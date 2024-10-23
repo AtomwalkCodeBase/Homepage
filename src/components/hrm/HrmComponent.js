@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { useTable } from 'react-table';
 // import "@fontsource/Centra";
-import HRMHeadBG from '../../assets/img/hrm_hero_img.png';
+import HRMHeadBG from '../../assets/img/hr.png';
 import KeyFeatureHrm from './KeyFeatureHrm';
 import FeatureBenifits from '../FeatureBenifits';
 

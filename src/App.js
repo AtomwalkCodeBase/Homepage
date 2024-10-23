@@ -23,8 +23,7 @@ import Blog from "./components/Blog";
 import BlogDetails from "./components/BlogDetails";
 import Success from "./components/SuccessBanner";
 import HrmComponent from "./components/hrm/HrmComponent";
-import LeaveManagement from "./components/hrm/LeaveManagement";
-import ClaimManagement from "./components/hrm/ClaimManagement";
+import HrmFeaturesManagement from "./components/hrm/HrmFeaturesManagement";
 
 function App() {
   const[openslide,setOpenslide]=useState(false);
@@ -78,8 +77,9 @@ const loginAndStore=async()=>{
           <Route path="/Blog.html" element={<Blog/>} />
           <Route path="/BlogDetails.html" element={<BlogDetails/>} />
           <Route path="/hrm.html" element={<HrmComponent />} />
-          <Route path="/leave.html" element={<LeaveManagement />} />
-          <Route path="/claim.html" element={<ClaimManagement />} />
+          <Route path="/leave.html" element={<HrmFeaturesManagement />} />
+          <Route path="/claim.html" element={<HrmFeaturesManagement />} />
+          <Route path="/employeehr.html" element={<HrmFeaturesManagement />} />
         </Routes>
       </Router>
       {openslide&&<Askme setOpenslide={setOpenslide}/>}

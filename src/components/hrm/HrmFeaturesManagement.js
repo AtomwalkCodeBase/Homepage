@@ -2,20 +2,21 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { useTable } from 'react-table';
 // import "@fontsource/Centra";
-import HRMHeadBG from '../../assets/img/claim.png';
+import ClaimHeadBG from '../../assets/img/claim.png'; 
+import LeaveHeadBG from '../../assets/img/leave1.png';
+import HrHeadBG from '../../assets/img/hrm_hero_img.png';
 import KeyFeatureHrm from './KeyFeatureHrm';
 import { ProcessFlow } from './ProcessFlow';
 import FeatureDescription from './FeatureDescription';
 import FeatureBenifits from '../FeatureBenifits';
 import FAQSection from './FAQSection';
+import { useLocation } from 'react-router-dom';
 
 const Page = styled.div`
   background-color: white;
   color: blue;
   width: 100%;
-  /* padding-top: 10px; */
   padding-bottom: 10px;
-  /* height: 1472px; */
 `;
 
 const Header = styled.div`
@@ -24,11 +25,9 @@ const Header = styled.div`
   color: blue;
   display: flex;
   justify-content: center;
-  
-  /* Adjustments for mobile devices */
+
   @media (max-width: 768px) {
-    height: auto; /* Allow height to adjust based on content */
-   // padding: 20px; /* Add some padding for smaller screens */
+    height: auto;
   }
 `;
 
@@ -42,14 +41,13 @@ const HeadBox = styled.div`
   justify-content: space-evenly;
   align-items: center;
   flex-direction: row;
-  
-  /* Adjustments for mobile devices */
+
   @media (max-width: 768px) {
-    padding: 20px; /* Reduce padding for smaller screens */
-    padding-top: 50px; /* Adjust top padding */
-    flex-direction: column; /* Stack items vertically */
-    justify-content: center; /* Center items */
-    align-items: center; /* Center items */
+    padding: 20px;
+    padding-top: 50px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
@@ -62,17 +60,14 @@ const HeadTextArea = styled.div`
   margin-left: 40px;
   margin-top: 25px;
 
-  /* Adjustments for mobile devices */
   @media (max-width: 768px) {
-    font-size: 32px; /* Reduce font size for smaller screens */
-    line-height: 38px; /* Adjust line height accordingly */
-    margin-left: 0px; /* Center text by removing left margin */
-    margin-top: 40px; /* Adjust top margin */
-    text-align: center; /* Center align the text */
+    font-size: 32px;
+    line-height: 38px;
+    margin-left: 0px;
+    margin-top: 40px;
+    text-align: center;
   }
 `;
-
-
 
 const HeadTextOne = styled.div`
   color: #1c1b1f;
@@ -90,6 +85,7 @@ const HeadPara = styled.p`
   word-wrap: normal;
   line-height: 31.504px;
   margin: 0px 0px 24px;
+
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -135,45 +131,75 @@ const HeadImage = styled.div`
   }
 `;
 
+const HrmFeaturesManagement = () => {
+  const location = useLocation();
 
+  // Determine which content to render based on the pathname
+  const isClaimPage = location.pathname === '/claim.html';
+  const isLeavePage = location.pathname === '/leave.html';
+  const isEmployeePage = location.pathname === '/employeehr.html';
 
-const ClaimManagement = () => {
-  
-  const demo =()=>{
-    window.location.href='/demo.html'
-  }
+  const content = useMemo(() => {
+    if (isClaimPage) {
+      return {
+        title: "Effortless Claim Management for Your Organization",
+        description: "Streamline your expense claim process with fast approvals, secure uploads, and real-time tracking all in one place.",
+        image: ClaimHeadBG,
+        data: "Claim"
+      };
+    } else if (isLeavePage) {
+      return {
+        title: "Simplified Leave Management for Employees",
+        description: "Manage leave requests, approvals, and balances with ease, all in one centralized system.",
+        image: LeaveHeadBG,
+        data: "Leave"
+      };
+    }
+    else if (isEmployeePage) {
+      return {
+        title: "Welcome to Employee Management",
+      description: "Explore our various modules designed to simplify your HR processes.",
+      image: HrHeadBG,
+      data: "HR"
+      };
+    }
+    return {
+      title: "Welcome to Employee Management",
+      description: "Explore our various modules designed to simplify your HR processes.",
+      image: HrHeadBG,
+      data: "HR"
+    };
+  }, [isClaimPage, isLeavePage,isEmployeePage]);
+
+  const demo = () => {
+    window.location.href = '/demo.html';
+  };
 
   return (
     <Page>
       <Header>
         <HeadBox>
           <HeadTextArea>
-            <HeadTextOne>Effortless Claim Management for Your Organization</HeadTextOne>
-            <HeadPara>
-            Streamline your expense claim process with fast approvals, secure uploads, and real-time tracking all in one place.
-            </HeadPara>
+            <HeadTextOne>{content.title}</HeadTextOne>
+            <HeadPara>{content.description}</HeadPara>
             <ButtonOne onClick={demo}>
               <ButtonText>Request a Demo</ButtonText>
             </ButtonOne>
           </HeadTextArea>
           <HeadImageArea>
             <HeadImage>
-              <img src={HRMHeadBG} alt="Pricing Challenge Background" />
+              <img src={content.image} alt="Page Background" />
             </HeadImage>
           </HeadImageArea>
         </HeadBox>
       </Header>
-      {/* <KeyFeatureHrm/> */}
-      <ProcessFlow data={`Claim`}/>
-      
-      <FeatureBenifits data={`Claim`} />
-      <FeatureDescription data={`Claim`}/>
-      <FAQSection data={`Claim`}/>
 
-
-      
+      <ProcessFlow data={content.data} />
+      <FeatureBenifits data={content.data} />
+      <FeatureDescription data={content.data} />
+      <FAQSection data={content.data} />
     </Page>
   );
 };
 
-export default ClaimManagement;
+export default HrmFeaturesManagement;

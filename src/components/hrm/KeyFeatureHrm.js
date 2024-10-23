@@ -101,6 +101,10 @@ const FeatureDescription = styled.p`
 `;
 
 const KeyFeatureHrm = () => {
+
+  const handleCardPress=(data)=>{
+    window.location.href=`/${data}.html`
+  }
   return (
     <SectionContainer>
       <MainTitle>
@@ -112,7 +116,7 @@ const KeyFeatureHrm = () => {
       </Subtitle> */}
 
       <FeaturesContainer>
-        <FeatureBox>
+        <FeatureBox onClick={()=>{handleCardPress('employeehr')}}>
           <IconContainer bgColor="#D8F5E3">
             <img src={Compliance} alt="Speed" />
           </IconContainer>
@@ -122,7 +126,7 @@ const KeyFeatureHrm = () => {
           </FeatureDescription>
         </FeatureBox>
 
-        <FeatureBox>
+        <FeatureBox onClick={()=>{handleCardPress('employeehr')}}>
           <IconContainer bgColor="#F0E7FF">
             <img src={Excellence} alt="Trust" />
           </IconContainer>
@@ -132,7 +136,7 @@ const KeyFeatureHrm = () => {
           </FeatureDescription>
         </FeatureBox>
 
-        <FeatureBox>
+        <FeatureBox onClick={()=>{handleCardPress('employeehr')}}>
           <IconContainer bgColor="#E0F7FC">
             <img src={Grow} alt="Accuracy" />
           </IconContainer>
@@ -143,7 +147,7 @@ const KeyFeatureHrm = () => {
         </FeatureBox>
 
         <FeatureBox
-        onClick={()=>{window.location.href='/leave.html'}}>
+        onClick={()=>{handleCardPress('leave')}}>
           <IconContainer bgColor="#FFF2E0">
             <img src={Payroll} alt="Reliability" />
           </IconContainer>
@@ -157,8 +161,8 @@ const KeyFeatureHrm = () => {
       </FeaturesContainer>
 
       <FeaturesContainer>
-      <FeatureBox
-      onClick={()=>{window.location.href='/claim.html'}}>
+      <FeatureBox 
+      onClick={()=>{handleCardPress('claim')}}>
           <IconContainer bgColor="#FFF2E0">
             <img src={Payroll} alt="Reliability" />
           </IconContainer>
@@ -168,7 +172,7 @@ const KeyFeatureHrm = () => {
           </FeatureDescription>
         </FeatureBox>
 
-        <FeatureBox>
+        <FeatureBox onClick={()=>{handleCardPress('employeehr')}}>
           <IconContainer bgColor="#FFF2E0">
             <img src={Payroll} alt="Reliability" />
           </IconContainer>
@@ -177,7 +181,7 @@ const KeyFeatureHrm = () => {
           Description: Automate payroll processing with integrated features for salary calculations, deductions, and disbursements. Ensure timely and accurate payments.
           </FeatureDescription>
         </FeatureBox>
-        <FeatureBox>
+        <FeatureBox onClick={()=>{handleCardPress('employeehr')}}>
           <IconContainer bgColor="#FFF2E0">
             <img src={Payroll} alt="Reliability" />
           </IconContainer>

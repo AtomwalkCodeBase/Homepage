@@ -6,6 +6,7 @@ import CheckMark from '../../assets/img/check_mark.png';
 import img1 from '../../assets/img/img1.svg';
 import img2 from '../../assets/img/add_claim_img.svg';
 import img3 from '../../assets/img/emp_advance.svg';
+import img4 from '../../assets/img/approve_claim.svg'
 
 const Container = styled.div`
   width: 100%;
@@ -30,10 +31,11 @@ const ImageSection = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-top: 10px;
 
   img {
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
   }
 
   @media (min-width: 768px) {
@@ -231,7 +233,7 @@ const FeatureDescription = ({ data }) => {
           description:
             'Empower managers to effortlessly manage and approve employee claims with just a few clicks. Review detailed claim submissions, verify receipts, and approve or reject claims in real-time, all from within the mobile or web platform. The streamlined approval process ensures transparency, timely responses, and hassle-free expense management.',
           benefits: ['Real-Time Notifications', 'Claim Review Dashboard', 'Approval/Reject Options','Real-Time Reporting Icon','Audit Trails'],
-          imageSrc: ClaimImgDemo2,
+          imageSrc: img4,
           imageAlt: 'Advance Tracking Icon"',
           imgPosition: 'right',
         },

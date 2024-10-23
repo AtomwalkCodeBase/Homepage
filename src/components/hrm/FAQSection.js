@@ -1,7 +1,6 @@
-// FAQSection.js
-
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import faqimg from '../../assets/img/faq.png'
 
 const Container = styled.div`
   display: flex;
@@ -82,8 +81,61 @@ const Answer = styled.div`
   }
 `;
 
-const FAQSection = () => {
+// New section styles for "Still have questions?"
+const CTASection = styled.div`
+  text-align: center;
+  margin-top: 50px;
+  padding: 30px;
+  /* background-color: #f8f5ff; */
+  border-radius: 12px;
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+  width: 100%;
+  max-width: 700px;
+
+  @media (min-width: 768px) {
+    padding: 40px;
+  }
+`;
+
+const CTAHeading = styled.h2`
+  font-size: 1.6rem;
+  color: #333;
+  margin-bottom: 20px;
+`;
+
+const CTAText = styled.p`
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 30px;
+`;
+
+const CTAButton = styled.a`
+  padding: 10px 20px;
+  background-color: #663399;
+  color: white;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  
+  &:hover {
+    background-color: #552288;
+  }
+`;
+
+// New styled component for the image
+const CTAImage = styled.img`
+  max-width: 200px;
+  margin-bottom: 10px;
+`;
+
+const FAQSection = (res) => {
   const [openIndex, setOpenIndex] = useState(null);
+
+  const demo =()=>{
+    window.location.href='/demo.html'
+  }
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -114,6 +166,18 @@ const FAQSection = () => {
           </FAQItem>
         ))}
       </FAQList>
+
+      {/* Adding the new "Still have questions?" section */}
+      <CTASection>
+        {/* Adding the image */}
+        <CTAImage src={faqimg} alt="FAQ" />
+        <CTAHeading>Still have questions?</CTAHeading>
+        <CTAText>
+          Book a call with our team to learn how Merchnlink can help you
+          change the way you manage your e-commerce business—forever.
+        </CTAText>
+        <CTAButton onClick={demo}>Book a demo</CTAButton>
+      </CTASection>
     </Container>
   );
 };

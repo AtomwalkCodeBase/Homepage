@@ -22,9 +22,9 @@ import LabManagement from "./components/LabManagement";
 import Blog from "./components/Blog";
 import BlogDetails from "./components/BlogDetails";
 import Success from "./components/SuccessBanner";
-import HrmComponent from "./components/HrmComponent";
-import LeaveManagement from "./components/LeaveManagement";
-import ClaimManagement from "./components/ClaimManagement";
+import HrmComponent from "./components/hrm/HrmComponent";
+import LeaveManagement from "./components/hrm/LeaveManagement";
+import ClaimManagement from "./components/hrm/ClaimManagement";
 
 function App() {
   const[openslide,setOpenslide]=useState(false);

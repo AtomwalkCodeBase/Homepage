@@ -90,11 +90,12 @@ const FAQSection = () => {
   };
 
   const claimFaqData = [
-    { question: "What is Merchlink?", answer: "Merchlink is a platform that connects brands with customers..." },
-    { question: "How can I partner with brands on Merchlink?", answer: "You can partner with brands by signing up..." },
-    { question: "How does Merchlink work?", answer: "Merchlink helps manage connections..." },
-    { question: "How do you make money?", answer: "Merchlink generates revenue through partnerships..." },
-    { question: "How do I get access to Merchlink’s network?", answer: "Access is granted after completing your profile..." },
+    { question: "What is Atomwalk HRM?", answer: "Answer..." },
+    { question: "How can I use Atomwalk HRM?", answer: "Answer..." },
+    { question: "How does HRM work?", answer: "Answer..." },
+    { question: "How to add a claim?", answer: "Answer..." },
+    { question: "How do I apply for a leave?", answer: "Answer..." },
+    { question: "How a manager can approve a leave?", answer: "Answer..." },
   ];
 
   return (

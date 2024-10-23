@@ -2,12 +2,7 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { useTable } from 'react-table';
 // import "@fontsource/Centra";
-import HRMHeadBG from '../assets/img/hrm_hero_img.png';
-import Logo1 from '../assets/img/logo1.png';
-import Logo2 from '../assets/img/logo2.png';
-import Logo3 from '../assets/img/logo3.png';
-import PricingTableComponent from './PricingTableComponent';
-import Testimonial from './Testimonial';
+import HRMHeadBG from '../../assets/img/hrm_hero_img.png';
 import KeyFeatureHrm from './KeyFeatureHrm';
 import { ProcessFlow } from './ProcessFlow';
 

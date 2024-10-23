@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import Compliance from './../assets/img/consulting.png'
-import Excellence from './../assets/img/service.png'
-import Grow from './../assets/img/grow.png'
-import Payroll from './../assets/img/human-resources.png'
-import Arrow from './../assets/img/arrows.png'
+import Compliance from '../../assets/img/consulting.png'
+import Excellence from '../../assets/img/service.png'
+import Grow from '../../assets/img/grow.png'
+import Payroll from '../../assets/img/human-resources.png'
+import Arrow from '../../assets/img/arrows.png'
 
 // Container for the entire section
 const SectionContainer = styled.div`

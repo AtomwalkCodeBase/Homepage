@@ -2,12 +2,12 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import ClaimImgDemo from '../assets/img/Claim_Image_demo.png';
-import ClaimImgDemo2 from '../assets/img/Claim_Image_Demo2.png';
-import CheckMark from '../assets/img/check.png';
-import img1 from '../assets/img/img1.svg';
-import img2 from '../assets/img/add_claim_img.svg'
-import img3 from '../assets/img/emp_advance.svg'
+import ClaimImgDemo from '../../assets/img/Claim_Image_demo.png';
+import ClaimImgDemo2 from '../../assets/img/Claim_Image_Demo2.png';
+import CheckMark from '../../assets/img/check_mark.png';
+import img1 from '../../assets/img/img1.svg';
+import img2 from '../../assets/img/add_claim_img.svg'
+import img3 from '../../assets/img/emp_advance.svg'
 
 const Container = styled.div`
   width: 100%;
@@ -18,7 +18,7 @@ const Features = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f9f4f5; 
+  background-color: #f0ebf7; 
   padding: 20px;
   
   @media (min-width: 768px) {
@@ -84,12 +84,12 @@ const BenefitsContainer = styled.div`
     }
 
     li img {
-        width: 20px;
-        height: 20px;
+        width: 30px;
+        height: 30px;
     }
 
     li span {
-        color: #6a1b9a; /* Purple color */
+        color: #1E90FF; 
         font-size: 0.9rem;
         font-weight: 400;
 

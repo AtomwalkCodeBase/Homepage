@@ -5,7 +5,7 @@ import ClaimProcessFlow from './ClaimProcessFlow';
 const PageContainer = styled.div`
   padding: 20px;
   /* padding-top: 50px; */
-  background-color: rgb(255 246 247);
+  background-color: #f0ebf7;
   font-family: Arial, sans-serif;
 
   @media (min-width: 768px) {
@@ -53,6 +53,7 @@ export const ProcessFlow = (res) => {
       <Title>Process Flow for {res?.data}</Title>
       <Section>
         <IndustryContainer style={{backgroundColor:"#ffffff"}}>
+          
           <ClaimProcessFlow/>
         </IndustryContainer>
       </Section>

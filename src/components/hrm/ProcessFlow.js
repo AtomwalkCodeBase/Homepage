@@ -4,7 +4,6 @@ import ClaimProcessFlow from './ClaimProcessFlow';
 
 const PageContainer = styled.div`
   padding: 20px;
-  /* padding-top: 50px; */
   background-color: #f0ebf7;
   font-family: Arial, sans-serif;
 
@@ -18,7 +17,7 @@ const Section = styled.div`
 `;
 
 const Title = styled.h1`
-margin-top: 80px;
+  margin-top: 80px;
   font-size: 35px;
   font-weight: 700;
   color: #2c3e50;
@@ -46,18 +45,15 @@ const IndustryContainer = styled.div`
   }
 `;
 
-export const ProcessFlow = (res) => {
-    
+export const ProcessFlow = ({ data }) => {
   return (
     <PageContainer>
-      <Title>Process Flow for {res?.data}</Title>
+      <Title>Process Flow for {data}</Title>
       <Section>
-        <IndustryContainer style={{backgroundColor:"#ffffff"}}>
-          
-          <ClaimProcessFlow/>
+        <IndustryContainer style={{ backgroundColor: "#ffffff" }}>
+          {data === 'Claim' && <ClaimProcessFlow />}
         </IndustryContainer>
       </Section>
-      
     </PageContainer>
-  )
-}
+  );
+};

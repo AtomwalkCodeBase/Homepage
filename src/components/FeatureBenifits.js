@@ -1,10 +1,8 @@
-// FeatureSection.js
-
 import React from 'react';
 import styled from 'styled-components';
 
-// You can replace these icons with your own imported image files or URLs
-import Icon1 from '../assets/img/clock.png';
+// Icons
+import Icon1 from '../assets/img/clock.png'; // You can replace this with your icons
 
 const Section = styled.section`
   text-align: center;
@@ -40,15 +38,7 @@ const BenefitCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* background-color: #fff;
-  border-radius: 12px; */
   padding: 20px;
-  /* box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease; */
-
-  /* &:hover {
-    transform: translateY(-10px);
-  } */
 `;
 
 const BenefitIcon = styled.div`
@@ -80,58 +70,42 @@ const BenefitText = styled.p`
   line-height: 1.4;
 `;
 
-const FeatureBenifits = (res) => {
+// Data sets for different responses
+const claimBenefits = [
+  { title: 'Save', text: 'time & effort', bgColor: '#d9f5e3', icon: Icon1 },
+  { title: 'Administer', text: 'easy claim processing', bgColor: '#f2e3ff', icon: Icon1 },
+  { title: 'Ensure', text: 'accurate claim accounting', bgColor: '#ffe8cc', icon: Icon1 },
+  { title: 'Reduce', text: 'claim processing time', bgColor: '#fff1d0', icon: Icon1 },
+  { title: 'Deliver', text: 'better claim experience', bgColor: '#d7faff', icon: Icon1 },
+  { title: 'Improve', text: 'claim transparency', bgColor: '#d9f5e3', icon: Icon1 },
+];
+
+const leaveBenefits = [
+  { title: 'Save', text: 'time & effort', bgColor: '#d9f5e3', icon: Icon1 },
+  { title: 'Administer', text: 'uniform leave policy', bgColor: '#f2e3ff', icon: Icon1 },
+  { title: 'Ensure', text: 'accurate leave accounting', bgColor: '#ffe8cc', icon: Icon1 },
+  { title: 'Reduce', text: 'unnecessary expense', bgColor: '#fff1d0', icon: Icon1 },
+  { title: 'Deliver', text: 'an outstanding employee experience', bgColor: '#d7faff', icon: Icon1 },
+  { title: 'Improve', text: 'employer brand image', bgColor: '#d9f5e3', icon: Icon1 },
+];
+
+const FeatureBenifits = ({ data }) => {
+  // Determine which set of benefits to display based on the response data
+  const benefits = data === 'Claim' ? claimBenefits : leaveBenefits;
+
   return (
     <Section>
-      <Title>All-in-One {res?.data} Management, <span>Faster and Easier.</span></Title>
+      <Title>All-in-One {data} Management, <span>Faster and Easier.</span></Title>
       <BenefitGrid>
-        <BenefitCard>
-          <BenefitIcon bgColor="#d9f5e3">
-            <img src={Icon1} alt="Save Icon" />
-          </BenefitIcon>
-          <BenefitTitle>Save</BenefitTitle>
-          <BenefitText>time & effort</BenefitText>
-        </BenefitCard>
-
-        <BenefitCard>
-          <BenefitIcon bgColor="#f2e3ff">
-            <img src={Icon1} alt="Administer Icon" />
-          </BenefitIcon>
-          <BenefitTitle>Administer</BenefitTitle>
-          <BenefitText>uniform leave policy</BenefitText>
-        </BenefitCard>
-
-        <BenefitCard>
-          <BenefitIcon bgColor="#ffe8cc">
-            <img src={Icon1} alt="Ensure Icon" />
-          </BenefitIcon>
-          <BenefitTitle>Ensure</BenefitTitle>
-          <BenefitText>accurate leave accounting</BenefitText>
-        </BenefitCard>
-
-        <BenefitCard>
-          <BenefitIcon bgColor="#fff1d0">
-            <img src={Icon1} alt="Reduce Icon" />
-          </BenefitIcon>
-          <BenefitTitle>Reduce</BenefitTitle>
-          <BenefitText>unnecessary expense</BenefitText>
-        </BenefitCard>
-
-        <BenefitCard>
-          <BenefitIcon bgColor="#d7faff">
-            <img src={Icon1} alt="Deliver Icon" />
-          </BenefitIcon>
-          <BenefitTitle>Deliver</BenefitTitle>
-          <BenefitText>an outstanding employee experience</BenefitText>
-        </BenefitCard>
-
-        <BenefitCard>
-          <BenefitIcon bgColor="#d9f5e3">
-            <img src={Icon1} alt="Improve Icon" />
-          </BenefitIcon>
-          <BenefitTitle>Improve</BenefitTitle>
-          <BenefitText>employer brand image</BenefitText>
-        </BenefitCard>
+        {benefits.map((benefit, index) => (
+          <BenefitCard key={index}>
+            <BenefitIcon bgColor={benefit.bgColor}>
+              <img src={benefit.icon} alt={`${benefit.title} Icon`} />
+            </BenefitIcon>
+            <BenefitTitle>{benefit.title}</BenefitTitle>
+            <BenefitText>{benefit.text}</BenefitText>
+          </BenefitCard>
+        ))}
       </BenefitGrid>
     </Section>
   );

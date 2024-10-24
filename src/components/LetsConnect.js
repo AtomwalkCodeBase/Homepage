@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import People  from './../assets/img/Backgroundpeople.png'
 import product  from './../assets/img/Product.png'
-
+import Crm  from './../assets/img/CrmHero.png'
 // Styled Components
 
 const Section = styled.section`
@@ -19,7 +19,7 @@ const Section = styled.section`
     flex-direction: row;
     text-align: left;
     height: 600px;
-    padding: 50px 12%
+    padding: 50px 10%
   }
 `;
 
@@ -83,8 +83,8 @@ const LetsConnect = (props) => {
         <Description>{props.description}</Description>
       </TextContainer>
       <ImageContainer>
-        {!props.data&&<Circle />}
-        <PeopleImage src={props.data?product:People} alt="People talking" />
+        {/* {!props.data&&<Circle />} */}
+        <PeopleImage src={props.data?product:props.crm?Crm:props.lead?props.img:People} alt="People talking" />
       </ImageContainer>
     </Section>
   );

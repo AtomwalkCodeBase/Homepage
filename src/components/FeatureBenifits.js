@@ -7,7 +7,11 @@ import Icon1 from '../assets/img/clock.png'; // You can replace this with your i
 const Section = styled.section`
   text-align: center;
   padding: 50px 20px;
+  margin-top: 90px;
   background-color: #fff;
+  @media (max-width: 768px) {
+   margin-top: -30px;
+  }
 `;
 
 const Title = styled.h1`

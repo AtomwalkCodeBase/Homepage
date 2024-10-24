@@ -22,6 +22,7 @@ const Header = styled.div`
   display: flex;
   justify-content: center;
   
+  
   /* Adjustments for mobile devices */
   @media (max-width: 768px) {
     height: auto; /* Allow height to adjust based on content */
@@ -158,8 +159,8 @@ const demo =()=>{
           </HeadImageArea>
         </HeadBox>
       </Header>
-      <KeyFeatureHrm/>
       <FeatureBenifits data={`HR`} />
+      <KeyFeatureHrm/>
 
 
       {/* <AddOnData>

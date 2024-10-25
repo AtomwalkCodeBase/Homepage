@@ -124,11 +124,11 @@ export const ProcessFlow = ({ data }) => {
       { step: 'Dashboard Available'},
     ],
     Leave: [
-      { step: 'View Holiday Calender'},
+      { step: 'Setup Holiday Calendar'},
       { step: 'Leave Dashboard'},
-      { step: 'Apply Leave'},
-      { step: 'Approve Leave'},
-      { step: 'Leave Report'},
+      { step: 'Manage Leave by Employee'},
+      { step: 'Manage Leave by Manager'},
+      { step: 'Reports & Analysis'},
     ],
     Payroll: [
       { step: 'Payroll Setup'},

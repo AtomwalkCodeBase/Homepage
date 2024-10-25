@@ -275,57 +275,57 @@ const FeatureDescription = ({ data }) => {
       ]
     : isLeave?
     [
-        {
-          title: 'Streamlined Holiday Calander',
-          subtitle: 'Keep Your Team in Sync with a Seamless Holiday Calendar System',
-          description:
-            'The Holiday Calendar Management functionality enables your company to efficiently manage its holiday records. This feature allows for Adding, Updating, Deleting, and Viewing holidays with ease. Available via the WEB App, this module simplifies the process of setting up a company-wide holiday schedule, ensuring that employees are well-informed of upcoming holidays.',
-          benefits: ['Streamlined Updates', 'Audit Supported', 'Upload Supportedt'],
-          imageSrc: img7,
-          imageAlt: 'Leave Application',
-          imgPosition: 'left',
-        },
-        {
-          title: 'Leave Dashboard',
-          subtitle: 'Comprehensive Leave Management at Your Fingertips',
-          description:
-            'The Leave Dashboard is designed to simplify and streamline leave management for both employees and managers. It provides an easy-to-navigate interface where employees can view their leave history, apply for various types of leaves, and access holiday calendars. Managers can efficiently approve or reject leave requests, ensuring a seamless process for all stakeholders.',
-          benefits: ['Real-Time Leave Tracking', 'Efficient Approval Process', 'Holiday Calendar','Comprehensive Reports','Customizable Sorting'],
-          imageSrc: img8,
-          imageAlt: 'Leave Dashboard',
-          imgPosition: 'right',
-        },
-        {
-          title: 'Hassle-Free Leave Application',
-          subtitle: 'Seamlessly Apply for Leave Anytime, Anywhere',
-          description:
-            'The Apply Leave feature makes it incredibly easy for employees to submit leave requests. Whether it’s a vacation, sick leave, or work-from-home (WFH) request, this feature ensures a smooth process. Employees can view their available leave balance, select the type of leave, and even check the holiday list to plan their time off effectively. With real-time updates, they are always informed of the status of their requests.',
-          benefits: ['Instant Leave Application', 'Mobile Convenience', 'Holiday List Integration','Quick Notifications','Work Flexibility'],
-          imageSrc: img9,
-          imageAlt: 'Leave Application',
-          imgPosition: 'left',
-        },
-        {
-          title: 'Swift Leave Approvals',
-          subtitle: 'Manage Leave Requests with Ease and Precision',
-          description:
-            'The Approve Leave feature empowers managers to handle leave requests quickly and efficiently. With an intuitive dashboard, managers can review pending leave applications, view detailed information, and take immediate action. The system ensures transparency by displaying past leave histories and balances, allowing managers to make informed decisions. This feature streamlines the approval process, ensuring minimal disruption to team workflows.',
-          benefits: ['Efficient Leave Approval', 'Comprehensive Leave View', 'Mobile Convenience','Instant Notifications','Approval History','Customizable Sorting'],
-          imageSrc: img10,
-          imageAlt: 'Leave Approval',
-          imgPosition: 'right',
-        },
-        {
-          title: 'In-Depth Leave Reports',
-          subtitle: 'Gain Complete Insights into Leave Patterns and Usage',
-          description:
-            ' The Leave Report feature provides a comprehensive overview of leave activities within the organization. Managers can easily access detailed reports that track employee leave history, usage patterns, and overall leave balances. This tool helps in planning, monitoring, and maintaining a balanced workforce. With customizable sorting options, users can generate tailored reports for specific timeframes or individual employees, enabling better decision-making.',
-          benefits: ['Comprehensive Leave Insights', 'Customizable Reports', 'Enhanced Workforce Planning','Leave Balances at a Glance','Exportable Reports'],
-          imageSrc: img11,
-          imageAlt: 'Leave Reports',
-          imgPosition: 'left',
-        },
-      ]: isPayroll?
+      {
+        title: 'Location Wise  - Simplified Management of your Holiday Calendar',
+        subtitle: 'Easy and exhaustive way to take care of your complex organisational need of Holiday management (Single/Multi location).',
+        description:
+          'Manage Holiday setup digitally for your business for each Year across single/ multiple location. Holiday setup supports Mandatory and Optional holiday for each location. Supports Multiple leave types and yearly limit for each leave types. Setup enables, better Project execution planning for the organisation and provides transparency for the employee to plan/utilise their Leave.',
+        benefits: ['Easy Exhaustive Setup across Single/Multi Location', 'Supports Audit trails and track changes in setup', 'Optional Holiday setup enables for each location.', 'Transparent and accessible by all users/employees.'],
+        imageSrc: img7,
+        imageAlt: 'Holiday Calendar',
+        imgPosition: 'left',
+      },
+      {
+        title: 'Dashboard for Complete Leave overview ',
+        subtitle: 'Easily track, manage, and plan your time off/ Utilisation of Leave.',
+        description:
+          'Employee can view detailed summary dashboard of their leave status, including total applied, approved, and pending leave categorized by leave type. Month wise trend analysis enables the Manager to manage risk at project planning level. The system also provides a year-wise holiday list which is accessible through  Mobile app, making it simple to manage leave information and plan time off effectively. Leave details are shared with Billing/Payroll modules seamlessly to eliminate any processing errors.',
+        benefits: ['Comprehensive Overview, Detailed for each leave types. ', 'Trend Analysis for better planning and risk management.', 'Accessible from Mobile app', 'Shared with Payroll and Project Management modules seamlessly.'],
+        imageSrc: img8,
+        imageAlt: 'Leave Dashboard',
+        imgPosition: 'right',
+      },
+      {
+        title: 'Apply leave from Anywhere Any time',
+        subtitle: 'Simple Leave Application: easy to apply and cancel from anywhere & anytime.',
+        description:
+          `Employee can apply for multiple types of leaves like  Earned Leave, Work From Home and Loss of Pay through both web and mobile apps. On submitted, the leave request automatically move to manager's dashboard for approval,  streamlining the process.`,
+        benefits: ['Both Web and Mobile Convenience', 'Multiple leave types', ' Easy Application process with Holiday List Integration, to alter users.'],
+        imageSrc: img9,
+        imageAlt: 'Leave Application',
+        imgPosition: 'left',
+      },
+      {
+        title: 'Swift Leave Approvals from Anywhere Anytime',
+        subtitle: 'Approve/ Reject Leave Requests with Ease and Precision from Approver Dashboard.',
+        description:
+          'Managers can easily filter leave requests by individual employee or leave type, providing a clear view of total leave applied, approved, and pending for each employee. This organized approach allows for efficient navigation and prompt action. Managers can review details before making decisions, with a mandatory remark field to ensure clear communication with employees during the approval or rejection process.',
+        benefits: ['Organized and Filter View', 'Comprehensive Overview', 'Streamlined Approval Process', 'Efficient Leave Approval', 'Mobile Convenience', 'Approval History'],
+        imageSrc: img10,
+        imageAlt: 'Leave Approval',
+        imgPosition: 'right',
+      },
+      {
+        title: 'Organized Leave Insights for Efficient Management',
+        subtitle: 'Gain Complete Insights into Leave Patterns and Usage',
+        description:
+          ' Managers can sort leave requests by individual employee or leave type, providing a clear and organized view. They also have access to a comprehensive annual leave report that includes all leave details across departments. This feature ensures efficient record-keeping and supports transparent leave management, helping managers make informed decisions.',
+        benefits: ['Informed Decision-Making', 'Exportable Reports', ' Leave Balances at a Glance', 'Customizable Reports'],
+        imageSrc: img11,
+        imageAlt: 'Leave Reports',
+        imgPosition: 'left',
+      },
+    ]: isPayroll?
       [
         {
           title: 'Payroll & Compliance Management',

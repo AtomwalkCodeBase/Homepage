@@ -138,6 +138,7 @@ const HrmFeaturesManagement = () => {
   const isClaimPage = location.pathname === '/claim.html';
   const isLeavePage = location.pathname === '/leave.html';
   const isEmployeePage = location.pathname === '/employeehr.html';
+  const isPayrollPage = location.pathname === '/payroll.html';
 
   const content = useMemo(() => {
     if (isClaimPage) {
@@ -161,6 +162,14 @@ const HrmFeaturesManagement = () => {
       description: "Explore our various modules designed to simplify your HR processes.",
       image: HrHeadBG,
       data: "HR"
+      };
+    }
+    else if (isPayrollPage) {
+      return {
+        title: "Accurate and Automated Payroll Solutions",
+      description: "Simplify payroll with Atomwalk HRM's automated system, handling salaries, deductions, and taxes with accuracy. Real-time integration ensures seamless reporting and easy payslip access for employees",
+      image: HrHeadBG,
+      data: "Payroll"
       };
     }
     return {
@@ -197,7 +206,7 @@ const HrmFeaturesManagement = () => {
       <ProcessFlow data={content.data} />
       <FeatureBenifits data={content.data} />
       <FeatureDescription data={content.data} />
-      <FAQSection data={content.data} />
+      {/* <FAQSection data={content.data} /> */}
     </Page>
   );
 };

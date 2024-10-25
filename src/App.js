@@ -81,6 +81,7 @@ const loginAndStore=async()=>{
           <Route path="/leave.html" element={<HrmFeaturesManagement />} />
           <Route path="/claim.html" element={<HrmFeaturesManagement />} />
           <Route path="/employeehr.html" element={<HrmFeaturesManagement />} />
+          <Route path="/payroll.html" element={<HrmFeaturesManagement/>} />
           <Route path="/leadManagement.html" element={<LeadManagement/>} />
         </Routes>
       </Router>

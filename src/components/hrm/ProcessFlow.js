@@ -69,7 +69,7 @@ const Step = styled.div`
   padding-top: 20px;
   margin: 10px;
   border-radius: 8px;
-  border: 1px solid ${props => props.bgColor || '#f3f3f3'};
+  border: 1px solid #4A90E2;
   width: 125px;
   /* flex: 1; */
   display: flex;
@@ -91,7 +91,7 @@ const Step = styled.div`
 
 const DocText =styled.p`
 text-align: center;
-color: ${props => props.bgColor || '#f3f3f3'};
+color: #4A90E2;
 font-weight: bold;
 
 `;
@@ -103,7 +103,7 @@ const Arrow = styled.div`
   height: 0;
   border-left: 15px solid transparent;
   border-right: 15px solid transparent;
-  border-top: 30px solid ${props => props.arrowColor || '#000'};
+  border-top: 30px solid #4A90E2;
   margin: 0 10px;
   transform: rotate(-90deg);
 
@@ -116,27 +116,32 @@ export const ProcessFlow = ({ data }) => {
   // Define different flows for each type
   const flows = {
     Claim: [
-      { step: 'Setup of Expenses', color: '#4A90E2' },
-      { step: 'Advance is Issued', color: '#7EDfff' },
-      { step: 'Expense of Claim', color: '#7ED321' },
-      { step: 'Approval Of Claim', color: '#a970ff' },
-      { step: 'Approval Of Claim', color: '#F8E71C' },
-      { step: 'Post Entries', color: '#50E3C2' },
-      { step: 'Dashboard Available', color: '#4A90E2' },
+      { step: 'Setup of Expenses'},
+      { step: 'Advance is Issued' },
+      { step: 'Expense of Claim'},
+      { step: 'Approval Of Claim'},
+      { step: 'Post Entries'},
+      { step: 'Dashboard Available'},
     ],
     Leave: [
-      { step: 'View Holiday Calender', color: '#F5A623' },
-      { step: 'Leave Dashboard', color: '#D0021B' },
-      { step: 'Apply Leave', color: '#8B572A' },
-      { step: 'Approve Leave', color: '#417505' },
-      { step: 'Leave Report', color: '#7ED321' },
+      { step: 'View Holiday Calender'},
+      { step: 'Leave Dashboard'},
+      { step: 'Apply Leave'},
+      { step: 'Approve Leave'},
+      { step: 'Leave Report'},
+    ],
+    Payroll: [
+      { step: 'Payroll Setup'},
+      { step: 'Appraisal System'},
+      { step: 'Generate Salary'},
+      { step: 'Post Salary Payable'},
     ],
     HR: [
-      { step: 'On-Boarding', color: '#50E3C2' },
-      { step: 'Employee Data', color: '#F8E71C' },
-      { step: 'Attendance', color: '#B8E986' },
-      { step: 'Payroll', color: '#417505' },
-      { step: 'Exit Process', color: '#D0021B' },
+      { step: 'On-Boarding'},
+      { step: 'Employee Data'},
+      { step: 'Attendance'},
+      // { step: 'Payroll'},
+      { step: 'Exit Process'},
     ],
   };
 
@@ -152,11 +157,11 @@ export const ProcessFlow = ({ data }) => {
           <FlowContainer>
             {processSteps.map((step, index) => (
               <React.Fragment key={index}>
-                <Step bgColor={step.color}>
-                  <DocText bgColor={step.color}>{step.step}</DocText>
+                <Step>
+                  <DocText>{step.step}</DocText>
                 </Step>
                 {index < processSteps.length - 1 && (
-                  <Arrow arrowColor={step.color} />
+                  <Arrow/>
                 )}
               </React.Fragment>
             ))}

@@ -2,16 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 
 // Icons
-import Icon1 from '../assets/img/clock.png'; // You can replace this with your icons
+import Icon1 from '../assets/img/clock.png';
+import Icon2 from '../assets/img/administer.png';
+import Icon3 from '../assets/img/reconciliation.png';
+import Icon4 from '../assets/img/reduce-time.png';
+import Icon5 from '../assets/img/better_experience.png';
+import Icon6 from '../assets/img/transparency.png';
+import Icon7 from '../assets/img/brand_reputaion.png';
+import Icon8 from '../assets/img/money_saving.png';
 
 const Section = styled.section`
   text-align: center;
   padding: 50px 20px;
-  margin-top: 90px;
   background-color: #fff;
-  @media (max-width: 768px) {
-   margin-top: -30px;
-  }
+  
 `;
 
 const Title = styled.h1`
@@ -76,26 +80,44 @@ const BenefitText = styled.p`
 
 // Data sets for different responses
 const claimBenefits = [
-  { title: 'Save', text: 'time & effort', bgColor: '#d9f5e3', icon: Icon1 },
-  { title: 'Administer', text: 'easy claim processing', bgColor: '#f2e3ff', icon: Icon1 },
-  { title: 'Ensure', text: 'accurate claim accounting', bgColor: '#ffe8cc', icon: Icon1 },
-  { title: 'Reduce', text: 'claim processing time', bgColor: '#fff1d0', icon: Icon1 },
-  { title: 'Deliver', text: 'better claim experience', bgColor: '#d7faff', icon: Icon1 },
-  { title: 'Improve', text: 'claim transparency', bgColor: '#d9f5e3', icon: Icon1 },
+  { title: 'Optimize', text: 'maximize time & effort efficiency', bgColor: '#d9f5e3', icon: Icon1 },
+  { title: 'Streamline', text: 'simplify claim management', bgColor: '#f2e3ff', icon: Icon2 },
+  { title: 'Verify', text: 'ensure precise claim reconciliation', bgColor: '#ffe8cc', icon: Icon3 },
+  { title: 'Accelerate', text: 'minimize claim processing delays', bgColor: '#fff1d0', icon: Icon4 },
+  { title: 'Enhance', text: 'deliver a seamless claim experience', bgColor: '#d7faff', icon: Icon5 },
+  { title: 'Elevate', text: 'increase claim transparency', bgColor: '#d9f5e3', icon: Icon6 }
 ];
 
 const leaveBenefits = [
   { title: 'Save', text: 'time & effort', bgColor: '#d9f5e3', icon: Icon1 },
-  { title: 'Administer', text: 'uniform leave policy', bgColor: '#f2e3ff', icon: Icon1 },
-  { title: 'Ensure', text: 'accurate leave accounting', bgColor: '#ffe8cc', icon: Icon1 },
-  { title: 'Reduce', text: 'unnecessary expense', bgColor: '#fff1d0', icon: Icon1 },
-  { title: 'Deliver', text: 'an outstanding employee experience', bgColor: '#d7faff', icon: Icon1 },
-  { title: 'Improve', text: 'employer brand image', bgColor: '#d9f5e3', icon: Icon1 },
+  { title: 'Administer', text: 'uniform leave policy', bgColor: '#f2e3ff', icon: Icon2 },
+  { title: 'Ensure', text: 'accurate leave accounting', bgColor: '#ffe8cc', icon: Icon3 },
+  { title: 'Reduce', text: 'unnecessary expense', bgColor: '#fff1d0', icon: Icon4 },
+  { title: 'Deliver', text: 'an outstanding employee experience', bgColor: '#d7faff', icon: Icon5 },
+  { title: 'Improve', text: 'employer brand image', bgColor: '#d9f5e3', icon: Icon6 },
 ];
+
+const employeeBenefits = [
+  { title: 'Save', text: 'time & effort', bgColor: '#d9f5e3', icon: Icon1 },
+  { title: 'Administer', text: 'uniform leave policy', bgColor: '#f2e3ff', icon: Icon2 },
+  { title: 'Ensure', text: 'accurate leave accounting', bgColor: '#ffe8cc', icon: Icon3 },
+  { title: 'Reduce', text: 'unnecessary expense', bgColor: '#fff1d0', icon: Icon4 },
+  { title: 'Deliver', text: 'an outstanding employee experience', bgColor: '#d7faff', icon: Icon5 },
+  { title: 'Improve', text: 'employer brand image', bgColor: '#d9f5e3', icon: Icon6 },
+];
+const hrmBenefits = [
+  { title: 'Streamline', text: 'eliminate time-consuming paperwork', bgColor: '#d9f5e3', icon: Icon1 },
+  { title: 'Optimize', text: 'cut unnecessary operational expenses', bgColor: '#fff1d0', icon: Icon8 },
+  { title: 'Boost', text: 'elevate employer brand reputation', bgColor: '#d9f5e3', icon: Icon7 },
+  { title: 'Standardize', text: 'enforce a consistent company policy', bgColor: '#f2e3ff', icon: Icon2 },
+  { title: 'Track', text: 'ensure accurate employee monitoring', bgColor: '#ffe8cc', icon: Icon3 },
+  { title: 'Enhance', text: 'create an exceptional employee experience', bgColor: '#d7faff', icon: Icon5 },
+];
+
 
 const FeatureBenifits = ({ data }) => {
   // Determine which set of benefits to display based on the response data
-  const benefits = data === 'Claim' ? claimBenefits : leaveBenefits;
+  const benefits = data === 'Claim' ? claimBenefits : data === 'HR' ? hrmBenefits : leaveBenefits;
 
   return (
     <Section>

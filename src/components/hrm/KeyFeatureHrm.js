@@ -3,13 +3,21 @@ import styled from 'styled-components';
 import Compliance from '../../assets/img/consulting.png'
 import Excellence from '../../assets/img/service.png'
 import Grow from '../../assets/img/grow.png'
-import Payroll from '../../assets/img/human-resources.png'
+import Payroll from '../../assets/img/payroll.png'
 import Arrow from '../../assets/img/arrows.png'
+import AttIcon from '../../assets/img/attendance1.png'
+import OnboardingIcon from '../../assets/img/onboarding.png'
+import EmployeeDataIcon from '../../assets/img/empdata.png'
+import LeaveManagementIcon from '../../assets/img/leavemanagement.png'
+import ClaimManagementIcon from '../../assets/img/claimmanage.png'
+import ExitProcessIcon from '../../assets/img/exit-process.png'
+
+
 
 // Container for the entire section
 const SectionContainer = styled.div`
   padding: 110px 20px;
-  background-color: #fff7e6;
+  background-color: #f0ebf7;
   text-align: center;
 `;
 
@@ -118,7 +126,7 @@ const KeyFeatureHrm = () => {
       <FeaturesContainer>
         <FeatureBox onClick={()=>{handleCardPress('employeehr')}}>
           <IconContainer bgColor="#D8F5E3">
-            <img src={Compliance} alt="Speed" />
+            <img src={OnboardingIcon} alt="Onboarding" />
           </IconContainer>
           <FeatureTitle>On-Boarding Process:</FeatureTitle>
           <FeatureDescription>
@@ -128,7 +136,7 @@ const KeyFeatureHrm = () => {
 
         <FeatureBox onClick={()=>{handleCardPress('employeehr')}}>
           <IconContainer bgColor="#F0E7FF">
-            <img src={Excellence} alt="Trust" />
+            <img src={EmployeeDataIcon} alt="EmployeeData" />
           </IconContainer>
           <FeatureTitle>Employee Data:</FeatureTitle>
           <FeatureDescription>
@@ -138,7 +146,7 @@ const KeyFeatureHrm = () => {
 
         <FeatureBox onClick={()=>{handleCardPress('employeehr')}}>
           <IconContainer bgColor="#E0F7FC">
-            <img src={Grow} alt="Accuracy" />
+            <img src={AttIcon} alt="Attendance" />
           </IconContainer>
           <FeatureTitle>Attendance:</FeatureTitle>
           <FeatureDescription>
@@ -149,7 +157,7 @@ const KeyFeatureHrm = () => {
         <FeatureBox
         onClick={()=>{handleCardPress('leave')}}>
           <IconContainer bgColor="#FFF2E0">
-            <img src={Payroll} alt="Reliability" />
+            <img src={LeaveManagementIcon} alt="Reliability" />
           </IconContainer>
           <FeatureTitle>Leave Management:</FeatureTitle>
           <FeatureDescription>
@@ -164,7 +172,7 @@ const KeyFeatureHrm = () => {
       <FeatureBox 
       onClick={()=>{handleCardPress('claim')}}>
           <IconContainer bgColor="#FFF2E0">
-            <img src={Payroll} alt="Reliability" />
+            <img src={ClaimManagementIcon} alt="Reliability" />
           </IconContainer>
           <FeatureTitle>Claim Management:</FeatureTitle>
           <FeatureDescription>
@@ -172,22 +180,22 @@ const KeyFeatureHrm = () => {
           </FeatureDescription>
         </FeatureBox>
 
-        <FeatureBox onClick={()=>{handleCardPress('employeehr')}}>
+        <FeatureBox onClick={()=>{handleCardPress('payroll')}}>
           <IconContainer bgColor="#FFF2E0">
             <img src={Payroll} alt="Reliability" />
           </IconContainer>
           <FeatureTitle>Payroll:</FeatureTitle>
           <FeatureDescription>
-          Description: Automate payroll processing with integrated features for salary calculations, deductions, and disbursements. Ensure timely and accurate payments.
+          Automate payroll processing with integrated features for salary calculations, deductions, and disbursements. Ensure timely and accurate payments.
           </FeatureDescription>
         </FeatureBox>
         <FeatureBox onClick={()=>{handleCardPress('employeehr')}}>
           <IconContainer bgColor="#FFF2E0">
-            <img src={Payroll} alt="Reliability" />
+            <img src={ExitProcessIcon} alt="Reliability" />
           </IconContainer>
           <FeatureTitle>Exit Process:</FeatureTitle>
           <FeatureDescription>
-          Description: Simplify the employee exit process, from resignation submission to final clearance. Ensure smooth offboarding with documented workflows
+          Simplify the employee exit process, from resignation submission to final clearance. Ensure smooth offboarding with documented workflows
           </FeatureDescription>
         </FeatureBox>
         

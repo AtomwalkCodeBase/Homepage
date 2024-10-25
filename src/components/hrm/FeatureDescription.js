@@ -1,12 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
 import ClaimImgDemo from '../../assets/img/Claim_Image_demo.png';
-import ClaimImgDemo2 from '../../assets/img/Claim_Image_Demo2.png';
 import CheckMark from '../../assets/img/check_mark.png';
 import img1 from '../../assets/img/img1.svg';
 import img2 from '../../assets/img/add_claim_img.svg';
 import img3 from '../../assets/img/emp_advance.svg';
-import img4 from '../../assets/img/approve_claim.svg'
+import img4 from '../../assets/img/approve_claim.svg';
+import img5 from '../../assets/img/sattle_claim.svg';
+import img6 from '../../assets/img/expense_claim.svg';
+import img7 from '../../assets/img/holiday_calender.svg';
+import img8 from '../../assets/img/leave_dashboard.svg';
+import img9 from '../../assets/img/add_leave.svg';
+import img10 from '../../assets/img/approval_leave.svg';
+import img11 from '../../assets/img/leave_report.svg';
+import img12 from '../../assets/img/payroll_setup.svg';
+import img13 from '../../assets/img/appraisal_setup.svg';
+
+
 
 const Container = styled.div`
   width: 100%;
@@ -44,18 +54,18 @@ const ImageSection = styled.div`
 `;
 
 const BenefitsContainer = styled.div`
-  background-color: #fff;
-  border-color: #e8e8e9;
+  /* background-color: #fff; */
+  /* border-color: #e8e8e9;
   border-radius: 20px;
   border-style: solid;
-  border-width: 0.8px;
+  border-width: 0.8px; */
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   flex-direction: column;
-  gap: 20px;
+  /* gap: 5px; */
   justify-content: center;
   line-height: 26px;
-  padding: 24px;
+  /* padding: 5px; */
   text-align: center;
 
   p {
@@ -69,8 +79,10 @@ const BenefitsContainer = styled.div`
     padding: 0;
     margin: 0;
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     justify-content: center;
+    /* align-items: center; */
+    flex-direction: column;
     gap: 20px;
   }
 
@@ -78,7 +90,7 @@ const BenefitsContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 160px;
+    /* width: 160px; */
     gap: 8px;
   }
 
@@ -144,6 +156,8 @@ const TextSection = styled.div`
 
 const FeatureDescription = ({ data }) => {
   const isClaim = data === 'Claim';
+  const isLeave = data === 'Leave';
+  const isPayroll = data === 'Payroll';
 
   const getFeatureContent = (feature) => (
     <Features>
@@ -157,7 +171,7 @@ const FeatureDescription = ({ data }) => {
             <h2>{feature.subtitle}</h2>
             <p>{feature.description}</p>
             <BenefitsContainer>
-              <p>Key Benefits</p>
+              {/* <p>Key Benefits</p> */}
               <ul>
                 {feature.benefits.map((benefit, index) => (
                   <li key={index}>
@@ -176,7 +190,7 @@ const FeatureDescription = ({ data }) => {
             <h2>{feature.subtitle}</h2>
             <p>{feature.description}</p>
             <BenefitsContainer>
-              <p>Key Benefits</p>
+              {/* <p>Key Benefits</p> */}
               <ul>
                 {feature.benefits.map((benefit, index) => (
                   <li key={index}>
@@ -201,7 +215,7 @@ const FeatureDescription = ({ data }) => {
           title: 'Simplify Claim Expense Setup',
           subtitle: 'Effortlessly Manage Your Company’s Claim Categories',
           description:
-            'With our Claim Expense Setup functionality, your company can efficiently manage claim types and categories, streamlining the entire process. Whether you need to Add, Update, Delete, or View claim types, this setup provides all the essential tools in a user-friendly interface.',
+            `This process enables the company to efficiently manage expenses through the setup of service categories. The first step is to define the Service Category, which includes fields such as Service Category Name, Tax Applicability (with an option to select whether tax applies or not), Applicable Tax Rate, TDS Threshold Limit, TDS Rate for the service, Category Alias, and Expense Ledger. Additionally, the company can specify whether the category is excluded from expense claims and if a bill is required for submission.Once the service category is set up, the company can add specific Expense Items or Services (e.g., Consultancy) with details like Name, Service Code, Service Category (linked to the previously defined category), Service Cost, and Description. Employees can then select these predefined expense items when submitting claims.This setup not only simplifies the expense claim process but also aids in project cost analysis, making it a valuable tool for the company's financial management and decision-making.`,
           benefits: ['Upload Receipts', 'Real-time Tracking', 'Multi-Claim Support'],
           imageSrc: img1,
           imageAlt: 'Expense Setup',
@@ -243,8 +257,8 @@ const FeatureDescription = ({ data }) => {
           description:
             'Managing expense claims has never been easier. With Atomwalk HRM On-The-Go, employees can submit claims for reimbursement by uploading receipts directly through the app. Managers can approve or reject claims instantly, ensuring transparency and accountability at every step. The entire process is automated and recorded for future audits, allowing for efficient tracking and settlement of employee expenses.',
           benefits: ['Quick Submission', 'Approval Workflow', 'Transparency','Audit Support','Mobile-Friendly'],
-          imageSrc: img3,
-          imageAlt: 'Advance',
+          imageSrc: img5,
+          imageAlt: 'Sattle Claim',
           imgPosition: 'left',
         },
         {
@@ -253,33 +267,159 @@ const FeatureDescription = ({ data }) => {
           description:
             "  The Post Accounting Entries feature simplifies your financial management by automatically generating accounting entries for every transaction. Whether it's payroll disbursements, claims, or expense tracking, this feature ensures that all financial movements are accurately recorded in the system. Say goodbye to manual bookkeeping and embrace a streamlined, error-free accounting process that saves time and reduces discrepancies.",
           benefits: ['Automated Accounting', 'Real-Time Updates', 'Compliance Ready','Integration'],
-          imageSrc: img2,
+          imageSrc: img6,
           imageAlt: 'Post Accounting',
           imgPosition: 'right',
         },
        
       ]
-    : [
+    : isLeave?
+    [
         {
-          title: 'Submit Leave Applications with Ease',
-          subtitle: 'Fast and Efficient Leave Application Process',
+          title: 'Streamlined Holiday Calander',
+          subtitle: 'Keep Your Team in Sync with a Seamless Holiday Calendar System',
           description:
-            'Empower employees to submit leave requests quickly from their mobile devices or desktops. Track the status of leave applications in real-time, and streamline approvals with our efficient leave management system.',
-          benefits: ['Real-Time Tracking', 'Leave Balance Updates', 'Multi-Leave Support'],
-          imageSrc: img2,
+            'The Holiday Calendar Management functionality enables your company to efficiently manage its holiday records. This feature allows for Adding, Updating, Deleting, and Viewing holidays with ease. Available via the WEB App, this module simplifies the process of setting up a company-wide holiday schedule, ensuring that employees are well-informed of upcoming holidays.',
+          benefits: ['Streamlined Updates', 'Audit Supported', 'Upload Supportedt'],
+          imageSrc: img7,
           imageAlt: 'Leave Application',
           imgPosition: 'left',
         },
         {
-          title: 'Simplify Leave Approvals',
-          subtitle: 'Quick and Transparent Leave Approval Process',
+          title: 'Leave Dashboard',
+          subtitle: 'Comprehensive Leave Management at Your Fingertips',
           description:
-            'Managers can easily approve or reject leave requests in real-time. With our streamlined leave approval process, transparency is ensured, and responses are timely, making leave management hassle-free.',
-          benefits: ['Approval/Reject Options', 'Audit Trails', 'Mobile Convenience'],
-          imageSrc: ClaimImgDemo,
+            'The Leave Dashboard is designed to simplify and streamline leave management for both employees and managers. It provides an easy-to-navigate interface where employees can view their leave history, apply for various types of leaves, and access holiday calendars. Managers can efficiently approve or reject leave requests, ensuring a seamless process for all stakeholders.',
+          benefits: ['Real-Time Leave Tracking', 'Efficient Approval Process', 'Holiday Calendar','Comprehensive Reports','Customizable Sorting'],
+          imageSrc: img8,
+          imageAlt: 'Leave Dashboard',
+          imgPosition: 'right',
+        },
+        {
+          title: 'Hassle-Free Leave Application',
+          subtitle: 'Seamlessly Apply for Leave Anytime, Anywhere',
+          description:
+            'The Apply Leave feature makes it incredibly easy for employees to submit leave requests. Whether it’s a vacation, sick leave, or work-from-home (WFH) request, this feature ensures a smooth process. Employees can view their available leave balance, select the type of leave, and even check the holiday list to plan their time off effectively. With real-time updates, they are always informed of the status of their requests.',
+          benefits: ['Instant Leave Application', 'Mobile Convenience', 'Holiday List Integration','Quick Notifications','Work Flexibility'],
+          imageSrc: img9,
+          imageAlt: 'Leave Application',
+          imgPosition: 'left',
+        },
+        {
+          title: 'Swift Leave Approvals',
+          subtitle: 'Manage Leave Requests with Ease and Precision',
+          description:
+            'The Approve Leave feature empowers managers to handle leave requests quickly and efficiently. With an intuitive dashboard, managers can review pending leave applications, view detailed information, and take immediate action. The system ensures transparency by displaying past leave histories and balances, allowing managers to make informed decisions. This feature streamlines the approval process, ensuring minimal disruption to team workflows.',
+          benefits: ['Efficient Leave Approval', 'Comprehensive Leave View', 'Mobile Convenience','Instant Notifications','Approval History','Customizable Sorting'],
+          imageSrc: img10,
           imageAlt: 'Leave Approval',
           imgPosition: 'right',
         },
+        {
+          title: 'In-Depth Leave Reports',
+          subtitle: 'Gain Complete Insights into Leave Patterns and Usage',
+          description:
+            ' The Leave Report feature provides a comprehensive overview of leave activities within the organization. Managers can easily access detailed reports that track employee leave history, usage patterns, and overall leave balances. This tool helps in planning, monitoring, and maintaining a balanced workforce. With customizable sorting options, users can generate tailored reports for specific timeframes or individual employees, enabling better decision-making.',
+          benefits: ['Comprehensive Leave Insights', 'Customizable Reports', 'Enhanced Workforce Planning','Leave Balances at a Glance','Exportable Reports'],
+          imageSrc: img11,
+          imageAlt: 'Leave Reports',
+          imgPosition: 'left',
+        },
+      ]: isPayroll?
+      [
+        {
+          title: 'Payroll & Compliance Management',
+          subtitle: 'Seamless Payroll and Compliance Configurations for Efficient HR Operations',
+          description: (
+            <ul>
+              <li>Approval Limit: Set approval thresholds to streamline payroll decisions, ensuring only authorized personnel handle sensitive changes.</li>
+              <li>Appraisal Structure: Customize and manage the employee appraisal process to align performance reviews with salary increments and promotions.</li>
+              <li>KPI Data: Configure and manage Key Performance Indicators (KPIs) to track and evaluate employee performance effectively.</li>
+              <li>Salary Structure: Standardize salary management by setting up structured pay plans based on departments, grades, or roles.</li>
+              <li>PF Parameter: Configure Provident Fund parameters to automate deductions and ensure compliance with statutory regulations.</li>
+              <li>Gratuity Parameter: Set up gratuity eligibility and payout structures to simplify calculations and ensure compliance with regulations.</li>
+              <li>ESI Parameter: Manage Employee State Insurance (ESI) contributions and eligibility to provide health coverage in compliance with government laws.</li>
+              <li>Tax Setup: Configure income tax settings and other statutory deductions to ensure payroll compliance with tax laws.</li>
+            </ul>
+          ),
+          benefits: ['Automated Payroll Processing', 'Compliance Assurance', 'Real-Time Updates'],
+          imageSrc: img12,
+          imageAlt: 'Payroll & Compliance',
+          imgPosition: 'left',
+        },
+        {
+            title: 'Appraisal System',
+            subtitle: 'Streamlined Employee Performance Evaluation',
+            description:
+              'The Appraisal System enables organizations to systematically evaluate employee performance, link individual achievements to corporate goals, and manage salary increments, promotions, and developmental feedback. This module supports setting up an appraisal framework, customizing review processes, and automating approval workflows for performance reviews.',
+            benefits: ['Performance Alignment', 'Structured Appraisals', 'Data-Driven Decisions','Improved Employee Engagement','Compliance and Documentation'],
+            imageSrc: img13,
+            imageAlt: 'Appraisal System',
+            imgPosition: 'right',
+          },
+          {
+            title: 'Generate Salary',
+            subtitle: 'Automated Payroll Generation for Accurate Salary Processing',
+            description:
+              'The Generate Salary module enables organizations to automatically calculate and disburse employee salaries based on predefined salary structures, attendance records, deductions, and statutory compliances. This ensures timely and accurate payroll processing, minimizing errors and reducing administrative workload.',
+            benefits: ['Automated Calculations', 'Accurate and Compliant', 'Time-Efficient','Reduced Errors','Improved Employee Transparency'],
+            imageSrc: img2,
+            imageAlt: 'Generate Salary',
+            imgPosition: 'left',
+          },
+          {
+            title: 'Post Salary Payable',
+            subtitle: 'Efficiently manage and track employee payroll with advanced search and filter capabilities.',
+            description:
+              'Our advanced salary management system empowers HR managers to effortlessly search, filter, and access employee salary records using a variety of criteria such as date, month, grade, and department. With user-friendly navigation, switching between different months is seamless. A comprehensive header provides a clear overview of payroll status, displaying the total number of employees with processed salaries and those pending. This system enhances the overall accuracy and efficiency of payroll management, ensuring smooth and precise operations.',
+            benefits: ['Effortless Search and Filter', 'Seamless Navigation', 'Comprehensive Overview','Instant Notifications','Enhanced Payroll Accuracy'],
+            imageSrc: ClaimImgDemo,
+            imageAlt: 'Post Salary',
+            imgPosition: 'right',
+          },
+          
+        ]:[
+        {
+          title: 'On-Boarding Process',
+          subtitle: 'Smooth Onboarding and Integration of New Employees into the Organization',
+          description:
+            'This module enables streamlined management of departments, grades, HR policies, and appointees. Departments can be created with essential details for organized tracking, while comprehensive grade records support decision-making. HR policies are stored for easy access, and managers can maintain detailed appointee records, including documents, bank details, and offer statuses. The employee list can be sorted by grade, department, or specific employee details, with filters to categorize by status, offering efficient list management and quick status updates. Custom templates for offer and joining letters allow HR to handle onboarding smoothly and efficiently.',
+          benefits: ['Efficient Department Management', 'Detailed Grade Tracking', 'Convenient Policy Access','Thorough Appointee Management','Dynamic Offer Letters','Streamlined Status Updates','Flexible Employee List Management with Quick Filter Reset'],
+          imageSrc: img2,
+          imageAlt: 'On-Boarding',
+          imgPosition: 'left',
+        },
+        {
+          title: 'Employee Data',
+          subtitle: 'Centralized Employee Information Management',
+          description:
+            'This module enables streamlined employee management, allowing managers to sort, search, and filter employee records by various criteria, track regular and contract employees, manage billing rates, and initiate separation processes. It supports centralized data maintenance, automatic employee ID generation, department and grade associations, and bulk uploads for efficient data handling. Optional fields for documents and bank details ensure comprehensive record-keeping while simplifying management.',
+          benefits: ['Automatic Employee ID Generation','Centralized Information', 'Data Accuracy and Integrity', 'Compliance and Record-Keeping','Manage Employee Billing Rates','Contract Employee Management','Audit Tracing','Department and Grade Association','Bulk Record Uploads'],
+          imageSrc: ClaimImgDemo,
+          imageAlt: 'Employee Data',
+          imgPosition: 'right',
+        },
+        {
+          title: 'Attendance Management',
+          subtitle: 'Automated Attendance Tracking and Compliance',
+          description:
+            'The Attendance Management module allows organizations to track employee attendance, working hours, and leaves accurately. By integrating with biometric devices, time-tracking systems, or manual input methods, this module ensures that employee attendance is recorded in real time, automating the process of tracking punctuality, absenteeism, and overtime, while supporting payroll calculations and compliance.',
+          benefits: ['Automated Attendance Tracking', 'Compliance with Labor Laws', 'Accurate Payroll Processing','Improved Workforce Management','Enhanced Employee Engagement'],
+          imageSrc: img2,
+          imageAlt: 'Attendance Management',
+          imgPosition: 'left',
+        },
+        {
+          title: 'Exit Process',
+          subtitle: 'Structured and Seamless Employee Offboarding',
+          description:
+            'The Exit Process module ensures a smooth, structured, and compliant offboarding of employees from the organization. It covers the entire process, from resignation or termination to the final clearance and exit interview, ensuring a transparent and positive exit experience for both the employee and the organization. The module also tracks key tasks like documentation handover, knowledge transfer, and compliance with company policies.',
+          benefits: ['Streamlined Offboarding', 'Improved Compliance', 'Enhanced Data Security','Feedback for Continuous Improvement','Accurate Final Settlements','Clear Communication'],
+          imageSrc: ClaimImgDemo,
+          imageAlt: 'Exit Process',
+          imgPosition: 'right',
+        },
+        
       ];
 
   return <Container>{features.map(getFeatureContent)}</Container>;

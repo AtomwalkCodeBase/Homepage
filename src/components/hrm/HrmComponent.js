@@ -5,6 +5,7 @@ import { useTable } from 'react-table';
 import HRMHeadBG from '../../assets/img/hr.png';
 import KeyFeatureHrm from './KeyFeatureHrm';
 import FeatureBenifits from '../FeatureBenifits';
+import FAQSection from './FAQSection';
 
 const Page = styled.div`
   background-color: white;
@@ -21,12 +22,13 @@ const Header = styled.div`
   color: blue;
   display: flex;
   justify-content: center;
-  
+  margin-bottom: 100px;
+
   
   /* Adjustments for mobile devices */
   @media (max-width: 768px) {
-    height: auto; /* Allow height to adjust based on content */
-   // padding: 20px; /* Add some padding for smaller screens */
+    height: auto;
+    margin-bottom: -30px;
   }
 `;
 
@@ -161,88 +163,9 @@ const demo =()=>{
       </Header>
       <FeatureBenifits data={`HR`} />
       <KeyFeatureHrm/>
+      <FAQSection/>
 
 
-      {/* <AddOnData>
-              <AddOnLeft>
-                <BoxOne>
-                <AddOnTitle>Some <TitleTwo>greyt Add-ons</TitleTwo> to go?</AddOnTitle>
-                <BoxOnePara>Give your Atomwalk account actual superpowers! Explore plan Add-Ons for attendance, performance management and employee engagement.</BoxOnePara>
-                </BoxOne>
-                <BoxTwo>
-                  <BoxTitle>Performance Management System</BoxTitle>
-                  <BoxHeading>Starts at ₹3000 for 50 employees</BoxHeading>
-                  <BoxPara>360° Reportee-Manager Feedback and Reviews</BoxPara>
-                </BoxTwo>
-                <BoxThree>
-                  <BoxTitle>Visage</BoxTitle>
-                  <BoxHeading>₹20/user/month</BoxHeading>
-                  <BoxPara>Al-powered Facial Recognition-Based attendance Marking</BoxPara>
-                </BoxThree>
-              </AddOnLeft>
-              <AddOnRight>
-                <BoxFour>
-                  <BoxTitle>Visage</BoxTitle>
-                  <BoxHeading>₹20/user/month</BoxHeading>
-                  <BoxPara>Al-powered Facial Recognition-Based attendance Marking</BoxPara>
-                </BoxFour>
-                <BoxFive>
-                <BoxTitle>Visage</BoxTitle>
-                  <BoxHeading>₹20/user/month</BoxHeading>
-                  <BoxPara>Al-powered Facial Recognition-Based attendance Marking</BoxPara>
-                </BoxFive>
-                <BoxSix>
-                  <ListSpace>
-                    <ListRow>
-                      <ListDot></ListDot>
-                      <ListText>GPS-based Attendance Marking</ListText>
-                    </ListRow>
-                    <ListRow>
-                      <ListDot></ListDot>
-                      <ListText>Workflows for Manager Review</ListText>
-                    </ListRow>
-                    <ListRow>
-                      <ListDot></ListDot>
-                      <ListText>Attendance Scheme-level Customizations</ListText>
-                    </ListRow>
-                    <ListRow>
-                      <ListDot></ListDot>
-                      <ListText>Geo Swipe Reports for Due Diligence</ListText>
-                    </ListRow>
-                  </ListSpace>
-                </BoxSix>
-              </AddOnRight>
-      </AddOnData>
-
-      <Feature>
-      <TitleOne><TitleTwo>Exceptional software</TitleTwo> doesn't have to come at a cost</TitleOne>
-      <TitlePara>Atomwalk offers the lowest cost-per-license (PEPM) in category</TitlePara>
-        <FeatureBoxArea>
-              <FeatureBox>
-                <FeatureBoxInner>
-                  <FeatureImage><img src={Logo1} alt="Feature Box" /></FeatureImage>
-                  <TitleOne>77.78% lower cost</TitleOne>
-                  <SubTitle>than Zoho</SubTitle>
-                </FeatureBoxInner>
-              </FeatureBox>
-              <FeatureBox>
-              <FeatureBoxInner>
-                  <FeatureImage><img src={Logo2} alt="Feature Box" /></FeatureImage>
-                  <TitleOne>183.33% lower cost</TitleOne>
-                  <SubTitle>than HROne</SubTitle>
-                </FeatureBoxInner>
-              </FeatureBox>
-              <FeatureBox>
-              <FeatureBoxInner>
-                  <FeatureImage><img src={Logo3} alt="Feature Box" /></FeatureImage>
-                  <TitleOne>50% lower cost</TitleOne>
-                  <SubTitle>than Keka</SubTitle>
-                </FeatureBoxInner>
-              </FeatureBox>
-        </FeatureBoxArea>
-      </Feature>
-
-      <Testimonial></Testimonial> */}
     </Page>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import faqimg from '../../assets/img/faq.png'
+import faqimg from '../../assets/img/faq.png';
 
 const Container = styled.div`
   display: flex;
@@ -79,16 +79,17 @@ const Answer = styled.div`
   @media (min-width: 768px) {
     font-size: 1.1rem;
   }
+
+  ul {
+    padding-left: 20px;
+    list-style-type: disc;
+  }
 `;
 
-// New section styles for "Still have questions?"
 const CTASection = styled.div`
   text-align: center;
   margin-top: 50px;
   padding: 30px;
-  /* background-color: #f8f5ff; */
-  border-radius: 12px;
-  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
   width: 100%;
   max-width: 700px;
 
@@ -124,7 +125,6 @@ const CTAButton = styled.a`
   }
 `;
 
-// New styled component for the image
 const CTAImage = styled.img`
   max-width: 200px;
   margin-bottom: 10px;
@@ -133,21 +133,56 @@ const CTAImage = styled.img`
 const FAQSection = (res) => {
   const [openIndex, setOpenIndex] = useState(null);
 
-  const demo =()=>{
-    window.location.href='/demo.html'
-  }
+  const demo = () => {
+    window.location.href = '/demo.html';
+  };
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   const claimFaqData = [
-    { question: "What is Atomwalk HRM?", answer: "Answer..." },
-    { question: "How can I use Atomwalk HRM?", answer: "Answer..." },
-    { question: "How does HRM work?", answer: "Answer..." },
-    { question: "How to add a claim?", answer: "Answer..." },
-    { question: "How do I apply for a leave?", answer: "Answer..." },
-    { question: "How a manager can approve a leave?", answer: "Answer..." },
+    { 
+      "question": "What is Atomwalk HRM?", 
+      "answer": "Atomwalk HRM is an all-in-one Human Resource Management solution designed to streamline HR processes such as employee attendance tracking, leave management, claims submission, payroll, and more. With its mobile app, Atomwalk HRM On-The-Go, employees and managers can manage HR tasks like real-time attendance, leave requests, approvals, and claims from anywhere, enhancing accessibility and efficiency. This system simplifies workflows from onboarding to exit, making it ideal for businesses looking to automate and optimize their HR operations while improving overall employee experience."
+    },
+    { 
+      "question": "How can I use Atomwalk HRM?", 
+      "answer": "You can use Atomwalk HRM by accessing it through its web-based platform or the Atomwalk HRM On-The-Go mobile app. Once logged in, employees can manage their attendance, apply for leave, submit claims, and access payroll information. Managers can approve or reject leave and claims, view reports, and monitor employee attendance in real-time. The system is designed to be user-friendly, with a dashboard that provides easy navigation to the HR functionalities relevant to your role."
+    },
+    { 
+      "question": "How does HRM work?", 
+      "answer": "Atomwalk HRM works by automating core HR processes like attendance tracking, leave management, claims submission, and payroll handling. The system integrates employee data and allows for real-time updates on various HR activities. It helps managers approve requests, generate reports, and track employee productivity, while employees can manage their own data through the self-service portal. The solution is designed to reduce paperwork and manual effort, improving efficiency and accuracy across HR operations."
+    },
+    { 
+      "question": "Why should I choose Atomwalk HRM?", 
+      "answer": [
+        "Zero Paperwork, managing the details anytime/anywhere digitally.",
+        "Documents are stored in the document management system (S3 bucket), accessible anytime by authorized personnel for future audit needs.",
+        "Expenses can be linked to respective projects (if using Project Management modules), aiding in project margin tracking and efficient cost control.",
+        "Automatic integration with accounting systems.",
+        "Email and WhatsApp integration.",
+        "Mobile app available for ESS (Employee Self-Service) for instant use.",
+        "Referral System.",
+        "Unlimited expense heads can be added as per the need."
+      ]
+    },
+    { 
+      "question": "How to add a claim?", 
+      "answer": "To add a claim in Atomwalk HRM, go to the 'Claims' section from the dashboard. Click on 'Submit New Claim,' then fill in the details such as claim type, amount, and description. You can also attach relevant receipts or documents. Once done, submit the claim for approval, and you’ll be notified of its status in real-time. The system supports various claim categories, ensuring easy tracking and management of expenses."
+    },
+    { 
+      "question": "How do I apply for a leave?", 
+      "answer": "To apply for leave in Atomwalk HRM, log in to your account and navigate to the 'Leave' section. Select 'Apply Leave,' choose the type of leave (e.g., vacation, sick leave, WFH), specify the dates, and provide any necessary details or attachments. Submit the request, and you will be able to track its status as it moves through the approval process."
+    },
+    { 
+      "question": "How can a manager approve a leave?", 
+      "answer": "A manager can approve a leave in Atomwalk HRM by logging in and navigating to the 'Leave Approvals' section. There, they can review pending leave requests, check the employee's leave balance and history, and either approve or reject the request with a single click. The system provides options to add comments, and employees are notified instantly about the approval status."
+    },
+    { 
+      "question": "Why and how does Atomwalk handle the company exit process?", 
+      "answer": "Atomwalk’s Exit Process module is designed to ensure a structured, seamless, and compliant offboarding experience for employees. It handles every aspect of the process, from resignation or termination to final settlement, asset handover, and exit interviews. With automated tracking and task management, it guarantees a smooth transition, protects company data and assets, and ensures legal compliance, leaving both the organization and the departing employee with a positive experience."
+    }
   ];
 
   return (
@@ -161,15 +196,21 @@ const FAQSection = (res) => {
               <span>{openIndex === index ? '-' : '+'}</span>
             </Question>
             <Answer isOpen={openIndex === index}>
-              {item.answer}
+              {Array.isArray(item.answer) ? (
+                <ul>
+                  {item.answer.map((point, i) => (
+                    <li key={i}>{point}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>{item.answer}</p>
+              )}
             </Answer>
           </FAQItem>
         ))}
       </FAQList>
 
-      {/* Adding the new "Still have questions?" section */}
       <CTASection>
-        {/* Adding the image */}
         <CTAImage src={faqimg} alt="FAQ" />
         <CTAHeading>Still have questions?</CTAHeading>
         <CTAText>

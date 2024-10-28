@@ -3,9 +3,7 @@ import styled from 'styled-components';
 
 const PageContainer = styled.div`
   padding: 20px;
-  background-color: #f0ebf7;
-  font-family: Arial, sans-serif;
-
+  background-color: ${(props) => props.bgcolor ? props.bgcolor : "#f0ebf7"};
   @media (min-width: 768px) {
     padding: 50px;
   }
@@ -112,7 +110,7 @@ const Arrow = styled.div`
   }
 `;
 
-export const ProcessFlow = ({ data }) => {
+export const ProcessFlow = ({ data,bgcolors}) => {
   // Define different flows for each type
   const flows = {
     Claim: [
@@ -136,11 +134,28 @@ export const ProcessFlow = ({ data }) => {
       { step: 'Post Salary'},
     ],
     HR: [
-      { step: 'On-Boarding'},
-      { step: 'Employee Data'},
-      { step: 'Attendance'},
-      // { step: 'Payroll'},
-      { step: 'Exit Process'},
+        { step: 'On-Boarding'},
+        { step: 'Employee Data'},
+        { step: 'Attendance'},
+        // { step: 'Payroll'},
+        { step: 'Exit Process'},
+    ],
+    Lead: [
+      { step: 'Lead Capture', color: '#4A90E2' },
+      { step: 'Lead Tracking', color: '#4A90E2' },
+      { step: 'Lead Scoring', color: '#4A90E2' },
+      { step: 'Lead Distribytion ', color: '#4A90E2' },
+      { step: 'Lead Nurturing', color: '#4A90E2' },
+    ],
+    Campaign: [
+      { step: 'Planning and Audience Segmentation', color: '#4A90E2' },
+      { step: 'Designing Campaign Content', color: '#4A90E2' },
+      { step: 'Campaign Setup in CRM', color: '#4A90E2' },
+      { step: 'Execution and Sending', color: '#4A90E2' },
+      { step: 'Monitoring and Engagement Tracking', color: '#4A90E2' },
+      { step: 'Follow-up and Lead Nurturing', color: '#4A90E2' },
+      { step: 'Campaign Analysis and Reporting', color: '#4A90E2' },
+
     ],
   };
 
@@ -148,7 +163,7 @@ export const ProcessFlow = ({ data }) => {
   const processSteps = flows[data] || [];
 
   return (
-    <PageContainer>
+    <PageContainer bgcolor={bgcolors}>
       <Title>Process Flow for {data}</Title>
       <Section>
         <IndustryContainer style={{ backgroundColor: "#ffffff" }}>

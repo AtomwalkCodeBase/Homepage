@@ -8,6 +8,7 @@ const Container = styled.div`
   align-items: center;
   padding: 20px;
   width: 100%;
+  background-color: aliceblue;
   
   @media (min-width: 768px) {
     padding: 40px 20px;
@@ -130,18 +131,24 @@ const CTAImage = styled.img`
   margin-bottom: 10px;
 `;
 
-const FAQSection = (res) => {
+const FAQSection = ({data,res}) => {
   const [openIndex, setOpenIndex] = useState(null);
 
-  const demo = () => {
-    window.location.href = '/demo.html';
-  };
+  const demo =()=>{
+    window.location.href='/demo.html'
+  }
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const claimFaqData = [
+  const claimFaqData =data? [
+    { question: "What is Atomwalk CRM?", answer: "Atomwalk CRM is a customer relationship management platform designed to help businesses manage their interactions with customers, leads, suppliers, and partners. It offers a comprehensive set of tools for task management, lead tracking, customer support, and sales process automation, allowing businesses to improve communication, streamline operations, and increase productivity." },
+    { question: "How can I use Atomwalk CRM?", answer: "You can use Atomwalk CRM by signing up for an account and accessing its features either through a web app or mobile application. Once logged in, you can create customer profiles, manage leads, assign tasks, and track the progress of deals. Atomwalk CRM provides intuitive dashboards and reporting tools that help users oversee customer interactions, sales pipelines, and team activities efficiently." },
+    { question: "How does CRM work?", answer: "A CRM works by consolidating customer and lead data into a centralized system. It records and tracks all interactions—emails, calls, meetings—making it easier for teams to access important information at any time. With Atomwalk CRM, you can manage leads through each stage of the sales pipeline, assign tasks to team members, automate follow-ups, and generate reports. By organizing all your customer-related data in one place, CRM systems help businesses improve customer service, boost sales, and drive growth." },
+    { question: "How to add a Lead?", answer: "To add a lead in Atomwalk CRM, go to the Lead List section, where you can click on Add Lead. Fill in the required details such as name, contact information, and relevant notes about the lead's interest or status. You can also upload bulk leads if you have a file prepared. Once added, you can assign tasks to follow up on the lead and track its progress in the sales pipeline." },
+    { question: "How do I track  a lead?", answer: "In Atomwalk CRM, leads can be tracked through the sales pipeline. You can view all leads in the Lead List and monitor their status, such as active or inactive, and see which tasks or follow-ups are assigned to them. The system also provides a visual representation of where each lead is in the sales cycle, and you can set reminders for future actions or update the lead's status based on recent interactions. This ensures that no lead is neglected and helps optimize conversion rates." },
+  ]: [
     { 
       "question": "What is Atomwalk HRM?", 
       "answer": "Atomwalk HRM is an all-in-one Human Resource Management solution designed to streamline HR processes such as employee attendance tracking, leave management, claims submission, payroll, and more. With its mobile app, Atomwalk HRM On-The-Go, employees and managers can manage HR tasks like real-time attendance, leave requests, approvals, and claims from anywhere, enhancing accessibility and efficiency. This system simplifies workflows from onboarding to exit, making it ideal for businesses looking to automate and optimize their HR operations while improving overall employee experience."

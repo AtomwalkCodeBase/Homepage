@@ -120,27 +120,27 @@ const KeyFeatureCrm = () => {
         </IconContainer>
         <FeatureTitle> Lead Management:</FeatureTitle>
         <FeatureDescription>
-        Automated e-Invoice, GST reconciliation, and real-time financial management.
+        Streamline and track leads from acquisition to conversion, ensuring efficient follow-ups and maximizing sales opportunities.
         </FeatureDescription>
       </FeatureBox>
 
-      <FeatureBox>
+      <FeatureBox onClick={()=>handelNvigation('CustomerManagement.html')}>
         <IconContainer bgColor="#F0E7FF">
           <img src={Excellence} alt="Trust" />
         </IconContainer>
         <FeatureTitle>Customer Management:</FeatureTitle>
         <FeatureDescription>
-        Project and work order management, BOM generation, and process optimization.
+        Manage customer relationships by storing interaction histories, preferences, and communication details in one centralized platform
         </FeatureDescription>
       </FeatureBox>
 
-      <FeatureBox>
+      <FeatureBox onClick={()=>handelNvigation('Channelpartner.html')}>
         <IconContainer bgColor="#E0F7FC">
           <img src={Grow} alt="Accuracy" />
         </IconContainer>
-        <FeatureTitle>partner management:</FeatureTitle>
+        <FeatureTitle>Channel partner management:</FeatureTitle>
         <FeatureDescription>
-        Integrated CRM for lead management, sales performance tracking, and customer communication.
+        Collaborate effectively with business partners by tracking their contributions, agreements, and communication to ensure successful partnerships.
         </FeatureDescription>
       </FeatureBox>
 
@@ -148,18 +148,18 @@ const KeyFeatureCrm = () => {
         <IconContainer bgColor="#FFF2E0">
           <img src={Payroll} alt="Reliability" />
         </IconContainer>
-        <FeatureTitle>Asset Management Company:</FeatureTitle>
+        <FeatureTitle>Annual Maintenance Contract:</FeatureTitle>
         <FeatureDescription>
-        From recruitment to payroll, manage the full employee lifecycle effortlessly.
+        Efficiently manage assets, investments, and portfolios while tracking performance and ensuring regulatory compliance
         </FeatureDescription>
       </FeatureBox>
-      <FeatureBox>
+      <FeatureBox onClick={()=>handelNvigation('campaignManagement.html')}>
         <IconContainer bgColor="#ffe0f5">
           <img src={Arrow} alt="Reliability" />
         </IconContainer>
         <FeatureTitle>Campaign Management:</FeatureTitle>
         <FeatureDescription>
-        Handle operations across multiple branches or locations with ease.
+        Plan, execute, and analyze marketing campaigns to reach target audiences, track results, and optimize strategies for higher engagement and ROI.
         </FeatureDescription>
       </FeatureBox>
     </FeaturesContainer>

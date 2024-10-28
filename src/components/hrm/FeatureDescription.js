@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import ClaimImgDemo from '../../assets/img/Claim_Image_demo.png';
+import ClaimImgDemo2 from '../../assets/img/Claim_Image_Demo2.png';
 import CheckMark from '../../assets/img/check_mark.png';
 import img1 from '../../assets/img/img1.svg';
 import img2 from '../../assets/img/add_claim_img.svg';
 import img3 from '../../assets/img/emp_advance.svg';
-import img4 from '../../assets/img/approve_claim.svg';
+import img4 from '../../assets/img/approve_claim.svg'
 import img5 from '../../assets/img/sattle_claim.svg';
 import img6 from '../../assets/img/expense_claim.svg';
 import img7 from '../../assets/img/holiday_calender.svg';
@@ -15,8 +16,6 @@ import img10 from '../../assets/img/approval_leave.svg';
 import img11 from '../../assets/img/leave_report.svg';
 import img12 from '../../assets/img/payroll_setup.svg';
 import img13 from '../../assets/img/appraisal_setup.svg';
-
-
 
 const Container = styled.div`
   width: 100%;
@@ -211,38 +210,38 @@ const FeatureDescription = ({ data }) => {
 
   const features = isClaim
     ? [
-      {
+        {
         title: 'Simplify Claim Expense Item Setup',
         subtitle: 'Efficiently manage, and control Expense Items with Service Item category setup.',
-        description:
+          description:
           `Define Service Item categories to streamline Expense items , giving employees a quick selection process for claim submissions. 
 This setup enables you to capture GST applicability, Submit of Expense document applicability, Limits for approval etc, to simplify and streamline your claim management process.`,
         benefits: ['Define Service Item Categories', 'Flexible Expense Item Setup', 'Analysis of expense based on expense category/Item'],
-        imageSrc: img1,
-        imageAlt: 'Expense Setup',
-        imgPosition: 'left',
-      },
-      {
+          imageSrc: img1,
+          imageAlt: 'Expense Setup',
+          imgPosition: 'left',
+        },
+        {
         title: 'Employee Advance Tracking and Expense claim offset against Advance',
         subtitle: 'Employee Advance upload, Tracking and History of offset against Expense Claims. ',
-        description:
+          description:
           ' Manage Employee expense advance and efficiently track advance offset against each claim, offering a clear view of balances and outstanding advance amount. Enables decision making process for effective advance amount.',
         benefits: ['Advance Tracking', 'Clear offset Records with claim details'],
-        imageSrc: img3,
-        imageAlt: 'Advance',
-        imgPosition: 'right',
-      },
-      {
+          imageSrc: img3,
+          imageAlt: 'Advance',
+          imgPosition: 'right',
+        },
+        {
         title: 'Simplified Claim expenses by Employee',
         subtitle: 'Submit and track expense claims easily, anytime, anywhere.',
-        description:
+          description:
           ' Employee can submit expense claims by selecting an Expense item, adding project details if needed, and uploading supporting documents like bills and receipts. The mobile app feature allows employee to capture and submit receipts instantly, making the process faster and more efficient for both employee and approval & settlement process for company on real-time basis.',
         benefits: ['Simple Claim Submission', 'Upload Supporting Documents', ' Mobile-Friendly Convenience, Instant Receipt Capture', 'Expense auto linkage to projects and efficient project margin tracking'],
-        imageSrc: img2,
-        imageAlt: 'Add Claim',
-        imgPosition: 'left',
-      },
-      {
+          imageSrc: img2,
+          imageAlt: 'Add Claim',
+          imgPosition: 'left',
+        },
+        {
         title: 'Smart Claim flow for Quick, Transparent Approvals',
         subtitle: 'Automated workflows simplify review and referral based on approval limit setup',
         description:

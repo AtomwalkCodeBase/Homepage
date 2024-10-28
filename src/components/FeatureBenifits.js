@@ -2,7 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 // Icons
-import Icon1 from '../assets/img/clock.png';
+import Icon1 from '../assets/img/clock.png'; // You can replace this with your icons
+import Primium from '../assets/img/premium.gif';
+import optimizing from '../assets/img/optimization.png';
+import Access from '../assets/img/access.png';
+import exprieance from '../assets/img/best-customer-experience.png';
+import Accessbule from '../assets/img/accessible.png';
+import easy from '../assets/img/easy-to-use.png';
 import Icon2 from '../assets/img/administer.png';
 import Icon3 from '../assets/img/reconciliation.png';
 import Icon4 from '../assets/img/reduce-time.png';
@@ -10,6 +16,8 @@ import Icon5 from '../assets/img/better_experience.png';
 import Icon6 from '../assets/img/transparency.png';
 import Icon7 from '../assets/img/brand_reputaion.png';
 import Icon8 from '../assets/img/money_saving.png';
+
+
 
 const Section = styled.section`
   text-align: center;
@@ -96,7 +104,14 @@ const leaveBenefits = [
   { title: 'Deliver', text: 'an outstanding employee experience', bgColor: '#d7faff', icon: Icon5 },
   { title: 'Improve', text: 'employer brand image', bgColor: '#d9f5e3', icon: Icon6 },
 ];
-
+const leadBenefits = [
+  { title: 'Maximize Efficiency', text: 'Save valuable time and effort with seamless processes', bgColor: '#d9f5e3', icon: optimizing },
+  { title: 'Unmatched Quality', text: 'We consistently deliver top-notch results for every user', bgColor: '#f2e3ff', icon: Primium },
+  { title: 'Lightning-Fast Access', text: 'Enjoy quick and easy access to our application anywhere, anytime', bgColor: '#ffe8cc', icon: Access },
+  { title: 'Seamless Experience', text: 'Experience flawless and intuitive user interactions', bgColor: '#fff1d0', icon: exprieance },
+  { title: 'User-Centric Design', text: 'Delivering an outstanding and effortless user experience', bgColor: '#d7faff', icon: easy },
+  { title: 'Universal Accessibility', text: 'Access our platform seamlessly on both mobile and web', bgColor: '#d9f5e3', icon: Accessbule },
+];
 const employeeBenefits = [
   { title: 'Save', text: 'time & effort', bgColor: '#d9f5e3', icon: Icon1 },
   { title: 'Administer', text: 'uniform leave policy', bgColor: '#f2e3ff', icon: Icon2 },
@@ -114,10 +129,9 @@ const hrmBenefits = [
   { title: 'Enhance', text: 'create an exceptional employee experience', bgColor: '#d7faff', icon: Icon5 },
 ];
 
-
 const FeatureBenifits = ({ data }) => {
   // Determine which set of benefits to display based on the response data
-  const benefits = data === 'Claim' ? claimBenefits : data === 'HR' ? hrmBenefits : leaveBenefits;
+  const benefits = data === 'Claim' ? claimBenefits :data=='lead'?leadBenefits:data =='HR' ? hrmBenefits: leaveBenefits;
 
   return (
     <Section>

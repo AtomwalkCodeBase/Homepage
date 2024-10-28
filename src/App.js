@@ -25,6 +25,7 @@ import Success from "./components/SuccessBanner";
 import HrmComponent from "./components/hrm/HrmComponent";
 import HrmFeaturesManagement from "./components/hrm/HrmFeaturesManagement";
 import LeadManagement from "./components/crm/LeadManagement";
+import HerosectionCrm from "./components/crm/HerosectionCrm";
 
 function App() {
   const[openslide,setOpenslide]=useState(false);
@@ -73,7 +74,7 @@ const loginAndStore=async()=>{
           {/* <Route path="/pricing.html" element={<PricingRoute />} /> */}
           <Route path="/demo.html" element={<FormComponent />} />
           <Route path="/seals.html" element={<ContactSalesPage />} />
-          <Route path="/crm.html" element={<AppPromo/>} />
+          <Route path="/crm.html" element={<HerosectionCrm/>} />
           <Route path="/lms.html" element={<LabManagement/>} />
           <Route path="/Blog.html" element={<Blog/>} />
           <Route path="/BlogDetails.html" element={<BlogDetails/>} />
@@ -83,6 +84,9 @@ const loginAndStore=async()=>{
           <Route path="/employeehr.html" element={<HrmFeaturesManagement />} />
           <Route path="/payroll.html" element={<HrmFeaturesManagement/>} />
           <Route path="/leadManagement.html" element={<LeadManagement/>} />
+          <Route path="/CustomerManagement.html" element={<LeadManagement/>} />
+          <Route path="/Channelpartner.html" element={<LeadManagement/>} />
+          <Route path="/campaignManagement.html" element={<LeadManagement/>} />
         </Routes>
       </Router>
       {openslide&&<Askme setOpenslide={setOpenslide}/>}

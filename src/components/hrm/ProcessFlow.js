@@ -116,12 +116,12 @@ export const ProcessFlow = ({ data }) => {
   // Define different flows for each type
   const flows = {
     Claim: [
-      { step: 'Setup of Expenses'},
-      { step: 'Advance is Issued' },
-      { step: 'Expense of Claim'},
+      { step: 'Expense Item Setup'},
+      { step: 'Expense Advance for Employee' },
+      { step: 'Claim Expense'},
       { step: 'Approval Of Claim'},
-      { step: 'Post Entries'},
-      { step: 'Dashboard Available'},
+      { step: 'Settlement of Claims'},
+      { step: 'Reports & Dashboards'},
     ],
     Leave: [
       { step: 'Setup Holiday Calendar'},
@@ -131,10 +131,9 @@ export const ProcessFlow = ({ data }) => {
       { step: 'Reports & Analysis'},
     ],
     Payroll: [
-      { step: 'Payroll Setup'},
-      { step: 'Appraisal System'},
-      { step: 'Generate Salary'},
-      { step: 'Post Salary Payable'},
+      { step: 'Payroll Setup & Controls'},
+      { step: 'Generate Monthly Salary'},
+      { step: 'Post Salary'},
     ],
     HR: [
       { step: 'On-Boarding'},

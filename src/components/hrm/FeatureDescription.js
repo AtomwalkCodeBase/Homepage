@@ -211,174 +211,154 @@ const FeatureDescription = ({ data }) => {
 
   const features = isClaim
     ? [
-        {
-          title: 'Simplify Claim Expense Setup',
-          subtitle: 'Effortlessly Manage Your Company’s Claim Categories',
-          description:
-            `This process enables the company to efficiently manage expenses through the setup of service categories. The first step is to define the Service Category, which includes fields such as Service Category Name, Tax Applicability (with an option to select whether tax applies or not), Applicable Tax Rate, TDS Threshold Limit, TDS Rate for the service, Category Alias, and Expense Ledger. Additionally, the company can specify whether the category is excluded from expense claims and if a bill is required for submission.Once the service category is set up, the company can add specific Expense Items or Services (e.g., Consultancy) with details like Name, Service Code, Service Category (linked to the previously defined category), Service Cost, and Description. Employees can then select these predefined expense items when submitting claims.This setup not only simplifies the expense claim process but also aids in project cost analysis, making it a valuable tool for the company's financial management and decision-making.`,
-          benefits: ['Upload Receipts', 'Real-time Tracking', 'Multi-Claim Support'],
-          imageSrc: img1,
-          imageAlt: 'Expense Setup',
-          imgPosition: 'left',
-        },
-        {
-          title: 'Manage Employee Advances with Ease',
-          subtitle: 'Track and record advances issued to employees in real-time.',
-          description:
-            ' With Atomwalk HRM On-The-Go, employers can easily issue and manage cash advances for employees. The platform allows you to track advance payments, link them to employee records, and ensure seamless recovery through payroll.',
-          benefits: ['Upload Receipts', 'Real-time Tracking', 'Multi-Claim Support'],
-          imageSrc: img3,
-          imageAlt: 'Advance',
-          imgPosition: 'right',
-        },
-        {
-          title: 'Submit Expense Claims with Ease',
-          subtitle: 'Simplified Claim Submission for Fast Reimbursement.',
-          description:
-            ' Empower employees to submit expense claims directly from their mobile devices or desktops. With an intuitive interface, employees can quickly upload receipts, enter claim details, and track the status of their submissions in real-time. This functionality streamlines the reimbursement process, ensuring that employees are compensated for their expenses efficiently.',
-          benefits: ['Advance Tracking Icon', 'Payroll Integration Icon', 'Real-Time Reporting Icon'],
-          imageSrc: img2,
-          imageAlt: 'Add Claim',
-          imgPosition: 'left',
-        },
-        {
-          title: 'Simplify Expense Management with Seamless Claim Approvals',
-          subtitle: 'Quick, Transparent, and Efficient Claim Processing for Managers',
-          description:
-            'Empower managers to effortlessly manage and approve employee claims with just a few clicks. Review detailed claim submissions, verify receipts, and approve or reject claims in real-time, all from within the mobile or web platform. The streamlined approval process ensures transparency, timely responses, and hassle-free expense management.',
-          benefits: ['Real-Time Notifications', 'Claim Review Dashboard', 'Approval/Reject Options','Real-Time Reporting Icon','Audit Trails'],
-          imageSrc: img4,
-          imageAlt: 'Advance Tracking Icon"',
-          imgPosition: 'right',
-        },
-        {
-          title: 'Streamlined Claim Processing for Faster Reimbursements',
-          subtitle: 'Empower your employees to submit and settle claims with ease.',
-          description:
-            'Managing expense claims has never been easier. With Atomwalk HRM On-The-Go, employees can submit claims for reimbursement by uploading receipts directly through the app. Managers can approve or reject claims instantly, ensuring transparency and accountability at every step. The entire process is automated and recorded for future audits, allowing for efficient tracking and settlement of employee expenses.',
-          benefits: ['Quick Submission', 'Approval Workflow', 'Transparency','Audit Support','Mobile-Friendly'],
-          imageSrc: img5,
-          imageAlt: 'Sattle Claim',
-          imgPosition: 'left',
-        },
-        {
-          title: 'Ensure Accurate Financial Tracking with Seamless Accounting Entries',
-          subtitle: 'Automate and streamline your accounting processes with real-time financial updates.',
-          description:
-            "  The Post Accounting Entries feature simplifies your financial management by automatically generating accounting entries for every transaction. Whether it's payroll disbursements, claims, or expense tracking, this feature ensures that all financial movements are accurately recorded in the system. Say goodbye to manual bookkeeping and embrace a streamlined, error-free accounting process that saves time and reduces discrepancies.",
-          benefits: ['Automated Accounting', 'Real-Time Updates', 'Compliance Ready','Integration'],
-          imageSrc: img6,
-          imageAlt: 'Post Accounting',
-          imgPosition: 'right',
-        },
-       
-      ]
-    : isLeave?
+      {
+        title: 'Simplify Claim Expense Item Setup',
+        subtitle: 'Efficiently manage, and control Expense Items with Service Item category setup.',
+        description:
+          `Define Service Item categories to streamline Expense items , giving employees a quick selection process for claim submissions. 
+This setup enables you to capture GST applicability, Submit of Expense document applicability, Limits for approval etc, to simplify and streamline your claim management process.`,
+        benefits: ['Define Service Item Categories', 'Flexible Expense Item Setup', 'Analysis of expense based on expense category/Item'],
+        imageSrc: img1,
+        imageAlt: 'Expense Setup',
+        imgPosition: 'left',
+      },
+      {
+        title: 'Employee Advance Tracking and Expense claim offset against Advance',
+        subtitle: 'Employee Advance upload, Tracking and History of offset against Expense Claims. ',
+        description:
+          ' Manage Employee expense advance and efficiently track advance offset against each claim, offering a clear view of balances and outstanding advance amount. Enables decision making process for effective advance amount.',
+        benefits: ['Advance Tracking', 'Clear offset Records with claim details'],
+        imageSrc: img3,
+        imageAlt: 'Advance',
+        imgPosition: 'right',
+      },
+      {
+        title: 'Simplified Claim expenses by Employee',
+        subtitle: 'Submit and track expense claims easily, anytime, anywhere.',
+        description:
+          ' Employee can submit expense claims by selecting an Expense item, adding project details if needed, and uploading supporting documents like bills and receipts. The mobile app feature allows employee to capture and submit receipts instantly, making the process faster and more efficient for both employee and approval & settlement process for company on real-time basis.',
+        benefits: ['Simple Claim Submission', 'Upload Supporting Documents', ' Mobile-Friendly Convenience, Instant Receipt Capture', 'Expense auto linkage to projects and efficient project margin tracking'],
+        imageSrc: img2,
+        imageAlt: 'Add Claim',
+        imgPosition: 'left',
+      },
+      {
+        title: 'Smart Claim flow for Quick, Transparent Approvals',
+        subtitle: 'Automated workflows simplify review and referral based on approval limit setup',
+        description:
+          'Submitted claims are automatically routed to managers for review, with options to approve, reject, or send back for clarification. The system verifies manager approval authority based on grade and approval limits, forwarding claims to a higher-level manager if needed. This process maintains digital records for easy tracking and transparent decision-making. Approval process is enabled through Mobile app for real-time approval and quick settlement process.',
+        benefits: ['Flexible Review/Approval Flows', 'Approval limits based on Amount', 'Anytime, anywhere approval for speedy settlement'],
+        imageSrc: img4,
+        imageAlt: 'Advance Tracking Icon"',
+        imgPosition: 'right',
+      },
+      {
+        title: 'Accurate and Streamlined Claim Settlements',
+        subtitle: 'Efficient settlement process with auto flow of Data to Accounts and Linked Projects.',
+        description:
+          'Once approved, claims move to the settlement phase where user  can view all claims and advance records side by side for easy and effective settlement processing. The screen provides direct access to claim details and attached documents, with a bulk settlement feature to handle multiple claims efficiently. This seamless process with Accounts and Project management modules.',
+        benefits: ['Clear Claim View', 'Direct Document Access', 'Bulk Settlement Option', 'Reliable Processing with auto Account ledger processing'],
+        imageSrc: img5,
+        imageAlt: 'Settle Claim',
+        imgPosition: 'left',
+      },
+      {
+        title: 'Efficient Dashboard to Track all Expense Items.',
+        subtitle: 'Instant insights on claim status and trends.',
+        description:
+          "  The Expense Claim Dashboard provides graphical charts view for claim status and  monthly trends, helping employee/ Manger track claims at a glance. Extensive filter criteria based on expense category, expense Item ,  Departments etc for analysis and managing your expenses in a better way. ",
+        benefits: ['Graphical Overviews with real-time update', 'Extensive Filter criteria for reports', 'Download reports in PDF / XLS'],
+        imageSrc: img6,
+        imageAlt: 'Post Accounting',
+        imgPosition: 'right',
+      },
+     
+    ]
+  : isLeave?
+  [
+    {
+      title: 'Location Wise  - Simplified Management of your Holiday Calendar',
+      subtitle: 'Easy and exhaustive way to take care of your complex organisational need of Holiday management (Single/Multi location).',
+      description:
+        'Manage Holiday setup digitally for your business for each Year across single/ multiple location. Holiday setup supports Mandatory and Optional holiday for each location. Supports Multiple leave types and yearly limit for each leave types. Setup enables, better Project execution planning for the organisation and provides transparency for the employee to plan/utilise their Leave.',
+      benefits: ['Easy Exhaustive Setup across Single/Multi Location', 'Supports Audit trails and track changes in setup', 'Optional Holiday setup enables for each location.', 'Transparent and accessible by all users/employees.'],
+      imageSrc: img7,
+      imageAlt: 'Holiday Calendar',
+      imgPosition: 'left',
+    },
+    {
+      title: 'Dashboard for Complete Leave overview ',
+      subtitle: 'Easily track, manage, and plan your time off/ Utilisation of Leave.',
+      description:
+        'Employee can view detailed summary dashboard of their leave status, including total applied, approved, and pending leave categorized by leave type. Month wise trend analysis enables the Manager to manage risk at project planning level. The system also provides a year-wise holiday list which is accessible through  Mobile app, making it simple to manage leave information and plan time off effectively. Leave details are shared with Billing/Payroll modules seamlessly to eliminate any processing errors.',
+      benefits: ['Comprehensive Overview, Detailed for each leave types. ', 'Trend Analysis for better planning and risk management.', 'Accessible from Mobile app', 'Shared with Payroll and Project Management modules seamlessly.'],
+      imageSrc: img8,
+      imageAlt: 'Leave Dashboard',
+      imgPosition: 'right',
+    },
+    {
+      title: 'Apply leave from Anywhere Any time',
+      subtitle: 'Simple Leave Application: easy to apply and cancel from anywhere & anytime.',
+      description:
+        `Employee can apply for multiple types of leaves like  Earned Leave, Work From Home and Loss of Pay through both web and mobile apps. On submitted, the leave request automatically move to manager's dashboard for approval,  streamlining the process.`,
+      benefits: ['Both Web and Mobile Convenience', 'Multiple leave types', ' Easy Application process with Holiday List Integration, to alter users.'],
+      imageSrc: img9,
+      imageAlt: 'Leave Application',
+      imgPosition: 'left',
+    },
+    {
+      title: 'Swift Leave Approvals from Anywhere Anytime',
+      subtitle: 'Approve/ Reject Leave Requests with Ease and Precision from Approver Dashboard.',
+      description:
+        'Managers can easily filter leave requests by individual employee or leave type, providing a clear view of total leave applied, approved, and pending for each employee. This organized approach allows for efficient navigation and prompt action. Managers can review details before making decisions, with a mandatory remark field to ensure clear communication with employees during the approval or rejection process.',
+      benefits: ['Organized and Filter View', 'Comprehensive Overview', 'Streamlined Approval Process', 'Efficient Leave Approval', 'Mobile Convenience', 'Approval History'],
+      imageSrc: img10,
+      imageAlt: 'Leave Approval',
+      imgPosition: 'right',
+    },
+    {
+      title: 'Organized Leave Insights for Efficient Management',
+      subtitle: 'Gain Complete Insights into Leave Patterns and Usage',
+      description:
+        ' Managers can sort leave requests by individual employee or leave type, providing a clear and organized view. They also have access to a comprehensive annual leave report that includes all leave details across departments. This feature ensures efficient record-keeping and supports transparent leave management, helping managers make informed decisions.',
+      benefits: ['Informed Decision-Making', 'Exportable Reports', ' Leave Balances at a Glance', 'Customizable Reports'],
+      imageSrc: img11,
+      imageAlt: 'Leave Reports',
+      imgPosition: 'left',
+    },
+  ]: isPayroll?
     [
       {
-        title: 'Location Wise  - Simplified Management of your Holiday Calendar',
-        subtitle: 'Easy and exhaustive way to take care of your complex organisational need of Holiday management (Single/Multi location).',
-        description:
-          'Manage Holiday setup digitally for your business for each Year across single/ multiple location. Holiday setup supports Mandatory and Optional holiday for each location. Supports Multiple leave types and yearly limit for each leave types. Setup enables, better Project execution planning for the organisation and provides transparency for the employee to plan/utilise their Leave.',
-        benefits: ['Easy Exhaustive Setup across Single/Multi Location', 'Supports Audit trails and track changes in setup', 'Optional Holiday setup enables for each location.', 'Transparent and accessible by all users/employees.'],
-        imageSrc: img7,
-        imageAlt: 'Holiday Calendar',
+        title: 'Flexible and Compliant Payroll Management',
+        subtitle: 'Configurable Salary structure with predefined integrated TDS/PT/PF/Gratuity calculation for seamless employee compensation.',
+        description: "Our HR management offers a comprehensive system for managing employee salary structures , and compliance setup in accordance with government regulations. Companies can create tailored salary structures for different employee grades. The platform also facilitates setting up Provident fund, Gratuity, Employee State Insurance (ESI), and TDS, PT tax parameters, ensuring full compliance and transparency in payroll management. In addition to this any other salary components like Variable Pay and custom deductions can be configured in the system making it highly flexible for any Complex scenario.",
+        benefits: ['Configurable pay scale grades', 'Configurable salary structures with formula builder', 'Customizable payslip design', 'Dynamic Salary Structures to include compliance like PF, Gratuity, ESI, PT and TDS', 'Audit trails for Setup control', 'Contract Rate setup for contract employee'],
+        imageSrc: img12,
+        imageAlt: 'Payroll & Compliance',
         imgPosition: 'left',
       },
       {
-        title: 'Dashboard for Complete Leave overview ',
-        subtitle: 'Easily track, manage, and plan your time off/ Utilisation of Leave.',
-        description:
-          'Employee can view detailed summary dashboard of their leave status, including total applied, approved, and pending leave categorized by leave type. Month wise trend analysis enables the Manager to manage risk at project planning level. The system also provides a year-wise holiday list which is accessible through  Mobile app, making it simple to manage leave information and plan time off effectively. Leave details are shared with Billing/Payroll modules seamlessly to eliminate any processing errors.',
-        benefits: ['Comprehensive Overview, Detailed for each leave types. ', 'Trend Analysis for better planning and risk management.', 'Accessible from Mobile app', 'Shared with Payroll and Project Management modules seamlessly.'],
-        imageSrc: img8,
-        imageAlt: 'Leave Dashboard',
-        imgPosition: 'right',
-      },
-      {
-        title: 'Apply leave from Anywhere Any time',
-        subtitle: 'Simple Leave Application: easy to apply and cancel from anywhere & anytime.',
-        description:
-          `Employee can apply for multiple types of leaves like  Earned Leave, Work From Home and Loss of Pay through both web and mobile apps. On submitted, the leave request automatically move to manager's dashboard for approval,  streamlining the process.`,
-        benefits: ['Both Web and Mobile Convenience', 'Multiple leave types', ' Easy Application process with Holiday List Integration, to alter users.'],
-        imageSrc: img9,
-        imageAlt: 'Leave Application',
-        imgPosition: 'left',
-      },
-      {
-        title: 'Swift Leave Approvals from Anywhere Anytime',
-        subtitle: 'Approve/ Reject Leave Requests with Ease and Precision from Approver Dashboard.',
-        description:
-          'Managers can easily filter leave requests by individual employee or leave type, providing a clear view of total leave applied, approved, and pending for each employee. This organized approach allows for efficient navigation and prompt action. Managers can review details before making decisions, with a mandatory remark field to ensure clear communication with employees during the approval or rejection process.',
-        benefits: ['Organized and Filter View', 'Comprehensive Overview', 'Streamlined Approval Process', 'Efficient Leave Approval', 'Mobile Convenience', 'Approval History'],
-        imageSrc: img10,
-        imageAlt: 'Leave Approval',
-        imgPosition: 'right',
-      },
-      {
-        title: 'Organized Leave Insights for Efficient Management',
-        subtitle: 'Gain Complete Insights into Leave Patterns and Usage',
-        description:
-          ' Managers can sort leave requests by individual employee or leave type, providing a clear and organized view. They also have access to a comprehensive annual leave report that includes all leave details across departments. This feature ensures efficient record-keeping and supports transparent leave management, helping managers make informed decisions.',
-        benefits: ['Informed Decision-Making', 'Exportable Reports', ' Leave Balances at a Glance', 'Customizable Reports'],
-        imageSrc: img11,
-        imageAlt: 'Leave Reports',
-        imgPosition: 'left',
-      },
-    ]: isPayroll?
-      [
-        {
-          title: 'Payroll & Compliance Management',
-          subtitle: 'Seamless Payroll and Compliance Configurations for Efficient HR Operations',
-          description: (
-            <ul>
-              <li>Approval Limit: Set approval thresholds to streamline payroll decisions, ensuring only authorized personnel handle sensitive changes.</li>
-              <li>Appraisal Structure: Customize and manage the employee appraisal process to align performance reviews with salary increments and promotions.</li>
-              <li>KPI Data: Configure and manage Key Performance Indicators (KPIs) to track and evaluate employee performance effectively.</li>
-              <li>Salary Structure: Standardize salary management by setting up structured pay plans based on departments, grades, or roles.</li>
-              <li>PF Parameter: Configure Provident Fund parameters to automate deductions and ensure compliance with statutory regulations.</li>
-              <li>Gratuity Parameter: Set up gratuity eligibility and payout structures to simplify calculations and ensure compliance with regulations.</li>
-              <li>ESI Parameter: Manage Employee State Insurance (ESI) contributions and eligibility to provide health coverage in compliance with government laws.</li>
-              <li>Tax Setup: Configure income tax settings and other statutory deductions to ensure payroll compliance with tax laws.</li>
-            </ul>
-          ),
-          benefits: ['Automated Payroll Processing', 'Compliance Assurance', 'Real-Time Updates'],
-          imageSrc: img12,
-          imageAlt: 'Payroll & Compliance',
-          imgPosition: 'left',
+          title: 'Streamlined Monthly Salary Generation with real-time error validation.',
+          subtitle: 'Seamless access to Attendance data for accurate and quick Payroll processing.',
+          description:
+            'Our payroll processing engine, access the attendance data and compliance setup (like PF, Gratuity, ESI, TDS, PT etc) to calculate with 100% accuracy for efficient processing of Monthly process. Authorised users can update components (if required) prior to salary posting process. Customisable Prepare and Review process for salary generation. Variable Pay components, Additional Pay components like Bonus and Contract employee salary generation with overtime calculation support are few examples which make our payroll processing engine efficient and versatile.',
+          benefits: ['Seamless Access to Attendance ', 'Configurable compliance setup for 100% accurate payroll processing.', 'Contract employee salary processing with OT calculation', 'Maker checker process', 'Easy navigation to past monthly salary records'],
+          imageSrc: img13,
+          imageAlt: 'Appraisal System',
+          imgPosition: 'right',
         },
         {
-            title: 'Appraisal System',
-            subtitle: 'Streamlined Employee Performance Evaluation',
-            description:
-              'The Appraisal System enables organizations to systematically evaluate employee performance, link individual achievements to corporate goals, and manage salary increments, promotions, and developmental feedback. This module supports setting up an appraisal framework, customizing review processes, and automating approval workflows for performance reviews.',
-            benefits: ['Performance Alignment', 'Structured Appraisals', 'Data-Driven Decisions','Improved Employee Engagement','Compliance and Documentation'],
-            imageSrc: img13,
-            imageAlt: 'Appraisal System',
-            imgPosition: 'right',
-          },
-          {
-            title: 'Generate Salary',
-            subtitle: 'Automated Payroll Generation for Accurate Salary Processing',
-            description:
-              'The Generate Salary module enables organizations to automatically calculate and disburse employee salaries based on predefined salary structures, attendance records, deductions, and statutory compliances. This ensures timely and accurate payroll processing, minimizing errors and reducing administrative workload.',
-            benefits: ['Automated Calculations', 'Accurate and Compliant', 'Time-Efficient','Reduced Errors','Improved Employee Transparency'],
-            imageSrc: img2,
-            imageAlt: 'Generate Salary',
-            imgPosition: 'left',
-          },
-          {
-            title: 'Post Salary Payable',
-            subtitle: 'Efficiently manage and track employee payroll with advanced search and filter capabilities.',
-            description:
-              'Our advanced salary management system empowers HR managers to effortlessly search, filter, and access employee salary records using a variety of criteria such as date, month, grade, and department. With user-friendly navigation, switching between different months is seamless. A comprehensive header provides a clear overview of payroll status, displaying the total number of employees with processed salaries and those pending. This system enhances the overall accuracy and efficiency of payroll management, ensuring smooth and precise operations.',
-            benefits: ['Effortless Search and Filter', 'Seamless Navigation', 'Comprehensive Overview','Instant Notifications','Enhanced Payroll Accuracy'],
-            imageSrc: ClaimImgDemo,
-            imageAlt: 'Post Salary',
-            imgPosition: 'right',
-          },
-          
-        ]:[
+          title: 'Accurate Accounting Entries for Financial Clarity',
+          subtitle: 'Ensuring error-free records with detailed reporting.',
+          description:
+            'After generating salaries, the HR manager creates accounting entries to maintain precise financial records. The system displays all payable heads, showing amounts already posted and pending. Managers can download detailed reports in PDF or Excel formats and include specific posting remarks for transparency, ensuring a well-documented and accurate accounting process.',
+          benefits: ['Precise Accounting Entries', 'Payable Overview', 'Detailed Reporting',' Transparent Documentation', 'Error-Free Financial Management'],
+          imageSrc: img2,
+          imageAlt: 'Generate Salary',
+          imgPosition: 'left',
+        },
+        
+      ]:[
         {
           title: 'On-Boarding Process',
           subtitle: 'Smooth Onboarding and Integration of New Employees into the Organization',

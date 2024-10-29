@@ -156,6 +156,9 @@ const FeatureDescription = ({ data }) => {
   const isClaim = data === 'Claim';
   const isLeave = data === 'Leave';
   const isPayroll = data === 'Payroll';
+  const isAppraisal = data === 'Appraisal';
+  const isEmployeeData = data === 'HR';
+  const isAttendanceData = data === 'Attendance';
 
   const getFeatureContent = (feature) => (
     <Features>
@@ -348,47 +351,149 @@ const FeatureDescription = ({ data }) => {
           imageAlt: "Payroll Reports",
           imgPosition: "right"
       }
+  ] : isEmployeeData?
+  [
+      {
+          title: "Complete Employee Lifecycle Management",
+          subtitle: "Centralized Employee Data Management - with Multi Location.",
+          description: "This module enables streamlined employee data management, allowing HR and Employee managers to sort, search, and filter employee records by various criteria like Department and Grade for easy analysis and reports. Both permanent and contract employees can be managed with different salary structures. All lifecycle stages like onboarding process, initiating separation processes, completion of probation period, etc., can be managed smoothly for each employee data by the authorized manager. Optional fields for documents and bank details ensure comprehensive record-keeping while simplifying management.",
+          benefits: ["Department and Grade structure - for data segregation and easy management.", "Automatic ID Generation for Employee, and Contract Employee.", "Centralized Information - Data Accuracy and Integrity", "Compliance and Record-Keeping - integrated with document management system.", "Manage Employee Billing Rates", "Contract Employee Management", "Audit Tracing for employee data. Supports bulk record uploads from existing system."],
+          imageSrc: img12,
+          imageAlt: "Payroll & Compliance",
+          imgPosition: "left"
+      },
+      {
+          title: "Job Offer Records - Onboarding Process",
+          subtitle: "Smooth Onboarding and Integration of New Employees into the Organization",
+          description: "Enables you to keep the Job offer records with unique reference ID for easy traceability and managing the offer letter and onboarding process. Custom templates for offer and joining letters allow HR to handle onboarding smoothly and efficiently. Provides data for analysis for the recruitment process.",
+          benefits: ["Thorough Appointee Management", "Link Salary structure to include CTC details in offer letter", "Dynamic Offer, Appointment Letters", "One-click employee data creation from offer details"],
+          imageSrc: img13,
+          imageAlt: "Salary Process",
+          imgPosition: "right"
+      },
+      {
+          title: "Streamlined Exit Process with Customized Setup",
+          subtitle: "Ensuring Smooth Exit with Assets and KT Transfer",
+          description: "With customized exit process setup, you can track and complete all the steps needed to be done by the employee before he/she exits the system. This can be knowledge transfer, handover of assets, exit interview, to name a few. Employee can initiate the separation process, which can be managed by approval/review flow.",
+          benefits: ["Customized exit process setup", "Smooth Transitions and completion of activity by departments.", "Facility to capture document evidence at each step."],
+          imageSrc: img13,
+          imageAlt: "Payslip Generation",
+          imgPosition: "left"
+      },
+      
+  ] : isAppraisal?
+  [
+      {
+          title: "Efficient Appraisal System for Accurate Assessments",
+          subtitle: "Completely Configurable Appraisal KPI Structure Definition.",
+          description: "Highly flexible and configurable appraisal structure to set up your KPI targets for each employee grade level. Supports and is configurable for quarterly, half-yearly, and yearly appraisal cycles. Self-assessment, and provides scores for key performance indicators (KPIs), and submits the appraisal to the Employee manager, who evaluates and gives scores for each KPI. Review process by Reviewer to normalize the grades for an appraisal cycle for a particular employee grade. This structured process ensures accurate and fair evaluations, fostering transparency in performance-based benefits.",
+          benefits: ["Flexible Appraisal structure with KPI weightage.", "Historical appraisal records reference for employee improvement and training plan.", "Provision to upload supporting documents.", "Structured Process, Fair Performance Assessment"],
+          imageSrc: img7,
+          imageAlt: "Holiday Calendar",
+          imgPosition: "left"
+      },
+      {
+          title: "Self-Evaluation for Each KPI Goal",
+          subtitle: "Transparent and KPI Goals for Each Cycle.",
+          description: "Employee can self-initiate and give his own score. Document evidence, if required, can be uploaded. Historical appraisal data for earlier cycles is accessible.",
+          benefits: ["Overall score is rule-based calculation", "Seamlessly flows to employee manager", "Historical Appraisal Data access"],
+          imageSrc: img8,
+          imageAlt: "Leave Dashboard",
+          imgPosition: "right"
+      },
+      {
+          title: "Manager Evaluation for Each KPI Goal.",
+          subtitle: "Flexible Structure and Score for Each KPI.",
+          description: "Manager evaluates and provides the score for each KPI Goal. The final score is auto-calculated based on rule setup. After providing the score, Manager sends the appraisal to the employee for final sign-off and remarks.",
+          benefits: ["Overall score for Manager is rule-based calculation", "Seamlessly flows between employee and manager", "Historical Appraisal Data access"],
+          imageSrc: img9,
+          imageAlt: "Leave Application",
+          imgPosition: "left"
+      },
+      {
+          title: "Review Process for Grade Evaluation",
+          subtitle: "Normalization of Appraisal Grades by Reviewer.",
+          description: "Normalization of appraisal grades by Reviewer at each employee grade level. Performance-linked salary components (like variable pay) evaluation process. Reports for each appraisal cycle and employee grade levels.",
+          benefits: ["Review process", "Reports for performance-based salary components.", "Customizable Reports"],
+          imageSrc: img10,
+          imageAlt: "Leave Approval",
+          imgPosition: "right"
+      },
+  ] : isAttendanceData?
+  [
+      {
+          title: "Attendance",
+          subtitle: "Easy and exhaustive way to take care of your complex organisational need of Holiday management (Single/Multi location).",
+          description: "Manage Holiday setup digitally for your business for each Year across single/multiple locations. Holiday setup supports Mandatory and Optional holidays for each location. Supports Multiple leave types and yearly limit for each leave type. Setup enables better Project execution planning for the organisation and provides transparency for the employee to plan/utilise their Leave.",
+          benefits: ["Easy Exhaustive Setup across Single/Multi Location", "Supports Audit trails and track changes in setup", "Optional Holiday setup enables for each location", "Transparent and accessible by all users/employees"],
+          imageSrc: img7,
+          imageAlt: "Holiday Calendar",
+          "imgPosition": "left"
+      },
+      {
+          title: "Dashboard for Complete Leave Overview",
+          subtitle: "Easily track, manage, and plan your time off/utilisation of Leave.",
+          description: "Employee can view detailed summary dashboard of their leave status, including total applied, approved, and pending leave categorized by leave type. Month-wise trend analysis enables the Manager to manage risk at project planning level. The system also provides a year-wise holiday list which is accessible through Mobile app, making it simple to manage leave information and plan time off effectively. Leave details are shared with Billing/Payroll modules seamlessly to eliminate any processing errors.",
+          benefits: ["Comprehensive Overview, Detailed for each leave type", "Trend Analysis for better planning and risk management", "Accessible from Mobile app", "Shared with Payroll and Project Management modules seamlessly"],
+          imageSrc: img8,
+          imageAlt: "Leave Dashboard",
+          imgPosition: "right"
+      },
+      {
+          title: "Apply Leave from Anywhere Anytime",
+          subtitle: "Simple Leave Application: easy to apply and cancel from anywhere & anytime.",
+          description: "Employee can apply for multiple types of leaves like Earned Leave, Work From Home, and Loss of Pay through both web and mobile apps. On submitted, the leave request automatically moves to manager's dashboard for approval, streamlining the process.",
+          benefits: ["Both Web and Mobile Convenience", "Multiple leave types", "Easy Application process with Holiday List Integration, to alter users"],
+          imageSrc: img9,
+          imageAlt: "Leave Application",
+          imgPosition: "left"
+      },
+      {
+          title: "Swift Leave Approvals from Anywhere Anytime",
+          subtitle: "Approve/Reject Leave Requests with Ease and Precision from Approver Dashboard.",
+          description: "Managers can easily filter leave requests by individual employee or leave type, providing a clear view of total leave applied, approved, and pending for each employee. This organized approach allows for efficient navigation and prompt action. Managers can review details before making decisions, with a mandatory remark field to ensure clear communication with employees during the approval or rejection process.",
+          benefits: ["Organized and Filter View", "Comprehensive Overview", "Streamlined Approval Process", "Efficient Leave Approval", "Mobile Convenience", "Approval History"],
+          imageSrc: img10,
+          imageAlt: "Leave Approval",
+          imgPosition: "right"
+      },
+      {
+          title: "Organized Leave Insights for Efficient Management",
+          subtitle: "Gain Complete Insights into Leave Patterns and Usage",
+          description: "Managers can sort leave requests by individual employee or leave type, providing a clear and organized view. They also have access to a comprehensive annual leave report that includes all leave details across departments. This feature ensures efficient record-keeping and supports transparent leave management, helping managers make informed decisions.",
+          benefits: ["Informed Decision-Making", "Exportable Reports", "Leave Balances at a Glance", "Customizable Reports"],
+          imageSrc: img11,
+          imageAlt: "Leave Reports",
+          imgPosition: "left"
+      }
   ]:[
-        {
-          title: 'On-Boarding Process',
-          subtitle: 'Smooth Onboarding and Integration of New Employees into the Organization',
-          description:
-            'This module enables streamlined management of departments, grades, HR policies, and appointees. Departments can be created with essential details for organized tracking, while comprehensive grade records support decision-making. HR policies are stored for easy access, and managers can maintain detailed appointee records, including documents, bank details, and offer statuses. The employee list can be sorted by grade, department, or specific employee details, with filters to categorize by status, offering efficient list management and quick status updates. Custom templates for offer and joining letters allow HR to handle onboarding smoothly and efficiently.',
-          benefits: ['Efficient Department Management', 'Detailed Grade Tracking', 'Convenient Policy Access','Thorough Appointee Management','Dynamic Offer Letters','Streamlined Status Updates','Flexible Employee List Management with Quick Filter Reset'],
-          imageSrc: img2,
-          imageAlt: 'On-Boarding',
-          imgPosition: 'left',
-        },
-        {
-          title: 'Employee Data',
-          subtitle: 'Centralized Employee Information Management',
-          description:
-            'This module enables streamlined employee management, allowing managers to sort, search, and filter employee records by various criteria, track regular and contract employees, manage billing rates, and initiate separation processes. It supports centralized data maintenance, automatic employee ID generation, department and grade associations, and bulk uploads for efficient data handling. Optional fields for documents and bank details ensure comprehensive record-keeping while simplifying management.',
-          benefits: ['Automatic Employee ID Generation','Centralized Information', 'Data Accuracy and Integrity', 'Compliance and Record-Keeping','Manage Employee Billing Rates','Contract Employee Management','Audit Tracing','Department and Grade Association','Bulk Record Uploads'],
-          imageSrc: ClaimImgDemo,
-          imageAlt: 'Employee Data',
-          imgPosition: 'right',
-        },
-        {
-          title: 'Attendance Management',
-          subtitle: 'Automated Attendance Tracking and Compliance',
-          description:
-            'The Attendance Management module allows organizations to track employee attendance, working hours, and leaves accurately. By integrating with biometric devices, time-tracking systems, or manual input methods, this module ensures that employee attendance is recorded in real time, automating the process of tracking punctuality, absenteeism, and overtime, while supporting payroll calculations and compliance.',
-          benefits: ['Automated Attendance Tracking', 'Compliance with Labor Laws', 'Accurate Payroll Processing','Improved Workforce Management','Enhanced Employee Engagement'],
-          imageSrc: img2,
-          imageAlt: 'Attendance Management',
-          imgPosition: 'left',
-        },
-        {
-          title: 'Exit Process',
-          subtitle: 'Structured and Seamless Employee Offboarding',
-          description:
-            'The Exit Process module ensures a smooth, structured, and compliant offboarding of employees from the organization. It covers the entire process, from resignation or termination to the final clearance and exit interview, ensuring a transparent and positive exit experience for both the employee and the organization. The module also tracks key tasks like documentation handover, knowledge transfer, and compliance with company policies.',
-          benefits: ['Streamlined Offboarding', 'Improved Compliance', 'Enhanced Data Security','Feedback for Continuous Improvement','Accurate Final Settlements','Clear Communication'],
-          imageSrc: ClaimImgDemo,
-          imageAlt: 'Exit Process',
-          imgPosition: 'right',
-        },
+    {
+      title: "Complete Employee Lifecycle Management",
+      subtitle: "Centralized Employee Data Management - with Multi Location.",
+      description: "This module enables streamlined employee data management, allowing HR and Employee managers to sort, search, and filter employee records by various criteria like Department and Grade for easy analysis and reports. Both permanent and contract employees can be managed with different salary structures. All lifecycle stages like onboarding process, initiating separation processes, completion of probation period, etc., can be managed smoothly for each employee data by the authorized manager. Optional fields for documents and bank details ensure comprehensive record-keeping while simplifying management.",
+      benefits: ["Department and Grade structure - for data segregation and easy management.", "Automatic ID Generation for Employee, and Contract Employee.", "Centralized Information - Data Accuracy and Integrity", "Compliance and Record-Keeping - integrated with document management system.", "Manage Employee Billing Rates", "Contract Employee Management", "Audit Tracing for employee data. Supports bulk record uploads from existing system."],
+      imageSrc: img12,
+      imageAlt: "Payroll & Compliance",
+      imgPosition: "left"
+  },
+  {
+      title: "Job Offer Records - Onboarding Process",
+      subtitle: "Smooth Onboarding and Integration of New Employees into the Organization",
+      description: "Enables you to keep the Job offer records with unique reference ID for easy traceability and managing the offer letter and onboarding process. Custom templates for offer and joining letters allow HR to handle onboarding smoothly and efficiently. Provides data for analysis for the recruitment process.",
+      benefits: ["Thorough Appointee Management", "Link Salary structure to include CTC details in offer letter", "Dynamic Offer, Appointment Letters", "One-click employee data creation from offer details"],
+      imageSrc: img13,
+      imageAlt: "Salary Process",
+      imgPosition: "right"
+  },
+  {
+      title: "Streamlined Exit Process with Customized Setup",
+      subtitle: "Ensuring Smooth Exit with Assets and KT Transfer",
+      description: "With customized exit process setup, you can track and complete all the steps needed to be done by the employee before he/she exits the system. This can be knowledge transfer, handover of assets, exit interview, to name a few. Employee can initiate the separation process, which can be managed by approval/review flow.",
+      benefits: ["Customized exit process setup", "Smooth Transitions and completion of activity by departments.", "Facility to capture document evidence at each step."],
+      imageSrc: img13,
+      imageAlt: "Payslip Generation",
+      imgPosition: "left"
+  },
         
       ];
 

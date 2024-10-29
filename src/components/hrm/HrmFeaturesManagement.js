@@ -139,6 +139,8 @@ const HrmFeaturesManagement = () => {
   const isLeavePage = location.pathname === '/leave.html';
   const isEmployeePage = location.pathname === '/employeehr.html';
   const isPayrollPage = location.pathname === '/payroll.html';
+  const isAttendancePage = location.pathname === '/attendance.html';
+  const isAppraisalPage = location.pathname === '/appraisal.html';
 
   const content = useMemo(() => {
     if (isClaimPage) {
@@ -164,12 +166,28 @@ const HrmFeaturesManagement = () => {
       data: "HR"
       };
     }
+    else if (isAttendancePage) {
+      return {
+        title: "Welcome to Employee Attendance",
+      description: "Explore our various modules designed to simplify your HR processes.",
+      image: HrHeadBG,
+      data: "Attendance"
+      };
+    }
     else if (isPayrollPage) {
       return {
         title: "Accurate and Automated Payroll Solutions",
       description: "Simplify payroll with Atomwalk HRM's automated system, handling salaries, deductions, and taxes with accuracy. Real-time integration ensures seamless reporting and easy payslip access for employees",
       image: HrHeadBG,
       data: "Payroll"
+      };
+    }
+    else if (isAppraisalPage) {
+      return {
+        title: "Performance Mangement",
+      description: "The appraisal system supporting KPI-based evaluations, with self-assessment, manager scoring, and grade normalization for fair, transparent performance reviews and structured reporting.",
+      image: HrHeadBG,
+      data: "Appraisal"
       };
     }
     return {
@@ -204,7 +222,7 @@ const HrmFeaturesManagement = () => {
       </Header>
 
       <ProcessFlow data={content.data} />
-      <FeatureBenifits data={content.data} />
+      {/* <FeatureBenifits data={content.data} /> */}
       <FeatureDescription data={content.data} />
       {/* <FAQSection data={content.data} /> */}
     </Page>

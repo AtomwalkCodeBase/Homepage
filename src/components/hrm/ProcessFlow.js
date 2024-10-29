@@ -133,11 +133,21 @@ export const ProcessFlow = ({ data,bgcolors}) => {
       { step: 'Generate Monthly Salary'},
       { step: 'Post Salary'},
     ],
+    Attendance: [
+      { step: 'Check-in'},
+      { step: 'Attendance Dashboard'},
+      { step: 'Manage Attendance'},
+    ],
+    Appraisal: [
+      { step: 'Performance Mangement System'},
+      { step: 'Self Appraisal Process '},
+      { step: 'Manager Appriasl Process '},
+      { step: 'Appriasl Rivew Process and Reports '},
+    ],
     HR: [
-        { step: 'On-Boarding'},
+        
         { step: 'Employee Data'},
-        { step: 'Attendance'},
-        // { step: 'Payroll'},
+        { step: 'On-Boarding'},
         { step: 'Exit Process'},
     ],
     Lead: [

@@ -221,8 +221,7 @@ const FAQSection = ({data,res}) => {
         <CTAImage src={faqimg} alt="FAQ" />
         <CTAHeading>Still have questions?</CTAHeading>
         <CTAText>
-          Book a call with our team to learn how Merchnlink can help you
-          change the way you manage your e-commerce business—forever.
+          Book a call with our team to learn how to integrate ATOMWALK HRM with your business.
         </CTAText>
         <CTAButton onClick={demo}>Book a demo</CTAButton>
       </CTASection>

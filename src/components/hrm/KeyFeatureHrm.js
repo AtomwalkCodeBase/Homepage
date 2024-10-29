@@ -144,7 +144,7 @@ const KeyFeatureHrm = () => {
           </FeatureDescription>
         </FeatureBox>
 
-        <FeatureBox onClick={()=>{handleCardPress('employeehr')}}>
+        <FeatureBox onClick={()=>{handleCardPress('attendance')}}>
           <IconContainer bgColor="#E0F7FC">
             <img src={AttIcon} alt="Attendance" />
           </IconContainer>
@@ -187,6 +187,15 @@ const KeyFeatureHrm = () => {
           <FeatureTitle>Payroll:</FeatureTitle>
           <FeatureDescription>
           Automate payroll processing with integrated features for salary calculations, deductions, and disbursements. Ensure timely and accurate payments.
+          </FeatureDescription>
+        </FeatureBox>
+        <FeatureBox onClick={()=>{handleCardPress('appraisal')}}>
+          <IconContainer bgColor="#FFF2E0">
+            <img src={Payroll} alt="Reliability" />
+          </IconContainer>
+          <FeatureTitle>Performance Mangement System:</FeatureTitle>
+          <FeatureDescription>
+          ----------------
           </FeatureDescription>
         </FeatureBox>
         <FeatureBox onClick={()=>{handleCardPress('employeehr')}}>

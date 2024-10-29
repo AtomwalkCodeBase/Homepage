@@ -167,7 +167,7 @@ const FeatureDescription = ({ data }) => {
           <TextSection>
             <h1>{feature.title}</h1>
             <h2>{feature.subtitle}</h2>
-            <p>{feature.description}</p>
+            <p style={{color:"#666"}}>{feature.description}</p>
             <BenefitsContainer>
               {/* <p>Key Benefits</p> */}
               <ul>
@@ -186,7 +186,7 @@ const FeatureDescription = ({ data }) => {
           <TextSection>
             <h1>{feature.title}</h1>
             <h2>{feature.subtitle}</h2>
-            <p>{feature.description}</p>
+            <p style={{color:"#666"}}>{feature.description}</p>
             <BenefitsContainer>
               {/* <p>Key Benefits</p> */}
               <ul>

@@ -99,6 +99,9 @@ const FeatureDescription = styled.p`
 `;
 
 const ProductPage = () => {
+  const handelNavigation=(data)=>{
+    window.location.href=data;
+  }
   return (
     <SectionContainer>
       <MainTitle>
@@ -130,7 +133,7 @@ const ProductPage = () => {
           </FeatureDescription>
         </FeatureBox>
 
-        <FeatureBox>
+        <FeatureBox style={{cursor:"pointer"}} onClick={()=>handelNavigation()}> 
           <IconContainer bgColor="#E0F7FC">
             <img src={Grow} alt="Accuracy" />
           </IconContainer>
@@ -140,7 +143,7 @@ const ProductPage = () => {
           </FeatureDescription>
         </FeatureBox>
 
-        <FeatureBox>
+        <FeatureBox style={{cursor:"pointer"}} onClick={()=>handelNavigation()}>
           <IconContainer bgColor="#FFF2E0">
             <img src={Payroll} alt="Reliability" />
           </IconContainer>

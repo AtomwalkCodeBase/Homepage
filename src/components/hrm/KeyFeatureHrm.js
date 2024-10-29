@@ -52,7 +52,7 @@ const Subtitle = styled.p`
 // Container for the features
 const FeaturesContainer = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   margin-top: 40px;
 
   @media (max-width: 768px) {

@@ -79,12 +79,12 @@ const HeadTextOne = styled.div`
 `;
 
 const HeadPara = styled.p`
-  color: #1c1b1f;
-  width: 65%;
+  color: #454545;
+  /* width: 65%; */
   font-size: 21px;
-  word-wrap: normal;
-  line-height: 31.504px;
-  margin: 0px 0px 24px;
+  /* word-wrap: normal; */
+  /* line-height: 31.504px;
+  margin: 0px 0px 24px; */
 
   @media (max-width: 768px) {
     width: 100%;

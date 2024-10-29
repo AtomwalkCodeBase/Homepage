@@ -66,7 +66,7 @@ const ImageContainer = styled.div`
 // Title styling
 const Title = styled.h2`
   font-size: 2.1em;
-  color: rgb(170, 0, 234);
+  color:#ea5c49;
   margin-bottom: 10px;
   font-weight: 800;
   line-height: 1.25;
@@ -91,7 +91,7 @@ const Input = styled.input`
 const Button = styled.button`
   width: 100%;
   padding: 10px;
-  background-color: #6a1b9a;
+  background-color: #ea5c49;
   color: white;
   border: none;
   border-radius: 20px;
@@ -100,7 +100,7 @@ const Button = styled.button`
   font-weight: 700;
 
   &:hover {
-    background-color: #4a148c;
+    background-color: #f77867;
   }
 `;
 
@@ -116,7 +116,7 @@ const CloseButton = styled.button`
   font-size: 1.5em;
   cursor: pointer;
   &:hover{
-  background: #454544;
+  background: #f77867;
   }
 `;
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import LetsConnect from '../LetsConnect'
 import { useLocation } from 'react-router-dom'
 import Lead  from '../../assets/img/Mockup5-Lead.png'
@@ -8,6 +8,7 @@ import Campaign  from '../../assets/img/Campain.png'
 import { ProcessFlow } from '../hrm/ProcessFlow'
 import CrmFeatures from './CrmFeatures'
 const LeadManagement = () => {
+  const[showData,setShowData]=useState("");
   const location = useLocation();
 
   // Array of configurations for different pages
@@ -43,6 +44,11 @@ const LeadManagement = () => {
   ];
 
   // Function to determine which page configuration to use based on URL
+  useEffect(()=>{
+    if(location.pathname.includes('campaignManagement')){
+      setShowData('Claim')
+    }
+  },[location.pathname])
   const getCurrentPageConfig = () => {
     if (location.pathname.includes('leadManagement')) {
       return managementPages[0]; // Lead Management data
@@ -53,8 +59,8 @@ const LeadManagement = () => {
       return managementPages[2]; // Customer Management data
     }
     else if (location.pathname.includes('campaignManagement')) {
-      return managementPages[3]; // Customer Management data
-    }
+    return  managementPages[3]; // Customer Management data
+}
     // Default to Lead Management if no match
     return managementPages[0];
   };
@@ -71,7 +77,7 @@ const LeadManagement = () => {
         lead={true}
       />
       <ProcessFlow bgcolors={"#e8f1fe"} data={currentPageConfig.titles}></ProcessFlow>
-      <CrmFeatures data={'Claim'}></CrmFeatures>
+      <CrmFeatures data={showData}></CrmFeatures>
     </div>
   )
 }

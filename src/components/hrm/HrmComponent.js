@@ -35,7 +35,7 @@ const Header = styled.div`
 const HeadBox = styled.div`
   height: 125%;
   width: 100%;
-  background-color: #a970ff;
+  background-color: #eae3ff;
   padding: 90px;
   padding-top: 150px;
   display: flex;

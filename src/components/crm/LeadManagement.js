@@ -22,12 +22,14 @@ const LeadManagement = () => {
     },
     {
       title: "Customer Management",
+      titles: "Customer",
       description: "Atomwalk CRM's Customer Management system helps businesses organize and manage customer data, interactions, and communication history. It allows users to track customer preferences, purchase history, and provides tools to enhance customer retention and satisfaction.",
       background: "#d6e7ff",
       img: `${Customer}`  // Add your image path here
     },
     {
       title: "Channel Partner Management",
+      titles: "Partner",
       description: "Atomwalk CRM's Channel Partner Management system enables businesses to effectively manage their relationships with partners. It helps track partner activities, agreements, and contributions, streamlining collaboration to drive mutual growth. The system also provides visibility into partner performance, ensuring transparency and maximizing the value of partnerships.",
       background: "#d6e7ff",
       img: `${Partner}`  // Add your image path here

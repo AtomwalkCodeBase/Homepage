@@ -68,7 +68,7 @@ const Step = styled.div`
   margin: 10px;
   border-radius: 8px;
   border: 1px solid #4A90E2;
-  width: 125px;
+  width: 185px;
   /* flex: 1; */
   display: flex;
   align-items: center;
@@ -153,20 +153,31 @@ export const ProcessFlow = ({ data,bgcolors}) => {
     Lead: [
       { step: 'Lead Capture', color: '#4A90E2' },
       { step: 'Lead Tracking', color: '#4A90E2' },
-      { step: 'Lead Scoring', color: '#4A90E2' },
-      { step: 'Lead Distribytion ', color: '#4A90E2' },
-      { step: 'Lead Nurturing', color: '#4A90E2' },
+      { step: ' Opt-in Customer Management', color: '#4A90E2' },
+      { step: 'Lead Lifecycle Management ', color: '#4A90E2' },
+      { step: ' Lost Lead Recovery and Management', color: '#4A90E2' },
     ],
     Campaign: [
-      { step: 'Planning and Audience Segmentation', color: '#4A90E2' },
-      { step: 'Designing Campaign Content', color: '#4A90E2' },
-      { step: 'Campaign Setup in CRM', color: '#4A90E2' },
-      { step: 'Execution and Sending', color: '#4A90E2' },
-      { step: 'Monitoring and Engagement Tracking', color: '#4A90E2' },
-      { step: 'Follow-up and Lead Nurturing', color: '#4A90E2' },
-      { step: 'Campaign Analysis and Reporting', color: '#4A90E2' },
-
+      { step: ' Flexible Template Creation by User (No Restrictions)', color: '#4A90E2' },
+      { step: 'Universal Template Access for All Users', color: '#4A90E2' },
+      { step: 'Target Audience Segmentation', color: '#4A90E2' },
+      { step: 'Campaign Template Review Process', color: '#4A90E2' },
+      { step: 'Automated Campaign Trigger with Predefined Scheduler', color: '#4A90E2' }
     ],
+    Partner : [
+      { step: ' Add Partner', color: '#4A90E2' },
+      { step: 'Order Information Tracking', color: '#4A90E2' },
+      { step: 'Commission Management', color: '#4A90E2' },
+      { step: 'Multi-Report Generation', color: '#4A90E2' },
+    ],
+    Customer : [
+      { step: ' Customer Uploading (Upload Customer Data)', color: '#4A90E2' },
+      { step: 'Order Management (Manage Reservations)', color: '#4A90E2' },
+      { step: ' Process-wise Order Management (Resale and Cross-Selling)', color: '#4A90E2' },
+      { step: 'Ticket Tracking (AMC Tracking)', color: '#4A90E2' },
+      { step: 'Reports and Dashboards', color: '#4A90E2' }
+    ],
+   
   };
 
   // Get the appropriate flow based on the `data` prop

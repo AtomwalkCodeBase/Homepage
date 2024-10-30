@@ -17,7 +17,7 @@ const Features = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f0ebf7; 
+  background-color: #e8f1fe; 
   padding: 20px;
   
   @media (min-width: 768px) {
@@ -78,7 +78,7 @@ const BenefitsContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 260px;
+    width: 360px;
     gap: 8px;
   }
 

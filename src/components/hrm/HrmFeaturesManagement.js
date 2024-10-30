@@ -16,7 +16,7 @@ const Page = styled.div`
   background-color: white;
   color: blue;
   width: 100%;
-  padding-bottom: 10px;
+  /* padding-bottom: 10px; */
 `;
 
 const Header = styled.div`
@@ -34,7 +34,7 @@ const Header = styled.div`
 const HeadBox = styled.div`
   height: 125%;
   width: 100%;
-  background-color: #a970ff;
+  background-color:#eae3ff;
   padding: 90px;
   padding-top: 150px;
   display: flex;

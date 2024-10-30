@@ -133,7 +133,7 @@ const ProductPage = () => {
           </FeatureDescription>
         </FeatureBox>
 
-        <FeatureBox style={{cursor:"pointer"}} onClick={()=>handelNavigation()}> 
+        <FeatureBox style={{cursor:"pointer"}} onClick={()=>handelNavigation("/crm.html")}> 
           <IconContainer bgColor="#E0F7FC">
             <img src={Grow} alt="Accuracy" />
           </IconContainer>
@@ -143,7 +143,7 @@ const ProductPage = () => {
           </FeatureDescription>
         </FeatureBox>
 
-        <FeatureBox style={{cursor:"pointer"}} onClick={()=>handelNavigation()}>
+        <FeatureBox style={{cursor:"pointer"}} onClick={()=>handelNavigation("/hrm.html")}>
           <IconContainer bgColor="#FFF2E0">
             <img src={Payroll} alt="Reliability" />
           </IconContainer>

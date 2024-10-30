@@ -195,7 +195,7 @@ const KeyFeatureHrm = () => {
           </IconContainer>
           <FeatureTitle>Performance Mangement System:</FeatureTitle>
           <FeatureDescription>
-          ----------------
+          The appraisal system supporting KPI-based evaluations, with self-assessment, manager scoring, and grade normalization for fair, transparent performance reviews and structured reporting.
           </FeatureDescription>
         </FeatureBox>
         <FeatureBox onClick={()=>{handleCardPress('employeehr')}}>

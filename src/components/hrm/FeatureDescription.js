@@ -15,6 +15,16 @@ import img10 from '../../assets/img/approval_leave.svg';
 import img11 from '../../assets/img/leave_report.svg';
 import img12 from '../../assets/img/payroll_setup.svg';
 import img13 from '../../assets/img/appraisal_setup.svg';
+import img21 from '../../assets/img/onboarding.svg';
+import img22 from '../../assets/img/employeeData.svg';
+import img23 from '../../assets/img/exit_process.svg';
+import img31 from '../../assets/img/payroll-seup.svg';
+import img32 from '../../assets/img/generate-salary.svg';
+import img33 from '../../assets/img/post-salary.svg';
+import img41 from '../../assets/img/appraisal-setup-feature.svg';
+import img42 from '../../assets/img/self-appraisal.svg';
+import img43 from '../../assets/img/emp-appraisal.svg';
+import img44 from '../../assets/img/manager-evaluation.svg';
 
 const Container = styled.div`
   width: 100%;
@@ -320,7 +330,7 @@ const FeatureDescription = ({ data }) => {
           subtitle: "Configurable Salary structure with predefined integrated TDS/PT/PF/Gratuity calculation for seamless employee compensation.",
           description: "Our HR management offers a comprehensive system for managing employee salary structures, and compliance setup in accordance with government regulations. Companies can create tailored salary structures for different employee grades. The platform also facilitates setting up Provident Fund, Gratuity, Employee State Insurance (ESI), and TDS, PT tax parameters, ensuring full compliance and transparency in payroll management. In addition to this, any other salary components like Variable Pay and custom deductions can be configured in the system, making it highly flexible for any complex scenario.",
           benefits: ["Configurable pay scale grades", "Configurable salary structures with formula builder", "Customizable payslip design", "Dynamic Salary Structures to include compliance like PF, Gratuity, ESI, PT, and TDS", "Audit trails for Setup control", "Contract Rate setup for contract employee"],
-          imageSrc: img12,
+          imageSrc: img31,
           imageAlt: "Payroll & Compliance",
           imgPosition: "left"
       },
@@ -329,46 +339,38 @@ const FeatureDescription = ({ data }) => {
           subtitle: "Seamless access to Attendance data for accurate and quick Payroll processing.",
           description: "Our payroll processing tool enables quick salary generation while minimizing errors through integration with attendance and leave data. This facilitates managers with accurate data for decision-making. The system supports importing employee data from Attendance, HRM, and Leave Management modules for Payroll processing. Along with the full salary computation, the payroll system integrates with Payment Disbursement to enable online transfer, checks with employee pay account details for direct salary disbursement through net banking etc.",
           benefits: ["Accurate Payroll Generation", "Reduced Manual Errors", "Integrated with Attendance and Leave", "Direct Salary Disbursement"],
-          imageSrc: img13,
+          imageSrc: img32,
           imageAlt: "Salary Process",
           imgPosition: "right"
       },
       {
-          title: "Detailed Pay Slips and Statements",
-          subtitle: "Comprehensive and clear statements for employee and admin access.",
-          description: "Payroll management provides both employees and administrators with access to comprehensive payslips, enabling clarity around salary details, deductions, and compliance contributions. This system supports bulk processing of payslips and customized templates. Integrated with the attendance and leave management, it enables real-time pay corrections for missing attendance to ensure complete transparency for the entire payroll month.",
-          benefits: ["Detailed Payslip Generation", "Easy Salary Reconciliation", "Payslip Printing Option"],
-          imageSrc: img13,
-          imageAlt: "Payslip Generation",
+          title: "Accurate Accounting Entries for Financial Clarity",
+          subtitle: "Ensuring error-free records with detailed reporting.",
+          description: "After generating salaries, the HR manager creates accounting entries to maintain precise financial records. The system displays all payable heads, showing amounts already posted and pending. Managers can download detailed reports in PDF or Excel formats and include specific posting remarks for transparency, ensuring a well-documented and accurate accounting process.",
+          benefits: ["Precise Accounting Entries", "Payable Overview", "Detailed Reporting",' Transparent Documentation','Error-Free Financial Management'],
+          imageSrc: img33,
+          imageAlt: "Post Salary ",
           imgPosition: "left"
       },
-      {
-          title: "Extensive Payroll Reporting",
-          subtitle: "Get insights from payroll data for better workforce planning and compliance.",
-          description: "Our payroll system provides flexible reporting options that include the detailed payroll reconciliation report, tax and deductions summary report, and annual pay analysis. Reports can be customized to fit different departments and roles, making it easier to maintain records and plan effectively.",
-          benefits: ["Payroll Tax Summary", "Salary Audit Reports", "Yearly Analysis"],
-          imageSrc: img13,
-          imageAlt: "Payroll Reports",
-          imgPosition: "right"
-      }
+
   ] : isEmployeeData?
   [
-      {
+    {
+      title: "Job Offer Records - Onboarding Process",
+      subtitle: "Smooth Onboarding and Integration of New Employees into the Organization",
+      description: "Enables you to keep the Job offer records with unique reference ID for easy traceability and managing the offer letter and onboarding process. Custom templates for offer and joining letters allow HR to handle onboarding smoothly and efficiently. Provides data for analysis for the recruitment process.",
+      benefits: ["Thorough Appointee Management", "Link Salary structure to include CTC details in offer letter", "Dynamic Offer, Appointment Letters", "One-click employee data creation from offer details"],
+      imageSrc: img21,
+      imageAlt: "Onboarding",
+      imgPosition: "left"
+  },
+  {
           title: "Complete Employee Lifecycle Management",
           subtitle: "Centralized Employee Data Management - with Multi Location.",
           description: "This module enables streamlined employee data management, allowing HR and Employee managers to sort, search, and filter employee records by various criteria like Department and Grade for easy analysis and reports. Both permanent and contract employees can be managed with different salary structures. All lifecycle stages like onboarding process, initiating separation processes, completion of probation period, etc., can be managed smoothly for each employee data by the authorized manager. Optional fields for documents and bank details ensure comprehensive record-keeping while simplifying management.",
           benefits: ["Department and Grade structure - for data segregation and easy management.", "Automatic ID Generation for Employee, and Contract Employee.", "Centralized Information - Data Accuracy and Integrity", "Compliance and Record-Keeping - integrated with document management system.", "Manage Employee Billing Rates", "Contract Employee Management", "Audit Tracing for employee data. Supports bulk record uploads from existing system."],
-          imageSrc: img12,
-          imageAlt: "Payroll & Compliance",
-          imgPosition: "left"
-      },
-      {
-          title: "Job Offer Records - Onboarding Process",
-          subtitle: "Smooth Onboarding and Integration of New Employees into the Organization",
-          description: "Enables you to keep the Job offer records with unique reference ID for easy traceability and managing the offer letter and onboarding process. Custom templates for offer and joining letters allow HR to handle onboarding smoothly and efficiently. Provides data for analysis for the recruitment process.",
-          benefits: ["Thorough Appointee Management", "Link Salary structure to include CTC details in offer letter", "Dynamic Offer, Appointment Letters", "One-click employee data creation from offer details"],
-          imageSrc: img13,
-          imageAlt: "Salary Process",
+          imageSrc: img22,
+          imageAlt: "Employee data",
           imgPosition: "right"
       },
       {
@@ -376,8 +378,8 @@ const FeatureDescription = ({ data }) => {
           subtitle: "Ensuring Smooth Exit with Assets and KT Transfer",
           description: "With customized exit process setup, you can track and complete all the steps needed to be done by the employee before he/she exits the system. This can be knowledge transfer, handover of assets, exit interview, to name a few. Employee can initiate the separation process, which can be managed by approval/review flow.",
           benefits: ["Customized exit process setup", "Smooth Transitions and completion of activity by departments.", "Facility to capture document evidence at each step."],
-          imageSrc: img13,
-          imageAlt: "Payslip Generation",
+          imageSrc: img23,
+          imageAlt: "Exit Process",
           imgPosition: "left"
       },
       
@@ -388,7 +390,7 @@ const FeatureDescription = ({ data }) => {
           subtitle: "Completely Configurable Appraisal KPI Structure Definition.",
           description: "Highly flexible and configurable appraisal structure to set up your KPI targets for each employee grade level. Supports and is configurable for quarterly, half-yearly, and yearly appraisal cycles. Self-assessment, and provides scores for key performance indicators (KPIs), and submits the appraisal to the Employee manager, who evaluates and gives scores for each KPI. Review process by Reviewer to normalize the grades for an appraisal cycle for a particular employee grade. This structured process ensures accurate and fair evaluations, fostering transparency in performance-based benefits.",
           benefits: ["Flexible Appraisal structure with KPI weightage.", "Historical appraisal records reference for employee improvement and training plan.", "Provision to upload supporting documents.", "Structured Process, Fair Performance Assessment"],
-          imageSrc: img7,
+          imageSrc: img41,
           imageAlt: "Holiday Calendar",
           imgPosition: "left"
       },
@@ -397,7 +399,7 @@ const FeatureDescription = ({ data }) => {
           subtitle: "Transparent and KPI Goals for Each Cycle.",
           description: "Employee can self-initiate and give his own score. Document evidence, if required, can be uploaded. Historical appraisal data for earlier cycles is accessible.",
           benefits: ["Overall score is rule-based calculation", "Seamlessly flows to employee manager", "Historical Appraisal Data access"],
-          imageSrc: img8,
+          imageSrc: img42,
           imageAlt: "Leave Dashboard",
           imgPosition: "right"
       },
@@ -406,7 +408,7 @@ const FeatureDescription = ({ data }) => {
           subtitle: "Flexible Structure and Score for Each KPI.",
           description: "Manager evaluates and provides the score for each KPI Goal. The final score is auto-calculated based on rule setup. After providing the score, Manager sends the appraisal to the employee for final sign-off and remarks.",
           benefits: ["Overall score for Manager is rule-based calculation", "Seamlessly flows between employee and manager", "Historical Appraisal Data access"],
-          imageSrc: img9,
+          imageSrc: img44,
           imageAlt: "Leave Application",
           imgPosition: "left"
       },
@@ -415,7 +417,7 @@ const FeatureDescription = ({ data }) => {
           subtitle: "Normalization of Appraisal Grades by Reviewer.",
           description: "Normalization of appraisal grades by Reviewer at each employee grade level. Performance-linked salary components (like variable pay) evaluation process. Reports for each appraisal cycle and employee grade levels.",
           benefits: ["Review process", "Reports for performance-based salary components.", "Customizable Reports"],
-          imageSrc: img10,
+          imageSrc: img43,
           imageAlt: "Leave Approval",
           imgPosition: "right"
       },

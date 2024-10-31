@@ -126,7 +126,7 @@ const hrmBenefits = [
   { title: 'Boost', text: 'elevate employer brand reputation', bgColor: '#d9f5e3', icon: Icon7 },
   { title: 'Standardize', text: 'enforce a consistent company policy', bgColor: '#f2e3ff', icon: Icon2 },
   { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ffe8cc', icon: Icon3 },
-  { title: 'Reliabilty', text: '24/7 availability with 100% uptime on mobile and web, supported by multiple app servers. ', bgColor: '#d7faff', icon: Icon5 },
+  { title: 'Reliabilty', text: '24/7 availability with 100% uptime on mobile and web ', bgColor: '#d7faff', icon: Icon5 },
 ];
 
 const FeatureBenifits = ({ data }) => {

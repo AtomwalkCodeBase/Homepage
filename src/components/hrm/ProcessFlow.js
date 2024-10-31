@@ -146,8 +146,8 @@ export const ProcessFlow = ({ data,bgcolors}) => {
     ],
     HR: [
         
-        { step: 'Employee Data'},
         { step: 'On-Boarding'},
+        { step: 'Employee Data'},
         { step: 'Exit Process'},
     ],
     Lead: [

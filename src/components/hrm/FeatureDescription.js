@@ -25,6 +25,9 @@ import img41 from '../../assets/img/appraisal-setup-feature.svg';
 import img42 from '../../assets/img/self-appraisal.svg';
 import img43 from '../../assets/img/emp-appraisal.svg';
 import img44 from '../../assets/img/manager-evaluation.svg';
+import img51 from '../../assets/img/check-in.svg';
+import img52 from '../../assets/img/attendance-dashboard.svg';
+import img53 from '../../assets/img/emp-attendance.svg';
 
 const Container = styled.div`
   width: 100%;
@@ -424,48 +427,30 @@ const FeatureDescription = ({ data }) => {
   ] : isAttendanceData?
   [
       {
-          title: "Attendance",
-          subtitle: "Easy and exhaustive way to take care of your complex organisational need of Holiday management (Single/Multi location).",
-          description: "Manage Holiday setup digitally for your business for each Year across single/multiple locations. Holiday setup supports Mandatory and Optional holidays for each location. Supports Multiple leave types and yearly limit for each leave type. Setup enables better Project execution planning for the organisation and provides transparency for the employee to plan/utilise their Leave.",
-          benefits: ["Easy Exhaustive Setup across Single/Multi Location", "Supports Audit trails and track changes in setup", "Optional Holiday setup enables for each location", "Transparent and accessible by all users/employees"],
-          imageSrc: img7,
-          imageAlt: "Holiday Calendar",
+          title: "Attendance- Anytime- Anywhere",
+          subtitle: "Streamlined Check-In with Location Tracking and Daily Task Insights.",
+          description: "Our attendance system combines flexibility and precision, allowing employees to mark their workdays from the web or mobile app. The mobile app's check-in and check-out features are equipped with real-time location tracking, automatically capturing the exact location, date, and time to ensure accurate and efficient attendance records. Additionally, during check-out, employees are prompted to fill out a remarks field, providing a brief summary of their day’s tasks. This feature enables managers to gain valuable insights into daily productivity, fostering accountability and enhancing team management.",
+          benefits: ["Accurate Time & Location Tracking", "Enhanced Flexibility", " Improved Productivity Monitoring", "Efficient Reporting"],
+          imageSrc: img51,
+          imageAlt: "Check-in",
           "imgPosition": "left"
       },
       {
-          title: "Dashboard for Complete Leave Overview",
-          subtitle: "Easily track, manage, and plan your time off/utilisation of Leave.",
-          description: "Employee can view detailed summary dashboard of their leave status, including total applied, approved, and pending leave categorized by leave type. Month-wise trend analysis enables the Manager to manage risk at project planning level. The system also provides a year-wise holiday list which is accessible through Mobile app, making it simple to manage leave information and plan time off effectively. Leave details are shared with Billing/Payroll modules seamlessly to eliminate any processing errors.",
-          benefits: ["Comprehensive Overview, Detailed for each leave type", "Trend Analysis for better planning and risk management", "Accessible from Mobile app", "Shared with Payroll and Project Management modules seamlessly"],
-          imageSrc: img8,
+          title: "Stay Informed, Stay Organized",
+          subtitle: "Dynamic Calendar View for Attendance, Holidays, and Leave Management.",
+          description: "Our attendance system offers a dynamic calendar view that allows employees to easily track their attendance status, view holiday lists, and monitor their leave days. After checking in and out, employees can submit their attendance records weekly for manager review, ensuring accountability and streamlined communication. This feature not only keeps employees informed but also helps managers efficiently oversee attendance and leave management, fostering a productive work environment.",
+          benefits: ["Weekly Submission for Review", "Dynamic Calendar View"],
+          imageSrc: img52,
           imageAlt: "Leave Dashboard",
           imgPosition: "right"
       },
       {
-          title: "Apply Leave from Anywhere Anytime",
-          subtitle: "Simple Leave Application: easy to apply and cancel from anywhere & anytime.",
-          description: "Employee can apply for multiple types of leaves like Earned Leave, Work From Home, and Loss of Pay through both web and mobile apps. On submitted, the leave request automatically moves to manager's dashboard for approval, streamlining the process.",
-          benefits: ["Both Web and Mobile Convenience", "Multiple leave types", "Easy Application process with Holiday List Integration, to alter users"],
-          imageSrc: img9,
+          title: "Comprehensive Attendance Insights",
+          subtitle: "Efficient Review and Approval for Enhanced Team Productivity.",
+          description: "Our attendance management system provides managers with a complete overview of their team’s attendance records. Once an employee submits their attendance, it is forwarded for review, ensuring accountability. If an employee encounters issues completing the process, managers can seamlessly update attendance for previous days through the manager portal, including remarks for full transparency. With access to detailed attendance records, managers can also update check-in and check-out times with geo-location data as needed. This system supports weekly approvals, streamlining the management of attendance and promoting effective team oversight.",
+          benefits: ["Streamlined Review Process", "Flexibility in Attendance Management", "Transparency with Remarks","Geo-Location Updates",' Weekly Approval Workflow'],
+          imageSrc: img53,
           imageAlt: "Leave Application",
-          imgPosition: "left"
-      },
-      {
-          title: "Swift Leave Approvals from Anywhere Anytime",
-          subtitle: "Approve/Reject Leave Requests with Ease and Precision from Approver Dashboard.",
-          description: "Managers can easily filter leave requests by individual employee or leave type, providing a clear view of total leave applied, approved, and pending for each employee. This organized approach allows for efficient navigation and prompt action. Managers can review details before making decisions, with a mandatory remark field to ensure clear communication with employees during the approval or rejection process.",
-          benefits: ["Organized and Filter View", "Comprehensive Overview", "Streamlined Approval Process", "Efficient Leave Approval", "Mobile Convenience", "Approval History"],
-          imageSrc: img10,
-          imageAlt: "Leave Approval",
-          imgPosition: "right"
-      },
-      {
-          title: "Organized Leave Insights for Efficient Management",
-          subtitle: "Gain Complete Insights into Leave Patterns and Usage",
-          description: "Managers can sort leave requests by individual employee or leave type, providing a clear and organized view. They also have access to a comprehensive annual leave report that includes all leave details across departments. This feature ensures efficient record-keeping and supports transparent leave management, helping managers make informed decisions.",
-          benefits: ["Informed Decision-Making", "Exportable Reports", "Leave Balances at a Glance", "Customizable Reports"],
-          imageSrc: img11,
-          imageAlt: "Leave Reports",
           imgPosition: "left"
       }
   ]:[

@@ -8,9 +8,10 @@ import Arrow from '../../assets/img/arrows.png'
 import AttIcon from '../../assets/img/attendance1.png'
 import OnboardingIcon from '../../assets/img/onboarding.png'
 import EmployeeDataIcon from '../../assets/img/empdata.png'
-import LeaveManagementIcon from '../../assets/img/leavemanagement.png'
+import LeaveManagementIcon from '../../assets/img/leave-management.png'
 import ClaimManagementIcon from '../../assets/img/claimmanage.png'
 import ExitProcessIcon from '../../assets/img/exit-process.png'
+import PerformanceManagementIcon from '../../assets/img/performance-management.png'
 
 
 
@@ -171,7 +172,7 @@ const KeyFeatureHrm = () => {
       <FeaturesContainer>
       <FeatureBox 
       onClick={()=>{handleCardPress('claim')}}>
-          <IconContainer bgColor="#FFF2E0">
+          <IconContainer bgColor="#EFF498">
             <img src={ClaimManagementIcon} alt="Reliability" />
           </IconContainer>
           <FeatureTitle>Claim Management:</FeatureTitle>
@@ -181,7 +182,7 @@ const KeyFeatureHrm = () => {
         </FeatureBox>
 
         <FeatureBox onClick={()=>{handleCardPress('payroll')}}>
-          <IconContainer bgColor="#FFF2E0">
+          <IconContainer bgColor="#D99B80">
             <img src={Payroll} alt="Reliability" />
           </IconContainer>
           <FeatureTitle>Payroll:</FeatureTitle>
@@ -190,8 +191,8 @@ const KeyFeatureHrm = () => {
           </FeatureDescription>
         </FeatureBox>
         <FeatureBox onClick={()=>{handleCardPress('appraisal')}}>
-          <IconContainer bgColor="#FFF2E0">
-            <img src={Payroll} alt="Reliability" />
+          <IconContainer bgColor="#F7DAF4">
+            <img src={PerformanceManagementIcon} alt="Performance Mangement" />
           </IconContainer>
           <FeatureTitle>Performance Mangement System:</FeatureTitle>
           <FeatureDescription>
@@ -199,7 +200,7 @@ const KeyFeatureHrm = () => {
           </FeatureDescription>
         </FeatureBox>
         <FeatureBox onClick={()=>{handleCardPress('employeehr')}}>
-          <IconContainer bgColor="#FFF2E0">
+          <IconContainer bgColor="#F7DADB">
             <img src={ExitProcessIcon} alt="Reliability" />
           </IconContainer>
           <FeatureTitle>Exit Process:</FeatureTitle>

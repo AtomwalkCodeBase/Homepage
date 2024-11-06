@@ -152,17 +152,28 @@ const CardLink = styled.a`
   }
 `;
 const Newcard = (props) => {
+  const handelnavigate=(data)=>{
+    if(data=="HR & Payroll"){
+      window.location.href="/hrm.html"
+    }
+    else if(data=="Customer Management"){
+       window.location.href="/crm.html"
+    }
+    else{
+          window.location.href="/product.html"
+    }
+  }
   return (
 
     <Col style={{margin:"-2px"}} size={5} sm={6} md={4}>
-    <MainDiv>
+    <MainDiv onClick={()=>handelnavigate(props?.project?.title)} >
     <Card color={props?.project?.background}>
         <CardImage src={props.image} alt="greytHR Academy" />
         <CardTitle>{props?.project?.title}</CardTitle>
         <CardDescription>
           {props?.project?.description}
         </CardDescription>
-        <CardLink href="/product.html">Know More</CardLink>
+        <CardLink onClick={()=>handelnavigate(props?.project?.title)}>Know More</CardLink>
       </Card>
     </MainDiv>
        </Col>

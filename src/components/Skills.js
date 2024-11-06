@@ -157,8 +157,11 @@ export const Skills = () => {
           <Content>
             <IndustryTitle>Lab Management</IndustryTitle>
             <Description>
-              Laboratories require meticulous organization and data management. A robust Lab Management System (LMS) can automate processes such as sample tracking, data entry, and reporting, which streamlines operations and ensures compliance with industry standards.
-            </Description>
+            Research and Development (R & D) Labs in companies/ Universities
+- Grant management, Operational efficiency chemical consumption,
+Lab equipment management, Supplier and Purchase order
+management, Lab report/ documentation.
+              </Description>
           </Content>
         </IndustryContainer>
       </Section>

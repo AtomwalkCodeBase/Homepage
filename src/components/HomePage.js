@@ -50,7 +50,7 @@ useEffect(()=>{
    {/* <TrustedCustomer></TrustedCustomer> */}
    <Testimonial></Testimonial>
     <Pricing></Pricing>
-    <PricingAvtar></PricingAvtar>
+    {/* <PricingAvtar></PricingAvtar> */}
     <Contact setShowsuccess={setShowsuccess}></Contact>
     <ProductDemoModal isOpen={modalIsOpen} onRequestClose={closeModal} setShowsuccess={setShowsuccess} />
     </div>

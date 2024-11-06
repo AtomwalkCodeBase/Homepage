@@ -4,6 +4,11 @@ import Product from './../assets/img/Projectmange.jpg'
 import Inventory from './../assets/img/inventory management.jpg'
 import Process from './../assets/img/Process Templates.jpg'
 import Sales from './../assets/img/Sales and Procurement.jpg'
+import Report from './../assets/img/Report And Dashboard.jpg'
+import GST from './../assets/img/gst.webp'
+import Bank from './../assets/img/Bank Reconciliation.jpg'
+import Finacial from './../assets/img/Finacial Acconting.avif'
+
 
 // Main container for the entire section
 const SectionContainer = styled.section`
@@ -163,7 +168,7 @@ const ProductCard = () => {
             <img src={Inventory} alt="Performance management" />
           </ImageContainer>
           <TextContainer>
-            <BoxHeading>Performance management system</BoxHeading>
+            <BoxHeading>Inventory Management</BoxHeading>
             <BoxText>
             <ul>
 						<li>Item Category and Group </li>
@@ -218,6 +223,87 @@ const ProductCard = () => {
 						<li>Goods Receipt (GRN)</li>
 						<li>Goods Return/Shortage/ Debit Note</li>
 						<li>Purchase Service Order, TDS handling</li>
+						</ul>
+            </BoxText>
+            <Button>Experience Live Demo</Button>
+          </TextContainer>
+          <DecorativeCircle top="20%" left="5%" />
+          <DecorativeCircle bottom="10%" right="70%" />
+        </ContentBox>
+        <ContentBox bgColor="rgb(225, 255, 246)">
+          <TextContainer>
+            <BoxHeading>GST & TDS</BoxHeading>
+            <BoxText>
+            <ul>
+						<li>GST report Support</li>
+						<li>TDS and TDS reconciliation</li>
+						<li>GST Reconciliation with A/c</li>
+						</ul>
+            </BoxText>
+            <Button onClick={demopage}>Request a Demo</Button>
+          </TextContainer>
+          <ImageContainer>
+            <img src={GST}alt="Employee engagement" />
+          </ImageContainer>
+          <DecorativeCircle top="10%" left="80%" />
+          <DecorativeCircle bottom="5%" right="10%" />
+        </ContentBox>
+        <ContentBox bgColor="#ffeadf">
+          <ImageContainer>
+            <img src={Finacial} alt="Performance management" />
+          </ImageContainer>
+          <TextContainer>
+            <BoxHeading>Finacial Acconting</BoxHeading>
+            <BoxText>
+            <ul>
+						<li>Reports (Sales, Purchase and Inventory). </li>
+						<li>Audit Trail.</li>
+						<li>Statutory Reports (P&LBalance Sheet, Cash Flow, Change in Equity).</li>
+						<li>Purchase Reports</li>
+						<li>Depreciation Schedule</li>
+						</ul>
+            </BoxText>
+            <Button>Experience Live Demo</Button>
+          </TextContainer>
+          <DecorativeCircle top="20%" left="5%" />
+          <DecorativeCircle bottom="10%" right="70%" />
+        </ContentBox>
+        <ContentBox bgColor="#d7faff">
+          <TextContainer>
+            <BoxHeading>Bank Reconciliation</BoxHeading>
+            <BoxText>
+            <ul>
+						<li>Bank Statement Upload</li>
+						<li>Account Reconciliation with Sales and PO</li>
+						<li>Rule based reconciliation of Expenses</li>
+            <li>Bank statement View</li>
+						<li>Reconciled statement view</li>
+						<li>Bank, Exchange rate setup</li>
+						</ul>
+            </BoxText>
+            <Button onClick={demopage}>Request a Demo</Button>
+          </TextContainer>
+          <ImageContainer>
+            <img src={Bank}alt="Employee engagement" />
+          </ImageContainer>
+          <DecorativeCircle top="10%" left="80%" />
+          <DecorativeCircle bottom="5%" right="10%" />
+        </ContentBox>
+        <ContentBox bgColor="#dfdfdf">
+          <ImageContainer>
+            <img src={Report} alt="Performance management" />
+          </ImageContainer>
+          <TextContainer>
+            <BoxHeading>Reports and Dashboard</BoxHeading>
+            <BoxText>
+            <ul>
+						<li>Manager Dashboard</li>
+						<li>Sales Dashboard</li>
+						<li>Account Receivable and Payable</li>
+						<li>Party wise outstanding</li>
+						<li>Batch reports like Sales overdue, GST not filed</li>
+						<li>Report Templates</li>
+						<li>User Access control</li>
 						</ul>
             </BoxText>
             <Button>Experience Live Demo</Button>

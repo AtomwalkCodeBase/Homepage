@@ -153,12 +153,12 @@ export const ProcessFlow = ({ data,bgcolors}) => {
     Lead: [
       { step: 'Lead Capture', color: '#4A90E2' },
       { step: 'Lead Tracking', color: '#4A90E2' },
-      { step: ' Opt-in Customer Management', color: '#4A90E2' },
+      { step: 'Obtain Customer Management', color: '#4A90E2' },
       { step: 'Lead Lifecycle Management ', color: '#4A90E2' },
-      { step: ' Lost Lead Recovery and Management', color: '#4A90E2' },
+      { step: 'Lost Lead Recovery and Management', color: '#4A90E2' },
     ],
     Campaign: [
-      { step: ' Flexible Template Creation by User (No Restrictions)', color: '#4A90E2' },
+      { step: 'Flexible Template Creation by User (No Restrictions)', color: '#4A90E2' },
       { step: 'Universal Template Access for All Users', color: '#4A90E2' },
       { step: 'Target Audience Segmentation', color: '#4A90E2' },
       { step: 'Campaign Template Review Process', color: '#4A90E2' },

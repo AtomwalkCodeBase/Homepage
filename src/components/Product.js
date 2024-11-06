@@ -268,7 +268,7 @@ const Product = () => {
    <ProductCard></ProductCard>
    <PlanSuccess></PlanSuccess>
    <SeamlessIntegration></SeamlessIntegration>
-   <TestimonialCardComponent></TestimonialCardComponent>
+   {/* <TestimonialCardComponent></TestimonialCardComponent> */}
   {/* <Container>
       <Section>
         <Title>Empower Your Business with Atomwalk Office ERP</Title>

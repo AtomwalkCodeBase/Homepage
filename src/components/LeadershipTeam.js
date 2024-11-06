@@ -1,28 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import Team from './../assets/img/TemIcon.jpg'
-import Linkind from './../assets/img/linkedin.png'
-import Lipika from './../assets/img/lipika.jpg'
-import Sk from './../assets/img/Sk.svg'
-import Jaganath from './../assets/img/sk2.svg'
+import Team from './../assets/img/TemIcon.jpg';
+import Linkind from './../assets/img/linkedin.png';
+import Lipika from './../assets/img/lipika.jpg';
+import Sk from './../assets/img/Sk.svg';
+import Jaganath from './../assets/img/sk2.svg';
+
 // Styled Components
-const LinkedInIcon = styled.a`
-  display: inline-block;
-  margin-top: 10px;
-  color: #0077b5;
-  font-size: 1.5rem;
-width: 8%;
-  &:hover {
-    color: #005582;
-  }
-`;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* width: 100%; */
-  /* padding: 50px 0; */
 `;
 
 const Section = styled.div`
@@ -39,6 +28,7 @@ const Section = styled.div`
     padding: 20px 0;
   }
 `;
+
 const Section2 = styled.div`
   width: 100%;
   padding: 50px 0;
@@ -53,6 +43,7 @@ const Section2 = styled.div`
     padding: 20px 0;
   }
 `;
+
 const Heading = styled.h2`
   font-size: 2.5rem;
   margin-bottom: 30px;
@@ -67,29 +58,55 @@ const Heading = styled.h2`
 const PeopleGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  /* gap: 30px; */
   width: 80%;
   justify-items: center;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     width: 100%;
-    gap: 20px;
   }
 `;
 
 const PersonCard = styled.div`
+  perspective: 1000px;
+  width: 100%;
+  max-width: 400px;
+  height: 420px;
+  margin: 20px;
+  position: relative;
+
+  &:hover .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+`;
+
+const FlipCardInner = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
   text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+`;
+
+const FlipCardFront = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
   background-color: #fff;
   border-radius: 15px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
+`;
 
-  @media (max-width: 768px) {
-    max-width: 90%;
-  }
+const FlipCardBack = styled(FlipCardFront)`
+  background-color: #f8f8f8;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const PersonImage = styled.img`
@@ -119,6 +136,20 @@ const PersonDescription = styled.p`
   line-height: 1.4;
 `;
 
+const LinkedInIcon = styled.a`
+  display: inline-block;
+  margin-top: 10px;
+  color: #0077b5;
+  font-size: 1.5rem;
+  &:hover {
+    color: #005582;
+  }
+  img {
+    width: 30px;
+    height: 30px;
+  }
+`;
+
 // Main Component
 const LeadershipAdvisors = () => {
   return (
@@ -128,18 +159,38 @@ const LeadershipAdvisors = () => {
         <Heading>Leadership</Heading>
         <PeopleGrid>
           <PersonCard>
-            <PersonImage src={Team} alt="Manoj Sahoo" />
-            <PersonName>Manoj Kumar Sahoo</PersonName>
-
-            <PersonRole>CEO, Co-founder</PersonRole>
-            <PersonDescription>Manoj has 25+ years of experience in Product solution, Engineering and Development in two of the India’s leading Products, Finacle (INFOSYS) an enterprise solution in Banking and Financial Services and Tally the most admirable product in SMB segment</PersonDescription>
+            <FlipCardInner className="flip-card-inner">
+              <FlipCardFront>
+                <PersonImage src={Team} alt="Manoj Sahoo" />
+                <PersonName>Manoj Kumar Sahoo</PersonName>
+                <PersonRole>CEO, Co-founder</PersonRole>
+                <PersonDescription>Manoj has 25+ years of experience in Product solution, Engineering and Development in two of the India’s leading Products, Finacle (INFOSYS) an enterprise solution in Banking and Financial Services and Tally the most admirable product in SMB segment</PersonDescription>
+              </FlipCardFront>
+              <FlipCardBack>
+                <PersonDescription>
+Manoj K. Sahoo, Founder and Director of Atomwalk, drives product development and innovation with over 25 years of experience in engineering and software solutions. He was instrumental in building two of India’s iconic software products: Finacle, Infosys's global banking solution, and Tally, a leading business tool for SMBs. Manoj's expertise spans payments, supply chain management, and delivery excellence, with multiple patents in product innovation. Holding a B-Tech from NIT Rourkela and an MS from BITS Pilani, he leads Atomwalk's mission to deliver ERP solutions that enhance business efficiency and digital transformation.</PersonDescription>
+                <LinkedInIcon href="https://www.linkedin.com/in/manojksahoo" target="_blank">
+                  <img src={Linkind} alt="LinkedIn" />
+                </LinkedInIcon>
+              </FlipCardBack>
+            </FlipCardInner>
           </PersonCard>
 
           <PersonCard>
-            <PersonImage src={Lipika} alt="Lipika" />
-            <PersonName>Dr. Lipika Sahoo</PersonName>
-            <PersonRole>Founder and Director</PersonRole>
-            <PersonDescription>Dr. Lipika Sahoo, with 24 years of academia and industry experience in technology, innovation, and intellectual property, holds a PhD from IISc. She has triple master's degrees: MSc from Sambalpur University, PGDIPR from NLSIU, and PGCBM from XIMB, along with advanced certifications from WIPO and IIM Bangalore.</PersonDescription>
+            <FlipCardInner className="flip-card-inner">
+              <FlipCardFront>
+                <PersonImage src={Lipika} alt="Lipika" />
+                <PersonName>Dr. Lipika Sahoo</PersonName>
+                <PersonRole>Founder and Director</PersonRole>
+                <PersonDescription>Dr. Lipika Sahoo, with 24 years of academia and industry experience in technology, innovation, and intellectual property, holds a PhD from IISc. She has triple master's degrees: MSc from Sambalpur University, PGDIPR from NLSIU, and PGCBM from XIMB, along with advanced certifications from WIPO and IIM Bangalore.</PersonDescription>
+              </FlipCardFront>
+              <FlipCardBack>
+                <PersonDescription>Dr. Lipika Sahoo, Founder and Director of Atomwalk, brings 24 years of experience in academia and industry, specializing in technology, innovation, and intellectual property. She holds a PhD from the Indian Institute of Science (IISc) and has earned multiple advanced degrees, including an MSc, PGDIPR, PGCBM, and certifications from WIPO and IIM Bangalore. Dr. Sahoo serves as a reviewer for various government innovation programs, such as BIRAC-BIG, SPARSH, and TATA Trust's Social Alpha. Her extensive expertise supports Atomwalk’s mission of driving impactful, socially relevant technological innovations.</PersonDescription>
+                <LinkedInIcon href="https://www.linkedin.com/in/lipikasahoo" target="_blank">
+                  <img src={Linkind} alt="LinkedIn" />
+                </LinkedInIcon>
+              </FlipCardBack>
+            </FlipCardInner>
           </PersonCard>
         </PeopleGrid>
       </Section>
@@ -149,16 +200,36 @@ const LeadershipAdvisors = () => {
         <Heading>Board of Advisors</Heading>
         <PeopleGrid>
           <PersonCard>
-            <PersonImage src={Sk} alt="BV Jagadeesh" />
-            <PersonName>SK Patnaik</PersonName>
-            <PersonRole>Advisor</PersonRole>
-            <PersonDescription>For ~25 years, he led Business Management (Client Relationship, Sales and P&L Management, new GTM) roles mainly in the IT Solutions & Services spanning global markets (the US, UK, South-East Asia, and India).</PersonDescription>
+            <FlipCardInner className="flip-card-inner">
+              <FlipCardFront>
+                <PersonImage src={Sk} alt="SK Patnaik" />
+                <PersonName>SK Patnaik</PersonName>
+                <PersonRole>Advisor</PersonRole>
+                <PersonDescription>For ~25 years, he led Business Management (Client Relationship, Sales and P&L Management, new GTM) roles mainly in the IT Solutions & Services spanning global markets (the US, UK, South-East Asia, and India).</PersonDescription>
+              </FlipCardFront>
+              <FlipCardBack>
+                <PersonDescription>SK Patnaik, who joined Atomwalk’s Board of Advisors in 2021, brings expertise in business strategy, product innovation, and revenue growth. With ~25 years of experience in IT solutions across global markets, he has held key roles in client relations, sales, and P&L management. Previously with Infosys, he led APAC and India operations for the Global Manufacturing Vertical and has deep experience in the ERP landscape with platforms like SAP, Oracle, and SaaS solutions. SK also co-founded a deep-tech telecom startup and holds an MBA in Marketing and Systems from the Xavier Institute of Management, Bhubaneswar.</PersonDescription>
+                <LinkedInIcon href="https://www.linkedin.com/in/sk-patnaik-" target="_blank">
+                  <img src={Linkind} alt="LinkedIn" />
+                </LinkedInIcon>
+              </FlipCardBack>
+            </FlipCardInner>
           </PersonCard>
-           <PersonCard>
-            <PersonImage src={Jaganath} alt="Murali Chirala" />
-            <PersonName>Dr. M R Jaganath</PersonName>
-            <PersonRole>Advisor</PersonRole>
-            <PersonDescription>He has an illustrious career  as a Scientist managing deep Technology, Translational Medicine, Drug development , Drug discovery.  He has published numerous scientific articles in reputed journals.</PersonDescription>
+          <PersonCard>
+            <FlipCardInner className="flip-card-inner">
+              <FlipCardFront>
+                <PersonImage src={Jaganath} alt="Dr. M R Jaganath" />
+                <PersonName>Dr. M R Jaganath</PersonName>
+                <PersonRole>Advisor</PersonRole>
+                <PersonDescription>He has an illustrious career  as a Scientist managing deep Technology, Translational Medicine, Drug development , Drug discovery.  He has published numerous scientific articles in reputed journals.</PersonDescription>
+              </FlipCardFront>
+              <FlipCardBack>
+                <PersonDescription>Dr. M R Jaganath, who joined Atomwalk’s Board of Advisors in October 2023, brings expertise in lab management, Good Laboratory Practice (GLP), and Good Manufacturing Practice (GMP). With a PhD from the Indian Institute of Science (IISc) and a distinguished career as Chief Scientific Officer at Connexios Life Sciences, he has extensive experience in translational medicine, drug development, and drug discovery. A prolific scientist, Dr. Jaganath has published numerous articles in esteemed scientific journals, contributing significantly to the field of advanced medical research and innovation.</PersonDescription>
+                <LinkedInIcon href="https://linkedin.com" target="_blank">
+                  <img src={Linkind} alt="LinkedIn" />
+                </LinkedInIcon>
+              </FlipCardBack>
+            </FlipCardInner>
           </PersonCard>
         </PeopleGrid>
       </Section2>
@@ -167,6 +238,7 @@ const LeadershipAdvisors = () => {
 };
 
 export default LeadershipAdvisors;
+
 {/* <LinkedInIcon href="https://www.linkedin.com/in/manojksahoo" target="_blank">
 <img src={Linkind}></img>
 </LinkedInIcon> */}

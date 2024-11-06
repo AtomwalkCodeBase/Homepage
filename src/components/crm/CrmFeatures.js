@@ -265,8 +265,8 @@ const CrmFeatures = ({data}) => {
             title: 'Get Complete Context on Every Lead',
             subtitle: 'Personalized and Informed Lead Follow-ups',
             description:
-              'Without a personalized follow-up process, even the most promising leads can lose interest. Customizing outreach can be time-consuming, but our lead management software integrates every touchpoint across marketing, sales, operations, and service. This allows you to create informed, personalized follow-ups that keep leads engaged and boost conversions.',
-            benefits: ['Comprehensive Lead History', 'Cross-Departmental Integration', 'Informed Outreach'],
+              'To maximize the potential of lost leads, implement follow-up automation to re-engage them after a set period, such as three months, with “win-back” campaigns that offer special promotions or address any unmet needs. Keep detailed records of why leads were marked as lost (e.g., budget constraints, timing, lack of interest) to enable tailored future follow-up strategies. Design re-engagement workflows in the CRM to tag lost leads, retarget them, and monitor for any shifts in their engagement levels. Analyzing lost lead data periodically can reveal common reasons for drop-off, providing insights to refine marketing and sales approaches. Maintain lost leads as a distinct segment in the CRM, allowing for strategic re-engagement with new products or services, ensuring they stay accessible for potential future opportunities.'
+              ,benefits: ['Comprehensive Lead History', 'Cross-Departmental Integration', 'Informed Outreach'],
             imageSrc: img1,  // Replace with your relevant image variable
             imageAlt: 'Lead Context',
             imgPosition: 'right',

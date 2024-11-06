@@ -25,12 +25,12 @@ const testimonialData = [
     text: "He highlights the efficiency and effectiveness of Atomwalk’s software in streamlining their operations.",
     img: "https://picsum.photos/103/103",
   },
-  {
-    id: 4,
-    name: "Dr.Lipika Sahoo CEO at Lifeintelect Consultancy: ",
-    text: "Implementing Atomwalk’s ERP system was one of the best decisions we’ve made. It has streamlined our processes, from accounting to project management, and provided us with valuable insights into our business performance.",
-    img: `${Lipika}`,
-  },
+  // {
+  //   id: 4,
+  //   name: "Dr.Lipika Sahoo CEO at Lifeintelect Consultancy: ",
+  //   text: "Implementing Atomwalk’s ERP system was one of the best decisions we’ve made. It has streamlined our processes, from accounting to project management, and provided us with valuable insights into our business performance.",
+  //   img: `${Lipika}`,
+  // },
 ];
 
 // Styled Components

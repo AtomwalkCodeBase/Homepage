@@ -8,6 +8,8 @@ import Logo2 from '../assets/img/logo2.png';
 import Logo3 from '../assets/img/logo3.png';
 import PricingTableComponent from './PricingTableComponent';
 import Testimonial from './Testimonial';
+import Pricing from './Pricing';
+import PricingCard from './PricingCard';
 
 const Page = styled.div`
   background-color: white;
@@ -19,7 +21,7 @@ const Page = styled.div`
 `;
 
 const Header = styled.div`
-  height: 472px;
+  height: 572px;
   background-color: white;
   color: blue;
   display: flex;
@@ -33,7 +35,7 @@ const Header = styled.div`
 `;
 
 const HeadBox = styled.div`
-  height: 125%;
+  height: 572px;
   width: 100%;
   background-color: #96ddbc;
   padding: 90px;
@@ -46,7 +48,7 @@ const HeadBox = styled.div`
   /* Adjustments for mobile devices */
   @media (max-width: 768px) {
     padding: 20px; /* Reduce padding for smaller screens */
-    padding-top: 50px; /* Adjust top padding */
+    padding-top: 130px; /* Adjust top padding */
     flex-direction: column; /* Stack items vertically */
     justify-content: center; /* Center items */
     align-items: center; /* Center items */
@@ -85,10 +87,9 @@ const HeadTextOne = styled.div`
 
 const HeadPara = styled.p`
   color: #1c1b1f;
-  width: 65%;
+  width: 73%;
   font-size: 21px;
   word-wrap: normal;
-  line-height: 31.504px;
   margin: 0px 0px 24px;
   @media (max-width: 768px) {
     width: 100%;
@@ -129,9 +130,12 @@ const ButtonText = styled.div`
 const HeadImage = styled.div`
   line-height: 26px;
   img {
-    width: 100%;
+    width: 120%;
     height: auto;
     border-radius: 15px;
+  }
+  @media (max-width:768px) {
+    display: none;
   }
 `;
 
@@ -139,7 +143,7 @@ const PlanArea = styled.div`
   line-height: 26px;
   margin: 144px 0px;
   width: 100%;
-  margin-top: 180px;
+  /* margin-top: 180px; */
   @media (max-width:768px) {
     margin-top: 70px;
   }
@@ -523,11 +527,9 @@ const demo =()=>{
       <Header>
         <HeadBox>
           <HeadTextArea>
-            <HeadTextOne>Take Our Pricing Challenge!</HeadTextOne>
+            <HeadTextOne>Challenge Our Pricing See the Value!</HeadTextOne>
             <HeadPara>
-              23000+ companies endorse Atomwalk for exceptional software, support
-              and service. Starting at INR 30/employee - the lowest license
-              costs in its category
+             Get access to premium features without breaking the bank. We believe in providing powerful tools at every level, so you get the value you deserve. Explore our plans to find the right fit for your needs and budget.
             </HeadPara>
             <ButtonOne onClick={demo}>
               <ButtonText>Discuss Price</ButtonText>
@@ -540,7 +542,8 @@ const demo =()=>{
           </HeadImageArea>
         </HeadBox>
       </Header>
-
+      <Pricing></Pricing>
+      <PricingCard></PricingCard> 
       <PlanArea>
         <TitleOne>
           Choose the best plan <TitleTwo>for you</TitleTwo>

@@ -87,36 +87,37 @@ const icons = {
 
 const values = [
   {
-    title: "Improve Every Day",
-    description: "Growth is not ‘set it and forget it.’ We strive to be better every day, as a business and as individuals.",
+    title: "Constant Improvement",
+    description: "Growth isn’t a one-time effort. We’re committed to evolving every day, both as a company and as individuals.",
     icon: icons.improve,
     bgColor: "#f3d0ff",
   },
   {
-    title: "Deliver Excellence",
-    description: "Excellence, both in our products and customer success, is our North Star.",
+    title: "Pursue Excellence",
+    description: "Excellence guides our actions, shaping our products and driving our customer success.",
     icon: icons.excellence,
     bgColor: "#ffe2c4",
   },
   {
-    title: "Focus on Impact",
-    description: "As a business, the impact we create for our customers and solving their problems is our Chief Key Performance Indicator.",
+    title: "Prioritize Meaningful Impact",
+    description: "Our core metric is the value we create for customers by solving their most pressing needs.",
     icon: icons.impact,
     bgColor: "#f5efb8",
   },
   {
-    title: "Drive Customer Success",
-    description: "Listen and treat every interaction with our customers as an opportunity to create an enduring relationship that adds value to them.",
+    title: "Champion Customer Success",
+    description: "We see every interaction as a chance to build lasting, impactful relationships with our customers.",
     icon: icons.customerSuccess,
     bgColor: "#daf7e2",
   },
   {
-    title: "Nurture Learning & Sharing",
-    description: "We thrive in an environment of mutual trust, shared knowledge, and collaboration.",
+    title: "Cultivate Learning & Collaboration",
+    description: "We grow together through trust, open knowledge-sharing, and a spirit of collaboration.",
     icon: icons.learning,
     bgColor: "#d3f4ff",
   },
 ];
+
 
 const OurValues = () => {
   return (

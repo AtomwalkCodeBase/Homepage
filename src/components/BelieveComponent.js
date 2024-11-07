@@ -64,34 +64,34 @@ const Text = styled.p`
 const BelieveComponent = () => {
   return (
     <Container>
-      <Title>We Believe</Title>
-      <CardsContainer>
-        <Card>
-          <IconWrapper color="#8ed1b0">
-          <img  src={People}></img>
-          </IconWrapper>
-          <Text>That business is first and foremost about people</Text>
-        </Card>
-        <Card>
-          <IconWrapper color="#db70d1">
-          <img  src={Hand}></img>
-          </IconWrapper>
-          <Text>That we can truly change the world</Text>
-        </Card>
-        <Card>
-          <IconWrapper color="#fbbd3c">
-          <img  src={Rocket}></img>
-          </IconWrapper>
-          <Text>That relentless innovation is a way to be, not a choice</Text>
-        </Card>
-        <Card>
-          <IconWrapper style={{width:"65px"}}color="#6cd5ff">
-           <img  src={Handsek}></img>
-          </IconWrapper>
-          <Text>That human connections and partnerships help break boundaries and help raise the bar</Text>
-        </Card>
-      </CardsContainer>
-    </Container>
+  <Title>Our Beliefs</Title>
+  <CardsContainer>
+    <Card>
+      <IconWrapper color="#8ed1b0">
+        <img src={People} alt="People Icon" />
+      </IconWrapper>
+      <Text>Business is ultimately about valuing people above all else.</Text>
+    </Card>
+    <Card>
+      <IconWrapper color="#db70d1">
+        <img src={Hand} alt="Hand Icon" />
+      </IconWrapper>
+      <Text>We have the power to make a meaningful difference in the world.</Text>
+    </Card>
+    <Card>
+      <IconWrapper color="#fbbd3c">
+        <img src={Rocket} alt="Rocket Icon" />
+      </IconWrapper>
+      <Text>Innovation should be a core part of our identity, not just an option.</Text>
+    </Card>
+    <Card>
+      <IconWrapper style={{ width: "65px" }} color="#6cd5ff">
+        <img src={Handsek} alt="Handshake Icon" />
+      </IconWrapper>
+      <Text>Building connections and partnerships helps us break limits and aim higher.</Text>
+    </Card>
+  </CardsContainer>
+</Container>
   );
 };
 

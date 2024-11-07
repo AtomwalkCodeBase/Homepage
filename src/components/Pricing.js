@@ -63,7 +63,7 @@ const PlanCard = styled.div`
 `;
 
 const Price = styled.h2`
-  font-size: 3em;
+  font-size: 2.7em;
   margin: 20px 0;
   font-weight: 800;
   color: #000933;
@@ -202,11 +202,11 @@ const modules = [
     "Item Serial Number handling",
     "Item physical inspection and open balance",
     "Item min order qty and Expiry date tracking"] },
-  { name: "Process Templates", features: ["Activity Definition with User group",
-    "Equipment and Document definition for Activity",
-    "Process definition for a Product",
-    "Process Activity Dependency",
-    "Process items and Bill of Material",] },
+  // { name: "Process Templates", features: ["Activity Definition with User group",
+  //   "Equipment and Document definition for Activity",
+  //   "Process definition for a Product",
+  //   "Process Activity Dependency",
+  //   "Process items and Bill of Material",] },
   { name: "Sales and Procurement", features: ["Sales order, quotation, proforma invoice",
     "Tax Invoice",
     "Payment, GST Tracking, TDS handling",
@@ -219,9 +219,12 @@ const modules = [
     "Customer Sales/Payments Tracking (Bank/TDS)",
     "Agreements",
     "Customer Type/ Group"] },
-  { name: "GST & TDS", features: ["GST report Support",
-    "TDS and TDS reconciliation",
-    "GST Reconciliation with A/c",] },
+  { name: "HR & Payroll", features: ["Employee Hire to Exit",
+    "Leave & Attendance",
+    "Travel & Expenses",
+    "Salary & Payroll",
+    "Advances",
+    "Claim Settlement"] },
   { name: "Bank Reconciliation", features: ["Bank Statement Upload",
     "Account Reconciliation with Sales and PO",
     "Rule based reconciliation of Expenses",
@@ -262,7 +265,7 @@ const Pricing = () => {
       <PlansContainer>
         <PlanCard>
           <h3
-            style={{ color: "red", fontWeight: "800", fontSize: "2.5rem" }}
+            style={{ color: "#ffff", fontWeight: "800", fontSize: "2.5rem",padding:"10px",backgroundColor:"red",borderRadius:"5px" }}
           >
             Free Trial
           </h3>
@@ -272,7 +275,7 @@ const Pricing = () => {
             <FeatureItem valid>3 User Access</FeatureItem>
             <FeatureItem valid>30 days Vallidity</FeatureItem>
             <FeatureItem valid>20MB Space</FeatureItem>
-            <FeatureItem>Multi Location Access</FeatureItem>
+            <FeatureItem>Multi Branch Access</FeatureItem>
             <FeatureItem2  onClick={openModal}>Click Hear to see the modules</FeatureItem2>
           </FeatureList>
           <Button>Sign up for free</Button>
@@ -280,20 +283,21 @@ const Pricing = () => {
         <PlanCard>
           <h3
             style={{
-              color: "#2196f3",
+              color: "#fff",
               fontWeight: "800",
               fontSize: "2.5rem",
+              padding:"10px",backgroundColor:"#2196f3",borderRadius:"5px"
             }}
           >
             Basic
           </h3>
-          <Price>₹4,200/mo</Price>
+          <Price>₹5,000/mo</Price>
           <Message>Billed at ₹50,000 per year</Message>
           <FeatureList>
-            <FeatureItem valid>30 User Access</FeatureItem>
+            <FeatureItem valid>5 User Access</FeatureItem>
             <FeatureItem valid>1 Year Validity</FeatureItem>
             <FeatureItem valid>200MB Space</FeatureItem>
-            <FeatureItem>Multi Location Access</FeatureItem>
+            <FeatureItem>Multi Branch Access</FeatureItem>
             <FeatureItem2  onClick={openModal}>Click Hear to see the modules</FeatureItem2>
           </FeatureList>
           <Button>Start a free trial</Button>
@@ -301,20 +305,21 @@ const Pricing = () => {
         <PlanCard>
           <h3
             style={{
-              color: "orange",
+              color: "#fff",
               fontWeight: "800",
               fontSize: "2.5rem",
+              padding:"10px",backgroundColor:"orange",borderRadius:"5px"
             }}
           >
             Premium
           </h3>
-          <Price>₹8,400/mo</Price>
+          <Price>₹10,000/mo</Price>
           <Message>Billed at ₹100,000 per year</Message>
           <FeatureList>
-            <FeatureItem valid>100 User Access</FeatureItem>
+            <FeatureItem valid>10 User Access</FeatureItem>
             <FeatureItem valid>1 Year Vallidity</FeatureItem>
             <FeatureItem valid>500MB Space</FeatureItem>
-            <FeatureItem valid>Multi Location Access</FeatureItem>
+            <FeatureItem valid>Multi Branch Access</FeatureItem>
             <FeatureItem2 lickable onClick={openModal}>Click Hear to see the modules</FeatureItem2>
           </FeatureList>
           <Button>Start a free trial</Button>
@@ -322,20 +327,21 @@ const Pricing = () => {
         <PlanCard>
           <h3
             style={{
-              color: "#800080",
+              color: "#fff",
               fontWeight: "800",
               fontSize: "2.5rem",
+                 padding:"10px",backgroundColor:"#800080",borderRadius:"5px"
             }}
           >
             Ultimate
           </h3>
-          <Price>₹16,700/mo</Price>
+          <Price>₹25,000/mo</Price>
           <Message>Billed at ₹200,000 per year</Message>
           <FeatureList>
-            <FeatureItem valid>Unlimited User Access</FeatureItem>
+            <FeatureItem valid>25 User Access</FeatureItem>
             <FeatureItem valid>1 Year Vallidity</FeatureItem>
             <FeatureItem valid>1.2GB Space</FeatureItem>
-            <FeatureItem valid>Multi Location Access</FeatureItem>
+            <FeatureItem valid>Multi Branch Access</FeatureItem>
             <FeatureItem2 lickable onClick={openModal}>Click Hear to see the modules</FeatureItem2>
           </FeatureList>
           <Button>Start a free trial</Button>

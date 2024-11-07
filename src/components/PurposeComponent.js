@@ -47,7 +47,7 @@ const ImageWrapper = styled.div`
 `;
 
 const Image = styled.img`
-  max-width: 100%;
+  max-width: 50%;
   height: auto;
   border-radius: 15px;
 `;
@@ -80,40 +80,41 @@ const FeatureDescription = styled.p`
 
 const PurposeComponent = () => {
   return (
-    <Container>
-      <HeaderSection>
-        <HeaderTitle>Our Purpose</HeaderTitle>
-        <HeaderSubtitle>
-          Help a new wave of entrepreneurs to unleash their ambitions and help them succeed for everyone – themselves, others and the planet.
-        </HeaderSubtitle>
-      </HeaderSection>
-      <ContentSection>
-        <ImageWrapper>
-          <Image src={Team} alt="Team of Entrepreneurs" />
-        </ImageWrapper>
-        <TextContent>
-          <SectionTitle>How We Do It</SectionTitle>
-          <Feature>
-            <FeatureTitle>Dream.</FeatureTitle>
-            <FeatureDescription>
-              We see the dreams through our customers’ eyes and work with intelligence, tech, and passion to make them come true.
-            </FeatureDescription>
-          </Feature>
-          <Feature>
-            <FeatureTitle>Be Fearless.</FeatureTitle>
-            <FeatureDescription>
-              We act on our intuition, make bold moves and eat fear for breakfast.
-            </FeatureDescription>
-          </Feature>
-          <Feature>
-            <FeatureTitle>Become Intrapreneurs.</FeatureTitle>
-            <FeatureDescription>
-              We take ownership of our projects, regularly rewrite processes, challenge conceptions and are idea labs on the move.
-            </FeatureDescription>
-          </Feature>
-        </TextContent>
-      </ContentSection>
-    </Container>
+<Container>
+  <HeaderSection>
+    <HeaderTitle>Our Mission</HeaderTitle>
+    <HeaderSubtitle>
+      Empower a new generation of entrepreneurs to pursue their visions and drive positive change for themselves, their communities, and the world.
+    </HeaderSubtitle>
+  </HeaderSection>
+  <ContentSection>
+    <ImageWrapper>
+      <Image src={Team} alt="Dedicated Team of Innovators" />
+    </ImageWrapper>
+    <TextContent>
+      <SectionTitle>Our Approach</SectionTitle>
+      <Feature>
+        <FeatureTitle>Inspire.</FeatureTitle>
+        <FeatureDescription>
+          We connect deeply with our customers’ visions and use creativity, technology, and dedication to bring their ideas to life.
+        </FeatureDescription>
+      </Feature>
+      <Feature>
+        <FeatureTitle>Take Bold Steps.</FeatureTitle>
+        <FeatureDescription>
+          We embrace courage in all we do, pushing boundaries and meeting challenges head-on with confidence.
+        </FeatureDescription>
+      </Feature>
+      <Feature>
+        <FeatureTitle>Think Like Owners.</FeatureTitle>
+        <FeatureDescription>
+          We treat every project as our own, constantly refining, innovating, and creating new solutions that drive progress.
+        </FeatureDescription>
+      </Feature>
+    </TextContent>
+  </ContentSection>
+</Container>
+
   );
 };
 

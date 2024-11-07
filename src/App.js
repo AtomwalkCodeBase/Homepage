@@ -71,7 +71,7 @@ const loginAndStore=async()=>{
           <Route path="/Product.html" element={<Product />} />
           <Route path="/contactUs.html" element={<ContactUs />} />
           <Route path="/aboutUs.html" element={<AbotUs />} />
-          {/* <Route path="/pricing.html" element={<PricingRoute />} /> */}
+          <Route path="/pricing.html" element={<PricingRoute />} />
           <Route path="/demo.html" element={<FormComponent />} />
           <Route path="/seals.html" element={<ContactSalesPage />} />
           <Route path="/crm.html" element={<HerosectionCrm/>} />

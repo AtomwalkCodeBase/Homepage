@@ -20,7 +20,7 @@ const AboutWrap = styled.div`
 `
 const AboutTxt = styled.div`
     position: absolute;
-    top: 8%;
+    top: 6%;
     left: 50%;
     transform: translate(-50%, -50%);
     margin-top: 50px;

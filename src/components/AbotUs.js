@@ -10,9 +10,9 @@ const AbotUs = () => {
   return (
     <div>
       <AboutUsBanner></AboutUsBanner>
-      {/* <BelieveComponent></BelieveComponent>
+      <BelieveComponent></BelieveComponent>
       <PurposeComponent></PurposeComponent>
-      <OurValues></OurValues> */}
+      <OurValues></OurValues>
       <LeadershipTeam></LeadershipTeam>
       <Leadership></Leadership>
     </div>

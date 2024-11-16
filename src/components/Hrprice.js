@@ -248,7 +248,7 @@ const modules = [
 ];
 
 
-const Pricing = () => {
+const Hrprice = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [expandedModule, setExpandedModule] = useState(null);
 
@@ -260,8 +260,8 @@ const Pricing = () => {
   return (
     <>
     <PricingContainer>
-      <Title2>PRICING</Title2>
-      <Title>Pick the plan that’s right for you</Title>
+      {/* <Title2>Customer relationship management</Title2> */}
+      <Title>Choose the Perfect HRM Plan to Empower Your People!</Title>
       <PlansContainer>
         <PlanCard>
           <h3
@@ -269,7 +269,7 @@ const Pricing = () => {
           >
             Free Trial
           </h3>
-          <Price>₹0/Month</Price>
+          <Price>₹0/Annum</Price>
           <Message>Seriously, free forever</Message>
           <FeatureList>
             <FeatureItem valid>3 User Access</FeatureItem>
@@ -291,10 +291,10 @@ const Pricing = () => {
           >
             Basic
           </h3>
-          <Price>₹5,000/Month</Price>
-          <Message>Billed at ₹50,000 per year</Message>
+          <Price>₹45,000/Annum</Price>
+          <Message>Billed at ₹150/month/user</Message>
           <FeatureList>
-            <FeatureItem valid>5 User Access</FeatureItem>
+            <FeatureItem valid>25 User Access</FeatureItem>
             <FeatureItem valid>1 Year Validity</FeatureItem>
             <FeatureItem valid>200MB Space</FeatureItem>
             <FeatureItem>Multi Branch Access</FeatureItem>
@@ -313,10 +313,10 @@ const Pricing = () => {
           >
             Premium
           </h3>
-          <Price>₹10,000/Month</Price>
-          <Message>Billed at ₹100,000 per year</Message>
+          <Price>₹75,000/Annum</Price>
+          <Message>Billed at ₹125/month/userr</Message>
           <FeatureList>
-            <FeatureItem valid>10 User Access</FeatureItem>
+            <FeatureItem valid>50 User Access</FeatureItem>
             <FeatureItem valid>1 Year Vallidity</FeatureItem>
             <FeatureItem valid>500MB Space</FeatureItem>
             <FeatureItem valid>Multi Branch Access</FeatureItem>
@@ -335,10 +335,10 @@ const Pricing = () => {
           >
             Ultimate
           </h3>
-          <Price>₹25,000/Month</Price>
-          <Message>Billed at ₹200,000 per year</Message>
+          <Price>₹1,20,000/Annum</Price>
+          <Message>Billed at ₹100/mo/user</Message>
           <FeatureList>
-            <FeatureItem valid>25 User Access</FeatureItem>
+            <FeatureItem valid>100 User Access</FeatureItem>
             <FeatureItem valid>1 Year Vallidity</FeatureItem>
             <FeatureItem valid>1.2GB Space</FeatureItem>
             <FeatureItem valid>Multi Branch Access</FeatureItem>
@@ -379,4 +379,4 @@ const Pricing = () => {
   );
 };
 
-export default Pricing;
+export default Hrprice;

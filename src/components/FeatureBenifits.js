@@ -128,10 +128,19 @@ const hrmBenefits = [
   { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ffe8cc', icon: Icon3 },
   { title: 'Reliabilty', text: '24/7 availability with 100% uptime on mobile and web ', bgColor: '#d7faff', icon: Icon5 },
 ];
+const labEquipment = [
+  { title: '24/7 Access with less man power', text: 'Schedule Equipment Anytime, Seamlessly', bgColor: '#d7faff', icon: Icon1 },
+  { title: 'Real-Time Availability!', text: 'Stay Updated, Avoid Surprises', bgColor: '#d9f5e3', icon: Icon7 },
+  { title: 'Hassle-Free User Management!', text: 'Group, Control, Assign Roles', bgColor: '#fff1d0', icon:  Icon2 },
+  { title: 'Zero Booking Conflicts!', text: 'Smart Scheduling, Uninterrupted Operations', bgColor: '#f2e3ff', icon: Icon8 },
+  { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ffe8cc', icon: Icon3 },
+  { title: 'Stay Audit-Ready', text: 'Automated Logs, Effortless Records ', bgColor: '#d9f5e3', icon: Icon5 },
+];
+
 
 const FeatureBenifits = ({ data }) => {
   // Determine which set of benefits to display based on the response data
-  const benefits = data === 'Claim' ? claimBenefits :data=='lead'?leadBenefits:data =='HR' ? hrmBenefits: leaveBenefits;
+  const benefits = data === 'Claim' ? claimBenefits :data=='lead'?leadBenefits:data =='HR' ? hrmBenefits:data =='Equipment' ? labEquipment: leaveBenefits;
 
   return (
     <Section>

@@ -10,6 +10,7 @@ import PricingTableComponent from './PricingTableComponent';
 import Testimonial from './Testimonial';
 import Pricing from './Pricing';
 import PricingCard from './PricingCard';
+import Hrprice from './Hrprice';
 
 const Page = styled.div`
   background-color: white;
@@ -543,8 +544,9 @@ const demo =()=>{
         </HeadBox>
       </Header>
       <Pricing></Pricing>
-      <PricingCard></PricingCard> 
-      <PlanArea>
+      <PricingCard></PricingCard>
+      <Hrprice></Hrprice> 
+      {/* <PlanArea>
         <TitleOne>
           Choose the best plan <TitleTwo>for you</TitleTwo>
         </TitleOne>
@@ -659,7 +661,7 @@ const demo =()=>{
                 </FeatureBoxInner>
               </FeatureBox>
         </FeatureBoxArea>
-      </Feature>
+      </Feature> */}
 
       <Testimonial></Testimonial>
     </Page>

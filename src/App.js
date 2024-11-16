@@ -18,7 +18,7 @@ import FormComponent from "./components/FormComponent";
 import PricingRoute from "./components/PricingRoute";
 import ContactSalesPage from "./components/ContactSalesPage";
 import AppPromo from "./components/AppPromo";
-import LabManagement from "./components/LabManagement";
+import LabManagement from "./components/lms/LabManagement";
 import Blog from "./components/Blog";
 import BlogDetails from "./components/BlogDetails";
 import Success from "./components/SuccessBanner";
@@ -26,6 +26,8 @@ import HrmComponent from "./components/hrm/HrmComponent";
 import HrmFeaturesManagement from "./components/hrm/HrmFeaturesManagement";
 import LeadManagement from "./components/crm/LeadManagement";
 import HerosectionCrm from "./components/crm/HerosectionCrm";
+import LmsHeroSection from "./components/lms/LmsHeroSection";
+import LabEqupmentmanagement from "./components/lms/LabEqupmentmanagement";
 
 function App() {
   const[openslide,setOpenslide]=useState(false);
@@ -60,9 +62,9 @@ const loginAndStore=async()=>{
 }
   return (
     <div className="App">
-      <NavBar></NavBar>
       {/* <Success message="We have successfully recorded your information."></Success> */}
       <Router>
+      <NavBar></NavBar>
         <Routes>
           <Route path="" element={<HomePage />} />
           <Route path="/signin.html" element={<Login />} />
@@ -75,7 +77,7 @@ const loginAndStore=async()=>{
           <Route path="/demo.html" element={<FormComponent />} />
           <Route path="/seals.html" element={<ContactSalesPage />} />
           <Route path="/crm.html" element={<HerosectionCrm/>} />
-          <Route path="/lms.html" element={<LabManagement/>} />
+          <Route path="/lms.html" element={<LmsHeroSection/>} />
           <Route path="/Blog.html" element={<Blog/>} />
           <Route path="/BlogDetails.html" element={<BlogDetails/>} />
           <Route path="/hrm.html" element={<HrmComponent />} />
@@ -89,6 +91,8 @@ const loginAndStore=async()=>{
           <Route path="/CustomerManagement.html" element={<LeadManagement/>} />
           <Route path="/Channelpartner.html" element={<LeadManagement/>} />
           <Route path="/campaignManagement.html" element={<LeadManagement/>} />
+          <Route path="/labmanagement.html" element={<LabManagement/>} />
+          <Route path="/labequipmentmangement.html" element={<LabEqupmentmanagement/>} />
         </Routes>
       </Router>
       {openslide&&<Askme setOpenslide={setOpenslide}/>}

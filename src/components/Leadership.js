@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import  Pritam from './../assets/img/BPritam.jpg'
 import  Sriya  from './../assets/img/Sriya.jpg'
-import  Ashutosh from './../assets/img/AAshutosh.jpeg'
+import  Ashutosh from './../assets/img/AAshutosh1.jpeg'
 
 // Styled components for the layout
 const LeadershipContainer = styled.div`
@@ -88,7 +88,7 @@ const Leadership = () => {
         {leadershipData.map((leader, index) => (
           <Card key={index} backg={leader.backg}>
             <ImageContainer>
-              <Image src={leader.imgSrc} alt={leader.backg} />
+              <Image style={{marginTop:leader.name=='Ashutosh Mohapatra'?"-21px":"0px"}} src={leader.imgSrc} alt={leader.backg} />
             </ImageContainer>
             <Name>{leader.name}</Name>
             <Role>{leader.role}</Role>

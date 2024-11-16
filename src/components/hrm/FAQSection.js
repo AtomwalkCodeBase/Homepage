@@ -142,13 +142,71 @@ const FAQSection = ({data,res}) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const claimFaqData =data? [
+  const claimFaqData =data=="crm"? [
     { question: "What is Atomwalk CRM?", answer: "Atomwalk CRM is a customer relationship management platform designed to help businesses manage their interactions with customers, leads, suppliers, and partners. It offers a comprehensive set of tools for task management, lead tracking, customer support, and sales process automation, allowing businesses to improve communication, streamline operations, and increase productivity." },
     { question: "How can I use Atomwalk CRM?", answer: "You can use Atomwalk CRM by signing up for an account and accessing its features either through a web app or mobile application. Once logged in, you can create customer profiles, manage leads, assign tasks, and track the progress of deals. Atomwalk CRM provides intuitive dashboards and reporting tools that help users oversee customer interactions, sales pipelines, and team activities efficiently." },
     { question: "How does CRM work?", answer: "A CRM works by consolidating customer and lead data into a centralized system. It records and tracks all interactions—emails, calls, meetings—making it easier for teams to access important information at any time. With Atomwalk CRM, you can manage leads through each stage of the sales pipeline, assign tasks to team members, automate follow-ups, and generate reports. By organizing all your customer-related data in one place, CRM systems help businesses improve customer service, boost sales, and drive growth." },
     { question: "How to add a Lead?", answer: "To add a lead in Atomwalk CRM, go to the Lead List section, where you can click on Add Lead. Fill in the required details such as name, contact information, and relevant notes about the lead's interest or status. You can also upload bulk leads if you have a file prepared. Once added, you can assign tasks to follow up on the lead and track its progress in the sales pipeline." },
     { question: "How do I track  a lead?", answer: "In Atomwalk CRM, leads can be tracked through the sales pipeline. You can view all leads in the Lead List and monitor their status, such as active or inactive, and see which tasks or follow-ups are assigned to them. The system also provides a visual representation of where each lead is in the sales cycle, and you can set reminders for future actions or update the lead's status based on recent interactions. This ensures that no lead is neglected and helps optimize conversion rates." },
-  ]: [
+  ]:data=="equipment"?[
+    { 
+      "question": "How to create a user ID?", 
+      "answer": "Only admin has the access to create user ID using user’s email."
+    },
+    { 
+      "question": "Can a user change his username and email?", 
+      "answer": "No. User can’t modify the username and email once it’s created. User has to contact the admin for any modification."
+    },
+    { 
+      "question": "What if I forget my username?", 
+      "answer": "Our system lets you create a nickname to log in. So, if Ram forgets his default username, he can still access the system using his personalized nickname."
+    },
+    { 
+      "question": "Is it possible to restrict certain users from accessing specific equipment?", 
+      "answer": "Yes, Admins can restrict specific users or user groups from accessing certain equipment. For example, if Ram is not trained to use the high-powered laser machine, the admin can restrict him from booking it."
+    },
+    { 
+      "question": "Can I view available booking slots for the current and upcoming week?", 
+      "answer": "Absolutely! Users can view available booking slots for both the current and the upcoming week. For instance, if Ram wants to plan ahead, he can check the available slots for the next week and book equipment accordingly."
+    },
+    { 
+      "question": "Can I cancel or reschedule a booking?", 
+      "answer": "Yes! You can cancel or reschedule your booking at any time. For instance, if Jenny booked equipment for Thursday but needs it for Friday instead, she can cancel the original booking and create a new one."
+    },
+    { 
+      "question": "Can the system block timeslots for scheduled maintenance?", 
+      "answer": "Yes! The system automatically blocks time slots for scheduled maintenance. For example, if the centrifuge is scheduled for maintenance at 2 PM, it will block 1 PM to 4 PM, preventing any bookings during that period to ensure uninterrupted maintenance."
+    },
+    { 
+      "question": "Can I set up different user groups for each department?", 
+      "answer": "Yes, you can set up different user groups for each department in your lab equipment management system. For example, if the Biology Department requires access to specific equipment, you can create a user group specifically for them. This ensures that members of the Biology Department can manage and book equipment relevant to their research while restricting access to other departments."
+    },
+    { 
+      "question": "How many times can I book equipment in a week?", 
+      "answer": "Each user can book equipment as per the policy set up in your setup. For example, if Ram books for HPLC on Monday, Tuesday, and Friday then he won't be able to book again until the next week. Because for HPLC the max slot per week is 3."
+    },
+    { 
+      "question": "Can I share my booked slot with another user?", 
+      "answer": "No, each booking is tied to the specific user who made it. For example, if Ram booked the HPLC machine, only he has access to it during his time slot. However, Managers or Admins can make changes to the schedule if necessary."
+    },
+    { 
+      "question": "Can I book equipment outside of working hours?", 
+      "answer": "Yes! Our system allows 24/7 booking. For instance, if Ram prefers working late, he can book equipment at 11 PM on Tuesday, as long as it’s available."
+    },
+    { 
+      "question": "Can I see past bookings?", 
+      "answer": "Yes, users can view their booking history in the system. For example, if Ram wants to check when he last used the PCR machine, he can log in and view his past bookings."
+    },
+    { 
+      "question": "Can I generate reports for the required field?", 
+      "answer": "Yes, you can generate custom reports based on specific fields like equipment usage, booking frequency, and maintenance schedules. For example, if Ram wants to analyze the usage of the PCR machine over the past month and he has access as a manager, then he can generate a report for that specific data."
+    },
+    { 
+      "question": "Can I delete the unnecessary data from the software?", 
+      "answer": "Yes, Admins can purge unnecessary or outdated data to keep the system running smoothly. For instance, if a large volume of old booking logs is slowing the system down, the admin can remove those logs without affecting current operations."
+    }
+  ]
+  : [
     { 
       "question": "What is Atomwalk HRM?", 
       "answer": "Atomwalk HRM is an all-in-one Human Resource Management solution designed to streamline HR processes such as employee attendance tracking, leave management, claims submission, payroll, and more. With its mobile app, Atomwalk HRM On-The-Go, employees and managers can manage HR tasks like real-time attendance, leave requests, approvals, and claims from anywhere, enhancing accessibility and efficiency. This system simplifies workflows from onboarding to exit, making it ideal for businesses looking to automate and optimize their HR operations while improving overall employee experience."
@@ -221,7 +279,7 @@ const FAQSection = ({data,res}) => {
         <CTAImage src={faqimg} alt="FAQ" />
         <CTAHeading>Still have questions?</CTAHeading>
         <CTAText>
-          Book a call with our team to learn how to integrate ATOMWALK HRM with your business.
+          Book a call with our team to learn how to integrate ATOMWALK <span>{data=="crm"?"CRM":data=="equipment"?"LEMS":"HRM"}</span> with your business.
         </CTAText>
         <CTAButton onClick={demo}>Book a demo</CTAButton>
       </CTASection>

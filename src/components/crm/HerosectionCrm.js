@@ -10,7 +10,7 @@ const HerosectionCrm = () => {
           <LetsConnect title={"Comprehensive CRM platform"} description={"Atomwalk CRM is a comprehensive Customer Relationship Management (CRM) system designed to streamline and manage various business operations, focusing on customer, supplier, partner, and lead management. It offers functionalities that support task management, order processing, and tracking of product interests and payments."} background={"#d6e7ff"} crm={true}></LetsConnect>
           <FeatureBenifits data={'lead'}></FeatureBenifits>
           <KeyFeatureCrm></KeyFeatureCrm>
-          <FAQSection data={true}></FAQSection>
+          <FAQSection data={"crm"}></FAQSection>
     </div>
   )
 }

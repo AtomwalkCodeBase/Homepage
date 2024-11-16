@@ -99,7 +99,7 @@ const FeatureDescription = styled.p`
   color: #666;
 `;
 
-const KeyFeatureCrm = () => {
+const KeyFeaturelems = () => {
   const handelNvigation=(data)=>{
     window.location.href=`/${data}`
   }
@@ -117,7 +117,7 @@ const KeyFeatureCrm = () => {
         <IconContainer bgColor="#D8F5E3">
           <img src={Compliance} alt="Speed" />
         </IconContainer>
-        <FeatureTitle> Lead Management:</FeatureTitle>
+        <FeatureTitle> Enhanced User Management</FeatureTitle>
         <FeatureDescription>
         Streamline and track leads from acquisition to conversion, ensuring efficient follow-ups and maximizing sales opportunities.
         </FeatureDescription>
@@ -126,7 +126,7 @@ const KeyFeatureCrm = () => {
         <IconContainer bgColor="#F0E7FF">
           <img src={Excellence} alt="Trust"/>
         </IconContainer>
-        <FeatureTitle>Customer Management:</FeatureTitle>
+        <FeatureTitle>Simplified Equipment Management</FeatureTitle>
         <FeatureDescription>
         Manage customer relationships by storing interaction histories, preferences, and communication details in one centralized platform
         </FeatureDescription>
@@ -135,7 +135,7 @@ const KeyFeatureCrm = () => {
         <IconContainer bgColor="#E0F7FC">
           <img src={Grow} alt="Accuracy" />
         </IconContainer>
-        <FeatureTitle>Channel partner management:</FeatureTitle>
+        <FeatureTitle>Equipment Maintenance</FeatureTitle>
         <FeatureDescription>
         Collaborate effectively with business partners by tracking their contributions, agreements, and communication to ensure successful partnerships.
         </FeatureDescription>
@@ -144,18 +144,9 @@ const KeyFeatureCrm = () => {
         <IconContainer bgColor="#FFF2E0">
           <img src={Payroll} alt="Reliability" />
         </IconContainer>
-        <FeatureTitle>Annual Maintenance Contract:</FeatureTitle>
+        <FeatureTitle>Gain Insights with Report & Analytics</FeatureTitle>
         <FeatureDescription>
         Efficiently manage assets, investments, and portfolios while tracking performance and ensuring regulatory compliance
-        </FeatureDescription>
-      </FeatureBox>
-      <FeatureBox onClick={()=>handelNvigation('campaignManagement.html')}>
-        <IconContainer bgColor="#ffe0f5">
-          <img src={Arrow} alt="Reliability" />
-        </IconContainer>
-        <FeatureTitle>Campaign Management:</FeatureTitle>
-        <FeatureDescription>
-        Plan, execute, and analyze marketing campaigns to reach target audiences, track results, and optimize strategies for higher engagement and ROI.
         </FeatureDescription>
       </FeatureBox>
     </FeaturesContainer>
@@ -163,4 +154,4 @@ const KeyFeatureCrm = () => {
   )
 }
 
-export default KeyFeatureCrm
+export default KeyFeaturelems;

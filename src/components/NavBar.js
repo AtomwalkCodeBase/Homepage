@@ -2,15 +2,17 @@ import { useState, useEffect } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import logo from '../assets/img/Atom_walk_logo-removebg-preview.png';
 import styled from 'styled-components';
+import { useLocation, useNavigate  } from "react-router-dom";
 const Atomicon =styled.img`
 width: 180px;
 `
 
 export const NavBar = () => {
-
+  const location = useLocation();
+  const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState('home');
   const [scrolled, setScrolled] = useState(false);
-
+  const[showLogin,setShowLogin]=useState(true);
   useEffect(() => {
     const onScroll = () => {
       if (window.scrollY > 50) {
@@ -30,9 +32,24 @@ export const NavBar = () => {
   }
 
   const navigatet=()=>{
-    window.location.href="https://www.atomwalk.com/login/"
+    if(showLogin){
+        window.location.href="https://www.atomwalk.com/login/"
+    }
+    else{
+      navigate(-1);
+    }
+  
   }
-
+  useEffect(()=>{
+    const queryParams = new URLSearchParams(location.search);
+    const loggedInValue = queryParams.get("is_logged_in");
+    if(loggedInValue=='WUVT'){
+      setShowLogin(false);
+    }
+else{
+  setShowLogin(true);
+}
+  },[]);
   return (
       <Navbar expand="md" className={scrolled ? "scrolled" : ""}>
         <Container>
@@ -49,9 +66,8 @@ export const NavBar = () => {
               <Nav.Link href="/aboutUs.html" className={activeLink === 'about' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('about')}>About Us</Nav.Link>
               <Nav.Link href="/contactUs.html" className={activeLink === 'projects' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('projects')}>Contact Us</Nav.Link>
             </Nav>
-            <span className="navbar-text">
-
-                <button onClick={navigatet} className="vvd"><span>Login</span></button>
+           <span className="navbar-text">
+            <button onClick={navigatet} className="vvd">{showLogin?<span>Login</span>:<span>Back To Dashboard</span>}</button>
             </span>
           </Navbar.Collapse>
         </Container>

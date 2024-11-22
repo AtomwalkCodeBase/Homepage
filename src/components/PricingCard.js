@@ -291,8 +291,8 @@ const PricingCard = () => {
           >
             Basic
           </h3>
-          <Price>₹3,000/Month</Price>
-          <Message>Billed at ₹30,000 per year</Message>
+          <Price>₹5,000/Month</Price>
+          <Message>Billed at ₹50,000 per year</Message>
           <FeatureList>
             <FeatureItem valid>5 User Access</FeatureItem>
             <FeatureItem valid>1 Year Validity</FeatureItem>
@@ -313,8 +313,8 @@ const PricingCard = () => {
           >
             Premium
           </h3>
-          <Price>₹5,000/Month</Price>
-          <Message>Billed at ₹50,000 per year</Message>
+          <Price>₹8,000/Month</Price>
+          <Message>Billed at ₹75,000 per year</Message>
           <FeatureList>
             <FeatureItem valid>10 User Access</FeatureItem>
             <FeatureItem valid>1 Year Vallidity</FeatureItem>
@@ -335,8 +335,8 @@ const PricingCard = () => {
           >
             Ultimate
           </h3>
-          <Price>₹10,000/Month</Price>
-          <Message>Billed at ₹100,000 per year</Message>
+          <Price>₹15,000/Month</Price>
+          <Message>Billed at ₹150,000 per year</Message>
           <FeatureList>
             <FeatureItem valid>25 User Access</FeatureItem>
             <FeatureItem valid>1 Year Vallidity</FeatureItem>

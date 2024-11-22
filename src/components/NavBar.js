@@ -2,17 +2,25 @@ import { useState, useEffect } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import logo from '../assets/img/Atom_walk_logo-removebg-preview.png';
 import styled from 'styled-components';
-import { useLocation, useNavigate  } from "react-router-dom";
-const Atomicon =styled.img`
-width: 180px;
-`
+import { useLocation, useNavigate } from "react-router-dom";
+import ProductMenu from './ProductMenu'; // Import the ProductMenu component
+
+const Atomicon = styled.img`
+  width: 180px;
+`;
+
+const ProductMenuWrapper = styled.div`
+  position: relative; /* Necessary for positioning the dropdown menu */
+`;
 
 export const NavBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState('home');
   const [scrolled, setScrolled] = useState(false);
-  const[showLogin,setShowLogin]=useState(true);
+  const [showLogin, setShowLogin] = useState(true);
+  const [showProductMenu, setShowProductMenu] = useState(false);
+
   useEffect(() => {
     const onScroll = () => {
       if (window.scrollY > 50) {
@@ -20,57 +28,64 @@ export const NavBar = () => {
       } else {
         setScrolled(false);
       }
-    }
+    };
 
     window.addEventListener("scroll", onScroll);
 
     return () => window.removeEventListener("scroll", onScroll);
-  }, [])
+  }, []);
 
-  const onUpdateActiveLink = (value) => {
-    setActiveLink(value);
-  }
-
-  const navigatet=()=>{
-    if(showLogin){
-        window.location.href="https://www.atomwalk.com/login/"
-    }
-    else{
+  const navigatet = () => {
+    if (showLogin) {
+      window.location.href = "https://www.atomwalk.com/login/";
+    } else {
       navigate(-1);
     }
-  
-  }
-  useEffect(()=>{
+  };
+
+  useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const loggedInValue = queryParams.get("is_logged_in");
-    if(loggedInValue=='WUVT'){
+    if (loggedInValue === 'WUVT') {
       setShowLogin(false);
+    } else {
+      setShowLogin(true);
     }
-else{
-  setShowLogin(true);
-}
-  },[]);
+  }, [location]);
+
   return (
-      <Navbar expand="md" className={scrolled ? "scrolled" : ""}>
-        <Container>
-          <Navbar.Brand href="/">
-            <Atomicon src={logo} alt="Logo" />
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav">
-            <span className="navbar-toggler-icon"></span>
-          </Navbar.Toggle>
-          <Navbar.Collapse id="basic-navbar-nav" className="mobile">
-            <Nav className="ms-auto">
-              <Nav.Link href="/Product.html" className={activeLink === 'Product' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('Product')}>Products</Nav.Link>
-              <Nav.Link href="/pricing.html" className={activeLink === 'Pricing' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('Pricing')}>Pricing</Nav.Link>
-              <Nav.Link href="/aboutUs.html" className={activeLink === 'about' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('about')}>About Us</Nav.Link>
-              <Nav.Link href="/contactUs.html" className={activeLink === 'projects' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('projects')}>Contact Us</Nav.Link>
-            </Nav>
-           <span className="navbar-text">
-            <button onClick={navigatet} className="vvd">{showLogin?<span>Login</span>:<span>Back To Dashboard</span>}</button>
-            </span>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-  )
-}
+    <Navbar expand="md" className={scrolled ? "scrolled" : ""}>
+      <Container>
+        <Navbar.Brand href="/">
+          <Atomicon src={logo} alt="Logo" />
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav">
+          <span className="navbar-toggler-icon"></span>
+        </Navbar.Toggle>
+        <Navbar.Collapse id="basic-navbar-nav" className="mobile">
+          <Nav className="ms-auto">
+            <ProductMenuWrapper
+              onMouseEnter={() => setShowProductMenu(true)}
+              onMouseLeave={() => setShowProductMenu(false)}
+            >
+              <Nav.Link
+                href="#"
+                className={activeLink === 'Product' ? 'active navbar-link' : 'navbar-link'}
+                onClick={() => setActiveLink('Product')}
+              >
+                Products
+              </Nav.Link>
+              <ProductMenu show={showProductMenu} />
+            </ProductMenuWrapper>
+            <Nav.Link href="/pricing.html" className={activeLink === 'Pricing' ? 'active navbar-link' : 'navbar-link'} onClick={() => setActiveLink('Pricing')}>Pricing</Nav.Link>
+            <Nav.Link href="/aboutUs.html" className={activeLink === 'about' ? 'active navbar-link' : 'navbar-link'} onClick={() => setActiveLink('about')}>About Us</Nav.Link>
+            <Nav.Link href="/contactUs.html" className={activeLink === 'projects' ? 'active navbar-link' : 'navbar-link'} onClick={() => setActiveLink('projects')}>Contact Us</Nav.Link>
+          </Nav>
+          <span className="navbar-text">
+            <button onClick={navigatet} className="vvd">{showLogin ? <span>Login</span> : <span>Back</span>}</button>
+          </span>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
+};

@@ -124,9 +124,14 @@ nav.navbar .navbar-nav .nav-link.navbar-link {
   font-weight: 500;
   color: rgb(30, 36, 63);
   letter-spacing: 0.8px;
-  padding: 0 25px;
+  padding: 20px 25px;
   font-size: 18px;
   opacity: 0.75;
+}
+@media only screen and (max-width: 768px) {
+  nav.navbar .navbar-nav .nav-link.navbar-link {
+    padding: 10px 25px;
+  }
 }
 nav.navbar .navbar-nav a.nav-link.navbar-link:hover,
 nav.navbar .navbar-nav a.nav-link.navbar-link.active {

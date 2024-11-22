@@ -7,6 +7,11 @@ import projImg3 from "../assets/img/Hrandpayroll.jpg";
 import projImg4 from "../assets/img/Designer.png";
 import projImg5 from "../assets/img/Accountandf.png";
 import projImg6 from "../assets/img/projectmangement.png";
+import projImg7 from "../assets/img/lab management system.png";
+import projImg8 from "../assets/img/Lab Equipment Management System with lab equipment.png";
+import projImg9 from "../assets/img/good laboratory practices.png";
+
+
 import { ProjectCard } from "./ProjectCard";
 import Newcard from "./Newcard";
 const GradientDiv = styled.div`
@@ -56,6 +61,27 @@ const Features = () => {
         "Make informed decisions based on real-time information and analytics provided by Atomwalk Office",
       imgUrl: projImg6,
       background:"#fff8e6"
+    },
+    {
+      title: "Lab Equipment Management System",
+      description:
+        "Effortlessly Track, Manage, and Optimize Your Lab Equipment for Peak Performance.",
+      imgUrl: projImg8,
+      background:"#f4e8e3"
+    },
+    {
+      title: "Lab Management System",
+      description:
+        "Comprehensive Lab Solutions for Streamlined Operations and Enhanced Productivity.",
+      imgUrl: projImg7,
+      background:"#c7facf"
+    },
+    {
+      title: "Good Laboratory P ractices",
+      description:
+        "Ensuring Excellence and Compliance: Your Partner in Good Laboratory Practices.",
+      imgUrl: projImg9,
+      background:"#f7e4f2"
     },
   ];
   return (

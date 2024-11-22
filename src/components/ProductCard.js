@@ -139,6 +139,70 @@ const ProductCard = () => {
     <SectionContainer>
       <SectionTitle>Atomwalk Office ERP connects every aspect of your business into one unified system</SectionTitle>
       <ContentContainer>
+        
+      <ContentBox bgColor="#d6e7ff">
+          <ImageContainer>
+            <img src={Inventory} alt="Performance management" />
+          </ImageContainer>
+          <TextContainer>
+            <BoxHeading>Customer Management</BoxHeading>
+            <BoxText>
+            <ul>
+						<li>Lead Management</li>
+						<li>Customer Management </li>
+						<li>Channel partner management</li>
+						<li>Annual Maintenance Contract</li>
+						<li>Campaign Management</li>
+						</ul>
+            </BoxText>
+            <Button>Experience Live Demo</Button>
+          </TextContainer>
+          <DecorativeCircle top="20%" left="5%" />
+          <DecorativeCircle bottom="10%" right="70%" />
+        </ContentBox>
+        <ContentBox bgColor="#fae0f8">
+          <TextContainer>
+            <BoxHeading>HR & Payroll</BoxHeading>
+            <BoxText>
+            <ul>
+						<li>On-Boarding Process</li>
+						<li>Employee Data</li>
+						<li>Attendance</li>
+						<li>Leave Management</li>
+						<li>Claim Management</li>
+						<li>Payroll</li>
+						<li>Performance Mangement System</li>
+						<li>Exit Process</li>
+						</ul>
+            </BoxText>
+            <Button onClick={demopage}>Request a Demo</Button>
+          </TextContainer>
+          <ImageContainer>
+            <img src={Product}alt="Employee engagement" />
+          </ImageContainer>
+          <DecorativeCircle top="10%" left="80%" />
+          <DecorativeCircle bottom="5%" right="10%" />
+        </ContentBox>
+        
+        <ContentBox bgColor="#e0f7fa">
+          <ImageContainer>
+            <img src={Inventory} alt="Performance management" />
+          </ImageContainer>
+          <TextContainer>
+            <BoxHeading>Lab Management</BoxHeading>
+            <BoxText>
+            <ul>
+						<li>Enhanced User Management</li>
+						<li>Simplified Equipment Management</li>
+						<li>Equipment Maintenance</li>
+						<li>Gain Insights with Report & Analytics</li>
+						</ul>
+            </BoxText>
+            <Button>Experience Live Demo</Button>
+          </TextContainer>
+          <DecorativeCircle top="20%" left="5%" />
+          <DecorativeCircle bottom="10%" right="70%" />
+        </ContentBox>
         <ContentBox bgColor="#fce4ec">
           <TextContainer>
             <BoxHeading>Project Management</BoxHeading>

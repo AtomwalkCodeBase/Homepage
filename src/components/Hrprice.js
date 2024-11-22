@@ -336,7 +336,7 @@ const Hrprice = () => {
             Ultimate
           </h3>
           <Price>₹1,20,000/Annum</Price>
-          <Message>Billed at ₹100/mo/user</Message>
+          <Message>Billed at ₹100/month/user</Message>
           <FeatureList>
             <FeatureItem valid>100 User Access</FeatureItem>
             <FeatureItem valid>1 Year Vallidity</FeatureItem>

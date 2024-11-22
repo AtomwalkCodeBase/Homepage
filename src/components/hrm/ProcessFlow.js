@@ -177,6 +177,28 @@ export const ProcessFlow = ({ data,bgcolors}) => {
       { step: 'Ticket Tracking (AMC Tracking)', color: '#4A90E2' },
       { step: 'Reports and Dashboards', color: '#4A90E2' }
     ],
+    UserManagement:[
+      { step: 'Lab Admin', color: '#4A90E2' },
+      { step: 'Lab Manager', color: '#4A90E2' },
+      { step: 'Lab User', color: '#4A90E2' },
+
+    ]
+    ,
+    EquipmentManagement:[
+      { step: 'Equipment Setup', color: '#4A90E2' },
+      { step: 'Booking', color: '#4A90E2' },
+      { step: ' Cancellation', color: '#4A90E2' },
+    ],
+    EquipmentMaintenance:[
+      { step: 'preventive Maintenance', color: '#4A90E2' },
+      { step: 'Emergency maintenance', color: '#4A90E2' },
+    ],
+    ReportandDashboard:[
+      { step: ' Usage Trends', color: '#4A90E2' },
+      { step: 'Audit ready records', color: '#4A90E2' },
+      { step: 'Data purge ', color: '#4A90E2' },
+      { step: 'Analytics', color: '#4A90E2' },
+    ]
    
   };
 

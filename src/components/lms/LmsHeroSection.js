@@ -7,6 +7,7 @@ import EcommApp from '../../assets/img/EcommApp.svg';
 import CrmApp from '../../assets/img/labmagement.png';
 import HrAPP from '../../assets/img/equpment.png';
 import Ecom from '../../assets/img/online-shop.png';
+import UnderConstructionPopup from '../UnderConstructionPopup';
 
 // Styled Components
 const Container = styled.div`
@@ -136,6 +137,7 @@ const ProfileImage = styled.img`
 const LmsHeroSection = () => {
   const [background, setBackground] = useState('linear-gradient(180deg, #d2f5fa, rgb(255 246 247))');
   const [profileImg, setProfileImg] = useState(TagImag);
+  const[openpop,setopenpop]=useState(false);
 
   const handleMouseEnter = (bgColor, imgSrc) => {
     setBackground(bgColor);
@@ -169,7 +171,7 @@ const LmsHeroSection = () => {
             background={background}
             onMouseEnter={() => handleMouseEnter('linear-gradient(180deg, #edd4fc, rgb(255 246 247))', CrmApp)}
             onMouseLeave={handleMouseLeave}
-            onClick={()=>{window.location.href='/labmanagement.html'}}
+            onClick={()=>{setopenpop(!openpop)}}
           >
             <FeatureIcon src={Crm} alt="CRM" />
             <FeatureText>Lab Management System: Streamlined Solutions for Modern Lab Operations.</FeatureText>
@@ -187,6 +189,7 @@ const LmsHeroSection = () => {
       <RightSection>
         <ProfileImage src={profileImg} alt="Profile" />
       </RightSection>
+      <UnderConstructionPopup visible={openpop} setvisible={setopenpop}></UnderConstructionPopup>
     </Container>
   );
 };

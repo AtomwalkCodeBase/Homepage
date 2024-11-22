@@ -7,6 +7,7 @@ import EcommApp from './../assets/img/EcommApp.svg';
 import Crm from './../assets/img/crm.png';
 import Hr from './../assets/img/search-job.png';
 import Ecom from './../assets/img/online-shop.png';
+import UnderConstructionPopup from './UnderConstructionPopup';
 
 // Styled Components
 const Container = styled.div`
@@ -135,7 +136,7 @@ const ProfileImage = styled.img`
 const HeroSection = () => {
   const [background, setBackground] = useState('linear-gradient(180deg, #fceabb, rgb(255 246 247))');
   const [profileImg, setProfileImg] = useState(TagImag);
-
+  const[openpop,setopenpop]=useState(false);
   const handleMouseEnter = (bgColor, imgSrc) => {
     setBackground(bgColor);
     setProfileImg(imgSrc);
@@ -153,7 +154,7 @@ const HeroSection = () => {
         <SubHeading>
           Experience the efficiency and clarity that comes with a fully integrated business management solution. With Atomwalk Office, transform your data into actionable insights and drive your business forward with confidence.
         </SubHeading>
-        <CTAButton onClick={()=>{window.location.href='https://www.atomwalk.com/login/'}}>Get started</CTAButton>
+        <CTAButton onClick={()=>{window.location.href='/demo.html'}}>Get Started</CTAButton>
         <Features>
           <FeatureItem
             background={background}
@@ -174,6 +175,7 @@ const HeroSection = () => {
             <FeatureText>HR management software streamlining payroll, attendance, leave, claims.</FeatureText>
           </FeatureItem>
           <FeatureItem
+            onClick={()=>{setopenpop(!openpop)}}
             background={background}
             onMouseEnter={() => handleMouseEnter('linear-gradient(180deg, #90ee90, rgb(255 246 247))', EcommApp)}
             onMouseLeave={handleMouseLeave}
@@ -186,6 +188,7 @@ const HeroSection = () => {
       <RightSection>
         <ProfileImage src={profileImg} alt="Profile" />
       </RightSection>
+      <UnderConstructionPopup visible={openpop} setvisible={setopenpop}></UnderConstructionPopup>
     </Container>
   );
 };

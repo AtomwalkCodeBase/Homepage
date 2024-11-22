@@ -28,6 +28,7 @@ import LeadManagement from "./components/crm/LeadManagement";
 import HerosectionCrm from "./components/crm/HerosectionCrm";
 import LmsHeroSection from "./components/lms/LmsHeroSection";
 import LabEqupmentmanagement from "./components/lms/LabEqupmentmanagement";
+import LmsSytem from "./components/lms/LmsSytem";
 
 function App() {
   const[openslide,setOpenslide]=useState(false);
@@ -91,6 +92,10 @@ const loginAndStore=async()=>{
           <Route path="/CustomerManagement.html" element={<LeadManagement/>} />
           <Route path="/Channelpartner.html" element={<LeadManagement/>} />
           <Route path="/campaignManagement.html" element={<LeadManagement/>} />
+          <Route path="/userManagement.html" element={<LmsSytem/>} />
+          <Route path="/equipmentManagement.html" element={<LmsSytem/>} />
+          <Route path="/equipmentMaintenance.html" element={<LmsSytem/>} />
+          <Route path="/reportandDashboard.html" element={<LmsSytem/>} />
           <Route path="/labmanagement.html" element={<LabManagement/>} />
           <Route path="/labequipmentmangement.html" element={<LabEqupmentmanagement/>} />
         </Routes>

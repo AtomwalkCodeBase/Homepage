@@ -14,7 +14,7 @@ const AbotUs = () => {
       <PurposeComponent></PurposeComponent>
       <OurValues></OurValues>
       <LeadershipTeam></LeadershipTeam>
-      <Leadership></Leadership>
+      {/* <Leadership></Leadership> */}
     </div>
   )
 }

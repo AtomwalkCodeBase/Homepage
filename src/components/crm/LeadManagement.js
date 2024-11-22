@@ -47,8 +47,8 @@ const LeadManagement = () => {
 
   // Function to determine which page configuration to use based on URL
   useEffect(()=>{
-    if(location.pathname.includes('campaignManagement')){
-      setShowData('Claim')
+    if(location.pathname.includes('userManagement')){
+      setShowData('userManagement')
     }
   },[location.pathname])
   const getCurrentPageConfig = () => {

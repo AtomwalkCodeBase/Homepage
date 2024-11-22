@@ -30,7 +30,7 @@ const AboutTxt = styled.div`
     }
     @media screen and (max-width: 767px) {
         /* margin: 0 auto; */
-        margin-top: -150px;
+        margin-top: 20px;
         width: 370px;
     }
 

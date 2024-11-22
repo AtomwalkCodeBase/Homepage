@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import Compliance from '../../assets/img/Leadmanagement.png'
-import Excellence from '../../assets/img/CustomerMangement.png'
-import Grow from '../../assets/img/partnership.png'
-import Payroll from '../../assets/img/asset-management.png'
+import Compliance from '../../assets/img/userManagement.png'
+import Excellence from '../../assets/img/equipmentManagement.png'
+import Grow from '../../assets/img/maintenance.png'
+import Payroll from '../../assets/img/dashboard.png'
 import Arrow from '../../assets/img/content-management.png'
 
 // Container for the entire section
@@ -113,41 +113,44 @@ const KeyFeaturelems = () => {
     optimizes your entire business operation. Our platform offers:
     </Subtitle>
     <FeaturesContainer>
-      <FeatureBox onClick={()=>handelNvigation('leadManagement.html')}> 
+      <FeatureBox onClick={()=>handelNvigation('userManagement.html')}> 
         <IconContainer bgColor="#D8F5E3">
           <img src={Compliance} alt="Speed" />
         </IconContainer>
         <FeatureTitle> Enhanced User Management</FeatureTitle>
         <FeatureDescription>
-        Streamline and track leads from acquisition to conversion, ensuring efficient follow-ups and maximizing sales opportunities.
+        Atomwalk’s LEM ensures every role in the lab gets precisely what they
+need—empowering admins, managers, and users to focus on productivity without any
+roadblocks.
         </FeatureDescription>
       </FeatureBox>
-      <FeatureBox onClick={()=>handelNvigation('CustomerManagement.html')}>
+      <FeatureBox onClick={()=>handelNvigation('equipmentManagement.html')}>
         <IconContainer bgColor="#F0E7FF">
           <img src={Excellence} alt="Trust"/>
         </IconContainer>
-        <FeatureTitle>Simplified Equipment Management</FeatureTitle>
+        <FeatureTitle>Rule Based Equipment Management</FeatureTitle>
         <FeatureDescription>
-        Manage customer relationships by storing interaction histories, preferences, and communication details in one centralized platform
+        Say goodbye to scheduling conflicts. With Atomwalk’s LEM, you’ll always know
+which equipment is available, making the booking process seamless.
         </FeatureDescription>
       </FeatureBox>
-      <FeatureBox onClick={()=>handelNvigation('Channelpartner.html')}>
+      <FeatureBox onClick={()=>handelNvigation('equipmentMaintenance.html')}>
         <IconContainer bgColor="#E0F7FC">
           <img src={Grow} alt="Accuracy" />
         </IconContainer>
         <FeatureTitle>Equipment Maintenance</FeatureTitle>
         <FeatureDescription>
-        Collaborate effectively with business partners by tracking their contributions, agreements, and communication to ensure successful partnerships.
-        </FeatureDescription>
+        Don’t let unexpected breakdowns slow you down. Atomwalk’s LEM sends alerts for
+maintenance and calibrations, ensuring minimal downtime and maximum lab
+productivity.</FeatureDescription>
       </FeatureBox>
-      <FeatureBox>
+      <FeatureBox onClick={()=>handelNvigation('reportandDashboard.html')}>
         <IconContainer bgColor="#FFF2E0">
           <img src={Payroll} alt="Reliability" />
         </IconContainer>
-        <FeatureTitle>Gain Insights with Report & Analytics</FeatureTitle>
+        <FeatureTitle>Gain Insights with Report & Dashboard</FeatureTitle>
         <FeatureDescription>
-        Efficiently manage assets, investments, and portfolios while tracking performance and ensuring regulatory compliance
-        </FeatureDescription>
+        Unlock the power of data with Atomwalk’s detailed reports and Dashboard. Gain clear insights into usage pattern of equipments and labs </FeatureDescription>
       </FeatureBox>
     </FeaturesContainer>
   </SectionContainer>

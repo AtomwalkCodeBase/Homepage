@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import ClaimImgDemo from '../../assets/img/Claim_Image_demo.png';
 import ClaimImgDemo2 from '../../assets/img/Claim_Image_Demo2.png';
@@ -7,7 +7,7 @@ import img1 from '../../assets/img/CrmMocups2.svg';
 import img2 from '../../assets/img/CrmMocups.svg';
 import img3 from '../../assets/img/emp_advance.svg';
 import img4 from '../../assets/img/approve_claim.svg'
-
+import { useLocation } from "react-router-dom";
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -273,8 +273,29 @@ const CrmFeatures = ({data}) => {
           },
           
       ];
-      
-  
+      const location = useLocation(); // Get the current URL
+
+  useEffect(() => {
+    // Get the query string (e.g., "?5")
+    const queryString = location.search;
+
+    // Extract the step manually if no key exists
+    const stepMatch = queryString.match(/\?(\d+)/);
+    const step = stepMatch ? parseInt(stepMatch[1], 10) : NaN;
+
+    console.log(step, "Step value parsed from URL");
+
+    // Calculate scroll offset
+    const scrollOffset = !isNaN(step) ? 700 + (step - 1) * 630 : 0;
+
+    // Scroll the page
+    if (scrollOffset > 0) {
+      window.scrollTo({
+        top: scrollOffset,
+        behavior: "smooth",
+      });
+    }
+  }, [location.search]); // Re-run when URL query changes
     return <Container>{features.map(getFeatureContent)}</Container>
 }
 

@@ -8,6 +8,9 @@ import Report from './../assets/img/Report And Dashboard.jpg'
 import GST from './../assets/img/gst.webp'
 import Bank from './../assets/img/Bank Reconciliation.jpg'
 import Finacial from './../assets/img/Finacial Acconting.avif'
+import Crm from './../assets/img/CrmProduct.jpeg'
+import Hr from './../assets/img/Hrproduct.jpeg'
+import Lab from './../assets/img/labmangement.jpg'
 
 
 // Main container for the entire section
@@ -142,7 +145,7 @@ const ProductCard = () => {
         
       <ContentBox bgColor="#d6e7ff">
           <ImageContainer>
-            <img src={Inventory} alt="Performance management" />
+            <img src={Crm} alt="Performance management" />
           </ImageContainer>
           <TextContainer>
             <BoxHeading>Customer Management</BoxHeading>
@@ -178,7 +181,7 @@ const ProductCard = () => {
             <Button onClick={demopage}>Request a Demo</Button>
           </TextContainer>
           <ImageContainer>
-            <img src={Product}alt="Employee engagement" />
+            <img src={Hr}alt="Employee engagement" />
           </ImageContainer>
           <DecorativeCircle top="10%" left="80%" />
           <DecorativeCircle bottom="5%" right="10%" />
@@ -186,7 +189,7 @@ const ProductCard = () => {
         
         <ContentBox bgColor="#e0f7fa">
           <ImageContainer>
-            <img src={Inventory} alt="Performance management" />
+            <img src={Lab} alt="Performance management" />
           </ImageContainer>
           <TextContainer>
             <BoxHeading>Lab Management</BoxHeading>

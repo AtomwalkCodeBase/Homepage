@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate, useLocation } from "react-router-dom";
 
 const PageContainer = styled.div`
   padding: 20px;
@@ -178,9 +179,9 @@ export const ProcessFlow = ({ data,bgcolors}) => {
       { step: 'Reports and Dashboards', color: '#4A90E2' }
     ],
     UserManagement:[
-      { step: 'Lab Admin', color: '#4A90E2' },
-      { step: 'Lab Manager', color: '#4A90E2' },
-      { step: 'Lab User', color: '#4A90E2' },
+      { step: 'User Group Setup', color: '#4A90E2' },
+      { step: 'User Profile Creation', color: '#4A90E2' },
+      { step: 'Update/ Delete Profile', color: '#4A90E2' },
 
     ]
     ,
@@ -202,8 +203,14 @@ export const ProcessFlow = ({ data,bgcolors}) => {
    
   };
 
-  // Get the appropriate flow based on the `data` prop
+  // Get the appropriate flow based on the data prop
   const processSteps = flows[data] || [];
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleStepClick = (index) => {
+    navigate(`${location.pathname}?${index + 1}`);
+  };
 
   return (
     <PageContainer bgcolor={bgcolors}>
@@ -214,7 +221,7 @@ export const ProcessFlow = ({ data,bgcolors}) => {
           <FlowContainer>
             {processSteps.map((step, index) => (
               <React.Fragment key={index}>
-                <Step>
+              <Step onClick={() => handleStepClick(index)}>
                   <DocText>{step.step}</DocText>
                 </Step>
                 {index < processSteps.length - 1 && (

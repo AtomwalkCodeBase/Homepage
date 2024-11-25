@@ -167,7 +167,7 @@ const HeroBlog = () => {
           <Button href="/demo.html">Try Demo</Button>
         </ButtonContainer>
         <FeatureList>
-          <FeatureItem>eliminate repetitive tasks with Jula</FeatureItem>
+          <FeatureItem>eliminate repetitive tasks with Atomwalk</FeatureItem>
           <FeatureItem>productive and enthusiastic team member</FeatureItem>
           <FeatureItem>Streamline lead tracking</FeatureItem>
         </FeatureList>

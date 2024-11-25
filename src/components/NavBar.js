@@ -69,7 +69,7 @@ export const NavBar = () => {
               onMouseLeave={() => setShowProductMenu(false)}
             >
               <Nav.Link
-                href="#"
+                href="/Product.html"
                 className={activeLink === 'Product' ? 'active navbar-link' : 'navbar-link'}
                 onClick={() => setActiveLink('Product')}
               >

@@ -10,7 +10,7 @@ import { ProcessFlow } from './ProcessFlow';
 import FeatureDescription from './FeatureDescription';
 import FeatureBenifits from '../FeatureBenifits';
 import FAQSection from './FAQSection';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Page = styled.div`
   background-color: white;
@@ -99,7 +99,12 @@ const HeadImageArea = styled.div`
   line-height: 26px;
   padding: 44px 0px 0px;
 `;
-
+const ButtonWrap=styled.div`
+display: flex;
+align-items: center;
+justify-content: left;
+gap:20px;
+`;
 const ButtonOne = styled.button`
   align-items: center;
   background-color: #aa00ea;
@@ -108,12 +113,19 @@ const ButtonOne = styled.button`
   border-style: solid;
   border-width: 1.6px;
   color: #fff;
-  font-weight: 500;
-  line-height: 24px;
+  font-weight: 400;
   padding: 14px 32px;
   text-align: center;
 `;
-
+const ButtonOne1 = styled.button`
+  align-items: center;
+  background-color: #6c757d;
+  border-radius: 100px;
+  color: #fff;
+  font-weight: 400;
+  padding: 14px 32px;
+  text-align: center;
+`;
 const ButtonText = styled.div`
   color: #fff;
   font-size: 20px;
@@ -201,7 +213,10 @@ const HrmFeaturesManagement = () => {
   const demo = () => {
     window.location.href = '/demo.html';
   };
-
+  const navigate = useNavigate();
+const navback=()=>{
+  navigate(-1);
+}
   return (
     <Page>
       <Header>
@@ -209,9 +224,13 @@ const HrmFeaturesManagement = () => {
           <HeadTextArea>
             <HeadTextOne>{content.title}</HeadTextOne>
             <HeadPara>{content.description}</HeadPara>
-            <ButtonOne onClick={demo}>
+            <ButtonWrap> <ButtonOne onClick={demo}>
               <ButtonText>Request a Demo</ButtonText>
             </ButtonOne>
+            <ButtonOne1 onClick={navback}>
+              <ButtonText>Back</ButtonText>
+            </ButtonOne1></ButtonWrap>
+           
           </HeadTextArea>
           <HeadImageArea>
             <HeadImage>

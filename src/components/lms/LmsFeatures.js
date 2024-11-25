@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import ClaimImgDemo from '../../assets/img/Claim_Image_demo.png';
 import ClaimImgDemo2 from '../../assets/img/Claim_Image_Demo2.png';
@@ -7,7 +7,7 @@ import img1 from '../../assets/img/CrmMocups2.svg';
 import img2 from '../../assets/img/CrmMocups.svg';
 import img3 from '../../assets/img/emp_advance.svg';
 import img4 from '../../assets/img/approve_claim.svg'
-
+import { useLocation } from "react-router-dom";
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -78,7 +78,7 @@ const BenefitsContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 360px;
+    width: 460px;
     gap: 8px;
   }
 
@@ -145,7 +145,29 @@ const TextSection = styled.div`
 
 const LmsFeatures = ({data}) => {
     const isClaim = data;
-    console.log(data,"fcdgvdevd")
+    const location = useLocation(); // Get the current URL
+
+    useEffect(() => {
+      // Get the query string (e.g., "?5")
+      const queryString = location.search;
+  
+      // Extract the step manually if no key exists
+      const stepMatch = queryString.match(/\?(\d+)/);
+      const step = stepMatch ? parseInt(stepMatch[1], 10) : NaN;
+  
+      console.log(step, "Step value parsed from URL");
+  
+      // Calculate scroll offset
+      const scrollOffset = !isNaN(step) ? 700 + (step - 1) * 700 : 0;
+  
+      // Scroll the page
+      if (scrollOffset > 0) {
+        window.scrollTo({
+          top: scrollOffset,
+          behavior: "smooth",
+        });
+      }
+    }, [location.search]);
 
     const getFeatureContent = (feature) => (
       <Features>
@@ -200,28 +222,28 @@ const LmsFeatures = ({data}) => {
     const features = isClaim === 'userManagement'
     ? [
         {
-          title: 'Empowered Oversight, Effortless Management',
+          title: 'Manage User group (Lab Departments) for  Effortless Management / Analytics',
           subtitle: 'Empowering Admins to Manage Every Aspect of Lab Operations',
-          description: 'Atomwalk’s LEM provides admins with powerful tools to manage user profiles, oversee equipment usage, handle emergencies, and generate insightful reports. This allows admins to ensure smooth lab operations and maintain compliance effortlessly.',
-          benefits: ['Create and manage profiles', 'Oversee Bookings and usage', 'Handle emergencies and generate reports'],
+          description: 'Atomwalk’s LEM provides LAB Admins (Owners) with powerful tools to manage user profiles based on the department setup in institution, which inturn helps to oversee equipment usage, and generate insightful reports. This allows Lab Admins to ensure smooth lab operations and maintain compliance effortlessly.',
+          benefits: ['Create and manage profiles (Based on Department setup)', 'Configurable access control for each User group'],
           imageSrc: img3, // Replace with relevant image variable for campaign management
           imageAlt: 'Campaign Management Dashboard',
           imgPosition: 'left',
         },
         {
           title: 'Streamlined Management, Enhanced Productivity',
-          subtitle: 'Enabling Managers to Optimize Lab Workflow and Maintenance',
-          description: 'With Atomwalk’s LEM, managers can efficiently organize groups, oversee tasks, and ensure that equipment remains in top condition. By tracking maintenance and usage trends, managers can stay proactive and improve overall lab productivity.',
-          benefits: ['Organize groups and tasks', 'Track maintenance', 'Stay informed with real-time data'],
+          subtitle: 'Empowering Lab Admins/ Users with Instant Activation and Anytime Access',
+          description: 'With Atomwalk’s LEM, LAB Admins can efficiently organize Lab users across users groups. User can manage their Profile and manage passwords on DIY basis. LAB Users can maintain their user name/ nick name to access the system anytime anywhere for equipment booking/cancellations.',
+          benefits: ['LAB Users Creation with right User Group', ' LAB Users Profile/password management'],
           imageSrc: img3, // Replace with relevant image variable for campaign execution
           imageAlt: 'Campaign Performance Tracking',
           imgPosition: 'right',
         },
         {
-          title: 'Quick Access, Seamless Experience',
-          subtitle: 'Empowering Lab Users with Instant Booking and Personalized Access',
-          description: 'Atomwalk’s LEM allows lab users to book equipment with ease, receive timely notifications, and enjoy a personalized login experience. Users can focus on their tasks without delays or interruptions, enhancing their productivity.',
-          benefits: ['Instant equipment booking', 'Stay updated with real-time availability', 'Personalized logins'],
+          title: 'Easy Lab User management - Seamless  Experience',
+          subtitle: 'Empowering Lab Admins with Instant Deactivation and remove Access',
+          description: 'Atomwalk’s LEM allows Lab Admin users to deactivate Lab Users and remove access in case of disciplinary action or completion of course. Lab Admins also can control temproray access to external Lab users.',
+          benefits: ['LAB Users deactivation', 'LAB Users removal of Access'],
           imageSrc: img3, // Replace with relevant image variable for campaign execution
           imageAlt: 'Campaign Performance Tracking',
           imgPosition: 'left',

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import ClaimImgDemo from '../../assets/img/Claim_Image_demo.png';
 import CheckMark from '../../assets/img/check_mark.png';
@@ -28,7 +28,7 @@ import img44 from '../../assets/img/manager-evaluation.svg';
 import img51 from '../../assets/img/check-in.svg';
 import img52 from '../../assets/img/attendance-dashboard.svg';
 import img53 from '../../assets/img/emp-attendance.svg';
-
+import { useLocation } from "react-router-dom";
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -483,7 +483,29 @@ const FeatureDescription = ({ data }) => {
   },
         
       ];
+      const location = useLocation(); // Get the current URL
 
+      useEffect(() => {
+        // Get the query string (e.g., "?5")
+        const queryString = location.search;
+    
+        // Extract the step manually if no key exists
+        const stepMatch = queryString.match(/\?(\d+)/);
+        const step = stepMatch ? parseInt(stepMatch[1], 10) : NaN;
+    
+        console.log(step, "Step value parsed from URL");
+    
+        // Calculate scroll offset
+        const scrollOffset = !isNaN(step) ? 700 + (step - 1) * 700 : 0;
+    
+        // Scroll the page
+        if (scrollOffset > 0) {
+          window.scrollTo({
+            top: scrollOffset,
+            behavior: "smooth",
+          });
+        }
+      }, [location.search]);
   return <Container>{features.map(getFeatureContent)}</Container>;
 };
 

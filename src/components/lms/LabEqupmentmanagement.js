@@ -100,14 +100,14 @@ const LabEqupmentmanagement = () => {
         <Description>
          Optimize utilization, minimize downtime, and simplify equipment management with
          real-time tracking and maintenance.  </Description>
-        <Button>Learn more</Button>
+        <Button onClick={()=>{window.location.href="/userManagement.html"}}>Learn more</Button>
       </TextContainer>
       <ImageContainer>
         <Image src={mainImage} alt="Laboratory Technician" />
       </ImageContainer>
     </Section>
     <FeatureBenifits data={'Equipment'}></FeatureBenifits>
-        <KeyFeaturelems></KeyFeaturelems>
+     <KeyFeaturelems></KeyFeaturelems>
     <FAQSection data={"equipment"}></FAQSection>
     </>
   );

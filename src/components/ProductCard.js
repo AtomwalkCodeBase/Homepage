@@ -11,6 +11,7 @@ import Finacial from './../assets/img/Finacial Acconting.avif'
 import Crm from './../assets/img/CrmProduct.jpeg'
 import Hr from './../assets/img/Hrproduct.jpeg'
 import Lab from './../assets/img/labmangement.jpg'
+import Labeq from './../assets/img/Labeqp.webp'
 
 
 // Main container for the entire section
@@ -19,7 +20,12 @@ const SectionContainer = styled.section`
   text-align: center;
   background-color: #ddf5ff;
 `;
-
+const Maincontent=styled.div`
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 30px;
+`
 // Title of the section
 const SectionTitle = styled.h2`
   font-size: 2.5em;
@@ -142,28 +148,7 @@ const ProductCard = () => {
     <SectionContainer>
       <SectionTitle>Atomwalk Office ERP connects every aspect of your business into one unified system</SectionTitle>
       <ContentContainer>
-        
-      <ContentBox bgColor="#d6e7ff">
-          <ImageContainer>
-            <img src={Crm} alt="Performance management" />
-          </ImageContainer>
-          <TextContainer>
-            <BoxHeading>Customer Management</BoxHeading>
-            <BoxText>
-            <ul>
-						<li>Lead Management</li>
-						<li>Customer Management </li>
-						<li>Channel partner management</li>
-						<li>Annual Maintenance Contract</li>
-						<li>Campaign Management</li>
-						</ul>
-            </BoxText>
-            <Button>Experience Live Demo</Button>
-          </TextContainer>
-          <DecorativeCircle top="20%" left="5%" />
-          <DecorativeCircle bottom="10%" right="70%" />
-        </ContentBox>
-        <ContentBox bgColor="#fae0f8">
+      <ContentBox bgColor="#fae0f8">
           <TextContainer>
             <BoxHeading>HR & Payroll</BoxHeading>
             <BoxText>
@@ -186,19 +171,19 @@ const ProductCard = () => {
           <DecorativeCircle top="10%" left="80%" />
           <DecorativeCircle bottom="5%" right="10%" />
         </ContentBox>
-        
-        <ContentBox bgColor="#e0f7fa">
+      <ContentBox bgColor="#d6e7ff">
           <ImageContainer>
-            <img src={Lab} alt="Performance management" />
+            <img src={Crm} alt="Performance management" />
           </ImageContainer>
           <TextContainer>
-            <BoxHeading>Lab Management</BoxHeading>
+            <BoxHeading>Customer Management</BoxHeading>
             <BoxText>
             <ul>
-						<li>Enhanced User Management</li>
-						<li>Simplified Equipment Management</li>
-						<li>Equipment Maintenance</li>
-						<li>Gain Insights with Report & Analytics</li>
+						<li>Lead Management</li>
+						<li>Customer Management </li>
+						<li>Channel partner management</li>
+						<li>Annual Maintenance Contract</li>
+						<li>Campaign Management</li>
 						</ul>
             </BoxText>
             <Button>Experience Live Demo</Button>
@@ -379,6 +364,47 @@ const ProductCard = () => {
           <DecorativeCircle bottom="10%" right="70%" />
         </ContentBox>
       </ContentContainer>
+      <SectionTitle style={{marginTop:"40px"}}>LabSync ERP: Uniting Every Element of Your Lab into One Seamless System</SectionTitle>
+      <Maincontent>
+      <ContentBox bgColor="#e0f7fa">
+          <ImageContainer>
+            <img src={Labeq} alt="Performance management" />
+          </ImageContainer>
+          <TextContainer>
+            <BoxHeading>Lab Equipment Management System</BoxHeading>
+            <BoxText>
+            <ul>
+						<li>Enhanced User Management</li>
+						<li>Simplified Equipment Management</li>
+						<li>Equipment Maintenance</li>
+						<li>Gain Insights with Report & Analytics</li>
+						</ul>
+            </BoxText>
+            <Button>Experience Live Demo</Button>
+          </TextContainer>
+          <DecorativeCircle top="20%" left="5%" />
+          <DecorativeCircle bottom="10%" right="70%" />
+        </ContentBox>
+        <ContentBox bgColor="#f6eaff">
+          <ImageContainer>
+            <img src={Lab} alt="Performance management" />
+          </ImageContainer>
+          <TextContainer>
+            <BoxHeading>Lab Management System</BoxHeading>
+            <BoxText>
+            <ul>
+						<li>Lab User Management</li>
+						<li>Lab Process Template</li>
+						<li>Lab Experiment Project</li>
+						<li>Lab PI/Dashboard and Report</li>
+						</ul>
+            </BoxText>
+            <Button>Experience Live Demo</Button>
+          </TextContainer>
+          <DecorativeCircle top="20%" left="5%" />
+          <DecorativeCircle bottom="10%" right="70%" />
+        </ContentBox>
+        </Maincontent>
     </SectionContainer>
   );
 };

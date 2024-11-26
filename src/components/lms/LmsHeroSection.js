@@ -171,7 +171,7 @@ const LmsHeroSection = () => {
             background={background}
             onMouseEnter={() => handleMouseEnter('linear-gradient(180deg, #edd4fc, rgb(255 246 247))', CrmApp)}
             onMouseLeave={handleMouseLeave}
-            onClick={()=>{setopenpop(!openpop)}}
+            onClick={()=>{window.location.href='/labmanagement.html'}}
           >
             <FeatureIcon src={Crm} alt="CRM" />
             <FeatureText>Lab Management System: Streamlined Solutions for Modern Lab Operations.</FeatureText>

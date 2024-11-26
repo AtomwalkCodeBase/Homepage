@@ -6,6 +6,7 @@ import HRMHeadBG from '../../assets/img/hr.png';
 import KeyFeatureHrm from './KeyFeatureHrm';
 import FeatureBenifits from '../FeatureBenifits';
 import FAQSection from './FAQSection';
+import { useNavigate } from 'react-router-dom';
 
 const Page = styled.div`
   background-color: white;
@@ -72,7 +73,12 @@ const HeadTextArea = styled.div`
   }
 `;
 
-
+const ButtonWrap=styled.div`
+display: flex;
+align-items: center;
+justify-content: left;
+gap:20px;
+`;
 
 const HeadTextOne = styled.div`
   color: #1c1b1f;
@@ -134,10 +140,21 @@ const HeadImage = styled.div`
     border-radius: 15px;
   }
 `;
-
+const ButtonOne1 = styled.button`
+  align-items: center;
+  background-color: #6c757d;
+  border-radius: 100px;
+  color: #fff;
+  font-weight: 400;
+  padding: 14px 32px;
+  text-align: center;
+`;
 
 const HrmComponent = () => {
-   
+  const navigate = useNavigate();
+  const navback=()=>{
+    navigate(-1);
+  }
 const demo =()=>{
   window.location.href='/demo.html'
 }
@@ -150,9 +167,12 @@ const demo =()=>{
             <HeadPara>
             A smart, mobile-first solution for managing employee attendance, leave requests, claims, and real-time location tracking—right from your phone
             </HeadPara>
-            <ButtonOne onClick={demo}>
+            <ButtonWrap> <ButtonOne onClick={demo}>
               <ButtonText>Request a Demo</ButtonText>
             </ButtonOne>
+            <ButtonOne1 onClick={navback}>
+              <ButtonText>Back</ButtonText>
+            </ButtonOne1></ButtonWrap>
           </HeadTextArea>
           <HeadImageArea>
             <HeadImage>

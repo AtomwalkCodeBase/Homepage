@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import Hr from './../assets/img/human-resources1.png'
-import Crm from './../assets/img/crm1.png'
-import Lab from './../assets/img/Labtest.png'
-import Erp from './../assets/img/erp.png'
+import Hr from './../assets/img/human-resources1.png';
+import Crm from './../assets/img/crm1.png';
+import Lab from './../assets/img/Labtest.png';
+import Erp from './../assets/img/erp.png';
 
 // Keyframes for slide-down animation
 const slideDown = keyframes`
@@ -44,6 +44,15 @@ const ProductMenuContainer = styled.div`
     font-size: 1rem;
     font-weight: 500;
 
+    &.active {
+      background-color: #f39c12;
+      color: #ffffff;
+
+      .product-icon {
+        transform: scale(1.1);
+      }
+    }
+
     &:hover {
       background-color: #f39c12;
       color: #ffffff;
@@ -73,28 +82,42 @@ const MenuTitle = styled.div`
 
 const ProductMenu = ({ show }) => {
   const navigate = useNavigate();
+  const [selectedProduct, setSelectedProduct] = useState('');
 
-  const handleProductClick = (product) => {
-    navigate(product);
+  const handleProductClick = (product, path) => {
+    setSelectedProduct(product);
+    navigate(path);
   };
 
   return (
     <ProductMenuContainer show={show}>
       <MenuTitle>Explore Our Products</MenuTitle>
-      <div className="product-item" onClick={() => handleProductClick('/crm.html')}>
+      <div
+        className={`product-item ${selectedProduct === 'CRM' ? 'active' : ''}`}
+        onClick={() => handleProductClick('CRM', '/crm.html')}
+      >
         <img className="product-icon" src={Crm} alt="CRM" />
         <span>Customer Relationship Management (CRM)</span>
       </div>
-      <div className="product-item" onClick={() => handleProductClick('/hrm.html')}>
+      <div
+        className={`product-item ${selectedProduct === 'HRM' ? 'active' : ''}`}
+        onClick={() => handleProductClick('HRM', '/hrm.html')}
+      >
         <img className="product-icon" src={Hr} alt="HRM" />
         <span>Human Resource Management (HRM)</span>
       </div>
-      <div className="product-item" onClick={() => handleProductClick('/lms.html')}>
+      <div
+        className={`product-item ${selectedProduct === 'LMS' ? 'active' : ''}`}
+        onClick={() => handleProductClick('LMS', '/lms.html')}
+      >
         <img className="product-icon" src={Lab} alt="LMS" />
         <span>Lab Management System (LMS)</span>
       </div>
-      <div className="product-item" onClick={() => handleProductClick('/Product.html')}>
-        <img className="product-icon" src={Erp} alt="LMS" />
+      <div
+        className={`product-item ${selectedProduct === 'ERP' ? 'active' : ''}`}
+        onClick={() => handleProductClick('ERP', '/Product.html')}
+      >
+        <img className="product-icon" src={Erp} alt="ERP" />
         <span>Enterprise Resource Planning (ERP)</span>
       </div>
     </ProductMenuContainer>

@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import mainImage from "../../assets/img/Labtest.png"; // Your main image path
+import mainImage from "../../assets/img/Lab_Management_System_illustration.png"; // Your main image path
 import abstractShape from "../../assets/img/Logo placeholder.png"; // Abstract shapes in the top left
 import FeatureBenifits from "../FeatureBenifits";
 import FAQSection from "../hrm/FAQSection";
-import KeyFeaturelems from "./KeyFeaturelems";
+import KeyFetureLms from "./KeyFetureLms";
 // import labApparatus from "./../assets/img/machine.png"; // The lab apparatus image
 
 // Styled Components
@@ -182,14 +182,14 @@ const LabManagement = () => {
         <Description>
          Laboratories require meticulous organization and data management. A robust Lab Management System (LMS) can automate processes such as sample tracking, data entry, and reporting, which streamlines operations and ensures compliance with industry standards.
         </Description>
-        <Button>Learn more</Button>
+        <Button onClick={()=>{window.location.href="/userManagement.html"}}>Learn more</Button>
       </TextContainer>
       <ImageContainer>
         <Image src={mainImage} alt="Laboratory Technician" />
       </ImageContainer>
     </Section>
     <FeatureBenifits data={'lead'}></FeatureBenifits>
-    <KeyFeaturelems></KeyFeaturelems>
+    <KeyFetureLms></KeyFetureLms>
     <FAQSection data={"equipment"}></FAQSection>
     </>
   );

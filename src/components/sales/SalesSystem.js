@@ -104,7 +104,7 @@ const SalesSytem = () => {
         lead={true}
       />
       {/* <ProcessFlow bgcolors={"#e8fcec"} data={currentPageConfig.titles}></ProcessFlow> */}
-      <SalesProcessFlow bgcolors={"#FFF9C4"} data={currentPageConfig.titles}/>
+      <SalesProcessFlow bgcolors={"#cefad0"} data={currentPageConfig.titles}/>
       <SalesFeatures data={showData}></SalesFeatures>
     </div>
   )

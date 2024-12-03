@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import People from './../assets/img/Backgroundpeople.png';
 import product from './../assets/img/Product.png';
 import Crm from './../assets/img/CrmHero.png';
+import Sales from './../assets/img/Sales&Procurement.png';
 import { useNavigate } from 'react-router-dom';
 
 // Styled Components
@@ -123,7 +124,7 @@ const LetsConnect = (props) => {
       </TextContainer>
       <ImageContainer>
         <PeopleImage
-          src={props.data ? product : props.crm ? Crm : props.lead ? props.img : People}
+          src={props.data ? product : props.sales ? Sales : props.crm ? Crm : props.lead ? props.img : People}
           alt="People talking"
         />
       </ImageContainer>

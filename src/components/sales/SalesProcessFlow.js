@@ -15,15 +15,15 @@ const Section = styled.div`
 `;
 
 const Title = styled.h1`
-  margin-top: 80px;
-  font-size: 35px;
-  font-weight: 700;
+  margin-top: 10px;
+  font-size: 30px;
+  font-weight: 800;
   color: #2c3e50;
   text-align: center;
   margin-bottom: 40px;
 
   @media (min-width: 768px) {
-    font-size: 45px;
+    font-size: 40px;
   }
 `;
 
@@ -111,101 +111,20 @@ const Arrow = styled.div`
   }
 `;
 
-export const ProcessFlow = ({ data,bgcolors}) => {
+export const SalesProcessFlow = ({ data,bgcolors}) => {
   // Define different flows for each type
   const flows = {
-    Claim: [
-      { step: 'Expense Item Setup'},
-      { step: 'Expense Advance for Employee' },
-      { step: 'Claim Expense'},
-      { step: 'Approval Of Claim'},
-      { step: 'Settlement of Claims'},
-      { step: 'Reports & Dashboards'},
-    ],
-    Leave: [
-      { step: 'Setup Holiday Calendar'},
-      { step: 'Leave Dashboard'},
-      { step: 'Manage Leave by Employee'},
-      { step: 'Manage Leave by Manager'},
-      { step: 'Reports & Analysis'},
-    ],
-    Payroll: [
-      { step: 'Payroll Setup & Controls'},
-      { step: 'Generate Monthly Salary'},
-      { step: 'Post Salary'},
-    ],
-    Attendance: [
-      { step: 'Check-in'},
-      { step: 'Attendance Dashboard'},
-      { step: 'Manage Attendance'},
-    ],
-    Appraisal: [
-      { step: 'Performance Mangement System'},
-      { step: 'Self Appraisal Process '},
-      { step: 'Manager Appriasl Process '},
-      { step: 'Appriasl Rivew Process and Reports '},
-    ],
-    HR: [
-        
-        { step: 'On-Boarding'},
-        { step: 'Employee Data'},
-        { step: 'Exit Process'},
-    ],
-    Lead: [
-      { step: 'Lead Capture', color: '#4A90E2' },
-      { step: 'Lead Tracking', color: '#4A90E2' },
-      { step: 'Obtain Customer Management', color: '#4A90E2' },
-      { step: 'Lead Lifecycle Management ', color: '#4A90E2' },
-      { step: 'Lost Lead Recovery and Management', color: '#4A90E2' },
-    ],
-    Campaign: [
-      { step: 'Flexible Template Creation by User (No Restrictions)', color: '#4A90E2' },
-      { step: 'Universal Template Access for All Users', color: '#4A90E2' },
-      { step: 'Target Audience Segmentation', color: '#4A90E2' },
-      { step: 'Campaign Template Review Process', color: '#4A90E2' },
-      { step: 'Automated Campaign Trigger with Predefined Scheduler', color: '#4A90E2' }
-    ],
-    Partner : [
-      { step: ' Add Partner', color: '#4A90E2' },
-      { step: 'Order Information Tracking', color: '#4A90E2' },
-      { step: 'Commission Management', color: '#4A90E2' },
-      { step: 'Multi-Report Generation', color: '#4A90E2' },
-    ],
-    Customer : [
-      { step: ' Customer Uploading (Upload Customer Data)', color: '#4A90E2' },
-      { step: 'Order Management (Manage Reservations)', color: '#4A90E2' },
-      { step: ' Process-wise Order Management (Resale and Cross-Selling)', color: '#4A90E2' },
-      { step: 'Ticket Tracking (AMC Tracking)', color: '#4A90E2' },
-      { step: 'Reports and Dashboards', color: '#4A90E2' }
-    ],
-    UserManagement:[
-      { step: 'User Group Setup', color: '#4A90E2' },
-      { step: 'User Profile Creation', color: '#4A90E2' },
-      { step: 'Update/ Delete Profile', color: '#4A90E2' },
-
-    ]
-    ,
-    EquipmentManagement:[
-      { step: 'Equipment Setup', color: '#4A90E2' },
-      { step: 'Booking', color: '#4A90E2' },
-      { step: ' Cancellation', color: '#4A90E2' },
-    ],
-    EquipmentMaintenance:[
-      { step: 'preventive Maintenance', color: '#4A90E2' },
-      { step: 'Emergency maintenance', color: '#4A90E2' },
-    ],
-    ReportandDashboard:[
-      { step: ' Usage Trends', color: '#4A90E2' },
-      { step: 'Audit ready records', color: '#4A90E2' },
-      { step: 'Data purge ', color: '#4A90E2' },
-      { step: 'Analytics', color: '#4A90E2' },
-    ],
-    SalesLifecycle:[
+    SalesLifecycleService:[
       { step: 'Quotation/Sales Order', color: '#4A90E2' },
-      { step: 'Work Order Execution', color: '#4A90E2' },
+      { step: 'Sales Invoice', color: '#4A90E2' },
+      { step: 'Payment Management', color: '#4A90E2' },
+    ],
+    Sales:[
+      { step: 'Quotation/Sales Order', color: '#4A90E2' },
+      { step: 'Work Order Creation (Project)', color: '#4A90E2' },
       { step: 'Sales Invoice', color: '#4A90E2' },
       { step: 'Delivery Chalan', color: '#4A90E2' },
-      { step: 'Allocate Inventory', color: '#4A90E2' },
+      // { step: 'Allocate Inventory', color: '#4A90E2' },
       { step: 'Shipment Details', color: '#4A90E2' },
       { step: 'Payment Management', color: '#4A90E2' },
     ],
@@ -218,9 +137,15 @@ export const ProcessFlow = ({ data,bgcolors}) => {
     ],
     Compliance:[
       { step: 'E-Way Bill', color: '#4A90E2' },
-      { step: 'TDS', color: '#4A90E2' },
-      { step: 'GST', color: '#4A90E2' },
       { step: 'E-Invoice', color: '#4A90E2' },
+      { step: 'GST', color: '#4A90E2' },
+      { step: 'TDS', color: '#4A90E2' },
+    ],
+    Report:[
+      { step: 'Sales Report', color: '#4A90E2' },
+      { step: 'Procurement Report', color: '#4A90E2' },
+      { step: 'GST', color: '#4A90E2' },
+      { step: 'TDS', color: '#4A90E2' },
     ],
    
   };
@@ -236,7 +161,7 @@ export const ProcessFlow = ({ data,bgcolors}) => {
 
   return (
     <PageContainer bgcolor={bgcolors}>
-      <Title>Process Flow for {data}</Title>
+      <Title>{data} Lifecycle</Title>
       <Section>
         <IndustryContainer style={{ backgroundColor: "#ffffff" }}>
           

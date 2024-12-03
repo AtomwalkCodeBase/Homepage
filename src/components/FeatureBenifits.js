@@ -136,11 +136,19 @@ const labEquipment = [
   { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ffe8cc', icon: Icon3 },
   { title: 'Stay Audit-Ready', text: 'Automated Logs, Effortless Records ', bgColor: '#d9f5e3', icon: Icon5 },
 ];
+const sales = [
+  { title: '24/7 Access with less man power', text: 'Schedule Equipment Anytime, Seamlessly', bgColor: '#d7faff', icon: Icon1 },
+  { title: 'Real-Time Availability!', text: 'Stay Updated, Avoid Surprises', bgColor: '#d9f5e3', icon: Icon3 },
+  { title: 'Efficiency', text: 'Automate tasks like orders creation or generating invoices', bgColor: '#fff1d0', icon:  Icon2 },
+  { title: 'Business Growth', text: 'Payment reminders and tax invoice creation simplify cash flow management.', bgColor: '#f2e3ff', icon: Icon8 },
+  { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ffe8cc', icon: Icon7 },
+  { title: 'Stay Audit-Ready', text: 'Tracking all the detailed changes', bgColor: '#d9f5e3', icon: Icon5 },
+];
 
 
 const FeatureBenifits = ({ data }) => {
   // Determine which set of benefits to display based on the response data
-  const benefits = data === 'Claim' ? claimBenefits :data=='lead'?leadBenefits:data =='HR' ? hrmBenefits:data =='Equipment' ? labEquipment: leaveBenefits;
+  const benefits = data === 'Claim' ? claimBenefits :data=='lead'?leadBenefits:data =='HR' ? hrmBenefits:data =='Equipment' ? labEquipment:data =='Sales and Procurement' ? sales: leaveBenefits;
 
   return (
     <Section>

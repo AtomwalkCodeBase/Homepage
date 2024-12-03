@@ -144,6 +144,11 @@ const ProductCard = () => {
   const demopage =()=>{
     window.location.href='/demo.html'
   }
+
+  const salespage=()=>{
+    window.location.href="/sales.html"
+  }
+
   return (
     <SectionContainer>
       <SectionTitle>Atomwalk Office ERP connects every aspect of your business into one unified system</SectionTitle>
@@ -277,7 +282,7 @@ const ProductCard = () => {
 						<li>Purchase Service Order, TDS handling</li>
 						</ul>
             </BoxText>
-            <Button>Experience Live Demo</Button>
+            <Button  onClick={salespage}>Experience Live Demo</Button>
           </TextContainer>
           <DecorativeCircle top="20%" left="5%" />
           <DecorativeCircle bottom="10%" right="70%" />

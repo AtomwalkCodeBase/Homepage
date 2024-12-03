@@ -29,6 +29,9 @@ import HerosectionCrm from "./components/crm/HerosectionCrm";
 import LmsHeroSection from "./components/lms/LmsHeroSection";
 import LabEqupmentmanagement from "./components/lms/LabEqupmentmanagement";
 import LmsSytem from "./components/lms/LmsSytem";
+import SalesHeroSection from "./components/sales/SalesHeroSection";
+import SalesLifeCycle from "./components/sales/SalesLifeCycle";
+import SalesSytem from "./components/sales/SalesSystem";
 
 function App() {
   const[openslide,setOpenslide]=useState(false);
@@ -98,6 +101,12 @@ const loginAndStore=async()=>{
           <Route path="/reportandDashboard.html" element={<LmsSytem/>} />
           <Route path="/labmanagement.html" element={<LabManagement/>} />
           <Route path="/labequipmentmangement.html" element={<LabEqupmentmanagement/>} />
+          <Route path="/sales.html" element={<SalesHeroSection/>} />
+          {/* <Route path="/saleslifecycle.html" element={<SalesLifeCycle/>} /> */}
+          <Route path="/saleslifecycle.html" element={<SalesSytem/>} />
+          <Route path="/procurement.html" element={<SalesSytem/>} />
+          <Route path="/compliance.html" element={<SalesSytem/>} />
+          <Route path="/salesreport.html" element={<SalesSytem/>} />
         </Routes>
       </Router>
       {openslide&&<Askme setOpenslide={setOpenslide}/>}

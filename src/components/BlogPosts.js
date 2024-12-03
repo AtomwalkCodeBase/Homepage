@@ -153,11 +153,11 @@ const posts = [
     },
     {
       id: 4,
-      title: "The Impact of Technology on the Workplace: How Technology is Changing",
+      title: "Efficient Inventory Management with Atomwalk",
       category: "Technology",
       image: "https://koala.sh/api/image/v2-213fq-qwlz7.jpg?width=1216&height=832&dream",
-      author: "Ernie Smith",
-      date: "August 20, 2022",
+      author: "Pritam Kumar Nayak",
+      date: "November 29, 2024",
     },
     {
       id: 5,

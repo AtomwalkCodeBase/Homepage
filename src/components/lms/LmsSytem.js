@@ -8,7 +8,7 @@ import Campaign  from '../../assets/img/Dashboardaand.png'
 import { ProcessFlow } from '../hrm/ProcessFlow'
 import LmsFeatures from './LmsFeatures'
 
-const LmsSytem = () => {
+const LmsSytem = ({data}) => {
   const[showData,setShowData]=useState("");
   const location = useLocation();
 
@@ -42,7 +42,34 @@ const LmsSytem = () => {
       background: "#bbfcc0",
       img: `${Campaign}`  // Add your image path here
     },
-    
+    {
+      title: "User and Role Management",
+      titles: "UserManagement",
+      description: "Atomwalk’s LMS ensures Role-based access control to restrict data access based on user roles, and manage permissions to ensure secure and appropriate data access.",
+       background: "#e8f4fc",
+      img: `${Campaign}`  // Add your image path here
+    },
+    {
+      title: "Lab Process Template",
+      titles: "LabProcess",
+      description: "Provide a simplified way to manage experiment templates required for the laboratory. Include various experiment templates with necessary steps, required inventory, and equipment. This ensures optimized and error-free execution of experiments by lab users.",
+      background: "#e8f4fc",
+      img: `${Partner}`  // Add your image path here
+    },
+    {
+      title: "Lab Experiment Project Execution",
+      titles: "LabExperiment",
+      description: "Provide a simplified way to manage experiment templates required for the laboratory. Include various experiment templates with necessary steps, required inventory, and equipment. This ensures optimized and error-free execution of experiments by lab users.",
+      background: "#e8f4fc",
+      img: `${Partner}`  // Add your image path here
+    },
+    {
+      title: "PI with Report & Dashboard",
+      titles: "LabExperiment",
+      description: "Provides a Performance Indicator (PI) system integrated with detailed reports and interactive dashboards, offering real-time insights and tracking of key metrics for informed decision-making.",
+      background: "#e8f4fc",
+      img: `${Partner}`  // Add your image path here
+    },    
     // You can add more management types if needed
   ];
 
@@ -55,13 +82,24 @@ const LmsSytem = () => {
         setShowData('equipmentManagement')
     }
     else if(location.pathname.includes('equipmentMaintenance')){
-        setShowData('equipmentMaintenance')
-        
+        setShowData('equipmentMaintenance')  
     }
     else if(location.pathname.includes('reportandDashboard')){
         setShowData('reportandDashboard')
     }
-  },[location.pathname])
+    else if(location.pathname.includes('userroleManagement')){
+      setShowData('userroleManagement')
+  }
+   else if(location.pathname.includes('labProcessemplate')){
+    setShowData('labProcessemplate')
+   }
+   else if(location.pathname.includes('labExperimentProject')){
+     setShowData('labExperimentProject')
+   }
+   else if(location.pathname.includes('pIwithReport')){
+     setShowData('pIwithReport')
+   }
+     },[location.pathname])
   const getCurrentPageConfig = () => {
     if (location.pathname.includes('userManagement')) {
       return managementPages[0]; // Lead Management data
@@ -73,6 +111,18 @@ const LmsSytem = () => {
     }
     else if (location.pathname.includes('reportandDashboard')) {
     return  managementPages[3]; // Customer Management data
+}
+else if (location.pathname.includes('userroleManagement')) {
+  return managementPages[4]; // Customer Management data
+}
+else if (location.pathname.includes('labProcessemplate')) {
+  return managementPages[5]; // Customer Management data
+}
+else if (location.pathname.includes('labExperimentProject')) {
+  return managementPages[6]; // Customer Management data
+}
+else if (location.pathname.includes('pIwithReport')) {
+  return managementPages[7]; // Customer Management data
 }
     // Default to Lead Management if no match
     return managementPages[0];
@@ -89,8 +139,8 @@ const LmsSytem = () => {
         img={currentPageConfig.img}
         lead={true}
       />
-      <ProcessFlow bgcolors={"#e8fcec"} data={currentPageConfig.titles}></ProcessFlow>
-      <LmsFeatures data={showData}></LmsFeatures>
+      <ProcessFlow bgcolors={data?"#e8fafc":"#e8fcec"} data={currentPageConfig.titles}></ProcessFlow>
+      <LmsFeatures bgcolors={data?"#e8fafc":"#e8fcec"} data={showData}></LmsFeatures>
     </div>
   )
 }

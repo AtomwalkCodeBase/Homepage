@@ -99,6 +99,10 @@ const loginAndStore=async()=>{
           <Route path="/equipmentManagement.html" element={<LmsSytem/>} />
           <Route path="/equipmentMaintenance.html" element={<LmsSytem/>} />
           <Route path="/reportandDashboard.html" element={<LmsSytem/>} />
+          <Route path="/userroleManagement.html" element={<LmsSytem data={true}/>} />
+          <Route path="/labProcessemplate.html" element={<LmsSytem data={true}/>} />
+          <Route path="/labExperimentProject.html" element={<LmsSytem data={true}/>} />
+          <Route path="/pIwithReport.html" element={<LmsSytem data={true}/>} />
           <Route path="/labmanagement.html" element={<LabManagement/>} />
           <Route path="/labequipmentmangement.html" element={<LabEqupmentmanagement/>} />
           <Route path="/sales.html" element={<SalesHeroSection/>} />

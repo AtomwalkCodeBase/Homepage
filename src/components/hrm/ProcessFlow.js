@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { useNavigate, useLocation } from "react-router-dom";
 
 const PageContainer = styled.div`
@@ -77,7 +77,7 @@ const Step = styled.div`
   transition: all 0.3s ease-in-out;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  
+
   &:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   }
@@ -89,9 +89,9 @@ const Step = styled.div`
 `;
 
 const DocText =styled.p`
-text-align: center;
-color: #4A90E2;
-font-weight: bold;
+  text-align: center;
+  color: #4A90E2;
+  font-weight: bold;
 
 `;
 
@@ -199,6 +199,23 @@ export const ProcessFlow = ({ data,bgcolors}) => {
       { step: 'Audit ready records', color: '#4A90E2' },
       { step: 'Data purge ', color: '#4A90E2' },
       { step: 'Analytics', color: '#4A90E2' },
+    ],
+    UserManagement:[
+      { step: 'User Group Setup', color: '#4A90E2' },
+      { step: 'User Profile Creation', color: '#4A90E2' },
+      { step: 'Update/ Delete Profile', color: '#4A90E2' },
+    ],
+    LabProcess:[
+      { step: 'Setup Inventory and Equipment', color: '#4A90E2' },
+      { step: 'Document and Report Configuration', color: '#4A90E2' },
+      { step: 'Activity Creation', color: '#4A90E2' },
+      { step: 'Quality Management', color: '#4A90E2' },
+    ],
+    LabExperiment:[
+      { step: 'Project Creation', color: '#4A90E2' },
+      { step: 'Activity Steps Definition', color: '#4A90E2' },
+      { step: 'Process Template Selection', color: '#4A90E2' },
+      { step: 'Inventory Items Addition', color: '#4A90E2' },
     ],
     SalesLifecycle:[
       { step: 'Quotation/Sales Order', color: '#4A90E2' },

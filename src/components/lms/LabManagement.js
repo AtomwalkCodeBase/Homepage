@@ -188,7 +188,7 @@ const LabManagement = () => {
         <Image src={mainImage} alt="Laboratory Technician" />
       </ImageContainer>
     </Section>
-    <FeatureBenifits data={'lead'}></FeatureBenifits>
+    <FeatureBenifits data={'LMS'}></FeatureBenifits>
     <KeyFetureLms></KeyFetureLms>
     <FAQSection data={"equipment"}></FAQSection>
     </>

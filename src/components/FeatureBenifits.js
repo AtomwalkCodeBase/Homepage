@@ -16,6 +16,10 @@ import Icon5 from '../assets/img/better_experience.png';
 import Icon6 from '../assets/img/transparency.png';
 import Icon7 from '../assets/img/brand_reputaion.png';
 import Icon8 from '../assets/img/money_saving.png';
+import Icon9 from '../assets/img/customize.png';
+import Icon10 from '../assets/img/encrypted.png';
+import Icon11 from '../assets/img/quality.png';
+import Icon12 from '../assets/img/scalability1.png';
 
 
 
@@ -136,6 +140,14 @@ const labEquipment = [
   { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ffe8cc', icon: Icon3 },
   { title: 'Stay Audit-Ready', text: 'Automated Logs, Effortless Records ', bgColor: '#d9f5e3', icon: Icon5 },
 ];
+const labManagement = [
+  { title: 'Quality', text: 'Schedule Equipment Anytime, Seamlessly', bgColor: '#d7faff', icon: Icon11 },
+  { title: 'Data Security', text: 'Stay Updated, Avoid Surprises', bgColor: '#d9f5e3', icon: Icon10 },
+  { title: 'Scalability ', text: 'Group, Control, Assign Roles', bgColor: '#fff1d0', icon:  Icon12 },
+  { title: 'Customization', text: 'Smart Scheduling, Uninterrupted Operations', bgColor: '#f2e3ff', icon: Icon9 },
+  { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ffe8cc', icon: Icon3 },
+  { title: 'Stay Audit-Ready', text: 'Automated Logs, Effortless Records ', bgColor: '#d9f5e3', icon: Icon5 },
+];
 const sales = [
   { title: '24/7 Access with less man power', text: 'Schedule Equipment Anytime, Seamlessly', bgColor: '#d7faff', icon: Icon1 },
   { title: 'Real-Time Availability!', text: 'Stay Updated, Avoid Surprises', bgColor: '#d9f5e3', icon: Icon3 },
@@ -148,7 +160,7 @@ const sales = [
 
 const FeatureBenifits = ({ data }) => {
   // Determine which set of benefits to display based on the response data
-  const benefits = data === 'Claim' ? claimBenefits :data=='lead'?leadBenefits:data =='HR' ? hrmBenefits:data =='Equipment' ? labEquipment:data =='Sales and Procurement' ? sales: leaveBenefits;
+  const benefits = data === 'LMS' ? labManagement: data === 'Claim' ? claimBenefits :data=='lead'?leadBenefits:data =='HR' ? hrmBenefits:data =='Equipment' ? labEquipment:data =='Sales and Procurement' ? sales: leaveBenefits;
 
   return (
     <Section>

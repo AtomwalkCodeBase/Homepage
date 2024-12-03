@@ -3,7 +3,6 @@ import styled from "styled-components";
 import abstractShape from "../../assets/img/Logo placeholder.png"; // Abstract shapes in the top left
 import FeatureBenifits from "../FeatureBenifits";
 import FAQSection from "../hrm/FAQSection";
-import SalesImage from "../../assets/img/Sales_Life_Cycle.png";
 import KeyFeatureSales from "./KeyFeatureSales";
 import TagImg from '../../assets/img/Sales&Procurement.png';
 import LetsConnect from "../LetsConnect";
@@ -133,7 +132,7 @@ const SalesHeroSection = () => {
 
   return (
     <>
-       <LetsConnect title={"Simplify & Efficient Your Sales and Procurement Operations"} description={"Take control of your business with a seamless ERP solution that helps you manage sales orders, quotations, invoices, payments, procurement, inventory, and compliance—all in one place."} background={"#ffeb3b"} sales={true}></LetsConnect>
+       <LetsConnect title={"Simplify & Efficient Your Sales and Procurement Operations"} description={"Take control of your business with a seamless ERP solution that helps you manage sales orders, quotations, invoices, payments, procurement, inventory, and compliance—all in one place."} background={"#ffeb3b"} lead={true} img={TagImg}></LetsConnect>
       <FeatureBenifits data={"Sales and Procurement"} />
       <KeyFeatureSales/>
       

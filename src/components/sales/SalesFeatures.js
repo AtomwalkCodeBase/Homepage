@@ -26,7 +26,7 @@ const Features = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #cefad0; 
+  background-color: ${(props) => props.bgcolor ? props.bgcolor : "#cefad0"};; 
   padding: 20px;
   
   @media (min-width: 768px) {
@@ -155,7 +155,7 @@ const TextSection = styled.div`
 `;
 
 
-const SalesFeatures = ({data}) => {
+const SalesFeatures = ({data,bgcolors}) => {
     const isClaim = data;
     const location = useLocation(); // Get the current URL
 
@@ -182,7 +182,7 @@ const SalesFeatures = ({data}) => {
     }, [location.search]);
 
     const getFeatureContent = (feature) => (
-      <Features>
+      <Features bgcolor={bgcolors}>
         {feature.imgPosition === 'left' ? (
           <>
             <ImageSection>

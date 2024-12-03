@@ -21,14 +21,16 @@ const SalesSytem = () => {
       title: "Enhance Your Sales Lifecycle Management",
       titles: "Sales",
       description: "From work orders to invoicing, streamline your sales process for better control and business growth.",
-      background: "#FFF176",
+      background: "#C7F98E",
+      backgrounds: "#cefad0",
       img: `${Sales}`  // Add your image path here
     },
     {
       title: "Streamlined Procurement, Smarter Decisions",
       titles: "Procurement",
       description: "From supplier identification to payment settlement, manage every step of your procurement lifecycle with efficiency and control.",
-      background: "#FFF176",
+      background: "#fc6ae2",
+      backgrounds: "#FED7F7",
       img: `${Procurement}`  // Add your image path here
     },
     {
@@ -36,6 +38,7 @@ const SalesSytem = () => {
       titles: "Compliance",
       description: "Streamline GST, TDS, and e-way bill management with Atomwalk to ensure effortless adherence to regulatory requirements.",
       background: "#FFF176",
+      backgrounds: "#fff9c4",
       img: `${Compliance}`  // Add your image path here
     },
     {
@@ -43,6 +46,7 @@ const SalesSytem = () => {
       titles: "Report",
       description: "Unlock the power of data with Atomwalk’s detailed reports and Dashboard. Gain clear insights into usage pattern of equpments and labs  ",
       background: "#FFF176",
+      backgrounds: "#fff9c4",
       img: `${Campaign}`  // Add your image path here
     },
     
@@ -104,8 +108,8 @@ const SalesSytem = () => {
         lead={true}
       />
       {/* <ProcessFlow bgcolors={"#e8fcec"} data={currentPageConfig.titles}></ProcessFlow> */}
-      <SalesProcessFlow bgcolors={"#cefad0"} data={currentPageConfig.titles}/>
-      <SalesFeatures data={showData}></SalesFeatures>
+      <SalesProcessFlow data={currentPageConfig.titles} bgcolors={currentPageConfig.backgrounds}/>
+      <SalesFeatures data={showData} bgcolors={currentPageConfig.backgrounds}></SalesFeatures>
     </div>
   )
 }

@@ -6,7 +6,12 @@ import CheckMark from '../../assets/img/check_mark.png';
 import img1 from '../../assets/img/CrmMocups2.svg';
 import img2 from '../../assets/img/CrmMocups.svg';
 import img3 from '../../assets/img/emp_advance.svg';
-import img4 from '../../assets/img/approve_claim.svg'
+import img4 from '../../assets/img/campain1.svg'
+import img5 from '../../assets/img/campign2.svg'
+import img6 from '../../assets/img/campgin3.svg'
+import img7 from '../../assets/img/Customerdata1.svg'
+import img10 from '../../assets/img/Amc1.svg'
+import img11 from '../../assets/img/Reportanddashboard.svg'
 import { useLocation } from "react-router-dom";
 const Container = styled.div`
   width: 100%;
@@ -34,7 +39,7 @@ const ImageSection = styled.div`
   margin-top: 10px;
 
   img {
-    width: 130%;
+    width: 100%;
     /* max-width: 500px; */
   }
 
@@ -144,8 +149,8 @@ const TextSection = styled.div`
 
 
 const CrmFeatures = ({data}) => {
-    const isClaim = data === 'Claim';
-
+  console.log(data,"  dcjcnd");
+  const isClaim = data;
     const getFeatureContent = (feature) => (
       <Features>
         {feature.imgPosition === 'left' ? (
@@ -196,31 +201,8 @@ const CrmFeatures = ({data}) => {
       </Features>
     );
   
-    const features = isClaim
-      ? [
-        {
-          title: 'Effortless Campaign Management',
-          subtitle: 'Seamlessly Create, View, and Manage Campaigns',
-          description:
-            'Atomwalk CRM offers a user-friendly interface to manage customer email campaigns with ease. Users can add new campaigns, view campaign lists, and access powerful search features to quickly find specific campaigns. With organized tools, campaign creation and management become intuitive and efficient, allowing you to focus on engagement and conversions.',
-          benefits: ['Campaign List View', 'Campaign Search', 'User-Friendly Interface'],
-          imageSrc: img3,  // Replace with relevant image variable for campaign management
-          imageAlt: 'Campaign Management Dashboard',
-          imgPosition: 'left',
-        },
-        {
-          title: 'Enhanced Campaign Execution and Analysis',
-          subtitle: 'Maximize Engagement with Real-Time Tracking and Insights',
-          description:
-            'From sending targeted emails to monitoring their performance, Atomwalk CRM enables real-time tracking of customer interactions, open rates, and conversion metrics. Use detailed analytics to adjust strategies, close completed campaigns, and optimize future campaigns. This helps maximize reach, engagement, and ultimately, customer satisfaction.',
-          benefits: ['Send Emails', 'Real-Time Tracking', 'Detailed Analytics'],
-          imageSrc: img3,  // Replace with relevant image variable for campaign execution
-          imageAlt: 'Campaign Performance Tracking',
-          imgPosition: 'right',
-        }        
-         
-        ]
-      : [
+    const features = isClaim =='leadManagement'
+      ?[
         {
           title: 'Streamlined Lead Engagement',
           subtitle: 'Effortless Management for Higher Conversions',
@@ -272,9 +254,122 @@ const CrmFeatures = ({data}) => {
             imgPosition: 'right',
           },
           
-      ];
-      const location = useLocation(); // Get the current URL
+      ]:isClaim =='campaignManagement'?[
+        {
+          title: 'Create and Launch Campaigns Effortlessly',
+          subtitle: 'Effortless Campaign Management - Advertise Smarter with a Few Simple Clicks',
+          description:
+            'The “Create Campaign” module in Atomwalk’s CRM simplifies the process of advertising to your client base. Define your campaign name, target customer groups, set schedules, and customize message content—all from one streamlined interface. Whether you’re launching a one-time campaign or scheduling recurring ones, this tool makes it intuitive and efficient.',
+          benefits: ['Targeted outreach',
+                      "Scheduling Flexibility ",                                                                                                       
+                      "User-Friendly Interface",     ],
+          imageSrc: img4,  // Replace with relevant image variable for campaign management
+          imageAlt: 'Campaign Management Dashboard',
+          imgPosition: 'left',
+        },
+        {
+          title: 'Design Campaigns That Reflect Your Brand',
+          subtitle: 'Empower Your Communication with Flexible Templates',
+          description:
+            'Atomwalk allows you to create fully customizable campaign templates or use pre-designed system templates for faster setup. With options to add headers, footers, and visuals, these templates help you maintain branding consistency while driving leads effectively. You can also choose a background color or image to align with your business theme, ensuring your communication stands out.',
+          benefits: ["Tailored templates",
+                     "Pre-built options",
+                     "Dynamic content"],
+          imageSrc: img5,  // Replace with relevant image variable for campaign execution
+          imageAlt: 'Campaign Performance Tracking',
+          imgPosition: 'right',
+        },
+        {
+          title: 'Engage Customers, Track Responses',
+          subtitle: 'Interactive Buttons for Real-Time Client Feedback',
+          description:
+            'The “Response View” feature enhances customer engagement by adding interactive response buttons and voting options directly to your campaigns. Whether it’s a “Yes” or “No” decision, or a custom voting setup, this feature provides actionable insights from your clients. Easily analyze responses and make data-driven decisions to optimize future campaigns.',
+          benefits: ['Send Emails', 'Real-Time Tracking', 'Detailed Analytics'],
+          imageSrc: img6,  // Replace with relevant image variable for campaign execution
+          imageAlt: 'Campaign Performance Tracking',
+          imgPosition: 'left',
+        }               
+         
+        ]:isClaim =='CustomerManagement'?[
+          {
+            title: 'Comprehensive Customer Management',
+            subtitle: 'Easily Access, Track, and Update Customer Information',
+            description:
+              'Atomwalk CRM’s Customer Management module provides users with a centralized platform to manage and organize customer data. With tools for creating new customer profiles, viewing customer lists, and adding or updating details, the interface allows for streamlined customer tracking and engagement. Additionally, users can manage product interests, payment statuses, and set up tasks related to specific customers.',
+            benefits:['Customer List View', 'Add and Update Customer Details', 'Track Product Interests and Payments'],
+            imageSrc: img7,  // Replace with relevant image variable for campaign management
+            imageAlt: 'CustomerManagement',
+            imgPosition: 'left',
+          },
+          {
+            title: 'Design Campaigns That Reflect Your Brand',
+            subtitle: 'Empower Your Communication with Flexible Templates',
+            description:
+              'Atomwalk allows you to create fully customizable campaign templates or use pre-designed system templates for faster setup. With options to add headers, footers, and visuals, these templates help you maintain branding consistency while driving leads effectively. You can also choose a background color or image to align with your business theme, ensuring your communication stands out.',
+            benefits: ["Tailored templates",
+                       "Pre-built options",
+                       "Dynamic content"],
+            imageSrc: img5,  // Replace with relevant image variable for campaign execution
+            imageAlt: 'Campaign Performance Tracking',
+            imgPosition: 'right',
+          },
+          {
+            title: 'Engage Customers, Track Responses',
+            subtitle: 'Interactive Buttons for Real-Time Client Feedback',
+            description:
+              'The “Response View” feature enhances customer engagement by adding interactive response buttons and voting options directly to your campaigns. Whether it’s a “Yes” or “No” decision, or a custom voting setup, this feature provides actionable insights from your clients. Easily analyze responses and make data-driven decisions to optimize future campaigns.',
+            benefits: ['Send Emails', 'Real-Time Tracking', 'Detailed Analytics'],
+            imageSrc: img6,  // Replace with relevant image variable for campaign execution
+            imageAlt: 'Campaign Performance Tracking',
+            imgPosition: 'left',
+          },
+          {
+            title: 'Track and Manage Warranties with Ease',
+            subtitle: 'Streamline Your AMC and Warranty Operations',
+            description:
+              'Atomwalk enables you to efficiently add and manage warranty details for your products. With options to set warranty periods, reminders, and customer details, you can ensure timely follow-ups and improve service management. The user-friendly interface allows you to view and edit warranty records, ensuring no missed renewals or support cases.',
+            benefits: [
+              "Simplified warranty management",
+              "Automatic AMC reminders",
+              "Comprehensive customer records"
+            ],
+            imageSrc: img10, // Replace with the appropriate image variable for warranty tracking
+            imageAlt: 'Warranty Management Dashboard',
+            imgPosition: 'right',
+          },
+          {
+            title: 'Gain Actionable Insights with Reports and Dashboards',
+            subtitle: 'Visualize Your Business Performance at a Glance',
+            description:
+              'Atomwalk provides a comprehensive suite of reports and dashboards that help you monitor key business metrics in real-time. From Customer Group-wise Distribution to tracking Top 5 Customer Sales and Quotations, you can analyze performance trends and make informed decisions. The Receivable Dashboard ensures you stay on top of outstanding payments, enhancing cash flow management.',
+            benefits: [
+              "Real-time insights",
+              "Customizable reports",
+              "Improved decision-making",
+              "Clear receivables tracking"
+            ],
+            imageSrc: img11, // Replace with the appropriate image variable for Reports and Dashboards UI
+            imageAlt: 'Reports and Dashboard View',
+            imgPosition: 'left',
+          }
+          
+                         
+           
+          ]:[
+          {
 
+            title: 'Enhanced Campaign Execution and Analysis',
+            subtitle: 'Maximize Engagement with Real-Time Tracking and Insights',
+            description:
+              'From sending targeted emails to monitoring their performance, Atomwalk CRM enables real-time tracking of customer interactions, open rates, and conversion metrics. Use detailed analytics to adjust strategies, close completed campaigns, and optimize future campaigns. This helps maximize reach, engagement, and ultimately, customer satisfaction.',
+            benefits: ['Send Emails', 'Real-Time Tracking', 'Detailed Analytics'],
+            imageSrc: img3,  // Replace with relevant image variable for campaign execution
+            imageAlt: 'Campaign Performance Tracking',
+            imgPosition: 'right',
+          }
+        ];
+     
+      const location = useLocation(); // Get the current URL
   useEffect(() => {
     // Get the query string (e.g., "?5")
     const queryString = location.search;

@@ -7,6 +7,7 @@ import img1 from '../../assets/img/CrmMocups2.svg';
 import img2 from '../../assets/img/CrmMocups.svg';
 import img3 from '../../assets/img/emp_advance.svg';
 import img4 from '../../assets/img/approve_claim.svg'
+import labProcessemplate1 from '../../assets/img/processtemplate1.svg'
 import { useLocation } from "react-router-dom";
 const Container = styled.div`
   width: 100%;
@@ -34,7 +35,7 @@ const ImageSection = styled.div`
   margin-top: 10px;
 
   img {
-    width: 130%;
+    width: 100%;
     /* max-width: 500px; */
   }
 
@@ -302,56 +303,66 @@ const LmsFeatures = ({data,bgcolors}) => {
       ]
     : isClaim === 'userroleManagement'?[
       {
-        title: 'Proactive Equipment Maintenance',
-        subtitle: 'Preventive measures for optimal performance',
-        description: 'Atomwalk’s equipment maintenance feature allows admins to schedule preventive maintenance efficiently, ensuring equipment remains in top condition. During maintenance periods, equipment can be blocked from booking, preventing unintended usage and keeping maintenance routines organized. This proactive approach helps to minimize unexpected downtime, extend equipment lifespan, and ensure that all resources are ready when needed. With Atomwalk, maintenance planning becomes seamless, supporting continuous, reliable operation.',
-        benefits: ['Scheduled maintenance blocking', 'Minimized downtime with preventive care', 'Enhanced equipment longevity and reliability'],
+        title: 'Empowered Oversight, Effortless Management',
+        subtitle: 'Empowering Admins to Manage Every Aspect of Lab Operations',
+        description: 'Atomwalk’s LEM provides admins with powerful tools to manage user profiles, oversee equipment usage, handle emergencies, and generate insightful reports. This allows admins to ensure smooth lab operations and maintain compliance effortlessly.',
+        benefits: ['Create and manage profiles',' Oversee Bookings and usage', 'Handle emergencies and generate reports'],
         imageSrc: img1, // Replace with your relevant image variable
         imageAlt: 'Lead Engagement Overview',
         imgPosition: 'right',
       },
       {
-        title: 'Emergency Maintenance Protocol',
-        subtitle: 'Expert emergency maintenance to minimize downtime and maximize efficiency',
+        title: 'Streamlined Management, Enhanced Productivity',
+        subtitle: 'Enabling Managers to Optimize Lab Workflow and Maintenance',
         description: 'Atomwalk’s equipment maintenance feature allows admins to schedule preventive maintenance efficiently, ensuring equipment remains in top condition. During maintenance periods, equipment can be blocked from booking, preventing unintended usage and keeping maintenance routines organized. This proactive approach helps to minimize unexpected downtime, extend equipment lifespan, and ensure that all resources are ready when needed. With Atomwalk, maintenance planning becomes seamless, supporting continuous, reliable operation.',
-        benefits: ['Scheduled maintenance blocking', 'Minimized downtime with preventive care', 'Enhanced equipment longevity and reliability'],
+        benefits: ['Organize groups and tasks' ,' track maintenance', 'stay informed with real-time data'],
+        imageSrc: img2, // Replace with your relevant image variable
+        imageAlt: 'Lead Management',
+        imgPosition: 'left',
+      },
+      {
+        title: 'Quick Access, Seamless Experience',
+        subtitle: 'Empowering Lab Users with Instant Booking and Personalized Access',
+        description: 'Atomwalk’s equipment maintenance feature allows admins to schedule preventive maintenance efficiently, ensuring equipment remains in top condition. During maintenance periods, equipment can be blocked from booking, preventing unintended usage and keeping maintenance routines organized. This proactive approach helps to minimize unexpected downtime, extend equipment lifespan, and ensure that all resources are ready when needed. With Atomwalk, maintenance planning becomes seamless, supporting continuous, reliable operation.',
+        benefits: ['Instant equipment booking', 'Stay updated with real-time availability' ,'Personalized logins'],
         imageSrc: img2, // Replace with your relevant image variable
         imageAlt: 'Lead Management',
         imgPosition: 'left',
       },
     ]:isClaim === 'labProcessemplate'?[
       {
-        title: 'Inventory and Equipment Setup',
-        subtitle: 'Organized setup for streamlined operations',
-        description: 'With Atomwalk’s inventory and equipment setup feature, admins can efficiently configure and categorize all equipment and inventory items. This ensures accurate tracking and optimal usage of resources. The system supports detailed classification, making it easier to identify equipment availability, usage patterns, and maintenance needs. Streamlined inventory management helps labs save time, reduce errors, and maintain operational efficiency.',
+        title: 'Manage efficiently Inventory Items & Equipments for Experiment Templates',
+        subtitle: 'Organized setup for streamlined operations for Expremint steps',
+        description: 'With Atomwalk’s inventory and equipment setup feature, admins can efficiently configure and categorize all equipment and inventory items. This ensures accurate tracking and optimal usage of resources at activity level (Experiment steps). The system supports detailed classification, making it easier to identify equipment availability, usage patterns, and maintenance needs. Streamlined inventory management helps labs save time, reduce errors, and maintain operational efficiency.', 
         benefits: ['Efficient equipment categorization', 'Accurate tracking and monitoring', 'Optimized resource utilization'],
-        imageSrc: img3, // Replace with your relevant image variable
+        imageSrc: labProcessemplate1, // Replace with your relevant image variable
         imageAlt: 'Inventory Setup Overview',
         imgPosition: 'right',
       },
       {
-        title: 'Document and Report Configuration',
-        subtitle: 'Customizable documentation for compliance and insights',
-        description: 'Atomwalk’s document and report configuration feature empowers admins to tailor reports and documentation according to the lab’s specific requirements. Generate detailed reports that cover equipment usage, maintenance schedules, and quality checks, ensuring compliance with industry standards. The system supports real-time data visualization, making it easier to analyze trends and make informed decisions.',
-        benefits: ['Customizable report formats', 'Comprehensive compliance tracking', 'Real-time data visualization'],
+        title: 'Manage Document setup and configuration',
+        subtitle: 'Capture output documents for experiment steps',
+        description: 'Atomwalk’s document configuration feature empowers admins to tailor reports and documentation according to the lab’s specific requirements. Detailed reports based on equipment output results  can be stored in form of documents. The system supports real-time data visualization, making it easier to analyze experiment results and make informed decisions.',
+        benefits: ['Customizable Document setup ', 'Real-time data visualization'],
         imageSrc: img4, // Replace with your relevant image variable
         imageAlt: 'Report Configuration',
         imgPosition: 'left',
       },
       {
-        title: 'Activity Creation',
-        subtitle: 'Streamline workflows with organized activity setups',
-        description: 'Activity creation in Atomwalk helps labs streamline their workflows by defining tasks and processes systematically. This feature enables efficient planning and execution, ensuring every activity is aligned with lab protocols. Administrators can assign resources, set deadlines, and monitor progress, fostering collaboration and accountability.',
-        benefits: ['Systematic workflow organization', 'Resource and task alignment', 'Enhanced productivity and collaboration'],
+        title: 'Manage efficiently all Experiment steps required.',
+        subtitle: 'Streamline workflows with organized and sequenced Experiment steps',
+        description: 'Experiment Steps (Activity) creation in Atomwalk helps labs streamline their workflows by defining tasks and experiment steps systematically. This feature enables efficient planning and execution, ensuring every activity is aligned with lab protocols. Administrators can assign resources, set deadlines, and monitor progress, fostering collaboration and accountability.',
+        benefits: ['Systematic workflow organization', 'Resource and task alignment', 'Enhanced productivity and collaboration','Clear output documents requirement ' ,'Review process for experiment steps','Clear output documents requirement' 
+          ],
         imageSrc: img2, // Replace with your relevant image variable
         imageAlt: 'Activity Management',
         imgPosition: 'right',
       },
       {
-        title: 'Quality Management',
+        title: 'Manage Quality check data for each experiment steps ',
         subtitle: 'Ensuring excellence through structured quality control',
-        description: 'The quality management feature in Atomwalk ensures adherence to high standards by enabling systematic monitoring and control. Labs can set up quality checks, track compliance, and address discrepancies effectively. This ensures consistent performance, mitigates risks, and upholds the lab’s reputation for reliability and excellence.',
-        benefits: ['Structured quality control', 'Compliance tracking and management', 'Risk mitigation and performance consistency'],
+        description: 'The quality management feature for each steps of experiment in Atomwalk ensures adherence to high standards by enabling systematic monitoring and control. Labs can set up quality checks, track compliance, and address discrepancies effectively. This ensures consistent performance, mitigates risks, and upholds the lab’s reputation for reliability and excellence.',
+         benefits: ['Structured quality control', 'Compliance tracking and management', 'Risk mitigation and performance consistency','Review process for QC data'],
         imageSrc: img3, // Replace with your relevant image variable
         imageAlt: 'Quality Assurance',
         imgPosition: 'left',
@@ -359,56 +370,51 @@ const LmsFeatures = ({data,bgcolors}) => {
     ]
     :isClaim === 'labExperimentProject'?[
       {
-        title: 'Project Creation',
-        subtitle: 'Initiate and structure your lab experiment',
-        description: 'With Atomwalk’s project creation feature, you can define the scope, objectives, and timeline for your lab experiments. Assign roles to team members, set deadlines, and ensure alignment of goals for successful execution. This foundational step lays the groundwork for organized project management.',
+        title: 'Manage efficiently the LAB experment projects',
+        subtitle: 'Initiate, allocate and track your LAB experiment projects',
+        description: 'With Atomwalk’s Lab Experiment project creation feature, you can select the experiment process template to initiate the project. All required details like experment steps, along with equipment, inventory items, output document details will be auto populated from the experiment template, ensuring opertional efficiency for your lab experiments. Assign Lab users (research students), set deadlines and sub activities, and ensure alignment of goals for successful execution. This foundational step lays the groundwork for organized LAB experiment project management.',
         benefits: [
-          'Clear project objectives and scope',
-          'Defined timelines and responsibilities',
-          'Enhanced collaboration and planning',
+          "Systematic Experiment step organization",
+          "Improved task allocation and tracking",
+          "Simplified progress monitoring",
+          "Effective Inventory item management",
+          " Equipment Allocation to Projects",
+          " Experiment step wise all documents at one dashboard",
+          "Enhanced collaboration and planning",
+          'Time-saving predefined templates',
+           'Consistency in execution',
         ],
         imageSrc: img1, // Replace with your relevant image variable
         imageAlt: 'Project Creation Overview',
         imgPosition: 'right',
       },
       {
-        title: 'Activity Steps Definition',
-        subtitle: 'Break down the project into manageable tasks',
-        description: 'Atomwalk enables you to define and organize specific activity steps required for your project. This modular approach ensures that every task is accounted for and easily manageable. Each step can be assigned to team members, monitored for progress, and adjusted as needed.',
+        title: 'Manage your Lab Project Objectives',
+        subtitle: 'Lab Project Objectives status tracking ',
+        description: 'Atomwalk enables you to define and manage all your Project Objectives at one place. Objective status can be tracked by PI (project manager) and necessary steps can be planned.',
         benefits: [
-          'Systematic task organization',
-          'Improved task allocation and tracking',
-          'Simplified progress monitoring',
+         'Clear project objectives and scope',
+         'Defined timelines and responsibilities',
+         'Enhanced collaboration and planning',
         ],
         imageSrc: img2, // Replace with your relevant image variable
         imageAlt: 'Activity Steps Management',
         imgPosition: 'left',
       },
       {
-        title: 'Process Template Selection',
-        subtitle: 'Standardize workflows for consistency',
-        description: 'Select or customize a process template that aligns with your project requirements. Atomwalk’s process templates ensure consistent execution by providing a predefined framework. This helps to save time, maintain quality, and adapt processes based on experiment needs.',
+        title: 'Enable periodic updates of experiment steps.',
+        subtitle: 'Manage your experiment steps from Activity Dashboard',
+        description: 'Atomwalk enables you to define and organize specific activity steps required for your project. This modular approach ensures that every task is accounted for and easily manageable. Each step can be assigned to team members, monitored for progress, and adjusted as needed.',
         benefits: [
-          'Time-saving predefined templates',
-          'Consistency in execution',
-          'Adaptability to unique project needs',
+            "Real-time inventory allocation and tracking",
+            "Periodic update of Experiment steps with required documents (output results)",
+            "Manage Equipment booking",
+            "Review process for output documents",
+            "Sub activity steps management"
         ],
         imageSrc: img3, // Replace with your relevant image variable
         imageAlt: 'Process Template Selection',
         imgPosition: 'right',
-      },
-      {
-        title: 'Inventory Items Addition',
-        subtitle: 'Ensure resource availability for seamless execution',
-        description: 'Add and allocate required inventory items and equipment to the project using Atomwalk. This ensures that all necessary resources are accounted for, minimizing delays and enabling efficient experiment execution. Real-time tracking ensures that inventory is available when needed.',
-        benefits: [
-          'Accurate resource allocation',
-          'Real-time inventory tracking',
-          'Reduced delays in project execution',
-        ],
-        imageSrc: img4, // Replace with your relevant image variable
-        imageAlt: 'Inventory Management',
-        imgPosition: 'left',
       },
     ]
     :[

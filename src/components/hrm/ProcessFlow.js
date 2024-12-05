@@ -159,11 +159,9 @@ export const ProcessFlow = ({ data,bgcolors}) => {
       { step: 'Lost Lead Recovery and Management', color: '#4A90E2' },
     ],
     Campaign: [
-      { step: 'Flexible Template Creation by User (No Restrictions)', color: '#4A90E2' },
-      { step: 'Universal Template Access for All Users', color: '#4A90E2' },
-      { step: 'Target Audience Segmentation', color: '#4A90E2' },
-      { step: 'Campaign Template Review Process', color: '#4A90E2' },
-      { step: 'Automated Campaign Trigger with Predefined Scheduler', color: '#4A90E2' }
+      { step: 'Create Campaign', color: '#4A90E2' },
+      { step: 'Custom and Default Campaign Template', color: '#4A90E2' },
+      { step: 'Response interface', color: '#4A90E2' },
     ],
     Partner : [
       { step: ' Add Partner', color: '#4A90E2' },
@@ -172,7 +170,7 @@ export const ProcessFlow = ({ data,bgcolors}) => {
       { step: 'Multi-Report Generation', color: '#4A90E2' },
     ],
     Customer : [
-      { step: ' Customer Uploading (Upload Customer Data)', color: '#4A90E2' },
+      { step: ' Customer Integration', color: '#4A90E2' },
       { step: 'Order Management (Manage Reservations)', color: '#4A90E2' },
       { step: ' Process-wise Order Management (Resale and Cross-Selling)', color: '#4A90E2' },
       { step: 'Ticket Tracking (AMC Tracking)', color: '#4A90E2' },
@@ -200,22 +198,21 @@ export const ProcessFlow = ({ data,bgcolors}) => {
       { step: 'Data purge ', color: '#4A90E2' },
       { step: 'Analytics', color: '#4A90E2' },
     ],
-    UserManagement:[
-      { step: 'User Group Setup', color: '#4A90E2' },
-      { step: 'User Profile Creation', color: '#4A90E2' },
-      { step: 'Update/ Delete Profile', color: '#4A90E2' },
+    UserManagements:[
+      { step: 'Admin', color: '#4A90E2' },
+      { step: 'Manager', color: '#4A90E2' },
+      { step: 'User', color: '#4A90E2' },
     ],
     LabProcess:[
-      { step: 'Setup Inventory and Equipment', color: '#4A90E2' },
-      { step: 'Document and Report Configuration', color: '#4A90E2' },
-      { step: 'Activity Creation', color: '#4A90E2' },
+      { step: 'Add Equipment & Inventory Items', color: '#4A90E2' },
+      { step: 'Document Setup', color: '#4A90E2' },
+      { step: 'Experiment Workflow (Activity) Creation', color: '#4A90E2' },
       { step: 'Quality Management', color: '#4A90E2' },
     ],
     LabExperiment:[
-      { step: 'Project Creation', color: '#4A90E2' },
-      { step: 'Activity Steps Definition', color: '#4A90E2' },
-      { step: 'Process Template Selection', color: '#4A90E2' },
-      { step: 'Inventory Items Addition', color: '#4A90E2' },
+      { step: 'Creation of Lab Experiment Project ', color: '#4A90E2' },
+      { step: 'Lab Project Objective Defination', color: '#4A90E2' },
+      { step: 'Experiment Steps (Activity) Management', color: '#4A90E2' },
     ],
     SalesLifecycle:[
       { step: 'Quotation/Sales Order', color: '#4A90E2' },

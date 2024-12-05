@@ -63,6 +63,7 @@ const ContentBox = styled.div`
   align-items: center;
   position: relative;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -145,233 +146,268 @@ const ProductCard = () => {
     window.location.href='/demo.html'
   }
 
-  const salespage=()=>{
-    window.location.href="/sales.html"
+  const salespage=(url)=>{
+    window.location.href=`${url}`
   }
 
   return (
+    <>
     <SectionContainer>
       <SectionTitle>Atomwalk Office ERP connects every aspect of your business into one unified system</SectionTitle>
       <ContentContainer>
-      <ContentBox bgColor="#fae0f8">
-          <TextContainer>
-            <BoxHeading>HR & Payroll</BoxHeading>
-            <BoxText>
-            <ul>
-						<li>On-Boarding Process</li>
-						<li>Employee Data</li>
-						<li>Attendance</li>
-						<li>Leave Management</li>
-						<li>Claim Management</li>
-						<li>Payroll</li>
-						<li>Performance Mangement System</li>
-						<li>Exit Process</li>
-						</ul>
-            </BoxText>
-            <Button onClick={demopage}>Request a Demo</Button>
-          </TextContainer>
-          <ImageContainer>
-            <img src={Hr}alt="Employee engagement" />
-          </ImageContainer>
-          <DecorativeCircle top="10%" left="80%" />
-          <DecorativeCircle bottom="5%" right="10%" />
-        </ContentBox>
-      <ContentBox bgColor="#d6e7ff">
-          <ImageContainer>
-            <img src={Crm} alt="Performance management" />
-          </ImageContainer>
-          <TextContainer>
-            <BoxHeading>Customer Management</BoxHeading>
-            <BoxText>
-            <ul>
-						<li>Lead Management</li>
-						<li>Customer Management </li>
-						<li>Channel partner management</li>
-						<li>Annual Maintenance Contract</li>
-						<li>Campaign Management</li>
-						</ul>
-            </BoxText>
-            <Button>Experience Live Demo</Button>
-          </TextContainer>
-          <DecorativeCircle top="20%" left="5%" />
-          <DecorativeCircle bottom="10%" right="70%" />
-        </ContentBox>
-        <ContentBox bgColor="#fce4ec">
-          <TextContainer>
-            <BoxHeading>Project Management</BoxHeading>
-            <BoxText>
-            <ul>
-						<li>Project Activity Allocation Tracking </li>
-						<li>Project Activity Dependency (Critical Patch) </li>
-						<li>Schedule Tracking</li>
-						<li>Item Cost and Effort Tracking</li>
-						<li>Efficiency tracking at Activity</li>
-						<li>Project Documents, Alert management</li>
-						<li>Integration with Procurement and PO</li>
-						<li>Integration with Inventory Allocation, Wastage and Release</li>
-						</ul>
-            </BoxText>
-            <Button onClick={demopage}>Request a Demo</Button>
-          </TextContainer>
-          <ImageContainer>
-            <img src={Product}alt="Employee engagement" />
-          </ImageContainer>
-          <DecorativeCircle top="10%" left="80%" />
-          <DecorativeCircle bottom="5%" right="10%" />
-        </ContentBox>
+  <ContentBox bgColor="#d6e7ff" onClick={()=>salespage("/crm.html")}>
+    <ImageContainer>
+      <img src={Crm} alt="Performance management" />
+    </ImageContainer>
+    <TextContainer>
+      <BoxHeading>Customer Management</BoxHeading>
+      <BoxText>
+        <ul>
+          <li>Lead Management</li>
+          <li>Customer Management</li>
+          <li>Channel partner management</li>
+          <li>Annual Maintenance Contract</li>
+          <li>Campaign Management</li>
+        </ul>
+      </BoxText>
+      <Button onClick={(e) => {
+  e.stopPropagation();
+  demopage();
+}}>Request a Demo</Button>
+    </TextContainer>
+    <DecorativeCircle top="20%" left="5%" />
+    <DecorativeCircle bottom="10%" right="70%" />
+  </ContentBox>
 
-        <ContentBox bgColor="#e0f7fa">
-          <ImageContainer>
-            <img src={Inventory} alt="Performance management" />
-          </ImageContainer>
-          <TextContainer>
-            <BoxHeading>Inventory Management</BoxHeading>
-            <BoxText>
-            <ul>
-						<li>Item Category and Group </li>
-						<li>Inventory Item and Service Item </li>
-						<li>Item Supplier management</li>
-						<li>Multiple locations</li>
-						<li>Multiple Units </li>
-						<li>Warehouse management (Bin Locations)</li>
-						<li>Item Serial Number handling</li>
-						<li>Item physical inspection and open balance</li>
-						<li>Item min order qty and Expiry date tracking</li>
-						</ul>
-            </BoxText>
-            <Button>Experience Live Demo</Button>
-          </TextContainer>
-          <DecorativeCircle top="20%" left="5%" />
-          <DecorativeCircle bottom="10%" right="70%" />
-        </ContentBox>
-        <ContentBox bgColor="#f6eaff">
-          <TextContainer>
-            <BoxHeading>Process Templates</BoxHeading>
-            <BoxText>
-            <ul>
-						<li>Activity Definition with User group</li>
-						<li>Equipment and Document definition for Activity</li>
-						<li>Process definition for a Product</li>
-						<li>Process Activity Dependency</li>
-						<li>Process items and Bill of Material</li>
-						</ul>
-            </BoxText>
-            <Button onClick={demopage}>Request a Demo</Button>
-          </TextContainer>
-          <ImageContainer>
-            <img src={Process}alt="Employee engagement" />
-          </ImageContainer>
-          <DecorativeCircle top="10%" left="80%" />
-          <DecorativeCircle bottom="5%" right="10%" />
-        </ContentBox>
-        <ContentBox bgColor="#ffeadf">
-          <ImageContainer>
-            <img src={Sales} alt="Performance management" />
-          </ImageContainer>
-          <TextContainer>
-            <BoxHeading>Sales and Procurement</BoxHeading>
-            <BoxText>
-            <ul>
-						<li>Sales order, quotation, proforma invoice </li>
-						<li>Tax Invoice </li>
-						<li>Payment, GST Tracking, TDS handling</li>
-						<li>Return, Credit note handling</li>
-						<li>Purchase Order, Purchase requests</li>
-						<li>Goods Receipt (GRN)</li>
-						<li>Goods Return/Shortage/ Debit Note</li>
-						<li>Purchase Service Order, TDS handling</li>
-						</ul>
-            </BoxText>
-            <Button  onClick={salespage}>Experience Live Demo</Button>
-          </TextContainer>
-          <DecorativeCircle top="20%" left="5%" />
-          <DecorativeCircle bottom="10%" right="70%" />
-        </ContentBox>
-        <ContentBox bgColor="rgb(225, 255, 246)">
-          <TextContainer>
-            <BoxHeading>GST & TDS</BoxHeading>
-            <BoxText>
-            <ul>
-						<li>GST report Support</li>
-						<li>TDS and TDS reconciliation</li>
-						<li>GST Reconciliation with A/c</li>
-						</ul>
-            </BoxText>
-            <Button onClick={demopage}>Request a Demo</Button>
-          </TextContainer>
-          <ImageContainer>
-            <img src={GST}alt="Employee engagement" />
-          </ImageContainer>
-          <DecorativeCircle top="10%" left="80%" />
-          <DecorativeCircle bottom="5%" right="10%" />
-        </ContentBox>
-        <ContentBox bgColor="#ffeadf">
-          <ImageContainer>
-            <img src={Finacial} alt="Performance management" />
-          </ImageContainer>
-          <TextContainer>
-            <BoxHeading>Finacial Acconting</BoxHeading>
-            <BoxText>
-            <ul>
-						<li>Reports (Sales, Purchase and Inventory). </li>
-						<li>Audit Trail.</li>
-						<li>Statutory Reports (P&LBalance Sheet, Cash Flow, Change in Equity).</li>
-						<li>Purchase Reports</li>
-						<li>Depreciation Schedule</li>
-						</ul>
-            </BoxText>
-            <Button>Experience Live Demo</Button>
-          </TextContainer>
-          <DecorativeCircle top="20%" left="5%" />
-          <DecorativeCircle bottom="10%" right="70%" />
-        </ContentBox>
-        <ContentBox bgColor="#d7faff">
-          <TextContainer>
-            <BoxHeading>Bank Reconciliation</BoxHeading>
-            <BoxText>
-            <ul>
-						<li>Bank Statement Upload</li>
-						<li>Account Reconciliation with Sales and PO</li>
-						<li>Rule based reconciliation of Expenses</li>
-            <li>Bank statement View</li>
-						<li>Reconciled statement view</li>
-						<li>Bank, Exchange rate setup</li>
-						</ul>
-            </BoxText>
-            <Button onClick={demopage}>Request a Demo</Button>
-          </TextContainer>
-          <ImageContainer>
-            <img src={Bank}alt="Employee engagement" />
-          </ImageContainer>
-          <DecorativeCircle top="10%" left="80%" />
-          <DecorativeCircle bottom="5%" right="10%" />
-        </ContentBox>
-        <ContentBox bgColor="#dfdfdf">
-          <ImageContainer>
-            <img src={Report} alt="Performance management" />
-          </ImageContainer>
-          <TextContainer>
-            <BoxHeading>Reports and Dashboard</BoxHeading>
-            <BoxText>
-            <ul>
-						<li>Manager Dashboard</li>
-						<li>Sales Dashboard</li>
-						<li>Account Receivable and Payable</li>
-						<li>Party wise outstanding</li>
-						<li>Batch reports like Sales overdue, GST not filed</li>
-						<li>Report Templates</li>
-						<li>User Access control</li>
-						</ul>
-            </BoxText>
-            <Button>Experience Live Demo</Button>
-          </TextContainer>
-          <DecorativeCircle top="20%" left="5%" />
-          <DecorativeCircle bottom="10%" right="70%" />
-        </ContentBox>
-      </ContentContainer>
-      <SectionTitle style={{marginTop:"40px"}}>LabSync ERP: Uniting Every Element of Your Lab into One Seamless System</SectionTitle>
-      <Maincontent>
-      <ContentBox bgColor="#e0f7fa">
+  <ContentBox bgColor="#ffeadf">
+    <TextContainer>
+      <BoxHeading>Sales and Procurement</BoxHeading>
+      <BoxText>
+        <ul>
+          <li>Sales order, quotation, proforma invoice</li>
+          <li>Tax Invoice</li>
+          <li>Payment, GST Tracking, TDS handling</li>
+          <li>Return, Credit note handling</li>
+          <li>Purchase Order, Purchase requests</li>
+          <li>Goods Receipt (GRN)</li>
+          <li>Goods Return/Shortage/Debit Note</li>
+          <li>Purchase Service Order, TDS handling</li>
+        </ul>
+      </BoxText>
+      <Button onClick={()=>salespage("/sales.html")}>Request a Demo</Button>
+    </TextContainer>
+    <ImageContainer>
+      <img src={Sales} alt="Performance management" />
+    </ImageContainer>
+    <DecorativeCircle top="20%" left="5%" />
+    <DecorativeCircle bottom="10%" right="70%" />
+  </ContentBox>
+
+  <ContentBox bgColor="#e0f7fa">
+    <ImageContainer>
+      <img src={Inventory} alt="Performance management" />
+    </ImageContainer>
+    <TextContainer>
+      <BoxHeading>Inventory Management</BoxHeading>
+      <BoxText>
+        <ul>
+          <li>Item Category and Group</li>
+          <li>Inventory Item and Service Item</li>
+          <li>Item Supplier management</li>
+          <li>Multiple locations</li>
+          <li>Multiple Units</li>
+          <li>Warehouse management (Bin Locations)</li>
+          <li>Item Serial Number handling</li>
+          <li>Item physical inspection and open balance</li>
+          <li>Item min order qty and Expiry date tracking</li>
+        </ul>
+      </BoxText>
+      <Button>Request a Demo</Button>
+    </TextContainer>
+    <DecorativeCircle top="20%" left="5%" />
+    <DecorativeCircle bottom="10%" right="70%" />
+  </ContentBox>
+
+  <ContentBox bgColor="rgb(225, 255, 246)">
+    <TextContainer>
+      <BoxHeading>GST & TDS</BoxHeading>
+      <BoxText>
+        <ul>
+          <li>GST report Support</li>
+          <li>TDS and TDS reconciliation</li>
+          <li>GST Reconciliation with A/c</li>
+        </ul>
+      </BoxText>
+      <Button onClick={(e) => {
+  e.stopPropagation();
+  demopage();
+}}>Request a Demo</Button>
+    </TextContainer>
+    <ImageContainer>
+      <img src={GST} alt="Employee engagement" />
+    </ImageContainer>
+    <DecorativeCircle top="10%" left="80%" />
+    <DecorativeCircle bottom="5%" right="10%" />
+  </ContentBox>
+
+  <ContentBox bgColor="#d7faff">
+    <ImageContainer>
+      <img src={Bank} alt="Employee engagement" />
+    </ImageContainer>
+    <TextContainer>
+      <BoxHeading>Bank Reconciliation</BoxHeading>
+      <BoxText>
+        <ul>
+          <li>Bank Statement Upload</li>
+          <li>Account Reconciliation with Sales and PO</li>
+          <li>Rule-based reconciliation of Expenses</li>
+          <li>Bank statement View</li>
+          <li>Reconciled statement view</li>
+          <li>Bank, Exchange rate setup</li>
+        </ul>
+      </BoxText>
+      <Button onClick={(e) => {
+  e.stopPropagation();
+  demopage();
+}}>Request a Demo</Button>
+    </TextContainer>
+    <DecorativeCircle top="10%" left="80%" />
+    <DecorativeCircle bottom="5%" right="10%" />
+  </ContentBox>
+
+  <ContentBox bgColor="#ffeadf">
+    <TextContainer>
+      <BoxHeading>Financial Accounting</BoxHeading>
+      <BoxText>
+        <ul>
+          <li>Reports (Sales, Purchase and Inventory).</li>
+          <li>Audit Trail.</li>
+          <li>Statutory Reports (P&L, Balance Sheet, Cash Flow, Change in Equity).</li>
+          <li>Purchase Reports</li>
+          <li>Depreciation Schedule</li>
+        </ul>
+      </BoxText>
+      <Button onClick={(e) => {
+  e.stopPropagation();
+  demopage();
+}}>Request a Demo</Button>
+    </TextContainer>
+    <ImageContainer>
+      <img src={Finacial} alt="Performance management" />
+    </ImageContainer>
+    <DecorativeCircle top="20%" left="5%" />
+    <DecorativeCircle bottom="10%" right="70%" />
+  </ContentBox>
+
+  <ContentBox bgColor="#dfdfdf">
+    <ImageContainer>
+      <img src={Report} alt="Performance management" />
+    </ImageContainer>
+    <TextContainer>
+      <BoxHeading>Reports and Dashboard</BoxHeading>
+      <BoxText>
+        <ul>
+          <li>Manager Dashboard</li>
+          <li>Sales Dashboard</li>
+          <li>Account Receivable and Payable</li>
+          <li>Party wise outstanding</li>
+          <li>Batch reports like Sales overdue, GST not filed</li>
+          <li>Report Templates</li>
+          <li>User Access control</li>
+        </ul>
+      </BoxText>
+      <Button onClick={(e) => {
+  e.stopPropagation();
+  demopage();
+}}>Request a Demo</Button>
+    </TextContainer>
+    <DecorativeCircle top="20%" left="5%" />
+    <DecorativeCircle bottom="10%" right="70%" />
+  </ContentBox>
+
+  <ContentBox bgColor="#f6eaff">
+    <TextContainer>
+      <BoxHeading>Process Templates</BoxHeading>
+      <BoxText>
+        <ul>
+          <li>Activity Definition with User group</li>
+          <li>Equipment and Document definition for Activity</li>
+          <li>Process definition for a Product</li>
+          <li>Process Activity Dependency</li>
+          <li>Process items and Bill of Material</li>
+        </ul>
+      </BoxText>
+      <Button onClick={(e) => {
+  e.stopPropagation();
+  demopage();
+}}>Request a Demo</Button>
+    </TextContainer>
+    <ImageContainer>
+      <img src={Process} alt="Employee engagement" />
+    </ImageContainer>
+    <DecorativeCircle top="10%" left="80%" />
+    <DecorativeCircle bottom="5%" right="10%" />
+  </ContentBox>
+
+  <ContentBox bgColor="#fce4ec">
+    <ImageContainer>
+      <img src={Product} alt="Employee engagement" />
+    </ImageContainer>
+    <TextContainer>
+      <BoxHeading>Project Management</BoxHeading>
+      <BoxText>
+        <ul>
+          <li>Project Activity Allocation Tracking</li>
+          <li>Project Activity Dependency (Critical Path)</li>
+          <li>Schedule Tracking</li>
+          <li>Item Cost and Effort Tracking</li>
+          <li>Efficiency tracking at Activity</li>
+          <li>Project Documents, Alert management</li>
+          <li>Integration with Procurement and PO</li>
+          <li>Integration with Inventory Allocation, Wastage and Release</li>
+        </ul>
+      </BoxText>
+      <Button onClick={(e) => {
+  e.stopPropagation();
+  demopage();
+}}>Request a Demo</Button>
+    </TextContainer>
+    <DecorativeCircle top="10%" left="80%" />
+    <DecorativeCircle bottom="5%" right="10%" />
+  </ContentBox>
+
+  <ContentBox bgColor="#fae0f8"onClick={()=>salespage("/hrm.html")}>
+    <TextContainer>
+      <BoxHeading>HR & Payroll</BoxHeading>
+      <BoxText>
+        <ul>
+          <li>On-Boarding Process</li>
+          <li>Employee Data</li>
+          <li>Attendance</li>
+          <li>Leave Management</li>
+          <li>Claim Management</li>
+          <li>Payroll</li>
+          <li>Performance Management System</li>
+          <li>Exit Process</li>
+        </ul>
+      </BoxText>
+      <Button onClick={(e) => {
+  e.stopPropagation();
+  demopage();
+}}>Request a Demo</Button>
+    </TextContainer>
+    <ImageContainer>
+      <img src={Hr} alt="Employee engagement" />
+    </ImageContainer>
+    <DecorativeCircle top="10%" left="80%" />
+    <DecorativeCircle bottom="5%" right="10%" />
+  </ContentBox>
+</ContentContainer>
+</SectionContainer>
+       <SectionContainer style={{backgroundColor:"#b9f9f3"}}>
+      <SectionTitle style={{marginTop:"40px"}}>Atomwalk Lab Management: Streamlining Labs, Unifying Excellence.</SectionTitle>
+      <ContentContainer>
+      <ContentBox bgColor="#e0f7fa" onClick={()=>salespage("/labequipmentmangement.html")}>
           <ImageContainer>
             <img src={Labeq} alt="Performance management" />
           </ImageContainer>
@@ -385,15 +421,15 @@ const ProductCard = () => {
 						<li>Gain Insights with Report & Analytics</li>
 						</ul>
             </BoxText>
-            <Button>Experience Live Demo</Button>
+            <Button onClick={(e) => {
+  e.stopPropagation();
+  demopage();
+}}>Request a Demo</Button>
           </TextContainer>
           <DecorativeCircle top="20%" left="5%" />
           <DecorativeCircle bottom="10%" right="70%" />
         </ContentBox>
-        <ContentBox bgColor="#f6eaff">
-          <ImageContainer>
-            <img src={Lab} alt="Performance management" />
-          </ImageContainer>
+        <ContentBox bgColor="#f6eaff" onClick={()=>salespage("/labmanagement.html")}>
           <TextContainer>
             <BoxHeading>Lab Management System</BoxHeading>
             <BoxText>
@@ -404,13 +440,20 @@ const ProductCard = () => {
 						<li>Lab PI/Dashboard and Report</li>
 						</ul>
             </BoxText>
-            <Button>Experience Live Demo</Button>
+            <Button onClick={(e) => {
+  e.stopPropagation();
+  demopage();
+}}>Request a Demo</Button>
           </TextContainer>
+          <ImageContainer>
+            <img src={Lab} alt="Performance management" />
+          </ImageContainer>
           <DecorativeCircle top="20%" left="5%" />
           <DecorativeCircle bottom="10%" right="70%" />
         </ContentBox>
-        </Maincontent>
+        </ContentContainer>
     </SectionContainer>
+    </>
   );
 };
 

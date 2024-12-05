@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import LetsConnect from '../LetsConnect'
 import { useLocation } from 'react-router-dom'
 import Lead  from '../../assets/img/Mockup5-Lead.png'
+import User  from '../../assets/img/user-mangerole.png'
 import Customer  from '../../assets/img/SimplifiedEquipmentManagement.png'
 import Partner  from '../../assets/img/labmentanat.png'
 import Campaign  from '../../assets/img/Dashboardaand.png'
+import Lab  from '../../assets/img/labexp.png'
 import { ProcessFlow } from '../hrm/ProcessFlow'
 import LmsFeatures from './LmsFeatures'
 
@@ -44,17 +46,17 @@ const LmsSytem = ({data}) => {
     },
     {
       title: "User and Role Management",
-      titles: "UserManagement",
+      titles: "UserManagements",
       description: "Atomwalk’s LMS ensures Role-based access control to restrict data access based on user roles, and manage permissions to ensure secure and appropriate data access.",
        background: "#e8f4fc",
-      img: `${Campaign}`  // Add your image path here
+      img: `${User}`  // Add your image path here
     },
     {
       title: "Lab Process Template",
       titles: "LabProcess",
       description: "Provide a simplified way to manage experiment templates required for the laboratory. Include various experiment templates with necessary steps, required inventory, and equipment. This ensures optimized and error-free execution of experiments by lab users.",
       background: "#e8f4fc",
-      img: `${Partner}`  // Add your image path here
+      img: `${Lab}`  // Add your image path here
     },
     {
       title: "Lab Experiment Project Execution",
@@ -68,7 +70,7 @@ const LmsSytem = ({data}) => {
       titles: "LabExperiment",
       description: "Provides a Performance Indicator (PI) system integrated with detailed reports and interactive dashboards, offering real-time insights and tracking of key metrics for informed decision-making.",
       background: "#e8f4fc",
-      img: `${Partner}`  // Add your image path here
+      img: `${Campaign}`  // Add your image path here
     },    
     // You can add more management types if needed
   ];

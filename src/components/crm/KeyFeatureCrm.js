@@ -140,7 +140,7 @@ const KeyFeatureCrm = () => {
         Collaborate effectively with business partners by tracking their contributions, agreements, and communication to ensure successful partnerships.
         </FeatureDescription>
       </FeatureBox>
-      <FeatureBox>
+      <FeatureBox onClick={()=>handelNvigation('CustomerManagement.html')}>
         <IconContainer bgColor="#FFF2E0">
           <img src={Payroll} alt="Reliability" />
         </IconContainer>

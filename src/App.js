@@ -32,6 +32,8 @@ import LmsSytem from "./components/lms/LmsSytem";
 import SalesHeroSection from "./components/sales/SalesHeroSection";
 import SalesLifeCycle from "./components/sales/SalesLifeCycle";
 import SalesSytem from "./components/sales/SalesSystem";
+import ProcessHeroPage from "./components/processproject/ProcessHeroPage";
+import ProcessManagementSystem from "./components/processproject/ProjectManagementSystem";
 
 function App() {
   const[openslide,setOpenslide]=useState(false);
@@ -106,11 +108,15 @@ const loginAndStore=async()=>{
           <Route path="/labmanagement.html" element={<LabManagement/>} />
           <Route path="/labequipmentmangement.html" element={<LabEqupmentmanagement/>} />
           <Route path="/sales.html" element={<SalesHeroSection/>} />
-          {/* <Route path="/saleslifecycle.html" element={<SalesLifeCycle/>} /> */}
           <Route path="/saleslifecycle.html" element={<SalesSytem/>} />
           <Route path="/procurement.html" element={<SalesSytem/>} />
           <Route path="/compliance.html" element={<SalesSytem/>} />
           <Route path="/salesreport.html" element={<SalesSytem/>} />
+          <Route path="/processandproject.html" element={<ProcessHeroPage/>} />
+          <Route path="/process.html" element={<ProcessManagementSystem/>} />
+          <Route path="/project.html" element={<ProcessManagementSystem/>} />
+          <Route path="/useractivities.html" element={<ProcessManagementSystem/>} />
+          <Route path="/activityreport.html" element={<ProcessManagementSystem/>} />
         </Routes>
       </Router>
       {openslide&&<Askme setOpenslide={setOpenslide}/>}

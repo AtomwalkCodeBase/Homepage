@@ -28,6 +28,7 @@ import img44 from '../../assets/img/manager-evaluation.svg';
 import img51 from '../../assets/img/check-in.svg';
 import img52 from '../../assets/img/attendance-dashboard.svg';
 import img53 from '../../assets/img/emp-attendance.svg';
+import img54 from '../../assets/img/WeeklyScore.svg';
 import { useLocation } from "react-router-dom";
 const Container = styled.div`
   width: 100%;
@@ -441,7 +442,7 @@ const FeatureDescription = ({ data }) => {
           description: "Our attendance system offers a dynamic calendar view that allows employees to easily track their attendance status, view holiday lists, and monitor their leave days. After checking in and out, employees can submit their attendance records weekly for manager review, ensuring accountability and streamlined communication. This feature not only keeps employees informed but also helps managers efficiently oversee attendance and leave management, fostering a productive work environment.",
           benefits: ["Weekly Submission for Review", "Dynamic Calendar View"],
           imageSrc: img52,
-          imageAlt: "Leave Dashboard",
+          imageAlt: "Attendance View",
           imgPosition: "right"
       },
       {
@@ -450,9 +451,18 @@ const FeatureDescription = ({ data }) => {
           description: "Our attendance management system provides managers with a complete overview of their team’s attendance records. Once an employee submits their attendance, it is forwarded for review, ensuring accountability. If an employee encounters issues completing the process, managers can seamlessly update attendance for previous days through the manager portal, including remarks for full transparency. With access to detailed attendance records, managers can also update check-in and check-out times with geo-location data as needed. This system supports weekly approvals, streamlining the management of attendance and promoting effective team oversight.",
           benefits: ["Streamlined Review Process", "Flexibility in Attendance Management", "Transparency with Remarks","Geo-Location Updates",' Weekly Approval Workflow'],
           imageSrc: img53,
-          imageAlt: "Leave Application",
+          imageAlt: "Approval Attendance",
           imgPosition: "left"
-      }
+      },
+      {
+        title: "Transform Task Management & Performance Tracking with Atomwalk HRM",
+        subtitle: "Empower your team with clear task assignments and insightful performance evaluations.",
+        description: "With Atomwalk Technology HRM, task allocation and performance tracking become seamless. Managers can easily assign weekly tasks, monitor progress, and assess employee performance, all within a structured framework. Employees are able to track their task completion and attendance efficiently, while managers have a clear overview of their team's weekly outputs. The Weekly Score Dashboard offers both employees and managers a comprehensive view of performance scores, with insightful graphical charts to help identify trends and growth opportunities. This feature creates a transparent and engaging performance management system, driving organizational success.",
+        benefits: ["Allocate up to three tasks per week, with detailed tracking and notes.", "Employees can mark tasks complete and submit weekly attendance in one step.","Managers can review, approve/reject submissions, and assign performance ratings.","Personalized performance scores and interactive charts for both employees and managers.","Graphical performance scores highlight trends, growth, and team achievements."],
+        imageSrc: img54,
+        imageAlt: "Weekly Score Dashboard",
+        imgPosition: "right"
+    },
   ]:[
     {
       title: "Complete Employee Lifecycle Management",

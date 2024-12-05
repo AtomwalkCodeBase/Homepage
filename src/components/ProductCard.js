@@ -179,7 +179,7 @@ const ProductCard = () => {
     <DecorativeCircle bottom="10%" right="70%" />
   </ContentBox>
 
-  <ContentBox bgColor="#ffeadf">
+  <ContentBox bgColor="#ffeadf" onClick={()=>salespage("/sales.html")}>
     <TextContainer>
       <BoxHeading>Sales and Procurement</BoxHeading>
       <BoxText>
@@ -194,7 +194,7 @@ const ProductCard = () => {
           <li>Purchase Service Order, TDS handling</li>
         </ul>
       </BoxText>
-      <Button onClick={()=>salespage("/sales.html")}>Request a Demo</Button>
+      <Button onClick={(e) => {e.stopPropagation();demopage();}}>Request a Demo</Button>
     </TextContainer>
     <ImageContainer>
       <img src={Sales} alt="Performance management" />
@@ -325,7 +325,7 @@ const ProductCard = () => {
     <DecorativeCircle bottom="10%" right="70%" />
   </ContentBox>
 
-  <ContentBox bgColor="#f6eaff">
+  <ContentBox bgColor="#f6eaff" onClick={()=>salespage("/processandproject.html")}>
     <TextContainer>
       <BoxHeading>Process Templates</BoxHeading>
       <BoxText>
@@ -349,7 +349,7 @@ const ProductCard = () => {
     <DecorativeCircle bottom="5%" right="10%" />
   </ContentBox>
 
-  <ContentBox bgColor="#fce4ec">
+  <ContentBox bgColor="#fce4ec" onClick={()=>salespage("/processandproject.html")}>
     <ImageContainer>
       <img src={Product} alt="Employee engagement" />
     </ImageContainer>

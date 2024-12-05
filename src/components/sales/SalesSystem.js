@@ -9,7 +9,6 @@ import SalesFeatures from './SalesFeatures';
 import Sales from '../../assets/img/Sales_Lifecycle.png';
 import Procurement from '../../assets/img/Procurement.png';
 import Compliance from '../../assets/img/complience.png';
-import { SalesProcessFlow } from './SalesProcessFlow'
 
 const SalesSytem = () => {
   const[showData,setShowData]=useState("");
@@ -107,8 +106,8 @@ const SalesSytem = () => {
         img={currentPageConfig.img}
         lead={true}
       />
-      {/* <ProcessFlow bgcolors={"#e8fcec"} data={currentPageConfig.titles}></ProcessFlow> */}
-      <SalesProcessFlow data={currentPageConfig.titles} bgcolors={currentPageConfig.backgrounds}/>
+      <ProcessFlow bgcolors={currentPageConfig.backgrounds} data={currentPageConfig.titles}></ProcessFlow>
+      {/* <SalesProcessFlow data={currentPageConfig.titles} bgcolors={currentPageConfig.backgrounds}/> */}
       <SalesFeatures data={showData} bgcolors={currentPageConfig.backgrounds}></SalesFeatures>
     </div>
   )

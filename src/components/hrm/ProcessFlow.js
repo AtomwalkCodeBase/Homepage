@@ -138,6 +138,7 @@ export const ProcessFlow = ({ data,bgcolors}) => {
       { step: 'Check-in'},
       { step: 'Attendance Dashboard'},
       { step: 'Manage Attendance'},
+      { step: 'Weekly Score'},
     ],
     Appraisal: [
       { step: 'Performance Mangement System'},
@@ -214,12 +215,17 @@ export const ProcessFlow = ({ data,bgcolors}) => {
       { step: 'Lab Project Objective Defination', color: '#4A90E2' },
       { step: 'Experiment Steps (Activity) Management', color: '#4A90E2' },
     ],
-    SalesLifecycle:[
+    SalesLifecycleService:[
       { step: 'Quotation/Sales Order', color: '#4A90E2' },
-      { step: 'Work Order Execution', color: '#4A90E2' },
+      { step: 'Sales Invoice', color: '#4A90E2' },
+      { step: 'Payment Management', color: '#4A90E2' },
+    ],
+    Sales:[
+      { step: 'Quotation/Sales Order', color: '#4A90E2' },
+      { step: 'Work Order Creation (Project)', color: '#4A90E2' },
       { step: 'Sales Invoice', color: '#4A90E2' },
       { step: 'Delivery Chalan', color: '#4A90E2' },
-      { step: 'Allocate Inventory', color: '#4A90E2' },
+      // { step: 'Allocate Inventory', color: '#4A90E2' },
       { step: 'Shipment Details', color: '#4A90E2' },
       { step: 'Payment Management', color: '#4A90E2' },
     ],
@@ -232,15 +238,35 @@ export const ProcessFlow = ({ data,bgcolors}) => {
     ],
     Compliance:[
       { step: 'E-Way Bill', color: '#4A90E2' },
-      { step: 'TDS', color: '#4A90E2' },
-      { step: 'GST', color: '#4A90E2' },
       { step: 'E-Invoice', color: '#4A90E2' },
+      { step: 'GST', color: '#4A90E2' },
+      { step: 'TDS', color: '#4A90E2' },
+    ],
+    Report:[
+      { step: 'Sales Report', color: '#4A90E2' },
+      { step: 'Procurement Report', color: '#4A90E2' },
+      { step: 'GST', color: '#4A90E2' },
+      { step: 'TDS', color: '#4A90E2' },
+    ],
+    "Work Order":[
+      { step: 'Setup Category', color: '#4A90E2' },
+      { step: 'Activity Creation', color: '#4A90E2' },
+      { step: 'Activity Setup', color: '#4A90E2' },
+      { step: 'Creation of Process', color: '#4A90E2' },
+      { step: 'Process Tamplete Setup', color: '#4A90E2' },
+      { step: 'Process Tamplete Details ', color: '#4A90E2' },
+    ],
+    "Project Management":[
+      { step: 'Project Creation/Work Order Creation', color: '#4A90E2' },
+      { step: 'Project Activity Management', color: '#4A90E2' },
+      { step: 'Project Management', color: '#4A90E2' },
+      { step: 'Activity Dashboard', color: '#4A90E2' },
     ],
    
   };
 
   // Get the appropriate flow based on the data prop
-  const processSteps = flows[data] || [];
+  const processSteps = flows[data] || flows["Work Order"] || flows["Project Management"] || [];
   const navigate = useNavigate();
   const location = useLocation();
 

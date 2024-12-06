@@ -202,11 +202,6 @@ const modules = [
     "Item Serial Number handling",
     "Item physical inspection and open balance",
     "Item min order qty and Expiry date tracking"] },
-  // { name: "Process Templates", features: ["Activity Definition with User group",
-  //   "Equipment and Document definition for Activity",
-  //   "Process definition for a Product",
-  //   "Process Activity Dependency",
-  //   "Process items and Bill of Material",] },
   { name: "Sales and Procurement", features: ["Sales order, quotation, proforma invoice",
     "Tax Invoice",
     "Payment, GST Tracking, TDS handling",
@@ -251,123 +246,165 @@ const modules = [
 const Pricing = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [expandedModule, setExpandedModule] = useState(null);
+  const [selectedPlan, setSelectedPlan] = useState(null);
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const openModal = (plan) => {
+    setSelectedPlan(plan);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedPlan(null);
+  };
+
   const toggleModule = (moduleName) => {
     setExpandedModule(expandedModule === moduleName ? null : moduleName);
   };
+
+  const filterModules = () => {
+    if (selectedPlan === "Basic") {
+      return modules.filter(
+        (module) => module.name !== "Customer Management( CRM)" && module.name !== "HR & Payroll"
+      );
+    }
+    if (selectedPlan === "Premium") {
+      return modules.filter((module) => module.name !== "HR & Payroll");
+    }
+    return modules; // Show all modules for other plans
+  };
+
   return (
     <>
-    <PricingContainer>
-      <Title2>PRICING</Title2>
-      <Title>Pick the plan that’s right for you</Title>
-      <PlansContainer>
-        <PlanCard>
-          <h3
-            style={{ color: "#ffff", fontWeight: "800", fontSize: "2.5rem",padding:"10px",backgroundColor:"red",borderRadius:"5px" }}
-          >
-            Free Trial
-          </h3>
-          <Price>₹0/Month</Price>
-          <Message>Seriously, free forever</Message>
-          <FeatureList>
-            <FeatureItem valid>3 User Access</FeatureItem>
-            <FeatureItem valid>30 days Vallidity</FeatureItem>
-            <FeatureItem valid>20MB Space</FeatureItem>
-            <FeatureItem>Multi Branch Access</FeatureItem>
-            <FeatureItem2  onClick={openModal}>Click Hear to see the modules</FeatureItem2>
-          </FeatureList>
-          <Button>Sign up for free</Button>
-        </PlanCard>
-        <PlanCard>
-          <h3
-            style={{
-              color: "#fff",
-              fontWeight: "800",
-              fontSize: "2.5rem",
-              padding:"10px",backgroundColor:"#2196f3",borderRadius:"5px"
-            }}
-          >
-            Basic
-          </h3>
-          <Price>₹5,000/Month</Price>
-          <Message>Billed at ₹50,000 per year</Message>
-          <FeatureList>
-            <FeatureItem valid>5 User Access</FeatureItem>
-            <FeatureItem valid>1 Year Validity</FeatureItem>
-            <FeatureItem valid>200MB Space</FeatureItem>
-            <FeatureItem>Multi Branch Access</FeatureItem>
-            <FeatureItem2  onClick={openModal}>Click Hear to see the modules</FeatureItem2>
-          </FeatureList>
-          <Button>Start a free trial</Button>
-        </PlanCard>
-        <PlanCard>
-          <h3
-            style={{
-              color: "#fff",
-              fontWeight: "800",
-              fontSize: "2.5rem",
-              padding:"10px",backgroundColor:"orange",borderRadius:"5px"
-            }}
-          >
-            Premium
-          </h3>
-          <Price>₹10,000/Month</Price>
-          <Message>Billed at ₹100,000 per year</Message>
-          <FeatureList>
-            <FeatureItem valid>10 User Access</FeatureItem>
-            <FeatureItem valid>1 Year Vallidity</FeatureItem>
-            <FeatureItem valid>500MB Space</FeatureItem>
-            <FeatureItem valid>Multi Branch Access</FeatureItem>
-            <FeatureItem2 lickable onClick={openModal}>Click Hear to see the modules</FeatureItem2>
-          </FeatureList>
-          <Button>Start a free trial</Button>
-        </PlanCard>
-        <PlanCard>
-          <h3
-            style={{
-              color: "#fff",
-              fontWeight: "800",
-              fontSize: "2.5rem",
-                 padding:"10px",backgroundColor:"#800080",borderRadius:"5px"
-            }}
-          >
-            Ultimate
-          </h3>
-          <Price>₹25,000/Month</Price>
-          <Message>Billed at ₹200,000 per year</Message>
-          <FeatureList>
-            <FeatureItem valid>25 User Access</FeatureItem>
-            <FeatureItem valid>1 Year Vallidity</FeatureItem>
-            <FeatureItem valid>1.2GB Space</FeatureItem>
-            <FeatureItem valid>Multi Branch Access</FeatureItem>
-            <FeatureItem2 lickable onClick={openModal}>Click Hear to see the modules</FeatureItem2>
-          </FeatureList>
-          <Button>Start a free trial</Button>
-        </PlanCard>
-      </PlansContainer>
-    </PricingContainer>
-    <ReactModal
+      <PricingContainer>
+        <Title2>PRICING</Title2>
+        <Title>Pick the plan that’s right for you</Title>
+        <PlansContainer>
+          <PlanCard>
+            <h3
+              style={{
+                color: "#ffff",
+                fontWeight: "800",
+                fontSize: "2.5rem",
+                padding: "10px",
+                backgroundColor: "red",
+                borderRadius: "5px",
+              }}
+            >
+              Free Trial
+            </h3>
+            <Price>₹0/Month</Price>
+            <Message>Seriously, free forever</Message>
+            <FeatureList>
+              <FeatureItem valid>3 User Access</FeatureItem>
+              <FeatureItem valid>30 days Validity</FeatureItem>
+              <FeatureItem valid>20MB Space</FeatureItem>
+              <FeatureItem>Multi Branch Access</FeatureItem>
+              <FeatureItem2 onClick={() => openModal("Free Trial")}>
+                Click Here to see the modules
+              </FeatureItem2>
+            </FeatureList>
+            <Button>Sign up for free</Button>
+          </PlanCard>
+          <PlanCard>
+            <h3
+              style={{
+                color: "#fff",
+                fontWeight: "800",
+                fontSize: "2.5rem",
+                padding: "10px",
+                backgroundColor: "#2196f3",
+                borderRadius: "5px",
+              }}
+            >
+              Basic
+            </h3>
+            <Price>₹5,000/Month</Price>
+            <Message>Billed at ₹50,000 per year</Message>
+            <FeatureList>
+              <FeatureItem valid>5 User Access</FeatureItem>
+              <FeatureItem valid>1 Year Validity</FeatureItem>
+              <FeatureItem valid>200MB Space</FeatureItem>
+              <FeatureItem>Multi Branch Access</FeatureItem>
+              <FeatureItem2 onClick={() => openModal("Basic")}>
+                Click Here to see the modules
+              </FeatureItem2>
+            </FeatureList>
+            <Button>Start a free trial</Button>
+          </PlanCard>
+          <PlanCard>
+            <h3
+              style={{
+                color: "#fff",
+                fontWeight: "800",
+                fontSize: "2.5rem",
+                padding: "10px",
+                backgroundColor: "orange",
+                borderRadius: "5px",
+              }}
+            >
+              Premium
+            </h3>
+            <Price>₹10,000/Month</Price>
+            <Message>Billed at ₹100,000 per year</Message>
+            <FeatureList>
+              <FeatureItem valid>10 User Access</FeatureItem>
+              <FeatureItem valid>1 Year Validity</FeatureItem>
+              <FeatureItem valid>500MB Space</FeatureItem>
+              <FeatureItem valid>Multi Branch Access</FeatureItem>
+              <FeatureItem2 onClick={() => openModal("Premium")}>
+                Click Here to see the modules
+              </FeatureItem2>
+            </FeatureList>
+            <Button>Start a free trial</Button>
+          </PlanCard>
+          <PlanCard>
+            <h3
+              style={{
+                color: "#fff",
+                fontWeight: "800",
+                fontSize: "2.5rem",
+                padding: "10px",
+                backgroundColor: "#800080",
+                borderRadius: "5px",
+              }}
+            >
+              Ultimate
+            </h3>
+            <Price>₹25,000/Month</Price>
+            <Message>Billed at ₹200,000 per year</Message>
+            <FeatureList>
+              <FeatureItem valid>25 User Access</FeatureItem>
+              <FeatureItem valid>1 Year Validity</FeatureItem>
+              <FeatureItem valid>1.2GB Space</FeatureItem>
+              <FeatureItem valid>Multi Branch Access</FeatureItem>
+              <FeatureItem2 onClick={() => openModal("Ultimate")}>
+                Click Here to see the modules
+              </FeatureItem2>
+            </FeatureList>
+            <Button>Start a free trial</Button>
+          </PlanCard>
+        </PlansContainer>
+      </PricingContainer>
+      <ReactModal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         style={customStyles}
       >
-         <CloseButton onClick={closeModal}>&times;</CloseButton>
+        <CloseButton onClick={closeModal}>&times;</CloseButton>
         <FeatureList>
-          {modules.map((module, index) => (
+          {filterModules().map((module, index) => (
             <div key={index}>
               <ModuleContainer onClick={() => toggleModule(module.name)}>
                 <ModuleTitle>{module.name}</ModuleTitle>
                 <ExpandIcon>{expandedModule === module.name ? "−" : "+"}</ExpandIcon>
               </ModuleContainer>
-
-              {/* Show features if the module is expanded */}
               {expandedModule === module.name && (
                 <FeatureDetails>
                   {module.features.map((feature, idx) => (
-                    <ul style={{marginBottom:"5px"}}>
-                    <li key={idx}>{feature}</li></ul>
+                    <ul style={{ marginBottom: "5px" }}>
+                      <li key={idx}>{feature}</li>
+                    </ul>
                   ))}
                 </FeatureDetails>
               )}

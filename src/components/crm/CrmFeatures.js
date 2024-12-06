@@ -10,8 +10,12 @@ import img4 from '../../assets/img/campain1.svg'
 import img5 from '../../assets/img/campign2.svg'
 import img6 from '../../assets/img/campgin3.svg'
 import img7 from '../../assets/img/Customerdata1.svg'
+import img8 from '../../assets/img/odermanagement.svg'
 import img10 from '../../assets/img/Amc1.svg'
 import img11 from '../../assets/img/Reportanddashboard.svg'
+import img12 from '../../assets/img/Chanelpatner.svg'
+import img13 from '../../assets/img/pattner.svg'
+import img14 from '../../assets/img/multyreport.svg'
 import { useLocation } from "react-router-dom";
 const Container = styled.div`
   width: 100%;
@@ -83,7 +87,7 @@ const BenefitsContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 360px;
+    width: 400px;
     gap: 8px;
   }
 
@@ -302,27 +306,38 @@ const CrmFeatures = ({data}) => {
             imgPosition: 'left',
           },
           {
-            title: 'Design Campaigns That Reflect Your Brand',
-            subtitle: 'Empower Your Communication with Flexible Templates',
+            title: 'Efficiently Manage Your Orders',
+            subtitle: 'Simplified Order Tracking and Fulfillment',
             description:
-              'Atomwalk allows you to create fully customizable campaign templates or use pre-designed system templates for faster setup. With options to add headers, footers, and visuals, these templates help you maintain branding consistency while driving leads effectively. You can also choose a background color or image to align with your business theme, ensuring your communication stands out.',
-            benefits: ["Tailored templates",
-                       "Pre-built options",
-                       "Dynamic content"],
-            imageSrc: img5,  // Replace with relevant image variable for campaign execution
-            imageAlt: 'Campaign Performance Tracking',
+              'Atomwalk’s Order Management module streamlines the entire order lifecycle, from creation to fulfillment. Keep track of customer orders, monitor their status in real-time, and manage related invoices and delivery schedules. With a centralized platform, you can improve order accuracy, reduce errors, and ensure timely processing for a better customer experience.',
+            benefits: [
+              "Real-time order tracking",
+              "Centralized order information",
+              "Improved order accuracy",
+              "Faster order fulfillment",
+              "Seamless integration with invoices and delivery schedules"
+            ],
+            imageSrc: img8, // Replace with the appropriate image variable for Order Management UI
+            imageAlt: 'Order Management Dashboard',
             imgPosition: 'right',
-          },
+          },          
           {
-            title: 'Engage Customers, Track Responses',
-            subtitle: 'Interactive Buttons for Real-Time Client Feedback',
+            title: 'Maximize Sales with Process-wise Order Management',
+            subtitle: 'Streamline Resale and Cross-Selling Opportunities',
             description:
-              'The “Response View” feature enhances customer engagement by adding interactive response buttons and voting options directly to your campaigns. Whether it’s a “Yes” or “No” decision, or a custom voting setup, this feature provides actionable insights from your clients. Easily analyze responses and make data-driven decisions to optimize future campaigns.',
-            benefits: ['Send Emails', 'Real-Time Tracking', 'Detailed Analytics'],
-            imageSrc: img6,  // Replace with relevant image variable for campaign execution
-            imageAlt: 'Campaign Performance Tracking',
+              'Leverage Atomwalk’s Process-wise Order Management module to unlock new revenue streams through resale and cross-selling. Easily identify opportunities to upsell or resell products based on customer purchase history and preferences. Automate workflows to recommend the right products, manage multi-step sales processes, and track performance metrics for each sales process.',
+            benefits: [
+              "Drive cross-selling opportunities",
+              "Optimize resale workflows",
+              "Leverage customer purchase data",
+              "Track performance of specific sales processes",
+              "Increase revenue through upselling and reselling"
+            ],
+            imageSrc: img7, // Replace with the appropriate image variable for Process-wise Management UI
+            imageAlt: 'Resale and Cross-Selling Process Dashboard',
             imgPosition: 'left',
-          },
+          }
+          ,
           {
             title: 'Track and Manage Warranties with Ease',
             subtitle: 'Streamline Your AMC and Warranty Operations',
@@ -352,9 +367,53 @@ const CrmFeatures = ({data}) => {
             imageAlt: 'Reports and Dashboard View',
             imgPosition: 'left',
           }
-          
-                         
-           
+          ]:isClaim =="Channelpartner"?[{
+            title: 'Effortlessly Manage Your Channel Partners',
+            subtitle: 'Streamline Partner Onboarding and Management',
+            description:
+              'With Atomwalk, managing channel partners becomes seamless and efficient. This module allows you to record and organize comprehensive details such as company information, contact details, GSTN, PAN, TAN, and more. Easily classify partners into groups, identify their roles (e.g., supplier or partner), and maintain a central database for quick access and streamlined communication.',
+            benefits: [
+              "Comprehensive partner records",
+              "Seamless onboarding process",
+              "Simplified partner classification",
+              "Efficient partner management"
+            ],
+            imageSrc: img12, // Replace with the appropriate image variable for Channel Partner UI
+            imageAlt: 'Channel Partner Management Dashboard',
+            imgPosition: 'right',
+          },
+          {
+            title: 'Track Orders and Sales with Precision',
+            subtitle: 'Comprehensive Order Management for Better Insights',
+            description:
+              'Atomwalk’s Order Information Tracking module enables you to efficiently manage and monitor all aspects of your orders. From maintaining task lists and tracking product interests to managing TDS (Tax Deducted at Source) and generating sales invoices, this module streamlines your sales operations. Gain complete visibility into your order lifecycle and ensure timely updates for smooth business operations.',
+            benefits: [
+              "End-to-end order tracking",
+              "Simplified TDS management",
+              "Integrated sales invoice generation",
+              "Task list for better organization",
+              "Track product interests and customer preferences"
+            ],
+            imageSrc: img13, // Replace with the appropriate image variable for Order Tracking UI
+            imageAlt: 'Order Tracking Dashboard',
+            imgPosition: 'left',
+          },
+          {
+            title: 'Generate Detailed Reports with Ease',
+            subtitle: 'Comprehensive Multi-Report Generation for Channel Partners',
+            description:
+              'Atomwalk’s Multi-Report Generation feature within Channel Partner Management allows you to generate customized reports across various metrics and data points. Whether you need performance insights, transaction history, sales contributions, or partner-specific analysis, this module empowers you with actionable data. Export reports in multiple formats for seamless sharing and better decision-making.',
+            benefits: [
+              "Generate partner-specific reports",
+              "Detailed performance insights",
+              "Track sales contributions and trends",
+              "Export reports in multiple formats (PDF, Excel, etc.)",
+              "Customizable reporting options"
+            ],
+            imageSrc: img14, // Replace with the appropriate image variable for Multi-Report UI
+            imageAlt: 'Multi-Report Dashboard for Channel Partners',
+            imgPosition: 'right',
+          }          
           ]:[
           {
 

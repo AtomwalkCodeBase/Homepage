@@ -167,13 +167,13 @@ export const ProcessFlow = ({ data,bgcolors}) => {
     Partner : [
       { step: ' Add Partner', color: '#4A90E2' },
       { step: 'Order Information Tracking', color: '#4A90E2' },
-      { step: 'Commission Management', color: '#4A90E2' },
+      // { step: 'Commission Management', color: '#4A90E2' },
       { step: 'Multi-Report Generation', color: '#4A90E2' },
     ],
     Customer : [
-      { step: ' Customer Integration', color: '#4A90E2' },
-      { step: 'Order Management (Manage Reservations)', color: '#4A90E2' },
-      { step: ' Process-wise Order Management (Resale and Cross-Selling)', color: '#4A90E2' },
+      { step: 'Customer Integration', color: '#4A90E2' },
+      { step: 'Order Management', color: '#4A90E2' },
+      { step: 'Process-wise Order Management (Resale and Cross-Selling)', color: '#4A90E2' },
       { step: 'Ticket Tracking (AMC Tracking)', color: '#4A90E2' },
       { step: 'Reports and Dashboards', color: '#4A90E2' }
     ],

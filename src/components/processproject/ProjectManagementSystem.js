@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import LetsConnect from '../LetsConnect'
 import { useLocation } from 'react-router-dom'
-import Lead  from '../../assets/img/Mockup5-Lead.png'
-import Customer  from '../../assets/img/Customermage-removebg-preview.png'
-import Partner  from '../../assets/img/Pattner.png'
-import Campaign  from '../../assets/img/Campain.png'
+import Report  from '../../assets/img/Dashboardaand.png'
+import Project  from '../../assets/img/ProjectManage.png'
+import Process  from '../../assets/img/ProcessTamplete.png'
+
 import { ProcessFlow } from '../hrm/ProcessFlow'
+import ProcessFeatures from './ProcessFeatures'
 // import CrmFeatures from './CrmFeatures'
 const ProcessManagementSystem = () => {
   const[showData,setShowData]=useState("");
@@ -14,35 +15,47 @@ const ProcessManagementSystem = () => {
   // Array of configurations for different pages
   const managementPages = [
     {
-      title: "Work Order Process Tamplete",
+      title: "Process Operations for Every Business Need",
       titles: "Work Order",
-      description: "Streamline workflows with customizable process templates for consistent and efficient project execution.",
+      description: "Comprehensive Solutions for Inventory, Equipment, Documentation, and Process Management.",
       background: "#d6e7ff",
-      img: `${Lead}`  // Add your image path here
+      img: `${Process}`  // Add your image path here
     },
     {
-      title: "Project Management",
+      title: "Integrated Project and Activity Management",
       titles: "Project Management",
-      description: "Efficiently plan, track, and manage projects with real-time progress monitoring, task allocation, and performance insights.",
+      description: "Efficiently Link Sales Orders, Track Progress, and Optimize Resources for Manufacturing Excellence.",
       background: "#d6e7ff",
-      img: `${Customer}`  // Add your image path here
+      img: `${Project}`  // Add your image path here
     },
+    // {
+    //   title: "User Activities",
+    //   titles: "User Activities",
+    //   description: "Track and manage user activities, assign tasks, monitor progress, and ensure alignment with organizational goals for better efficiency.",
+    //   background: "#d6e7ff",
+    //   img: `${Partner}`  // Add your image path here
+    // },
     {
-      title: "User Activities",
-      titles: "User Activities",
-      description: "Track and manage user activities, assign tasks, monitor progress, and ensure alignment with organizational goals for better efficiency.",
-      background: "#d6e7ff",
-      img: `${Partner}`  // Add your image path here
-    },
-    {
-      title: "Report & Dashboard",
+      title: "Advanced Dashboards for Project and Resource Management",
       titles: "Report & Dashboard",
-      description: "Gain actionable insights with comprehensive reports and interactive dashboards, enabling data-driven decision-making and performance tracking.",
+      description: "Gain Real-Time Insights into Activity Progress, Project Margins, and Resource Utilization for Optimized Manufacturing Performance.",
       background: "#d6e7ff",
-      img: `${Campaign}`  // Add your image path here
+      img: `${Report}`  // Add your image path here
     },
     
   ];
+
+  useEffect(()=>{
+    if(location.pathname.includes('process')){
+      setShowData('process')
+    }
+    else if(location.pathname.includes('project')){
+      setShowData('project')
+    }
+    else{
+      setShowData('activityreport')
+    }
+  },[location.pathname])
 
   const getCurrentPageConfig = () => {
     if (location.pathname.includes('process')) {
@@ -50,14 +63,14 @@ const ProcessManagementSystem = () => {
     } else if (location.pathname.includes('project')) {
       return managementPages[1]; // Customer Management data
     }
-    else if (location.pathname.includes('useractivities')) {
-      return managementPages[2]; // Customer Management data
-    }
+    // else if (location.pathname.includes('useractivities')) {
+    //   return managementPages[2]; // Customer Management data
+    // }
     else if (location.pathname.includes('activityreport')) {
-    return  managementPages[3]; // Customer Management data
-}
+    return  managementPages[2]; // Customer Management data
+    }
     // Default to Lead Management if no match
-    return managementPages[0];
+    return managementPages[2];
   };
 
   const currentPageConfig = getCurrentPageConfig();
@@ -73,6 +86,7 @@ const ProcessManagementSystem = () => {
       />
       <ProcessFlow bgcolors={"#e8f1fe"} data={currentPageConfig.titles}></ProcessFlow>
       {/* <CrmFeatures data={showData}></CrmFeatures> */}
+      <ProcessFeatures data={showData}/>
     </div>
   )
 }

@@ -327,14 +327,18 @@ const ProductCard = () => {
 
   <ContentBox bgColor="#f6eaff" onClick={()=>salespage("/processandproject.html")}>
     <TextContainer>
-      <BoxHeading>Process Templates</BoxHeading>
+      <BoxHeading>Process Templates & Project Management</BoxHeading>
       <BoxText>
         <ul>
           <li>Activity Definition with User group</li>
           <li>Equipment and Document definition for Activity</li>
-          <li>Process definition for a Product</li>
-          <li>Process Activity Dependency</li>
           <li>Process items and Bill of Material</li>
+          <li>Project Activity Allocation Tracking</li>
+          <li>Project Activity Dependency (Critical Path)</li>
+          <li>Item Cost and Effort Tracking</li>
+          <li>Efficiency tracking at Activity</li>
+          {/* <li>Project Documents, Alert management</li> */}
+          <li>Integration with Inventory Allocation, Wastage and Release</li>
         </ul>
       </BoxText>
       <Button onClick={(e) => {
@@ -348,7 +352,7 @@ const ProductCard = () => {
     <DecorativeCircle top="10%" left="80%" />
     <DecorativeCircle bottom="5%" right="10%" />
   </ContentBox>
-
+{/* 
   <ContentBox bgColor="#fce4ec" onClick={()=>salespage("/processandproject.html")}>
     <ImageContainer>
       <img src={Product} alt="Employee engagement" />
@@ -374,9 +378,12 @@ const ProductCard = () => {
     </TextContainer>
     <DecorativeCircle top="10%" left="80%" />
     <DecorativeCircle bottom="5%" right="10%" />
-  </ContentBox>
+  </ContentBox> */}
 
   <ContentBox bgColor="#fae0f8"onClick={()=>salespage("/hrm.html")}>
+  <ImageContainer>
+      <img src={Hr} alt="Employee engagement" />
+    </ImageContainer>
     <TextContainer>
       <BoxHeading>HR & Payroll</BoxHeading>
       <BoxText>
@@ -396,9 +403,6 @@ const ProductCard = () => {
   demopage();
 }}>Request a Demo</Button>
     </TextContainer>
-    <ImageContainer>
-      <img src={Hr} alt="Employee engagement" />
-    </ImageContainer>
     <DecorativeCircle top="10%" left="80%" />
     <DecorativeCircle bottom="5%" right="10%" />
   </ContentBox>
@@ -422,13 +426,15 @@ const ProductCard = () => {
 						</ul>
             </BoxText>
             <Button onClick={(e) => {
-  e.stopPropagation();
-  demopage();
-}}>Request a Demo</Button>
+              e.stopPropagation();
+              demopage();
+            }}>Request a Demo
+            </Button>
           </TextContainer>
           <DecorativeCircle top="20%" left="5%" />
           <DecorativeCircle bottom="10%" right="70%" />
         </ContentBox>
+        
         <ContentBox bgColor="#f6eaff" onClick={()=>salespage("/labmanagement.html")}>
           <TextContainer>
             <BoxHeading>Lab Management System</BoxHeading>

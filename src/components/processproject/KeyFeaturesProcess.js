@@ -115,7 +115,7 @@ const KeyFeaturesProcess = () => {
         <IconContainer bgColor="#D8F5E3">
           <img src={Compliance} alt="Process" />
         </IconContainer>
-        <FeatureTitle>Process Tamplete:</FeatureTitle>
+        <FeatureTitle>Work Order / Process Tamplete:</FeatureTitle>
         <FeatureDescription>
         Streamline workflows with customizable process templates for consistent and efficient project execution.
         </FeatureDescription>
@@ -129,7 +129,7 @@ const KeyFeaturesProcess = () => {
         Efficiently plan, track, and manage projects with real-time progress monitoring, task allocation, and performance insights.
         </FeatureDescription>
       </FeatureBox>
-      <FeatureBox onClick={()=>handelNvigation('useractivities.html')}>
+      {/* <FeatureBox onClick={()=>handelNvigation('useractivities.html')}>
         <IconContainer bgColor="#F0E7FF">
           <img src={UserA} alt="User Activities"/>
         </IconContainer>
@@ -137,7 +137,7 @@ const KeyFeaturesProcess = () => {
         <FeatureDescription>
         Track and manage user activities, assign tasks, monitor progress, and ensure alignment with organizational goals for better efficiency.
         </FeatureDescription>
-      </FeatureBox>
+      </FeatureBox> */}
       <FeatureBox onClick={()=>handelNvigation('activityreport.html')}>
         <IconContainer bgColor="#F0E7FF">
           <img src={Report} alt="Activity Report"/>

@@ -115,7 +115,6 @@ const loginAndStore=async()=>{
           <Route path="/processandproject.html" element={<ProcessHeroPage/>} />
           <Route path="/process.html" element={<ProcessManagementSystem/>} />
           <Route path="/project.html" element={<ProcessManagementSystem/>} />
-          <Route path="/useractivities.html" element={<ProcessManagementSystem/>} />
           <Route path="/activityreport.html" element={<ProcessManagementSystem/>} />
         </Routes>
       </Router>

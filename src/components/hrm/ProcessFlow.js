@@ -249,24 +249,28 @@ export const ProcessFlow = ({ data,bgcolors}) => {
       { step: 'TDS', color: '#4A90E2' },
     ],
     "Work Order":[
-      { step: 'Setup Category', color: '#4A90E2' },
+      { step: 'Product Category', color: '#4A90E2' },
+      { step: 'Inventory Setup', color: '#4A90E2' },
+      { step: 'Equipment Setup', color: '#4A90E2' },
+      { step: 'Document Setup', color: '#4A90E2' },
       { step: 'Activity Creation', color: '#4A90E2' },
-      { step: 'Activity Setup', color: '#4A90E2' },
       { step: 'Creation of Process', color: '#4A90E2' },
-      { step: 'Process Tamplete Setup', color: '#4A90E2' },
-      { step: 'Process Tamplete Details ', color: '#4A90E2' },
     ],
     "Project Management":[
-      { step: 'Project Creation/Work Order Creation', color: '#4A90E2' },
-      { step: 'Project Activity Management', color: '#4A90E2' },
+      { step: 'Project/Work Order Creation', color: '#4A90E2' },
+      { step: 'User Activity Management', color: '#4A90E2' },
       { step: 'Project Management', color: '#4A90E2' },
+    ],
+    "Report & Dashboard":[
       { step: 'Activity Dashboard', color: '#4A90E2' },
+      { step: 'Project Dashboard', color: '#4A90E2' },
+      { step: 'Resource Utilisation', color: '#4A90E2' },
     ],
    
   };
 
   // Get the appropriate flow based on the data prop
-  const processSteps = flows[data] || flows["Work Order"] || flows["Project Management"] || [];
+  const processSteps = flows[data] || flows["Work Order"] || flows["Project Management"] || flows["Report & Dashboard"] || [];
   const navigate = useNavigate();
   const location = useLocation();
 

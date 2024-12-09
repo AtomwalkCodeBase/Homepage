@@ -219,7 +219,7 @@ const ProcessFeatures = ({data}) => {
           subtitle: 'Structured Setup and Categorization for Smarter Control',
           description:
             `Atomwalk enables precise inventory management, ensuring every item is categorized to align with your business’s operational needs. Begin with the Inventory Item Category Setup to establish structured categorization. Organize inventory location-wise and efficiently handle multiple inventories. With Atomwalk, you can create and manage inventory items by filling in detailed information and linking them category-wise. Atomwalk ensures you’re ready for seamless operations and compliance.`,
-          benefits: ['Establish structured categories for inventory items., Organize inventory by specific locations.', 'Multiple Inventory Management, Create and organize inventory items with complete details.','Associate items with categories for better tracking.'],
+          benefits: ['Establish structured categories for inventory items.', 'Organize inventory by specific locations.', 'Multiple Inventory Management, Create and organize inventory items with complete details.','Associate items with categories for better tracking.'],
           imageSrc: img2,  // Replace with your relevant image variable
           imageAlt: 'Inventory Setup',
           imgPosition: 'left',

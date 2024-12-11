@@ -35,6 +35,7 @@ import ProcessHeroPage from "./components/processproject/ProcessHeroPage";
 import ProcessManagementSystem from "./components/processproject/ProjectManagementSystem";
 import InventoryHeroPage from "./components/inventory/InventoryHeroPage";
 import InventoryManagementSystem from "./components/inventory/InventoryManagementSystem";
+import Assessment from "./components/Assessment";
 
 function App() {
   const[openslide,setOpenslide]=useState(false);
@@ -122,6 +123,7 @@ const loginAndStore=async()=>{
           <Route path="/inventoryop.html" element={<InventoryManagementSystem/>} />
           <Route path="/warehouse.html" element={<InventoryManagementSystem/>} />
           <Route path="/inventoryreport.html" element={<InventoryManagementSystem/>} />
+          <Route path="/assessment.html" element={<Assessment/>} />
         </Routes>
       </Router>
       {openslide&&<Askme setOpenslide={setOpenslide}/>}

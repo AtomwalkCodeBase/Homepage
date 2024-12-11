@@ -77,7 +77,7 @@ const Features = () => {
       background:"#c7facf"
     },
     {
-      title: "Good Laboratory P ractices",
+      title: "Good Laboratory Practices",
       description:
         "Ensuring Excellence and Compliance: Your Partner in Good Laboratory Practices.",
       imgUrl: projImg9,

@@ -160,7 +160,7 @@ const sales = [
 
 const FeatureBenifits = ({ data }) => {
   // Determine which set of benefits to display based on the response data
-  const benefits = data === 'LMS' ? labManagement: data === 'Claim' ? claimBenefits :data=='lead'?leadBenefits:data =='HR' ? hrmBenefits:data =='Equipment' ? labEquipment:data =='Sales and Procurement' ? sales: leaveBenefits;
+  const benefits = data === 'LMS' ? labManagement: data === 'Claim' ? claimBenefits :data=='Customer'?leadBenefits:data =='HR' ? hrmBenefits:data =='Equipment' ? labEquipment:data =='Sales and Procurement' ? sales: leaveBenefits;
 
   return (
     <Section>

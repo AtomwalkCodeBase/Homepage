@@ -223,28 +223,28 @@ const endpoint = 'https://www.atomwalk.com/api';
           <CheckBoxWrapper>
            <CheckBoxLabel>Please select your requirement(s):</CheckBoxLabel>
             <label>
-              <input type="checkbox" name="requirement" value="Payroll" onChange={handleCheckboxChange} /> Payroll
+              <input type="checkbox" name="requirement" value="Customer Management" onChange={handleCheckboxChange} /> Customer Management
             </label>
             <label>
-              <input type="checkbox" name="requirement" value="Core HR" onChange={handleCheckboxChange} /> Core HR
+              <input type="checkbox" name="requirement" value="Inventory Managemen" onChange={handleCheckboxChange} /> Inventory Managemen
             </label>
             <label>
-              <input type="checkbox" name="requirement" value="Attendance Management" onChange={handleCheckboxChange} /> Attendance Management
+              <input type="checkbox" name="requirement" value="Process Templates & Project Management" onChange={handleCheckboxChange} /> Process Templates & Project Management
             </label>
             <label>
-              <input type="checkbox" name="requirement" value="Leave Management" onChange={handleCheckboxChange} /> Leave Management
+              <input type="checkbox" name="requirement" value="HR & Payroll" onChange={handleCheckboxChange} /> HR & Payroll
             </label>
             <label>
-              <input type="checkbox" name="requirement" value="Performance Management System" onChange={handleCheckboxChange} /> Performance Management System
+              <input type="checkbox" name="requirement" value="Lab Management System" onChange={handleCheckboxChange} /> Lab Management System
             </label>
             <label>
               <input type="checkbox" name="requirement" value="Geo-Tagging" onChange={handleCheckboxChange} /> Geo-Tagging
             </label>
             <label>
-              <input type="checkbox" name="requirement" value="Recruitment" onChange={handleCheckboxChange} /> Recruitment
+              <input type="checkbox" name="requirement" value="Claim Management" onChange={handleCheckboxChange} /> Claim Management
             </label>
             <label>
-              <input type="checkbox" name="requirement" value="Employee Self Service" onChange={handleCheckboxChange} /> Employee Self Service
+              <input type="checkbox" name="requirement" value="Enterprise Resource Planning" onChange={handleCheckboxChange} /> Enterprise Resource Planning
             </label>
             <label>
               <input type="checkbox" name="requirement" value="Employee Engagement" onChange={handleCheckboxChange} /> Employee Engagement

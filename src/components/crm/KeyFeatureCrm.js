@@ -128,8 +128,7 @@ const KeyFeatureCrm = () => {
         </IconContainer>
         <FeatureTitle>Customer Management:</FeatureTitle>
         <FeatureDescription>
-        Manage customer relationships by storing interaction histories, preferences, and communication details in one centralized platform
-        </FeatureDescription>
+        Efficiently manage your customer data with receivable tracking, Manage customer tasks. AMC, multiple addresses, and support  effortlessly.</FeatureDescription>
       </FeatureBox>
       <FeatureBox onClick={()=>handelNvigation('Channelpartner.html')}>
         <IconContainer bgColor="#E0F7FC">
@@ -137,16 +136,16 @@ const KeyFeatureCrm = () => {
         </IconContainer>
         <FeatureTitle>Channel partner management:</FeatureTitle>
         <FeatureDescription>
-        Collaborate effectively with business partners by tracking their contributions, agreements, and communication to ensure successful partnerships.
+        Manage channel partners as extended arms to grow your business with Atomwalk CRM.
         </FeatureDescription>
       </FeatureBox>
-      <FeatureBox onClick={()=>handelNvigation('CustomerManagement.html')}>
+      <FeatureBox onClick={()=>handelNvigation('aMCTracking.html')}>
         <IconContainer bgColor="#FFF2E0">
           <img src={Payroll} alt="Reliability" />
         </IconContainer>
         <FeatureTitle>Annual Maintenance Contract:</FeatureTitle>
         <FeatureDescription>
-        Efficiently manage assets, investments, and portfolios while tracking performance and ensuring regulatory compliance
+        Efficiently manage, update, and view Annual Maintenance Contracts with Atomwalk CRM.
         </FeatureDescription>
       </FeatureBox>
       <FeatureBox onClick={()=>handelNvigation('campaignManagement.html')}>

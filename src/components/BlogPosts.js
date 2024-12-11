@@ -127,54 +127,54 @@ const SearchButton = styled.button`
 const BlogPosts = () => {
     // Sample array of post data
 const posts = [
-    {
-      id: 1,
-      title: "The Impact of Technology on the Workplace: Atomwalk CRM On-the-Go",
-      category: "Technology",
-      image: "https://www.homecareinsight.co.uk/2020/07/connected-technology.jpg", // Replace with your image URL
-      author: "Ashutosh Mohapatra",
-      date: "August 20, 2024",
-    },
-    {
-      id: 2,
-      title: "The Impact of Technology on the Workplace: How Technology is Changing",
-      category: "Technology",
-      image: "https://paas-s3-broker-prod-lon-2edbd31f-65e0-4d35-9755-fde7c3b1b292.s3.amazonaws.com/images/Tech_2.2e16d0ba.fill-960x540.png",
-      author: "A Sriya",
-      date: "April 20, 2024",
-    },
+    // {
+    //   id: 1,
+    //   title: "The Impact of Technology on the Workplace: Atomwalk CRM On-the-Go",
+    //   category: "Technology",
+    //   image: "https://www.homecareinsight.co.uk/2020/07/connected-technology.jpg", // Replace with your image URL
+    //   author: "Ashutosh Mohapatra",
+    //   date: "August 20, 2024",
+    // },
+    // {
+    //   id: 2,
+    //   title: "The Impact of Technology on the Workplace: How Technology is Changing",
+    //   category: "Technology",
+    //   image: "https://paas-s3-broker-prod-lon-2edbd31f-65e0-4d35-9755-fde7c3b1b292.s3.amazonaws.com/images/Tech_2.2e16d0ba.fill-960x540.png",
+    //   author: "A Sriya",
+    //   date: "April 20, 2024",
+    // },
     {
       id: 3,
       title: "5 Common HR Software Problems and Troubleshooting Tips You Must know: Atomwalk HRM On-the-Go",
-      category: "Technology",
+      category: "HRMS",
       image: "https://img.freepik.com/free-photo/medium-shot-man-wearing-vr-glasses_23-2149126949.jpg",
-      author: "Pritam Kumar Nayak",
+      author: "Atomwalk Team",
       date: "March 23, 2024",
     },
-    {
-      id: 4,
-      title: "Efficient Inventory Management with Atomwalk",
-      category: "Technology",
-      image: "https://koala.sh/api/image/v2-213fq-qwlz7.jpg?width=1216&height=832&dream",
-      author: "Pritam Kumar Nayak",
-      date: "November 29, 2024",
-    },
-    {
-      id: 5,
-      title: "The Impact of Technology on the Workplace: How Technology is Changing",
-      category: "Technology",
-      image: "https://images.saymedia-content.com/.image/t_share/MjAxNzE5OTgxMjA3OTg3ODU1/examples-of-digital-technology.jpg",
-      author: "Eric Smith",
-      date: "August 20, 2022",
-    },
-    {
-      id: 6,
-      title: "The Impact of Technology on the Workplace: How Technology is Changing",
-      category: "Technology",
-      image: "https://miro.medium.com/v2/resize:fit:664/1*K3Mb7l3_-saN81lhBUBrIA.jpeg",
-      author: "Tracey Wilson",
-      date: "August 20, 2022",
-    },
+    // {
+    //   id: 4,
+    //   title: "Efficient Inventory Management with Atomwalk",
+    //   category: "Technology",
+    //   image: "https://koala.sh/api/image/v2-213fq-qwlz7.jpg?width=1216&height=832&dream",
+    //   author: "Pritam Kumar Nayak",
+    //   date: "November 29, 2024",
+    // },
+    // {
+    //   id: 5,
+    //   title: "The Impact of Technology on the Workplace: How Technology is Changing",
+    //   category: "Technology",
+    //   image: "https://images.saymedia-content.com/.image/t_share/MjAxNzE5OTgxMjA3OTg3ODU1/examples-of-digital-technology.jpg",
+    //   author: "Eric Smith",
+    //   date: "August 20, 2022",
+    // },
+    // {
+    //   id: 6,
+    //   title: "The Impact of Technology on the Workplace: How Technology is Changing",
+    //   category: "Technology",
+    //   image: "https://miro.medium.com/v2/resize:fit:664/1*K3Mb7l3_-saN81lhBUBrIA.jpeg",
+    //   author: "Tracey Wilson",
+    //   date: "August 20, 2022",
+    // },
   ];
   const [searchQuery, setSearchQuery] = useState('');
 

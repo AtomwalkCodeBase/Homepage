@@ -96,6 +96,7 @@ const loginAndStore=async()=>{
           <Route path="/leadManagement.html" element={<LeadManagement/>} />
           <Route path="/CustomerManagement.html" element={<LeadManagement/>} />
           <Route path="/Channelpartner.html" element={<LeadManagement/>} />
+          <Route path="/aMCTracking.html" element={<LeadManagement/>} />
           <Route path="/campaignManagement.html" element={<LeadManagement/>} />
           <Route path="/userManagement.html" element={<LmsSytem/>} />
           <Route path="/equipmentManagement.html" element={<LmsSytem/>} />

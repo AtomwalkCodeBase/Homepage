@@ -248,6 +248,8 @@ export const ProcessFlow = ({ data,bgcolors}) => {
       { step: 'GST', color: '#4A90E2' },
       { step: 'TDS', color: '#4A90E2' },
     ],
+    AnnualMaintenance:[ { step: 'Add and Update AMC Details', color: '#4A90E2' },
+      { step: 'View All AMC Records', color: '#4A90E2' },],
     "Work Order":[
       { step: 'Product Category', color: '#4A90E2' },
       { step: 'Inventory Setup', color: '#4A90E2' },

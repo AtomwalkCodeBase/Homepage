@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Col } from "react-bootstrap";
+import UnderConstructionPopup from "./UnderConstructionPopup";
 
 const Manwarp = styled.div`
   position: relative; /* Establishes a containing block for the pseudo-elements */
@@ -152,6 +153,7 @@ const CardLink = styled.a`
   }
 `;
 const Newcard = (props) => {
+ const[openpop,setopenpop]=useState(false);
   const handelnavigate=(data)=>{
     if(data=="HR & Payroll"){
       window.location.href="/hrm.html"
@@ -162,6 +164,12 @@ const Newcard = (props) => {
     else if(data=="Lab Equipment Management System"){
       window.location.href="/labequipmentmangement.html"
    }
+   else if(data=="Lab Management System"){
+    window.location.href="/labmanagement.html"
+ }
+ else if(data=="Good Laboratory Practices"){
+  setopenpop(!openpop)
+}
     else{
           window.location.href="/product.html"
     }
@@ -179,6 +187,7 @@ const Newcard = (props) => {
         <CardLink onClick={()=>handelnavigate(props?.project?.title)}>Know More</CardLink>
       </Card>
     </MainDiv>
+    <UnderConstructionPopup visible={openpop} setvisible={setopenpop}></UnderConstructionPopup>
        </Col>
 
   );

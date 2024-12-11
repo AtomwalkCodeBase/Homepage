@@ -60,9 +60,9 @@ export default function AboutUsBanner() {
                 <P text="Innovative Financial Solutions: Our platform offers easy financing options and seamless connectivity with banks through blockchain technology, ensuring secure and efficient financial transactions for your business." color="#000" fontSize="16px" fontWeight="400" letterSpacing="0.8px" marginTop="30px"></P>
                 <P text="Operational Excellence: With Atomwalk Office, businesses can monitor and track their operational efficiency in real-time, enabling better decision-making and improved productivity." color="#000" fontSize="16px" fontWeight="400" letterSpacing="0.8px" marginTop="30px"></P>
                 <P text="Cutting-Edge Technology: We leverage the latest advancements in technology, including cloud services and blockchain, to provide a robust and secure environment for your business operations." color="#000" fontSize="16px" fontWeight="400" letterSpacing="0.8px" marginTop="30px"></P>
-                <BtnWrap>
+                {/* <BtnWrap>
                     <Button onClick={HandleSeeAllJobs} text="See Open Jobs" variant="solidOrange" width="auto" height="50px"></Button>
-                </BtnWrap>
+                </BtnWrap> */}
            </AboutTxt>
         </AboutWrap>
     </div>

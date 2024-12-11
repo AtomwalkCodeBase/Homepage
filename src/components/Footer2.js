@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import logo from "../assets/img/Atom_walk_logo-removebg-preview.png";
 import Email from "../assets/img/email.png";
@@ -8,6 +8,7 @@ import Footer from "../assets/img/footer-bg.png";
 import navIcon1 from "../assets/img/nav-icon1.svg";
 import navIcon2 from "../assets/img/nav-icon2.svg";
 import navIcon3 from "../assets/img/nav-icon3.svg";
+import UnderConstructionPopup from "./UnderConstructionPopup";
 const FooterContainer = styled.footer`
  background-color: rgb(13, 11, 62); /* Dark background color */
   /* background-image: url(${Footer}); */
@@ -75,10 +76,13 @@ const FooterLinksContainer = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  text-align: center;
+  text-align: left;
 
-  @media (min-width: 768px) {
-    text-align: left;
+  @media (max-width: 768px) {
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  text-align: center;
   }
 `;
 
@@ -240,6 +244,7 @@ const DisclaimerText = styled.p`
 `;
 
 export default function Footer2() {
+  const[openpop,setopenpop]=useState(false);
   return (
     <>
     
@@ -294,16 +299,16 @@ export default function Footer2() {
           <h3>Products</h3>
           <ul>
             <li>
-              <a href="#webdev">Manufacturing Business</a>
+              <a href="/crm.html">Customer Relationship Management</a>
             </li>
             <li>
-              <a href="#appdev">Consultancy Business</a>
+              <a href="/hrm.html">Human Resource Management</a>
             </li>
             <li>
-              <a href="#maintenance">Chemical Industry</a>
+              <a href="/lms.html">Lab Management System</a>
             </li>
             <li>
-              <a href="#marketing">Lab Management</a>
+              <a href="/Product.html">Enterprise Resource Planning</a>
             </li>
           </ul>
         </FooterLinks>
@@ -314,13 +319,13 @@ export default function Footer2() {
               <a href="/Blog.html">Blog</a>
             </li>
             <li>
-              <a href="#appdev">Support</a>
+              <a    onClick={()=>{setopenpop(!openpop)}}>Support</a>
             </li>
             <li>
-              <a href="#maintenance">Tutorials</a>
+              <a    onClick={()=>{setopenpop(!openpop)}}>Tutorials</a>
             </li>
             <li>
-              <a href="#marketing">FAQs</a>
+              <a    onClick={()=>{setopenpop(!openpop)}}>FAQs</a>
             </li>
           </ul>
         </FooterLinks>
@@ -339,6 +344,7 @@ export default function Footer2() {
             </div>
             </div>
       </FooterBottom>
+      <UnderConstructionPopup visible={openpop} setvisible={setopenpop}></UnderConstructionPopup>
       </>
   );
 }

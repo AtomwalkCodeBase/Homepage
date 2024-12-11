@@ -6,7 +6,8 @@ import HrAPP from './../assets/img/HrApp.svg';
 import EcommApp from './../assets/img/EcommApp.svg';
 import Crm from './../assets/img/crm.png';
 import Hr from './../assets/img/search-job.png';
-import Ecom from './../assets/img/online-shop.png';
+import Ecom from './../assets/img/experiment_16584785.png';
+import Lab from './../assets/img/labtest2.png';
 import UnderConstructionPopup from './UnderConstructionPopup';
 
 // Styled Components
@@ -175,13 +176,14 @@ const HeroSection = () => {
             <FeatureText>HR management software streamlining payroll, attendance, leave, claims.</FeatureText>
           </FeatureItem>
           <FeatureItem
-            onClick={()=>{setopenpop(!openpop)}}
+            // onClick={()=>{setopenpop(!openpop)}}
+            onClick={()=>{window.location.href='/lms.html'}}
             background={background}
-            onMouseEnter={() => handleMouseEnter('linear-gradient(180deg, #90ee90, rgb(255 246 247))', EcommApp)}
+            onMouseEnter={() => handleMouseEnter('linear-gradient(180deg, #90ee90, rgb(255 246 247))', Lab)}
             onMouseLeave={handleMouseLeave}
           >
             <FeatureIcon src={Ecom} alt="E-Commerce" />
-            <FeatureText>Your one-stop shop for easy, fast, and secure online shopping.</FeatureText>
+            <FeatureText>Manage lab operations and equipment effortlessly in one platform</FeatureText>
           </FeatureItem>
         </Features>
       </LeftSection>

@@ -417,14 +417,29 @@ const CrmFeatures = ({data}) => {
           ]:[
           {
 
-            title: 'Enhanced Campaign Execution and Analysis',
-            subtitle: 'Maximize Engagement with Real-Time Tracking and Insights',
+            title: 'Easily Add and Update AMC Details',
+            subtitle: 'Streamline Your Annual Maintenance Contract Management',
             description:
-              'From sending targeted emails to monitoring their performance, Atomwalk CRM enables real-time tracking of customer interactions, open rates, and conversion metrics. Use detailed analytics to adjust strategies, close completed campaigns, and optimize future campaigns. This helps maximize reach, engagement, and ultimately, customer satisfaction.',
-            benefits: ['Send Emails', 'Real-Time Tracking', 'Detailed Analytics'],
-            imageSrc: img3,  // Replace with relevant image variable for campaign execution
+              'Atomwalk simplifies the process of managing AMC details for your customers. Add new AMC records, update existing ones, and set reminders to ensure timely contract renewals. With features like warranty integration and customer-specific tracking, this module ensures you stay ahead in providing exceptional post-sales support.',
+            benefits: ["Effortless AMC addition and updates",
+    "Integrated warranty and AMC tracking",
+    "Set reminders for timely renewals"],
+            imageSrc: img10,  // Replace with relevant image variable for campaign execution
             imageAlt: 'Campaign Performance Tracking',
             imgPosition: 'right',
+          },
+          {
+
+            title: 'Access All AMC Records in One Place',
+            subtitle: 'Comprehensive Dashboard for Managing AMC Records',
+            description:
+              'With Atomwalk, you can access a consolidated list of all AMC records in one dashboard. Filter and search records by customer, product, or renewal status for quick insights. The intuitive interface allows you to stay on top of active contracts, expired warranties, and pending renewals, ensuring no service opportunity is missed.',
+            benefits: ["Centralized AMC record management",
+    "Quick filtering and search options",
+    "Enhanced visibility for active and expired contracts"],
+            imageSrc: img10,  // Replace with relevant image variable for campaign execution
+            imageAlt: 'Campaign Performance Tracking',
+            imgPosition: 'left',
           }
         ];
      

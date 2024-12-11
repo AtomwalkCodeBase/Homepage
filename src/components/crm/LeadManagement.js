@@ -5,6 +5,7 @@ import Lead  from '../../assets/img/Mockup5-Lead.png'
 import Customer  from '../../assets/img/Customermage-removebg-preview.png'
 import Partner  from '../../assets/img/Pattner.png'
 import Campaign  from '../../assets/img/Campain.png'
+import AMC  from '../../assets/img/amc.png'
 import { ProcessFlow } from '../hrm/ProcessFlow'
 import CrmFeatures from './CrmFeatures'
 const LeadManagement = () => {
@@ -41,6 +42,13 @@ const LeadManagement = () => {
       background: "#d6e7ff",
       img: `${Campaign}`  // Add your image path here
     },
+    {
+      title: "Annual Maintenance Contract",
+      titles: "AnnualMaintenance",
+      description: "Efficiently manage, update, and view Annual Maintenance Contracts with Atomwalk CRM.",
+      background: "#d6e7ff",
+      img: `${AMC}`  // Add your image path here
+    },
     
     // You can add more management types if needed
   ];
@@ -55,6 +63,9 @@ const LeadManagement = () => {
     }
     else if(location.pathname.includes('Channelpartner')){
       setShowData('Channelpartner')
+    }
+    else if(location.pathname.includes('aMCTracking')){
+      setShowData('aMCTracking')
     }
     else{
       setShowData('campaignManagement')
@@ -72,6 +83,9 @@ const LeadManagement = () => {
     else if (location.pathname.includes('campaignManagement')) {
     return  managementPages[3]; // Customer Management data
 }
+   else if (location.pathname.includes('aMCTracking')) {
+    return  managementPages[4]; // Customer Management data
+   }
     // Default to Lead Management if no match
     return managementPages[0];
   };

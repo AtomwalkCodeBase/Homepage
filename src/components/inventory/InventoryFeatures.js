@@ -265,84 +265,57 @@ const InventoryFeatures = ({data}) => {
             imgPosition: 'left',
           },
           
-      ]:isClaim =='project'?[
+      ]:isClaim =='inventoryreport'?[
         {
-          title: 'Efficient Work Order Management Made Simple',
-          subtitle: 'Streamline project creation and link seamlessly with sales orders.',
+          title: 'Comprehensive Stock Insights at Your Fingertips',
+          subtitle: 'Filter, Analyze, and Track Inventory Movement with Ease',
           description:
-            `Atomwalk enables businesses to create projects seamlessly after confirming sales orders, ensuring smooth transition into work orders. Users can generate detailed projects by linking them to specific sales orders, ensuring all relevant details auto-populate while offering flexibility for customization. From assigning a project manager to selecting a suitable project setup template, Atomwalk simplifies the workflow, making project creation both efficient and adaptable.`,
-          benefits: ['Unique codes ensure streamlined tracking.',
-                      "Auto-populates order items and templates linked to sales orders",
-                      "Edit fields like project title, revenue, start date, and description as needed.",
-                      "Automatically suggests templates, with options for customization.",     ],
+            `The Stock Item Report section in Atomwalk empowers users to filter inventory data by date, stock category, or item group. Users can view stock details, including item-wise stock category, item group, available quantity, quantities in and out, and more. The View Details button provides batch-specific insights such as flow type, transaction dates, remarks, unit quantity, current stock levels, unit price, and expiry dates. This feature ensures detailed tracking and better decision-making for manufacturing operations.`,
+          benefits: ['Filter by date, category, or item group.',
+                      "Access details on available quantity, in/out movements, and categories.",
+                      "View batch-wise flow type, dates, and pricing.",
+                      "Enables precise inventory control and tracking.",     ],
           imageSrc: img7,  // Replace with relevant image variable for campaign management
-          imageAlt: 'Project/Work Order Creation',
+          imageAlt: 'Stock Item Report',
           imgPosition: 'right',
         },
         {
-          title: 'Empower Your Projects with Advanced Activity Management',
-          subtitle: 'Customizable, collaborative, and detailed project activity tracking.',
+          title: 'Track Item Vaaluations with Batch-Level Precision',
+          subtitle: 'Dynamic Valuaation Reporting for Smarter Inventory Decisions',
           description:
-            `Atomwalk empowers project teams with seamless activity tracking and inventory management. Once the project manager starts a project, allocated users receive job cards with detailed activity instructions and work order references. The structured job card minimizes data input errors, ensuring accuracy. Users can begin activities by clicking the 'Start Project' button in their 'Project Activities' list, with dependencies automatically validated. As activities progress, users can update in-process and output inventory details, track activity completion metrics, and finalize tasks with remarks. Atomwalk also allows the allocation and reallocation of inventory items, with provisions to return unused items, helping businesses reduce waste and optimize inventory tracking.`,
-          benefits: ["Activities reflect for assigned users after project initiation.",
-                     "Access detailed job cards with work order references and structured fields for updates.",
-                     "Activities can only start once dependent tasks are completed.",
-                    " Update in-process and output inventory details during project execution.",
-                    "Allocate, reallocate, or return unused items to prevent losses and ensure efficient inventory usage.",
-                    "Updated details reflect on the final job card for streamlined reporting."
+            `The Valuation Report section in Atomwalk allows users to monitor item valuations batch-wise. By clicking on the View Details button for an item, users can access comprehensive data, including batch number, expiry date, flow type (IN or OUT), transaction dates, quantities, average price, and valuation in INR. Dynamic sorting options enable users to filter reports by date, stock category, or item group, providing actionable insights for effective inventory and financial planning.`,
+          benefits: ["Monitor expiry dates, flow type, and valuations.",
+                     " View quantities, pricing, and valuation per batch.",
+                     "Supports inventory valuation and strategic planning.",
                 ],
           imageSrc: img8,  // Replace with relevant image variable for campaign execution
-          imageAlt: 'User Activity Management',
+          imageAlt: 'Valuation Report',
           imgPosition: 'left',
         },
         {
-          title: 'Streamlined Project Management Tailored for Manufacturing',
-          subtitle: 'Efficient Activity Coordination and Resource Tracking',
+          title: 'Stay Ahead with Expiry Tracking',
+          subtitle: 'Smart Tools to Monitor and Manage Expiring Inventory',
           description:
-            `Atomwalk provides manufacturing-focused project management, integrating activity planning, dependency setup, and resource tracking. Activities auto-populate from process templates, with options to add or customize tasks and dependencies using a Gantt Chart view. Users can manage project inventory, equipment requirements, and critical documents essential for execution. The cost analysis module offers insights into activity costs, inventory expenses, and equipment usage, with detailed revenue and margin tracking. Atomwalk ensures precise planning, resource optimization, and improved project efficiency for manufacturing operations.`,
-          benefits: ['Auto-populated tasks with dependency and sub-activity options.', ' Visualize and manage critical and other paths for streamlined workflows.', 'Manage inventory, equipment, and required documents effectively.','Track activity costs, equipment usage, and project margins.','Tools designed for the specific demands of manufacturing projects.'],
+            `The Valuation Report section in Atomwalk includes an Inventory Expiry Report, enabling users to track expiring items with precision. Users can filter the expiry item list by categories such as 30 days, 60 days, or 90 days before expiry and sort by Expiring As on Date, Item Group, or Stock Category. Batch-wise expiry dates for each item are easily accessible, helping businesses manage expiring inventory effectively and reduce wastage.`,
+          benefits: ['Track items expiring day wise.', 'View expiry details for each batch.', 'Minimize wastage and optimize inventory management.'],
           imageSrc: img9,  // Replace with relevant image variable for campaign execution
-          imageAlt: 'Project Management',
+          imageAlt: 'Expiry Report',
           imgPosition: 'right',
         }               
          
         ]:[
           {
 
-            title: 'Activity Dashboards for Efficient Manufacturing Projects',
-            subtitle: 'Track Activities and Ensure Operational Precision',
+            title: 'Wire House Management',
+            subtitle: 'Wire House Management Subtitle',
             description:
-              'Atomwalk’s Activity Dashboard helps manufacturing teams efficiently track and manage tasks. Users can view assigned activities, track progress, and address overdue or pending tasks. Key metrics include overdue activities, upcoming deadlines, and completed milestones, with dynamic filters for quick sorting by date, type, or status. Designed to optimize workflows, the dashboard provides real-time access to activity details, ensuring seamless task execution and improved project efficiency in manufacturing operations.',
-            benefits: ['Track personal activities, including ongoing, overdue, and completed tasks.', 'Access critical data like deadlines and completion statuses.', ' Access detailed project overviews, including overdue and future activities.','Sort activities by date, type, status, or assigned user for customized tracking.','Monitor progress, identify delays, and optimize task management.',' Use dashboard insights to allocate resources effectively and meet deadlines.'],
+              'Wire House Management Description',
+            benefits: ['Wire House Management Benifits 1', 'Wire House Management Benifits 2',],
             imageSrc: img10,  // Replace with relevant image variable for campaign execution
-            imageAlt: 'User Activity Dashboard',
+            imageAlt: 'Wire House Management',
             imgPosition: 'right',
           },
-          {
-            title: `Optimize Profitability with Atomwalk's Project Margin Dashboard`,
-            subtitle: 'Customizable, collaborative, and detailed project activity tracking.',
-            description:
-              `Atomwalk’s Project Margin Dashboard provides manufacturing teams with a clear comparison of planned vs. actual margins through graphical views. Users can review project lists with details like assigned managers, project status, and margins. The dashboard also enables quick access to critical data, including project revenue, cost breakdowns, activity dependencies, inventory, and equipment requirements, ensuring better margin control and operational efficiency.`,
-            benefits: ["Visualize planned vs. actual margins for each project.",
-                       "Review assigned managers, project status, and key metrics.",
-                       "Access revenue and cost breakdowns for users, items, and equipment.",
-                      " Tools tailored for profit tracking and resource efficiency.",
-                      "Dynamic Filter & Sorting of List."
-                  ],
-            imageSrc: img11,  // Replace with relevant image variable for campaign execution
-            imageAlt: 'Project Dashboard',
-            imgPosition: 'left',
-          },
-          {
-            title: `Optimize Resource Allocation with Atomwalk's Utilization Dashboard`,
-            subtitle: 'Track Effort Utilization for Better Resource Planning',
-            description:
-              `Atomwalk’s Resource Utilization Dashboard provides a clear view of planned vs. actual effort utilization through dynamic graphical insights. Manufacturing teams can analyze month-wise utilization, compare planned and actual capacities, and filter data by manager, project, user, or date. The dashboard also offers detailed User Effort Utilization Data to monitor resource-specific performance, ensuring effective allocation and efficient workload distribution across projects.`,
-            benefits: ['Graphical view of planned vs. actual resource usage.', ' Sort by manager, project, user, or date for precise insights.', 'Analyze planned and actual monthly effort capacities.','Monitor individual user effort utilization.','Tools to enhance resource efficiency and project alignment.'],
-            imageSrc: img12,  // Replace with relevant image variable for campaign execution
-            imageAlt: 'Resource Utilisation',
-            imgPosition: 'right',
-          }  
+           
         ];
      
       const location = useLocation(); // Get the current URL

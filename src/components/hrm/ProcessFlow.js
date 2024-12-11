@@ -278,9 +278,8 @@ export const ProcessFlow = ({ data,bgcolors}) => {
     ],
     "Inventory Report & Dashboard":[
       { step: 'Stock Item Report', color: '#4A90E2' },
-      { step: 'Batchwise Report', color: '#4A90E2' },
       { step: 'Valuation Report', color: '#4A90E2' },
-      { step: 'Inventory Report', color: '#4A90E2' },
+      { step: 'Expiry Report', color: '#4A90E2' },
     ],
 
 

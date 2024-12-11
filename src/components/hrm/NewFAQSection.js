@@ -157,13 +157,14 @@ const CTAImage = styled.img`
 `;
 
 const NewFAQSection = ({ data }) => {
-  const [openCategoryIndex, setOpenCategoryIndex] = useState(null);
+  const [openCategoryIndex, setOpenCategoryIndex] = useState(0); // Open the first category by default
   const [openQuestionIndex, setOpenQuestionIndex] = useState(null);
 
   const demo = () => {
     window.location.href = '/demo.html';
   };
 
+  
   const faqData = {
     HR: {
       General: [

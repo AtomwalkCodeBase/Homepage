@@ -151,7 +151,7 @@ const KeyFeatureHrm = () => {
           </IconContainer>
           <FeatureTitle>Attendance:</FeatureTitle>
           <FeatureDescription>
-          Track employee attendance in real-time, with built-in GPS tracking and the ability to mark attendance remotely.
+          Track employee attendance in real time with integrated location tracking and the option to mark attendance remotely.
           </FeatureDescription>
         </FeatureBox>
 
@@ -162,7 +162,7 @@ const KeyFeatureHrm = () => {
           </IconContainer>
           <FeatureTitle>Leave Management:</FeatureTitle>
           <FeatureDescription>
-          Handle leave requests with ease. Managers can approve or reject requests, view leave history, and ensure employees stay within allotted time off.
+          Easily handle leave requests—employees can apply for leave, while managers can approve or reject requests, review leave history, and ensure compliance with company policies.
           </FeatureDescription>
         </FeatureBox>
         
@@ -177,7 +177,7 @@ const KeyFeatureHrm = () => {
           </IconContainer>
           <FeatureTitle>Claim Management:</FeatureTitle>
           <FeatureDescription>
-          Submit and manage claims such as travel or expense reimbursements. Employees can upload receipts, and managers can review and approve claim
+          Submit and manage claims, such as travel or expense reimbursements, with ease. Employees can upload receipts, managers can review and approve claims, and claim settlements with employee advance is also supported.
           </FeatureDescription>
         </FeatureBox>
 
@@ -187,7 +187,7 @@ const KeyFeatureHrm = () => {
           </IconContainer>
           <FeatureTitle>Payroll:</FeatureTitle>
           <FeatureDescription>
-          Automate payroll processing with integrated features for salary calculations, deductions, and disbursements. Ensure timely and accurate payments.
+          Automate payroll processing with integrated features for salary calculations, deductions, and disbursements, ensuring timely and accurate payroll management.
           </FeatureDescription>
         </FeatureBox>
         <FeatureBox onClick={()=>{handleCardPress('appraisal')}}>
@@ -205,7 +205,7 @@ const KeyFeatureHrm = () => {
           </IconContainer>
           <FeatureTitle>Exit Process:</FeatureTitle>
           <FeatureDescription>
-          Simplify the employee exit process, from resignation submission to final clearance. Ensure smooth offboarding with documented workflows
+          Simplify the employee exit process, from resignation submission to final clearance. Atomwalk HRM allows companies to set up exit process documentation, ensuring all required documents and company assets are managed efficiently and securely stored for future reference.
           </FeatureDescription>
         </FeatureBox>
         

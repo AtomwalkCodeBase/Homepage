@@ -203,7 +203,7 @@ const ProductCard = () => {
     <DecorativeCircle bottom="10%" right="70%" />
   </ContentBox>
 
-  <ContentBox bgColor="#e0f7fa">
+  <ContentBox bgColor="#e0f7fa" onClick={()=>salespage("/inventory.html")}>
     <ImageContainer>
       <img src={Inventory} alt="Performance management" />
     </ImageContainer>
@@ -380,7 +380,7 @@ const ProductCard = () => {
     <DecorativeCircle bottom="5%" right="10%" />
   </ContentBox> */}
 
-  <ContentBox bgColor="#fae0f8"onClick={()=>salespage("/hrm.html")}>
+  <ContentBox bgColor="#fae0f8" onClick={()=>salespage("/hrm.html")}>
   <ImageContainer>
       <img src={Hr} alt="Employee engagement" />
     </ImageContainer>

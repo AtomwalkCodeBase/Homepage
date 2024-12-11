@@ -268,11 +268,27 @@ export const ProcessFlow = ({ data,bgcolors}) => {
       { step: 'Project Dashboard', color: '#4A90E2' },
       { step: 'Resource Utilisation', color: '#4A90E2' },
     ],
+    "Inventory Operation":[
+      { step: 'Inventory Setup', color: '#4A90E2' },
+      { step: 'Inventory Item', color: '#4A90E2' },
+      { step: 'Stock Management', color: '#4A90E2' },
+      { step: 'Increament of Inventory', color: '#4A90E2' },
+      { step: 'Physical Inspection', color: '#4A90E2' },
+      { step: 'Decreament of Inventory', color: '#4A90E2' },
+    ],
+    "Inventory Report & Dashboard":[
+      { step: 'Stock Item Report', color: '#4A90E2' },
+      { step: 'Batchwise Report', color: '#4A90E2' },
+      { step: 'Valuation Report', color: '#4A90E2' },
+      { step: 'Inventory Report', color: '#4A90E2' },
+    ],
+
+
    
   };
 
   // Get the appropriate flow based on the data prop
-  const processSteps = flows[data] || flows["Work Order"] || flows["Project Management"] || flows["Report & Dashboard"] || [];
+  const processSteps = flows[data] || flows["Work Order"] || flows["Project Management"] || flows["Report & Dashboard"] || flows["Inventory Operation"] || [];
   const navigate = useNavigate();
   const location = useLocation();
 

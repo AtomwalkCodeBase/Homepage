@@ -154,10 +154,10 @@ export const ProcessFlow = ({ data,bgcolors}) => {
     ],
     Lead: [
       { step: 'Lead Capture', color: '#4A90E2' },
-      { step: 'Lead Tracking', color: '#4A90E2' },
-      { step: 'Obtain Customer Management', color: '#4A90E2' },
-      { step: 'Lead Lifecycle Management ', color: '#4A90E2' },
-      { step: 'Lost Lead Recovery and Management', color: '#4A90E2' },
+      { step: 'Lead Enrichment and Task Assignment', color: '#4A90E2' },
+      // { step: 'Obtain Customer Management', color: '#4A90E2' },
+      { step: 'Lead Tracking and Status Management ', color: '#4A90E2' },
+      { step: 'Lead Closure', color: '#4A90E2' },
     ],
     Campaign: [
       { step: 'Create Campaign', color: '#4A90E2' },
@@ -171,9 +171,9 @@ export const ProcessFlow = ({ data,bgcolors}) => {
       { step: 'Multi-Report Generation', color: '#4A90E2' },
     ],
     Customer : [
-      { step: 'Customer Integration', color: '#4A90E2' },
-      { step: 'Order Management', color: '#4A90E2' },
-      { step: 'Process-wise Order Management (Resale and Cross-Selling)', color: '#4A90E2' },
+      { step: 'Customer Data Management', color: '#4A90E2' },
+      { step: 'Customer Task & TDS Management', color: '#4A90E2' },
+      { step: 'Invoice, Payment & Product Interests', color: '#4A90E2' },
       { step: 'Ticket Tracking (AMC Tracking)', color: '#4A90E2' },
       { step: 'Reports and Dashboards', color: '#4A90E2' }
     ],

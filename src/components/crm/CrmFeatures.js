@@ -4,8 +4,9 @@ import ClaimImgDemo from '../../assets/img/Claim_Image_demo.png';
 import ClaimImgDemo2 from '../../assets/img/Claim_Image_Demo2.png';
 import CheckMark from '../../assets/img/check_mark.png';
 import img1 from '../../assets/img/CrmMocups2.svg';
+import Crmrep from '../../assets/img/reprtcrm.svg';
 import img2 from '../../assets/img/CrmMocups.svg';
-import img3 from '../../assets/img/emp_advance.svg';
+import img3 from '../../assets/img/marklost.svg';
 import img4 from '../../assets/img/campain1.svg'
 import img5 from '../../assets/img/campign2.svg'
 import img6 from '../../assets/img/campgin3.svg'
@@ -16,6 +17,7 @@ import img11 from '../../assets/img/Reportanddashboard.svg'
 import img12 from '../../assets/img/Chanelpatner.svg'
 import img13 from '../../assets/img/pattner.svg'
 import img14 from '../../assets/img/multyreport.svg'
+import Tds from '../../assets/img/Tds.svg'
 import { useLocation } from "react-router-dom";
 const Container = styled.div`
   width: 100%;
@@ -218,45 +220,56 @@ const CrmFeatures = ({data}) => {
           imgPosition: 'right',
         },
         {
-          title: 'Manage Leads with Ease',
-          subtitle: 'Fast and Efficient Lead Management Process',
-          description:
-            'Empower your sales team to add and manage leads effortlessly from their mobile devices or desktops. Track the status of leads in real-time, and streamline follow-ups with our intuitive lead management system.',
-          benefits: ['Real-Time Lead Tracking', 'Automated Follow-ups', 'Bulk Lead Uploads'],
+          title: 'Enhanced Lead Detailing and Task Management',
+          subtitle: 'Boost Productivity with Organized Workflow',
+          description: 
+          'Atomwalk CRM enables users to update lead profiles with detailed information, including lead source, contact data, and preferences, ensuring a personalized approach to engagement. Tasks can be assigned to leads for follow-ups, meetings, or next steps, with reminders to maintain timely actions. Users can also record product interests to tailor interactions to specific requirements and even reassign ownership of leads to ensure proper management. These features provide a structured workflow, fostering collaboration and enhancing lead conversion outcomes.',
+          benefits: ['Detailed Lead Profiles', 'Efficient Task Management', 'Seamless Ownership Reassignment'],
           imageSrc: img2,  // Replace with your relevant image variable
-          imageAlt: 'Lead Management',
+          imageAlt: 'Lead Enrichment and Task Management Overview',
           imgPosition: 'left',
         },
         {
-          title: 'Streamline Lead Conversions',
-          subtitle: 'Quick and Transparent Lead Conversion Process',
-          description:
-            'Sales managers can track lead progress, assign tasks, and update lead status in real-time. Our streamlined lead conversion process ensures that opportunities are never missed, providing transparency and timely action for maximum conversions.',
-          benefits: ['Task Assignment', 'Pipeline Status Updates', 'Conversion Tracking'],
-          imageSrc: img1,  // Replace with your relevant image variable
-          imageAlt: 'Lead Conversion',
+          title: 'Lead Tracking and Status Management',
+          subtitle: 'Stay Updated with Real-Time Lead Insights',
+          description: 
+            'Atomwalk CRM offers tools to monitor lead progress and track all interactions seamlessly. Users can update lead status as Active, Inactive, or Prospect to reflect real-time progress. The system also provides a comprehensive view of each lead’s task list, current tasks, contact details, and product interests, ensuring every aspect of the lead is easily accessible for effective follow-ups and decision-making.',
+          benefits: ['Real-Time Lead Insights', 'Comprehensive Tracking', 'Streamlined Workflow Management'],
+          imageSrc: Crmrep,  // Replace with your relevant image variable
+          imageAlt: 'Lead Tracking Overview',
           imgPosition: 'right',
         },
+                
         {
-            title: 'Centralize Lead Management for Higher Conversions',
-            subtitle: 'Efficient and Transparent Lead Conversion Process',
-            description:
-              'Sales managers can seamlessly track lead history, assign tasks, and update lead statuses in real-time. With our centralized lead management system, you can prioritize leads, ensure timely follow-ups, and never miss an opportunity to convert, all while maintaining full transparency throughout the process.',
-            benefits: ['Real-Time Task Assignment', 'Lead Prioritization', 'Conversion Tracking'],
-            imageSrc: img1,  // Replace with your relevant image variable
-            imageAlt: 'Lead Conversion Process',
-            imgPosition: 'left',
-          },
-          {
-            title: 'Get Complete Context on Every Lead',
-            subtitle: 'Personalized and Informed Lead Follow-ups',
-            description:
-              'To maximize the potential of lost leads, implement follow-up automation to re-engage them after a set period, such as three months, with “win-back” campaigns that offer special promotions or address any unmet needs. Keep detailed records of why leads were marked as lost (e.g., budget constraints, timing, lack of interest) to enable tailored future follow-up strategies. Design re-engagement workflows in the CRM to tag lost leads, retarget them, and monitor for any shifts in their engagement levels. Analyzing lost lead data periodically can reveal common reasons for drop-off, providing insights to refine marketing and sales approaches. Maintain lost leads as a distinct segment in the CRM, allowing for strategic re-engagement with new products or services, ensuring they stay accessible for potential future opportunities.'
-              ,benefits: ['Comprehensive Lead History', 'Cross-Departmental Integration', 'Informed Outreach'],
-            imageSrc: img1,  // Replace with your relevant image variable
-            imageAlt: 'Lead Context',
-            imgPosition: 'right',
-          },
+          title: 'Streamline Lead Conversions',
+          subtitle: 'Quick and Transparent Lead Conversion Process',
+          description: 
+    'With Atomwalk CRM, users can mark leads as Lost to maintain accurate records for analysis or move successful conversions into the appropriate sales or customer management pipeline. Additionally, purchase orders can be updated directly within the system, streamlining the transition from lead to customer and ensuring a smooth handoff.',
+          benefits: ['Accurate Record-Keeping', 'Streamlined Conversions', 'Integrated Purchase Order Management'],
+          imageSrc: img3,  // Replace with your relevant image variable
+          imageAlt: 'Lead Conversion',
+          imgPosition: 'left',
+        },
+        // {
+        //     title: 'Centralize Lead Management for Higher Conversions',
+        //     subtitle: 'Efficient and Transparent Lead Conversion Process',
+        //     description:
+        //       'Sales managers can seamlessly track lead history, assign tasks, and update lead statuses in real-time. With our centralized lead management system, you can prioritize leads, ensure timely follow-ups, and never miss an opportunity to convert, all while maintaining full transparency throughout the process.',
+        //     benefits: ['Real-Time Task Assignment', 'Lead Prioritization', 'Conversion Tracking'],
+        //     imageSrc: img1,  // Replace with your relevant image variable
+        //     imageAlt: 'Lead Conversion Process',
+        //     imgPosition: 'left',
+        //   },
+        //   {
+        //     title: 'Get Complete Context on Every Lead',
+        //     subtitle: 'Personalized and Informed Lead Follow-ups',
+        //     description:
+        //       'To maximize the potential of lost leads, implement follow-up automation to re-engage them after a set period, such as three months, with “win-back” campaigns that offer special promotions or address any unmet needs. Keep detailed records of why leads were marked as lost (e.g., budget constraints, timing, lack of interest) to enable tailored future follow-up strategies. Design re-engagement workflows in the CRM to tag lost leads, retarget them, and monitor for any shifts in their engagement levels. Analyzing lost lead data periodically can reveal common reasons for drop-off, providing insights to refine marketing and sales approaches. Maintain lost leads as a distinct segment in the CRM, allowing for strategic re-engagement with new products or services, ensuring they stay accessible for potential future opportunities.'
+        //       ,benefits: ['Comprehensive Lead History', 'Cross-Departmental Integration', 'Informed Outreach'],
+        //     imageSrc: img1,  // Replace with your relevant image variable
+        //     imageAlt: 'Lead Context',
+        //     imgPosition: 'right',
+        //   },
           
       ]:isClaim =='campaignManagement'?[
         {
@@ -299,44 +312,66 @@ const CrmFeatures = ({data}) => {
             title: 'Comprehensive Customer Management',
             subtitle: 'Easily Access, Track, and Update Customer Information',
             description:
-              'Atomwalk CRM’s Customer Management module provides users with a centralized platform to manage and organize customer data. With tools for creating new customer profiles, viewing customer lists, and adding or updating details, the interface allows for streamlined customer tracking and engagement. Additionally, users can manage product interests, payment statuses, and set up tasks related to specific customers.',
+              'Atomwalk CRM enables users to view and manage a complete customer list, import or upload customer data in bulk, and update customer profiles effortlessly. This ensures accurate and up-to-date records for better customer interaction and service.',
             benefits:['Customer List View', 'Add and Update Customer Details', 'Track Product Interests and Payments'],
             imageSrc: img7,  // Replace with relevant image variable for campaign management
             imageAlt: 'CustomerManagement',
+            imgPosition: 'right',
+          },
+          // {
+          //   title: 'Efficiently Manage Your Orders',
+          //   subtitle: 'Simplified Order Tracking and Fulfillment',
+          //   description:
+          //     'Atomwalk’s Order Management module streamlines the entire order lifecycle, from creation to fulfillment. Keep track of customer orders, monitor their status in real-time, and manage related invoices and delivery schedules. With a centralized platform, you can improve order accuracy, reduce errors, and ensure timely processing for a better customer experience.',
+          //   benefits: [
+          //     "Real-time order tracking",
+          //     "Centralized order information",
+          //     "Improved order accuracy",
+          //     "Faster order fulfillment",
+          //     "Seamless integration with invoices and delivery schedules"
+          //   ],
+          //   imageSrc: img8, // Replace with the appropriate image variable for Order Management UI
+          //   imageAlt: 'Order Management Dashboard',
+          //   imgPosition: 'right',
+          // }, 
+          {
+            title: 'Task and TDS Management',
+            subtitle: 'Streamline Customer Operations',
+            description: 
+              'Manage customer-related tasks effectively by assigning and tracking them within the CRM. Additionally, users can add and upload TDS (Tax Deducted at Source) details, ensuring compliance and seamless financial management for each customer.',
+            benefits: ['Organized Task Management', 'Simplified TDS Handling', 'Improved Workflow Efficiency'],
+            imageSrc: Tds, // Replace with your relevant image variable
+            imageAlt: 'Customer Task and TDS Management Overview',
             imgPosition: 'left',
           },
+                   
+          // {
+          //   title: 'Maximize Sales with Process-wise Order Management',
+          //   subtitle: 'Streamline Resale and Cross-Selling Opportunities',
+          //   description:
+          //     'Leverage Atomwalk’s Process-wise Order Management module to unlock new revenue streams through resale and cross-selling. Easily identify opportunities to upsell or resell products based on customer purchase history and preferences. Automate workflows to recommend the right products, manage multi-step sales processes, and track performance metrics for each sales process.',
+          //   benefits: [
+          //     "Drive cross-selling opportunities",
+          //     "Optimize resale workflows",
+          //     "Leverage customer purchase data",
+          //     "Track performance of specific sales processes",
+          //     "Increase revenue through upselling and reselling"
+          //   ],
+          //   imageSrc: img7, // Replace with the appropriate image variable for Process-wise Management UI
+          //   imageAlt: 'Resale and Cross-Selling Process Dashboard',
+          //   imgPosition: 'left',
+          // }
           {
-            title: 'Efficiently Manage Your Orders',
-            subtitle: 'Simplified Order Tracking and Fulfillment',
-            description:
-              'Atomwalk’s Order Management module streamlines the entire order lifecycle, from creation to fulfillment. Keep track of customer orders, monitor their status in real-time, and manage related invoices and delivery schedules. With a centralized platform, you can improve order accuracy, reduce errors, and ensure timely processing for a better customer experience.',
-            benefits: [
-              "Real-time order tracking",
-              "Centralized order information",
-              "Improved order accuracy",
-              "Faster order fulfillment",
-              "Seamless integration with invoices and delivery schedules"
-            ],
-            imageSrc: img8, // Replace with the appropriate image variable for Order Management UI
-            imageAlt: 'Order Management Dashboard',
+            title: 'Invoices, Payments, and Product Interests',
+            subtitle: 'Streamlined Financial and Sales Data',
+            description: 
+              'Users can manage invoices and payment details with ease, including adding and viewing sales invoices. The system also allows the addition of product interests to customer profiles, supporting targeted sales strategies and personalized engagement.',
+            benefits: ['Efficient Invoice Management', 'Clear Payment Tracking', 'Enhanced Product Interest Tracking'],
+            imageSrc: img8, // Replace with your relevant image variable
+            imageAlt: 'Invoice and Product Interest Management Overview',
             imgPosition: 'right',
-          },          
-          {
-            title: 'Maximize Sales with Process-wise Order Management',
-            subtitle: 'Streamline Resale and Cross-Selling Opportunities',
-            description:
-              'Leverage Atomwalk’s Process-wise Order Management module to unlock new revenue streams through resale and cross-selling. Easily identify opportunities to upsell or resell products based on customer purchase history and preferences. Automate workflows to recommend the right products, manage multi-step sales processes, and track performance metrics for each sales process.',
-            benefits: [
-              "Drive cross-selling opportunities",
-              "Optimize resale workflows",
-              "Leverage customer purchase data",
-              "Track performance of specific sales processes",
-              "Increase revenue through upselling and reselling"
-            ],
-            imageSrc: img7, // Replace with the appropriate image variable for Process-wise Management UI
-            imageAlt: 'Resale and Cross-Selling Process Dashboard',
-            imgPosition: 'left',
           }
+          
           ,
           {
             title: 'Track and Manage Warranties with Ease',
@@ -350,7 +385,7 @@ const CrmFeatures = ({data}) => {
             ],
             imageSrc: img10, // Replace with the appropriate image variable for warranty tracking
             imageAlt: 'Warranty Management Dashboard',
-            imgPosition: 'right',
+            imgPosition: 'left',
           },
           {
             title: 'Gain Actionable Insights with Reports and Dashboards',
@@ -365,7 +400,7 @@ const CrmFeatures = ({data}) => {
             ],
             imageSrc: img11, // Replace with the appropriate image variable for Reports and Dashboards UI
             imageAlt: 'Reports and Dashboard View',
-            imgPosition: 'left',
+            imgPosition: 'right',
           }
           ]:isClaim =="Channelpartner"?[{
             title: 'Effortlessly Manage Your Channel Partners',

@@ -24,7 +24,8 @@ const LeadManagement = () => {
     {
       title: "Customer Management",
       titles: "Customer",
-      description: "Atomwalk CRM's Customer Management system helps businesses organize and manage customer data, interactions, and communication history. It allows users to track customer preferences, purchase history, and provides tools to enhance customer retention and satisfaction.",
+      description:'Atomwalk CRM simplifies organizing and maintaining customer data. Users can view, import, and update customer lists, manage tasks, add and upload TDS details, handle invoices and payments, and associate product interests for personalized engagement. These features streamline customer operations and enhance service efficiency.',
+     // description: "Atomwalk CRM offers a comprehensive solution for organizing and maintaining all customer-related data and interactions. Users can view, import, and update customer lists effortlessly, ensuring accurate and centralized records. The system allows seamless task management for customer follow-ups, adding and uploading TDS details, and managing invoices and payment information. Additionally, users can create and view sales invoices while associating product interests with each customer for personalized engagement.",
       background: "#d6e7ff",
       img: `${Customer}`  // Add your image path here
     },

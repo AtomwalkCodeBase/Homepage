@@ -440,7 +440,7 @@ const FeatureDescription = ({ data }) => {
           title: "Stay Informed, Stay Organized",
           subtitle: "Dynamic Calendar View for Attendance, Holidays, and Leave Management.",
           description: "Our attendance system offers a dynamic calendar view that allows employees to easily track their attendance status, view holiday lists, and monitor their leave days. After checking in and out, employees can submit their attendance records weekly for manager review, ensuring accountability and streamlined communication. This feature not only keeps employees informed but also helps managers efficiently oversee attendance and leave management, fostering a productive work environment.",
-          benefits: ["Weekly Submission for Review", "Dynamic Calendar View"],
+          benefits: ["Weekly Submission for Review", "Dynamic Calendar View",'Multiple Status Display: On-Time, Weekly Duration, Mobile Check-ins '],
           imageSrc: img52,
           imageAlt: "Attendance View",
           imgPosition: "right"
@@ -449,7 +449,7 @@ const FeatureDescription = ({ data }) => {
           title: "Comprehensive Attendance Insights",
           subtitle: "Efficient Review and Approval for Enhanced Team Productivity.",
           description: "Our attendance management system provides managers with a complete overview of their team’s attendance records. Once an employee submits their attendance, it is forwarded for review, ensuring accountability. If an employee encounters issues completing the process, managers can seamlessly update attendance for previous days through the manager portal, including remarks for full transparency. With access to detailed attendance records, managers can also update check-in and check-out times with geo-location data as needed. This system supports weekly approvals, streamlining the management of attendance and promoting effective team oversight.",
-          benefits: ["Streamlined Review Process", "Flexibility in Attendance Management", "Transparency with Remarks","Geo-Location Updates",' Weekly Approval Workflow'],
+          benefits: ["Streamlined Review Process", "Flexibility in Attendance Management", "Transparency with Remarks","Geo-Location Updates",' Weekly Approval Workflow', 'Employee Status: On-Time, Weekly Duration, Mobile Check-ins'],
           imageSrc: img53,
           imageAlt: "Approval Attendance",
           imgPosition: "left"

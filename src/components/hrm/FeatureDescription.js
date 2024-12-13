@@ -90,12 +90,12 @@ const BenefitsContainer = styled.div`
     list-style: none;
     padding: 0;
     margin: 0;
-    display: flex;
+    /* display: flex; */
     /* flex-wrap: wrap; */
-    justify-content: center;
+    /* justify-content: center; */
     /* align-items: center; */
-    flex-direction: column;
-    gap: 20px;
+    /* flex-direction: column; */
+    /* gap: 20px; */
   }
 
   li {
@@ -103,7 +103,7 @@ const BenefitsContainer = styled.div`
     flex-direction: row;
     align-items: center;
     /* width: 160px; */
-    gap: 8px;
+    gap: 2px;
   }
 
   li img {

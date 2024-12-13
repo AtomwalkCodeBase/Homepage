@@ -205,67 +205,87 @@ const InventoryFeatures = ({data}) => {
     const features = isClaim =='inventoryop'
       ?[
         {
-          title: 'Comprehensive Inventory Management with Atomwalk',
-          subtitle: 'Structured Setup and Categorization for Smarter Control',
-          description:
-            `Atomwalk enables precise inventory management, ensuring every item is categorized to align with your business’s operational needs. Begin with the Inventory Item Category Setup to establish structured categorization. Organize inventory location-wise and efficiently handle multiple inventories. With Atomwalk, you can create and manage inventory items by filling in detailed information and linking them category-wise. Atomwalk ensures you’re ready for seamless operations and compliance.`,
-          benefits: ['Establish structured categories for inventory items.', 'Organize inventory by specific locations.','Multiple Inventory Management, Create and organize inventory items with complete details.','Associate items with categories for better tracking.','Supports efficient inventory control and production planning.'],
-          imageSrc: img1,  // Replace with your relevant image variable
-          imageAlt: 'Inventory Setup',
-          imgPosition: 'right',
+          "title": "Comprehensive Inventory Management with Atomwalk",
+          "subtitle": "Structured Setup and Categorization for Smarter Control",
+          "description":
+            "Atomwalk enables precise inventory management, ensuring every item is categorized to align with your business’s operational needs. Begin with the Inventory Item Category Setup to establish structured categorization. Organize inventory location-wise and efficiently handle multiple inventories. With Atomwalk, you can create and manage inventory items by filling in detailed information and linking them category-wise. Atomwalk ensures you’re ready for seamless operations and compliance.",
+          "benefits": [
+            "Establish structured categories for inventory items.",
+            "Organize inventory by specific locations.",
+            "Multiple Inventory Management.",
+            "Create and organize inventory items with complete details.",
+            "Associate items with categories for better tracking."
+          ],
+          "imageSrc": img1,  // Replace with your relevant image variable
+          "imageAlt": "Inventory Setup",
+          "imgPosition": "right"
         },
         {
-          title: 'Flexible Inventory Item Management with Atomwalk',
-          subtitle: 'Organize Items by Category, Type, and Supplier Details',
-          description:
-            `Atomwalk streamlines inventory item setup by allowing users to add items across various categories, inventory types, batch types, and valuation methods. Users can also associate supplier details with items if required. For enhanced customization, Atomwalk provides an Additional Fields feature, enabling users to dynamically add and manage extra fields based on specific business needs, ensuring a tailored inventory management experience for manufacturing operations.`,
-          benefits: ['Add items by category, type, and group.', 'Include supplier-specific information as needed.', 'Add custom fields through the Additional Fields feature.','Designed for comprehensive inventory tracking and organization.'],
-          imageSrc: img2,  // Replace with your relevant image variable
-          imageAlt: 'Inventory Item',
-          imgPosition: 'left',
+          "title": "Flexible Inventory Item Management with Atomwalk",
+          "subtitle": "Track, Update, and Manage Inventory Items Effortlessly",
+          "description":
+            "Atomwalk streamlines maintenance of inventory items by allowing users to add items across various categories, inventory types, batch expiry details, and BIN locations. Users can also associate preferred supplier details with items if required. For enhanced customization, Atomwalk provides an Additional Fields feature, enabling users to dynamically add and manage extra fields based on specific business needs, ensuring a tailored inventory management experience for manufacturing operations. Atomwalk empowers users to dynamically manage inventory stock through the Batch Details section. Track essential details such as batch numbers, expiry dates, bin locations, initial and current quantities, and stock history. Users can view stock opening balances and update item stock details directly via the Action button, ensuring accurate and real-time stock management tailored to manufacturing needs.",
+          "benefits": [
+            "Add items by category, type, and stock item group.",
+            "Include preferred supplier-specific information along with supplier reference and pricing.",
+            "Add custom fields through the Additional Fields feature.",
+            "Supports batch/expiry date tracking.",
+            "Maintain open stock balance.",
+            "Min Inventory item quantity tracking.",
+            "Default BIN location setup.",
+            "Designed for comprehensive inventory tracking and organization."
+          ],
+          "imageSrc": img2,  // Replace with your relevant image variable
+          "imageAlt": "Inventory Item",
+          "imgPosition": "left"
         },
         {
-          title: 'Dynamic Inventory Stock Management with Atomwalk',
-          subtitle: 'Track, Update, and Manage Stock Effortlessly',
-          description:
-            `Atomwalk empowers users to dynamically manage inventory stock through the Batch Details section. Track essential details such as batch numbers, expiry dates, bin locations, initial and current quantities, and stock history. Users can view stock opening balances and update item stock details directly via the Action button, ensuring accurate and real-time stock management tailored to manufacturing needs.`,
-          benefits: ['Monitor batch numbers, expiry dates, and bin locations.', 'View initial and current quantities, history, and opening balances.', 'Modify stock details instantly through the Action button.','Tools for precise stock control and visibility.'],
-          imageSrc: img3,  // Replace with your relevant image variable
-          imageAlt: 'Stock Management',
-          imgPosition: 'right',
+          "title": "Effortless Inventory Updates During Purchase Order Processing",
+          "subtitle": "Seamless Stock Management with Receiving BIN Location",
+          "description":
+            "Atomwalk enhances inventory management by automatically increasing item quantities during the Purchase Order goods received process. Users simply input details like the invoice number, quantity received, and the desired bin location for storage. Once submitted, inventory quantities are updated in real-time, ensuring accurate stock records and streamlined purchase order handling with location control.",
+          "benefits": [
+            "Update inventory during the Purchase Order - Goods received process (along with GRN).",
+            "Allocate BIN storage location.",
+            "Ensures accurate and efficient inventory tracking.",
+            "Asset (Inventory Item) tracking.",
+            "Auto Accounting entries to reflect stock inflow.",
+            "Batch/Inventory item serial no tracking."
+          ],
+          "imageSrc": img4,  // Replace with your relevant image variable
+          "imageAlt": "Increment of Inventory",
+          "imgPosition": "right"
         },
         {
-            title: 'Effortless Inventory Updates During Order Processing',
-            subtitle: 'Seamless Stock Management with Purchase Order Integration',
-            description:
-              'Atomwalk enhances inventory management by automatically increasing item quantities during the Order In process. Users simply input details like the invoice number, quantity received, and the desired bin location for storage. Once submitted, inventory quantities are updated in real time, ensuring accurate stock records and streamlined purchase order handling for manufacturing operations.',
-            benefits: ['Update inventory during the Order In process.', 'Input invoice number, received quantity, and storage location.','Ensures accurate and efficient inventory tracking.','Issue sales or work orders based on updated inventory levels.'],
-            imageSrc: img4,  // Replace with your relevant image variable
-            imageAlt: 'Increament of Inventory',
-            imgPosition: 'left',
-          },
-          {
-            title: 'Ensure Accuracy with Physical Inventory Inspection',
-            subtitle: 'Adjust Stock Levels for Real-Time Inventory Management.',
-            description:
-              'Atomwalk offers a Physical Inspection feature to help users maintain accurate inventory records. If stock discrepancies arise, users can adjust inventory quantities to reflect actual levels, ensuring reliable data for operational efficiency in manufacturing processes.'
-              ,benefits: ['Verify and adjust inventory quantities.', 'Align system records with actual stock levels.', 'Maintains inventory accuracy for smooth operations.'],
-            imageSrc: img5,  // Replace with your relevant image variable
-            imageAlt: 'Physical Inspection',
-            imgPosition: 'right',
-          }, 
-          {
-            title: 'Automated Inventory Adjustments for Sales and Work Orders',
-            subtitle: 'Track Consumption and Plan Future Orders with Ease',
-            description:
-              'Atomwalk ensures automatic inventory adjustments when items are consumed in a work order or sold to a customer. With real-time stock reduction upon order issuance, users can seamlessly track inventory levels. This feature enables proactive decision-making, allowing users to issue new sales orders or create work orders for production as inventory levels change.',
-            benefits: ['Inventory reduces automatically upon order issuance.', 'Monitor stock changes during sales or work orders.'],
-            imageSrc: img6,  // Replace with your relevant image variable
-            imageAlt: 'Decreament of Inventory',
-            imgPosition: 'left',
-          },
-          
-      ]:isClaim =='inventoryreport'?[
+          "title": "Ensure Accuracy with Physical Inventory Inspection",
+          "subtitle": "Adjust Stock Levels for Real-Time Inventory Management.",
+          "description":
+            "Atomwalk offers a Physical Inspection feature to help users maintain accurate inventory records. If stock discrepancies arise, users can adjust inventory quantities to reflect actual levels, ensuring reliable data for operational efficiency in manufacturing processes.",
+          "benefits": [
+            "Verify and adjust inventory quantities.",
+            "Align system records with actual stock levels.",
+            "Maintains inventory accuracy for smooth operations."
+          ],
+          "imageSrc": img5,  // Replace with your relevant image variable
+          "imageAlt": "Physical Inspection",
+          "imgPosition": "left"
+        },
+        {
+          "title": "Automated Inventory Adjustments for Sales and Work Orders",
+          "subtitle": "Track Consumption and Plan Future Orders with Ease",
+          "description":
+            "Atomwalk ensures automatic inventory adjustments when items are consumed in a work order or sold to a customer. With real-time stock reduction upon order issuance, users can seamlessly track inventory levels. This feature enables proactive decision-making, allowing users to issue new sales orders or create work orders for production as inventory levels change.",
+          "benefits": [
+            "Inventory consumption tracking through sales or project work orders.",
+            "Auto Inventory allocation based on FIFO method.",
+            "Clear history of consumption across sales and projects."
+          ],
+          "imageSrc": img6,  // Replace with your relevant image variable
+          "imageAlt": "Decrement of Inventory",
+          "imgPosition": "right"
+        }
+      ]
+      :isClaim =='inventoryreport'?[
         {
           title: 'Comprehensive Stock Insights at Your Fingertips',
           subtitle: 'Filter, Analyze, and Track Inventory Movement with Ease',

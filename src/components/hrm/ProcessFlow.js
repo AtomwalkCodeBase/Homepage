@@ -230,17 +230,16 @@ export const ProcessFlow = ({ data,bgcolors}) => {
       { step: 'Payment Management', color: '#4A90E2' },
     ],
     Procurement:[
-      { step: 'Supplier Identification', color: '#4A90E2' },
+      { step: 'Supplier(Vendor) Identification', color: '#4A90E2' },
       { step: 'Purchase Order Creation', color: '#4A90E2' },
-      { step: 'Order-In', color: '#4A90E2' },
+      { step: 'Order-In (GRN)', color: '#4A90E2' },
       { step: 'Return Handling', color: '#4A90E2' },
-      { step: 'Payable Process Tracking', color: '#4A90E2' },
+      { step: 'Payment Tracking (Payables)', color: '#4A90E2' },
     ],
     Compliance:[
       { step: 'E-Way Bill', color: '#4A90E2' },
-      { step: 'E-Invoice', color: '#4A90E2' },
-      { step: 'GST', color: '#4A90E2' },
       { step: 'TDS', color: '#4A90E2' },
+      { step: 'GST', color: '#4A90E2' },
     ],
     Report:[
       { step: 'Sales Report', color: '#4A90E2' },
@@ -269,12 +268,12 @@ export const ProcessFlow = ({ data,bgcolors}) => {
       { step: 'Resource Utilisation', color: '#4A90E2' },
     ],
     "Inventory Operation":[
-      { step: 'Inventory Setup', color: '#4A90E2' },
+      { step: 'Inventory Item Category', color: '#4A90E2' },
       { step: 'Inventory Item', color: '#4A90E2' },
-      { step: 'Stock Management', color: '#4A90E2' },
-      { step: 'Increament of Inventory', color: '#4A90E2' },
+      // { step: 'Stock Management', color: '#4A90E2' },
+      { step: 'Adding Inventory to Stock ', color: '#4A90E2' },
       { step: 'Physical Inspection', color: '#4A90E2' },
-      { step: 'Decreament of Inventory', color: '#4A90E2' },
+      { step: 'Consumption of Inventory', color: '#4A90E2' },
     ],
     "Inventory Report & Dashboard":[
       { step: 'Stock Item Report', color: '#4A90E2' },

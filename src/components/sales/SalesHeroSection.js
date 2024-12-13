@@ -6,6 +6,7 @@ import FAQSection from "../hrm/FAQSection";
 import KeyFeatureSales from "./KeyFeatureSales";
 import TagImg from '../../assets/img/Sales&Procurement.png';
 import LetsConnect from "../LetsConnect";
+import NewFAQSection from "../hrm/NewFAQSection";
 
 const Section = styled.section`
   display: flex;
@@ -138,7 +139,7 @@ const SalesHeroSection = () => {
       
       {/* {selectedIndustry && <KeyFeatureSales industry={selectedIndustry} />} */}
 
-      <FAQSection data={"equipment"} />
+      <NewFAQSection data={"sales"} />
     </>
   );
 };

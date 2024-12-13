@@ -16,6 +16,9 @@ import img12 from '../../assets/img/ProcureReturn.svg';
 import img13 from '../../assets/img/ProcurePayable.svg';
 import img14 from '../../assets/img/SalesReport.svg';
 import img15 from '../../assets/img/ProcureReport.svg';
+import img21 from '../../assets/img/EwaybillComplience.svg';
+import img22 from '../../assets/img/TdsComplience.svg';
+import img23 from '../../assets/img/GstComplience.svg';
 import { useLocation } from "react-router-dom";
 const Container = styled.div`
   width: 100%;
@@ -80,10 +83,6 @@ const BenefitsContainer = styled.div`
     list-style: none;
     padding: 0;
     margin: 0;
-    /* display: flex;
-    flex-wrap: wrap;
-    justify-content: center; */
-    gap: 20px;
   }
 
   li {
@@ -162,16 +161,26 @@ const SalesFeatures = ({data,bgcolors}) => {
     useEffect(() => {
       // Get the query string (e.g., "?5")
       const queryString = location.search;
-  
+    
       // Extract the step manually if no key exists
       const stepMatch = queryString.match(/\?(\d+)/);
       const step = stepMatch ? parseInt(stepMatch[1], 10) : NaN;
-  
+    
       console.log(step, "Step value parsed from URL");
-  
+    
+      // Define base scroll offset values for each claim type
+      const scrollOffsetMap = {
+        saleslifecycle: 850,
+        procurement: 720,
+        compliance: 900,
+      };
+    
+      // Get the base offset value based on isClaim
+      const baseScrollOffset = scrollOffsetMap[isClaim] || 0;
+    
       // Calculate scroll offset
-      const scrollOffset = !isNaN(step) ? 700 + (step - 1) * 700 : 0;
-  
+      const scrollOffset = !isNaN(step) ? baseScrollOffset + (step - 1) * baseScrollOffset : 0;
+    
       // Scroll the page
       if (scrollOffset > 0) {
         window.scrollTo({
@@ -179,7 +188,8 @@ const SalesFeatures = ({data,bgcolors}) => {
           behavior: "smooth",
         });
       }
-    }, [location.search]);
+    }, [location.search, isClaim]);
+    
 
     const getFeatureContent = (feature) => (
       <Features bgcolor={bgcolors}>
@@ -348,7 +358,7 @@ const SalesFeatures = ({data,bgcolors}) => {
     ? [
         {
           title: 'Seamlessly Manage Your Supplier Database.',
-          subtitle: 'Manage preferred suppliers against each Inventory Item..',
+          subtitle: 'Manage preferred suppliers against each Inventory Item.',
           description: 'Atomwalk simplifies supplier management by allowing users to add suppliers details into the supplier database. User can manage preferred suppliers with lead time and purchase cost, supplier ref num etc. This process ensures seamless management of supplier information for improved procurement operations.',
           benefits: ['Supplier Data management.', ' Manage Defualt/ preferred suppliers for Item'],
           imageSrc: img8, // Replace with your relevant image variable
@@ -357,7 +367,7 @@ const SalesFeatures = ({data,bgcolors}) => {
         },
         {
           title: 'Streamline Your Procurement with Efficient Purchase Order Management.',
-          subtitle: 'Create detailed purchase orders and manage procurement operations seamlessly.',
+          subtitle: 'Create detailed purchase orders and manage supplier transactions seamlessly.',
           description: 'With Atomwalk, creating purchase is straightforward and efficient. Users can select suppliers from the list and input all necessary details for purchase order. The system ensures precise order management by allowing item selection, shipment details and branch-specific tracking.',
           benefits: ['Auto numbering facility for PO.', 'Shipment details capture.', 'Auto population of default supplier details.','Purchase Order PDF templates with email PO as attachment seamlessly.','Sales Invoice storage.'],
           imageSrc: img9, // Replace with your relevant image variable
@@ -373,15 +383,15 @@ const SalesFeatures = ({data,bgcolors}) => {
           imageAlt: 'Order-In',
           imgPosition: 'right',
         },
-        {
-          title: 'Precision-Driven Inventory Management',
-          subtitle: 'Organize, allocate, and control your inventory for optimal efficiency.',
-          description: 'Atomwalk empowers businesses with advanced inventory allocation and warehouse management tools. Easily set up warehouses with customizable structures such as Zone, Aisle, Section, Shelf, and Bin. Allocate items to specific storage locations and streamline the Order-In process by defining storage zones for each product. Gain real-time visibility into inventory levels, reduce errors, and enhance operational efficiency.',
-          benefits: ['Assign storage locations for precise tracking.', 'Automatically update inventory after Order-In.', 'View storage details for easy access.','Automatically update inventory with received items.','Maintain accurate records for efficient warehouse operations.'],
-          imageSrc: img11, // Replace with your relevant image variable
-          imageAlt: 'Inventory MAngement',
-          imgPosition: 'right',
-        },
+        // {
+        //   title: 'Precision-Driven Inventory Management',
+        //   subtitle: 'Organize, allocate, and control your inventory for optimal efficiency.',
+        //   description: 'Atomwalk empowers businesses with advanced inventory allocation and warehouse management tools. Easily set up warehouses with customizable structures such as Zone, Aisle, Section, Shelf, and Bin. Allocate items to specific storage locations and streamline the Order-In process by defining storage zones for each product. Gain real-time visibility into inventory levels, reduce errors, and enhance operational efficiency.',
+        //   benefits: ['Assign storage locations for precise tracking.', 'Automatically update inventory after Order-In.', 'View storage details for easy access.','Automatically update inventory with received items.','Maintain accurate records for efficient warehouse operations.'],
+        //   imageSrc: img11, // Replace with your relevant image variable
+        //   imageAlt: 'Inventory MAngement',
+        //   imgPosition: 'right',
+        // },
         {
           title: 'Handle Returns with Confidence and Accuracy.',
           subtitle: 'Efficiently manage product returns, shortages, and damages with ease.',
@@ -408,7 +418,7 @@ const SalesFeatures = ({data,bgcolors}) => {
           subtitle: 'Effortless e-Way Bill Management Aligned with GST Guidelines.',
           description: 'Managing compliance for the movement of goods is critical under India’s GST regime, and Atomwalk ensures you’re always aligned with government regulations. With our e-Way Bill management solution, users can easily generate the mandatory electronic document required for transporting goods over ₹50,000. By enabling e-Way Bill settings and filling shipment details like mode of transport and destination, Atomwalk automates the generation process, saving time and reducing errors. This streamlined solution helps businesses focus on operations while staying compliant with GST guidelines, ensuring hassle-free goods movement and avoiding penalties.',
           benefits: ['Automates e-Way Bill for shipments over ₹50,000.', 'Configure once with user name and enablement.', 'Fill transport modes to generate e-Way Bill.','Aligns with government rules for hassle-free shipments.','Simplifies compliance within shipment management.',''],
-          imageSrc: img1, // Replace with your relevant image variable
+          imageSrc: img21, // Replace with your relevant image variable
           imageAlt: 'E-Way Bill',
           imgPosition: 'right',
         },
@@ -417,7 +427,7 @@ const SalesFeatures = ({data,bgcolors}) => {
           subtitle: 'Stay aligned with tax regulations while optimizing your financial workflows',
           description: 'With Atomwalk, managing Tax Deducted at Source (TDS) becomes seamless and compliant with government regulations. Through the Service Category Setup, users can configure TDS parameters like applicable tax rates, threshold limits, TDS rates for services, and expense ledger details. Once setup, Atomwalk automates TDS calculations during accounting processes. TDS is applied automatically when transactions exceed ₹30,000, as per government guidelines. Even for multiple product sales to a single customer, the system calculates TDS on the cumulative amount, ensuring precise compliance. Atomwalk simplifies TDS management, helping businesses stay compliant while reducing manual effort.',
           benefits: ['Configure TDS rates, thresholds, and expense ledgers effortlessly.', 'Automatic TDS calculation for transactions above ₹30,000.', 'Cumulative TDS calculations for multiple product sales.','Ensures compliance with updated government regulations.','Streamlines accounting processes with accurate tax deductions.'],
-          imageSrc: img2, // Replace with your relevant image variable
+          imageSrc: img22, // Replace with your relevant image variable
           imageAlt: 'TDS',
           imgPosition: 'left',
         },
@@ -426,7 +436,7 @@ const SalesFeatures = ({data,bgcolors}) => {
           subtitle: 'Configure, Update, and Automate GST Processes Effortlessly',
           description: 'GST compliance can be complex, but Atomwalk makes it straightforward with an intuitive tax setup and management module. Users can configure GST rates, define minimum taxable amounts, and set effective dates to ensure accurate calculations. Flexible options allow for customization, including tax codes, types, and slab-based deductions. Additionally, Atomwalk empowers businesses to stay updated with evolving government regulations by providing easy tools for updating tax setups. With automated CGST and SGST calculations, Atomwalk simplifies tax management, ensuring compliance and operational efficiency without dependency on external resources.',
           benefits: ['Dynamic GST Configuration(Tax Setup Flexibility)', 'Set tax codes, types, and slab-based deductions.', 'Easily update setups for new GST regulations.','Auto-calculates CGST and SGST as per configuration','Update tax setups without external dependency.'],
-          imageSrc: img1, // Replace with your relevant image variable
+          imageSrc: img23, // Replace with your relevant image variable
           imageAlt: 'GST',
           imgPosition: 'right',
         },

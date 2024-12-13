@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Compliance from '../../assets/img/Sales_Lifecycle_icon.png'
 import Excellence from '../../assets/img/Procurement_icon.png'
 import Grow from '../../assets/img/Compliance-Lifecycle-icon.png'
 import Payroll from '../../assets/img/sales_report_icon.png';
+import UnderConstructionPopup from '../UnderConstructionPopup';
 // Container for the entire section
 const SectionContainer = styled.div`
   padding: 110px 20px;
@@ -98,6 +99,8 @@ const FeatureDescription = styled.p`
 `;
 
 const KeyFeatureSales = () => {
+  
+  const[openpop,setopenpop]=useState(false);
   const handelNvigation=(data)=>{
     window.location.href=`/${data}`
   }
@@ -138,7 +141,9 @@ const KeyFeatureSales = () => {
         Streamline compliance management with precise tracking, automated updates, and real-time monitoring, ensuring complete accuracy and adherence to regulations at every stage.
         </FeatureDescription>
       </FeatureBox>
-      <FeatureBox onClick={()=>handelNvigation('salesreport.html')}>
+      <FeatureBox 
+      // onClick={()=>handelNvigation('salesreport.html')}
+        onClick={()=>{setopenpop(!openpop)}}>
         <IconContainer bgColor="#FFF2E0">
           <img src={Payroll} alt="Reliability" />
         </IconContainer>
@@ -147,6 +152,8 @@ const KeyFeatureSales = () => {
         Track and analyze sales performance with detailed reports and dynamic dashboards, helping you monitor revenue, trends, and key metrics at a glance.</FeatureDescription>
       </FeatureBox>
     </FeaturesContainer>
+    
+    <UnderConstructionPopup visible={openpop} setvisible={setopenpop}></UnderConstructionPopup>
   </SectionContainer>
   )
 }

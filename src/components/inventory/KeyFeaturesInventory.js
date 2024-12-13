@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Compliance from '../../assets/img/Leadmanagement.png'
 import Proj from '../../assets/img/Project_icon.png'
 // import UserA from '../../assets/img/User_Activity_icon.png'
 import Report from '../../assets/img/sales_report_icon.png';
+import UnderConstructionPopup from '../UnderConstructionPopup';
 
 // Container for the entire section
 const SectionContainer = styled.div`
@@ -99,6 +100,9 @@ const FeatureDescription = styled.p`
 `;
 
 const KeyFeaturesInventory = () => {
+  
+  const[openpop,setopenpop]=useState(false);
+
   const handelNvigation=(data)=>{
     window.location.href=`/${data}`
   }
@@ -121,7 +125,9 @@ const KeyFeaturesInventory = () => {
         Streamline workflows with customizable process templates for consistent and efficient project execution.
         </FeatureDescription>
       </FeatureBox>
-      <FeatureBox onClick={()=>handelNvigation('warehouse.html')}>
+      <FeatureBox 
+      // onClick={()=>handelNvigation('warehouse.html')}
+        onClick={()=>{setopenpop(!openpop)}}>
         <IconContainer bgColor="#F0E7FF">
           <img src={Proj} alt="Project"/>
         </IconContainer>
@@ -150,6 +156,8 @@ const KeyFeaturesInventory = () => {
       </FeatureBox>
       
     </FeaturesContainer>
+    
+    <UnderConstructionPopup visible={openpop} setvisible={setopenpop}></UnderConstructionPopup>
   </SectionContainer>
   )
 }

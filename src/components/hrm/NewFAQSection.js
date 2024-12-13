@@ -226,6 +226,37 @@ const NewFAQSection = ({ data }) => {
   'Customization and Scalability': [
     { question: "Can I add custom fields or modules?", answer: "Yes, the CRM allows you to add custom fields or modules to tailor the system to your specific business needs. You can create and modify custom fields for existing modules, such as adding additional contact details, notes, or custom attributes related to leads, customers, or opportunities. Additionally, you can create entirely new modules to track unique data or processes specific to your business, such as custom project tracking or additional support metrics. These customizations enable the CRM to align more closely with your workflows and data management requirements, enhancing its functionality and usability."},
   ],
+  },
+    sales: {
+      'Sales Process': [
+        { question: 'What is a sales module in an ERP system?', answer: 'In the Sales module, Atomwalk helps manage processes such as sales orders, quotations, invoices, and customer interactions.' },
+        { question: 'How can I create a sales order?', answer: 'You can create a sales order by navigating to the Sales module, selecting the customer, and adding the products/services along with their quantities and prices. While creating sales order you can also give the details like Shipment address & is it a Part Delivery or not.' },
+        { question: 'Can I automate the creation of quotations or proforma invoices?', answer: 'Yes, you can generate quotations or proforma invoices directly from the system, which can later be converted into sales orders.' },
+        { question: 'How does the module handle tax calculations (e.g., GST)? ', answer: 'Atomwalk supports automated tax calculations based on configured tax rates (e.g., GST) for items or services being sold. Additionally, it provides users with the option to set a specific tax category, if required.' },
+        { question: 'Does it support tracking pending payments and sending reminders? ', answer: 'Yes, Atomwalk allows you to track unpaid invoices and send payment reminders through different platform.' },
+        { question: 'Can I generate sales reports?', answer: `Atomwalk offers robust reporting tools to analyze sales performance and revenue trends. Users can view sales reports on a monthly or quarterly basis, along with customer-wise sales breakdowns, customer outstanding details, debtor aging charts, and Days Sales Outstanding (DSO) charts. Additionally, the system includes the option to print sales reports for easy sharing and documentation.` },
+        { question: 'How are returns or refunds processed? ', answer: 'Returns or refunds are managed through credit notes in the system.' },
+        { question: 'How do you support Bad Debt Expense?', answer: `Atomwalk allows users to process a 'Write-Off' against an invoice. If necessary, users can create a 'Write-Off' entry to close outstanding invoice bills. The pending payments are then transferred to the Bad Debt Expense Ledger for accurate financial tracking.` },
+      ],
+      'Procurement Process': [
+        { question: 'What is a procurement module in an ERP system? ', answer: `The procurement module streamlines the purchasing process, including purchase orders, vendor management, and goods receipt.` },
+        { question: 'How do I create a purchase order (PO)? ', answer: `To create a Purchase Order, go to the Sales & Purchase section and select the 'Purchase Order' option. Click on the 'Add Purchase Order' button, choose a vendor/supplier, add the items or services to be purchased, and then generate the Purchase Order (PO).` },
+        { question: 'Can I track the status of purchase orders?', answer: `Yes, you can track POs from creation to delivery and payment within the system.` },
+        { question: 'What is a GRN, and how is it recorded? ', answer: 'A Goods Receipt Note (GRN) confirms the receipt of goods. It is recorded in the system when the items are delivered and verified or at the time of Order-In, depending on the process flow.' },
+        { question: 'How does the module handle vendor payments? ', answer: `Atomwalk integrates with finance to manage vendor payments, including tracking due dates, making partial or full payments, and reconciling accounts.` },
+        { question: 'Can I manage service-based procurement?', answer: 'Yes, the module supports purchase service orders for services instead of physical goods.' },
+        { question: 'Does it support multiple currencies for international purchases?', answer: 'Yes, the system can handle transactions in multiple currencies.' },
+      ],
+      'Compliance Process': [
+        { question: 'What is a compliance module in an ERP system?', answer: `The compliance module ensures the organization adheres the rules, regulations, and standards.` },
+        { question: 'How does the system handle GST filing?', answer: `Atomwalk automatically calculates GST for transactions, and helps users stay updated with compliance requirements.` },
+        { question: 'Can it manage TDS deductions? ', answer: `Yes, the module supports TDS deductions and provides reports.` },
+        { question: 'What types of regulatory reports can I generate?', answer: 'The system can generate reports for GST, TDS, audit trails, and other compliance-related requirements.' },
+        { question: 'Can the module be configured for industry-specific compliance needs? ', answer: `Yes, the module is customizable to meet the compliance needs of specific industries, like healthcare, manufacturing, retail, service or any industry-specific.` },
+        { question: 'How does it ensure data security for compliance records?', answer: 'The system implements role-based access, encryption, and audit trails to secure sensitive compliance data.' },
+        
+      ],
+      
     },
   };
 

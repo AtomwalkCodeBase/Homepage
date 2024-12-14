@@ -50,6 +50,7 @@ const ContactInfo = styled.div`
   align-items: center;
   margin: 20px 0;
 
+
   @media (min-width: 768px) {
     flex-direction: row;
     justify-content: center;
@@ -69,6 +70,11 @@ img{
   width: 20px;
   margin-right: 10px;
 }
+a{
+  text-decoration: none;
+  color:white;
+}
+
 `;
 
 const FooterLinksContainer = styled.div`
@@ -266,9 +272,19 @@ export default function Footer2() {
 
     </NewsletterContainer>
     <ContactInfo>
-        <div> <img src={Email} alt="AtomWalk Logo" />info@atomwalk.com</div>
-        <div><img src={Phone} alt="AtomWalk Logo" />+91-7259555003</div>
-      </ContactInfo>
+  <div>
+    <a href="mailto:info@atomwalk.com">
+      <img src={Email} alt="AtomWalk Logo" />
+      info@atomwalk.com
+    </a>
+  </div>
+  <div>
+    <a href="tel:+917259555003">
+      <img src={Phone} alt="AtomWalk Logo" />
+      +91-7259555003
+    </a>
+  </div>
+</ContactInfo>
     {/* <DisclaimerText>
         By providing your information, you hereby consent to the AtomWalk <a href="#">Cookie Policy</a> and <a href="#">Privacy Policy</a>.
       </DisclaimerText> */}
@@ -339,8 +355,8 @@ export default function Footer2() {
         </p>
         <div className="social-icon">
               <a href="https://www.linkedin.com/company/atomwalk-technologies/"><img src={navIcon1} alt="Icon" /></a>
-              <a href="#"><img src={navIcon2} alt="Icon" /></a>
-              <a href="#"><img src={navIcon3} alt="Icon" /></a>
+              <a href="https://www.facebook.com/profile.php?id=61569432586041"><img src={navIcon2} alt="Icon" /></a>
+              <a href="https://www.instagram.com/atomwalktechnologies/"><img src={navIcon3} alt="Icon" /></a>
             </div>
             </div>
       </FooterBottom>

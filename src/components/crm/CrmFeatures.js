@@ -490,7 +490,7 @@ const CrmFeatures = ({data}) => {
     console.log(step, "Step value parsed from URL");
 
     // Calculate scroll offset
-    const scrollOffset = !isNaN(step) ? 700 + (step - 1) * 630 : 0;
+    const scrollOffset = !isNaN(step) ? 700 + (step - 1) * 700 : 0;
 
     // Scroll the page
     if (scrollOffset > 0) {

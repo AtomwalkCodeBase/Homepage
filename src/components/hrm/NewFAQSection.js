@@ -43,8 +43,8 @@ const CategoryHeader = styled.div`
   padding: 15px;
   font-size: 1.2rem;
   font-weight: bold;
-  color: #333;
-  background-color: #CCBDF9;
+  color: #fff;
+  background-color: #7b1fa2;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -52,13 +52,13 @@ const CategoryHeader = styled.div`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #9D7EFD;
+    background-color:rgb(140, 64, 172);
   }
 
   span {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #663399;
+    color:rgb(255, 255, 255);
   }
 `;
 

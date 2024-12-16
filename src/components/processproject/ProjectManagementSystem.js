@@ -18,14 +18,14 @@ const ProcessManagementSystem = () => {
       title: "Process Operations for Every Business Need",
       titles: "Work Order",
       description: "Comprehensive Solutions for Inventory, Equipment, Documentation, and Process Management.",
-      background: "#d6e7ff",
+      background: "#ADEBF3",
       img: `${Process}`  // Add your image path here
     },
     {
       title: "Integrated Project and Activity Management",
       titles: "Project Management",
       description: "Efficiently Link Sales Orders, Track Progress, and Optimize Resources for Manufacturing Excellence.",
-      background: "#d6e7ff",
+      background: "#ADEBF3",
       img: `${Project}`  // Add your image path here
     },
     // {
@@ -39,7 +39,7 @@ const ProcessManagementSystem = () => {
       title: "Advanced Dashboards for Project and Resource Management",
       titles: "Report & Dashboard",
       description: "Gain Real-Time Insights into Activity Progress, Project Margins, and Resource Utilization for Optimized Manufacturing Performance.",
-      background: "#d6e7ff",
+      background: "#ADEBF3",
       img: `${Report}`  // Add your image path here
     },
     
@@ -84,7 +84,7 @@ const ProcessManagementSystem = () => {
         img={currentPageConfig.img}
         lead={true}
       />
-      <ProcessFlow bgcolors={"#e8f1fe"} data={currentPageConfig.titles}></ProcessFlow>
+      <ProcessFlow bgcolors={"#EAFCFF"} data={currentPageConfig.titles}></ProcessFlow>
       {/* <CrmFeatures data={showData}></CrmFeatures> */}
       <ProcessFeatures data={showData}/>
     </div>

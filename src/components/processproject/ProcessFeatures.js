@@ -23,7 +23,7 @@ const Features = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #e8f1fe; 
+  background-color: #EAFCFF; 
   padding: 20px;
   
   @media (min-width: 768px) {

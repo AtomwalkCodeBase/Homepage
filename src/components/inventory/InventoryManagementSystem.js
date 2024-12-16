@@ -23,17 +23,17 @@ const InventoryManagementSystem = () => {
       img: `${Process}`  // Add your image path here
     },
     {
-      title: "Integrated Project and Activity Management",
-      titles: "Project Management",
+      title: "Integrated Warehouse Management",
+      titles: "Warehouse Management",
       description: "Efficiently Link Sales Orders, Track Progress, and Optimize Resources for Manufacturing Excellence.",
-      background: "#d6e7ff",
+      background: "#9DF9F0",
       img: `${Project}`  // Add your image path here
     },
     {
       title: "Advanced Dashboards for Project and Resource Management",
       titles: "Inventory Report & Dashboard",
       description: "Gain Real-Time Insights into Activity Progress, Project Margins, and Resource Utilization for Optimized Manufacturing Performance.",
-      background: "#d6e7ff",
+      background: "#9DF9F0",
       img: `${Report}`  // Add your image path here
     },
     
@@ -78,7 +78,7 @@ const InventoryManagementSystem = () => {
         img={currentPageConfig.img}
         lead={true}
       />
-      <ProcessFlow bgcolors={"#e8f1fe"} data={currentPageConfig.titles}></ProcessFlow>
+      <ProcessFlow bgcolors={"#D0FEF9"} data={currentPageConfig.titles}></ProcessFlow>
       {/* <CrmFeatures data={showData}></CrmFeatures> */}
       <InventoryFeatures data={showData}/>
       

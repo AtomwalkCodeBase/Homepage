@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import logo from "../assets/img/Atom_walk_logo-removebg-preview.png";
 import Email from "../assets/img/email.png";
@@ -250,10 +250,30 @@ const DisclaimerText = styled.p`
 `;
 
 export default function Footer2() {
+ const[opennavbar,setOpennavbar]=useState(true);
   const[openpop,setopenpop]=useState(false);
+  useEffect(() => {
+    const checkPath = () => {
+      const currentPath = window.location.pathname;
+      if (currentPath.includes('assessment')) {
+        setOpennavbar(false);
+      } else {
+        setOpennavbar(true);
+      }
+    };
+    checkPath();
+    const handlePopState = () => {
+      checkPath();
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
+
   return (
     <>
-    
+    {opennavbar?<div>
     <FooterContainer>
       <FooterLeft>
       <NewsletterContainer>
@@ -360,6 +380,14 @@ export default function Footer2() {
             </div>
             </div>
       </FooterBottom>
+      </div>:<FooterBottom>
+      <div style={{padding:"25px"}}>
+        <p>© 2024 Atomwalk. All Rights Reserved.</p>
+        <p>
+          Privacy Policy | Terms & Conditions | Made with <span>♥</span> Atomwalk
+        </p>
+            </div>
+      </FooterBottom>}
       <UnderConstructionPopup visible={openpop} setvisible={setopenpop}></UnderConstructionPopup>
       </>
   );

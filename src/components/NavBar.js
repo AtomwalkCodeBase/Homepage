@@ -20,7 +20,15 @@ export const NavBar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [showLogin, setShowLogin] = useState(true);
   const [showProductMenu, setShowProductMenu] = useState(false);
-
+  const[opennavbar,setOpennavbar]=useState(true);
+useEffect(()=>{
+  if(location.pathname.includes('assessment')){
+    setOpennavbar(false);
+  }
+  else{
+    setOpennavbar(true);
+  }
+},[location.pathname])
   useEffect(() => {
     const onScroll = () => {
       if (window.scrollY > 50) {
@@ -54,7 +62,8 @@ export const NavBar = () => {
   }, [location]);
 
   return (
-    <Navbar expand="md" className={scrolled ? "scrolled" : ""}>
+    <div>
+     {opennavbar&&<Navbar expand="md" className={scrolled ? "scrolled" : ""}>
       <Container>
         <Navbar.Brand href="/">
           <Atomicon src={logo} alt="Logo" />
@@ -86,6 +95,7 @@ export const NavBar = () => {
           </span>
         </Navbar.Collapse>
       </Container>
-    </Navbar>
+    </Navbar>}
+    </div>
   );
 };

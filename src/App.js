@@ -36,6 +36,7 @@ import ProcessManagementSystem from "./components/processproject/ProjectManageme
 import InventoryHeroPage from "./components/inventory/InventoryHeroPage";
 import InventoryManagementSystem from "./components/inventory/InventoryManagementSystem";
 import Assessment from "./components/Assessment";
+import ThankYouPage from "./components/ThankYouPage";
 
 function App() {
   const[openslide,setOpenslide]=useState(false);
@@ -72,7 +73,7 @@ const loginAndStore=async()=>{
     <div className="App">
       {/* <Success message="We have successfully recorded your information."></Success> */}
       <Router>
-      <NavBar></NavBar>
+       <NavBar></NavBar>
         <Routes>
           <Route path="" element={<HomePage />} />
           <Route path="/signin.html" element={<Login />} />
@@ -124,10 +125,11 @@ const loginAndStore=async()=>{
           <Route path="/warehouse.html" element={<InventoryManagementSystem/>} />
           <Route path="/inventoryreport.html" element={<InventoryManagementSystem/>} />
           <Route path="/assessment.html" element={<Assessment/>} />
+          <Route path="/thankyou.html" element={<ThankYouPage/>} />
         </Routes>
       </Router>
-      {openslide&&<Askme setOpenslide={setOpenslide}/>}
-      <FloatingActionButton setOpenslide={setOpenslide}></FloatingActionButton>
+      {/* {openslide&&<Askme setOpenslide={setOpenslide}/>} */}
+      {/* <FloatingActionButton setOpenslide={setOpenslide}></FloatingActionButton> */}
       <Footer2></Footer2>
     </div>
   );

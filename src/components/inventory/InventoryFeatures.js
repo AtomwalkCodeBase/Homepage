@@ -1,18 +1,14 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import CheckMark from '../../assets/img/check_mark.png';
-import img1 from '../../assets/img/ProductCategory.svg';
-import img2 from '../../assets/img/ProcessInventorySetup.svg';
-import img3 from '../../assets/img/EquipmentSetup.svg';
-import img4 from '../../assets/img/DocumentSetup.svg';
-import img5 from '../../assets/img/ActivitySetup.svg';
-import img6 from '../../assets/img/ProcessSetup.svg';
-import img7 from '../../assets/img/ProjectCreation.svg';
-import img8 from '../../assets/img/UserActivity.svg';
-import img9 from '../../assets/img/ProjectMangement.svg';
-import img10 from '../../assets/img/ActivityDB.svg';
-import img11 from '../../assets/img/ProjectDB.svg';
-import img12 from '../../assets/img/ResourceUtilisationDB.svg';
+import img1 from '../../assets/img/ProcessInventorySetup.svg';
+import img2 from '../../assets/img/Inventory_item.svg';
+import img4 from '../../assets/img/OrderIn.svg';
+import img5 from '../../assets/img/PhysicalInspection.svg';
+import img6 from '../../assets/img/DecreaseItem.svg';
+import img7 from '../../assets/img/StockItemReport.svg';
+import img8 from '../../assets/img/ValuationReport.svg';
+import img9 from '../../assets/img/ExpiryReport.svg';
 import { useLocation } from "react-router-dom";
 const Container = styled.div`
   width: 100%;
@@ -331,7 +327,7 @@ const InventoryFeatures = ({data}) => {
             description:
               'Wire House Management Description',
             benefits: ['Wire House Management Benifits 1', 'Wire House Management Benifits 2',],
-            imageSrc: img10,  // Replace with relevant image variable for campaign execution
+            imageSrc: img1,  // Replace with relevant image variable for campaign execution
             imageAlt: 'Wire House Management',
             imgPosition: 'right',
           },
@@ -340,26 +336,35 @@ const InventoryFeatures = ({data}) => {
      
       const location = useLocation(); // Get the current URL
   useEffect(() => {
-    // Get the query string (e.g., "?5")
-    const queryString = location.search;
-
-    // Extract the step manually if no key exists
-    const stepMatch = queryString.match(/\?(\d+)/);
-    const step = stepMatch ? parseInt(stepMatch[1], 10) : NaN;
-
-    console.log(step, "Step value parsed from URL");
-
-    // Calculate scroll offset
-    const scrollOffset = !isNaN(step) ? 700 + (step - 1) * 630 : 0;
-
-    // Scroll the page
-    if (scrollOffset > 0) {
-      window.scrollTo({
-        top: scrollOffset,
-        behavior: "smooth",
-      });
-    }
-  }, [location.search]); // Re-run when URL query changes
+          // Get the query string (e.g., "?5")
+          const queryString = location.search;
+        
+          // Extract the step manually if no key exists
+          const stepMatch = queryString.match(/\?(\d+)/);
+          const step = stepMatch ? parseInt(stepMatch[1], 10) : NaN;
+        
+          console.log(step, "Step value parsed from URL");
+        
+          // Define base scroll offset values for each claim type
+          const scrollOffsetMap = {
+            inventoryop: 820,
+            inventoryreport: 800,
+          };
+        
+          // Get the base offset value based on isClaim
+          const baseScrollOffset = scrollOffsetMap[isClaim] || 0;
+        
+          // Calculate scroll offset
+          const scrollOffset = !isNaN(step) ? baseScrollOffset + (step - 1) * baseScrollOffset : 0;
+        
+          // Scroll the page
+          if (scrollOffset > 0) {
+            window.scrollTo({
+              top: scrollOffset,
+              behavior: "smooth",
+            });
+          }
+        }, [location.search, isClaim]); // Re-run when URL query changes
     return <Container>{features.map(getFeatureContent)}</Container>
 }
 

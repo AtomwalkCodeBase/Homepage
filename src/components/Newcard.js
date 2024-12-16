@@ -164,6 +164,12 @@ const Newcard = (props) => {
     else if(data=="Lab Equipment Management System"){
       window.location.href="/labequipmentmangement.html"
    }
+   else if(data=="Inventory Management"){
+    window.location.href="/inventory.html"
+  }
+  else if(data=="Project Management"){
+    window.location.href="/processandproject.html"
+  }
    else if(data=="Lab Management System"){
     window.location.href="/labmanagement.html"
  }

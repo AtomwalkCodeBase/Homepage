@@ -237,6 +237,8 @@ const NewFAQSection = ({ data }) => {
         { question: 'Can I generate sales reports?', answer: `Atomwalk offers robust reporting tools to analyze sales performance and revenue trends. Users can view sales reports on a monthly or quarterly basis, along with customer-wise sales breakdowns, customer outstanding details, debtor aging charts, and Days Sales Outstanding (DSO) charts. Additionally, the system includes the option to print sales reports for easy sharing and documentation.` },
         { question: 'How are returns or refunds processed? ', answer: 'Returns or refunds are managed through credit notes in the system.' },
         { question: 'How do you support Bad Debt Expense?', answer: `Atomwalk allows users to process a 'Write-Off' against an invoice. If necessary, users can create a 'Write-Off' entry to close outstanding invoice bills. The pending payments are then transferred to the Bad Debt Expense Ledger for accurate financial tracking.` },
+        { question: 'How do you support Bad Debt Expense?', answer: `Atomwalk allows users to process a 'Write-Off' against an invoice. If necessary, users can create a 'Write-Off' entry to close outstanding invoice bills. The pending payments are then transferred to the Bad Debt Expense Ledger for accurate financial tracking.` },
+        { question: 'Does it support multiple currencies for international sales?', answer: 'Yes, the system can handle transactions in multiple currencies.' },
       ],
       'Procurement Process': [
         { question: 'What is a procurement module in an ERP system? ', answer: `The procurement module streamlines the purchasing process, including purchase orders, vendor management, and goods receipt.` },
@@ -245,12 +247,15 @@ const NewFAQSection = ({ data }) => {
         { question: 'What is a GRN, and how is it recorded? ', answer: 'A Goods Receipt Note (GRN) confirms the receipt of goods. It is recorded in the system when the items are delivered and verified or at the time of Order-In, depending on the process flow.' },
         { question: 'How does the module handle vendor payments? ', answer: `Atomwalk integrates with finance to manage vendor payments, including tracking due dates, making partial or full payments, and reconciling accounts.` },
         { question: 'Can I manage service-based procurement?', answer: 'Yes, the module supports purchase service orders for services instead of physical goods.' },
-        { question: 'Does it support multiple currencies for international purchases?', answer: 'Yes, the system can handle transactions in multiple currencies.' },
+        { question: 'Is it manage the Bin-Location on a Purchase?', answer: 'Yes, the module helps to mange the Bin-Location. While doing Order-In it automatilacally mange the allocated bin Location.' },
+        { question: 'Can I manage the return or damage quantity?', answer: 'Yes, you can effectively manage the return and damage quantity.' },
+        
       ],
       'Compliance Process': [
         { question: 'What is a compliance module in an ERP system?', answer: `The compliance module ensures the organization adheres the rules, regulations, and standards.` },
         { question: 'How does the system handle GST filing?', answer: `Atomwalk automatically calculates GST for transactions, and helps users stay updated with compliance requirements.` },
-        { question: 'Can it manage TDS deductions? ', answer: `Yes, the module supports TDS deductions and provides reports.` },
+        { question: 'Can it manage TDS calculation? ', answer: `Yes, the module supports TDS calculation and provides reports.` },        
+        { question: 'For a service are you able to calculate the TDS?', answer: 'Yes, Atomwalk help you calculate the TDS in a service also.' },
         { question: 'What types of regulatory reports can I generate?', answer: 'The system can generate reports for GST, TDS, audit trails, and other compliance-related requirements.' },
         { question: 'Can the module be configured for industry-specific compliance needs? ', answer: `Yes, the module is customizable to meet the compliance needs of specific industries, like healthcare, manufacturing, retail, service or any industry-specific.` },
         { question: 'How does it ensure data security for compliance records?', answer: 'The system implements role-based access, encryption, and audit trails to secure sensitive compliance data.' },
@@ -258,6 +263,55 @@ const NewFAQSection = ({ data }) => {
       ],
       
     },
+    Project: {
+      'General Overview': [
+        { question: "What is the Workorder Execution/Project Management module?", answer: "This module in Atomwalk Technology helps manage and execute projects or work orders by defining processes, assigning tasks, tracking progress, and ensuring timely delivery. It supports efficient collaboration and resource management." },
+        { question: "What is a process template, and how is it used?", answer: "A process template is a predefined workflow that outlines steps, milestones, and responsibilities for recurring or standard projects. It simplifies project setup, ensures consistency, and reduces manual errors." },
+        { question: "What are the key features of the module?", answer: "Customizable process templates for various projects, Task assignment and tracking,	Milestone-based progress monitoring,	Resource and cost allocation tools, Reports and dashboards for insights, Seamless integration with other Atomwalk ERP modules." },
+      ],
+      'Setup and Configuration': [
+        { question: "How do I create a new project or work order?", answer: "Navigate to the module, select “Create New Project/Workorder”, define the project scope, assign tasks, and set deadlines and milestones." },
+        { question: "How do I configure a process template for a recurring project?", answer: "Go to Process Templates, click Create New, define steps, assign roles, and set default timelines. Save it for future use." },
+        { question: "Can I customize the fields and workflow in the process template?", answer: "Yes, Atomwalk allows customization of fields, task priorities, workflows, and deadlines in the process template to match your organizational needs." },
+        { question: "How do I assign team members or departments to a project or task?", answer: "Within the project/task setup, assign team members or departments using the Assignment tab. You can search and add members based on skills or department availability." },
+    ],
+    'Execution and Monitoring': [
+      { question: "How do I track the progress of a work order/project?", answer: "Use the Project Dashboard to monitor task completion, milestone achievements, and overall progress in real time. " },
+      { question: "What reports can I generate for a project or work order?", answer: "Task status reports, Milestone tracking reports, Resource utilization reports, Budget vs. actual expenditure reports" },
+      { question: "How can I update the status of tasks or milestones?", answer: "Navigate to the task or milestone, select Update Status, and choose from predefined options like “In Progress,” “Completed,” or “Delayed.” Add comments if needed."},
+      { question: "What happens if there’s a delay in completing a task?", answer: "The system flags the delay and sends notifications to relevant stakeholders. The timeline is recalculated, considering dependencies and adjusted deadlines." },
+      { question: "Can I integrate the module with other tools or systems?", answer: "Yes, the module integrates seamlessly with Atomwalk’s other ERP modules like Sales, Procurement, and HRM, ensuring streamlined workflows. APIs are also available for third-party tool integration."},
+       ],
+       
+  },
+  Inventory: {
+    'General Overview': [
+      { question: "What is an Inventory Management module?", answer: "The Inventory Management module by Atomwalk Technology helps businesses efficiently track, manage, and control their inventory across multiple locations, ensuring accurate stock levels and smooth operations." },
+      { question: "What types of businesses can use this module?", answer: "Our module is versatile and suitable for businesses of all sizes, including retail, manufacturing, distribution, e-commerce, and service-based industries." },
+      { question: "How does the module help in inventory tracking?", answer: "Atomwalk’s module provides real-time tracking of inventory movement, from procurement to sales, using tools like barcode scanning, stock logs, and automated updates." },
+      { question: "Can it handle multiple warehouses or locations?", answer: "Yes, the module supports multi-warehouse management, allowing you to track and manage inventory across various locations seamlessly." },
+    ],
+    'Features & Functionalities': [
+      // { question: "5.	Does it support barcode scanning integration?", answer: "Yes, the module integrates with barcode scanners for faster and more accurate inventory updates." },
+      { question: "Can I track stock levels in real-time?", answer: "Absolutely! Real-time stock updates ensure that you always have accurate data on inventory availability." },
+      { question: "Does the module handle stock reordering or generate low-stock alerts?", answer: "Yes, it includes automatic reorder suggestions and low-stock alerts based on predefined thresholds." },
+      { question: "Is there support for batch and serial number tracking?", answer: "Yes, the module supports batch and serial number tracking for better traceability and quality control." },
+      { question: "How does the system manage product categories and variants?", answer: "Products can be categorized into multiple levels, with support for variants such as size, color, and other attributes." },
+      { question: "Can it track inventory valuation methods?", answer: "Yes, the module supports various inventory valuation methods batchwise to match your accounting preferences." },
+      { question: "Are damaged, expired, or returned goods tracked separately?", answer: "Yes, the module categorizes and tracks damaged, expired, and returned goods for better accountability." },
+  ],
+  'Integrations': [
+    { question: "Can the module integrate with sales, procurement, and accounting modules?", answer: "Yes, seamless integration with Atomwalk’s Sales, Procurement, and Accounting modules ensures end-to-end inventory control." },
+    { question: "Is there integration with e-commerce platforms or point-of-sale systems?", answer: "Yes, the module integrates with popular e-commerce platforms and POS systems to sync stock levels automatically." },
+    { question: "Can the system sync with third-party shipping or logistics tools?", answer: "Yes, integrations with logistics platforms enable real-time shipment tracking and automated updates."},
+     ],
+     
+    'Reports & Analytics': [
+      { question: "What types of inventory reports are available?", answer: "The module offers comprehensive reports such as stock aging, inventory turnover, valuation, and discrepancy analysis." },
+      { question: "How are inventory discrepancies reported and resolved?", answer: "Discrepancies are flagged automatically, with tools for physical investigation and adjustment to maintain accuracy." },
+    ],
+     
+},
   };
 
   const faqCategories = faqData[data] || {};

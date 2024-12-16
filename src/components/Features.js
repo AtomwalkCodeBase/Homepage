@@ -39,7 +39,7 @@ const Features = () => {
       description:
         "Effortlessly handle HR and payroll tasks with Atomwalk Office",
       imgUrl: projImg3,
-       background:"#e6ffff"
+       background:"#F7EFFF"
     },
     {
       title: "Customer Management",

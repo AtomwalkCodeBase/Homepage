@@ -20,7 +20,7 @@ const InventoryHeroPage = () => {
       <KeyFeaturesInventory/>
       
 
-      <NewFAQSection data={"equipment"} />
+      <NewFAQSection data={"Inventory"} />
     </>
   );
 };

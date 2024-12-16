@@ -259,7 +259,7 @@ const ProcessFeatures = ({data}) => {
             subtitle: 'Create, Manage, and Analyze for efficient process execution.',
             description:
               'Easily create a sequence of activities for projects in the manufacturing industry with our intuitive process management system. Define processes by filling essential details, add activities with customizable fields like planned duration and allocation percentage, and manage dependencies. Gain insights through an interactive Gantt chart, track item details (BOM, WIP materials, and output), and evaluate efficiency with detailed cost analysis, including equipment requirements.',
-            benefits: ['Define process details (name, category, ID, type, manufacturing details, equivalent sale price, description).', 'Add activities with fields like duration(Planned number of Days), allocation percentage, and dependencies.','Link dependent activities for seamless workflow management.','View Activity Gantt Chart and dependency graphs.',' Monitor BOM, WIP materials, and output details with images and costs.','Analyze equipment requirements and associated costs.','Evaluate process and activity efficiency.'],
+            benefits: ['Define process details: name, category, ID, type, manufacturing, sale price, description.', 'Add activities: duration (planned days), allocation %, dependencies.','Link dependent activities for seamless workflow management.','View Activity Gantt Chart and dependency graphs.',' Monitor BOM, WIP materials, and output details with images and costs.','Analyze equipment requirements and associated costs.','Evaluate process and activity efficiency.'],
             imageSrc: img6,  // Replace with your relevant image variable
             imageAlt: 'Creation of Process',
             imgPosition: 'left',
@@ -306,7 +306,7 @@ const ProcessFeatures = ({data}) => {
           imgPosition: 'right',
         }               
          
-        ]:[
+        ]:isClaim =='activityreport'?[
           {
 
             title: 'Activity Dashboards for Efficient Manufacturing Projects',
@@ -343,30 +343,53 @@ const ProcessFeatures = ({data}) => {
             imageAlt: 'Resource Utilisation',
             imgPosition: 'right',
           }  
-        ];
+        ]:[
+          {
+
+            title: 'Activity Dashboards for Efficient Manufacturing Projects',
+            subtitle: 'Track Activities and Ensure Operational Precision',
+            description:
+              'Atomwalk’s Activity Dashboard helps manufacturing teams efficiently track and manage tasks. Users can view assigned activities, track progress, and address overdue or pending tasks. Key metrics include overdue activities, upcoming deadlines, and completed milestones, with dynamic filters for quick sorting by date, type, or status. Designed to optimize workflows, the dashboard provides real-time access to activity details, ensuring seamless task execution and improved project efficiency in manufacturing operations.',
+            benefits: ['Track personal activities, including ongoing, overdue, and completed tasks.', 'Access critical data like deadlines and completion statuses.', ' Access detailed project overviews, including overdue and future activities.','Sort activities by date, type, status, or assigned user for customized tracking.','Monitor progress, identify delays, and optimize task management.',' Use dashboard insights to allocate resources effectively and meet deadlines.'],
+            imageSrc: img10,  // Replace with relevant image variable for campaign execution
+            imageAlt: 'User Activity Dashboard',
+            imgPosition: 'right',
+          },];
      
       const location = useLocation(); // Get the current URL
-  useEffect(() => {
-    // Get the query string (e.g., "?5")
-    const queryString = location.search;
+      useEffect(() => {
+        // Get the query string (e.g., "?5")
+        const queryString = location.search;
+      
+        // Extract the step manually if no key exists
+        const stepMatch = queryString.match(/\?(\d+)/);
+        const step = stepMatch ? parseInt(stepMatch[1], 10) : NaN;
+      
+        console.log(step, "Step value parsed from URL");
+      
+        // Define base scroll offset values for each claim type
+        const scrollOffsetMap = {
+          process: 780,
+          project: 800,
+          activityreport: 870,
+        };
+      
+        // Get the base offset value based on isClaim
+        const baseScrollOffset = scrollOffsetMap[isClaim] || 0;
+      
+        // Calculate scroll offset
+        const scrollOffset = !isNaN(step) ? baseScrollOffset + (step - 1) * baseScrollOffset : 0;
+      
+        // Scroll the page
+        if (scrollOffset > 0) {
+          window.scrollTo({
+            top: scrollOffset,
+            behavior: "smooth",
+          });
+        }
+      }, [location.search, isClaim]); // Re-run when URL query changes
 
-    // Extract the step manually if no key exists
-    const stepMatch = queryString.match(/\?(\d+)/);
-    const step = stepMatch ? parseInt(stepMatch[1], 10) : NaN;
 
-    console.log(step, "Step value parsed from URL");
-
-    // Calculate scroll offset
-    const scrollOffset = !isNaN(step) ? 700 + (step - 1) * 630 : 0;
-
-    // Scroll the page
-    if (scrollOffset > 0) {
-      window.scrollTo({
-        top: scrollOffset,
-        behavior: "smooth",
-      });
-    }
-  }, [location.search]); // Re-run when URL query changes
     return <Container>{features.map(getFeatureContent)}</Container>
 }
 

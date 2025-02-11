@@ -37,6 +37,7 @@ import InventoryHeroPage from "./components/inventory/InventoryHeroPage";
 import InventoryManagementSystem from "./components/inventory/InventoryManagementSystem";
 import Assessment from "./components/Assessment";
 import ThankYouPage from "./components/ThankYouPage";
+import TermsAndConditions from "./components/TermConditions";
 
 function App() {
   const[openslide,setOpenslide]=useState(false);
@@ -126,6 +127,7 @@ const loginAndStore=async()=>{
           <Route path="/inventoryreport.html" element={<InventoryManagementSystem/>} />
           <Route path="/assessment.html" element={<Assessment/>} />
           <Route path="/thankyou.html" element={<ThankYouPage/>} />
+          <Route path="/terms-and-conditions.html" element={<TermsAndConditions/>} />
         </Routes>
       </Router>
       {/* {openslide&&<Askme setOpenslide={setOpenslide}/>} */}

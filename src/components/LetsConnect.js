@@ -44,6 +44,7 @@ const Title = styled.h2`
 
 const Description = styled.p`
   font-size: 1.3rem;
+  text-align: justify;
   color: #555;
 `;
 

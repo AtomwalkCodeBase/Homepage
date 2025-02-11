@@ -74,6 +74,7 @@ const ValueTitle = styled.h3`
 const ValueDescription = styled.p`
   font-size: 0.95rem;
   color: #666;
+  text-align: justify;
 `;
 
 // Sample icons (replace with actual paths)
@@ -89,13 +90,13 @@ const values = [
   {
     title: "Simplicity",
     description: "We simplify complex business processes, making them easy to manage and understand, so our clients can focus on what matters most—growing their business.",
-    icon: icons.improve,
+    icon: icons.excellence,
     bgColor: "#f3d0ff",
   },
   {
     title: "Innovation",
     description: "We constantly evolve, bringing fresh ideas and advanced technology to the forefront, ensuring that our clients always have access to the best tools available.",
-    icon: icons.excellence,
+    icon: icons.improve,
     bgColor: "#ffe2c4",
   },
   {
@@ -107,13 +108,13 @@ const values = [
   {
     title: "Sustainability",
     description: "We are dedicated to environmentally responsible practices, reducing our carbon footprint, optimizing energy efficiency and inspiring our clients and partners to do the same.",
-    icon: icons.customerSuccess,
+    icon: icons.learning,
     bgColor: "#daf7e2",
   },
   {
     title: "Future Focus: ",
     description: "To pioneer the future of business efficiency by offering cutting-edge solutions that enhance HR processes, ensure financial compliance, and drive sustainable growth and operational excellence.",
-    icon: icons.learning,
+    icon: icons.customerSuccess,
     bgColor: "#d3f4ff",
   },
 ];

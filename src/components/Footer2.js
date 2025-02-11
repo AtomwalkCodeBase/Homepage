@@ -372,8 +372,11 @@ export default function Footer2() {
       <div style={{padding:"25px"}}>
         <p>© 2024 Atomwalk. All Rights Reserved.</p>
         <p>
-          Privacy Policy | Terms & Conditions | Made with <span>♥</span> Atomwalk
-        </p>
+      <a href="/privacy-policy.html" style={{ color: "white", textDecoration: "none" }}>Privacy Policy</a> |  
+      <a href="/terms-and-conditions.html" style={{ color: "white", textDecoration: "none" }}> Terms & Conditions</a> |  
+      <a href="/disclaimer.html" style={{ color: "white", textDecoration: "none" }}> Disclaimer</a> |  
+      Made with <span>♥</span> Atomwalk
+    </p>
         <div className="social-icon">
               <a href="https://www.linkedin.com/company/atomwalk-technologies"><img src={navIcon1} alt="linkedin" /></a>
               <a href="https://www.facebook.com/profile.php?id=61572466203683"><img src={navIcon2} alt="facebook" /></a>
@@ -387,7 +390,7 @@ export default function Footer2() {
       <div style={{padding:"25px"}}>
         <p>© 2024 Atomwalk. All Rights Reserved.</p>
         <p>
-          Privacy Policy | Terms & Conditions | Made with <span>♥</span> Atomwalk
+          Made with <span>♥</span> Atomwalk
         </p>
             </div>
       </FooterBottom>}

@@ -152,7 +152,7 @@ const LmsHeroSection = () => {
   return (
     <Container background={background}>
       <LeftSection>
-        <Heading>Complete Lab & Equipment Management Hub</Heading>
+        <Heading>Streamline Your Lab Operations with Ease</Heading>
         <SubHeading>
         Manage lab operations and equipment effortlessly in one platform. From sample tracking to inventory control, LabSync keeps your lab running smoothly and efficiently.
         </SubHeading>

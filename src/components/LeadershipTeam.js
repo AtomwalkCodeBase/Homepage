@@ -137,6 +137,7 @@ const PersonDescription = styled.p`
   font-size: 1rem;
   color: #777;
   line-height: 1.4;
+  text-align: justify;
 `;
 
 const LinkedInIcon = styled.a`
@@ -227,7 +228,7 @@ const LeadershipAdvisors = () => {
                 <PersonDescription>He has an illustrious career  as a Scientist managing deep Technology, Translational Medicine, Drug development , Drug discovery.  He has published numerous scientific articles in reputed journals.</PersonDescription>
               </FlipCardFront>
               <FlipCardBack>
-                <PersonDescription>Dr. M R Jaganath, who joined Atomwalk’s Board of Advisors in October 2023, brings expertise in lab management, Good Laboratory Practice (GLP), and Good Manufacturing Practice (GMP). With a PhD from the Indian Institute of Science (IISc) and a distinguished career as Chief Scientific Officer at Connexios Life Sciences, he has extensive experience in translational medicine, drug development, and drug discovery. A prolific scientist, Dr. Jaganath has published numerous articles in esteemed scientific journals, contributing significantly to the field of advanced medical research and innovation.</PersonDescription>
+                <PersonDescription>Dr. M.R. Jaganath, Technical Specialist on Atomwalk’s Board, is an expert in lab management, GLP, and GMP. As former CSO of Connexios Life Sciences, he contributed to translational network biology and led a team developing drug candidates for type 2 diabetes. He holds a PhD from IISc Bangalore and degrees in Agriculture and Agricultural Microbiology from UAS Bangalore. His career spans banking at RBI, startup support in distillery effluent treatment and plant tissue culture, and extensive work in drug discovery and development. A prolific scientist, he has numerous publications in esteemed journals.</PersonDescription>
                 {/* <LinkedInIcon href="https://linkedin.com" target="_blank">
                   <img src={Linkind} alt="LinkedIn" />
                 </LinkedInIcon> */}
@@ -245,10 +246,7 @@ const LeadershipAdvisors = () => {
                 <PersonDescription>Ms Jayanthi is a senior executive responsible for overseeing all aspects of an organization's human resource functions. </PersonDescription>
               </FlipCardFront>
               <FlipCardBack>
-                <PersonDescription>Ms Jayanthi is a senior executive responsible for overseeing all aspects of an organization's human resource functions, including recruitment, employee relations, talent development, compensation and benefits, and workforce planning, all while aligning HR strategies with the company's overall business goals. Setting up performance evaluation processes Implementing, Key Performance Indicators (KPIs), Identifying training and development needs</PersonDescription>
-                {/* <LinkedInIcon href="https://www.linkedin.com" target="_blank">
-                  <img src={Linkind} alt="LinkedIn" />
-                </LinkedInIcon> */}
+                <PersonDescription>Ms Jayanthi is a senior executive responsible for overseeing all aspects of an organization's human resource functions, including recruitment, employee relations, talent development, compensation and benefits, and workforce planning, all while aligning HR strategies with the company's overall business goals. Setting up performance evaluation processes Implementing, Key Performance Indicators (KPIs), Identifying training and development needs.</PersonDescription>
               </FlipCardBack>
             </FlipCardInner>
           </PersonCard>
@@ -261,7 +259,8 @@ const LeadershipAdvisors = () => {
                 <PersonDescription>He was also instrumental in establishing ISO 17025:2005 system at the test facility and accreditation by NABL. He was part of several inspections at the test facility from the Monitoring Authorities of Germany, The Netherlands, NGCMA (India), OECD site visit (Mutual Joint Visit), the US FDA (2012 and 2016), AAALAC, ISO 17025 audits by NABL.</PersonDescription>
               </FlipCardFront>
               <FlipCardBack>
-                <PersonDescription>Mr. Satish Murthy V., M.Sc., RQAP-GLP, joined Atomwalk’s Board as Quality Specialist, brings 28 years of expertise in Quality Management. He has been primarily responsible for the Quality Assurance functions for the different studies conducted in the GLP departments comprising of Safety Assessment, Analytical R&D, DMPK and Clinical Pharmacology and is well versed with the OECD Principles of GLP, US FDA 21 CFR part 58, US EPA 40 CFR part 160 and 40 CFR Part 792 GLP standards.  He serves as a faculty at the various GLP training programs conducted by the National GLP Compliance Monitoring Authority, India.</PersonDescription>
+                <PersonDescription>Mr. Satish Murthy V., M.Sc., RQAP-GLP, joined Atomwalk’s Board as Quality Specialist, brings 28 years of expertise in Quality Management. Satish Murthy V started his career in the year 1995 in the Quality Assurance Unit of Rallis Research, Eurofins Advinus Limited and Adgyl Lifesciences Private Limited. He has expertise in Quality Assurance functions like Safety Assessment, Analytical RD, DMPK and Clinical Pharmacology and is well versed with the OECD Principles of GLP, US FDA
+21 CFR part 58, US EPA 40 CFR part 160 and 40 CFR Part 792 GLP standards. He serves as a faculty at the various GLP training programs conducted by the National GLP Compliance Monitoring Authority, India.</PersonDescription>
                 {/* <LinkedInIcon href="https://linkedin.com" target="_blank">
                   <img src={Linkind} alt="LinkedIn" />
                 </LinkedInIcon> */}

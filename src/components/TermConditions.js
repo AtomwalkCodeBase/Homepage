@@ -181,6 +181,15 @@ export default function TermsAndConditions() {
           <TOCLink href="#introduction">Introduction</TOCLink>
           <TOCLink href="#acceptance">1. Acceptance</TOCLink>
           <TOCLink href="#price-and-payment">2. Price and Payment</TOCLink>
+          <TOCLink href="#equipment">3. EQUIPMENT</TOCLink>
+          <TOCLink href="#registration">4. REGISTRATION</TOCLink>
+          <TOCLink href="#password">5. PASSWORD AND SECURITY</TOCLink>
+          <TOCLink href="#userconduct">6. USER CONDUCT</TOCLink>
+          <TOCLink href="#dataDuplicity">7. DATA DUPLICITY</TOCLink>
+          <TOCLink href="#service">8. SERVICE AVAILABILITY</TOCLink>
+          <TOCLink href="#error">9. ERRORS, MISTAKES AND RIGHT TO MODIFY OR DISCONTINUE SERVICE</TOCLink>
+          <TOCLink href="#std">10. STANDARD TERMS & CONDITIONS</TOCLink>
+          <TOCLink href="#monitering">11. MONITORING</TOCLink>
         </TableOfContents>
 
         <Card id="introduction">
@@ -230,6 +239,80 @@ export default function TermsAndConditions() {
               time to time.
             </ListItem>
             <ListItem>The Subscription fee paid by user is non-refundable & non-transferable in any case.</ListItem>
+          </List>
+        </Card>
+        <Card id="equipment">
+          <SectionTitle>3. EQUIPMENT:</SectionTitle>
+          <List>
+            <Paragraph>
+            The User shall be responsible for maintaining all kinds of mobile devices, computer
+            hardware and other equipment to access and use our services. We shall not be liable for
+            any damages to the User’s equipment resulting from the use of our services.
+          </Paragraph>
+          </List>
+        </Card>
+        <Card id="registration">
+          <SectionTitle>4. REGISTRATION:</SectionTitle>
+          <List>
+          <Paragraph>
+          To utilise services on ATOMWALK, you may be required to complete a registration process and create a profile / account. You represent and warrant that all information provided by you to ATOMWALK is correct, accurate and complete, and that you will maintain the accuracy and completeness of this information in a prompt, timely basis.
+          </Paragraph>
+          </List>
+        </Card>
+        <Card id="password">
+          <SectionTitle>5. PASSWORD AND SECURITY:</SectionTitle>
+          <List>
+          <Paragraph>
+          As a registered user of ATOMWALK, you may receive or create a username and password. You are solely responsible for maintaining the confidentiality and security of your password(s) and account(s). You understand and agree that you are individually and fully responsible for all actions and listings, shared information, reviews, comments, posts made from your account(s). Any account you create is non-transferrable. You agree to notify ATOMWALK immediately if you become aware of any unauthorised use of your account(s).
+          </Paragraph>
+          </List>
+        </Card>
+        <Card id="userconduct">
+          <SectionTitle>6. USER CONDUCT:</SectionTitle>
+          <List>
+          <Paragraph>
+          The User shall not post or transmit through ATOMWALK any material which is unlawful, threatening, abusive, defamatory, invasive of privacy or public rights, vulgar, obscene, profane or otherwise objectionable, which encourages conduct that would constitute a criminal offense, give rise to civil liability, objectionable or otherwise violates any law.
+          </Paragraph>
+          </List>
+        </Card>
+        <Card id="dataDuplicity">
+          <SectionTitle>7. DATA DUPLICITY:</SectionTitle>
+          <List>
+          <Paragraph>
+          You agree not to create any data backup or copy the content and data that is available to you by use of the ATOMWALK Service except as stated in this agreement.
+          </Paragraph>
+          </List>
+        </Card>
+        <Card id="service">
+          <SectionTitle>8. SERVICE AVAILABILITY:</SectionTitle>
+          <List>
+            <ListItem>ATOMWALK will make all reasonable efforts to make the Service available at all times. However, you acknowledge that the ATOMWALK Service is provided over the internet and through mobile networks and so the quality and availability of the Service may be affected by factors outside the control of ATOMWALK.</ListItem>
+            <ListItem>ATOMWALK does not accept any responsibility whatsoever for unavailability of the Service , or any difficulty or inability to download or access content or any other communication system failure which may result in the Service being unavailable.</ListItem>
+          </List>
+        </Card>
+        <Card id="error">
+          <SectionTitle>9. ERRORS, MISTAKES AND RIGHT TO MODIFY OR DISCONTINUE SERVICE:</SectionTitle>
+          <List>
+          <Paragraph>
+          We will make all efforts but we do not warrant that the Services will be error-free, free of viruses or other harmful components. We do not represent or warrant that the information, features, functionality available on or through the ATOMWALK website willbe correct, accurate, timely or otherwise reliable. We may make changes to the features, functionality or content of the ATOMWALK website at any time. We reserve the right in our sole discretion to edit or delete any documents, information or other content
+appearing on the ATOMWALK website. ATOMWALK reserves the right at any time and from time to time to modify or discontinue, temporarily or permanently, the ATOMWALK services (or any part thereof) with or without notice. ATOMWALK shall not be liable to you or to any third party for any modification, suspension or discontinuance of the Service. Theversion of the Application software may be upgraded from time to time to add support for new functions and services.
+          </Paragraph>
+          </List>
+        </Card>
+        <Card id="std">
+          <SectionTitle>10. STANDARD TERMS & CONDITIONS:</SectionTitle>
+          <List>
+          <Paragraph>
+          ATOMWALK shall not be responsible for the correctness of content submitted by Users and the same shall be the sole responsibility of the Users.
+          </Paragraph>
+          </List>
+        </Card>
+        <Card id="monitering">
+          <SectionTitle>11. MONITORING:</SectionTitle>
+          <List>
+          <Paragraph>
+          ATOMWALK shall have the right, but not the obligation to monitor the content of website including comments, functionality, reviews, videos or any other data or information. ATOMWALK shall have the right to remove any material that in its sole discretion appears to be a violation of the terms of usage or otherwise objectionable.
+          </Paragraph>
           </List>
         </Card>
       </Container>

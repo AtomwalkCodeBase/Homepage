@@ -37,21 +37,21 @@ const Features = () => {
     {
       title: "HR & Payroll",
       description:
-        "Effortlessly handle HR and payroll tasks with HRM System",
+        "Effortlessly handle HR and payroll tasks with HRM System.",
       imgUrl: projImg3,
        background:"#F7EFFF"
     },
     {
       title: "Customer Management",
       description:
-        "Deliver exceptional customer service and boost sales with CRM System",
+        "Deliver exceptional customer service and boost sales with CRM System.",
       imgUrl: projImg4,
       background:"#EEFAF4"
     },
     {
       title: "Accounting & Financials",
       description:
-        "Manage your accounting and financials seamlessly with Accounting & Financial System",
+        "Manage your accounting and financials seamlessly with Accounting & Financial System.",
       imgUrl: projImg5,
       background:"#e6ffff"
     },
@@ -89,8 +89,7 @@ const Features = () => {
       <Container>
         <h2>Comprehensive Business Management Solution</h2>
         <p>
-        Streamline your business with Atomwalk Office's key features: 
-        Manufacturing Operations Management for optimized production and quality control, Purchasing & Inventory Management for precise supply chain oversight, Sales & Customer Service tools to boost sales and enhance customer relationships, Warehousing Solutions for efficient inventory tracking and automation, Accounting & Financials for thorough financial oversight, and a Complete HR Suite Including Payroll for seamless workforce management.
+        “Empowering organizations by simplifying business complexities for sustainable growth and driving business excellence. Atomwalk office software solutions transform your data into actionable insights to drive your business forward with confidence.”
         </p>
         <Row>
           <Col size={12}>

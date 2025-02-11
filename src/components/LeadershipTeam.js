@@ -166,7 +166,7 @@ const LeadershipAdvisors = () => {
               <FlipCardFront>
                 <PersonImage src={Team} alt="Manoj Sahoo" />
                 <PersonName>Manoj Kumar Sahoo</PersonName>
-                <PersonRole>Founder and Director of Atomwalk</PersonRole>
+                <PersonRole>Founder and Director</PersonRole>
                 <PersonDescription>Manoj has 25+ years of experience in Product solution, Engineering and Development in two of the India’s leading Products, Finacle (INFOSYS) an enterprise solution in Banking and Financial Services and Tally the most admirable product in SMB segment</PersonDescription>
               </FlipCardFront>
               <FlipCardBack>
@@ -184,7 +184,7 @@ const LeadershipAdvisors = () => {
               <FlipCardFront>
                 <PersonImage src={Lipika} alt="Lipika" />
                 <PersonName>Dr. Lipika Sahoo</PersonName>
-                <PersonRole>Co-Founder and Director of Atomwalk</PersonRole>
+                <PersonRole>Co-Founder and Director</PersonRole>
                 <PersonDescription>Dr. Lipika Sahoo, with 24 years of academia and industry experience in technology, innovation, and intellectual property, holds a PhD from IISc. She has triple master's degrees: MSc from Sambalpur University, PGDIPR from NLSIU, and PGCBM from XIMB, along with advanced certifications from WIPO and IIM Bangalore.</PersonDescription>
               </FlipCardFront>
               <FlipCardBack>
@@ -245,7 +245,7 @@ const LeadershipAdvisors = () => {
                 <PersonDescription>Ms Jayanthi is a senior executive responsible for overseeing all aspects of an organization's human resource functions. </PersonDescription>
               </FlipCardFront>
               <FlipCardBack>
-                <PersonDescription>Ms Jayanthi is a senior executive responsible for overseeing all aspects of an organization's human resource functions, including recruitment, employee relations, talent development, compensation and benefits, and workforce planning, all while aligning HR strategies with the company's overall business goals.</PersonDescription>
+                <PersonDescription>Ms Jayanthi is a senior executive responsible for overseeing all aspects of an organization's human resource functions, including recruitment, employee relations, talent development, compensation and benefits, and workforce planning, all while aligning HR strategies with the company's overall business goals. Setting up performance evaluation processes Implementing, Key Performance Indicators (KPIs), Identifying training and development needs</PersonDescription>
                 {/* <LinkedInIcon href="https://www.linkedin.com" target="_blank">
                   <img src={Linkind} alt="LinkedIn" />
                 </LinkedInIcon> */}

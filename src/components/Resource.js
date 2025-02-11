@@ -50,6 +50,7 @@ const SubHeading = styled.p`
   color: #555;
   margin-bottom: 30px;
   line-height: 1.5;
+  text-align: justify;
 
   @media (max-width: 768px) {
     font-size: 1rem;

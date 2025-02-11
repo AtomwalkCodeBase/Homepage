@@ -45,7 +45,7 @@ useEffect(()=>{
     {/* <Banner></Banner> */}
     <Resource></Resource>
     <Skills></Skills>
-    <UnlockFuture></UnlockFuture>
+    {/* <UnlockFuture></UnlockFuture> */}
     <Features></Features>
     {/* need to work one that page  */}
    {/* <TrustedCustomer></TrustedCustomer> */}

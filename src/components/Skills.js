@@ -78,6 +78,7 @@ const Description = styled.p`
   font-size: 16px;
   color: #7f8c8d;
   line-height: 1.5;
+  text-align: justify;
 
   @media (min-width: 768px) {
     font-size: 18px;
@@ -114,12 +115,12 @@ export const Skills = () => {
   }
   return (
     <PageContainer>
-      <Title>Streamlining Business Operations</Title>
+      <Title>Empowering Industries with Smart Solutions</Title>
       <Section>
         <IndustryContainer  onClick={productnav} style={{backgroundColor:"#F6EAFF"}}>
           <Image src={Mnufacture} alt="Manufacturing Small Business" />
           <Content>
-            <IndustryTitle>Discrete Manufacturing (Manufacturing and Factory Operation)</IndustryTitle>
+            <IndustryTitle>Manufacturing and Factory Operation</IndustryTitle>
             <Description>
             In the manufacturing sector, optimizing production lines, managing supply chains, and maintaining equipment are vital. Atomwalk Solutions empowers companies in real-time monitoring and predictive analytics that can improve your productivity and reduce downtime.
             </Description>

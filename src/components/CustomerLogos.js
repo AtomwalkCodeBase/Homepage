@@ -15,7 +15,7 @@ import Olety from './../assets/img/Olety.jpg';
 const Section = styled.section`
   text-align: center;
   padding: 50px 20px;
-  background-color: #f9f9f9;
+  background-color:#eaf4ff;
   overflow: hidden;
 `;
 

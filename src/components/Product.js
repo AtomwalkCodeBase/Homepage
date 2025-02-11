@@ -261,7 +261,7 @@ const Product = () => {
   return (
     <>
   <LetsConnect title={"Empower Your Business with Atomwalk Office ERP"}
-   description={" Atomwalk Office is a cloud-based ERP solution, designed to transform the way startups, small, and medium-sized businesses operate. Built on cutting-edge technologies like AI and Blockchain, our platform seamlessly manages core business functions including manufacturing, purchasing, inventory, sales, customer service, accounting, and HR."} 
+   description={"Atomwalk Office is a cloud-based ERP solution, designed to transform the way startups, small- medium to large-sized businesses. Built on cutting-edge technologies like AI and Blockchain, our platform seamlessly manages core business functions including manufacturing, purchasing, inventory, sales, customer service, accounting, and HR. You can make informed decisions based on real-time information, analytic and agile reporting systems."} 
    background={"#52ebff"}
    data={true}></LetsConnect>
    <ProductPage></ProductPage>

@@ -119,9 +119,9 @@ export const Skills = () => {
         <IndustryContainer  onClick={productnav} style={{backgroundColor:"#F6EAFF"}}>
           <Image src={Mnufacture} alt="Manufacturing Small Business" />
           <Content>
-            <IndustryTitle>Discrete Manufacturing</IndustryTitle>
+            <IndustryTitle>Discrete Manufacturing (Manufacturing and Factory Operation)</IndustryTitle>
             <Description>
-              In the manufacturing sector, optimizing production lines, managing supply chains, and maintaining equipment are vital. Implementing systems for real-time monitoring and predictive maintenance can improve productivity and reduce downtime.
+            In the manufacturing sector, optimizing production lines, managing supply chains, and maintaining equipment are vital. Atomwalk Solutions empowers companies in real-time monitoring and predictive analytics that can improve your productivity and reduce downtime.
             </Description>
           </Content>
         </IndustryContainer>
@@ -130,12 +130,9 @@ export const Skills = () => {
         <IndustryContainer onClick={productnav} style={{backgroundColor:"#EDF5FF"}}>
           <Image src={Chemical} alt="Chemical Industry" />
           <Content>
-            <IndustryTitle>Process Manufacturing</IndustryTitle>
+            <IndustryTitle>Process Manufacturing Industry</IndustryTitle>
             <Description>
-            Production process (Recipe Management), Planning, Project/ Work
-            order management, Operational efficiency, Inventory (Batch expiry
-            tracking)/ Warehouse management, CRM, Accounting and Finan-
-            cial management, Supplier and Purchase Order management.
+            In Process Manufacturing sectors Atomwalk Solutions can help excellent management of your Production process (Recipe Management), Planning, Project/ Work order management, Operational efficiency, Inventory (Batch expiry tracking)/ Warehouse management, CRM, Accounting and Financial management, Supplier and Purchase Order management.
             </Description>
           </Content>
         </IndustryContainer>
@@ -146,7 +143,7 @@ export const Skills = () => {
           <Content>
             <IndustryTitle>Consultancy, Services, Trading & NGOs</IndustryTitle>
             <Description>
-            Effective project management ensures timely completion of tasks, optimizing resources and teamwork. Operational efficiency focuses on streamlining processes for maximum productivity. Integrated systems for CRM, accounting, financial management, and supplier/purchase order management enhance decision-making, track finances, and ensure smooth supplier relations.
+            Atomwalk Solutions offers effective project management syatem that ensures timely completion of tasks, optimizing resources and teamwork. Operational efficiency focuses on streamlining processes for maximum productivity. Integrated systems for CRM, accounting, financial management, and supplier/purchase order management enhance decision-making, track finances, and ensure smooth supplier relations.
             </Description>
           </Content>
         </IndustryContainer>
@@ -155,12 +152,9 @@ export const Skills = () => {
         <IndustryContainer onClick={lmsmaneage} style={{backgroundColor:"#E1FFF6"}}>
           <Image src={Lab} alt="Lab Management System" />
           <Content>
-            <IndustryTitle>Lab Management</IndustryTitle>
+            <IndustryTitle>Lab Management / Lab Equipment Management</IndustryTitle>
             <Description>
-            Research and Development (R & D) Labs in companies/ Universities
-- Grant management, Operational efficiency chemical consumption,
-Lab equipment management, Supplier and Purchase order
-management, Lab report/ documentation.
+            Atomwalk Lab Management / Lab Equipment Management helps the Labs in innovation by enabling them smoothly managing all Lab process like - Grant management, Inventory Management, Lab equipment management, Supplier and Purchase order management, Lab report/ documentation and Lab equipment management.
               </Description>
           </Content>
         </IndustryContainer>

@@ -139,7 +139,7 @@ const ProductPage = () => {
           </IconContainer>
           <FeatureTitle>Business Growth:</FeatureTitle>
           <FeatureDescription>
-          Integrated CRM for lead management, sales performance tracking, and customer communication.
+          Integrated CRM for lead management, sales performance tracking, and customer communication
           </FeatureDescription>
         </FeatureBox>
 

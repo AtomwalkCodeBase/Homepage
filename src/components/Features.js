@@ -30,7 +30,7 @@ const Features = () => {
     },
     {
       title: "Inventory Management",
-      description: "Take control of your inventory with Atomwalk Office",
+      description: "Take control of your inventory with Atomwalk Office.",
       imgUrl: projImg2,
       background:"#EEFAF4"
     },
@@ -89,14 +89,8 @@ const Features = () => {
       <Container>
         <h2>Comprehensive Business Management Solution</h2>
         <p>
-          Streamline your business with Atomwalk Office's key features:
-          Manufacturing Operations Management for optimized production and
-          quality control, Purchasing & Inventory Management for precise supply
-          chain oversight, Sales & Customer Service tools to boost sales and
-          enhance customer relationships, Warehousing Solutions for efficient
-          inventory tracking and automation, Accounting & Financials for
-          thorough financial oversight, and a Complete HR Suite Including
-          Payroll for seamless workforce management.
+        Streamline your business with Atomwalk Office's key features: 
+        Manufacturing Operations Management for optimized production and quality control, Purchasing & Inventory Management for precise supply chain oversight, Sales & Customer Service tools to boost sales and enhance customer relationships, Warehousing Solutions for efficient inventory tracking and automation, Accounting & Financials for thorough financial oversight, and a Complete HR Suite Including Payroll for seamless workforce management.
         </p>
         <Row>
           <Col size={12}>

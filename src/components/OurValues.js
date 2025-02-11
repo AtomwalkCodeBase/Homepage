@@ -87,32 +87,32 @@ const icons = {
 
 const values = [
   {
-    title: "Constant Improvement",
-    description: "Growth isn’t a one-time effort. We’re committed to evolving every day, both as a company and as individuals.",
+    title: "Simplicity",
+    description: "We simplify complex business processes, making them easy to manage and understand, so our clients can focus on what matters most—growing their business.",
     icon: icons.improve,
     bgColor: "#f3d0ff",
   },
   {
-    title: "Pursue Excellence",
-    description: "Excellence guides our actions, shaping our products and driving our customer success.",
+    title: "Innovation",
+    description: "We constantly evolve, bringing fresh ideas and advanced technology to the forefront, ensuring that our clients always have access to the best tools available.",
     icon: icons.excellence,
     bgColor: "#ffe2c4",
   },
   {
-    title: "Prioritize Meaningful Impact",
-    description: "Our core metric is the value we create for customers by solving their most pressing needs.",
+    title: "Trust & Integrity",
+    description: "We build long-lasting relationships with our customers based on trust, delivering reliable, secure, and dependable services that they can count on. We are committed to understanding our customers' needs, and going the extra mile to ensure their satisfaction.",
     icon: icons.impact,
     bgColor: "#f5efb8",
   },
   {
-    title: "Champion Customer Success",
-    description: "We see every interaction as a chance to build lasting, impactful relationships with our customers.",
+    title: "Sustainability",
+    description: "We are dedicated to environmentally responsible practices, reducing our carbon footprint, optimizing energy efficiency and inspiring our clients and partners to do the same.",
     icon: icons.customerSuccess,
     bgColor: "#daf7e2",
   },
   {
-    title: "Cultivate Learning & Collaboration",
-    description: "We grow together through trust, open knowledge-sharing, and a spirit of collaboration.",
+    title: "Future Focus: ",
+    description: "To pioneer the future of business efficiency by offering cutting-edge solutions that enhance HR processes, ensure financial compliance, and drive sustainable growth and operational excellence.",
     icon: icons.learning,
     bgColor: "#d3f4ff",
   },

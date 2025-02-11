@@ -14,6 +14,11 @@ const HeaderSection = styled.div`
   margin-bottom: 50px;
 `;
 
+const VisionSection = styled.div`
+  text-align: center;
+  margin-top: 50px;
+`;
+
 const HeaderTitle = styled.h1`
   font-size: 2rem;
   color: #6a1b9a; // Purple color
@@ -84,7 +89,7 @@ const PurposeComponent = () => {
   <HeaderSection>
     <HeaderTitle>Our Mission</HeaderTitle>
     <HeaderSubtitle>
-      Empower a new generation of entrepreneurs to pursue their visions and drive positive change for themselves, their communities, and the world.
+    Empowering organizations by simplifying business complexities, through integrated solutions, for sustainable growth and driving business excellence.
     </HeaderSubtitle>
   </HeaderSection>
   <ContentSection>
@@ -113,6 +118,17 @@ const PurposeComponent = () => {
       </Feature>
     </TextContent>
   </ContentSection>
+  
+  <VisionSection>
+    <SectionTitle>Our Vision</SectionTitle>
+    <FeatureTitle>Innovating for Tomorrow’s Business Success</FeatureTitle>
+    <HeaderSubtitle>
+    To innovate solutions that not only meet today’s business, people and financial compliance needs but also pave the way for tomorrow’s business success and operational excellence.
+    </HeaderSubtitle>
+    {/* <FeatureDescription>
+    To innovate solutions that not only meet today’s business, people and financial compliance needs but also pave the way for tomorrow’s business success and operational excellence.
+        </FeatureDescription> */}
+  </VisionSection>
 </Container>
 
   );

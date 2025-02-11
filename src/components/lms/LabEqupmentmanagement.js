@@ -98,8 +98,11 @@ const LabEqupmentmanagement = () => {
       <TextContainer>
         <Title>Lab Equipment Management System</Title>
         <Description>
-         Optimize utilization, minimize downtime, and simplify equipment management with
-         real-time tracking and maintenance.  </Description>
+        Atomwalk LEM helps you efficiently manage your equipments. Atomwalk LEM offers
+easy user creation, permission management, user access management, integration
+with equipments, customized reporting systems, web browser access, Monitoring
+and scheduling regular calibration/maintenance of equipments, Automatic backup
+with multiple servers.  </Description>
         <Button onClick={()=>{window.location.href="/userManagement.html"}}>Learn more</Button>
       </TextContainer>
       <ImageContainer>

@@ -157,6 +157,10 @@ const FAQSection = ({data,res}) => {
     { question: "How can I track campaign performance?", answer: ""},
   ]:data=="equipment"?[
     { 
+      "question": "Who can use Lab Equipment Management?", 
+      "answer": "Research and Development (R &amp; D) Labs in companies/ Universities Biobanking, Food &amp; Beverage Industry, Medical labs, Pharmaceuticals, Clinical Testing and Molecular Diagnostics, Contract Research Laboratories, Environmental Testing Lab, Forensics Labs, Environmental Management, Mining and Exploration, Food and Beverage, Toxicology Lab, Molecular Biology, Public Health, Clinical Sector, Startups"
+    },
+    { 
       "question": "How to create a user ID?", 
       "answer": "Only admin has the access to create user ID using user’s email."
     },

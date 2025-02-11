@@ -5,8 +5,8 @@ import Linkind from './../assets/img/linkedin.png';
 import Lipika from './../assets/img/lipika.jpg';
 import Sk from './../assets/img/Sk.svg';
 import Jaganath from './../assets/img/sk2.svg';
-import Jayanthi from './../assets/img/Sk.svg';
-import Satish from './../assets/img/sk2.svg';
+import Satish from './../assets/img/Satish (1).jpg';
+import Jayanthi from './../assets/img/freepik__enhance__57693.png';
 
 // Styled Components
 const Container = styled.div`
@@ -48,6 +48,7 @@ const Section2 = styled.div`
 
 const Heading = styled.h2`
   font-size: 2.5rem;
+  padding-top: 30px;
   margin-bottom: 30px;
   color: #333;
 

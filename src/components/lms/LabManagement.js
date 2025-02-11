@@ -180,7 +180,12 @@ const LabManagement = () => {
       <TextContainer>
         <Title>Lab Management System</Title>
         <Description>
-         Laboratories require meticulous organization and data management. A robust Lab Management System (LMS) can automate processes such as sample tracking, data entry, and reporting, which streamlines operations and ensures compliance with industry standards.
+        Atomwalk Laboratory Management System (LMS) is a sophisticated software
+solution designed to tackle the multifaceted challenges faced by laboratories. LMS
+efficiently manages entire spectrum of lab processes. You can manage your
+laboratory experimental designs and their associated data, streamlining operations
+by automating workflows, managing tests/ experiments/ protocols, handling reporting
+procedures and maintaining efficient data storage and retrieval.
         </Description>
         <Button onClick={()=>{window.location.href="/userManagement.html"}}>Learn more</Button>
       </TextContainer>

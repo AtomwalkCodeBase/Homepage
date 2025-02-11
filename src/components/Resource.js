@@ -153,7 +153,7 @@ const HeroSection = () => {
       <LeftSection>
         <Heading>To Automate the Most Complex Operations</Heading>
         <SubHeading>
-          Experience the efficiency and clarity that comes with a fully integrated business management solution. With Atomwalk Office, transform your data into actionable insights and drive your business forward with confidence.
+        Atomwalk Office is a cloud-based ERP solution, designed to transform the way startups, small, and medium-sized businesses operate. Built on cutting-edge technologies like AI and Blockchain, our platform seamlessly manages core business functions including manufacturing, purchasing, inventory, sales, customer service, accounting, and HR. 
         </SubHeading>
         <CTAButton onClick={()=>{window.location.href='/demo.html'}}>Get Started</CTAButton>
         <Features>

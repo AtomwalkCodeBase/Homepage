@@ -125,8 +125,11 @@ const UnlockFuture = () => {
 <Container>
       <Header>
         <MainTitle>Unlock the Future</MainTitle>
-        <Subtitle>
-          Revolutionize your business operations with Atomwalk Office's cutting-edge ERP solution
+        <HighlightedText>
+        Integrated solution for Business Success
+          </HighlightedText>
+          <Subtitle>
+          Revolutionize your business operations with Atomwalk Office's cutting-edge solution
         </Subtitle>
         <TransformLink href="/Product.html">Transform Your Business Today</TransformLink>
       </Header>

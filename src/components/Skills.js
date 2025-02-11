@@ -152,9 +152,9 @@ export const Skills = () => {
         <IndustryContainer onClick={lmsmaneage} style={{backgroundColor:"#E1FFF6"}}>
           <Image src={Lab} alt="Lab Management System" />
           <Content>
-            <IndustryTitle>Lab Management / Lab Equipment Management</IndustryTitle>
+            <IndustryTitle>Lab Management / Equipment Management</IndustryTitle>
             <Description>
-            Atomwalk Lab Management / Lab Equipment Management helps the Labs in innovation by enabling them smoothly managing all Lab process like - Grant management, Inventory Management, Lab equipment management, Supplier and Purchase order management, Lab report/ documentation and Lab equipment management.
+            Atomwalk Lab Management / Equipment Management helps the Labs in innovation by enabling them smoothly managing all Lab process like - Grant management, Inventory Management, Lab equipment management, Supplier and Purchase order management, Lab report/ documentation and Lab equipment management.
               </Description>
           </Content>
         </IndustryContainer>

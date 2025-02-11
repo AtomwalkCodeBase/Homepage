@@ -89,7 +89,7 @@ const PurposeComponent = () => {
   <HeaderSection>
     <HeaderTitle>Our Mission</HeaderTitle>
     <HeaderSubtitle>
-    Empowering organizations by simplifying business complexities, through integrated solutions, for sustainable growth and driving business excellence.
+    "Empowering organizations by simplifying business complexities, through integrated solutions, for sustainable growth and driving business excellence"
     </HeaderSubtitle>
   </HeaderSection>
   <ContentSection>
@@ -97,23 +97,29 @@ const PurposeComponent = () => {
       <Image src={Team} alt="Dedicated Team of Innovators" />
     </ImageWrapper>
     <TextContent>
-      <SectionTitle>Our Approach</SectionTitle>
+      <SectionTitle>Why Choose ATOMWALK?</SectionTitle>
       <Feature>
-        <FeatureTitle>Inspire.</FeatureTitle>
+        <FeatureTitle>Integrated Approach:</FeatureTitle>
         <FeatureDescription>
-          We connect deeply with our customers’ visions and use creativity, technology, and dedication to bring their ideas to life.
+        How ATOMWALK’s unified solutions eliminate the silos between different business functions, providing a holistic view and seamless experience.
         </FeatureDescription>
       </Feature>
       <Feature>
-        <FeatureTitle>Take Bold Steps.</FeatureTitle>
+        <FeatureTitle>Customization:</FeatureTitle>
         <FeatureDescription>
-          We embrace courage in all we do, pushing boundaries and meeting challenges head-on with confidence.
+        Tailored solutions that adapt to the unique needs of large organizations.
         </FeatureDescription>
       </Feature>
       <Feature>
-        <FeatureTitle>Think Like Owners.</FeatureTitle>
+        <FeatureTitle>Innovation:</FeatureTitle>
         <FeatureDescription>
-          We treat every project as our own, constantly refining, innovating, and creating new solutions that drive progress.
+        Continuous innovation to stay ahead of industry trends and regulatory changes.
+        </FeatureDescription>
+      </Feature>
+      <Feature>
+        <FeatureTitle>Proven Track Record:</FeatureTitle>
+        <FeatureDescription>
+        Case studies or testimonials from existing large clients demonstrating successful implementations and tangible benefits.
         </FeatureDescription>
       </Feature>
     </TextContent>
@@ -121,7 +127,7 @@ const PurposeComponent = () => {
   
   <VisionSection>
     <SectionTitle>Our Vision</SectionTitle>
-    <FeatureTitle>Innovating for Tomorrow’s Business Success</FeatureTitle>
+    <FeatureTitle>"Innovating for Tomorrow’s Business Success"</FeatureTitle>
     <HeaderSubtitle>
     To innovate solutions that not only meet today’s business, people and financial compliance needs but also pave the way for tomorrow’s business success and operational excellence.
     </HeaderSubtitle>

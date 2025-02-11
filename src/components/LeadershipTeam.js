@@ -166,7 +166,7 @@ const LeadershipAdvisors = () => {
               <FlipCardFront>
                 <PersonImage src={Team} alt="Manoj Sahoo" />
                 <PersonName>Manoj Kumar Sahoo</PersonName>
-                <PersonRole>CEO, Co-founder</PersonRole>
+                <PersonRole>Founder and Director of Atomwalk</PersonRole>
                 <PersonDescription>Manoj has 25+ years of experience in Product solution, Engineering and Development in two of the India’s leading Products, Finacle (INFOSYS) an enterprise solution in Banking and Financial Services and Tally the most admirable product in SMB segment</PersonDescription>
               </FlipCardFront>
               <FlipCardBack>
@@ -184,14 +184,14 @@ const LeadershipAdvisors = () => {
               <FlipCardFront>
                 <PersonImage src={Lipika} alt="Lipika" />
                 <PersonName>Dr. Lipika Sahoo</PersonName>
-                <PersonRole>Founder and Director</PersonRole>
+                <PersonRole>Co-Founder and Director of Atomwalk</PersonRole>
                 <PersonDescription>Dr. Lipika Sahoo, with 24 years of academia and industry experience in technology, innovation, and intellectual property, holds a PhD from IISc. She has triple master's degrees: MSc from Sambalpur University, PGDIPR from NLSIU, and PGCBM from XIMB, along with advanced certifications from WIPO and IIM Bangalore.</PersonDescription>
               </FlipCardFront>
               <FlipCardBack>
                 <PersonDescription>Dr. Lipika Sahoo, Co-Founder and Director of Atomwalk, brings 24 years of experience in academia and industry, specializing in technology, innovation, and intellectual property. She holds a PhD from the Indian Institute of Science (IISc) and has earned multiple advanced degrees, including an MSc, PGDIPR, PGCBM, and certifications from WIPO and IIM Bangalore. Dr. Sahoo serves as a reviewer for various innovation programs. Her extensive expertise supports Atomwalk’s mission of driving impactful, socially relevant technological innovations.</PersonDescription>
-                <LinkedInIcon href="https://www.linkedin.com/in/lipikasahoo" target="_blank">
+                {/* <LinkedInIcon href="https://www.linkedin.com/in/lipikasahoo" target="_blank">
                   <img src={Linkind} alt="LinkedIn" />
-                </LinkedInIcon>
+                </LinkedInIcon> */}
               </FlipCardBack>
             </FlipCardInner>
           </PersonCard>
@@ -207,14 +207,14 @@ const LeadershipAdvisors = () => {
               <FlipCardFront>
                 <PersonImage src={Sk} alt="SK Patnaik" />
                 <PersonName>SK Patnaik</PersonName>
-                <PersonRole>Advisor</PersonRole>
+                <PersonRole>Client Relationship & Sales Advisory</PersonRole>
                 <PersonDescription>For ~25 years, he led Business Management (Client Relationship, Sales and P&L Management, new GTM) roles mainly in the IT Solutions & Services spanning global markets (the US, UK, South-East Asia, and India).</PersonDescription>
               </FlipCardFront>
               <FlipCardBack>
                 <PersonDescription>SK Patnaik, who joined Atomwalk’s Board in 2021, brings expertise in business strategy, product innovation, and revenue growth. With ~25 years of experience in IT solutions across global markets, he has held key roles in client relations, sales, and P&L management. Previously with Infosys, he led APAC and India operations for the Global Manufacturing Vertical and has deep experience in the ERP landscape with platforms like SAP, Oracle, and SaaS solutions. SK also co-founded a deep-tech telecom startup and holds an MBA in Marketing and Systems from the Xavier Institute of Management, Bhubaneswar.</PersonDescription>
-                <LinkedInIcon href="https://www.linkedin.com/in/sk-patnaik-" target="_blank">
+                {/* <LinkedInIcon href="https://www.linkedin.com/in/sk-patnaik-" target="_blank">
                   <img src={Linkind} alt="LinkedIn" />
-                </LinkedInIcon>
+                </LinkedInIcon> */}
               </FlipCardBack>
             </FlipCardInner>
           </PersonCard>
@@ -223,14 +223,14 @@ const LeadershipAdvisors = () => {
               <FlipCardFront>
                 <PersonImage src={Jaganath} alt="Dr. M R Jaganath" />
                 <PersonName>Dr. M R Jaganath</PersonName>
-                <PersonRole>Advisor</PersonRole>
+                <PersonRole>Technical Specialist</PersonRole>
                 <PersonDescription>He has an illustrious career  as a Scientist managing deep Technology, Translational Medicine, Drug development , Drug discovery.  He has published numerous scientific articles in reputed journals.</PersonDescription>
               </FlipCardFront>
               <FlipCardBack>
                 <PersonDescription>Dr. M R Jaganath, who joined Atomwalk’s Board of Advisors in October 2023, brings expertise in lab management, Good Laboratory Practice (GLP), and Good Manufacturing Practice (GMP). With a PhD from the Indian Institute of Science (IISc) and a distinguished career as Chief Scientific Officer at Connexios Life Sciences, he has extensive experience in translational medicine, drug development, and drug discovery. A prolific scientist, Dr. Jaganath has published numerous articles in esteemed scientific journals, contributing significantly to the field of advanced medical research and innovation.</PersonDescription>
-                <LinkedInIcon href="https://linkedin.com" target="_blank">
+                {/* <LinkedInIcon href="https://linkedin.com" target="_blank">
                   <img src={Linkind} alt="LinkedIn" />
-                </LinkedInIcon>
+                </LinkedInIcon> */}
               </FlipCardBack>
             </FlipCardInner>
           </PersonCard>
@@ -241,14 +241,14 @@ const LeadershipAdvisors = () => {
               <FlipCardFront>
                 <PersonImage src={Jayanthi} alt="Jayanthi S Vel" />
                 <PersonName>Jayanthi S Vel</PersonName>
-                <PersonRole>Chief Human Resources Officer (CHRO)</PersonRole>
+                <PersonRole>Human Resources Officer (HRO)</PersonRole>
                 <PersonDescription>Ms Jayanthi is a senior executive responsible for overseeing all aspects of an organization's human resource functions. </PersonDescription>
               </FlipCardFront>
               <FlipCardBack>
                 <PersonDescription>Ms Jayanthi is a senior executive responsible for overseeing all aspects of an organization's human resource functions, including recruitment, employee relations, talent development, compensation and benefits, and workforce planning, all while aligning HR strategies with the company's overall business goals.</PersonDescription>
-                <LinkedInIcon href="https://www.linkedin.com" target="_blank">
+                {/* <LinkedInIcon href="https://www.linkedin.com" target="_blank">
                   <img src={Linkind} alt="LinkedIn" />
-                </LinkedInIcon>
+                </LinkedInIcon> */}
               </FlipCardBack>
             </FlipCardInner>
           </PersonCard>
@@ -262,9 +262,9 @@ const LeadershipAdvisors = () => {
               </FlipCardFront>
               <FlipCardBack>
                 <PersonDescription>Mr. Satish Murthy V., M.Sc., RQAP-GLP, joined Atomwalk’s Board as Quality Specialist, brings 28 years of expertise in Quality Management. He has been primarily responsible for the Quality Assurance functions for the different studies conducted in the GLP departments comprising of Safety Assessment, Analytical R&D, DMPK and Clinical Pharmacology and is well versed with the OECD Principles of GLP, US FDA 21 CFR part 58, US EPA 40 CFR part 160 and 40 CFR Part 792 GLP standards.  He serves as a faculty at the various GLP training programs conducted by the National GLP Compliance Monitoring Authority, India.</PersonDescription>
-                <LinkedInIcon href="https://linkedin.com" target="_blank">
+                {/* <LinkedInIcon href="https://linkedin.com" target="_blank">
                   <img src={Linkind} alt="LinkedIn" />
-                </LinkedInIcon>
+                </LinkedInIcon> */}
               </FlipCardBack>
             </FlipCardInner>
           </PersonCard>

@@ -24,41 +24,41 @@ const Features = () => {
     {
       title: "Manufacturing Operations",
       description:
-        "Efficiently manage your manufacturing operations with Atomwalk Office",
+        "Efficiently manage your manufacturing operations with Manufacturing System.",
       imgUrl: projImg1,
       background:"#fff8e6"
     },
     {
       title: "Inventory Management",
-      description: "Take control of your inventory with Atomwalk Office.",
+      description: "Take control of your inventory with Inventory Management System.",
       imgUrl: projImg2,
       background:"#EEFAF4"
     },
     {
       title: "HR & Payroll",
       description:
-        "Effortlessly handle HR and payroll tasks with Atomwalk Office",
+        "Effortlessly handle HR and payroll tasks with HRM System",
       imgUrl: projImg3,
        background:"#F7EFFF"
     },
     {
       title: "Customer Management",
       description:
-        "Deliver exceptional customer service and boost sales with Atomwalk Office",
+        "Deliver exceptional customer service and boost sales with CRM System",
       imgUrl: projImg4,
       background:"#EEFAF4"
     },
     {
       title: "Accounting & Financials",
       description:
-        "Manage your accounting and financials seamlessly with Atomwalk Office",
+        "Manage your accounting and financials seamlessly with Accounting & Financial System",
       imgUrl: projImg5,
       background:"#e6ffff"
     },
     {
       title: "Project Management",
       description:
-        "Make informed decisions based on real-time information and analytics provided by Atomwalk Office",
+        "Make informed decisions based on real-time information and analytics provided by Project Management Syatem.",
       imgUrl: projImg6,
       background:"#fff8e6"
     },

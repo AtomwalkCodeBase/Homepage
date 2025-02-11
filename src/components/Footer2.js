@@ -8,6 +8,7 @@ import Footer from "../assets/img/footer-bg.png";
 import navIcon1 from "../assets/img/nav-icon1.svg";
 import navIcon2 from "../assets/img/nav-icon2.svg";
 import navIcon3 from "../assets/img/nav-icon3.svg";
+import navIcon4 from "../assets/img/youtube-icon.png";
 import UnderConstructionPopup from "./UnderConstructionPopup";
 const FooterContainer = styled.footer`
  background-color: rgb(13, 11, 62); /* Dark background color */
@@ -282,7 +283,7 @@ export default function Footer2() {
       </LogoContainer>
       
       <TextContainer>
-        Stay up-to-date with AtomWalk Newsletter!
+      Connect with  Atomwalk Technologies 
       </TextContainer>
       
       <FormContainer>
@@ -374,9 +375,11 @@ export default function Footer2() {
           Privacy Policy | Terms & Conditions | Made with <span>♥</span> Atomwalk
         </p>
         <div className="social-icon">
-              <a href="https://www.linkedin.com/company/atomwalk-technologies/"><img src={navIcon1} alt="Icon" /></a>
-              <a href="https://www.facebook.com/profile.php?id=61569432586041"><img src={navIcon2} alt="Icon" /></a>
-              <a href="https://www.instagram.com/atomwalktechnologies/"><img src={navIcon3} alt="Icon" /></a>
+              <a href="https://www.linkedin.com/company/atomwalk-technologies"><img src={navIcon1} alt="linkedin" /></a>
+              <a href="https://www.facebook.com/profile.php?id=61572466203683"><img src={navIcon2} alt="facebook" /></a>
+              <a href="https://www.instagram.com/atomwalktechnologies"><img src={navIcon3} alt="instagram" /></a>
+              <a href="https://www.youtube.com/@AtomwalkTechnologies"><img src={navIcon4} alt="youtube" /></a>
+              {/* <a href="https://www.instagram.com/atomwalktechnologies/"><img src={navIcon3} alt="Icon" /></a> */}
             </div>
             </div>
       </FooterBottom>

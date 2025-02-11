@@ -12,6 +12,7 @@ import PricingAvtar from './PricingAvtar'
 import Testimonial from './Testimonial'
 import ProductDemoModal from './ProductDemoModal'
 import Success from './SuccessBanner'
+import CustomerLogos from './CustomerLogos'
 
 const HomePage = () => {
 const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -49,6 +50,7 @@ useEffect(()=>{
     {/* need to work one that page  */}
    {/* <TrustedCustomer></TrustedCustomer> */}
    <Testimonial></Testimonial>
+   <CustomerLogos/>
     <Pricing></Pricing>
     {/* <PricingAvtar></PricingAvtar> */}
     <Contact setShowsuccess={setShowsuccess}></Contact>

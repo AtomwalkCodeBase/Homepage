@@ -8,6 +8,10 @@ import FluxGen from './../assets/img/Fluxgon.jpg';
 import IISER from './../assets/img/iiser_logo.png';
 import Veekay from './../assets/img/VeekayCoolers.png';
 import Lifeintelect from './../assets/img/lifeintelect_square.jpg';
+import Ramaiah from './../assets/img/Ramaiah_Square.png';
+import UniversePower from './../assets/img/UniversePower_Sqare.png';
+import Advika from './../assets/img/Advika_Sqare.png';
+import Olety from './../assets/img/Olety.jpg';
 
 
 // Testimonial Data
@@ -28,7 +32,7 @@ const testimonialData = [
     id: 3,
     name: "Mr Santosh Olety, CEO Olety Carz",
     text: `“Atomwalk’s ERP software, with its end to end solutions, we are able to track and monitor every aspect of our business. Since then, we have optimized processes, cut down costs, and achieved robust growth in sales. Atomwalk’s curated ERP software has helped us in integrating all our business activities in a very efficient manner. The software itself is easy to use, very reasonably priced for the wide range of solutions it has to offer.”`,
-    img: "https://picsum.photos/103/103",
+    img: `${Olety}`,
   },
   {
     id: 4,
@@ -52,19 +56,19 @@ const testimonialData = [
     id: 7,
     name: "Dr Prashanthi K, Assistant Prof. Ramaiah University, Bangalore",
     text:`"I am very pleased to place on record the exemplary services rendered by Atomwalk Technologies Private Limited. Atomwalk software has simplified our time-consuming activities, with its automation processes, and that has increased productivity, with quantifiable progress. We are very impressed with their ‘one of its kind’ software solutions, based on latest software technology, providing end to end solutions. The team at Atomwalk was very receptive to our queries and we appreciate their commitment and efficiency in ensuring timely delivery of the project. We highly recommend the services of Atomwalk Technologies Pvt Ltd, as a one stop solution for streamlining various activities of your business, at a very reasonable cost."`,
-    img: "https://picsum.photos/101/101",
+    img: `${Ramaiah}`,
   },
   {
     id: 8,
     name: "Jeyalakshmi Venkatanarayanan, Proprietrix, Universe Power Systems",
     text:"At Universe Power Systems, we are extremely happy with the software solutions and the services provided by Atomwalk Technologies, a company providing cloud based ERP solutions. Atomwalk Technologies’ unique, technologically advanced, yet user friendly and cost effective  software has helped our organization in managing our core processes, especially Customer Resource Management, which earlier was cumbersome and fraught with inefficiencies. The software has robust features which has helped us in improving customer engagement, enhancing customer experience and relationship, driving sales and increasing our profitability. Atomwalk’s exceptional customer support, responsive team made the onboarding process a truly delightful experience. They provided valuable insights in understanding customer behaviour. Their software has helped us in planning our business strategies more effectively. Universe Power Systems highly recommends  Atomwalk’s CRM software to any organization wanting to elevate their business to the next level, with enhanced customer engagement and satisfaction leading to higher sales and profits.",
-    img: "https://picsum.photos/101/101",
+    img: `${UniversePower}`,
   },
   {
     id: 9,
     name: "Mr Sridhar Alampalli, Advika (NGO)",
     text:"We, at Advika, are very happy with the software solutions provided by Atomwalk Technologies, a Bangalore based cloud ERP company. At Advika, a NGO dedicated to uplifting the lives of orphan children, managing daily operations, was a real challenge. From administrative to inventory to logistical issues, there were frequent problems of co ordination and implementation. Added to that, compliance as per regulatory authorities, was particularly important, especially maintaining meticulous records of inmates and other information as mandated by authorities. Atomwalk provided us with a comprehensive software which has streamlined our operations, integrated all processes. Now we are able to manage our data more effectively, track donations, monitor each child’s progress, manage inventory and ensure compliances required for an NGO. Our staff is also relieved of mundane tasks of maintaining heavy ledgers, making manual entries. Now that our resources are utilized efficiently, we have more time on our hands to focus on all round development of our children. Special thanks to the exceptional team support, help and guidance from Atomwalk Team in onboarding to the platform, helping us make the most of this powerful tool. The software itself is intuitive, user friendly and cost effective. We highly recommend the software solutions of Atomwalk Technologies for any organization seeking reliable, hassle free, user friendly and economically viable solutions for managing their day to day operations.",
-    img: "https://picsum.photos/101/101",
+    img: `${Advika}`,
   },
 
 ];

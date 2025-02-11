@@ -6,6 +6,10 @@ import Fluxgen from "./../assets/img/fluxgon_logo.png";
 import IISER from "./../assets/img/iiser_logo_long.png";
 import Veekay from "./../assets/img/VeekayCoolers.png";
 import Lifeintelect from './../assets/img/lifeintelect_square.jpg';
+import Ramaiah from './../assets/img/Ramaiah.png';
+import UniversePower from './../assets/img/UniversePower.png';
+import Advika from './../assets/img/Advika.jpg';
+import Olety from './../assets/img/Olety.jpg';
 
 // Styled Components
 const Section = styled.section`
@@ -76,7 +80,7 @@ const LogoImage = styled.img`
 `;
 
 // Logo Data
-const logos = [Meteonic, Fluxgen, IISER, Veekay, Lifeintelect, Fluxgen, IISER, Veekay];
+const logos = [Meteonic, Fluxgen, IISER, Veekay, Lifeintelect, Ramaiah, UniversePower, Advika, Olety];
 
 const CustomerLogos = () => {
   return (

@@ -528,7 +528,7 @@ const demo =()=>{
       <Header>
         <HeadBox>
           <HeadTextArea>
-            <HeadTextOne>Challenge Our Pricing See the Value!</HeadTextOne>
+            <HeadTextOne>Assess our pricing advantage and see the value for yourself</HeadTextOne>
             <HeadPara>
              Get access to premium features without breaking the bank. We believe in providing powerful tools at every level, so you get the value you deserve. Explore our plans to find the right fit for your needs and budget.
             </HeadPara>

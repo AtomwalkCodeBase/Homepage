@@ -82,7 +82,7 @@ const BelieveComponent = () => {
       <IconWrapper color="#fbbd3c">
         <img src={Rocket} alt="Rocket Icon" />
       </IconWrapper>
-      <Text>Innovation should be a core part of our identity, not just an option.</Text>
+      <Text>At Atomwalk, innovation is not an option, but a core part of our identity.</Text>
     </Card>
     <Card>
       <IconWrapper style={{ width: "65px" }} color="#6cd5ff">

@@ -85,7 +85,7 @@ const ContactCard = () => {
           <FeatureItem style={{backgroundColor:"rgb(181 255 206)"}}>
             <FeatureIcon src={Atomation} alt="Automated Processes" />
             <FeatureTitle>Call Us</FeatureTitle>
-            <FeatureText>Call us to discover how our products can work best for you.</FeatureText>
+            <FeatureText>Call us to explore how our products work best for you.</FeatureText>
             <FeatureText>Phone: +91-7259555003</FeatureText>
           </FeatureItem>
           <FeatureItem style={{backgroundColor:"rgb(188 216 255)"}}>

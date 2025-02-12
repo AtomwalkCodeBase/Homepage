@@ -88,25 +88,25 @@ const icons = {
 
 const values = [
   {
-    title: "Simplicity",
+    title: "Simplicity:",
     description: "We simplify complex business processes, making them easy to manage and understand, so our clients can focus on what matters most—growing their business.",
     icon: icons.excellence,
     bgColor: "#f3d0ff",
   },
   {
-    title: "Innovation",
+    title: "Innovation:",
     description: "We constantly evolve, bringing fresh ideas and advanced technology to the forefront, ensuring that our clients always have access to the best tools available.",
     icon: icons.improve,
     bgColor: "#ffe2c4",
   },
   {
-    title: "Trust & Integrity",
+    title: "Trust & Integrity:",
     description: "We build long-lasting relationships with our customers based on trust, delivering reliable, secure, and dependable services that they can count on. We are committed to understanding our customers' needs, and going the extra mile to ensure their satisfaction.",
     icon: icons.impact,
     bgColor: "#f5efb8",
   },
   {
-    title: "Sustainability",
+    title: "Sustainability:",
     description: "We are dedicated to environmentally responsible practices, reducing our carbon footprint, optimizing energy efficiency and inspiring our clients and partners to do the same.",
     icon: icons.learning,
     bgColor: "#daf7e2",

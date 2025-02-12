@@ -101,7 +101,7 @@ const FeatureDescription = styled.p`
 const PlanSuccess = () => {
   return (
     <Container>
-      <Title>Unite advantages</Title>
+      <Title>Transform the Way You Work</Title>
       <Subtitle>Features Tailored to Your Business Needs</Subtitle>
       <FeaturesContainer>
         <Feature>

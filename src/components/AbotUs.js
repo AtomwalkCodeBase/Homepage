@@ -5,6 +5,7 @@ import BelieveComponent from './BelieveComponent'
 import LeadershipTeam from './LeadershipTeam'
 import OurValues from './OurValues'
 import Leadership from './Leadership'
+import AdvantageSection from './AdvantageSection'
 
 const AbotUs = () => {
   return (
@@ -13,6 +14,7 @@ const AbotUs = () => {
       <BelieveComponent></BelieveComponent>
       <PurposeComponent></PurposeComponent>
       <OurValues></OurValues>
+      <AdvantageSection/>
       <LeadershipTeam></LeadershipTeam>
       {/* <Leadership></Leadership> */}
     </div>

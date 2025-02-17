@@ -9,6 +9,8 @@ import img6 from '../../assets/img/DecreaseItem.svg';
 import img7 from '../../assets/img/StockItemReport.svg';
 import img8 from '../../assets/img/ValuationReport.svg';
 import img9 from '../../assets/img/ExpiryReport.svg';
+import img10 from '../../assets/img/StockSafety.svg';
+import img11 from '../../assets/img/aging.svg';
 import { useLocation } from "react-router-dom";
 const Container = styled.div`
   width: 100%;
@@ -317,7 +319,27 @@ const InventoryFeatures = ({data}) => {
           imageSrc: img9,  // Replace with relevant image variable for campaign execution
           imageAlt: 'Expiry Report',
           imgPosition: 'right',
-        }               
+        },
+        {
+          title: 'Enhanced Safety Stock Report Dashboard',
+          subtitle: 'Gain Real-Time Insights into Inventory Levels and Stock Safety Performance',
+          description:
+            `The Safety Stock Report Dashboard in Atomwalk is specifically designed to help businesses maintain optimal stock levels, prevent stockouts, and ensure that inventory is always available when needed. This feature provides users with visual stock insights through interactive charts, detailed tracking of stock status, and powerful reporting capabilities. By keeping a close watch on inventory safety levels, businesses can reduce the risk of production halts, avoid urgent last-minute purchases, and improve overall supply chain efficiency. `,
+          benefits: ['Gain stock insights with Pie Chart and Category-wise Minimum Stock Distribution.', 'Monitor items nearing minimum levels with lead time for timely restocking.', 'Access detailed batch information for each stock item with a view button.', 'Filter data by item, category, stock status, and sort reports in ascending/descending order.', 'Re-generate reports manually and download in XLS or PDF format.'],
+          imageSrc: img10,  // Replace with relevant image variable for campaign execution
+          imageAlt: 'Expiry Report',
+          imgPosition: 'left',
+        },
+        {
+          title: 'Comprehensive Stock Aging Insights',
+          subtitle: 'Track Stock Movement and Optimize Inventory Flow',
+          description:
+            `The Stock Aging Report Dashboard in Atomwalk helps businesses monitor stock movement patterns and identify slow-moving, non-moving, or fast-moving inventory. It provides visual aging trends and item-wise aging breakdowns, enabling users to prevent excess stock build-up, reduce wastage, and improve stock turnover. With aging data segmented by time periods, users can spot items nearing expiration or sitting too long in stock, helping them adjust procurement, prioritize sales, and clear stagnant inventory. Filtering, sorting, and report generation features ensure quick access to data for faster, data-driven decisions.`,
+          benefits: ['Instantly assess stock movement with aging charts segmented by value and category.', 'Track stock quantities across multiple age brackets for each item.', 'Easily detect items nearing expiration or sitting idle to prevent wastage.', 'Filter by expiry status, item details, or category, and sort reports for quick analysis.'],
+          imageSrc: img11,  // Replace with relevant image variable for campaign execution
+          imageAlt: 'Expiry Report',
+          imgPosition: 'right',
+        }                
          
         ]:[
           {

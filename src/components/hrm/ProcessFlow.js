@@ -279,6 +279,8 @@ export const ProcessFlow = ({ data,bgcolors}) => {
       { step: 'Stock Item Report', color: '#4A90E2' },
       { step: 'Valuation Report', color: '#4A90E2' },
       { step: 'Expiry Report', color: '#4A90E2' },
+      { step: 'Safety Stock Report', color: '#4A90E2' },
+      { step: 'Stock Aging Report ', color: '#4A90E2' },
     ],
 
 

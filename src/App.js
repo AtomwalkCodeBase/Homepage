@@ -40,6 +40,7 @@ import ThankYouPage from "./components/ThankYouPage";
 import TermsAndConditions from "./components/TermConditions";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import Disclaimer from "./components/Disclaimer";
+import Career from "./components/Career";
 
 function App() {
   const[openslide,setOpenslide]=useState(false);
@@ -132,6 +133,7 @@ const loginAndStore=async()=>{
           <Route path="/terms-and-conditions.html" element={<TermsAndConditions/>} />
           <Route path="/privacy-policy.html" element={<PrivacyPolicy/>} />
           <Route path="/disclaimer.html" element={<Disclaimer/>} />
+          <Route path="/careers.html" element={<Career />} />
         </Routes>
       </Router>
       {/* {openslide&&<Askme setOpenslide={setOpenslide}/>} */}

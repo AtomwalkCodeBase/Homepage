@@ -209,10 +209,10 @@ const LeadershipAdvisors = () => {
                 <PersonImage src={Sk} alt="SK Patnaik" />
                 <PersonName>SK Patnaik</PersonName>
                 <PersonRole>Client Relationship & Sales Advisory</PersonRole>
-                <PersonDescription>For ~25 years, he led Business Management (Client Relationship, Sales and P&L Management, new GTM) roles mainly in the IT Solutions & Services spanning global markets (the US, UK, South-East Asia, and India).</PersonDescription>
+                <PersonDescription>SK has led Business Management (Client relationship, sales and P&L management, joint GTM) roles in the IT Services industry and lived in the US, UK, South-East Asia, India. He has successfully set-up new business divisions, new global market entries, and new partnerships.  </PersonDescription>
               </FlipCardFront>
               <FlipCardBack>
-                <PersonDescription>SK Patnaik, who joined Atomwalk’s Board in 2021, brings expertise in business strategy, product innovation, and revenue growth. With ~25 years of experience in IT solutions across global markets, he has held key roles in client relations, sales, and P&L management. Previously with Infosys, he led APAC and India operations for the Global Manufacturing Vertical and has deep experience in the ERP landscape with platforms like SAP, Oracle, and SaaS solutions. SK also co-founded a deep-tech telecom startup and holds an MBA in Marketing and Systems from the Xavier Institute of Management, Bhubaneswar.</PersonDescription>
+                <PersonDescription>SK Patnaik, who joined Atomwalk’s Board in 2021, brings expertise in business strategy, product innovation, and revenue growth. He led key roles in client relations, sales, and P&L management in IT Services across global markets in a career of 25 years. At Infosys, he established the APAC and India operations for Manufacturing Vertical and led the adoptions of Digital & Cloud, IoT, Smart Manufacturing, Automation & AI at several Fortune 500 Customers. He has long involvement in the ERP space with SAP, Oracle; platforms like Salesforce, and other SaaS solutions. SK also co-founded a deep-tech telecom start-up. He holds an MBA in Marketing and Systems from the Xavier Institute of Management, Bhubaneswar, India.</PersonDescription>
                 {/* <LinkedInIcon href="https://www.linkedin.com/in/sk-patnaik-" target="_blank">
                   <img src={Linkind} alt="LinkedIn" />
                 </LinkedInIcon> */}

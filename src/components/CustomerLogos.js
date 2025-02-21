@@ -10,6 +10,11 @@ import Ramaiah from './../assets/img/Ramaiah.png';
 import UniversePower from './../assets/img/UniversePower.png';
 import Advika from './../assets/img/Advika.jpg';
 import Olety from './../assets/img/Olety.jpg';
+import Start_Up_Inda from './../assets/img/satrup-india.png';
+import Make_In_Inda from './../assets/img/make-india.jpg';
+import Start_Up_KA from './../assets/img/Startup_Karnataka.png';
+import Nasscom from './../assets/img/NASSCOM.png';
+import msme from './../assets/img/msme.png';
 
 // Styled Components
 const Section = styled.section`
@@ -80,13 +85,13 @@ const LogoImage = styled.img`
 `;
 
 // Logo Data
-const logos = [Meteonic, Fluxgen, IISER, Veekay, Lifeintelect, Ramaiah, UniversePower, Advika, Olety];
+const logos = [Meteonic, Fluxgen, IISER, Veekay, Lifeintelect, Ramaiah, UniversePower, Advika, Olety,Start_Up_Inda,Make_In_Inda,Start_Up_KA,Nasscom,msme];
 
 const CustomerLogos = () => {
   return (
     <Section>
-      <Title>Our Customers</Title>
-      <Subtitle>Trusted by businesses</Subtitle>
+      <Title>Brands we are associated with</Title>
+      <Subtitle>Our Trusted Brand Partners</Subtitle>
       <LogoScrollContainer>
         <LogoTrack>
           {logos.concat(logos).map((logo, index) => (

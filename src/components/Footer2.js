@@ -364,6 +364,9 @@ export default function Footer2() {
             <li>
               <a    onClick={()=>{setopenpop(!openpop)}}>FAQs</a>
             </li>
+            <li>
+              <a href="/Careers.html">Career</a>
+            </li>
           </ul>
         </FooterLinks>
       </FooterLinksContainer>

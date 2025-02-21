@@ -273,10 +273,10 @@ const Hrprice = () => {
           <Message>Seriously, free forever</Message>
           <FeatureList>
             <FeatureItem valid>3 User Access</FeatureItem>
-            <FeatureItem valid>30 days Vallidity</FeatureItem>
+            <FeatureItem valid>30 days Validity</FeatureItem>
             <FeatureItem valid>20MB Space</FeatureItem>
             <FeatureItem>Multi Branch Access</FeatureItem>
-            <FeatureItem2  onClick={openModal}>Click Hear to see the modules</FeatureItem2>
+            <FeatureItem2  onClick={openModal}>Click here to see the modules</FeatureItem2>
           </FeatureList>
           <Button>Sign up for free</Button>
         </PlanCard>
@@ -298,7 +298,7 @@ const Hrprice = () => {
             <FeatureItem valid>1 Year Validity</FeatureItem>
             <FeatureItem valid>200MB Space</FeatureItem>
             <FeatureItem>Multi Branch Access</FeatureItem>
-            <FeatureItem2  onClick={openModal}>Click Hear to see the modules</FeatureItem2>
+            <FeatureItem2  onClick={openModal}>Click here to see the modules</FeatureItem2>
           </FeatureList>
           <Button>Start a free trial</Button>
         </PlanCard>
@@ -314,13 +314,13 @@ const Hrprice = () => {
             Premium
           </h3>
           <Price>₹75,000/Annum</Price>
-          <Message>Billed at ₹125/month/userr</Message>
+          <Message>Billed at ₹125/month/user</Message>
           <FeatureList>
             <FeatureItem valid>50 User Access</FeatureItem>
-            <FeatureItem valid>1 Year Vallidity</FeatureItem>
+            <FeatureItem valid>1 Year Validity</FeatureItem>
             <FeatureItem valid>500MB Space</FeatureItem>
             <FeatureItem valid>Multi Branch Access</FeatureItem>
-            <FeatureItem2 lickable onClick={openModal}>Click Hear to see the modules</FeatureItem2>
+            <FeatureItem2 lickable onClick={openModal}>Click here to see the modules</FeatureItem2>
           </FeatureList>
           <Button>Start a free trial</Button>
         </PlanCard>
@@ -339,10 +339,10 @@ const Hrprice = () => {
           <Message>Billed at ₹100/month/user</Message>
           <FeatureList>
             <FeatureItem valid>100 User Access</FeatureItem>
-            <FeatureItem valid>1 Year Vallidity</FeatureItem>
+            <FeatureItem valid>1 Year Validity</FeatureItem>
             <FeatureItem valid>1.2GB Space</FeatureItem>
             <FeatureItem valid>Multi Branch Access</FeatureItem>
-            <FeatureItem2 lickable onClick={openModal}>Click Hear to see the modules</FeatureItem2>
+            <FeatureItem2 lickable onClick={openModal}>Click here to see the modules</FeatureItem2>
           </FeatureList>
           <Button>Start a free trial</Button>
         </PlanCard>

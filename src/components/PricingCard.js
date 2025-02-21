@@ -273,10 +273,10 @@ const PricingCard = () => {
           <Message>Seriously, free forever</Message>
           <FeatureList>
             <FeatureItem valid>3 User Access</FeatureItem>
-            <FeatureItem valid>30 days Vallidity</FeatureItem>
+            <FeatureItem valid>30 days Validity</FeatureItem>
             <FeatureItem valid>20MB Space</FeatureItem>
             <FeatureItem>Multi Branch Access</FeatureItem>
-            <FeatureItem2  onClick={openModal}>Click Hear to see the modules</FeatureItem2>
+            <FeatureItem2  onClick={openModal}>Click here to see the modules</FeatureItem2>
           </FeatureList>
           <Button>Sign up for free</Button>
         </PlanCard>
@@ -298,7 +298,7 @@ const PricingCard = () => {
             <FeatureItem valid>1 Year Validity</FeatureItem>
             <FeatureItem valid>200MB Space</FeatureItem>
             <FeatureItem>Multi Branch Access</FeatureItem>
-            <FeatureItem2  onClick={openModal}>Click Hear to see the modules</FeatureItem2>
+            <FeatureItem2  onClick={openModal}>Click here to see the modules</FeatureItem2>
           </FeatureList>
           <Button>Start a free trial</Button>
         </PlanCard>
@@ -317,10 +317,10 @@ const PricingCard = () => {
           <Message>Billed at ₹75,000 per year</Message>
           <FeatureList>
             <FeatureItem valid>10 User Access</FeatureItem>
-            <FeatureItem valid>1 Year Vallidity</FeatureItem>
+            <FeatureItem valid>1 Year Validity</FeatureItem>
             <FeatureItem valid>500MB Space</FeatureItem>
             <FeatureItem valid>Multi Branch Access</FeatureItem>
-            <FeatureItem2 lickable onClick={openModal}>Click Hear to see the modules</FeatureItem2>
+            <FeatureItem2 lickable onClick={openModal}>Click here to see the modules</FeatureItem2>
           </FeatureList>
           <Button>Start a free trial</Button>
         </PlanCard>
@@ -339,10 +339,10 @@ const PricingCard = () => {
           <Message>Billed at ₹150,000 per year</Message>
           <FeatureList>
             <FeatureItem valid>25 User Access</FeatureItem>
-            <FeatureItem valid>1 Year Vallidity</FeatureItem>
+            <FeatureItem valid>1 Year Validity</FeatureItem>
             <FeatureItem valid>1.2GB Space</FeatureItem>
             <FeatureItem valid>Multi Branch Access</FeatureItem>
-            <FeatureItem2 lickable onClick={openModal}>Click Hear to see the modules</FeatureItem2>
+            <FeatureItem2 lickable onClick={openModal}>Click here to see the modules</FeatureItem2>
           </FeatureList>
           <Button>Start a free trial</Button>
         </PlanCard>

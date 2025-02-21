@@ -301,7 +301,7 @@ const Pricing = () => {
               <FeatureItem valid>20MB Space</FeatureItem>
               <FeatureItem>Multi Branch Access</FeatureItem>
               <FeatureItem2 onClick={() => openModal("Free Trial")}>
-                Click Here to see the modules
+                Click here to see the modules
               </FeatureItem2>
             </FeatureList>
             <Button>Sign up for free</Button>
@@ -327,7 +327,7 @@ const Pricing = () => {
               <FeatureItem valid>200MB Space</FeatureItem>
               <FeatureItem>Multi Branch Access</FeatureItem>
               <FeatureItem2 onClick={() => openModal("Basic")}>
-                Click Here to see the modules
+                Click here to see the modules
               </FeatureItem2>
             </FeatureList>
             <Button>Start a free trial</Button>
@@ -353,7 +353,7 @@ const Pricing = () => {
               <FeatureItem valid>500MB Space</FeatureItem>
               <FeatureItem valid>Multi Branch Access</FeatureItem>
               <FeatureItem2 onClick={() => openModal("Premium")}>
-                Click Here to see the modules
+                Click here to see the modules
               </FeatureItem2>
             </FeatureList>
             <Button>Start a free trial</Button>
@@ -379,7 +379,7 @@ const Pricing = () => {
               <FeatureItem valid>1.2GB Space</FeatureItem>
               <FeatureItem valid>Multi Branch Access</FeatureItem>
               <FeatureItem2 onClick={() => openModal("Ultimate")}>
-                Click Here to see the modules
+                Click here to see the modules
               </FeatureItem2>
             </FeatureList>
             <Button>Start a free trial</Button>

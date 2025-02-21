@@ -4,6 +4,7 @@ import styled from "styled-components";
 const PrivacyPolicyContainer = styled.div`
   max-width: 900px;
   margin: 60px auto;
+  margin-top: 140px;
   padding: 40px;
   background: #ffffff;
   border-radius: 15px;

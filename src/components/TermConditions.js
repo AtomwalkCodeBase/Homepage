@@ -66,6 +66,7 @@ const Sidebar = styled.nav`
   background: ${(props) => props.theme.cardBg};
   box-shadow: ${(props) => props.theme.cardShadow};
   padding: 20px;
+  margin-top: 140px;
   overflow-y: auto;
 
   @media (max-width: 768px) {
@@ -91,7 +92,8 @@ const TOCLink = styled.a`
 `
 
 const Content = styled.div`
-  margin-left: 270px;
+  margin-top: 100px;
+  margin-left: 450px;
   padding: 40px 20px;
   max-width: 800px;
 
@@ -148,7 +150,7 @@ const ListItem = styled.li`
 
 const ThemeToggle = styled.button`
   position: fixed;
-  top: 20px;
+  top: 130px;
   right: 20px;
   background: ${(props) => props.theme.cardBg};
   border: none;

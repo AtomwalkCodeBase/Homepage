@@ -98,6 +98,7 @@ const Title = styled.h2`
 const TestimonialCard = styled.div`
   display: flex !important;
   flex-direction: column;
+  min-height: 250px;
   align-items: center;
   text-align: center;
   background: white;
@@ -142,7 +143,7 @@ const Text = styled.p`
   color: #555;
   font-size: 1rem;
   line-height: 1.6;
-  text-align: justify;
+  /* text-align: justify; */
 `;
 
 const SliderWrapper = styled(Slider)`

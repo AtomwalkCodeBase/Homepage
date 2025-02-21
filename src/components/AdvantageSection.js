@@ -72,7 +72,7 @@ const CardContainer = styled.div`
 `;
 
 const Card = styled.div`
-  background: #ffffff;
+  background: #fff1c8;
   padding: 25px;
   border-radius: 12px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);

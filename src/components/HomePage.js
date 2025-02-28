@@ -51,7 +51,7 @@ useEffect(()=>{
    {/* <TrustedCustomer></TrustedCustomer> */}
    <Testimonial></Testimonial>
    <CustomerLogos/>
-    <Pricing></Pricing>
+    {/* <Pricing></Pricing> */}
     {/* <PricingAvtar></PricingAvtar> */}
     <Contact setShowsuccess={setShowsuccess}></Contact>
     <ProductDemoModal isOpen={modalIsOpen} onRequestClose={closeModal} setShowsuccess={setShowsuccess} />

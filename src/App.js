@@ -135,7 +135,7 @@ const loginAndStore=async()=>{
           <Route path="/privacy-policy.html" element={<PrivacyPolicy/>} />
           <Route path="/disclaimer.html" element={<Disclaimer/>} />
           <Route path="/careers.html" element={<Career />} />
-          <Route path="/fandq.html" element={<Commonfnadq/>} />
+          <Route path="/faq.html" element={<Commonfnadq/>} />
         </Routes>
       </Router>
       {/* {openslide&&<Askme setOpenslide={setOpenslide}/>} */}

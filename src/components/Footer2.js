@@ -423,7 +423,7 @@ export default function Footer2() {
             <li>
               <a href="/Blog.html">Blog</a>
             </li>
-            <li>
+            {/* <li>
                   <DropdownContainer>
                     <SupportLink href="https://www.atomwalk.com/login/" target="_blank">
                       Support
@@ -432,12 +432,12 @@ export default function Footer2() {
                     To raise a support ticket, please log in to your Atomwalk account. This ensures that we can track your issue.
                     </DropdownBox>
                   </DropdownContainer>
-                </li>
+                </li> */}
             <li>
               {/* <a    onClick={()=>{setopenpop(!openpop)}}>Tutorials</a> */}
             </li>
             <li>
-              <a  href="/fandq.html">FAQs</a>
+              <a  href="/faq.html">FAQs</a>
             </li>
             <li>
               <a href="/Careers.html">Career</a>

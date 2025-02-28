@@ -112,6 +112,10 @@ const Image = styled(motion.img)`
 const CareersHeader = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
 
+  const handleEmailClick = () => {
+    window.location.href = "mailto:info@atomwalk.com";
+  };
+
   return (
     <Container ref={ref} animate={inView ? { opacity: 1 } : { opacity: 0 }} transition={{ duration: 1 }}>
       <Title initial={{ y: -50, opacity: 0 }} animate={inView ? { y: 0, opacity: 1 } : {}} transition={{ duration: 0.8, ease: "easeOut" }}>
@@ -120,7 +124,9 @@ const CareersHeader = () => {
       <Subtitle initial={{ y: 50, opacity: 0 }} animate={inView ? { y: 0, opacity: 1 } : {}} transition={{ duration: 1, ease: "easeOut" }}>
         At Atomwalk Technologies, we believe in fostering innovation and professional growth. Join our team to be part of a dynamic work environment where creativity meets cutting-edge technology.
       </Subtitle>
-      <Button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} href="mailto:info@atomwalk.com" >Connect with HR Team →</Button>
+      <Button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }} onClick={handleEmailClick}>
+        Connect with HR Team →
+      </Button>
       <Image src={BottomImage} alt="Workplace Illustration" initial={{ scale: 0.8, opacity: 0 }} animate={inView ? { scale: 1, opacity: 1 } : {}} transition={{ duration: 1, ease: "easeOut" }} />
     </Container>
   );

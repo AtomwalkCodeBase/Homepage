@@ -51,10 +51,10 @@ const ContactInfo = styled.div`
   align-items: center;
   margin: 20px 0;
 
-
   @media (min-width: 768px) {
     flex-direction: row;
     justify-content: center;
+    align-items: center; /* Align with text */
   }
 
   div {
@@ -64,18 +64,19 @@ const ContactInfo = styled.div`
     border-radius: 5px;
     font-size: 1.1em;
     font-weight: 500;
-    cursor:pointer;
-    display:flex ;
+    cursor: pointer;
+    display: flex;
   }
-img{
-  width: 20px;
-  margin-right: 10px;
-}
-a{
-  text-decoration: none;
-  color:white;
-}
 
+  img {
+    width: 20px;
+    margin-right: 10px;
+  }
+
+  a {
+    text-decoration: none;
+    color: white;
+  }
 `;
 
 const FooterLinksContainer = styled.div`
@@ -150,7 +151,8 @@ const NewsletterContainer = styled.div`
   @media (min-width: 768px) {
     flex-direction: row;
     justify-content: space-between;
-    /* padding: 40px; */
+    align-items: center; /* Align with ContactInfo */
+    width: 100%;
   }
 `;
 
@@ -176,14 +178,15 @@ const LogoContainer = styled.div`
 const TextContainer = styled.div`
   font-size: 1.2em;
   text-align: center;
-  margin-bottom: 20px;
+  white-space: nowrap; /* Prevents text from wrapping */
+  margin-bottom: 10px;
 
   @media (min-width: 768px) {
     text-align: left;
     margin-bottom: 0;
-    max-width: 209px;
   }
 `;
+
 
 // Form Container
 const FormContainer = styled.form`
@@ -250,9 +253,61 @@ const DisclaimerText = styled.p`
   }
 `;
 
+const DropdownContainer = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+const DropdownBox = styled.div`
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: black;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  min-width: 220px;
+  max-width: 250px;
+  text-align: center;
+  z-index: 10;
+  white-space: normal;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+
+  ${DropdownContainer}:hover & {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  /* Prevent going outside the screen */
+  @media (max-width: 768px) {
+    left: auto;
+    right: 0;
+    transform: none;
+  }
+`;
+
+const SupportLink = styled.a`
+  cursor: pointer;
+  color: #a7a9ac;
+  text-decoration: none;
+  display: inline-block;
+  position: relative;
+
+  &:hover {
+    color: #55e6a5;
+  }
+`;
+
+
+
 export default function Footer2() {
  const[opennavbar,setOpennavbar]=useState(true);
   const[openpop,setopenpop]=useState(false);
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
   useEffect(() => {
     const checkPath = () => {
       const currentPath = window.location.pathname;
@@ -272,6 +327,18 @@ export default function Footer2() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".dropdown-container")) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   return (
     <>
     {opennavbar?<div>
@@ -286,10 +353,10 @@ export default function Footer2() {
       Connect with  Atomwalk Technologies 
       </TextContainer>
       
-      <FormContainer>
+      {/* <FormContainer>
         <InputField type="email" placeholder="Email*" required />
         <SubmitButton type="submit">Submit</SubmitButton>
-      </FormContainer>
+      </FormContainer> */}
 
     </NewsletterContainer>
     <ContactInfo>
@@ -356,10 +423,17 @@ export default function Footer2() {
               <a href="/Blog.html">Blog</a>
             </li>
             <li>
-              <a    onClick={()=>{setopenpop(!openpop)}}>Support</a>
-            </li>
+                  <DropdownContainer>
+                    <SupportLink href="https://www.atomwalk.com/login/" target="_blank">
+                      Support
+                    </SupportLink>
+                    <DropdownBox>
+                    To raise a support ticket, please log in to your Atomwalk account. This ensures that we can track your issue.
+                    </DropdownBox>
+                  </DropdownContainer>
+                </li>
             <li>
-              <a    onClick={()=>{setopenpop(!openpop)}}>Tutorials</a>
+              {/* <a    onClick={()=>{setopenpop(!openpop)}}>Tutorials</a> */}
             </li>
             <li>
               <a    onClick={()=>{setopenpop(!openpop)}}>FAQs</a>

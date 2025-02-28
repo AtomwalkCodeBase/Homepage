@@ -44,17 +44,32 @@ useEffect(()=>{
   }, []);
 
   const navigatet = () => {
-    if (showLogin) {
+    const queryParams = new URLSearchParams(location.search);
+    const loggedInValue = queryParams.get("called_url");
+    const crmurl=queryParams.get("base_url");
+    const data='https://crm.atomwalk.com/atomwalk';
+    if(crmurl){
+      if(crmurl==data){
+        window.location.href = 'https://crm.atomwalk.com/login/';
+      }
+      else{
+        window.location.href = 'https://atomwalk.com/login/';
+      }
+    }
+   else if (showLogin) {
       window.location.href = "https://www.atomwalk.com/login/";
-    } else {
-      navigate(-1);
+    } else if(loggedInValue){ 
+      window.location.href = loggedInValue;
+    }
+    else {
+      window.location.href = "https://www.atomwalk.com/login/";
     }
   };
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const loggedInValue = queryParams.get("is_logged_in");
-    if (loggedInValue === 'WUVT') {
+   if (loggedInValue === 'WUVT') {
       setShowLogin(false);
     } else {
       setShowLogin(true);
@@ -65,7 +80,7 @@ useEffect(()=>{
     <div>
      {opennavbar&&<Navbar expand="md" className={scrolled ? "scrolled" : ""}>
       <Container>
-        <Navbar.Brand href="/">
+        <Navbar.Brand onClick={navigatet}>
           <Atomicon src={logo} alt="Logo" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav">

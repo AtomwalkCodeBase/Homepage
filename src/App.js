@@ -41,6 +41,7 @@ import TermsAndConditions from "./components/TermConditions";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import Disclaimer from "./components/Disclaimer";
 import Career from "./components/Career";
+import Commonfnadq from "./components/Commonfnadq";
 
 function App() {
   const[openslide,setOpenslide]=useState(false);
@@ -134,6 +135,7 @@ const loginAndStore=async()=>{
           <Route path="/privacy-policy.html" element={<PrivacyPolicy/>} />
           <Route path="/disclaimer.html" element={<Disclaimer/>} />
           <Route path="/careers.html" element={<Career />} />
+          <Route path="/fandq.html" element={<Commonfnadq/>} />
         </Routes>
       </Router>
       {/* {openslide&&<Askme setOpenslide={setOpenslide}/>} */}

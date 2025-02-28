@@ -152,6 +152,7 @@ const NewsletterContainer = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center; /* Align with ContactInfo */
+    justify-content: center;
     width: 100%;
   }
 `;
@@ -436,7 +437,7 @@ export default function Footer2() {
               {/* <a    onClick={()=>{setopenpop(!openpop)}}>Tutorials</a> */}
             </li>
             <li>
-              <a    onClick={()=>{setopenpop(!openpop)}}>FAQs</a>
+              <a  href="/fandq.html">FAQs</a>
             </li>
             <li>
               <a href="/Careers.html">Career</a>

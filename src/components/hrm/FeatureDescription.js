@@ -18,6 +18,7 @@ import img13 from '../../assets/img/appraisal_setup.svg';
 import img21 from '../../assets/img/onboarding.svg';
 import img22 from '../../assets/img/employeeData.svg';
 import img23 from '../../assets/img/exit_process.svg';
+import img24 from '../../assets/img/assetman.svg';
 import img31 from '../../assets/img/payroll-seup.svg';
 import img32 from '../../assets/img/generate-salary.svg';
 import img33 from '../../assets/img/post-salary.svg';
@@ -378,13 +379,22 @@ const FeatureDescription = ({ data }) => {
           imgPosition: "right"
       },
       {
+        title: "Comprehensive Asset Management with Atomwalk HRM",
+        subtitle: "Efficient Asset Tracking & Transparent Employee Exit Process.",
+        description: "Atomwalk HRM supports comprehensive asset management, allowing companies to efficiently manage their assets category-wise. The system also facilitates seamless asset allocation to employees, ensuring transparency. During the employee exit approval process, the system automatically tracks allocated assets, ensuring all assets are returned before approval, enhancing operational clarity and control.",
+        benefits: ["Category & type wise asset management", "Employee-wise asset allocation", "Automatic asset tracking during exit process & Ensures asset return before exit approval", "Enhances transparency and accountability"],
+        imageSrc: img24,
+        imageAlt: "Asset Management",
+        imgPosition: "left"
+    },
+      {
           title: "Streamlined Exit Process with Customized Setup",
           subtitle: "Ensuring Smooth Exit with Assets and KT Transfer",
           description: "With customized exit process setup, you can track and complete all the steps needed to be done by the employee before he/she exits the system. This can be knowledge transfer, handover of assets, exit interview, to name a few. Employee can initiate the separation process, which can be managed by approval/review flow.",
-          benefits: ["Customized exit process setup", "Smooth Transitions and completion of activity by departments.", "Facility to capture document evidence at each step."],
+          benefits: ["Customized exit process setup", "Smooth Transitions and completion of activity by departments.", "Facility to capture document evidence at each step.", "If the asset is not returned to the company, the exit approval cannot be completed."],
           imageSrc: img23,
           imageAlt: "Exit Process",
-          imgPosition: "left"
+          imgPosition: "right"
       },
       
   ] : isAppraisal?
@@ -465,34 +475,43 @@ const FeatureDescription = ({ data }) => {
     },
   ]:[
     {
-      title: "Complete Employee Lifecycle Management",
-      subtitle: "Centralized Employee Data Management - with Multi Location.",
-      description: "This module enables streamlined employee data management, allowing HR and Employee managers to sort, search, and filter employee records by various criteria like Department and Grade for easy analysis and reports. Both permanent and contract employees can be managed with different salary structures. All lifecycle stages like onboarding process, initiating separation processes, completion of probation period, etc., can be managed smoothly for each employee data by the authorized manager. Optional fields for documents and bank details ensure comprehensive record-keeping while simplifying management.",
-      benefits: ["Department and Grade structure - for data segregation and easy management.", "Automatic ID Generation for Employee, and Contract Employee.", "Centralized Information - Data Accuracy and Integrity", "Compliance and Record-Keeping - integrated with document management system.", "Manage Employee Billing Rates", "Contract Employee Management", "Audit Tracing for employee data. Supports bulk record uploads from existing system."],
-      imageSrc: img12,
-      imageAlt: "Payroll & Compliance",
-      imgPosition: "left"
-  },
-  {
       title: "Job Offer Records - Onboarding Process",
       subtitle: "Smooth Onboarding and Integration of New Employees into the Organization",
       description: "Enables you to keep the Job offer records with unique reference ID for easy traceability and managing the offer letter and onboarding process. Custom templates for offer and joining letters allow HR to handle onboarding smoothly and efficiently. Provides data for analysis for the recruitment process.",
       benefits: ["Thorough Appointee Management", "Link Salary structure to include CTC details in offer letter", "Dynamic Offer, Appointment Letters", "One-click employee data creation from offer details"],
-      imageSrc: img13,
-      imageAlt: "Salary Process",
-      imgPosition: "right"
-  },
-  {
-      title: "Streamlined Exit Process with Customized Setup",
-      subtitle: "Ensuring Smooth Exit with Assets and KT Transfer",
-      description: "With customized exit process setup, you can track and complete all the steps needed to be done by the employee before he/she exits the system. This can be knowledge transfer, handover of assets, exit interview, to name a few. Employee can initiate the separation process, which can be managed by approval/review flow.",
-      benefits: ["Customized exit process setup", "Smooth Transitions and completion of activity by departments.", "Facility to capture document evidence at each step."],
-      imageSrc: img13,
-      imageAlt: "Payslip Generation",
+      imageSrc: img21,
+      imageAlt: "Onboarding",
       imgPosition: "left"
   },
-        
-      ];
+  {
+          title: "Complete Employee Lifecycle Management",
+          subtitle: "Centralized Employee Data Management - with Multi Location.",
+          description: "This module enables streamlined employee data management, allowing HR and Employee managers to sort, search, and filter employee records by various criteria like Department and Grade for easy analysis and reports. Both permanent and contract employees can be managed with different salary structures. All lifecycle stages like onboarding process, initiating separation processes, completion of probation period, etc., can be managed smoothly for each employee data by the authorized manager. Optional fields for documents and bank details ensure comprehensive record-keeping while simplifying management.",
+          benefits: ["Department and Grade structure - for data segregation and easy management.", "Automatic ID Generation for Employee, and Contract Employee.", "Centralized Information - Data Accuracy and Integrity", "Compliance and Record-Keeping - integrated with document management system.", "Manage Employee Billing Rates", "Contract Employee Management", "Audit Tracing for employee data. Supports bulk record uploads from existing system."],
+          imageSrc: img22,
+          imageAlt: "Employee data",
+          imgPosition: "right"
+      },
+      {
+        title: "Comprehensive Asset Management with Atomwalk HRM",
+        subtitle: "Efficient Asset Tracking & Transparent Employee Exit Process.",
+        description: "Atomwalk HRM supports comprehensive asset management, allowing companies to efficiently manage their assets category-wise. The system also facilitates seamless asset allocation to employees, ensuring transparency. During the employee exit approval process, the system automatically tracks allocated assets, ensuring all assets are returned before approval, enhancing operational clarity and control.",
+        benefits: ["Category & type wise asset management", "Employee-wise asset allocation", "Automatic asset tracking during exit process & Ensures asset return before exit approval", "Enhances transparency and accountability"],
+        imageSrc: img24,
+        imageAlt: "Asset Management",
+        imgPosition: "left"
+    },
+      {
+          title: "Streamlined Exit Process with Customized Setup",
+          subtitle: "Ensuring Smooth Exit with Assets and KT Transfer",
+          description: "With customized exit process setup, you can track and complete all the steps needed to be done by the employee before he/she exits the system. This can be knowledge transfer, handover of assets, exit interview, to name a few. Employee can initiate the separation process, which can be managed by approval/review flow.",
+          benefits: ["Customized exit process setup", "Smooth Transitions and completion of activity by departments.", "Facility to capture document evidence at each step.", "If the asset is not returned to the company, the exit approval cannot be completed."],
+          imageSrc: img23,
+          imageAlt: "Exit Process",
+          imgPosition: "right"
+      },
+      
+  ];
       const location = useLocation(); // Get the current URL
 
       useEffect(() => {

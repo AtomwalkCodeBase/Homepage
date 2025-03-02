@@ -208,7 +208,7 @@ const LeadershipAdvisors = () => {
               <FlipCardFront>
                 <PersonImage src={Sk} alt="SK Patnaik" />
                 <PersonName>SK Patnaik</PersonName>
-                <PersonRole>Client Relationship & Sales Advisory</PersonRole>
+                <PersonRole>Business, Product and Sales Strategy</PersonRole>
                 <PersonDescription>SK has led Business Management (Client relationship, sales and P&L management, joint GTM) roles in the IT Services industry and lived in the US, UK, South-East Asia, India. He has successfully set-up new business divisions, new global market entries, and new partnerships.  </PersonDescription>
               </FlipCardFront>
               <FlipCardBack>

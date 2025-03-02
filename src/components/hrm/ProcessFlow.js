@@ -150,6 +150,7 @@ export const ProcessFlow = ({ data,bgcolors}) => {
         
         { step: 'On-Boarding'},
         { step: 'Employee Data'},
+        { step: 'Asset Management'},
         { step: 'Exit Process'},
     ],
     Lead: [

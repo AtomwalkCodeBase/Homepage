@@ -199,8 +199,8 @@ const ProductCard = () => {
     <ImageContainer>
       <img src={Sales} alt="Performance management" />
     </ImageContainer>
-    <DecorativeCircle top="20%" left="5%" />
-    <DecorativeCircle bottom="10%" right="70%" />
+    {/* <DecorativeCircle top="20%" left="5%" />
+    <DecorativeCircle bottom="10%" right="70%" /> */}
   </ContentBox>
 
   <ContentBox bgColor="#e0f7fa" onClick={()=>salespage("/inventory.html")}>
@@ -271,8 +271,8 @@ const ProductCard = () => {
   demopage();
 }}>Request a Demo</Button>
     </TextContainer>
-    <DecorativeCircle top="10%" left="80%" />
-    <DecorativeCircle bottom="5%" right="10%" />
+    {/* <DecorativeCircle top="10%" left="80%" />
+    <DecorativeCircle bottom="5%" right="10%" /> */}
   </ContentBox>
 
   <ContentBox bgColor="#ffeadf">
@@ -295,8 +295,8 @@ const ProductCard = () => {
     <ImageContainer>
       <img src={Finacial} alt="Performance management" />
     </ImageContainer>
-    <DecorativeCircle top="20%" left="5%" />
-    <DecorativeCircle bottom="10%" right="70%" />
+    {/* <DecorativeCircle top="20%" left="5%" />
+    <DecorativeCircle bottom="10%" right="70%" /> */}
   </ContentBox>
 
   <ContentBox bgColor="#dfdfdf">
@@ -403,8 +403,8 @@ const ProductCard = () => {
   demopage();
 }}>Request a Demo</Button>
     </TextContainer>
-    <DecorativeCircle top="10%" left="80%" />
-    <DecorativeCircle bottom="5%" right="10%" />
+    {/* <DecorativeCircle top="10%" left="80%" />
+    <DecorativeCircle bottom="5%" right="10%" /> */}
   </ContentBox>
 </ContentContainer>
 </SectionContainer>
@@ -454,8 +454,8 @@ const ProductCard = () => {
           <ImageContainer>
             <img src={Lab} alt="Performance management" />
           </ImageContainer>
-          <DecorativeCircle top="20%" left="5%" />
-          <DecorativeCircle bottom="10%" right="70%" />
+          {/* <DecorativeCircle top="20%" left="5%" />
+          <DecorativeCircle bottom="10%" right="70%" /> */}
         </ContentBox>
         </ContentContainer>
     </SectionContainer>

@@ -139,10 +139,21 @@ export const Skills = () => {
         </IndustryContainer>
       </Section>
       <Section>
+        <IndustryContainer onClick={productnav} style={{backgroundColor:"#DFE7FF"}}>
+          <Image src={Consultancy} alt="Consultancy Business" />
+          <Content>
+            <IndustryTitle>Consultancy & NGOs</IndustryTitle>
+            <Description>
+            Atomwalk Solutions offers effective project management syatem that ensures timely completion of tasks, optimizing resources and teamwork. Operational efficiency focuses on streamlining processes for maximum productivity. Integrated systems for CRM, accounting, financial management, and supplier/purchase order management enhance decision-making, track finances, and ensure smooth supplier relations.
+            </Description>
+          </Content>
+        </IndustryContainer>
+      </Section>
+      <Section>
         <IndustryContainer onClick={productnav} style={{backgroundColor:"#FFEADF"}}>
           <Image src={Consultancy} alt="Consultancy Business" />
           <Content>
-            <IndustryTitle>Consultancy, Services, Trading & NGOs</IndustryTitle>
+            <IndustryTitle>Services & Trading</IndustryTitle>
             <Description>
             Atomwalk Solutions offers effective project management syatem that ensures timely completion of tasks, optimizing resources and teamwork. Operational efficiency focuses on streamlining processes for maximum productivity. Integrated systems for CRM, accounting, financial management, and supplier/purchase order management enhance decision-making, track finances, and ensure smooth supplier relations.
             </Description>

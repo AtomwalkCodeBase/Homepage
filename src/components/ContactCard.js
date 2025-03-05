@@ -96,8 +96,8 @@ const ContactCard = () => {
           </FeatureItem>
           <FeatureItem style={{backgroundColor:"rgb(255 211 168)"}}>
             <FeatureIcon src={Scel} alt="Scalability" />
-            <FeatureTitle>Our Main Office</FeatureTitle>
-            <FeatureText>Visit our main office</FeatureText>
+            <FeatureTitle>Our Corporate Office</FeatureTitle>
+            <FeatureText>Visit our corporate office</FeatureText>
             <FeatureText> Gopalan Millennium Towers, ITPL Main Road, Brookfield, Whitefield, Bengaluru, Karnataka 560037</FeatureText>
           </FeatureItem>
         </Features>

@@ -91,7 +91,7 @@ const CustomerLogos = () => {
   return (
     <Section>
       <Title>Brands we are associated with</Title>
-      <Subtitle>Our Trusted Brand Partners</Subtitle>
+      {/* <Subtitle>Our Trusted Brand Partners</Subtitle> */}
       <LogoScrollContainer>
         <LogoTrack>
           {logos.concat(logos).map((logo, index) => (

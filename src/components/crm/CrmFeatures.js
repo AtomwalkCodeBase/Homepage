@@ -196,7 +196,7 @@ const CrmFeatures = ({data}) => {
                       <span>{benefit}</span>
                     </li>
                   ))}
-                </ul>
+                </ul>  
               </BenefitsContainer>
             </TextSection>
             <ImageSection>
@@ -244,7 +244,7 @@ const CrmFeatures = ({data}) => {
           title: 'Streamline Lead Conversions',
           subtitle: 'Quick and Transparent Lead Conversion Process',
           description: 
-    'With Atomwalk CRM, users can mark leads as Lost to maintain accurate records for analysis or move successful conversions into the appropriate sales or customer management pipeline. Additionally, purchase orders can be updated directly within the system, streamlining the transition from lead to customer and ensuring a smooth handoff.',
+          'With Atomwalk CRM, users can mark leads as Lost to maintain accurate records for analysis or move successful conversions into the appropriate sales or customer management pipeline. Additionally, purchase orders can be updated directly within the system, streamlining the transition from lead to customer and ensuring a smooth handoff.',
           benefits: ['Accurate Record-Keeping', 'Streamlined Conversions', 'Integrated Purchase Order Management'],
           imageSrc: img3,  // Replace with your relevant image variable
           imageAlt: 'Lead Conversion',

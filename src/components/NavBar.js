@@ -88,6 +88,7 @@ useEffect(()=>{
         </Navbar.Toggle>
         <Navbar.Collapse id="basic-navbar-nav" className="mobile">
           <Nav className="ms-auto">
+          <Nav.Link href="/" className={activeLink === 'Home' ? 'active navbar-link' : 'navbar-link'} onClick={() => setActiveLink('Home')}>Home</Nav.Link>
             <ProductMenuWrapper
               onMouseEnter={() => setShowProductMenu(true)}
               onMouseLeave={() => setShowProductMenu(false)}

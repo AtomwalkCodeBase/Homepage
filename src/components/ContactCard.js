@@ -98,7 +98,7 @@ const ContactCard = () => {
             <FeatureIcon src={Scel} alt="Scalability" />
             <FeatureTitle>Our Corporate Office</FeatureTitle>
             <FeatureText>Visit our corporate office</FeatureText>
-            <FeatureText> Gopalan Millennium Towers, ITPL Main Road, Brookfield, Whitefield, Bengaluru, Karnataka 560037</FeatureText>
+            <FeatureText>Atomwalk Technologies, Gopalan Millennium Towers, ITPL Main Road, Brookfield, Whitefield, Bengaluru, Karnataka 560037</FeatureText>
           </FeatureItem>
         </Features>
       </ContentContainer>

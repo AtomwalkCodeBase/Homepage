@@ -166,7 +166,7 @@ const ContactUs = () => {
         </Para>
         <Address>
           <p><strong>India</strong></p>
-          <p><strong>Address: </strong>Gopalan Millennium Towers, ITPL Main Road, Brookfield, Whitefield, Bengaluru, Karnataka 560037</p>
+          <p><strong>Address: </strong>Atomwalk Technologies, Gopalan Millennium Towers, ITPL Main Road, Brookfield, Whitefield, Bengaluru, Karnataka 560037</p>
           <p><strong>Email:</strong> info@atomwalk.com</p>
           <p><strong>Phone:</strong> +91-7259555003</p>
         </Address>

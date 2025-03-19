@@ -165,7 +165,7 @@ const ContactUs = () => {
           Feel free to connect with us for any of your needs regarding our services. Our support team is ready to solve any of your issues. Just push a text to us and we will get back to you immediately.
         </Para>
         <Address>
-          <p><strong>India</strong></p>
+          {/* <p><strong>India</strong></p> */}
           <p><strong>Address: </strong>Atomwalk Technologies, Gopalan Millennium Towers, ITPL Main Road, Brookfield, Whitefield, Bengaluru, Karnataka 560037</p>
           <p><strong>Email:</strong> info@atomwalk.com</p>
           <p><strong>Phone:</strong> +91-7259555003</p>

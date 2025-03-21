@@ -47,7 +47,7 @@ function App() {
   const[openslide,setOpenslide]=useState(false);
   const url = 'https://www.atomwalk.com/rest-auth/login/';
   const data = {
-  username: 'ASUTOSH@PMA_00001', // Replace with actual username
+  username: 'ASHUTOSH@PMA_00001', // Replace with actual username
   password: 'ashutosh@11'  // Replace with actual password
   };
   useEffect(()=>{

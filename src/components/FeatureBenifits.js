@@ -20,6 +20,11 @@ import Icon9 from '../assets/img/customize.png';
 import Icon10 from '../assets/img/encrypted.png';
 import Icon11 from '../assets/img/quality.png';
 import Icon12 from '../assets/img/scalability1.png';
+import Icon13 from '../assets/img/waste-tracking.png';
+import Icon14 from '../assets/img/bin.png';
+import Icon15 from '../assets/img/smart-trash.png';
+import Icon16 from '../assets/img/dashboard.png';
+import Icon17 from '../assets/img/safety.png';
 
 
 
@@ -148,6 +153,14 @@ const labManagement = [
   { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ffe8cc', icon: Icon3 },
   { title: 'Stay Audit-Ready', text: 'Automated Logs, Effortless Records ', bgColor: '#d9f5e3', icon: Icon5 },
 ];
+const wasteManagement =[
+  { title: "Waste Tracking", text: "Monitor collection, segregation, and disposal in real-time.", bgColor: "#d7faff", "icon": Icon13 },
+  { title: "Optimized Collection Routes", text: "AI-driven route planning for fuel efficiency and reduced costs.", bgColor: "#d9f5e3", icon: Icon14 },
+  { title: "Smart Bin Alerts", text: "IoT-enabled bins notify when full, ensuring timely collection.", bgColor: "#fff1d0", icon: Icon15 },
+  { title: "Seamless Compliance Reporting", text: "Automated documentation for regulatory authorities.", bgColor: "#f2e3ff", icon: Icon5 },
+  { title: "Real-Time Dashboards", text: "Gain insights into waste management performance instantly.", bgColor: "#ffe8cc", icon: Icon16 },
+  { title: "Worker Safety Monitoring", text: "Track health check-ups and hazardous exposure for workers.", bgColor: "#d9f5e3", icon: Icon17 }
+];
 const sales = [
   { title: '24/7 Access with less man power', text: 'Schedule Equipment Anytime, Seamlessly', bgColor: '#d7faff', icon: Icon1 },
   { title: 'Real-Time Availability!', text: 'Stay Updated, Avoid Surprises', bgColor: '#d9f5e3', icon: Icon3 },
@@ -160,7 +173,7 @@ const sales = [
 
 const FeatureBenifits = ({ data }) => {
   // Determine which set of benefits to display based on the response data
-  const benefits = data === 'LMS' ? labManagement: data === 'Claim' ? claimBenefits :data=='Customer'?leadBenefits:data =='HR' ? hrmBenefits:data =='Equipment' ? labEquipment:data =='Sales and Procurement' ? sales: leaveBenefits;
+  const benefits = data === 'LMS' ? labManagement: data === 'Claim' ? claimBenefits :data=='Customer'?leadBenefits:data =='HR' ? hrmBenefits:data =='Equipment' ? labEquipment:data =='Waste Management' ?wasteManagement:data =='Sales and Procurement' ? sales: leaveBenefits;
 
   return (
     <Section>

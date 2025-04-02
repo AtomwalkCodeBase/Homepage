@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import Mnufacture from './../assets/img/Manufacturing-Business-Development-Tips-1024x576.jpg'
-import Lab from './../assets/img/labmangement.jpg'
-import Chemical from './../assets/img/chemical.png'
-import Consultancy from './../assets/img/consaltant.jpg'
+import Mnufacture from './../assets/img/Manufacturing-Business-Development-Tips-1024x576.jpg';
+import Lab from './../assets/img/labmangement.jpg';
+import Chemical from './../assets/img/chemical.png';
+import Consultancy from './../assets/img/consaltant.jpg';
+import Recycle from '../assets/img/Recycle.jpg';
+import Services from '../assets/img/servicetrd.jpg';
 
 const PageContainer = styled.div`
   padding: 20px;
@@ -110,6 +112,9 @@ export const Skills = () => {
   const productnav=()=>{
     window.location.href="/product.html"
   }
+  const wastemanagement=()=>{
+    window.location.href="/wastemanagement.html"
+  }
   const lmsmaneage=()=>{
     window.location.href="/lms.html"
   }
@@ -128,7 +133,7 @@ export const Skills = () => {
         </IndustryContainer>
       </Section>
       <Section >
-        <IndustryContainer onClick={productnav} style={{backgroundColor:"#EDF5FF"}}>
+        <IndustryContainer onClick={productnav} style={{backgroundColor:"#FEE9F3"}}>
           <Image src={Chemical} alt="Chemical Industry" />
           <Content>
             <IndustryTitle>Process Manufacturing Industry</IndustryTitle>
@@ -144,19 +149,30 @@ export const Skills = () => {
           <Content>
             <IndustryTitle>Consultancy & NGOs</IndustryTitle>
             <Description>
-            Atomwalk Solutions offers effective project management syatem that ensures timely completion of tasks, optimizing resources and teamwork. Operational efficiency focuses on streamlining processes for maximum productivity. Integrated systems for CRM, accounting, financial management, and supplier/purchase order management enhance decision-making, track finances, and ensure smooth supplier relations.
+            Atomwalk Technologies enhances Consultancy & NGO operations by streamlining project management, client interactions, and financial processes. It automates contract handling, invoicing, and donor management while providing real-time dashboards for transparency. NGOs efficiently manage donor and member data, track payments, and run impactful campaigns. It also records donor contributions, manages member payments, and provides a dashboard for easy monitoring and insights.
             </Description>
           </Content>
         </IndustryContainer>
       </Section>
       <Section>
         <IndustryContainer onClick={productnav} style={{backgroundColor:"#FFEADF"}}>
-          <Image src={Consultancy} alt="Consultancy Business" />
+          <Image src={Services} alt="Services & Trading" />
           <Content>
             <IndustryTitle>Services & Trading</IndustryTitle>
             <Description>
-            Atomwalk Solutions offers a comprehensive project management system designed to ensure timely task completion, resource optimization, and improved teamwork. By integrating CRM, accounting, financial management, and supplier/purchase order management, Atomwalk streamlines operations, enhances decision-making, and maintains smooth supplier relations, ensuring businesses achieve maximum productivity and efficiency.
+            Atomwalk Technologies streamlines Services & Trading with its cloud-based ERP, automating sales, procurement, inventory, and financial processes. It enables seamless order management, compliance, real-time tracking, and efficient invoicing. With blockchain security, it ensures transparency, reduces operational costs, and enhances decision-making, making business operations smoother and more profitable.
             </Description>
+          </Content>
+        </IndustryContainer>
+      </Section>
+      <Section>
+        <IndustryContainer onClick={wastemanagement} style={{backgroundColor:"#D9F9FE"}}>
+          <Image src={Recycle} alt="Waste Management System" />
+          <Content>
+            <IndustryTitle>Waste Management System</IndustryTitle>
+            <Description>
+            Atomwalk Technologies' Waste Management System optimizes waste tracking, disposal, and recycling within its cloud-based ERP. It automates waste collection, categorization, compliance reporting, and sustainability tracking. With real-time monitoring and blockchain security, businesses can minimize environmental impact, reduce costs, and enhance regulatory compliance, ensuring efficient and responsible waste management operations.
+              </Description>
           </Content>
         </IndustryContainer>
       </Section>
@@ -171,6 +187,7 @@ export const Skills = () => {
           </Content>
         </IndustryContainer>
       </Section>
+
     </PageContainer>
   )
 }

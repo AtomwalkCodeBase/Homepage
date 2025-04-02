@@ -762,7 +762,7 @@ export default function Commonfnadq({ data }) {
         <FAQHeader>
           <SparkleIcon size={24} style={{ top: 10, left: "30%" }} />
           <SparkleIcon size={18} style={{ top: 40, right: "28%" }} />
-          <Title>Frequently Asked Questions</Title>
+          <Title>Got Questions? We've Got Answers!</Title>
           <Subtitle>
             Find answers to common questions about our products, services, and
             how we can help you.

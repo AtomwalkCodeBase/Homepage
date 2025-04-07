@@ -372,7 +372,7 @@ const Pricing = () => {
               Ultimate
             </h3>
             <Price>₹25,000/Month</Price>
-            <Message>Billed at ₹200,000 per year</Message>
+            <Message>Billed at ₹250,000 per year</Message>
             <FeatureList>
               <FeatureItem valid>25 User Access</FeatureItem>
               <FeatureItem valid>1 Year Validity</FeatureItem>

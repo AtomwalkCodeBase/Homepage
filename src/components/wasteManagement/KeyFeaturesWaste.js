@@ -9,6 +9,10 @@ import solar1 from '../../assets/img/step3_1.png';
 import solar2 from '../../assets/img/step3_2.png';
 import solar3 from '../../assets/img/step3_4.png';
 import solar4 from '../../assets/img/step3_5.png';
+import Hospital1 from '../../assets/img/H_Step3(1).png';
+import Hospital2 from '../../assets/img/H_Step3(2).png';
+import Hospital3 from '../../assets/img/H_Step3(3).png';
+import Hospital4 from '../../assets/img/H_Step3(4).png';
 import UnderConstructionPopup from '../UnderConstructionPopup';
 
 // Animation keyframes
@@ -295,7 +299,7 @@ const KeyFeaturesWaste = (props) => {
   
   const hmsfeatures = [
     {
-      icon: Source,
+      icon: Hospital1,
       title: "Patients",
       description: "Book appointments, check doctor details, manage your schedule, and get reminders—all from a mobile app that’s simple to use.",
       accentColor: "#7d3eff",
@@ -303,7 +307,7 @@ const KeyFeaturesWaste = (props) => {
       iconHover: "#7d3eff"
     },
     {
-      icon: Collection,
+      icon: Hospital2,
       title: "Doctors",
       description: "See your schedule, check patient information, and get updates about appointments, so you can focus on giving great care.",
       accentColor: "#3ea9ff",
@@ -311,7 +315,7 @@ const KeyFeaturesWaste = (props) => {
       iconHover: "#3ea9ff"
     },
     {
-      icon: Process,
+      icon: Hospital3,
       title: "Hospital staff",
       description: "Keep track of all appointments, check doctor availability, and manage patient details using an easy dashboard.",
       accentColor: "#3eff8f",
@@ -319,7 +323,7 @@ const KeyFeaturesWaste = (props) => {
       iconHover: "#3eff8f"
     },
     {
-      icon: Report,
+      icon: Hospital4,
       title: "Tech Teams",
       description: "Provide training and support to ensure everyone can use the app without trouble.",
       accentColor: "#ff7d3e",

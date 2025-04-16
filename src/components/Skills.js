@@ -12,6 +12,7 @@ import Recycle from '../assets/img/Recycle.jpg';
 import Services from '../assets/img/servicetrd.jpg';
 import Fms from '../assets/img/Facility_image.jpg';
 import Sms from '../assets/img/solar-session 1.img.jpeg';
+import Hms from '../assets/img/Health image.jpg';
 
 const PageContainer = styled.div`
   padding: 20px;
@@ -315,7 +316,7 @@ export const Skills = () => {
     {
       title: "Hospital Management System (HMS)",
       description: "The Atomwalk Healthcare Management System makes it easy for hospitals, clinics, and patients to manage medical appointments and services with a simple mobile app for booking, helpful reminders, and clear communication between patients and doctors, our system helps everything run smoothly, improves patient care, and keeps everyone on the same page.",
-      image: Fms,
+      image: Hms,
       path: "/hospitalmanagement.html",
       bgColor: "rgb(217 254 229)",
       accentColor: "#009688",

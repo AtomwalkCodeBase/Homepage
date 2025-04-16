@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Compliance from '../../assets/img/Leadmanagement.png';
 import Source from '../../assets/img/trash.png';
@@ -214,9 +214,8 @@ const FeatureDescription = styled.p`
   }
 `;
 
-const KeyFeaturesWaste = () => {
+const KeyFeaturesWaste = (props) => {
   const [openpop, setopenpop] = useState(false);
-
   const handleNavigation = (data) => {
     window.location.href = `/${data}`;
   };
@@ -255,19 +254,57 @@ const KeyFeaturesWaste = () => {
       iconHover: "#ff7d3e"
     }
   ];
+  const fmsfeatures = [
+    {
+      icon: Source,
+      title: "Facility Managers",
+      description: "Oversee all ongoing operations through a centralized dashboard. Assign tasks, monitor progress, and ensure service delivery without the hassle of manual follow-ups.",
+      accentColor: "#7d3eff",
+      iconBg: "#f0e7ff",
+      iconHover: "#7d3eff"
+    },
+    {
+      icon: Collection,
+      title: "Workers & Technicians",
+      description: "Stay updated with mobile alerts, view task details, upload status proofs, and manage assignments effortlessly.",
+      accentColor: "#3ea9ff",
+      iconBg: "#e7f5ff",
+      iconHover: "#3ea9ff"
+    },
+    {
+      icon: Process,
+      title: "Apartment Communities",
+      description: "Experience faster resolution and consistent maintenance services through structured task execution.",
+      accentColor: "#3eff8f",
+      iconBg: "#e7fff0",
+      iconHover: "#3eff8f"
+    },
+    {
+      icon: Report,
+      title: "Regulatory & Compliance",
+      description: "Ensuring Regulatory Compliance with Digital Records, Automated Reporting, and Environmental Safety Standards.",
+      accentColor: "#ff7d3e",
+      iconBg: "#fff0e7",
+      iconHover: "#ff7d3e"
+    }
+  ];
+  const[data, setdata] = useState(features);
+  useEffect(() => {
+    if(window.location.pathname == '/facilitymanagement.html') {
+      setdata(fmsfeatures);
+    }
+  }, []);
 
   return (
     <SectionContainer>
       <MainTitle>
-      Waste Management Ecosystem Stakeholders
+        {props.title?props.title:"Waste Management Ecosystem Stakeholders"}
       </MainTitle>
       <Subtitle>
-      Our ERP solution connects all key players in the waste management value chain, 
-      enabling seamless collaboration between:
+        {props.description?props.description:"Our Waste Management System connects all essential players in the operations ecosystem—ensuring seamless coordination between administrators, on-ground teams, and clients."}
       </Subtitle>
-      
       <FeaturesContainer>
-        {features.map((feature, index) => (
+        {data.map((feature, index) => (
           <FeatureBox 
             key={index}
             delay={`${0.3 + index * 0.1}s`}

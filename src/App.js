@@ -43,6 +43,7 @@ import Disclaimer from "./components/Disclaimer";
 import Career from "./components/Career";
 import Commonfnadq from "./components/Commonfnadq";
 import WasteManagementHeroPage from "./components/wasteManagement/WasteManagementHeroPage";
+import Fmsheropage from "./components/fms/Fmsheropage";
 
 function App() {
   const[openslide,setOpenslide]=useState(false);
@@ -138,6 +139,7 @@ const loginAndStore=async()=>{
           <Route path="/careers.html" element={<Career />} />
           <Route path="/faq.html" element={<Commonfnadq/>} />
           <Route path="/wastemanagement.html" element={<WasteManagementHeroPage/>} />
+          <Route path="/facilitymanagement.html" element={<Fmsheropage/>} />
         </Routes>
       </Router>
       {/* {openslide&&<Askme setOpenslide={setOpenslide}/>} */}

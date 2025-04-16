@@ -25,6 +25,11 @@ import Icon14 from '../assets/img/bin.png';
 import Icon15 from '../assets/img/smart-trash.png';
 import Icon16 from '../assets/img/dashboard.png';
 import Icon17 from '../assets/img/safety.png';
+import Icon18 from '../assets/img/Step2(1).png';
+import Icon19 from '../assets/img/Step2(2).png';
+import Icon20 from '../assets/img/Step2(3).png';
+import Icon21 from '../assets/img/Step2(4).png';
+import Icon22 from '../assets/img/step2(5).png';
 
 
 
@@ -169,11 +174,19 @@ const sales = [
   { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ffe8cc', icon: Icon7 },
   { title: 'Stay Audit-Ready', text: 'Tracking all the detailed changes', bgColor: '#d9f5e3', icon: Icon5 },
 ];
+const Facility= [
+  { title: 'Dynamic Task Dashboard', text: 'Easily assign, monitor, and reschedule tasks in real time.', bgColor: '#d7faff', icon: Icon18 },
+  { title: 'Automated Repetitive Task Scheduling', text: 'Handle daily, weekly, or monthly recurring tasks without manual intervention.', bgColor: '#d9f5e3', icon: Icon19 },
+  { title: 'Efficiency', text: 'Automate tasks like orders creation or generating invoices', bgColor: '#fff1d0', icon:  Icon2 },
+  { title: 'Real-Time Notifications', text: 'Get updates and alerts on task assignments, changes, or completions.', bgColor: '#f2e3ff', icon: Icon20 },
+  { title: 'Worker App Integration', text: 'Field staff receive mobile notifications, update task progress, and provide photo-based proof of work.', bgColor: '#ffe8cc', icon: Icon21 },
+  { title: 'Location-Based Task Tracking', text: 'GPS tagging ensures accountability for on-site activities.', bgColor: '#d9f5e3', icon: Icon22 },
+];
 
 
 const FeatureBenifits = ({ data }) => {
   // Determine which set of benefits to display based on the response data
-  const benefits = data === 'LMS' ? labManagement: data === 'Claim' ? claimBenefits :data=='Customer'?leadBenefits:data =='HR' ? hrmBenefits:data =='Equipment' ? labEquipment:data =='Waste' ?wasteManagement:data =='Sales and Procurement' ? sales: leaveBenefits;
+  const benefits = data == 'Facility' ? Facility:data === 'LMS' ? labManagement: data === 'Claim' ? claimBenefits :data=='Customer'?leadBenefits:data =='HR' ? hrmBenefits:data =='Equipment' ? labEquipment:data =='Waste' ?wasteManagement:data =='Sales and Procurement' ? sales: leaveBenefits;
 
   return (
     <Section>

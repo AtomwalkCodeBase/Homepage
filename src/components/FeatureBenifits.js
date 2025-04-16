@@ -183,12 +183,12 @@ const Facility= [
   { title: 'Location-Based Task Tracking', text: 'GPS tagging ensures accountability for on-site activities.', bgColor: '#d9f5e3', icon: Icon22 },
 ];
 const Hospital= [
-  { title: 'Dynamic Task Dashboard', text: 'Easily assign, monitor, and reschedule tasks in real time.', bgColor: '#d7faff', icon: Icon18 },
-  { title: 'Automated Repetitive Task Scheduling', text: 'Handle daily, weekly, or monthly recurring tasks without manual intervention.', bgColor: '#d9f5e3', icon: Icon19 },
-  { title: 'Efficiency', text: 'Automate tasks like orders creation or generating invoices', bgColor: '#fff1d0', icon:  Icon2 },
+  { title: 'Appointment Booking Page', text: ' Patients can book appointments using a mobile app and see which time slots are open right away.', bgColor: '#d7faff', icon: Icon18 },
+  { title: 'Reschedule or Cancel Appointments', text: 'Users can update or cancel their bookings directly in the app if plans change.', bgColor: '#d9f5e3', icon: Icon19 },
+  { title: 'Appointment Reminders', text: 'Get automatic notifications before your appointment to help you remember.', bgColor: '#fff1d0', icon:  Icon2 },
   { title: 'Real-Time Notifications', text: 'Get updates and alerts on task assignments, changes, or completions.', bgColor: '#f2e3ff', icon: Icon20 },
-  { title: 'Worker App Integration', text: 'Field staff receive mobile notifications, update task progress, and provide photo-based proof of work.', bgColor: '#ffe8cc', icon: Icon21 },
-  { title: 'Location-Based Task Tracking', text: 'GPS tagging ensures accountability for on-site activities.', bgColor: '#d9f5e3', icon: Icon22 },
+  { title: 'Worker App Integration', text: 'Check out doctor profiles, their specialties, their experience and fees.', bgColor: '#ffe8cc', icon: Icon21 },
+  { title: 'Add to Your Calendar', text: 'Save appointments to your phone’s calendar to get reminders when it’s time.', bgColor: '#d9f5e3', icon: Icon22 },
 ];
 
 const FeatureBenifits = ({ data }) => {

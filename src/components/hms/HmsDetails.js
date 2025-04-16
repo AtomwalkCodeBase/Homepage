@@ -359,84 +359,84 @@ const HmsDetails = () => {
   return (
     <WasteManagementSection>
       <FeaturesContainer>
-        <SectionTitle> Advanced Facility Management Tools for Precision Task Handling</SectionTitle>
+        <SectionTitle>Advanced Hospital Tools for Easy Appointment Management</SectionTitle>
         
       <FeatureGrid>
         <FeatureCard color="#3498db">
           <FeatureHeader color="#3498db">
             <FeatureIcon color="#3498db"><FaTrashAlt /></FeatureIcon>
-            <FeatureTitle>Repeat Task Automation</FeatureTitle>
+            <FeatureTitle>Mobile Booking</FeatureTitle>
           </FeatureHeader>
           <FeatureList>
-            <FeatureItem color="#3498db">Schedule recurring tasks with weekly or monthly logic.</FeatureItem>
-            <FeatureItem color="#3498db">Assign fixed days and shifts without daily admin involvement.</FeatureItem>
-            <FeatureItem color="#3498db">Modify frequency and duration at any time.</FeatureItem>
-            <FeatureItem color="#3498db"> Save time and ensure consistency in operational duties.</FeatureItem>
+            <FeatureItem color="#3498db">Book a doctor’s appointment with just a few taps on the app.</FeatureItem>
+            <FeatureItem color="#3498db">See which times and doctors are free right away.</FeatureItem>
+            <FeatureItem color="#3498db">Choose the doctor and specialty you need easily.</FeatureItem>
+            <FeatureItem color="#3498db">Get a confirmation as soon as you book.</FeatureItem>
           </FeatureList>
         </FeatureCard>
         
         <FeatureCard color="#2ecc71">
           <FeatureHeader color="#2ecc71">
             <FeatureIcon color="#2ecc71"><FaRecycle /></FeatureIcon>
-            <FeatureTitle>Task Progress Tracker</FeatureTitle>
+            <FeatureTitle>Reschedule or Cancel Bookings</FeatureTitle>
           </FeatureHeader>
           <FeatureList>
-            <FeatureItem color="#2ecc71">Live task status: Assigned, In Progress, Completed.</FeatureItem>
-            <FeatureItem color="#2ecc71">Visual checklist for subtasks and daily activities.</FeatureItem>
-            <FeatureItem color="#2ecc71">Attach photos or comments for updates.</FeatureItem>
-            <FeatureItem color="#2ecc71">Admin gets full visibility without follow-ups.</FeatureItem>
+            <FeatureItem color="#2ecc71">Update your appointment date or time right in the app.</FeatureItem>
+            <FeatureItem color="#2ecc71">Cancel a booking if you can’t make it.</FeatureItem>
+            <FeatureItem color="#2ecc71">Get a quick confirmation when you make changes.</FeatureItem>
+            <FeatureItem color="#2ecc71">Save time by doing it yourself without calling the hospital.</FeatureItem>
           </FeatureList>
         </FeatureCard>
         
         <FeatureCard color="#e74c3c">
           <FeatureHeader color="#e74c3c">
             <FeatureIcon color="#e74c3c"><FaTruck /></FeatureIcon>
-            <FeatureTitle>Worker Productivity Dashboard</FeatureTitle>
+            <FeatureTitle>Appointment Reminders</FeatureTitle>
           </FeatureHeader>
           <FeatureList>
-            <FeatureItem color="#e74c3c"> Track completed vs. pending assignments.</FeatureItem>
-            <FeatureItem color="#e74c3c">Evaluate worker efficiency based on performance logs.</FeatureItem>
-            <FeatureItem color="#e74c3c"> Reassign delayed or missed tasks quickly.</FeatureItem>
-            <FeatureItem color="#e74c3c">Maintain records for audits or reviews.</FeatureItem>
+            <FeatureItem color="#e74c3c"> Get a reminder a day or an hour before your appointment.</FeatureItem>
+            <FeatureItem color="#e74c3c">You’ll get notifications by app, text, or email.</FeatureItem>
+            <FeatureItem color="#e74c3c"> Avoid forgetting or missing your visit.</FeatureItem>
+            <FeatureItem color="#e74c3c">Make sure app notification is enabled in your mobile.</FeatureItem>
           </FeatureList>
         </FeatureCard>
         
         <FeatureCard color="#f39c12">
           <FeatureHeader color="#f39c12">
             <FeatureIcon color="#f39c12"><FaIndustry /></FeatureIcon>
-            <FeatureTitle> Multi-Platform Access</FeatureTitle>
+            <FeatureTitle> Doctor and Specialty Guide</FeatureTitle>
           </FeatureHeader>
           <FeatureList>
-            <FeatureItem color="#f39c12"> Access the platform via web and mobile.</FeatureItem>
-            <FeatureItem color="#f39c12">Inventory Management for Recyclables – Tracks raw materials extracted from waste for reuse in production</FeatureItem>
-            <FeatureItem color="#f39c12">Role-based access control for team members.</FeatureItem>
-            <FeatureItem color="#f39c12">Real-time sync between web and app.</FeatureItem>
+            <FeatureItem color="#f39c12"> Read about doctors, specialty, and their  experience.</FeatureItem>
+            <FeatureItem color="#f39c12">Find doctors by their specialty.</FeatureItem>
+            <FeatureItem color="#f39c12">Check ratings to help you decide.</FeatureItem>
+            <FeatureItem color="#f39c12">See the latest schedules to book the right time.</FeatureItem>
           </FeatureList>
         </FeatureCard>
         
         <FeatureCard color="#9b59b6">
           <FeatureHeader color="#9b59b6">
             <FeatureIcon color="#9b59b6"><FaShieldAlt /></FeatureIcon>
-            <FeatureTitle>Alerts & Notifications</FeatureTitle>
+            <FeatureTitle>Your Profile and History</FeatureTitle>
           </FeatureHeader>
           <FeatureList>
-            <FeatureItem color="#9b59b6">Instant alerts on task updates and reschedules.</FeatureItem>
-            <FeatureItem color="#9b59b6">Deadline reminders to reduce delays.</FeatureItem>
-            <FeatureItem color="#9b59b6">Custom alerts for escalations or high-priority items.</FeatureItem>
-            <FeatureItem color="#9b59b6"> Keep both admin and worker updated in real-time.</FeatureItem>
+            <FeatureItem color="#9b59b6">Keep track of your health records and past appointments.</FeatureItem>
+            <FeatureItem color="#9b59b6">Update your contact information safely.</FeatureItem>
+            <FeatureItem color="#9b59b6">See all your past and upcoming visits in one spot.</FeatureItem>
+            <FeatureItem color="#9b59b6"> Book faster using your saved information.</FeatureItem>
           </FeatureList>
         </FeatureCard>
         
         <FeatureCard color="#1abc9c">
           <FeatureHeader color="#1abc9c">
             <FeatureIcon color="#1abc9c"><FaChartLine /></FeatureIcon>
-            <FeatureTitle>Reporting & Analytics</FeatureTitle>
+            <FeatureTitle>Calendar Sync</FeatureTitle>
           </FeatureHeader>
           <FeatureList>
-            <FeatureItem color="#1abc9c">Generate daily, weekly, or custom reports.</FeatureItem>
-            <FeatureItem color="#1abc9c">Track performance metrics and task loads.</FeatureItem>
-            <FeatureItem color="#1abc9c">Export data for compliance or invoicing.</FeatureItem>
-            <FeatureItem color="#1abc9c">Make data-driven decisions for process improvements.</FeatureItem>
+            <FeatureItem color="#1abc9c">Add appointments to your phone’s calendar, like Google or Outlook.</FeatureItem>
+            <FeatureItem color="#1abc9c">Set reminders to stay on top of your schedule.</FeatureItem>
+            <FeatureItem color="#1abc9c">Get updates if your appointment changes.</FeatureItem>
+            <FeatureItem color="#1abc9c">Stay organized and never miss a visit.</FeatureItem>
           </FeatureList>
         </FeatureCard>
       </FeatureGrid>
@@ -444,9 +444,9 @@ const HmsDetails = () => {
       <BenefitsSection>
           <BenefitsContainer>
             <BenefitsContent>
-              <BenefitsTitle>Simplifying Facility Operations through Centralized Task Management</BenefitsTitle>
+              <BenefitsTitle>Making Healthcare Easier with One Simple System</BenefitsTitle>
               <BenefitsDescription>
-              Manual tracking of apartment service operations leads to missed deadlines, inefficiencies, and poor communication. Atomwalk ERP-integrated FMS solves these issues with real-time monitoring, intelligent scheduling, and robust reporting—ensuring that every service is delivered on time with complete transparency.
+              Scheduling appointments by hand can lead to long waits, forgotten visits, and mix-ups. The Atomwalk HMS fixes these problems with an easy app for booking, real-time updates, and helpful reports—making sure every patient gets care on time with everything clear and organized.
  </BenefitsDescription>
               
               {/* <BenefitsGrid>
@@ -484,29 +484,29 @@ const HmsDetails = () => {
   <BenefitItem>
     <BenefitIcon><FaRecycle /></BenefitIcon>
     <BenefitText>
-      <strong>Centralized Task Scheduling </strong><br />
-      Assign and manage all operational tasks from a unified interface with recurring scheduling built in.
+      <strong>One Place for Booking </strong><br />
+      Book appointments anytime, anywhere using a single app that lets you pick the best doctor and time for your needs, with options to adjust if your schedule changes.
     </BenefitText>
   </BenefitItem>
   <BenefitItem>
     <BenefitIcon><FaFileInvoice /></BenefitIcon>
     <BenefitText>
-      <strong>Live Progress Monitoring </strong><br />
-      Track who’s working, what’s pending, and what’s done—right from the dashboard.
+      <strong>Live Appointment Updates</strong><br />
+      See which appointments are booked, changed, or canceled right away from the staff dashboard.
     </BenefitText>
   </BenefitItem>
   <BenefitItem>
     <BenefitIcon><FaBalanceScale /></BenefitIcon>
     <BenefitText>
-      <strong>Performance Logs & History</strong><br />
-      Keep detailed logs for each task, worker, and apartment—ideal for compliance and review.
+      <strong> Patient Records</strong><br />
+      Keep a clear record of every patient’s bookings, visits, and details for easy follow-ups or audits.
     </BenefitText>
   </BenefitItem>
   <BenefitItem>
     <BenefitIcon><FaLeaf /></BenefitIcon>
     <BenefitText>
-      <strong>Resident Satisfaction</strong><br />
-      Reduce response times and build trust through organized, efficient service execution.
+      <strong>Happier Patients</strong><br />
+      Cut down on wait times and keep patients happy with a clear, organized booking system.
     </BenefitText>
   </BenefitItem>
 </BenefitsGrid>
@@ -524,17 +524,16 @@ const HmsDetails = () => {
       
       
       <ConclusionSection>
-        <ConclusionTitle>Reimagining Facility Oversight with Digital Intelligence </ConclusionTitle>
+        <ConclusionTitle>Enhancing Healthcare with Smart Technology </ConclusionTitle>
         <ConclusionText>
-        Atomwalk Facility Management System brings structure, speed, and visibility to apartment-level operations. It bridges the gap between admin teams and <Highlight>on-ground workers</Highlight>, 
-        driving efficient task execution and resident satisfaction.
+        The Atomwalk Healthcare Management System simplifies hospital work, enhances patient-doctor connections, and ensures smooth appointments and care.
         </ConclusionText>
         <ConclusionList>
-          <ConclusionItem><strong>Smart Scheduling:</strong> Configure recurring jobs once and let the system handle the rest.</ConclusionItem>
-          <ConclusionItem><strong>Seamless Worker Coordination:</strong> Workers stay informed with task details, schedules, and alerts via app.</ConclusionItem>
-          <ConclusionItem><strong>Progress Transparency:</strong> Real-time status updates help supervisors act without micromanagement.          </ConclusionItem>
-          <ConclusionItem><strong>Data-Driven Oversight:</strong> Use insights to improve workflows, allocate resources, and reduce service gaps.          </ConclusionItem>
-          <ConclusionItem><strong>Scalable Infrastructure:</strong> Whether managing 10 apartments or 1000, FMS scales effortlessly.</ConclusionItem>
+          <ConclusionItem><strong>Easy Booking:</strong> Patients can book and manage appointments right from their phone.</ConclusionItem>
+          <ConclusionItem><strong>Doctor Coordination:</strong>Doctors will be connected with the staff for confirmation of their availability.</ConclusionItem>
+          <ConclusionItem><strong>Clear Updates:</strong>  Slots get updated for every booking or change as it happens. </ConclusionItem>
+          <ConclusionItem><strong>Smart Planning: </strong> Use data to make schedules better, shorten waits, and improve care. </ConclusionItem>
+          <ConclusionItem><strong>Grows with You: </strong>Works for small clinics or big hospitals without any trouble.</ConclusionItem>
         </ConclusionList>
       </ConclusionSection>
     </FeaturesContainer>

@@ -5,10 +5,6 @@ import Source from '../../assets/img/trash.png';
 import Collection from '../../assets/img/garbage-truck.png';
 import Process from '../../assets/img/waste-management.png';
 import Report from '../../assets/img/sales_report_icon.png';
-import Step3_1 from '../../assets/img/Step 3 (1).png';
-import Step3_2 from '../../assets/img/Step 3 (2).png';
-import Step3_3 from '../../assets/img/Step 3 (3).png';
-import Step3_4 from '../../assets/img/Step 3 (4).png';
 import UnderConstructionPopup from '../UnderConstructionPopup';
 
 // Animation keyframes
@@ -260,7 +256,7 @@ const KeyFeaturesWaste = (props) => {
   ];
   const fmsfeatures = [
     {
-      icon: Step3_1,
+      icon: Source,
       title: "Facility Managers",
       description: "Oversee all ongoing operations through a centralized dashboard. Assign tasks, monitor progress, and ensure service delivery without the hassle of manual follow-ups.",
       accentColor: "#7d3eff",
@@ -268,7 +264,7 @@ const KeyFeaturesWaste = (props) => {
       iconHover: "#7d3eff"
     },
     {
-      icon: Step3_2,
+      icon: Collection,
       title: "Workers & Technicians",
       description: "Stay updated with mobile alerts, view task details, upload status proofs, and manage assignments effortlessly.",
       accentColor: "#3ea9ff",
@@ -276,7 +272,7 @@ const KeyFeaturesWaste = (props) => {
       iconHover: "#3ea9ff"
     },
     {
-      icon: Step3_3,
+      icon: Process,
       title: "Apartment Communities",
       description: "Experience faster resolution and consistent maintenance services through structured task execution.",
       accentColor: "#3eff8f",
@@ -284,9 +280,44 @@ const KeyFeaturesWaste = (props) => {
       iconHover: "#3eff8f"
     },
     {
-      icon: Step3_4,
+      icon: Report,
       title: "Regulatory & Compliance",
       description: "Ensuring Regulatory Compliance with Digital Records, Automated Reporting, and Environmental Safety Standards.",
+      accentColor: "#ff7d3e",
+      iconBg: "#fff0e7",
+      iconHover: "#ff7d3e"
+    }
+  ];
+  
+  const hmsfeatures = [
+    {
+      icon: Source,
+      title: "Patients",
+      description: "Book appointments, check doctor details, manage your schedule, and get reminders—all from a mobile app that’s simple to use.",
+      accentColor: "#7d3eff",
+      iconBg: "#f0e7ff",
+      iconHover: "#7d3eff"
+    },
+    {
+      icon: Collection,
+      title: "Doctors",
+      description: "See your schedule, check patient information, and get updates about appointments, so you can focus on giving great care.",
+      accentColor: "#3ea9ff",
+      iconBg: "#e7f5ff",
+      iconHover: "#3ea9ff"
+    },
+    {
+      icon: Process,
+      title: "Hospital staff",
+      description: "Keep track of all appointments, check doctor availability, and manage patient details using an easy dashboard.",
+      accentColor: "#3eff8f",
+      iconBg: "#e7fff0",
+      iconHover: "#3eff8f"
+    },
+    {
+      icon: Report,
+      title: "Tech Teams",
+      description: "Provide training and support to ensure everyone can use the app without trouble.",
       accentColor: "#ff7d3e",
       iconBg: "#fff0e7",
       iconHover: "#ff7d3e"
@@ -297,6 +328,10 @@ const KeyFeaturesWaste = (props) => {
     if(window.location.pathname == '/facilitymanagement.html') {
       setdata(fmsfeatures);
     }
+    else if(window.location.pathname == '/hospitalmanagement.html'){
+      setdata(hmsfeatures);
+    }
+
   }, []);
 
   return (

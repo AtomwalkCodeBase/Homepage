@@ -45,6 +45,7 @@ import Commonfnadq from "./components/Commonfnadq";
 import WasteManagementHeroPage from "./components/wasteManagement/WasteManagementHeroPage";
 import Fmsheropage from "./components/fms/Fmsheropage";
 import HmsHeroPage from "./components/hms/HmsHeroPage";
+import Smsheropage from "./components/sms/Smsheropage";
 
 function App() {
   const[openslide,setOpenslide]=useState(false);
@@ -142,6 +143,7 @@ const loginAndStore=async()=>{
           <Route path="/wastemanagement.html" element={<WasteManagementHeroPage/>} />
           <Route path="/facilitymanagement.html" element={<Fmsheropage/>} />
           <Route path="/hospitalmanagement.html" element={<HmsHeroPage/>} />
+          <Route path="/solarmanagement.html" element={<Smsheropage/>} />
         </Routes>
       </Router>
       {/* {openslide&&<Askme setOpenslide={setOpenslide}/>} */}

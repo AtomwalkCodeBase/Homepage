@@ -5,6 +5,10 @@ import Source from '../../assets/img/trash.png';
 import Collection from '../../assets/img/garbage-truck.png';
 import Process from '../../assets/img/waste-management.png';
 import Report from '../../assets/img/sales_report_icon.png';
+import solar1 from '../../assets/img/step3_1.png';
+import solar2 from '../../assets/img/step3_2.png';
+import solar3 from '../../assets/img/step3_4.png';
+import solar4 from '../../assets/img/step3_5.png';
 import UnderConstructionPopup from '../UnderConstructionPopup';
 
 // Animation keyframes
@@ -323,6 +327,40 @@ const KeyFeaturesWaste = (props) => {
       iconHover: "#ff7d3e"
     }
   ];
+  const Smsfeatures = [
+    {
+      icon: solar1,
+      title: "Facility Managers",
+      description: "Monitor energy generation and ensure optimal solar system performance with minimal manual intervention.",
+      accentColor: "#7d3eff",
+      iconBg: "#f0e7ff",
+      iconHover: "#7d3eff"
+    },
+    {
+      icon: solar2,
+      title: "Infrastructure Developers",
+      description: "Integrate smart solar solutions into buildings, townships, and industrial parks for sustainable energy management.",
+      accentColor: "#3ea9ff",
+      iconBg: "#e7f5ff",
+      iconHover: "#3ea9ff"
+    },
+    {
+      icon: solar4,
+      title: "Business Owners",
+      description: "Gain visibility into energy ROI, reduce operational costs, and align with green energy goals.",
+      accentColor: "#3eff8f",
+      iconBg: "#e7fff0",
+      iconHover: "#3eff8f"
+    },
+    {
+      icon: solar3,
+      title: "Maintenance Teams",
+      description: "Receive real-time alerts and insights to streamline inspection, cleaning, and repair schedules.",
+      accentColor: "#ff7d3e",
+      iconBg: "#fff0e7",
+      iconHover: "#ff7d3e"
+    },
+  ];
   const[data, setdata] = useState(features);
   useEffect(() => {
     if(window.location.pathname == '/facilitymanagement.html') {
@@ -330,6 +368,9 @@ const KeyFeaturesWaste = (props) => {
     }
     else if(window.location.pathname == '/hospitalmanagement.html'){
       setdata(hmsfeatures);
+    }
+    else if(window.location.pathname == '/solarmanagement.html'){
+      setdata(Smsfeatures);
     }
 
   }, []);

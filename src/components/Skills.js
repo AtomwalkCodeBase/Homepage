@@ -11,6 +11,7 @@ import Consultancy from './../assets/img/consaltant.jpg';
 import Recycle from '../assets/img/Recycle.jpg';
 import Services from '../assets/img/servicetrd.jpg';
 import Fms from '../assets/img/Facility_image.jpg';
+import Sms from '../assets/img/solar-session 1.img.jpeg';
 
 const PageContainer = styled.div`
   padding: 20px;
@@ -337,6 +338,15 @@ export const Skills = () => {
       bgColor: "#E1FFF6",
       accentColor: "#009688",
       accentColor2: "#4db6ac"
+    },
+    {
+      title: "Solar Management System",
+      description: "Atomwalk Solar Management System revolutionizes how solar energy is harnessed monitored, and maintained. Our AIOT-based solution empowers users with real-time insights,ensuring efficient energy generation,usage and maintenance of solar installations.",
+      image: Sms,
+      path: "/solarmanagement.html",
+      bgColor: "#FFF9BF",
+      accentColor: "#F9CB43",
+      accentColor2: "#FBA518"
     }
   ];
 

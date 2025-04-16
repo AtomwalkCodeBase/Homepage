@@ -30,6 +30,12 @@ import Icon19 from '../assets/img/Step2(2).png';
 import Icon20 from '../assets/img/Step2(3).png';
 import Icon21 from '../assets/img/Step2(4).png';
 import Icon22 from '../assets/img/step2(5).png';
+import Icon23 from '../assets/img/step2_1_solar.png';
+import Icon24 from '../assets/img/step2_2_solar.png';
+import Icon25 from '../assets/img/step2_3_solar.png';
+import Icon26 from '../assets/img/step2_4_solarpng.png';
+import Icon27 from '../assets/img/step2_5_solar.png';
+import Icon28 from '../assets/img/step2_6_solarpng.png';
 
 
 
@@ -183,21 +189,29 @@ const Facility= [
   { title: 'Location-Based Task Tracking', text: 'GPS tagging ensures accountability for on-site activities.', bgColor: '#d9f5e3', icon: Icon22 },
 ];
 const Hospital= [
-  { title: 'Appointment Booking Page', text: ' Patients can book appointments using a mobile app and see which time slots are open right away.', bgColor: '#d7faff', icon: Icon18 },
-  { title: 'Reschedule or Cancel Appointments', text: 'Users can update or cancel their bookings directly in the app if plans change.', bgColor: '#d9f5e3', icon: Icon19 },
-  { title: 'Appointment Reminders', text: 'Get automatic notifications before your appointment to help you remember.', bgColor: '#fff1d0', icon:  Icon2 },
+  { title: 'Dynamic Task Dashboard', text: 'Easily assign, monitor, and reschedule tasks in real time.', bgColor: '#d7faff', icon: Icon18 },
+  { title: 'Automated Repetitive Task Scheduling', text: 'Handle daily, weekly, or monthly recurring tasks without manual intervention.', bgColor: '#d9f5e3', icon: Icon19 },
+  { title: 'Efficiency', text: 'Automate tasks like orders creation or generating invoices', bgColor: '#fff1d0', icon:  Icon2 },
   { title: 'Real-Time Notifications', text: 'Get updates and alerts on task assignments, changes, or completions.', bgColor: '#f2e3ff', icon: Icon20 },
-  { title: 'Worker App Integration', text: 'Check out doctor profiles, their specialties, their experience and fees.', bgColor: '#ffe8cc', icon: Icon21 },
-  { title: 'Add to Your Calendar', text: 'Save appointments to your phone’s calendar to get reminders when it’s time.', bgColor: '#d9f5e3', icon: Icon22 },
+  { title: 'Worker App Integration', text: 'Field staff receive mobile notifications, update task progress, and provide photo-based proof of work.', bgColor: '#ffe8cc', icon: Icon21 },
+  { title: 'Location-Based Task Tracking', text: 'GPS tagging ensures accountability for on-site activities.', bgColor: '#d9f5e3', icon: Icon22 },
+];
+const Solar= [
+  { title: 'Real-Time Monitoring', text: 'Live tracking of voltage, current,temperature, and solar irradiance.', bgColor: '#d7faff', icon: Icon23 },
+  { title: 'Fault Detection & Alerts', text: 'Instant alerts for issues like shading, dirt, or overheating.', bgColor: '#d9f5e3', icon: Icon24 },
+  { title: 'Energy Analytics Dashboard', text: 'View and analyze solar generation and usage trends.', bgColor: '#fff1d0', icon:  Icon25 },
+  { title: 'Remote Access & Control', text: 'Manage your solar system anytime, from anywhere.', bgColor: '#f2e3ff', icon: Icon26 },
+  { title: 'Predictive Maintenance', text: 'AI-driven insights to prevent failures and plan maintenance.', bgColor: '#ffe8cc', icon: Icon27 },
+  { title: 'Performance Benchmarking', text: 'Compare panel output to spot and fix inefficiencies', bgColor: '#d9f5e3', icon: Icon28 },
 ];
 
 const FeatureBenifits = ({ data }) => {
   // Determine which set of benefits to display based on the response data
-  const benefits = data == 'Hospital' ? Hospital: data == 'Facility' ? Facility:data === 'LMS' ? labManagement: data === 'Claim' ? claimBenefits :data=='Customer'?leadBenefits:data =='HR' ? hrmBenefits:data =='Equipment' ? labEquipment:data =='Waste' ?wasteManagement:data =='Sales and Procurement' ? sales: leaveBenefits;
+  const benefits = data == 'Solar' ? Solar:data == 'Hospital' ? Hospital: data == 'Facility' ? Facility:data === 'LMS' ? labManagement: data === 'Claim' ? claimBenefits :data=='Customer'?leadBenefits:data =='HR' ? hrmBenefits:data =='Equipment' ? labEquipment:data =='Waste' ?wasteManagement:data =='Sales and Procurement' ? sales: leaveBenefits;
 
   return (
     <Section>
-      <Title>All-in-One {data} Management, <span>Faster and Easier.</span></Title>
+      {data == 'Solar' ? <Title>Web-Enabled Solar Control for the <span>Modern World.</span></Title> : <Title>All-in-One {data} Management, <span>Faster and Easier.</span></Title>}
       <BenefitGrid>
         {benefits.map((benefit, index) => (
           <BenefitCard key={index}>

@@ -3,11 +3,23 @@ import styled, { keyframes } from 'styled-components';
 import { FaRedoAlt, FaTasks, FaUserCheck, FaBell, FaChartBar } from 'react-icons/fa';
 import { MdDevices } from 'react-icons/md';
 import facility from '../../assets/img/Step_5.png'
+import Solar from '../../assets/img/step5-removebg-preview.png'
+
 import {
-  FaCalendarAlt,
-  FaEye,
-  FaHistory,
-  FaSmile
+    FaCalendarAlt,
+    FaEye,
+    FaHistory,
+    FaSmile
+} from 'react-icons/fa';
+import {
+    FaSolarPanel,
+    FaBolt,
+    FaTools,
+    FaChartLine
+} from 'react-icons/fa';
+import {
+    FaChartPie,
+    FaLeaf
 } from 'react-icons/fa';
 
 
@@ -354,102 +366,103 @@ const BenefitsImage = styled.div`
 `;
 
 const SmsDetails = () => {
-  return (
-    <WasteManagementSection>
-      <FeaturesContainer>
-        <SectionTitle> Advanced Facility Management Tools for Precision Task Handling</SectionTitle>
+    return (
+        <WasteManagementSection>
+            <FeaturesContainer>
+                <SectionTitle>Advanced Solar Management ERP Solution</SectionTitle>
 
-        <FeatureGrid>
-          <FeatureCard color="#3498db">
-            <FeatureHeader color="#3498db">
-              <FeatureIcon color="#3498db"><FaRedoAlt /></FeatureIcon> {/* Repeat icon */}
-              <FeatureTitle>Repeat Task Automation</FeatureTitle>
-            </FeatureHeader>
-            <FeatureList>
-              <FeatureItem color="#3498db">Schedule recurring tasks with weekly or monthly logic.</FeatureItem>
-              <FeatureItem color="#3498db">Assign fixed days and shifts without daily admin involvement.</FeatureItem>
-              <FeatureItem color="#3498db">Modify frequency and duration at any time.</FeatureItem>
-              <FeatureItem color="#3498db">Save time and ensure consistency in operational duties.</FeatureItem>
-            </FeatureList>
-          </FeatureCard>
+                <FeatureGrid>
+                    <FeatureCard color="#3498db">
+                        <FeatureHeader color="#3498db">
+                            <FeatureIcon color="#3498db"><FaSolarPanel /></FeatureIcon> {/* Solar Panel Monitoring */}
+                            <FeatureTitle>Panel-Level Monitoring</FeatureTitle>
+                        </FeatureHeader>
+                        <FeatureList>
+                            <FeatureItem color="#3498db">Monitor voltage, current, and power output of panels.</FeatureItem>
+                            <FeatureItem color="#3498db">Detect underperforming or faulty panels instantly.</FeatureItem>
+                            <FeatureItem color="#3498db">Improve efficiency by identifying shading or soiling issues early.</FeatureItem>
+                            <FeatureItem color="#3498db">Enhance ROI by maximizing the performance of every panel.</FeatureItem>
+                        </FeatureList>
+                    </FeatureCard>
 
-          <FeatureCard color="#2ecc71">
-            <FeatureHeader color="#2ecc71">
-              <FeatureIcon color="#2ecc71"><FaTasks /></FeatureIcon> {/* Task checklist icon */}
-              <FeatureTitle>Task Progress Tracker</FeatureTitle>
-            </FeatureHeader>
-            <FeatureList>
-              <FeatureItem color="#2ecc71">Live task status: Assigned, In Progress, Completed.</FeatureItem>
-              <FeatureItem color="#2ecc71">Visual checklist for subtasks and daily activities.</FeatureItem>
-              <FeatureItem color="#2ecc71">Attach photos or comments for updates.</FeatureItem>
-              <FeatureItem color="#2ecc71">Admin gets full visibility without follow-ups.</FeatureItem>
-            </FeatureList>
-          </FeatureCard>
+                    <FeatureCard color="#2ecc71">
+                        <FeatureHeader color="#2ecc71">
+                            <FeatureIcon color="#2ecc71"><FaBolt /></FeatureIcon> {/* Energy Analysis */}
+                            <FeatureTitle>Energy Usage Analysis</FeatureTitle>
+                        </FeatureHeader>
+                        <FeatureList>
+                            <FeatureItem color="#2ecc71">Compare energy generated vs. consumed in real-time.</FeatureItem>
+                            <FeatureItem color="#2ecc71">Measure energy exported to the grid or stored in batteries.</FeatureItem>
+                            <FeatureItem color="#2ecc71">Optimize load management and track cost savings.</FeatureItem>
+                            <FeatureItem color="#2ecc71">Identify peak usage periods to adjust energy consumption habits.</FeatureItem>
+                        </FeatureList>
+                    </FeatureCard>
 
-          <FeatureCard color="#e74c3c">
-            <FeatureHeader color="#e74c3c">
-              <FeatureIcon color="#e74c3c"><FaUserCheck /></FeatureIcon> {/* Productivity & performance */}
-              <FeatureTitle>Worker Productivity Dashboard</FeatureTitle>
-            </FeatureHeader>
-            <FeatureList>
-              <FeatureItem color="#e74c3c">Track completed vs. pending assignments.</FeatureItem>
-              <FeatureItem color="#e74c3c">Evaluate worker efficiency based on performance logs.</FeatureItem>
-              <FeatureItem color="#e74c3c">Reassign delayed or missed tasks quickly.</FeatureItem>
-              <FeatureItem color="#e74c3c">Maintain records for audits or reviews.</FeatureItem>
-            </FeatureList>
-          </FeatureCard>
+                    <FeatureCard color="#e74c3c">
+                        <FeatureHeader color="#e74c3c">
+                            <FeatureIcon color="#e74c3c"><FaTools /></FeatureIcon> {/* Maintenance */}
+                            <FeatureTitle>Maintenance Scheduling</FeatureTitle>
+                        </FeatureHeader>
+                        <FeatureList>
+                            <FeatureItem color="#e74c3c">Set cleaning and inspection reminders based on performance drop.</FeatureItem>
+                            <FeatureItem color="#e74c3c">Maintain logs of service history and technician visits.</FeatureItem>
+                            <FeatureItem color="#e74c3c">Reduce downtime with timely preventive actions.</FeatureItem>
+                            <FeatureItem color="#e74c3c">Extend equipment lifespan through regular upkeep.</FeatureItem>
+                        </FeatureList>
+                    </FeatureCard>
 
-          <FeatureCard color="#f39c12">
-            <FeatureHeader color="#f39c12">
-              <FeatureIcon color="#f39c12"><MdDevices /></FeatureIcon>
-              <FeatureTitle>Multi-Platform Access</FeatureTitle>
-            </FeatureHeader>
-            <FeatureList>
-              <FeatureItem color="#f39c12">Access the platform via web and mobile.</FeatureItem>
-              <FeatureItem color="#f39c12">Inventory Management for Recyclables – Tracks raw materials extracted from waste for reuse in production</FeatureItem>
-              <FeatureItem color="#f39c12">Role-based access control for team members.</FeatureItem>
-              <FeatureItem color="#f39c12">Real-time sync between web and app.</FeatureItem>
-            </FeatureList>
-          </FeatureCard>
+                    <FeatureCard color="#f39c12">
+                        <FeatureHeader color="#f39c12">
+                            <FeatureIcon color="#f39c12"><MdDevices /></FeatureIcon>
+                            <FeatureTitle>Mobile & Web Dashboard</FeatureTitle>
+                        </FeatureHeader>
+                        <FeatureList>
+                            <FeatureItem color="#f39c12">View system status, production trends, and savings graphs.</FeatureItem>
+                            <FeatureItem color="#f39c12">Control and configure settings remotely.</FeatureItem>
+                            <FeatureItem color="#f39c12">Secure login with role-based access for multiple users.</FeatureItem>
+                            <FeatureItem color="#f39c12">Stay connected with real-time system data on the go.</FeatureItem>
+                        </FeatureList>
+                    </FeatureCard>
 
-          <FeatureCard color="#9b59b6">
-            <FeatureHeader color="#9b59b6">
-              <FeatureIcon color="#9b59b6"><FaBell /></FeatureIcon> {/* Notification bell */}
-              <FeatureTitle>Alerts & Notifications</FeatureTitle>
-            </FeatureHeader>
-            <FeatureList>
-              <FeatureItem color="#9b59b6">Instant alerts on task updates and reschedules.</FeatureItem>
-              <FeatureItem color="#9b59b6">Deadline reminders to reduce delays.</FeatureItem>
-              <FeatureItem color="#9b59b6">Custom alerts for escalations or high-priority items.</FeatureItem>
-              <FeatureItem color="#9b59b6">Keep both admin and worker updated in real-time.</FeatureItem>
-            </FeatureList>
-          </FeatureCard>
+                    <FeatureCard color="#9b59b6">
+                        <FeatureHeader color="#9b59b6">
+                            <FeatureIcon color="#9b59b6"><FaBell /></FeatureIcon>
+                            <FeatureTitle>Alerts & Notifications</FeatureTitle>
+                        </FeatureHeader>
+                        <FeatureList>
+                            <FeatureItem color="#9b59b6">Real-time alerts via SMS, email, or app notifications.</FeatureItem>
+                            <FeatureItem color="#9b59b6">Get notified for faults like disconnection, overheating, or inverter errors.</FeatureItem>
+                            <FeatureItem color="#9b59b6">Customize thresholds and alert types for different users.</FeatureItem>
+                            <FeatureItem color="#9b59b6">Enable faster decision-making with instant system feedback.</FeatureItem>
+                        </FeatureList>
+                    </FeatureCard>
 
-          <FeatureCard color="#1abc9c">
-            <FeatureHeader color="#1abc9c">
-              <FeatureIcon color="#1abc9c"><FaChartBar /></FeatureIcon> {/* Analytics chart */}
-              <FeatureTitle>Reporting & Analytics</FeatureTitle>
-            </FeatureHeader>
-            <FeatureList>
-              <FeatureItem color="#1abc9c">Generate daily, weekly, or custom reports.</FeatureItem>
-              <FeatureItem color="#1abc9c">Track performance metrics and task loads.</FeatureItem>
-              <FeatureItem color="#1abc9c">Export data for compliance or invoicing.</FeatureItem>
-              <FeatureItem color="#1abc9c">Make data-driven decisions for process improvements.</FeatureItem>
-            </FeatureList>
-          </FeatureCard>
-        </FeatureGrid>
+                    <FeatureCard color="#1abc9c">
+                        <FeatureHeader color="#1abc9c">
+                            <FeatureIcon color="#1abc9c"><FaChartLine /></FeatureIcon> {/* Daily Insights */}
+                            <FeatureTitle>Daily Solar Insights</FeatureTitle>
+                        </FeatureHeader>
+                        <FeatureList>
+                            <FeatureItem color="#1abc9c">Auto-generated reports on daily energy performance.</FeatureItem>
+                            <FeatureItem color="#1abc9c">Highlight best-performing days and inefficiencies.</FeatureItem>
+                            <FeatureItem color="#1abc9c">Download or share insights with stakeholders easily.</FeatureItem>
+                            <FeatureItem color="#1abc9c">Gain transparency into energy savings and trends.</FeatureItem>
+                        </FeatureList>
+                    </FeatureCard>
+                </FeatureGrid>
 
 
 
-        <BenefitsSection>
-          <BenefitsContainer>
-            <BenefitsContent>
-              <BenefitsTitle>Simplifying Facility Operations through Centralized Task Management</BenefitsTitle>
-              <BenefitsDescription>
-                Manual tracking of apartment service operations leads to missed deadlines, inefficiencies, and poor communication. Atomwalk ERP-integrated FMS solves these issues with real-time monitoring, intelligent scheduling, and robust reporting—ensuring that every service is delivered on time with complete transparency.
-              </BenefitsDescription>
 
-              {/* <BenefitsGrid>
+                <BenefitsSection>
+                    <BenefitsContainer>
+                        <BenefitsContent>
+                            <BenefitsTitle>Streamlining Solar Management with ERP Precision, Uptime, and Sustainability</BenefitsTitle>
+                            <BenefitsDescription>
+                                Managing solar energy systems manually can lead to performance gaps, energy loss, and maintenance delays. An ERP-integrated solar management system brings everything into one platform—streamlining monitoring, enhancing control, and enabling smarter energy decisions. With real-time data and automation, businesses and homeowners can optimize solar output, reduce downtime, and drive sustainability. ERP for solar isn’t just about monitoring—it’s about maximizing energy intelligence for a greener tomorrow.
+                            </BenefitsDescription>
+
+                            {/* <BenefitsGrid>
                 <BenefitItem>
                   <BenefitIcon><FaCity /></BenefitIcon>
                   <BenefitText>
@@ -480,70 +493,67 @@ const SmsDetails = () => {
                 </BenefitItem>
               </BenefitsGrid> */}
 
-              <BenefitsGrid>
-                <BenefitItem>
-                  <BenefitIcon><FaCalendarAlt /></BenefitIcon> {/* Scheduling */}
-                  <BenefitText>
-                    <strong>Centralized Task Scheduling</strong><br />
-                    Assign and manage all operational tasks from a unified interface with recurring scheduling built in.
-                  </BenefitText>
-                </BenefitItem>
+                            <BenefitsGrid>
+                                <BenefitItem>
+                                    <BenefitIcon><FaBolt /></BenefitIcon> {/* Energy Monitoring */}
+                                    <BenefitText>
+                                        <strong>Optimized Energy Monitoring</strong><br />
+                                        Real-time tracking of solar energy generation, usage, and export for peak efficiency and minimal loss.
+                                    </BenefitText>
+                                </BenefitItem>
 
-                <BenefitItem>
-                  <BenefitIcon><FaEye /></BenefitIcon> {/* Monitoring/Visibility */}
-                  <BenefitText>
-                    <strong>Live Progress Monitoring</strong><br />
-                    Track who’s working, what’s pending, and what’s done—right from the dashboard.
-                  </BenefitText>
-                </BenefitItem>
+                                <BenefitItem>
+                                    <BenefitIcon><FaTools /></BenefitIcon> {/* Diagnostics & Maintenance */}
+                                    <BenefitText>
+                                        <strong>Automated System Diagnostics</strong><br />
+                                        Instant fault detection, performance analytics, and automated alerts to ensure maximum uptime and reliability.
+                                    </BenefitText>
+                                </BenefitItem>
 
-                <BenefitItem>
-                  <BenefitIcon><FaHistory /></BenefitIcon> {/* Logs & History */}
-                  <BenefitText>
-                    <strong>Performance Logs & History</strong><br />
-                    Keep detailed logs for each task, worker, and apartment—ideal for compliance and review.
-                  </BenefitText>
-                </BenefitItem>
+                                <BenefitItem>
+                                    <BenefitIcon><FaChartPie /></BenefitIcon> {/* Financial Overview */}
+                                    <BenefitText>
+                                        <strong>Cost & Savings Management</strong><br />
+                                        Monitors energy savings, ROI, and income from grid exports—empowering better financial planning and transparency.
+                                    </BenefitText>
+                                </BenefitItem>
 
-                <BenefitItem>
-                  <BenefitIcon><FaSmile /></BenefitIcon> {/* Satisfaction/Trust */}
-                  <BenefitText>
-                    <strong>Resident Satisfaction</strong><br />
-                    Reduce response times and build trust through organized, efficient service execution.
-                  </BenefitText>
-                </BenefitItem>
-              </BenefitsGrid>
-
-
-            </BenefitsContent>
-            <BenefitsImage>
-              {/* Replace with your actual image */}
-              <img
-                src={facility}
-                alt="Waste management workflow"
-              />
-            </BenefitsImage>
-          </BenefitsContainer>
-        </BenefitsSection>
+                                <BenefitItem>
+                                    <BenefitIcon><FaLeaf /></BenefitIcon> {/* Sustainability */}
+                                    <BenefitText>
+                                        <strong>Sustainable Energy Utilization</strong><br />
+                                        Promotes clean energy goals by optimizing renewable energy usage and reducing reliance on the grid.
+                                    </BenefitText>
+                                </BenefitItem>
+                            </BenefitsGrid>
+                        </BenefitsContent>
+                        <BenefitsImage>
+                            {/* Replace with your actual image */}
+                            <img
+                                src={Solar}
+                                alt="Waste management workflow"
+                            />
+                        </BenefitsImage>
+                    </BenefitsContainer>
+                </BenefitsSection>
 
 
-        <ConclusionSection>
-          <ConclusionTitle>Reimagining Facility Oversight with Digital Intelligence </ConclusionTitle>
-          <ConclusionText>
-            Atomwalk Facility Management System brings structure, speed, and visibility to apartment-level operations. It bridges the gap between <Highlight>admin</Highlight> teams and <Highlight>on-ground workers</Highlight>,
-            driving efficient task execution and resident satisfaction.
-          </ConclusionText>
-          <ConclusionList>
-            <ConclusionItem><strong>Smart Scheduling:</strong> Configure recurring jobs once and let the system handle the rest.</ConclusionItem>
-            <ConclusionItem><strong>Seamless Worker Coordination:</strong> Workers stay informed with task details, schedules, and alerts via app.</ConclusionItem>
-            <ConclusionItem><strong>Progress Transparency:</strong> Real-time status updates help supervisors act without micromanagement.          </ConclusionItem>
-            <ConclusionItem><strong>Data-Driven Oversight:</strong> Use insights to improve workflows, allocate resources, and reduce service gaps.          </ConclusionItem>
-            <ConclusionItem><strong>Scalable Infrastructure:</strong> Whether managing 10 apartments or 1000, FMS scales effortlessly.</ConclusionItem>
-          </ConclusionList>
-        </ConclusionSection>
-      </FeaturesContainer>
-    </WasteManagementSection>
-  );
+                <ConclusionSection>
+                    <ConclusionTitle>Revolutionizing Solar Control Through the Cloud</ConclusionTitle>
+                    <ConclusionText>
+                    Our ERP solution helps you manage solar energy smarter—with <Highlight>intelligent automation</Highlight> and <Highlight>eco-friendly</Highlight> practices that make going green easier. Together, we’re building a cleaner, more efficient, and sustainable future.
+                    </ConclusionText>
+                    <ConclusionList>
+                        <ConclusionItem><strong>Smart Monitoring:</strong> Real-time solar tracking ensures maximum energy output and performance.</ConclusionItem>
+                        <ConclusionItem><strong>Seamless Compliance:</strong> Automated reporting aligns with energy standards and grid regulations.</ConclusionItem>
+                        <ConclusionItem><strong>Maximized Solar Efficiency:</strong> Ensure every unit of sunlight is converted into optimal energy output through intelligent performance tracking.</ConclusionItem>
+                        <ConclusionItem><strong>Maintenance First:</strong> Proactive diagnostics prioritize system health and technician safety.</ConclusionItem>
+                        <ConclusionItem><strong>Data-Driven Decisions:</strong> Analytics and insights drive performance improvements and energy planning.</ConclusionItem>
+                    </ConclusionList>
+                </ConclusionSection>
+            </FeaturesContainer>
+        </WasteManagementSection>
+    );
 };
 
 export default SmsDetails;

@@ -11,7 +11,7 @@ import Consultancy from './../assets/img/consaltant.jpg';
 import Recycle from '../assets/img/Recycle.jpg';
 import Services from '../assets/img/servicetrd.jpg';
 import Fms from '../assets/img/Facility_image.jpg';
-import Sms from '../assets/img/solar-session 1.img.jpeg';
+import Sms from '../assets/img/Solar_session_1.jpeg';
 import Hms from '../assets/img/Health image.jpg';
 
 const PageContainer = styled.div`

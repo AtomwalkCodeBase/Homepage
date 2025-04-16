@@ -1,17 +1,21 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import { 
-  FaTrashAlt, 
-  FaRecycle, 
-  FaTruck, 
-  FaIndustry, 
-  FaShieldAlt, 
-  FaFileInvoice,
-  FaLeaf, 
-  FaChartLine,
-  FaBalanceScale
-} from 'react-icons/fa';
-import Collection from '../../assets/img/garbage-flowchart.png'
+import Collection from '../../assets/img/H_step_5(1).png'
+import {
+    FaMobileAlt,
+    FaEdit,
+    FaBell,
+    FaUserMd,
+    FaIdBadge,
+    FaCalendarAlt,
+    FaFileInvoice,
+    FaBalanceScale,
+    FaLeaf,
+    FaRecycle,
+    FaSmileBeam,
+    FaFolderOpen,
+    FaCalendarCheck
+} from "react-icons/fa";
 
 // Animations
 const fadeIn = keyframes`
@@ -356,100 +360,100 @@ const BenefitsImage = styled.div`
 `;
 
 const HmsDetails = () => {
-  return (
-    <WasteManagementSection>
-      <FeaturesContainer>
-        <SectionTitle>Advanced Hospital Tools for Easy Appointment Management</SectionTitle>
-        
-      <FeatureGrid>
-        <FeatureCard color="#3498db">
-          <FeatureHeader color="#3498db">
-            <FeatureIcon color="#3498db"><FaTrashAlt /></FeatureIcon>
-            <FeatureTitle>Mobile Booking</FeatureTitle>
-          </FeatureHeader>
-          <FeatureList>
-            <FeatureItem color="#3498db">Book a doctor’s appointment with just a few taps on the app.</FeatureItem>
-            <FeatureItem color="#3498db">See which times and doctors are free right away.</FeatureItem>
-            <FeatureItem color="#3498db">Choose the doctor and specialty you need easily.</FeatureItem>
-            <FeatureItem color="#3498db">Get a confirmation as soon as you book.</FeatureItem>
-          </FeatureList>
-        </FeatureCard>
-        
-        <FeatureCard color="#2ecc71">
-          <FeatureHeader color="#2ecc71">
-            <FeatureIcon color="#2ecc71"><FaRecycle /></FeatureIcon>
-            <FeatureTitle>Reschedule or Cancel Bookings</FeatureTitle>
-          </FeatureHeader>
-          <FeatureList>
-            <FeatureItem color="#2ecc71">Update your appointment date or time right in the app.</FeatureItem>
-            <FeatureItem color="#2ecc71">Cancel a booking if you can’t make it.</FeatureItem>
-            <FeatureItem color="#2ecc71">Get a quick confirmation when you make changes.</FeatureItem>
-            <FeatureItem color="#2ecc71">Save time by doing it yourself without calling the hospital.</FeatureItem>
-          </FeatureList>
-        </FeatureCard>
-        
-        <FeatureCard color="#e74c3c">
-          <FeatureHeader color="#e74c3c">
-            <FeatureIcon color="#e74c3c"><FaTruck /></FeatureIcon>
-            <FeatureTitle>Appointment Reminders</FeatureTitle>
-          </FeatureHeader>
-          <FeatureList>
-            <FeatureItem color="#e74c3c"> Get a reminder a day or an hour before your appointment.</FeatureItem>
-            <FeatureItem color="#e74c3c">You’ll get notifications by app, text, or email.</FeatureItem>
-            <FeatureItem color="#e74c3c"> Avoid forgetting or missing your visit.</FeatureItem>
-            <FeatureItem color="#e74c3c">Make sure app notification is enabled in your mobile.</FeatureItem>
-          </FeatureList>
-        </FeatureCard>
-        
-        <FeatureCard color="#f39c12">
-          <FeatureHeader color="#f39c12">
-            <FeatureIcon color="#f39c12"><FaIndustry /></FeatureIcon>
-            <FeatureTitle> Doctor and Specialty Guide</FeatureTitle>
-          </FeatureHeader>
-          <FeatureList>
-            <FeatureItem color="#f39c12"> Read about doctors, specialty, and their  experience.</FeatureItem>
-            <FeatureItem color="#f39c12">Find doctors by their specialty.</FeatureItem>
-            <FeatureItem color="#f39c12">Check ratings to help you decide.</FeatureItem>
-            <FeatureItem color="#f39c12">See the latest schedules to book the right time.</FeatureItem>
-          </FeatureList>
-        </FeatureCard>
-        
-        <FeatureCard color="#9b59b6">
-          <FeatureHeader color="#9b59b6">
-            <FeatureIcon color="#9b59b6"><FaShieldAlt /></FeatureIcon>
-            <FeatureTitle>Your Profile and History</FeatureTitle>
-          </FeatureHeader>
-          <FeatureList>
-            <FeatureItem color="#9b59b6">Keep track of your health records and past appointments.</FeatureItem>
-            <FeatureItem color="#9b59b6">Update your contact information safely.</FeatureItem>
-            <FeatureItem color="#9b59b6">See all your past and upcoming visits in one spot.</FeatureItem>
-            <FeatureItem color="#9b59b6"> Book faster using your saved information.</FeatureItem>
-          </FeatureList>
-        </FeatureCard>
-        
-        <FeatureCard color="#1abc9c">
-          <FeatureHeader color="#1abc9c">
-            <FeatureIcon color="#1abc9c"><FaChartLine /></FeatureIcon>
-            <FeatureTitle>Calendar Sync</FeatureTitle>
-          </FeatureHeader>
-          <FeatureList>
-            <FeatureItem color="#1abc9c">Add appointments to your phone’s calendar, like Google or Outlook.</FeatureItem>
-            <FeatureItem color="#1abc9c">Set reminders to stay on top of your schedule.</FeatureItem>
-            <FeatureItem color="#1abc9c">Get updates if your appointment changes.</FeatureItem>
-            <FeatureItem color="#1abc9c">Stay organized and never miss a visit.</FeatureItem>
-          </FeatureList>
-        </FeatureCard>
-      </FeatureGrid>
-      
-      <BenefitsSection>
-          <BenefitsContainer>
-            <BenefitsContent>
-              <BenefitsTitle>Making Healthcare Easier with One Simple System</BenefitsTitle>
-              <BenefitsDescription>
-              Scheduling appointments by hand can lead to long waits, forgotten visits, and mix-ups. The Atomwalk HMS fixes these problems with an easy app for booking, real-time updates, and helpful reports—making sure every patient gets care on time with everything clear and organized.
- </BenefitsDescription>
-              
-              {/* <BenefitsGrid>
+    return (
+        <WasteManagementSection>
+            <FeaturesContainer>
+                <SectionTitle>Advanced Hospital Tools for Easy Appointment Management</SectionTitle>
+
+                <FeatureGrid>
+                    <FeatureCard color="#3498db">
+                        <FeatureHeader color="#3498db">
+                            <FeatureIcon color="#3498db"><FaMobileAlt /></FeatureIcon>
+                            <FeatureTitle>Mobile Booking</FeatureTitle>
+                        </FeatureHeader>
+                        <FeatureList>
+                            <FeatureItem color="#3498db">Book a doctor’s appointment with just a few taps on the app.</FeatureItem>
+                            <FeatureItem color="#3498db">See which times and doctors are free right away.</FeatureItem>
+                            <FeatureItem color="#3498db">Choose the doctor and specialty you need easily.</FeatureItem>
+                            <FeatureItem color="#3498db">Get a confirmation as soon as you book.</FeatureItem>
+                        </FeatureList>
+                    </FeatureCard>
+
+                    <FeatureCard color="#2ecc71">
+                        <FeatureHeader color="#2ecc71">
+                            <FeatureIcon color="#2ecc71"><FaEdit /></FeatureIcon>
+                            <FeatureTitle>Reschedule or Cancel Bookings</FeatureTitle>
+                        </FeatureHeader>
+                        <FeatureList>
+                            <FeatureItem color="#2ecc71">Update your appointment date or time right in the app.</FeatureItem>
+                            <FeatureItem color="#2ecc71">Cancel a booking if you can’t make it.</FeatureItem>
+                            <FeatureItem color="#2ecc71">Get a quick confirmation when you make changes.</FeatureItem>
+                            <FeatureItem color="#2ecc71">Save time by doing it yourself without calling the hospital.</FeatureItem>
+                        </FeatureList>
+                    </FeatureCard>
+
+                    <FeatureCard color="#e74c3c">
+                        <FeatureHeader color="#e74c3c">
+                            <FeatureIcon color="#e74c3c"><FaBell /></FeatureIcon>
+                            <FeatureTitle>Appointment Reminders</FeatureTitle>
+                        </FeatureHeader>
+                        <FeatureList>
+                            <FeatureItem color="#e74c3c">Get a reminder a day or an hour before your appointment.</FeatureItem>
+                            <FeatureItem color="#e74c3c">You’ll get notifications by app, text, or email.</FeatureItem>
+                            <FeatureItem color="#e74c3c">Avoid forgetting or missing your visit.</FeatureItem>
+                            <FeatureItem color="#e74c3c">Make sure app notification is enabled in your mobile.</FeatureItem>
+                        </FeatureList>
+                    </FeatureCard>
+
+                    <FeatureCard color="#f39c12">
+                        <FeatureHeader color="#f39c12">
+                            <FeatureIcon color="#f39c12"><FaUserMd /></FeatureIcon>
+                            <FeatureTitle>Doctor and Specialty Guide</FeatureTitle>
+                        </FeatureHeader>
+                        <FeatureList>
+                            <FeatureItem color="#f39c12">Read about doctors, specialty, and their experience.</FeatureItem>
+                            <FeatureItem color="#f39c12">Find doctors by their specialty.</FeatureItem>
+                            <FeatureItem color="#f39c12">Check ratings to help you decide.</FeatureItem>
+                            <FeatureItem color="#f39c12">See the latest schedules to book the right time.</FeatureItem>
+                        </FeatureList>
+                    </FeatureCard>
+
+                    <FeatureCard color="#9b59b6">
+                        <FeatureHeader color="#9b59b6">
+                            <FeatureIcon color="#9b59b6"><FaIdBadge /></FeatureIcon>
+                            <FeatureTitle>Your Profile and History</FeatureTitle>
+                        </FeatureHeader>
+                        <FeatureList>
+                            <FeatureItem color="#9b59b6">Keep track of your health records and past appointments.</FeatureItem>
+                            <FeatureItem color="#9b59b6">Update your contact information safely.</FeatureItem>
+                            <FeatureItem color="#9b59b6">See all your past and upcoming visits in one spot.</FeatureItem>
+                            <FeatureItem color="#9b59b6">Book faster using your saved information.</FeatureItem>
+                        </FeatureList>
+                    </FeatureCard>
+
+                    <FeatureCard color="#1abc9c">
+                        <FeatureHeader color="#1abc9c">
+                            <FeatureIcon color="#1abc9c"><FaCalendarAlt /></FeatureIcon>
+                            <FeatureTitle>Calendar Sync</FeatureTitle>
+                        </FeatureHeader>
+                        <FeatureList>
+                            <FeatureItem color="#1abc9c">Add appointments to your phone’s calendar, like Google or Outlook.</FeatureItem>
+                            <FeatureItem color="#1abc9c">Set reminders to stay on top of your schedule.</FeatureItem>
+                            <FeatureItem color="#1abc9c">Get updates if your appointment changes.</FeatureItem>
+                            <FeatureItem color="#1abc9c">Stay organized and never miss a visit.</FeatureItem>
+                        </FeatureList>
+                    </FeatureCard>
+                </FeatureGrid>
+
+                <BenefitsSection>
+                    <BenefitsContainer>
+                        <BenefitsContent>
+                            <BenefitsTitle>Making Healthcare Easier with One Simple System</BenefitsTitle>
+                            <BenefitsDescription>
+                                Scheduling appointments by hand can lead to long waits, forgotten visits, and mix-ups. The Atomwalk HMS fixes these problems with an easy app for booking, real-time updates, and helpful reports—making sure every patient gets care on time with everything clear and organized.
+                            </BenefitsDescription>
+
+                            {/* <BenefitsGrid>
                 <BenefitItem>
                   <BenefitIcon><FaCity /></BenefitIcon>
                   <BenefitText>
@@ -480,65 +484,69 @@ const HmsDetails = () => {
                 </BenefitItem>
               </BenefitsGrid> */}
 
-<BenefitsGrid>
-  <BenefitItem>
-    <BenefitIcon><FaRecycle /></BenefitIcon>
-    <BenefitText>
-      <strong>One Place for Booking </strong><br />
-      Book appointments anytime, anywhere using a single app that lets you pick the best doctor and time for your needs, with options to adjust if your schedule changes.
-    </BenefitText>
-  </BenefitItem>
-  <BenefitItem>
-    <BenefitIcon><FaFileInvoice /></BenefitIcon>
-    <BenefitText>
-      <strong>Live Appointment Updates</strong><br />
-      See which appointments are booked, changed, or canceled right away from the staff dashboard.
-    </BenefitText>
-  </BenefitItem>
-  <BenefitItem>
-    <BenefitIcon><FaBalanceScale /></BenefitIcon>
-    <BenefitText>
-      <strong> Patient Records</strong><br />
-      Keep a clear record of every patient’s bookings, visits, and details for easy follow-ups or audits.
-    </BenefitText>
-  </BenefitItem>
-  <BenefitItem>
-    <BenefitIcon><FaLeaf /></BenefitIcon>
-    <BenefitText>
-      <strong>Happier Patients</strong><br />
-      Cut down on wait times and keep patients happy with a clear, organized booking system.
-    </BenefitText>
-  </BenefitItem>
-</BenefitsGrid>
+                            <BenefitsGrid>
+                                <BenefitItem>
+                                    <BenefitIcon><FaCalendarCheck /></BenefitIcon>
+                                    <BenefitText>
+                                        <strong>One Place for Booking </strong><br />
+                                        Book appointments anytime, anywhere using a single app that lets you pick the best doctor and time for your needs, with options to adjust if your schedule changes.
+                                    </BenefitText>
+                                </BenefitItem>
 
-            </BenefitsContent>
-            <BenefitsImage>
-              {/* Replace with your actual image */}
-              <img 
-                src={Collection} 
-                alt="Waste management workflow" 
-              />
-            </BenefitsImage>
-          </BenefitsContainer>
-        </BenefitsSection>
-      
-      
-      <ConclusionSection>
-        <ConclusionTitle>Enhancing Healthcare with Smart Technology </ConclusionTitle>
-        <ConclusionText>
-        The Atomwalk Healthcare Management System simplifies hospital work, enhances patient-doctor connections, and ensures smooth appointments and care.
-        </ConclusionText>
-        <ConclusionList>
-          <ConclusionItem><strong>Easy Booking:</strong> Patients can book and manage appointments right from their phone.</ConclusionItem>
-          <ConclusionItem><strong>Doctor Coordination:</strong>Doctors will be connected with the staff for confirmation of their availability.</ConclusionItem>
-          <ConclusionItem><strong>Clear Updates:</strong>  Slots get updated for every booking or change as it happens. </ConclusionItem>
-          <ConclusionItem><strong>Smart Planning: </strong> Use data to make schedules better, shorten waits, and improve care. </ConclusionItem>
-          <ConclusionItem><strong>Grows with You: </strong>Works for small clinics or big hospitals without any trouble.</ConclusionItem>
-        </ConclusionList>
-      </ConclusionSection>
-    </FeaturesContainer>
-    </WasteManagementSection>
-  );
+                                <BenefitItem>
+                                    <BenefitIcon><FaFileInvoice /></BenefitIcon>
+                                    <BenefitText>
+                                        <strong>Live Appointment Updates</strong><br />
+                                        See which appointments are booked, changed, or canceled right away from the staff dashboard.
+                                    </BenefitText>
+                                </BenefitItem>
+
+                                <BenefitItem>
+                                    <BenefitIcon><FaFolderOpen /></BenefitIcon>
+                                    <BenefitText>
+                                        <strong>Patient Records</strong><br />
+                                        Keep a clear record of every patient’s bookings, visits, and details for easy follow-ups or audits.
+                                    </BenefitText>
+                                </BenefitItem>
+
+                                <BenefitItem>
+                                    <BenefitIcon><FaSmileBeam /></BenefitIcon>
+                                    <BenefitText>
+                                        <strong>Happier Patients</strong><br />
+                                        Cut down on wait times and keep patients happy with a clear, organized booking system.
+                                    </BenefitText>
+                                </BenefitItem>
+                            </BenefitsGrid>
+
+
+                        </BenefitsContent>
+                        <BenefitsImage>
+                            {/* Replace with your actual image */}
+                            <img
+                                src={Collection}
+                                alt="Waste management workflow"
+                            />
+                        </BenefitsImage>
+                    </BenefitsContainer>
+                </BenefitsSection>
+
+
+                <ConclusionSection>
+                    <ConclusionTitle>Enhancing Healthcare with Smart Technology </ConclusionTitle>
+                    <ConclusionText>
+                        The Atomwalk Healthcare Management System <Highlight>simplifies hospital work</Highlight>, enhances patient-doctor connections, and ensures <Highlight>smooth appointments</Highlight> and care.
+                    </ConclusionText>
+                    <ConclusionList>
+                        <ConclusionItem><strong>Easy Booking:</strong> Patients can book and manage appointments right from their phone.</ConclusionItem>
+                        <ConclusionItem><strong>Doctor Coordination:</strong>Doctors will be connected with the staff for confirmation of their availability.</ConclusionItem>
+                        <ConclusionItem><strong>Clear Updates:</strong>  Slots get updated for every booking or change as it happens. </ConclusionItem>
+                        <ConclusionItem><strong>Smart Planning: </strong> Use data to make schedules better, shorten waits, and improve care. </ConclusionItem>
+                        <ConclusionItem><strong>Grows with You: </strong>Works for small clinics or big hospitals without any trouble.</ConclusionItem>
+                    </ConclusionList>
+                </ConclusionSection>
+            </FeaturesContainer>
+        </WasteManagementSection>
+    );
 };
 
 export default HmsDetails;

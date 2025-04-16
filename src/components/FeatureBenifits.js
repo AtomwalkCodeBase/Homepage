@@ -42,6 +42,7 @@ import Icon31 from '../assets/img/H_Step2(3).png';
 import Icon32 from '../assets/img/H_Step2(4).png';
 import Icon33 from '../assets/img/H_Step2(5).png';
 import Icon34 from '../assets/img/H_Step2(6).png';
+import Icon35 from '../assets/img/Mobile_Icon.png';
 
 
 
@@ -189,7 +190,7 @@ const sales = [
 const Facility= [
   { title: 'Dynamic Task Dashboard', text: 'Easily assign, monitor, and reschedule tasks in real time.', bgColor: '#d7faff', icon: Icon18 },
   { title: 'Automated Repetitive Task Scheduling', text: 'Handle daily, weekly, or monthly recurring tasks without manual intervention.', bgColor: '#d9f5e3', icon: Icon19 },
-  { title: 'Efficiency', text: 'Automate tasks like orders creation or generating invoices', bgColor: '#fff1d0', icon:  Icon2 },
+  { title: 'Quick Task Reporting', text: 'Workers can capture photos, and update task status directly from their phones.', bgColor: '#fff1d0', icon:  Icon35 },
   { title: 'Real-Time Notifications', text: 'Get updates and alerts on task assignments, changes, or completions.', bgColor: '#f2e3ff', icon: Icon20 },
   { title: 'Worker App Integration', text: 'Field staff receive mobile notifications, update task progress, and provide photo-based proof of work.', bgColor: '#ffe8cc', icon: Icon21 },
   { title: 'Location-Based Task Tracking', text: 'GPS tagging ensures accountability for on-site activities.', bgColor: '#d9f5e3', icon: Icon22 },

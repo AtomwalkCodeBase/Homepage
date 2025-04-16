@@ -312,6 +312,15 @@ export const Skills = () => {
       accentColor2: "#ffeb3b"
     },
     {
+      title: "Hospital Management System (HMS)",
+      description: "The Atomwalk Healthcare Management System makes it easy for hospitals, clinics, and patients to manage medical appointments and services with a simple mobile app for booking, helpful reminders, and clear communication between patients and doctors, our system helps everything run smoothly, improves patient care, and keeps everyone on the same page.",
+      image: Fms,
+      path: "/hospitalmanagement.html",
+      bgColor: "rgb(217 254 229)",
+      accentColor: "#009688",
+      accentColor2: "#4db6ac"
+    },
+    {
       title: "Waste Management System",
       description: "Atomwalk Technologies' Waste Management System optimizes waste tracking, disposal, and recycling within its cloud-based ERP. It automates waste collection, categorization, compliance reporting, and sustainability tracking. With real-time monitoring and blockchain security, businesses can minimize environmental impact, reduce costs, and enhance regulatory compliance.",
       image: Recycle,

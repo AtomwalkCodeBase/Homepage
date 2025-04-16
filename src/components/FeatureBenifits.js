@@ -182,11 +182,18 @@ const Facility= [
   { title: 'Worker App Integration', text: 'Field staff receive mobile notifications, update task progress, and provide photo-based proof of work.', bgColor: '#ffe8cc', icon: Icon21 },
   { title: 'Location-Based Task Tracking', text: 'GPS tagging ensures accountability for on-site activities.', bgColor: '#d9f5e3', icon: Icon22 },
 ];
-
+const Hospital= [
+  { title: 'Dynamic Task Dashboard', text: 'Easily assign, monitor, and reschedule tasks in real time.', bgColor: '#d7faff', icon: Icon18 },
+  { title: 'Automated Repetitive Task Scheduling', text: 'Handle daily, weekly, or monthly recurring tasks without manual intervention.', bgColor: '#d9f5e3', icon: Icon19 },
+  { title: 'Efficiency', text: 'Automate tasks like orders creation or generating invoices', bgColor: '#fff1d0', icon:  Icon2 },
+  { title: 'Real-Time Notifications', text: 'Get updates and alerts on task assignments, changes, or completions.', bgColor: '#f2e3ff', icon: Icon20 },
+  { title: 'Worker App Integration', text: 'Field staff receive mobile notifications, update task progress, and provide photo-based proof of work.', bgColor: '#ffe8cc', icon: Icon21 },
+  { title: 'Location-Based Task Tracking', text: 'GPS tagging ensures accountability for on-site activities.', bgColor: '#d9f5e3', icon: Icon22 },
+];
 
 const FeatureBenifits = ({ data }) => {
   // Determine which set of benefits to display based on the response data
-  const benefits = data == 'Facility' ? Facility:data === 'LMS' ? labManagement: data === 'Claim' ? claimBenefits :data=='Customer'?leadBenefits:data =='HR' ? hrmBenefits:data =='Equipment' ? labEquipment:data =='Waste' ?wasteManagement:data =='Sales and Procurement' ? sales: leaveBenefits;
+  const benefits = data == 'Hospital' ? Hospital: data == 'Facility' ? Facility:data === 'LMS' ? labManagement: data === 'Claim' ? claimBenefits :data=='Customer'?leadBenefits:data =='HR' ? hrmBenefits:data =='Equipment' ? labEquipment:data =='Waste' ?wasteManagement:data =='Sales and Procurement' ? sales: leaveBenefits;
 
   return (
     <Section>

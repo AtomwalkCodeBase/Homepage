@@ -5,6 +5,10 @@ import Source from '../../assets/img/trash.png';
 import Collection from '../../assets/img/garbage-truck.png';
 import Process from '../../assets/img/waste-management.png';
 import Report from '../../assets/img/sales_report_icon.png';
+import Step3_1 from '../../assets/img/Step 3 (1).png';
+import Step3_2 from '../../assets/img/Step 3 (2).png';
+import Step3_3 from '../../assets/img/Step 3 (3).png';
+import Step3_4 from '../../assets/img/Step 3 (4).png';
 import UnderConstructionPopup from '../UnderConstructionPopup';
 
 // Animation keyframes
@@ -256,7 +260,7 @@ const KeyFeaturesWaste = (props) => {
   ];
   const fmsfeatures = [
     {
-      icon: Source,
+      icon: Step3_1,
       title: "Facility Managers",
       description: "Oversee all ongoing operations through a centralized dashboard. Assign tasks, monitor progress, and ensure service delivery without the hassle of manual follow-ups.",
       accentColor: "#7d3eff",
@@ -264,7 +268,7 @@ const KeyFeaturesWaste = (props) => {
       iconHover: "#7d3eff"
     },
     {
-      icon: Collection,
+      icon: Step3_2,
       title: "Workers & Technicians",
       description: "Stay updated with mobile alerts, view task details, upload status proofs, and manage assignments effortlessly.",
       accentColor: "#3ea9ff",
@@ -272,7 +276,7 @@ const KeyFeaturesWaste = (props) => {
       iconHover: "#3ea9ff"
     },
     {
-      icon: Process,
+      icon: Step3_3,
       title: "Apartment Communities",
       description: "Experience faster resolution and consistent maintenance services through structured task execution.",
       accentColor: "#3eff8f",
@@ -280,7 +284,7 @@ const KeyFeaturesWaste = (props) => {
       iconHover: "#3eff8f"
     },
     {
-      icon: Report,
+      icon: Step3_4,
       title: "Regulatory & Compliance",
       description: "Ensuring Regulatory Compliance with Digital Records, Automated Reporting, and Environmental Safety Standards.",
       accentColor: "#ff7d3e",

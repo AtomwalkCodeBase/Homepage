@@ -353,7 +353,7 @@ const BenefitsImage = styled.div`
   }
 `;
 
-const FmsDetails = () => {
+const SmsDetails = () => {
   return (
     <WasteManagementSection>
       <FeaturesContainer>
@@ -546,4 +546,4 @@ const FmsDetails = () => {
   );
 };
 
-export default FmsDetails;
+export default SmsDetails;

@@ -447,40 +447,10 @@ const WasteManagementDetails = () => {
             <BenefitsContent>
               <BenefitsTitle>Evolutionizing Waste Management with ERP: Efficiency, Compliance, and Sustainability Combined!</BenefitsTitle>
               <BenefitsDescription>
-              Managing waste efficiently is challenging, with traditional methods causing inefficiencies, high costs, and regulatory risks. An ERP system streamlines waste tracking, automates compliance, and optimizes resource use. With real-time data and analytics, businesses can reduce waste, improve efficiency, and make informed decisions. ERP for waste management isn’t just about compliance it’s about building a cleaner, smarter, and more sustainable future.
+              Managing waste efficiently is challenging with traditional methods, causing inefficiencies, high costs, and regulatory risks. Our ERP system streamlines waste collection, tracking, segregation & compliance. With real-time data and analytics, businesses can reduce waste & carbon footprint, improve efficiency, and make informed decisions. ERP for waste management isn’t just about compliance it’s about building a cleaner, smarter, and more sustainable future.
               </BenefitsDescription>
               
-              {/* <BenefitsGrid>
-                <BenefitItem>
-                  <BenefitIcon><FaCity /></BenefitIcon>
-                  <BenefitText>
-                    <strong>Urban Waste Challenges</strong><br />
-                    Handles complex waste from residential, commercial, industrial, and medical sources
-                  </BenefitText>
-                </BenefitItem>
-                <BenefitItem>
-                  <BenefitIcon><FaUsers /></BenefitIcon>
-                  <BenefitText>
-                    <strong>Stakeholder Integration</strong><br />
-                    Connects waste generators, collectors, processors, and regulators
-                  </BenefitText>
-                </BenefitItem>
-                <BenefitItem>
-                  <BenefitIcon><FaHandshake /></BenefitIcon>
-                  <BenefitText>
-                    <strong>Compliance Assurance</strong><br />
-                    Automated reporting for BBMP, KSPCB and other regulatory bodies
-                  </BenefitText>
-                </BenefitItem>
-                <BenefitItem>
-                  <BenefitIcon><FaBalanceScale /></BenefitIcon>
-                  <BenefitText>
-                    <strong>Sustainable Practices</strong><br />
-                    Promotes circular economy through optimized recycling processes
-                  </BenefitText>
-                </BenefitItem>
-              </BenefitsGrid> */}
-
+           
 <BenefitsGrid>
   <BenefitItem>
     <BenefitIcon><FaRecycle /></BenefitIcon>

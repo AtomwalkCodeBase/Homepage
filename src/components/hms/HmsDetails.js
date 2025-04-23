@@ -370,7 +370,7 @@ const HmsDetails = () => {
             </FeatureHeader>
             <FeatureList>
               <FeatureItem color="#3498db">Access real-time EHRs with patient vitals, lab results, and histories for doctors.</FeatureItem>
-              <FeatureItem color="#3498db">Streamline doctor diagnostics and prescriptions with allergy alerts.</FeatureItem>
+              <FeatureItem color="#3498db">Streamline doctor diagnostics and prescriptions.</FeatureItem>
               <FeatureItem color="#3498db">Coordinate nurse, cleaner, and technician roles with secure access.</FeatureItem>
               <FeatureItem color="#3498db">Schedule staff shifts with automated email and app notifications.</FeatureItem>
               <FeatureItem color="#3498db">Monitor staff performance and efficiency with workload analytics.</FeatureItem>
@@ -383,7 +383,7 @@ const HmsDetails = () => {
               <FeatureTitle>Patient Management</FeatureTitle>
             </FeatureHeader>
             <FeatureList>
-              <FeatureItem color="#2ecc71">Register patients with demographics, insurance, and unique QR code and IDs.</FeatureItem>
+              <FeatureItem color="#2ecc71">Register patients with demographics, insurance, and unique IDs and QR code.</FeatureItem>
               <FeatureItem color="#2ecc71">Allocate patients to OPD or in-patient care based on triage and symptoms.</FeatureItem>
               <FeatureItem color="#2ecc71">Store medical history, allergies, and previous visits for continuity of care.</FeatureItem>
               <FeatureItem color="#2ecc71">Enable rapid emergency registration with minimal data for critical cases.</FeatureItem>
@@ -398,7 +398,7 @@ const HmsDetails = () => {
             </FeatureHeader>
             <FeatureList>
               <FeatureItem color="#e74c3c">Book appointments with real-time doctor and slot availability.</FeatureItem>
-              <FeatureItem color="#e74c3c">Select doctors by specialty, experience, or ratings with current schedules.</FeatureItem>
+              <FeatureItem color="#e74c3c">Select doctors by specialty, or ratings with current schedules.</FeatureItem>
               <FeatureItem color="#e74c3c">Reschedule or cancel bookings in-app with instant confirmations.</FeatureItem>
               <FeatureItem color="#e74c3c">Organize appointments with calendar sync and app reminders.</FeatureItem>
               <FeatureItem color="#e74c3c">Manage profile, health records, and visits for tailored bookings.</FeatureItem>

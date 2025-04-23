@@ -13,10 +13,10 @@ import Hospital1 from '../../assets/img/H_Step3(1).png';
 import Hospital2 from '../../assets/img/H_Step3(2).png';
 import Hospital3 from '../../assets/img/H_Step3(3).png';
 import Hospital4 from '../../assets/img/H_Step3(4).png';
-import Facility1 from '../../assets/img/Step 3 (1).png';
-import Facility2 from '../../assets/img/Step 3 (2).png';
-import Facility3 from '../../assets/img/Step 3 (3).png';
-import Facility4 from '../../assets/img/Step 3 (4).png';
+import Facility1 from '../../assets/img/fms_step_3(1).png';
+import Facility2 from '../../assets/img/fms_step_3(2).png';
+import Facility3 from '../../assets/img/fms_step_3(3).png';
+import Facility4 from '../../assets/img/fms_step_3(4).png';
 import UnderConstructionPopup from '../UnderConstructionPopup';
 
 // Animation keyframes
@@ -269,32 +269,32 @@ const KeyFeaturesWaste = (props) => {
   const fmsfeatures = [
     {
       icon: Facility1,
-      title: "Facility Managers",
-      description: "Oversee all ongoing operations through a centralized dashboard. Assign tasks, monitor progress, and ensure service delivery without the hassle of manual follow-ups.",
+      title: "Space Owners & Tenants",
+      description: "Enable smart facility services with real-time issue reporting, usage tracking, and service feedback through an integrated platform.",
       accentColor: "#7d3eff",
       iconBg: "#f0e7ff",
       iconHover: "#7d3eff"
     },
     {
       icon: Facility2,
-      title: "Workers & Technicians",
-      description: "Stay updated with mobile alerts, view task details, upload status proofs, and manage assignments effortlessly.",
+      title: "End-to-End Service Providers",
+      description: "Oversee multiple properties, manage contracts, workforce, and monitor maintenance tasks efficiently from a centralized system.",
       accentColor: "#3ea9ff",
       iconBg: "#e7f5ff",
       iconHover: "#3ea9ff"
     },
     {
       icon: Facility3,
-      title: "Apartment Communities",
-      description: "Experience faster resolution and consistent maintenance services through structured task execution.",
+      title: "On-Ground Executors",
+      description: "Receive digital work orders, update task status in real time, and ensure timely service delivery with mobile-first tools.",
       accentColor: "#3eff8f",
       iconBg: "#e7fff0",
       iconHover: "#3eff8f"
     },
     {
       icon: Facility4,
-      title: "Platform Integration Team",
-      description: "Integrate task flows and performance logs into existing business systems to drive smarter decisions, reporting, and resource planning.",
+      title: "Inspection & Oversight Authorities",
+      description: "Access audit-ready documentation, automated reports, and compliance dashboards to ensure adherence to safety and operational standards. Advanced Facility Management ERP Solution",
       accentColor: "#ff7d3e",
       iconBg: "#fff0e7",
       iconHover: "#ff7d3e"

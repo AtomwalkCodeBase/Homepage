@@ -25,11 +25,12 @@ import Icon14 from '../assets/img/bin.png';
 import Icon15 from '../assets/img/smart-trash.png';
 import Icon16 from '../assets/img/dashboard.png';
 import Icon17 from '../assets/img/safety.png';
-import Icon18 from '../assets/img/Step2(1).png';
-import Icon19 from '../assets/img/Step2(2).png';
-import Icon20 from '../assets/img/Step2(3).png';
-import Icon21 from '../assets/img/Step2(4).png';
-import Icon22 from '../assets/img/step2(5).png';
+import Icon18 from '../assets/img/fm_step_1.png';
+import Icon19 from '../assets/img/fm_step_2.png';
+import Icon20 from '../assets/img/fm_step_3.png';
+import Icon21 from '../assets/img/fm_step_4.png';
+import Icon22 from '../assets/img/fm_step_5.png';
+import Icon50 from '../assets/img/Step2(1).png';
 import Icon23 from '../assets/img/step2_1_solar.png';
 import Icon24 from '../assets/img/step2_2_solar.png';
 import Icon25 from '../assets/img/step2_3_solar.png';
@@ -158,7 +159,7 @@ const hrmBenefits = [
 const labEquipment = [
   { title: '24/7 Access with less man power', text: 'Schedule Equipment Anytime, Seamlessly', bgColor: '#d7faff', icon: Icon1 },
   { title: 'Real-Time Availability!', text: 'Stay Updated, Avoid Surprises', bgColor: '#d9f5e3', icon: Icon7 },
-  { title: 'Hassle-Free User Management!', text: 'Group, Control, Assign Roles', bgColor: '#fff1d0', icon:  Icon2 },
+  { title: 'Hassle-Free User Management!', text: 'Group, Control, Assign Roles', bgColor: '#fff1d0', icon: Icon2 },
   { title: 'Zero Booking Conflicts!', text: 'Smart Scheduling, Uninterrupted Operations', bgColor: '#f2e3ff', icon: Icon8 },
   { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ffe8cc', icon: Icon3 },
   { title: 'Stay Audit-Ready', text: 'Automated Logs, Effortless Records ', bgColor: '#d9f5e3', icon: Icon5 },
@@ -166,12 +167,12 @@ const labEquipment = [
 const labManagement = [
   { title: 'Quality', text: 'Schedule Equipment Anytime, Seamlessly', bgColor: '#d7faff', icon: Icon11 },
   { title: 'Data Security', text: 'Stay Updated, Avoid Surprises', bgColor: '#d9f5e3', icon: Icon10 },
-  { title: 'Scalability ', text: 'Group, Control, Assign Roles', bgColor: '#fff1d0', icon:  Icon12 },
+  { title: 'Scalability ', text: 'Group, Control, Assign Roles', bgColor: '#fff1d0', icon: Icon12 },
   { title: 'Customization', text: 'Smart Scheduling, Uninterrupted Operations', bgColor: '#f2e3ff', icon: Icon9 },
   { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ffe8cc', icon: Icon3 },
   { title: 'Stay Audit-Ready', text: 'Automated Logs, Effortless Records ', bgColor: '#d9f5e3', icon: Icon5 },
 ];
-const wasteManagement =[
+const wasteManagement = [
   { title: "Waste Tracking", text: "Monitor collection, segregation, and disposal in real-time.", bgColor: "#d7faff", "icon": Icon13 },
   { title: "Optimized Collection Routes", text: "AI-driven route planning for fuel efficiency and reduced costs.", bgColor: "#d9f5e3", icon: Icon14 },
   { title: "Smart Bin Alerts", text: "IoT-enabled bins notify when full, ensuring timely collection.", bgColor: "#fff1d0", icon: Icon15 },
@@ -182,31 +183,31 @@ const wasteManagement =[
 const sales = [
   { title: '24/7 Access with less man power', text: 'Schedule Equipment Anytime, Seamlessly', bgColor: '#d7faff', icon: Icon1 },
   { title: 'Real-Time Availability!', text: 'Stay Updated, Avoid Surprises', bgColor: '#d9f5e3', icon: Icon3 },
-  { title: 'Efficiency', text: 'Automate tasks like orders creation or generating invoices', bgColor: '#fff1d0', icon:  Icon2 },
+  { title: 'Efficiency', text: 'Automate tasks like orders creation or generating invoices', bgColor: '#fff1d0', icon: Icon2 },
   { title: 'Business Growth', text: 'Payment reminders and tax invoice creation simplify cash flow management.', bgColor: '#f2e3ff', icon: Icon8 },
   { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ffe8cc', icon: Icon7 },
   { title: 'Stay Audit-Ready', text: 'Tracking all the detailed changes', bgColor: '#d9f5e3', icon: Icon5 },
 ];
-const Facility= [
-  { title: 'Dynamic Task Dashboard', text: 'Easily assign, monitor, and reschedule tasks in real time.', bgColor: '#d7faff', icon: Icon18 },
-  { title: 'Automated Repetitive Task Scheduling', text: 'Handle daily, weekly, or monthly recurring tasks without manual intervention.', bgColor: '#d9f5e3', icon: Icon19 },
-  { title: 'Quick Task Reporting', text: 'Workers can capture photos, and update task status directly from their phones.', bgColor: '#fff1d0', icon:  Icon35 },
-  { title: 'Real-Time Notifications', text: 'Get updates and alerts on task assignments, changes, or completions.', bgColor: '#f2e3ff', icon: Icon20 },
-  { title: 'Worker App Integration', text: 'Field staff receive mobile notifications, update task progress, and provide photo-based proof of work.', bgColor: '#ffe8cc', icon: Icon21 },
-  { title: 'Location-Based Task Tracking', text: 'GPS tagging ensures accountability for on-site activities.', bgColor: '#d9f5e3', icon: Icon22 },
+const Facility = [
+  { title: 'Asset Lifecycle Tracking', text: 'Monitor and manage asset performance, maintenance history, and status in real time.', bgColor: '#d7faff', icon: Icon18 },
+  { title: 'Work Order Automation', text: 'Automate task creation and assignment for scheduled and emergency maintenance.', bgColor: '#d9f5e3', icon: Icon19 },
+  { title: 'Predictive Maintenance', text: 'Prevent equipment failure with smart scheduling based on usage patterns and alerts.', bgColor: '#fff1d0', icon: Icon20 },
+  { title: 'Space Planning & Utilization', text: 'Optimize floor plans and space usage with interactive layouts and occupancy insights.', bgColor: '#f2e3ff', icon: Icon21 },
+  { title: 'Vendor Management', text: 'Track service partner performance, contract terms, and SLA compliance digitally.', bgColor: '#ffe8cc', icon: Icon22 },
+  { title: 'Real-Time Dashboards', text: 'View operations performance, task status, and cost analytics at a glance.', bgColor: '#d9f5e3', icon: Icon50 },
 ];
-const Hospital= [
+const Hospital = [
   { title: 'Real-Time Patient Dashboard', text: 'Monitor patient records, vitals, test results, and treatment plans in real time for informed care decisions.', bgColor: '#d7faff', icon: Icon29 },
   { title: 'Automated Scheduling System', text: 'Coordinate appointments, lab tests, surgeries, and staff shifts seamlessly to optimize hospital operations.', bgColor: '#d9f5e3', icon: Icon30 },
-  { title: 'Instant Notification Alerts', text: 'Receive timely updates on critical patient conditions, test results, or staff schedule changes.', bgColor: '#fff1d0', icon:  Icon31 },
+  { title: 'Instant Notification Alerts', text: 'Receive timely updates on critical patient conditions, test results, or staff schedule changes.', bgColor: '#fff1d0', icon: Icon31 },
   { title: 'Accurate Tracking', text: 'Track medications and samples with QR code scanning for accurate verification and error-free workflows.', bgColor: '#f2e3ff', icon: Icon32 },
   { title: 'Data-Driven Analytics', text: 'Analyze bed occupancy, patient outcomes, and staff performance in real time to drive operational excellence.', bgColor: '#ffe8cc', icon: Icon33 },
   { title: 'Integrated Billing Operations', text: 'Streamline financial workflows with itemized invoices and insurance claim tracking for efficiency.', bgColor: '#d9f5e3', icon: Icon34 },
 ];
-const Solar= [
+const Solar = [
   { title: 'Real-Time Monitoring', text: 'Live tracking of voltage, current,temperature, and solar irradiance.', bgColor: '#d7faff', icon: Icon23 },
   { title: 'Fault Detection & Alerts', text: 'Instant alerts for issues like shading, dirt, or overheating.', bgColor: '#d9f5e3', icon: Icon24 },
-  { title: 'Energy Analytics Dashboard', text: 'View and analyze solar generation and usage trends.', bgColor: '#fff1d0', icon:  Icon25 },
+  { title: 'Energy Analytics Dashboard', text: 'View and analyze solar generation and usage trends.', bgColor: '#fff1d0', icon: Icon25 },
   { title: 'Remote Access & Control', text: 'Manage your solar system anytime, from anywhere.', bgColor: '#f2e3ff', icon: Icon26 },
   { title: 'Predictive Maintenance', text: 'AI-driven insights to prevent failures and plan maintenance.', bgColor: '#ffe8cc', icon: Icon27 },
   { title: 'Performance Benchmarking', text: 'Compare panel output to spot and fix inefficiencies', bgColor: '#d9f5e3', icon: Icon28 },
@@ -214,11 +215,16 @@ const Solar= [
 
 const FeatureBenifits = ({ data }) => {
   // Determine which set of benefits to display based on the response data
-  const benefits = data == 'Solar' ? Solar:data == 'Hospital' ? Hospital: data == 'Facility' ? Facility:data === 'LMS' ? labManagement: data === 'Claim' ? claimBenefits :data=='Customer'?leadBenefits:data =='HR' ? hrmBenefits:data =='Equipment' ? labEquipment:data =='Waste' ?wasteManagement:data =='Sales and Procurement' ? sales: leaveBenefits;
+  const benefits = data == 'Solar' ? Solar : data == 'Hospital' ? Hospital : data == 'Facility' ? Facility : data === 'LMS' ? labManagement : data === 'Claim' ? claimBenefits : data == 'Customer' ? leadBenefits : data == 'HR' ? hrmBenefits : data == 'Equipment' ? labEquipment : data == 'Waste' ? wasteManagement : data == 'Sales and Procurement' ? sales : leaveBenefits;
 
   return (
     <Section>
-      {data == 'Solar' ? <Title>Web-Enabled Solar Control for the <span>Modern World.</span></Title> : <Title>All-in-One {data} Management, <span>Faster and Easier.</span></Title>}
+      {data === 'Solar' ? (<Title>Web-Enabled Solar Control for the <span>Modern World.</span></Title>
+      ) : data === 'Facility' ? (
+        <Title>All-in-One Facility Management, <span>Streamlined and Smarter.</span></Title>
+      ) : (
+        <Title>All-in-One {data} Management, <span>Faster and Easier.</span></Title>
+      )}
       <BenefitGrid>
         {benefits.map((benefit, index) => (
           <BenefitCard key={index}>

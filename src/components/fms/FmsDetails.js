@@ -1,16 +1,7 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import { FaRedoAlt, FaTasks, FaUserCheck, FaBell, FaChartBar } from 'react-icons/fa';
-import { MdDevices } from 'react-icons/md';
 import facility from '../../assets/img/Step_5.png'
-import {
-  FaCalendarAlt,
-  FaEye,
-  FaHistory,
-  FaSmile
-} from 'react-icons/fa';
-
-
+import { FaTools, FaBuilding, FaHandshake, FaFileAlt, FaMoneyBillWave, FaChartBar, FaChartLine, FaUsers } from 'react-icons/fa';
 // Animations
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(20px); }
@@ -357,84 +348,91 @@ const FmsDetails = () => {
   return (
     <WasteManagementSection>
       <FeaturesContainer>
-        <SectionTitle> Advanced Facility Management Tools for Precision Task Handling</SectionTitle>
+        <SectionTitle>Advanced Facility Management Details</SectionTitle>
 
         <FeatureGrid>
           <FeatureCard color="#3498db">
             <FeatureHeader color="#3498db">
-              <FeatureIcon color="#3498db"><FaRedoAlt /></FeatureIcon> {/* Repeat icon */}
-              <FeatureTitle>Repeat Task Automation</FeatureTitle>
+              <FeatureIcon color="#3498db">
+                <FaTools />
+              </FeatureIcon>
+              <FeatureTitle>Maintenance Management</FeatureTitle>
             </FeatureHeader>
             <FeatureList>
-              <FeatureItem color="#3498db">Schedule recurring tasks with weekly or monthly logic.</FeatureItem>
-              <FeatureItem color="#3498db">Assign fixed days and shifts without daily admin involvement.</FeatureItem>
-              <FeatureItem color="#3498db">Modify frequency and duration at any time.</FeatureItem>
-              <FeatureItem color="#3498db">Save time and ensure consistency in operational duties.</FeatureItem>
+              <FeatureItem color="#3498db">Work Order Automation – Schedule and manage routine and ad-hoc tasks</FeatureItem>
+              <FeatureItem color="#3498db">Technician Mobile App – Update jobs, attach proof of work on-site</FeatureItem>
+              <FeatureItem color="#3498db">Predictive Maintenance – Reduce breakdowns through smart asset usage analysis</FeatureItem>
+              <FeatureItem color="#3498db">Preventive Scheduling – System-driven tasks for regular maintenance cycles</FeatureItem>
             </FeatureList>
           </FeatureCard>
 
           <FeatureCard color="#2ecc71">
             <FeatureHeader color="#2ecc71">
-              <FeatureIcon color="#2ecc71"><FaTasks /></FeatureIcon> {/* Task checklist icon */}
-              <FeatureTitle>Task Progress Tracker</FeatureTitle>
+              <FeatureIcon color="#2ecc71">
+                <FaBuilding />
+              </FeatureIcon>
+              <FeatureTitle>Space & Asset Optimization</FeatureTitle>
             </FeatureHeader>
             <FeatureList>
-              <FeatureItem color="#2ecc71">Live task status: Assigned, In Progress, Completed.</FeatureItem>
-              <FeatureItem color="#2ecc71">Visual checklist for subtasks and daily activities.</FeatureItem>
-              <FeatureItem color="#2ecc71">Attach photos or comments for updates.</FeatureItem>
-              <FeatureItem color="#2ecc71">Admin gets full visibility without follow-ups.</FeatureItem>
+              <FeatureItem color="#2ecc71">Dynamic Space Planning – View interactive floor layouts and occupancy data</FeatureItem>
+              <FeatureItem color="#2ecc71">Asset Lifecycle Tracking – From acquisition to disposal with full maintenance logs</FeatureItem>
+              <FeatureItem color="#2ecc71">Inventory Management – Real-time updates on spare parts, tools, and consumables</FeatureItem>
             </FeatureList>
           </FeatureCard>
 
           <FeatureCard color="#e74c3c">
             <FeatureHeader color="#e74c3c">
-              <FeatureIcon color="#e74c3c"><FaUserCheck /></FeatureIcon> {/* Productivity & performance */}
-              <FeatureTitle>Worker Productivity Dashboard</FeatureTitle>
+              <FeatureIcon color="#e74c3c">
+                <FaHandshake />
+              </FeatureIcon>
+              <FeatureTitle>Vendor & Contract Management</FeatureTitle>
             </FeatureHeader>
             <FeatureList>
-              <FeatureItem color="#e74c3c">Track completed vs. pending assignments.</FeatureItem>
-              <FeatureItem color="#e74c3c">Evaluate worker efficiency based on performance logs.</FeatureItem>
-              <FeatureItem color="#e74c3c">Reassign delayed or missed tasks quickly.</FeatureItem>
-              <FeatureItem color="#e74c3c">Maintain records for audits or reviews.</FeatureItem>
+              <FeatureItem color="#e74c3c">Contract Oversight – SLA tracking, contract expiry alerts, and task assignments</FeatureItem>
+              <FeatureItem color="#e74c3c">Performance Monitoring – Measure and rate third-party vendor service quality</FeatureItem>
+              <FeatureItem color="#e74c3c">Access Logs – Role-based access for vendors and visitor entries</FeatureItem>
             </FeatureList>
           </FeatureCard>
 
           <FeatureCard color="#f39c12">
             <FeatureHeader color="#f39c12">
-              <FeatureIcon color="#f39c12"><MdDevices /></FeatureIcon>
-              <FeatureTitle>Multi-Platform Access</FeatureTitle>
+              <FeatureIcon color="#f39c12">
+                <FaFileAlt />
+              </FeatureIcon>
+              <FeatureTitle>Compliance & Documentation</FeatureTitle>
             </FeatureHeader>
             <FeatureList>
-              <FeatureItem color="#f39c12">Access the platform via web and mobile.</FeatureItem>
-              <FeatureItem color="#f39c12">Inventory Management for Recyclables – Tracks raw materials extracted from waste for reuse in production</FeatureItem>
-              <FeatureItem color="#f39c12">Role-based access control for team members.</FeatureItem>
-              <FeatureItem color="#f39c12">Real-time sync between web and app.</FeatureItem>
+              <FeatureItem color="#f39c12">Audit Trails – Maintain secure digital logs for inspections</FeatureItem>
+              <FeatureItem color="#f39c12">Document Automation – Auto-generate reports for regulatory compliance</FeatureItem>
+              <FeatureItem color="#f39c12">Inspection Scheduling – Plan and track audits with built-in workflows</FeatureItem>
             </FeatureList>
           </FeatureCard>
 
           <FeatureCard color="#9b59b6">
             <FeatureHeader color="#9b59b6">
-              <FeatureIcon color="#9b59b6"><FaBell /></FeatureIcon> {/* Notification bell */}
-              <FeatureTitle>Alerts & Notifications</FeatureTitle>
+              <FeatureIcon color="#9b59b6">
+                <FaMoneyBillWave />
+              </FeatureIcon>
+              <FeatureTitle>Finance & Cost Analysis</FeatureTitle>
             </FeatureHeader>
             <FeatureList>
-              <FeatureItem color="#9b59b6">Instant alerts on task updates and reschedules.</FeatureItem>
-              <FeatureItem color="#9b59b6">Deadline reminders to reduce delays.</FeatureItem>
-              <FeatureItem color="#9b59b6">Custom alerts for escalations or high-priority items.</FeatureItem>
-              <FeatureItem color="#9b59b6">Keep both admin and worker updated in real-time.</FeatureItem>
+              <FeatureItem color="#9b59b6">Budget Tracking – Allocate costs to departments or functions</FeatureItem>
+              <FeatureItem color="#9b59b6">Client Billing System – Invoice for services based on task type or frequency</FeatureItem>
+              <FeatureItem color="#9b59b6">Maintenance ROI Reports – Cost of repair vs. replacement analytics</FeatureItem>
             </FeatureList>
           </FeatureCard>
 
           <FeatureCard color="#1abc9c">
             <FeatureHeader color="#1abc9c">
-              <FeatureIcon color="#1abc9c"><FaChartBar /></FeatureIcon> {/* Analytics chart */}
-              <FeatureTitle>Reporting & Analytics</FeatureTitle>
+              <FeatureIcon color="#1abc9c">
+                <FaChartBar />
+              </FeatureIcon>
+              <FeatureTitle>Analytics & Real-Time Reporting</FeatureTitle>
             </FeatureHeader>
             <FeatureList>
-              <FeatureItem color="#1abc9c">Generate daily, weekly, or custom reports.</FeatureItem>
-              <FeatureItem color="#1abc9c">Track performance metrics and task loads.</FeatureItem>
-              <FeatureItem color="#1abc9c">Export data for compliance or invoicing.</FeatureItem>
-              <FeatureItem color="#1abc9c">Make data-driven decisions for process improvements.</FeatureItem>
+              <FeatureItem color="#1abc9c">Operational KPIs – Task completion, downtime, cost-per-asset metrics</FeatureItem>
+              <FeatureItem color="#1abc9c">Historical Reports – Trend insights and data export for audits</FeatureItem>
+              <FeatureItem color="#1abc9c">Custom Dashboards – Real-time performance snapshots and alerts</FeatureItem>
             </FeatureList>
           </FeatureCard>
         </FeatureGrid>
@@ -444,9 +442,9 @@ const FmsDetails = () => {
         <BenefitsSection>
           <BenefitsContainer>
             <BenefitsContent>
-              <BenefitsTitle>Simplifying Facility Operations through Centralized Task Management</BenefitsTitle>
+              <BenefitsTitle>Revolutionizing Facility Operations with ERP: Control, Compliance, and Clarity</BenefitsTitle>
               <BenefitsDescription>
-                Manual tracking of apartment service operations leads to missed deadlines, inefficiencies, and poor communication. Atomwalk ERP-integrated FMS solves these issues with real-time monitoring, intelligent scheduling, and robust reporting—ensuring that every service is delivered on time with complete transparency.
+                Legacy facility management creates silos and inefficiencies. Atomwalk’s ERP integrates your entire operation, reduces manual overhead, and gives decision-makers the visibility they need to manage smarter.
               </BenefitsDescription>
 
               {/* <BenefitsGrid>
@@ -482,34 +480,34 @@ const FmsDetails = () => {
 
               <BenefitsGrid>
                 <BenefitItem>
-                  <BenefitIcon><FaCalendarAlt /></BenefitIcon> {/* Scheduling */}
+                  <BenefitIcon><FaTools /></BenefitIcon>
                   <BenefitText>
-                    <strong>Centralized Task Scheduling</strong><br />
-                    Assign and manage all operational tasks from a unified interface with recurring scheduling built in.
+                    <strong>Automated Maintenance Flow</strong><br />
+                    Plan, track, and complete maintenance with mobile-enabled, real-time work orders.
                   </BenefitText>
                 </BenefitItem>
 
                 <BenefitItem>
-                  <BenefitIcon><FaEye /></BenefitIcon> {/* Monitoring/Visibility */}
+                  <BenefitIcon><FaUsers /></BenefitIcon>
                   <BenefitText>
-                    <strong>Live Progress Monitoring</strong><br />
-                    Track who’s working, what’s pending, and what’s done—right from the dashboard.
+                    <strong>Connected Vendors</strong><br />
+                    Simplify outsourced service coordination, payments, and SLA tracking.
                   </BenefitText>
                 </BenefitItem>
 
                 <BenefitItem>
-                  <BenefitIcon><FaHistory /></BenefitIcon> {/* Logs & History */}
+                  <BenefitIcon><FaChartLine /></BenefitIcon>
                   <BenefitText>
-                    <strong>Performance Logs & History</strong><br />
-                    Keep detailed logs for each task, worker, and apartment—ideal for compliance and review.
+                    <strong>Full Asset Visibility</strong><br />
+                    Track the full asset lifecycle and maintenance performance from your dashboard.
                   </BenefitText>
                 </BenefitItem>
 
                 <BenefitItem>
-                  <BenefitIcon><FaSmile /></BenefitIcon> {/* Satisfaction/Trust */}
+                  <BenefitIcon><FaBuilding /></BenefitIcon>
                   <BenefitText>
-                    <strong>Resident Satisfaction</strong><br />
-                    Reduce response times and build trust through organized, efficient service execution.
+                    <strong>Smarter Space Management</strong><br />
+                    Optimize workspaces with live occupancy tracking and flexible floor planning.
                   </BenefitText>
                 </BenefitItem>
               </BenefitsGrid>
@@ -528,17 +526,16 @@ const FmsDetails = () => {
 
 
         <ConclusionSection>
-          <ConclusionTitle>Reimagining Facility Oversight with Digital Intelligence </ConclusionTitle>
+          <ConclusionTitle>Transforming Facilities with Smart ERP </ConclusionTitle>
           <ConclusionText>
-            Atomwalk Facility Management System brings structure, speed, and visibility to apartment-level operations. It bridges the gap between <Highlight>admin</Highlight> teams and <Highlight>on-ground workers</Highlight>,
-            driving efficient task execution and resident satisfaction.
+          Atomwalk Facility ERP addresses operational inefficiencies with intelligent workflows and automation, empowering teams to do more with less.
           </ConclusionText>
           <ConclusionList>
-            <ConclusionItem><strong>Smart Scheduling:</strong> Configure recurring jobs once and let the system handle the rest.</ConclusionItem>
-            <ConclusionItem><strong>Seamless Worker Coordination:</strong> Workers stay informed with task details, schedules, and alerts via app.</ConclusionItem>
-            <ConclusionItem><strong>Progress Transparency:</strong> Real-time status updates help supervisors act without micromanagement.          </ConclusionItem>
-            <ConclusionItem><strong>Data-Driven Oversight:</strong> Use insights to improve workflows, allocate resources, and reduce service gaps.          </ConclusionItem>
-            <ConclusionItem><strong>Scalable Infrastructure:</strong> Whether managing 10 apartments or 1000, FMS scales effortlessly.</ConclusionItem>
+            <ConclusionItem><strong>Efficient Task Scheduling:</strong> Automate preventive routines and technician dispatch</ConclusionItem>
+            <ConclusionItem><strong>Digital Compliance:</strong> Maintain regulatory standards with secure documentation</ConclusionItem>
+            <ConclusionItem><strong>Asset Optimization:</strong> Reduce waste and extend equipment life</ConclusionItem>
+            <ConclusionItem><strong>Centralized Control:</strong> Unify facility management under one real-time platform</ConclusionItem>
+            <ConclusionItem><strong>Data-Driven Insights:</strong> Make faster, more informed decisions</ConclusionItem>
           </ConclusionList>
         </ConclusionSection>
       </FeaturesContainer>

@@ -2,20 +2,17 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import Collection from '../../assets/img/H_step_5(1).png'
 import {
-    FaMobileAlt,
-    FaEdit,
-    FaBell,
-    FaUserMd,
-    FaIdBadge,
-    FaCalendarAlt,
-    FaFileInvoice,
-    FaBalanceScale,
-    FaLeaf,
-    FaRecycle,
-    FaSmileBeam,
-    FaFolderOpen,
-    FaCalendarCheck
-} from "react-icons/fa";
+  FaSmileBeam,
+  FaFolderOpen,
+} from 'react-icons/fa';
+import {
+  FaUserMd,
+  FaUserPlus,
+  FaCalendarCheck,
+  FaFileInvoice,
+  FaBox,
+  FaBed,
+} from 'react-icons/fa';
 
 // Animations
 const fadeIn = keyframes`
@@ -360,100 +357,106 @@ const BenefitsImage = styled.div`
 `;
 
 const HmsDetails = () => {
-    return (
-        <WasteManagementSection>
-            <FeaturesContainer>
-                <SectionTitle>Advanced Hospital Tools for Easy Appointment Management</SectionTitle>
+  return (
+    <WasteManagementSection>
+      <FeaturesContainer>
+        <SectionTitle>Advanced Hospital Tools for Easy Healthcare and Operations</SectionTitle>
 
-                <FeatureGrid>
-                    <FeatureCard color="#3498db">
-                        <FeatureHeader color="#3498db">
-                            <FeatureIcon color="#3498db"><FaMobileAlt /></FeatureIcon>
-                            <FeatureTitle>Mobile Booking</FeatureTitle>
-                        </FeatureHeader>
-                        <FeatureList>
-                            <FeatureItem color="#3498db">Book a doctor’s appointment with just a few taps on the app.</FeatureItem>
-                            <FeatureItem color="#3498db">See which times and doctors are free right away.</FeatureItem>
-                            <FeatureItem color="#3498db">Choose the doctor and specialty you need easily.</FeatureItem>
-                            <FeatureItem color="#3498db">Get a confirmation as soon as you book.</FeatureItem>
-                        </FeatureList>
-                    </FeatureCard>
+        <FeatureGrid>
+          <FeatureCard color="#3498db">
+            <FeatureHeader color="#3498db">
+              <FeatureIcon color="#3498db"><FaUserMd /></FeatureIcon>
+              <FeatureTitle>Doctor and Staff Management</FeatureTitle>
+            </FeatureHeader>
+            <FeatureList>
+              <FeatureItem color="#3498db">Access real-time EHRs with patient vitals, lab results, and histories for doctors.</FeatureItem>
+              <FeatureItem color="#3498db">Streamline doctor diagnostics and prescriptions with allergy alerts.</FeatureItem>
+              <FeatureItem color="#3498db">Coordinate nurse, cleaner, and technician roles with secure access.</FeatureItem>
+              <FeatureItem color="#3498db">Schedule staff shifts with automated email and app notifications.</FeatureItem>
+              <FeatureItem color="#3498db">Monitor staff performance and efficiency with workload analytics.</FeatureItem>
+            </FeatureList>
+          </FeatureCard>
 
-                    <FeatureCard color="#2ecc71">
-                        <FeatureHeader color="#2ecc71">
-                            <FeatureIcon color="#2ecc71"><FaEdit /></FeatureIcon>
-                            <FeatureTitle>Reschedule or Cancel Bookings</FeatureTitle>
-                        </FeatureHeader>
-                        <FeatureList>
-                            <FeatureItem color="#2ecc71">Update your appointment date or time right in the app.</FeatureItem>
-                            <FeatureItem color="#2ecc71">Cancel a booking if you can’t make it.</FeatureItem>
-                            <FeatureItem color="#2ecc71">Get a quick confirmation when you make changes.</FeatureItem>
-                            <FeatureItem color="#2ecc71">Save time by doing it yourself without calling the hospital.</FeatureItem>
-                        </FeatureList>
-                    </FeatureCard>
+          <FeatureCard color="#2ecc71">
+            <FeatureHeader color="#2ecc71">
+              <FeatureIcon color="#2ecc71"><FaUserPlus /></FeatureIcon>
+              <FeatureTitle>Patient Management</FeatureTitle>
+            </FeatureHeader>
+            <FeatureList>
+              <FeatureItem color="#2ecc71">Register patients with demographics, insurance, and unique QR code and IDs.</FeatureItem>
+              <FeatureItem color="#2ecc71">Allocate patients to OPD or in-patient care based on triage and symptoms.</FeatureItem>
+              <FeatureItem color="#2ecc71">Store medical history, allergies, and previous visits for continuity of care.</FeatureItem>
+              <FeatureItem color="#2ecc71">Enable rapid emergency registration with minimal data for critical cases.</FeatureItem>
+              <FeatureItem color="#2ecc71">Collect patient feedback on care quality to improve services.</FeatureItem>
+            </FeatureList>
+          </FeatureCard>
 
-                    <FeatureCard color="#e74c3c">
-                        <FeatureHeader color="#e74c3c">
-                            <FeatureIcon color="#e74c3c"><FaBell /></FeatureIcon>
-                            <FeatureTitle>Appointment Reminders</FeatureTitle>
-                        </FeatureHeader>
-                        <FeatureList>
-                            <FeatureItem color="#e74c3c">Get a reminder a day or an hour before your appointment.</FeatureItem>
-                            <FeatureItem color="#e74c3c">You’ll get notifications by app, text, or email.</FeatureItem>
-                            <FeatureItem color="#e74c3c">Avoid forgetting or missing your visit.</FeatureItem>
-                            <FeatureItem color="#e74c3c">Make sure app notification is enabled in your mobile.</FeatureItem>
-                        </FeatureList>
-                    </FeatureCard>
+          <FeatureCard color="#e74c3c">
+            <FeatureHeader color="#e74c3c">
+              <FeatureIcon color="#e74c3c"><FaCalendarCheck /></FeatureIcon>
+              <FeatureTitle>Book an Appointment</FeatureTitle>
+            </FeatureHeader>
+            <FeatureList>
+              <FeatureItem color="#e74c3c">Book appointments with real-time doctor and slot availability.</FeatureItem>
+              <FeatureItem color="#e74c3c">Select doctors by specialty, experience, or ratings with current schedules.</FeatureItem>
+              <FeatureItem color="#e74c3c">Reschedule or cancel bookings in-app with instant confirmations.</FeatureItem>
+              <FeatureItem color="#e74c3c">Organize appointments with calendar sync and app reminders.</FeatureItem>
+              <FeatureItem color="#e74c3c">Manage profile, health records, and visits for tailored bookings.</FeatureItem>
+            </FeatureList>
+          </FeatureCard>
 
-                    <FeatureCard color="#f39c12">
-                        <FeatureHeader color="#f39c12">
-                            <FeatureIcon color="#f39c12"><FaUserMd /></FeatureIcon>
-                            <FeatureTitle>Doctor and Specialty Guide</FeatureTitle>
-                        </FeatureHeader>
-                        <FeatureList>
-                            <FeatureItem color="#f39c12">Read about doctors, specialty, and their experience.</FeatureItem>
-                            <FeatureItem color="#f39c12">Find doctors by their specialty.</FeatureItem>
-                            <FeatureItem color="#f39c12">Check ratings to help you decide.</FeatureItem>
-                            <FeatureItem color="#f39c12">See the latest schedules to book the right time.</FeatureItem>
-                        </FeatureList>
-                    </FeatureCard>
+          <FeatureCard color="#f39c12">
+            <FeatureHeader color="#f39c12">
+              <FeatureIcon color="#f39c12"><FaFileInvoice /></FeatureIcon>
+              <FeatureTitle>Billing, Invoicing, and Documentation</FeatureTitle>
+            </FeatureHeader>
+            <FeatureList>
+              <FeatureItem color="#f39c12">Create detailed bills with tax breakdowns (GST, VAT) for services, tests, and medications.</FeatureItem>
+              <FeatureItem color="#f39c12">Validate insurance policies and monitor claim progress for seamless reimbursements.</FeatureItem>
+              <FeatureItem color="#f39c12">Upload pathology reports and lab results for secure access by patients and doctors.</FeatureItem>
+              <FeatureItem color="#f39c12">Auto-generate discharge summaries with treatment details and follow-up plans.</FeatureItem>
+              <FeatureItem color="#f39c12">Store medical records in the MRD for compliance and easy retrieval.</FeatureItem>
+            </FeatureList>
+          </FeatureCard>
 
-                    <FeatureCard color="#9b59b6">
-                        <FeatureHeader color="#9b59b6">
-                            <FeatureIcon color="#9b59b6"><FaIdBadge /></FeatureIcon>
-                            <FeatureTitle>Your Profile and History</FeatureTitle>
-                        </FeatureHeader>
-                        <FeatureList>
-                            <FeatureItem color="#9b59b6">Keep track of your health records and past appointments.</FeatureItem>
-                            <FeatureItem color="#9b59b6">Update your contact information safely.</FeatureItem>
-                            <FeatureItem color="#9b59b6">See all your past and upcoming visits in one spot.</FeatureItem>
-                            <FeatureItem color="#9b59b6">Book faster using your saved information.</FeatureItem>
-                        </FeatureList>
-                    </FeatureCard>
+          <FeatureCard color="#9b59b6">
+            <FeatureHeader color="#9b59b6">
+              <FeatureIcon color="#9b59b6"><FaBox /></FeatureIcon>
+              <FeatureTitle>Inventory Management</FeatureTitle>
+            </FeatureHeader>
+            <FeatureList>
+              <FeatureItem color="#9b59b6">Track medicine stock with batch numbers, expiry dates, and reorder alerts.</FeatureItem>
+              <FeatureItem color="#9b59b6">Monitor surgical tools and disposables (e.g., gloves).</FeatureItem>
+              <FeatureItem color="#9b59b6">Log wastage of expired/damaged items and manage supplier contacts.</FeatureItem>
+              <FeatureItem color="#9b59b6">Dispense medications via pharmacy module, syncing with patient prescriptions.</FeatureItem>
+              <FeatureItem color="#9b59b6">Generate inventory reports to optimize stock levels and reduce costs.</FeatureItem>
+            </FeatureList>
+          </FeatureCard>
 
-                    <FeatureCard color="#1abc9c">
-                        <FeatureHeader color="#1abc9c">
-                            <FeatureIcon color="#1abc9c"><FaCalendarAlt /></FeatureIcon>
-                            <FeatureTitle>Calendar Sync</FeatureTitle>
-                        </FeatureHeader>
-                        <FeatureList>
-                            <FeatureItem color="#1abc9c">Add appointments to your phone’s calendar, like Google or Outlook.</FeatureItem>
-                            <FeatureItem color="#1abc9c">Set reminders to stay on top of your schedule.</FeatureItem>
-                            <FeatureItem color="#1abc9c">Get updates if your appointment changes.</FeatureItem>
-                            <FeatureItem color="#1abc9c">Stay organized and never miss a visit.</FeatureItem>
-                        </FeatureList>
-                    </FeatureCard>
-                </FeatureGrid>
+          <FeatureCard color="#1abc9c">
+            <FeatureHeader color="#1abc9c">
+              <FeatureIcon color="#1abc9c"><FaBed /></FeatureIcon>
+              <FeatureTitle>In-Patient Management</FeatureTitle>
+            </FeatureHeader>
+            <FeatureList>
+              <FeatureItem color="#1abc9c">Assign beds by department, ward, or special needs (e.g., ICU, isolation).</FeatureItem>
+              <FeatureItem color="#1abc9c">Track daily rounds, medications, and dietary requirements in real time.</FeatureItem>
+              <FeatureItem color="#1abc9c">Prepare discharge plans with automated summaries and billing integration.</FeatureItem>
+              <FeatureItem color="#1abc9c">Monitor bed status (available, occupied, cleaning) via live dashboards.</FeatureItem>
+              <FeatureItem color="#1abc9c">Trigger alerts for high-risk patients or insurance expiry to ensure compliance.</FeatureItem>
+            </FeatureList>
+          </FeatureCard>
+        </FeatureGrid>
 
-                <BenefitsSection>
-                    <BenefitsContainer>
-                        <BenefitsContent>
-                            <BenefitsTitle>Making Healthcare Easier with One Simple System</BenefitsTitle>
-                            <BenefitsDescription>
-                                Scheduling appointments by hand can lead to long waits, forgotten visits, and mix-ups. The Atomwalk HMS fixes these problems with an easy app for booking, real-time updates, and helpful reports—making sure every patient gets care on time with everything clear and organized.
-                            </BenefitsDescription>
+        <BenefitsSection>
+          <BenefitsContainer>
+            <BenefitsContent>
+              <BenefitsTitle>Simplifying Healthcare through Centralized Digital Management</BenefitsTitle>
+              <BenefitsDescription>
+                Manual processes in hospitals lead to delayed care, miscommunication, and inefficiencies. Atomwalk HMS, integrated with ERP systems, resolves these challenges with real-time patient monitoring, intelligent scheduling, robust reporting, and secure data management—ensuring timely, transparent, and high-quality healthcare delivery.
+              </BenefitsDescription>
 
-                            {/* <BenefitsGrid>
+              {/* <BenefitsGrid>
                 <BenefitItem>
                   <BenefitIcon><FaCity /></BenefitIcon>
                   <BenefitText>
@@ -484,69 +487,70 @@ const HmsDetails = () => {
                 </BenefitItem>
               </BenefitsGrid> */}
 
-                            <BenefitsGrid>
-                                <BenefitItem>
-                                    <BenefitIcon><FaCalendarCheck /></BenefitIcon>
-                                    <BenefitText>
-                                        <strong>One Place for Booking </strong><br />
-                                        Book appointments anytime, anywhere using a single app that lets you pick the best doctor and time for your needs, with options to adjust if your schedule changes.
-                                    </BenefitText>
-                                </BenefitItem>
+              <BenefitsGrid>
+                <BenefitItem>
+                  <BenefitIcon><FaCalendarCheck /></BenefitIcon>
+                  <BenefitText>
+                    <strong>Centralized Patient and Staff Management</strong><br />
+                    Manage patient registrations, treatment plans, staff schedules, and bed assignments from a unified interface with automated workflows.
+                  </BenefitText>
+                </BenefitItem>
 
-                                <BenefitItem>
-                                    <BenefitIcon><FaFileInvoice /></BenefitIcon>
-                                    <BenefitText>
-                                        <strong>Live Appointment Updates</strong><br />
-                                        See which appointments are booked, changed, or canceled right away from the staff dashboard.
-                                    </BenefitText>
-                                </BenefitItem>
+                <BenefitItem>
+                  <BenefitIcon><FaFileInvoice /></BenefitIcon>
+                  <BenefitText>
+                    <strong>Real-Time Care and Operational Monitoring</strong><br />
+                    Track patient vitals, test results, staff tasks, and bed statuses live from intuitive dashboards.
+                  </BenefitText>
+                </BenefitItem>
 
-                                <BenefitItem>
-                                    <BenefitIcon><FaFolderOpen /></BenefitIcon>
-                                    <BenefitText>
-                                        <strong>Patient Records</strong><br />
-                                        Keep a clear record of every patient’s bookings, visits, and details for easy follow-ups or audits.
-                                    </BenefitText>
-                                </BenefitItem>
+                <BenefitItem>
+                  <BenefitIcon><FaFolderOpen /></BenefitIcon>
+                  <BenefitText>
+                    <strong>Compliance and Performance Logs</strong><br />
+                    Maintain detailed records of treatments, staff actions, billing, and inventory for audits, compliance, and operational reviews.
+                  </BenefitText>
+                </BenefitItem>
 
-                                <BenefitItem>
-                                    <BenefitIcon><FaSmileBeam /></BenefitIcon>
-                                    <BenefitText>
-                                        <strong>Happier Patients</strong><br />
-                                        Cut down on wait times and keep patients happy with a clear, organized booking system.
-                                    </BenefitText>
-                                </BenefitItem>
-                            </BenefitsGrid>
-
-
-                        </BenefitsContent>
-                        <BenefitsImage>
-                            {/* Replace with your actual image */}
-                            <img
-                                src={Collection}
-                                alt="Waste management workflow"
-                            />
-                        </BenefitsImage>
-                    </BenefitsContainer>
-                </BenefitsSection>
+                <BenefitItem>
+                  <BenefitIcon><FaSmileBeam /></BenefitIcon>
+                  <BenefitText>
+                    <strong>Patient and Staff Satisfaction</strong><br />
+                    Enhance care delivery and staff efficiency with faster responses, clear communication, and organized processes, improving outcomes and morale.
+                  </BenefitText>
+                </BenefitItem>
+              </BenefitsGrid>
 
 
-                <ConclusionSection>
-                    <ConclusionTitle>Enhancing Healthcare with Smart Technology </ConclusionTitle>
-                    <ConclusionText>
-                        The Atomwalk Healthcare Management System <Highlight>simplifies hospital work</Highlight>, enhances patient-doctor connections, and ensures <Highlight>smooth appointments</Highlight> and care.
-                    </ConclusionText>
-                    <ConclusionList>
-                        <ConclusionItem><strong>Easy Booking:</strong> Patients can book and manage appointments right from their phone.</ConclusionItem>
-                        <ConclusionItem><strong>Doctor Coordination:</strong>Doctors will be connected with the staff for confirmation of their availability.</ConclusionItem>
-                        <ConclusionItem><strong>Clear Updates:</strong>  Slots get updated for every booking or change as it happens. </ConclusionItem>
-                        <ConclusionItem><strong>Smart Planning: </strong> Use data to make schedules better, shorten waits, and improve care. </ConclusionItem>
-                        <ConclusionItem><strong>Grows with You: </strong>Works for small clinics or big hospitals without any trouble.</ConclusionItem>
-                    </ConclusionList>
-                </ConclusionSection>
-            </FeaturesContainer>
-        </WasteManagementSection>
-    );
+            </BenefitsContent>
+            <BenefitsImage>
+              {/* Replace with your actual image */}
+              <img
+                src={Collection}
+                alt="Waste management workflow"
+              />
+            </BenefitsImage>
+          </BenefitsContainer>
+        </BenefitsSection>
+
+
+        <ConclusionSection>
+          <ConclusionTitle>Enhancing Healthcare with Smart Technology and  Staff Coordination</ConclusionTitle>
+          <ConclusionText>
+            Atomwalk Healthcare Management System brings structure, speed, and precision to hospital operations. By bridging <Highlight>clinical staff</Highlight>, <Highlight>administrators</Highlight>, and <Highlight>patients</Highlight>, it drives efficient care delivery, operational excellence, and workforce optimization.
+          </ConclusionText>
+          <ConclusionList>
+            <ConclusionItem><strong>Unified Patient Profiles:</strong> Register patients and staff for instant data access across departments.</ConclusionItem>
+            <ConclusionItem><strong>Instant Staff Updates:</strong> Connect doctors, nurses, and staff with mobile alerts and schedules.</ConclusionItem>
+            <ConclusionItem><strong>Efficient Care Monitoring:</strong> Track patient care, staff performance, and resources with minimal oversight.</ConclusionItem>
+            <ConclusionItem><strong>Data-Driven Optimization:</strong> Improve bed usage, staff allocation, and outcomes with real-time insights.</ConclusionItem>
+            <ConclusionItem><strong>Advanced Clinical Support:</strong> Equip doctors and nurses for diagnostics, treatment, and care coordination.</ConclusionItem>
+            <ConclusionItem><strong>Rapid Diagnostics Delivery:</strong> Deliver fast, accurate lab and radiology results across departments.</ConclusionItem>
+          </ConclusionList>
+        </ConclusionSection>
+      </FeaturesContainer>
+    </WasteManagementSection>
+  );
 };
 
 export default HmsDetails;

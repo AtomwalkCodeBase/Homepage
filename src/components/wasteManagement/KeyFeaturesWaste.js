@@ -303,33 +303,33 @@ const KeyFeaturesWaste = (props) => {
   
   const hmsfeatures = [
     {
-      icon: Hospital1,
-      title: "Patients",
-      description: "Book appointments, check doctor details, manage your schedule, and get reminders—all from a mobile app that’s simple to use.",
+      icon: Hospital4,
+      title: "Hospital Administrators",
+      description: "Oversee patient admissions, staff schedules, bed allocations, and financial reports through a centralized dashboard, minimizing manual oversight.",
       accentColor: "#7d3eff",
       iconBg: "#f0e7ff",
       iconHover: "#7d3eff"
     },
     {
       icon: Hospital2,
-      title: "Doctors",
-      description: "See your schedule, check patient information, and get updates about appointments, so you can focus on giving great care.",
+      title: "Doctors and Nurses",
+      description: "Doctors access EHR, order diagnostics, and prescribe medications; nurses update vitals, administer medications, and coordinate care via mobile alerts and dashboards.",
       accentColor: "#3ea9ff",
       iconBg: "#e7f5ff",
       iconHover: "#3ea9ff"
     },
     {
-      icon: Hospital3,
-      title: "Hospital staff",
-      description: "Keep track of all appointments, check doctor availability, and manage patient details using an easy dashboard.",
+      icon: Hospital1,
+      title: "Patients",
+      description: "Benefit from faster care, transparent billing, and organized follow-ups for an enhanced healthcare experience.",
       accentColor: "#3eff8f",
       iconBg: "#e7fff0",
       iconHover: "#3eff8f"
     },
     {
-      icon: Hospital4,
-      title: "Tech Teams",
-      description: "Provide training and support to ensure everyone can use the app without trouble.",
+      icon: Hospital3,
+      title: "Diagnostic and Pharmacy Staff",
+      description: "Process lab tests, imaging orders, and medication dispensing with barcode tracking, integrated radiology reports, and e-prescription-based invoicing for precise, efficient care delivery.",
       accentColor: "#ff7d3e",
       iconBg: "#fff0e7",
       iconHover: "#ff7d3e"

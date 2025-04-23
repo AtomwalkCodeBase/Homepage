@@ -1,16 +1,16 @@
 import React from 'react'
 import LetsConnect from '../LetsConnect'
 import FeatureBenifits from '../FeatureBenifits'
-import TagImg from '../../assets/img/H_step1.png'
+import TagImg from '../../assets/img/HMS_step1.png'
 import KeyFeaturesWaste from '../wasteManagement/KeyFeaturesWaste'
 import HmsDetails from './HmsDetails'
 
 const HmsHeroPage = () => {
   return (
     <>
-            <LetsConnect title={"Easy Healthcare Management: Book, Track, Stay Connected"} description={"The Atomwalk HMS gives patients a simple way to book, manage, and keep track of their doctor appointments. It’s built for hospitals and clinics that handle many different types of doctors and services. The system makes it easy to see doctor schedules, check appointment statuses, and stay organized, so both patients and hospital staff have a hassle-free experience."} background={"#7BD3EA"} lead={true} img={TagImg}></LetsConnect>
+            <LetsConnect title={"Unified Healthcare: Register, Treat, Manage"} description={"Atomwalk HMS provides a centralized platform to manage every aspect of hospital operations, from patient registration to staff scheduling. Designed for hospitals and healthcare providers, it streamlines patient data management, treatment planning, resource allocation, and workforce coordination, offering real-time visibility, automated workflows, and secure data handling to deliver superior care and operational excellence."} background={"#6DE1D2"} lead={true} img={TagImg}></LetsConnect>
             <FeatureBenifits data={"Hospital"} />
-            <KeyFeaturesWaste title={"Together, We Care Better"} description={"Our Healthcare Management System connects patients, doctors, and hospital staff in one easy-to-use platform, making sure everyone works together smoothly to provide great care."}></KeyFeaturesWaste>
+            <KeyFeaturesWaste title={"HMS in Action: Connecting People and Processes"} description={"Our Healthcare Management System unites all stakeholders in a cohesive ecosystem, ensuring flawless collaboration and efficient healthcare delivery across roles."}></KeyFeaturesWaste>
         <HmsDetails />
     </>
   )

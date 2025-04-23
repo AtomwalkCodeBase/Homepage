@@ -39,9 +39,9 @@ import Icon28 from '../assets/img/step2_6_solarpng.png';
 import Icon29 from '../assets/img/H_Step2(1).png';
 import Icon30 from '../assets/img/H_Step2(2).png';
 import Icon31 from '../assets/img/H_Step2(3).png';
-import Icon32 from '../assets/img/H_Step2(4).png';
-import Icon33 from '../assets/img/H_Step2(5).png';
-import Icon34 from '../assets/img/H_Step2(6).png';
+import Icon32 from '../assets/img/step2_(4).png';
+import Icon33 from '../assets/img/step2_(5).png';
+import Icon34 from '../assets/img/step2_(6).png';
 import Icon35 from '../assets/img/Mobile_Icon.png';
 
 
@@ -196,12 +196,12 @@ const Facility= [
   { title: 'Location-Based Task Tracking', text: 'GPS tagging ensures accountability for on-site activities.', bgColor: '#d9f5e3', icon: Icon22 },
 ];
 const Hospital= [
-  { title: 'Appointment Booking', text: 'Patients can book appointments using a mobile app and see which time slots are open right away.', bgColor: '#d7faff', icon: Icon29 },
-  { title: 'Reschedule or Cancel Appointments', text: 'Users can update or cancel their bookings directly in the app if plans change.', bgColor: '#d9f5e3', icon: Icon30 },
-  { title: 'Appointment Reminders', text: 'Get automatic notifications before your appointment to help you remember.', bgColor: '#fff1d0', icon:  Icon31 },
-  { title: 'Doctor Information List', text: 'Check out doctor profiles, their specialties, their experience and fees.', bgColor: '#f2e3ff', icon: Icon32 },
-  { title: 'Add to Your Calendar', text: 'Save appointments to your phone’s calendar to get reminders when it’s time.', bgColor: '#ffe8cc', icon: Icon33 },
-  { title: 'WhatsApp Integration', text: 'Patients can book, reschedule, or cancel appointments and receive reminders via an automated WhatsApp chatbot, ensuring secure and convenient communication.', bgColor: '#d9f5e3', icon: Icon34 },
+  { title: 'Real-Time Patient Dashboard', text: 'Monitor patient records, vitals, test results, and treatment plans in real time for informed care decisions.', bgColor: '#d7faff', icon: Icon29 },
+  { title: 'Automated Scheduling System', text: 'Coordinate appointments, lab tests, surgeries, and staff shifts seamlessly to optimize hospital operations.', bgColor: '#d9f5e3', icon: Icon30 },
+  { title: 'Instant Notification Alerts', text: 'Receive timely updates on critical patient conditions, test results, or staff schedule changes.', bgColor: '#fff1d0', icon:  Icon31 },
+  { title: 'Accurate Tracking', text: 'Track medications and samples with QR code scanning for accurate verification and error-free workflows.', bgColor: '#f2e3ff', icon: Icon32 },
+  { title: 'Data-Driven Analytics', text: 'Analyze bed occupancy, patient outcomes, and staff performance in real time to drive operational excellence.', bgColor: '#ffe8cc', icon: Icon33 },
+  { title: 'Integrated Billing Operations', text: 'Streamline financial workflows with itemized invoices and insurance claim tracking for efficiency.', bgColor: '#d9f5e3', icon: Icon34 },
 ];
 const Solar= [
   { title: 'Real-Time Monitoring', text: 'Live tracking of voltage, current,temperature, and solar irradiance.', bgColor: '#d7faff', icon: Icon23 },

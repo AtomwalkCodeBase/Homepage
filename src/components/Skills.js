@@ -314,8 +314,8 @@ export const Skills = () => {
       accentColor2: "#ffeb3b"
     },
     {
-      title: "Hospital Management System (HMS)",
-      description: "The Atomwalk Healthcare Management System makes it easy for hospitals, clinics, and patients to manage medical appointments and services with a simple mobile app for booking, helpful reminders, and clear communication between patients and doctors, our system helps everything run smoothly, improves patient care, and keeps everyone on the same page.",
+      title: "Hospital Management System",
+      description: "Atomwalk Healthcare Management System empowers hospital operations by integrating patient care, clinical workflows, and administrative tasks into a single, intuitive platform. From patient registration to discharge, emergency response to staff management, our system ensures seamless coordination, enhanced efficiency, and exceptional healthcare delivery across all hospital functions.",
       image: Hms,
       path: "/hospitalmanagement.html",
       bgColor: "rgb(217 254 229)",

@@ -211,7 +211,7 @@ const Highlight = styled.span`
 `;
 
 const BenefitsSection = styled.div`
-  background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+  background: linear-gradient(135deg, #e8f5e9, #d9f2e6);
   padding: 2rem 1rem;
   border-radius: 12px;
   margin: 2rem 0;
@@ -375,78 +375,79 @@ const SmsDetails = () => {
                     <FeatureCard color="#3498db">
                         <FeatureHeader color="#3498db">
                             <FeatureIcon color="#3498db"><FaSolarPanel /></FeatureIcon> {/* Solar Panel Monitoring */}
-                            <FeatureTitle>Panel-Level Monitoring</FeatureTitle>
+                            <FeatureTitle>Customer Management (CRM)</FeatureTitle>
                         </FeatureHeader>
                         <FeatureList>
-                            <FeatureItem color="#3498db">Monitor voltage, current, and power output of panels.</FeatureItem>
-                            <FeatureItem color="#3498db">Detect underperforming or faulty panels instantly.</FeatureItem>
-                            <FeatureItem color="#3498db">Improve efficiency by identifying shading or soiling issues early.</FeatureItem>
-                            <FeatureItem color="#3498db">Enhance ROI by maximizing the performance of every panel.</FeatureItem>
+                            <FeatureItem color="#3498db">Lead capture (website, calls, campaigns).</FeatureItem>
+                            <FeatureItem color="#3498db">Client profiling (residential, commercial, industry type).</FeatureItem>
+                            <FeatureItem color="#3498db"> visit scheduling & reporting</FeatureItem>
+                            <FeatureItem color="#3498db">Follow-up and deal stage tracking.</FeatureItem>
+                            <FeatureItem color="#3498db">Proposal & quotation generation</FeatureItem>
+
                         </FeatureList>
                     </FeatureCard>
-
+                        <FeatureCard color="#e74c3c">
+                        <FeatureHeader color="#e74c3c">
+                            <FeatureIcon color="#e74c3c"><FaTools /></FeatureIcon> {/* Maintenance */}
+                            <FeatureTitle>Procurement & Inventory management</FeatureTitle>
+                        </FeatureHeader>
+                        <FeatureList>
+                            <FeatureItem color="#e74c3c">Procurement of:Solar panels, Inverters, Batteries, Mounting structures.</FeatureItem>
+                            <FeatureItem color="#e74c3c">Stock tracking across warehouse & sites.</FeatureItem>
+                            <FeatureItem color="#e74c3c">Vendor/supplier management.</FeatureItem>
+                            <FeatureItem color="#e74c3c">Set minimum and maximum stock levels to manage supply efficiently.</FeatureItem>
+                            
+                        </FeatureList>
+                    </FeatureCard>
                     <FeatureCard color="#2ecc71">
                         <FeatureHeader color="#2ecc71">
                             <FeatureIcon color="#2ecc71"><FaBolt /></FeatureIcon> {/* Energy Analysis */}
-                            <FeatureTitle>Energy Usage Analysis</FeatureTitle>
+                            <FeatureTitle>Project Management (Installation)</FeatureTitle>
                         </FeatureHeader>
                         <FeatureList>
-                            <FeatureItem color="#2ecc71">Compare energy generated vs. consumed in real-time.</FeatureItem>
-                            <FeatureItem color="#2ecc71">Measure energy exported to the grid or stored in batteries.</FeatureItem>
-                            <FeatureItem color="#2ecc71">Optimize load management and track cost savings.</FeatureItem>
-                            <FeatureItem color="#2ecc71">Identify peak usage periods to adjust energy consumption habits.</FeatureItem>
-                        </FeatureList>
-                    </FeatureCard>
-
-                    <FeatureCard color="#e74c3c">
-                        <FeatureHeader color="#e74c3c">
-                            <FeatureIcon color="#e74c3c"><FaTools /></FeatureIcon> {/* Maintenance */}
-                            <FeatureTitle>Maintenance Scheduling</FeatureTitle>
-                        </FeatureHeader>
-                        <FeatureList>
-                            <FeatureItem color="#e74c3c">Set cleaning and inspection reminders based on performance drop.</FeatureItem>
-                            <FeatureItem color="#e74c3c">Maintain logs of service history and technician visits.</FeatureItem>
-                            <FeatureItem color="#e74c3c">Reduce downtime with timely preventive actions.</FeatureItem>
-                            <FeatureItem color="#e74c3c">Extend equipment lifespan through regular upkeep.</FeatureItem>
+                            <FeatureItem color="#2ecc71">Create a new project record and the process templet for the project, include the activities needed to the project.</FeatureItem>
+                            <FeatureItem color="#2ecc71">Task assignments to installation teams .</FeatureItem>
+                            <FeatureItem color="#2ecc71">Installation status (in-progress, delayed, complete).</FeatureItem>
+                            <FeatureItem color="#2ecc71">Payment status & follow-up.</FeatureItem>
                         </FeatureList>
                     </FeatureCard>
 
                     <FeatureCard color="#f39c12">
                         <FeatureHeader color="#f39c12">
                             <FeatureIcon color="#f39c12"><MdDevices /></FeatureIcon>
-                            <FeatureTitle>Mobile & Web Dashboard</FeatureTitle>
+                            <FeatureTitle>Post installation Management</FeatureTitle>
                         </FeatureHeader>
                         <FeatureList>
-                            <FeatureItem color="#f39c12">View system status, production trends, and savings graphs.</FeatureItem>
-                            <FeatureItem color="#f39c12">Control and configure settings remotely.</FeatureItem>
-                            <FeatureItem color="#f39c12">Secure login with role-based access for multiple users.</FeatureItem>
-                            <FeatureItem color="#f39c12">Stay connected with real-time system data on the go.</FeatureItem>
+                            <FeatureItem color="#f39c12">Monitor system performance in real-time through integrated data.</FeatureItem>
+                            <FeatureItem color="#f39c12">Enable issue resolution with a ticketing system.</FeatureItem>
+                            <FeatureItem color="#f39c12">Conduct scheduled maintenance and remote health checks.</FeatureItem>
+                            <FeatureItem color="#f39c12">Keep customers engaged with updates and manage warranties smoothly.</FeatureItem>
                         </FeatureList>
                     </FeatureCard>
 
                     <FeatureCard color="#9b59b6">
                         <FeatureHeader color="#9b59b6">
                             <FeatureIcon color="#9b59b6"><FaBell /></FeatureIcon>
-                            <FeatureTitle>Alerts & Notifications</FeatureTitle>
+                            <FeatureTitle>Compliance & Documentation</FeatureTitle>
                         </FeatureHeader>
                         <FeatureList>
-                            <FeatureItem color="#9b59b6">Real-time alerts via SMS, email, or app notifications.</FeatureItem>
-                            <FeatureItem color="#9b59b6">Get notified for faults like disconnection, overheating, or inverter errors.</FeatureItem>
-                            <FeatureItem color="#9b59b6">Customize thresholds and alert types for different users.</FeatureItem>
-                            <FeatureItem color="#9b59b6">Enable faster decision-making with instant system feedback.</FeatureItem>
+                            <FeatureItem color="#9b59b6">Store key documents in a centralized system.</FeatureItem>
+                            <FeatureItem color="#9b59b6">Use categories and tags for easy access.</FeatureItem>
+                            <FeatureItem color="#9b59b6">Secure documents with access controls.</FeatureItem>
+                            <FeatureItem color="#9b59b6">Track and share documents for compliance.</FeatureItem>
                         </FeatureList>
                     </FeatureCard>
 
                     <FeatureCard color="#1abc9c">
                         <FeatureHeader color="#1abc9c">
                             <FeatureIcon color="#1abc9c"><FaChartLine /></FeatureIcon> {/* Daily Insights */}
-                            <FeatureTitle>Daily Solar Insights</FeatureTitle>
+                            <FeatureTitle>AMC Mangement</FeatureTitle>
                         </FeatureHeader>
                         <FeatureList>
-                            <FeatureItem color="#1abc9c">Auto-generated reports on daily energy performance.</FeatureItem>
-                            <FeatureItem color="#1abc9c">Highlight best-performing days and inefficiencies.</FeatureItem>
-                            <FeatureItem color="#1abc9c">Download or share insights with stakeholders easily.</FeatureItem>
-                            <FeatureItem color="#1abc9c">Gain transparency into energy savings and trends.</FeatureItem>
+                            <FeatureItem color="#1abc9c">Warranty tracking</FeatureItem>
+                            <FeatureItem color="#1abc9c">AMC (Annual Maintenance Contract) renewals</FeatureItem>
+                            <FeatureItem color="#1abc9c">Service request logging.</FeatureItem>
+                            <FeatureItem color="#1abc9c">Handle payment and invoicing for the AMC and Keep customers informed about their AMC status</FeatureItem>
                         </FeatureList>
                     </FeatureCard>
                 </FeatureGrid>

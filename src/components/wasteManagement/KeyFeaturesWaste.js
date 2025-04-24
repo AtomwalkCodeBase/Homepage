@@ -338,32 +338,32 @@ const KeyFeaturesWaste = (props) => {
   const Smsfeatures = [
     {
       icon: solar1,
-      title: "Facility Managers",
-      description: "Monitor energy generation and ensure optimal solar system performance with minimal manual intervention.",
+      title: "Consumers",
+      description: "People and businesses who use solar energy to cut costs, monitor usage, and benefit from clean energy and government support.",
       accentColor: "#7d3eff",
       iconBg: "#f0e7ff",
       iconHover: "#7d3eff"
     },
     {
       icon: solar2,
-      title: "Infrastructure Developers",
-      description: "Integrate smart solar solutions into buildings, townships, and industrial parks for sustainable energy management.",
+      title: "Solar Energy Providers",
+      description: "Experts who set up and service solar systems, using smart tools to track performance and keep systems running smoothly.",
       accentColor: "#3ea9ff",
       iconBg: "#e7f5ff",
       iconHover: "#3ea9ff"
     },
     {
       icon: solar4,
-      title: "Business Owners",
-      description: "Gain visibility into energy ROI, reduce operational costs, and align with green energy goals.",
+      title: "Government & Regulatory Bodies",
+      description: "Authorities who guide solar adoption through policies and subsidies, using data to measure impact and ensure compliance.",
       accentColor: "#3eff8f",
       iconBg: "#e7fff0",
       iconHover: "#3eff8f"
     },
     {
       icon: solar3,
-      title: "Maintenance Teams",
-      description: "Receive real-time alerts and insights to streamline inspection, cleaning, and repair schedules.",
+      title: "ERP System Administrators",
+      description: "Tech professionals who build and maintain the solar platform, ensuring it runs securely and connects all the moving parts.",
       accentColor: "#ff7d3e",
       iconBg: "#fff0e7",
       iconHover: "#ff7d3e"

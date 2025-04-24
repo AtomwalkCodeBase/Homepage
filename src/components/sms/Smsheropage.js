@@ -9,9 +9,9 @@ import SmsDetails from './SmsDetails'
 function Smsheropage() {
   return (
     <>
-            <LetsConnect title={"Smart Solar Management: Track, Manage, Maximize"} description={"Atomwalk Solar Management System provides a robust platform to monitor and manage solar energy production through intelligent automation and real-time data insights. Designed for both industrial and residential setups, our system ensures that solar energy is harnessed efficiently and monitored sustainably."} background={"#BEE4D0"} lead={true} img={TagImgSms}></LetsConnect>
+            <LetsConnect title={"Smart Solar Management: Real-Time Insight "} description={"Atomwalk Smart Solar Management System streamlines solar operations with an all-in-one AIoT-powered platform. It combines real-time monitoring, smart inventory tracking, and customer management in one place. Built-in AI and sensors turn data into actionable insights for early issue detection and smarter decisions. Ideal for scaling your business or optimizing daily operations."} background={"#d9f2e6"} lead={true} img={TagImgSms}></LetsConnect>
             <FeatureBenifits data={"Solar"} />
-            <KeyFeaturesWaste title={"Solar Management Ecosystem Stakeholders"} description={"Our Facility Management System connects all essential players in the operations ecosystem—ensuring seamless coordination between administrators, on-ground teams, and clients."}></KeyFeaturesWaste>
+            <KeyFeaturesWaste title={"Key Collaborators to Intelligent Solar Infrastructure."} description={"Our Smart Solar Management System unifies all stakeholders on a single, user-friendly platform, ensuring seamless communication and efficient collaboration throughout the project lifecycle."}></KeyFeaturesWaste>
             <SmsDetails></SmsDetails>
     </>
   )

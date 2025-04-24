@@ -342,7 +342,7 @@ export const Skills = () => {
     },
     {
       title: "Solar Management System",
-      description: "Atomwalk Solar Management System revolutionizes how solar energy is harnessed monitored, and maintained. Our AIOT-based solution empowers users with real-time insights,ensuring efficient energy generation,usage and maintenance of solar installations.",
+      description: "Atomwalk Smart Solar Management System simplifies your solar business with a unified, AIoT-powered platform. It offers real-time monitoring, inventory tracking, and customer management. Get instant insights on voltage, current, and humidity, with early alerts for issues. Smart sensors and AI turn raw data into actionable insights. Stay connected, efficient, and ready for the future with Atomwalk. ",
       image: Sms,
       path: "/solarmanagement.html",
       bgColor: "#FFF9BF",

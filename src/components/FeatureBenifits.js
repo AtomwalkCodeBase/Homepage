@@ -31,11 +31,11 @@ import Icon20 from '../assets/img/fm_step_3.png';
 import Icon21 from '../assets/img/fm_step_4.png';
 import Icon22 from '../assets/img/fm_step_5.png';
 import Icon50 from '../assets/img/Step2(1).png';
-import Icon23 from '../assets/img/step2_1_solar.png';
-import Icon24 from '../assets/img/step2_2_solar.png';
-import Icon25 from '../assets/img/step2_3_solar.png';
+import Icon23 from '../assets/img/solar-step2(1).png';
+import Icon24 from '../assets/img/solar-step2(2).png';
+import Icon25 from '../assets/img/solar-step2(3).png';
 import Icon26 from '../assets/img/step2_4_solarpng.png';
-import Icon27 from '../assets/img/step2_5_solar.png';
+import Icon27 from '../assets/img/solar-step2(5).png';
 import Icon28 from '../assets/img/step2_6_solarpng.png';
 import Icon29 from '../assets/img/H_Step2(1).png';
 import Icon30 from '../assets/img/H_Step2(2).png';
@@ -207,10 +207,10 @@ const Hospital = [
 const Solar = [
   { title: 'Real-Time Monitoring', text: 'Live tracking of voltage, current,temperature, and solar irradiance.', bgColor: '#d7faff', icon: Icon23 },
   { title: 'Fault Detection & Alerts', text: 'Instant alerts for issues like shading, dirt, or overheating.', bgColor: '#d9f5e3', icon: Icon24 },
-  { title: 'Energy Analytics Dashboard', text: 'View and analyze solar generation and usage trends.', bgColor: '#fff1d0', icon: Icon25 },
-  { title: 'Remote Access & Control', text: 'Manage your solar system anytime, from anywhere.', bgColor: '#f2e3ff', icon: Icon26 },
-  { title: 'Predictive Maintenance', text: 'AI-driven insights to prevent failures and plan maintenance.', bgColor: '#ffe8cc', icon: Icon27 },
-  { title: 'Performance Benchmarking', text: 'Compare panel output to spot and fix inefficiencies', bgColor: '#d9f5e3', icon: Icon28 },
+  { title: 'Sales Analysis Dashboard', text: 'Sales analysis of the solar system vendor, showing total products sold and total income earned .', bgColor: '#fff1d0', icon: Icon25 },
+  { title: 'Seamless connectivity', text: 'Seamless connectivity in a solar management system ensures smooth communication between components .', bgColor: '#f2e3ff', icon: Icon26 },
+  { title: 'Predictive Maintenance', text: 'Uses data and analytics to anticipate equipment issues before they occur.', bgColor: '#ffe8cc', icon: Icon27 },
+  { title: 'Employee management', text: 'In solar operations, it ensures tasks are efficiently assigned to the right team members for smooth workflow', bgColor: '#d9f5e3', icon: Icon28 },
 ];
 
 const FeatureBenifits = ({ data }) => {
@@ -219,7 +219,7 @@ const FeatureBenifits = ({ data }) => {
 
   return (
     <Section>
-      {data === 'Solar' ? (<Title>Web-Enabled Solar Control for the <span>Modern World.</span></Title>
+      {data === 'Solar' ? (<Title>Solar Intelligence <span>Optimize, Control, and Grow.</span></Title>
       ) : data === 'Facility' ? (
         <Title>All-in-One Facility Management, <span>Streamlined and Smarter.</span></Title>
       ) : (

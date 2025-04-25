@@ -343,7 +343,7 @@ export const Skills = () => {
       accentColor2: "#4db6ac"
     },
     {
-      title: "Facility Management System (FMS)",
+      title: "Facility Management System",
       description: "Atomwalk Facility Management System reshapes how residential communities and service providers coordinate and execute operational tasks. With smart scheduling, real-time task tracking, and smooth communication between all involved partners, our platform ensures efficient maintenance operations, improved accountability, and better service delivery.",
       image: Fms,
       path: "/facilitymanagement.html",

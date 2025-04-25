@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useTable } from 'react-table';
 // import "@fontsource/Centra";
@@ -11,6 +11,7 @@ import Testimonial from './Testimonial';
 import Pricing from './Pricing';
 import PricingCard from './PricingCard';
 import Hrprice from './Hrprice';
+import { motion } from "framer-motion";
 
 const Page = styled.div`
   background-color: white;
@@ -227,7 +228,89 @@ const Td = styled.td`
   border: 1px solid #ddd;
 `;
 
+const regions = [
+  { label: "India", code: "IN" },
+  { label: "United States", code: "US" }
+];
+
+const TabArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #caf0f8;
+`;
+
+const Title2 = styled.h1`
+  font-size: 2.5em;
+  text-align: center;
+  margin-bottom: 10px;
+  color: #2c3e50;
+`;
+
+
+const TabContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #caf0f8;  /* Updated Background Color */
+  padding: 12px;
+  border-radius: 16px;
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    max-width: 300px;
+  }
+`;
+
+const TabButton = styled.button`
+  background: none;
+  border: none;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  color: ${({ active }) => (active ? "#222222" : "#666666")}; /* Darker active color */
+  position: relative;
+  z-index: 2;
+  transition: color 0.25s ease-in-out;
+
+  &:hover {
+    color: ${({ active }) => (active ? "#005A8D" : "#0077B6")}; /* Darker shade for active */
+  }
+`;
+
+
+const Indicator = styled(motion.div)`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  background: #007BFF;
+  border-radius: 2px;
+`;
+// const RegionalPricing = ({ region }) => {
+//   return (
+//     <div>
+//       <h2>Pricing for {region === "IN" ? "India" : "United States"}</h2>
+//       {/* Add pricing details based on region here */}
+//     </div>
+//   );
+// };
+
+
 const PricingRoute = () => {
+
+
+  const [selectedRegion, setSelectedRegion] = useState("IN");
+
   const data = useMemo(
     () => [
       {
@@ -543,126 +626,33 @@ const demo =()=>{
           </HeadImageArea>
         </HeadBox>
       </Header>
-      <Pricing></Pricing>
-      <PricingCard></PricingCard>
-      <Hrprice></Hrprice> 
-      {/* <PlanArea>
-        <TitleOne>
-          Choose the best plan <TitleTwo>for you</TitleTwo>
-        </TitleOne>
-        <TitlePara>
-          Atomwalk offers plans for Small, Mid and Large businesses. Our plans
-          differ in features, customisation options and fitment for different
-          industries. View all features at once, or pick a module and compare
-          plan-wise features
-        </TitlePara>
-        <TableWrapper>
-          <Table {...getTableProps()}>
-            <thead>
-              {headerGroups.map(headerGroup => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map(column => (
-                    <Th {...column.getHeaderProps()}>
-                      {column.render('Header')}
-                    </Th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {rows.map(row => {
-                prepareRow(row);
-                return (
-                  <tr {...row.getRowProps()}>
-                    {row.cells.map(cell => (
-                      <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
-        </TableWrapper>
-      </PlanArea>
-      <AddOnData>
-              <AddOnLeft>
-                <BoxOne>
-                <AddOnTitle>Some <TitleTwo>greyt Add-ons</TitleTwo> to go?</AddOnTitle>
-                <BoxOnePara>Give your Atomwalk account actual superpowers! Explore plan Add-Ons for attendance, performance management and employee engagement.</BoxOnePara>
-                </BoxOne>
-                <BoxTwo>
-                  <BoxTitle>Performance Management System</BoxTitle>
-                  <BoxHeading>Starts at ₹3000 for 50 employees</BoxHeading>
-                  <BoxPara>360° Reportee-Manager Feedback and Reviews</BoxPara>
-                </BoxTwo>
-                <BoxThree>
-                  <BoxTitle>Visage</BoxTitle>
-                  <BoxHeading>₹20/user/month</BoxHeading>
-                  <BoxPara>Al-powered Facial Recognition-Based attendance Marking</BoxPara>
-                </BoxThree>
-              </AddOnLeft>
-              <AddOnRight>
-                <BoxFour>
-                  <BoxTitle>Visage</BoxTitle>
-                  <BoxHeading>₹20/user/month</BoxHeading>
-                  <BoxPara>Al-powered Facial Recognition-Based attendance Marking</BoxPara>
-                </BoxFour>
-                <BoxFive>
-                <BoxTitle>Visage</BoxTitle>
-                  <BoxHeading>₹20/user/month</BoxHeading>
-                  <BoxPara>Al-powered Facial Recognition-Based attendance Marking</BoxPara>
-                </BoxFive>
-                <BoxSix>
-                  <ListSpace>
-                    <ListRow>
-                      <ListDot></ListDot>
-                      <ListText>GPS-based Attendance Marking</ListText>
-                    </ListRow>
-                    <ListRow>
-                      <ListDot></ListDot>
-                      <ListText>Workflows for Manager Review</ListText>
-                    </ListRow>
-                    <ListRow>
-                      <ListDot></ListDot>
-                      <ListText>Attendance Scheme-level Customizations</ListText>
-                    </ListRow>
-                    <ListRow>
-                      <ListDot></ListDot>
-                      <ListText>Geo Swipe Reports for Due Diligence</ListText>
-                    </ListRow>
-                  </ListSpace>
-                </BoxSix>
-              </AddOnRight>
-      </AddOnData>
-
-      <Feature>
-      <TitleOne><TitleTwo>Exceptional software</TitleTwo> doesn't have to come at a cost</TitleOne>
-      <TitlePara>Atomwalk offers the lowest cost-per-license (PEPM) in category</TitlePara>
-        <FeatureBoxArea>
-              <FeatureBox>
-                <FeatureBoxInner>
-                  <FeatureImage><img src={Logo1} alt="Feature Box" /></FeatureImage>
-                  <TitleOne>77.78% lower cost</TitleOne>
-                  <SubTitle>than Zoho</SubTitle>
-                </FeatureBoxInner>
-              </FeatureBox>
-              <FeatureBox>
-              <FeatureBoxInner>
-                  <FeatureImage><img src={Logo2} alt="Feature Box" /></FeatureImage>
-                  <TitleOne>183.33% lower cost</TitleOne>
-                  <SubTitle>than HROne</SubTitle>
-                </FeatureBoxInner>
-              </FeatureBox>
-              <FeatureBox>
-              <FeatureBoxInner>
-                  <FeatureImage><img src={Logo3} alt="Feature Box" /></FeatureImage>
-                  <TitleOne>50% lower cost</TitleOne>
-                  <SubTitle>than Keka</SubTitle>
-                </FeatureBoxInner>
-              </FeatureBox>
-        </FeatureBoxArea>
-      </Feature> */}
-
+      <TabArea>
+      <Title2>PRICING</Title2>
+      <TabContainer>
+        {regions.map((region) => (
+          <div key={region.code} style={{ position: "relative" }}>
+            <TabButton
+              active={selectedRegion === region.code}
+              onClick={() => setSelectedRegion(region.code)}
+            >
+              {region.label}
+              {selectedRegion === region.code && (
+                <Indicator
+                  layoutId="indicator"
+                  initial={false}
+                  animate={{ width: "100%" }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                />
+              )}
+            </TabButton>
+          </div>
+        ))}
+      </TabContainer>
+      </TabArea>
+      <Pricing  region={selectedRegion}></Pricing>
+      <PricingCard region={selectedRegion}></PricingCard>
+      {selectedRegion === "IN" && <Hrprice />}
+      
       <Testimonial></Testimonial>
     </Page>
   );

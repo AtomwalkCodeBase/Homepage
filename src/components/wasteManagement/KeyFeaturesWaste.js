@@ -338,7 +338,7 @@ const KeyFeaturesWaste = (props) => {
   const Smsfeatures = [
     {
       icon: solar1,
-      title: "Consumers",
+      title: "Customers",
       description: "People and businesses who use solar energy to cut costs, monitor usage, and benefit from clean energy and government support.",
       accentColor: "#7d3eff",
       iconBg: "#f0e7ff",

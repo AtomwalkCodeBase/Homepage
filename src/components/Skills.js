@@ -305,20 +305,11 @@ export const Skills = () => {
       accentColor2: "#ff8a65"
     },
     {
-      title: "Facility Management System (FMS)",
-      description: "Atomwalk Facility Management System reshapes how residential communities and service providers coordinate and execute operational tasks. With smart scheduling, real-time task tracking, and smooth communication between all involved partners, our platform ensures efficient maintenance operations, improved accountability, and better service delivery.",
-      image: Fms,
-      path: "/facilitymanagement.html",
-      bgColor: "rgb(254 251 217)",
-      accentColor: "#fbc02d",
-      accentColor2: "#ffeb3b"
-    },
-    {
-      title: "Hospital Management System",
-      description: "Atomwalk Healthcare Management System empowers hospital operations by integrating patient care, clinical workflows, and administrative tasks into a single, intuitive platform. From patient registration to discharge, emergency response to staff management, our system ensures seamless coordination, enhanced efficiency, and exceptional healthcare delivery across all hospital functions.",
-      image: Hms,
-      path: "/hospitalmanagement.html",
-      bgColor: "rgb(217 254 229)",
+      title: "Lab Management / Equipment Management",
+      description: "Atomwalk Lab Management / Equipment Management helps the Labs in innovation by enabling them smoothly managing all Lab process like - Grant management, Inventory Management, Lab equipment management, Supplier and Purchase order management, Lab report/ documentation and Lab equipment management.",
+      image: Lab,
+      path: "/lms.html",
+      bgColor: "#E1FFF6",
       accentColor: "#009688",
       accentColor2: "#4db6ac"
     },
@@ -331,24 +322,35 @@ export const Skills = () => {
       accentColor: "#00bcd4",
       accentColor2: "#4dd0e1"
     },
+    
     {
-      title: "Lab Management / Equipment Management",
-      description: "Atomwalk Lab Management / Equipment Management helps the Labs in innovation by enabling them smoothly managing all Lab process like - Grant management, Inventory Management, Lab equipment management, Supplier and Purchase order management, Lab report/ documentation and Lab equipment management.",
-      image: Lab,
-      path: "/lms.html",
-      bgColor: "#E1FFF6",
-      accentColor: "#009688",
-      accentColor2: "#4db6ac"
+      title: "Hospital Management System",
+      description: "Atomwalk Healthcare Management System empowers hospital operations by integrating patient care, clinical workflows, and administrative tasks into a single, intuitive platform. From patient registration to discharge, emergency response to staff management, our system ensures seamless coordination, enhanced efficiency, and exceptional healthcare delivery across all hospital functions.",
+      image: Hms,
+      path: "/hospitalmanagement.html",
+      bgColor: "#FFF9BF",
+      accentColor: "#F9CB43",
+      accentColor2: "#FBA518"
     },
+    
     {
       title: "Solar Management System",
       description: "Atomwalk Smart Solar Management System simplifies your solar business with a unified, AIoT-powered platform. It offers real-time monitoring, inventory tracking, and customer management. Get instant insights on voltage, current, and humidity, with early alerts for issues. Smart sensors and AI turn raw data into actionable insights. Stay connected, efficient, and ready for the future with Atomwalk. ",
       image: Sms,
       path: "/solarmanagement.html",
-      bgColor: "#FFF9BF",
-      accentColor: "#F9CB43",
-      accentColor2: "#FBA518"
-    }
+      bgColor: "rgb(217 254 229)",
+      accentColor: "#009688",
+      accentColor2: "#4db6ac"
+    },
+    {
+      title: "Facility Management System (FMS)",
+      description: "Atomwalk Facility Management System reshapes how residential communities and service providers coordinate and execute operational tasks. With smart scheduling, real-time task tracking, and smooth communication between all involved partners, our platform ensures efficient maintenance operations, improved accountability, and better service delivery.",
+      image: Fms,
+      path: "/facilitymanagement.html",
+      bgColor: "rgb(254 251 217)",
+      accentColor: "#fbc02d",
+      accentColor2: "#ffeb3b"
+    },
   ];
 
   return (

@@ -207,10 +207,10 @@ const Hospital = [
 const Solar = [
   { title: 'Real-Time Monitoring', text: 'Live tracking of voltage, current,temperature, and solar irradiance.', bgColor: '#d7faff', icon: Icon23 },
   { title: 'Fault Detection & Alerts', text: 'Instant alerts for issues like shading, dirt, or overheating.', bgColor: '#d9f5e3', icon: Icon24 },
-  { title: 'Sales Analysis Dashboard', text: 'Sales analysis of the solar system vendor, showing total products sold and total income earned .', bgColor: '#fff1d0', icon: Icon25 },
-  { title: 'Seamless connectivity', text: 'Seamless connectivity in a solar management system ensures smooth communication between components .', bgColor: '#f2e3ff', icon: Icon26 },
+  { title: 'Analysis & Dashboard', text: 'Analysis of the solar system vendor, showing total products sold and total income earned .', bgColor: '#fff1d0', icon: Icon25 },
+  { title: 'Seamless Connectivity', text: 'Seamless connectivity in a solar management system ensures smooth communication between components .', bgColor: '#f2e3ff', icon: Icon26 },
   { title: 'Predictive Maintenance', text: 'Uses data and analytics to anticipate equipment issues before they occur.', bgColor: '#ffe8cc', icon: Icon27 },
-  { title: 'Employee management', text: 'In solar operations, it ensures tasks are efficiently assigned to the right team members for smooth workflow', bgColor: '#d9f5e3', icon: Icon28 },
+  { title: 'Real-Time Task Management', text: 'In solar operations, it ensures tasks are efficiently assigned to the right team members for smooth workflow', bgColor: '#d9f5e3', icon: Icon28 },
 ];
 
 const FeatureBenifits = ({ data }) => {

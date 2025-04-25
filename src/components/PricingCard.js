@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import ReactModal from "react-modal";
 
+// Styled components with improved design
 const PricingContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 40px 20px;
   background-color: #caf0f8;
 `;
 
@@ -17,150 +18,157 @@ const Title = styled.h1`
   color: #2c3e50;
 `;
 
-const Title2 = styled.h1`
-  font-size: 2em;
+
+const Subtitle = styled.p`
+  font-size: 1.2em;
+  color: #5a6a7e;
   text-align: center;
-  margin-bottom: 30px;
-  color: #2c3e50;
+  margin-bottom: 60px;
+  max-width: 700px;
+  line-height: 1.6;
 `;
 
 const PlansContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 100px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  width: 100%;
+  max-width: 1200px;
 
-  @media (min-width: 768px) {
-    flex-direction: row;
-    justify-content: center;
-    gap: 47px;
-    width: 100%;
+  @media (min-width: 1200px) {
+    flex-wrap: nowrap;
   }
 `;
 
 const PlanCard = styled.div`
   background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 10px;
-  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  padding: 30px;
   width: 100%;
-  max-width: 300px;
+  min-width: 250px;
   text-align: center;
   color: #454545;
-  transition: transform 0.3s ease, box-shadow 0.3s ease,
-    background-color 0.3s ease;
-
-  @media (min-width: 768px) {
-    width: 23%;
-  }
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  flex: 1;
 
   &:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    background-color: wheat;
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+  }
+
+  @media (max-width: 1199px) {
+    max-width: calc(50% - 15px);
+    flex: none;
+  }
+
+  @media (max-width: 767px) {
+    max-width: 100%;
   }
 `;
 
+const PlanHeader = styled.div`
+  padding: 20px 0;
+  margin-bottom: 20px;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: ${props => props.color};
+    border-radius: 3px;
+  }
+`;
+
+const PlanName = styled.h3`
+  color: ${props => props.color};
+  font-weight: 700;
+  font-size: 1.8em;
+  margin-bottom: 10px;
+`;
+
 const Price = styled.h2`
-  font-size: 2em;
-  margin: 20px 0;
-  font-weight: 800;
-  color: #000933;
+  font-size: 2.2em;
+  margin: 15px 0;
+  font-weight: 700;
+  color: #2c3e50;
+`;
+
+const PriceNote = styled.span`
+  font-size: 0.8em;
+  color: #7f8c8d;
+  display: block;
+  margin-top: 5px;
 `;
 
 const FeatureList = styled.ul`
   list-style-type: none;
   padding: 0;
-  margin: 0;
+  margin: 25px 0;
   text-align: left;
 `;
 
 const FeatureItem = styled.li`
-  margin: 10px 0;
-  cursor: ${(props) => (props.clickable ? "pointer" : "default")};
+  margin: 12px 0;
+  padding-left: 25px;
+  position: relative;
+  font-size: 0.95em;
+  line-height: 1.5;
+  
   &::before {
-    content: "${(props) => (props.valid ? "✓" : "✗")}";
-    margin-right: 10px;
-    color: ${(props) => (props.valid ? "green" : "red")};
+    content: "${props => (props.valid ? "✓" : "✗")}";
+    position: absolute;
+    left: 0;
+    color: ${props => (props.valid ? "#27ae60" : "#e74c3c")};
+    font-weight: bold;
   }
-`;
-const FeatureItem2 = styled.div`
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 1em;
-color: #ea5c49; 
-text-decoration: none;
-cursor: pointer;
-font-weight: 500;
-  &:hover {
-    text-decoration: underline;
-    color: #ee442d;
-  }
-`;
-
-const Message = styled.p`
-  font-weight: 500;
 `;
 
 const Button = styled.button`
-  background-color: #ea5c49;
+  background: ${props => props.color};
   color: white;
   border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
+  border-radius: 6px;
+  padding: 12px 25px;
   font-size: 1em;
+  font-weight: 600;
   cursor: pointer;
   margin-top: 20px;
-
+  width: 100%;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
   &:hover {
-    background-color: #ee442d;
+    background: ${props => props.hoverColor || props.color};
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
 `;
-const ModuleContainer = styled.div`
-  background-color: #caf0f8;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: bold;
-  color: #454545;
-`;
 
-const ModuleTitle = styled.div`
-  font-size: 1.1em;
-`;
-const CloseButton = styled.button`
+const PopularBadge = styled.div`
   position: absolute;
-  top: 10px;
-  right: 4px;
-  background: #d1cdcd;
-  border-radius: 50%;
-  width: 5%;
-  border: none;
-  font-size: 1.5em;
-  cursor: pointer;
-  &:hover{
-  background: #f77867;
-  }
-`;
-const ExpandIcon = styled.span`
-  font-size: 1.5em;
-  color: #454545;
-  cursor: pointer;
+  top: 15px;
+  right: -30px;
+  background: #e74c3c;
+  color: white;
+  padding: 5px 30px;
+  font-size: 0.8em;
+  font-weight: bold;
+  transform: rotate(45deg);
+  width: 120px;
+  text-align: center;
 `;
 
-const FeatureDetails = styled.ul`
-  list-style-type: none;
-  margin-top: 10px;
-  padding-left: 20px;
-  color: #6b37d1;
-`;
-
+// Modal styles
 const customStyles = {
   content: {
     top: "50%",
@@ -170,212 +178,253 @@ const customStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     border: "none",
-    borderRadius: "10px",
+    borderRadius: "12px",
     width: "90%",
-    maxWidth: "750px",
+    maxWidth: "500px",
     padding: "40px",
-    overflow: "auto", // Enable scrolling within the modal
-    maxHeight: "80vh", // Limit the modal height to 80% of the viewport height
+    boxShadow: "0 15px 40px rgba(0, 0, 0, 0.2)",
   },
   overlay: {
-    // backgroundColor: "rgba(0, 0, 0, 0.8)", // Optional, for background dimming
-    zIndex: "32333",
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    zIndex: "1000",
   },
 };
 
-// Define the module data
-const modules = [
-  // { name: "Project Management", features: ["Project Activity Allocation Tracking",
-  //  " Project Activity Dependency (Critical Patch)",
-  //  " Schedule Tracking",
-  //   "Item Cost and Effort Tracking",
-  //   "Efficiency tracking at Activity",
-  //   "Project Documents, Alert management",
-  //   "Integration with Procurement and PO",
-  //   "Integration with Inventory Allocation, Wastage and Release"] },
-  // { name: "Inventory Management", features: ["Item Category and Group",
-  //   "Inventory Item and Service Item",
-  //   "Item Supplier management",
-  //   "Multiple locations",
-  //   "Multiple Units",
-  //   "Warehouse management (Bin Locations)",
-  //   "Item Serial Number handling",
-  //   "Item physical inspection and open balance",
-  //   "Item min order qty and Expiry date tracking"] },
-  // { name: "Process Templates", features: ["Activity Definition with User group",
-  //   "Equipment and Document definition for Activity",
-  //   "Process definition for a Product",
-  //   "Process Activity Dependency",
-  //   "Process items and Bill of Material",] },
-  // { name: "Sales and Procurement", features: ["Sales order, quotation, proforma invoice",
-  //   "Tax Invoice",
-  //   "Payment, GST Tracking, TDS handling",
-  //   "Return, Credit note handling",
-  //   "Purchase Order, Purchase requests",
-  //   "Goods Receipt (GRN)",
-  //   "Goods Return/Shortage/ Debit Note",
-  //   "Purchase Service Order, TDS handling"] },
-  { name: "Customer Management( CRM)", features: ["Customer Details",
-    "Customer Sales/Payments Tracking (Bank/TDS)",
-    "Agreements",
-    "Customer Type/ Group"] },
-  // { name: "HR & Payroll", features: ["Employee Hire to Exit",
-  //   "Leave & Attendance",
-  //   "Travel & Expenses",
-  //   "Salary & Payroll",
-  //   "Advances",
-  //   "Claim Settlement"] },
-  // { name: "Bank Reconciliation", features: ["Bank Statement Upload",
-  //   "Account Reconciliation with Sales and PO",
-  //   "Rule based reconciliation of Expenses",
-  //   "Bank statement View",
-  //   "Reconciled statement view",
-  //   "Bank, Exchange rate setup"] },
-  // { name: "Financial Accounting", features: ["Sales report (Period/Party/Outstanding)",
-  //   "Purchase Reports",
-  //   "Inventory (opening and closing stock)",
-  //   "Inventory Valuation",
-  //   "Financial Reports (P&L Balance sheet, Cash flow, Change in Equity",
-  //   "Aging/ DSO",
-  //   "Depreciation Schedule"] },
-  // { name: "Reports and Dashboard", features: ["Manager Dashboard",
-  //   "Sales Dashboard",
-  //   "Account Receivable and Payable",
-  //   "Party wise outstanding",
-  //   "Batch reports like Sales overdue, GST not filed",
-  //   "Report Templates",
-  //  " User Access control"] },
-];
+const ModalContent = styled.div`
+  text-align: center;
+`;
 
+const ModalTitle = styled.h2`
+  color: ${props => props.color || "#2c3e50"};
+  margin-bottom: 20px;
+`;
 
-const PricingCard = () => {
+const ModalText = styled.p`
+  color: #5a6a7e;
+  margin-bottom: 30px;
+  line-height: 1.6;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 1.8em;
+  cursor: pointer;
+  color: #7f8c8d;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    color: #e74c3c;
+    transform: rotate(90deg);
+  }
+`;
+
+// Pricing plans data
+const pricingPlans = {
+  IN: [
+    { 
+      name: "Free Trial", 
+      price: "₹0", 
+      period: "/month",
+      pricePerUser: false,
+      message: "No credit card required", 
+      userAccess: "3 User Access", 
+      validity: "30 days Validity", 
+      space: "20MB Storage Space", 
+      multiBranch: false, 
+      color: "red",
+      buttonColor: "red",
+      popular: false
+    },
+    { 
+      name: "Basic", 
+      price: "₹5,000", 
+      period: "/month",
+      pricePerUser: false,
+      message: "Billed at ₹50,000 per year", 
+      userAccess: "5 User Access", 
+      validity: "1 Year Validity", 
+      space: "200MB Storage Space", 
+      multiBranch: false, 
+      color: "#2196f3",
+      buttonColor: "#2196f3",
+      popular: false
+    },
+    { 
+      name: "Premium", 
+      price: "₹8,000", 
+      period: "/month",
+      pricePerUser: false,
+      message: "Billed at ₹75,000 per year", 
+      userAccess: "10 User Access", 
+      validity: "1 Year Validity", 
+      space: "500MB Storage Space", 
+      multiBranch: true, 
+      color: "orange",
+      buttonColor: "orange",
+      popular: true
+    },
+    { 
+      name: "Ultimate", 
+      price: "₹15,000", 
+      period: "/month",
+      pricePerUser: false,
+      message: "Billed at ₹150,000 per year", 
+      userAccess: "25 User Access", 
+      validity: "1 Year Validity", 
+      space: "1.2GB Storage Space", 
+      multiBranch: true, 
+      color: "#800080",
+      buttonColor: "#800080",
+      popular: false
+    }
+  ],
+  US: [
+    { 
+      name: "Free Trial", 
+      price: "$0", 
+      period: "/month",
+      pricePerUser: false,
+      // message: "No credit card required", 
+      userAccess: "3 User Access", 
+      validity: "30 days Validity", 
+      space: "20MB Storage Space", 
+      multiBranch: false, 
+      color: "red",
+      buttonColor: "red",
+      popular: false
+    },
+    { 
+      name: "Basic", 
+      price: "$75", 
+      period: "/month",
+      pricePerUser: false,
+      // message: "Billed at $663 per year", 
+      userAccess: "5 User Access", 
+      validity: "1 Year Validity", 
+      space: "200MB Storage Space", 
+      multiBranch: false, 
+      color: "#2196f3",
+      buttonColor: "#2196f3",
+      popular: false
+    },
+    { 
+      name: "Premium", 
+      price: "$120", 
+      period: "/month",
+      pricePerUser: false,
+      // message: "Billed at $994 per year", 
+      userAccess: "10 User Access", 
+      validity: "1 Year Validity", 
+      space: "500MB Storage Space", 
+      multiBranch: true, 
+      color: "orange",
+      buttonColor: "orange",
+      popular: true
+    },
+    { 
+      name: "Ultimate", 
+      price: "$199", 
+      period: "/month",
+      pricePerUser: false,
+      // message: "Billed at $1,988 per year", 
+      userAccess: "25 User Access", 
+      validity: "1 Year Validity", 
+      space: "1.2GB Storage Space", 
+      multiBranch: true, 
+      color: "#800080",
+      buttonColor: "#800080",
+      popular: false
+    }
+  ]
+};
+
+const PricingCard = ({ region = "IN" }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [expandedModule, setExpandedModule] = useState(null);
+  const [selectedPlan, setSelectedPlan] = useState(null);
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-  const toggleModule = (moduleName) => {
-    setExpandedModule(expandedModule === moduleName ? null : moduleName);
+  const plans = pricingPlans[region] || pricingPlans.IN;
+
+  const openModal = (plan) => {
+    setSelectedPlan(plan);
+    setIsModalOpen(true);
   };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedPlan(null);
+  };
+
+  const requestDemo = () => {
+    window.location.href = '/demo.html';
+  };
+
   return (
-    <>
     <PricingContainer>
-      {/* <Title2>Customer relationship management</Title2> */}
       <Title>Pick the Right CRM Plan to Elevate Your Processes!</Title>
+      {/* <Subtitle>
+        Choose the perfect HRM solution tailored for your organization's needs. 
+        All plans include our support and continuous updates.
+      </Subtitle> */}
+      
       <PlansContainer>
-        <PlanCard>
-          <h3
-            style={{ color: "#ffff", fontWeight: "800", fontSize: "2.5rem",padding:"10px",backgroundColor:"red",borderRadius:"5px" }}
-          >
-            Free Trial
-          </h3>
-          <Price>₹0/Month</Price>
-          <Message>Seriously, free forever</Message>
-          <FeatureList>
-            <FeatureItem valid>3 User Access</FeatureItem>
-            <FeatureItem valid>30 days Validity</FeatureItem>
-            <FeatureItem valid>20MB Space</FeatureItem>
-            <FeatureItem>Multi Branch Access</FeatureItem>
-            <FeatureItem2  onClick={openModal}>Click here to see the modules</FeatureItem2>
-          </FeatureList>
-          <Button>Sign up for free</Button>
-        </PlanCard>
-        <PlanCard>
-          <h3
-            style={{
-              color: "#fff",
-              fontWeight: "800",
-              fontSize: "2.5rem",
-              padding:"10px",backgroundColor:"#2196f3",borderRadius:"5px"
-            }}
-          >
-            Basic
-          </h3>
-          <Price>₹5,000/Month</Price>
-          <Message>Billed at ₹50,000 per year</Message>
-          <FeatureList>
-            <FeatureItem valid>5 User Access</FeatureItem>
-            <FeatureItem valid>1 Year Validity</FeatureItem>
-            <FeatureItem valid>200MB Space</FeatureItem>
-            <FeatureItem>Multi Branch Access</FeatureItem>
-            <FeatureItem2  onClick={openModal}>Click here to see the modules</FeatureItem2>
-          </FeatureList>
-          <Button>Start a free trial</Button>
-        </PlanCard>
-        <PlanCard>
-          <h3
-            style={{
-              color: "#fff",
-              fontWeight: "800",
-              fontSize: "2.5rem",
-              padding:"10px",backgroundColor:"orange",borderRadius:"5px"
-            }}
-          >
-            Premium
-          </h3>
-          <Price>₹8,000/Month</Price>
-          <Message>Billed at ₹75,000 per year</Message>
-          <FeatureList>
-            <FeatureItem valid>10 User Access</FeatureItem>
-            <FeatureItem valid>1 Year Validity</FeatureItem>
-            <FeatureItem valid>500MB Space</FeatureItem>
-            <FeatureItem valid>Multi Branch Access</FeatureItem>
-            <FeatureItem2 lickable onClick={openModal}>Click here to see the modules</FeatureItem2>
-          </FeatureList>
-          <Button>Start a free trial</Button>
-        </PlanCard>
-        <PlanCard>
-          <h3
-            style={{
-              color: "#fff",
-              fontWeight: "800",
-              fontSize: "2.5rem",
-                 padding:"10px",backgroundColor:"#800080",borderRadius:"5px"
-            }}
-          >
-            Ultimate
-          </h3>
-          <Price>₹15,000/Month</Price>
-          <Message>Billed at ₹150,000 per year</Message>
-          <FeatureList>
-            <FeatureItem valid>25 User Access</FeatureItem>
-            <FeatureItem valid>1 Year Validity</FeatureItem>
-            <FeatureItem valid>1.2GB Space</FeatureItem>
-            <FeatureItem valid>Multi Branch Access</FeatureItem>
-            <FeatureItem2 lickable onClick={openModal}>Click here to see the modules</FeatureItem2>
-          </FeatureList>
-          <Button>Start a free trial</Button>
-        </PlanCard>
+        {plans.map((plan, index) => (
+          <PlanCard key={index}>
+            {plan.popular && <PopularBadge>POPULAR</PopularBadge>}
+            <PlanHeader color={plan.color}>
+              <PlanName color={plan.color}>{plan.name}</PlanName>
+              <Price>
+                {plan.price}<PriceNote>{plan.period}</PriceNote>
+              </Price>
+              {plan.message && <p style={{ color: "#7f8c8d", fontSize: "0.9em" }}>{plan.message}</p>}
+            </PlanHeader>
+            
+            <FeatureList>
+              <FeatureItem valid>{plan.userAccess}</FeatureItem>
+              <FeatureItem valid>{plan.validity}</FeatureItem>
+              <FeatureItem valid>{plan.space}</FeatureItem>
+              <FeatureItem valid={plan.multiBranch}>Multi-Branch Access</FeatureItem>
+              <FeatureItem valid>24/7 Support</FeatureItem>
+              <FeatureItem valid>Regular Updates</FeatureItem>
+            </FeatureList>
+            
+            <Button 
+              color={plan.buttonColor} 
+              hoverColor={plan.popular ? "#e67e22" : null}
+              onClick={plan.name === "Free Trial" ? requestDemo : () => openModal(plan)}
+            >
+              {plan.name === "Free Trial" ? "Start Free Trial" : "Get Started"}
+            </Button>
+          </PlanCard>
+        ))}
       </PlansContainer>
-    </PricingContainer>
-    <ReactModal
+      
+      <ReactModal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         style={customStyles}
+        ariaHideApp={false}
       >
-         <CloseButton onClick={closeModal}>&times;</CloseButton>
-        <FeatureList>
-          {modules.map((module, index) => (
-            <div key={index}>
-              <ModuleContainer onClick={() => toggleModule(module.name)}>
-                <ModuleTitle>{module.name}</ModuleTitle>
-                <ExpandIcon>{expandedModule === module.name ? "−" : "+"}</ExpandIcon>
-              </ModuleContainer>
-
-              {/* Show features if the module is expanded */}
-              {expandedModule === module.name && (
-                <FeatureDetails>
-                  {module.features.map((feature, idx) => (
-                    <ul style={{marginBottom:"5px"}}>
-                    <li key={idx}>{feature}</li></ul>
-                  ))}
-                </FeatureDetails>
-              )}
-            </div>
-          ))}
-        </FeatureList>
+        <CloseButton onClick={closeModal}>&times;</CloseButton>
+        <ModalContent>
+          <ModalTitle color={selectedPlan?.color}>
+            {selectedPlan?.name} Plan Selected
+          </ModalTitle>
+          <ModalText>
+            You've chosen our {selectedPlan?.name} Plan. Click below to proceed with your selection or contact our sales team for more information.
+          </ModalText>
+          <Button 
+            color={selectedPlan?.buttonColor || "#3498db"} 
+            onClick={requestDemo}
+          >
+            Proceed with {selectedPlan?.name} Plan
+          </Button>
+        </ModalContent>
       </ReactModal>
-    </>
+    </PricingContainer>
   );
 };
 

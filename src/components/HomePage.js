@@ -13,6 +13,7 @@ import Testimonial from './Testimonial'
 import ProductDemoModal from './ProductDemoModal'
 import Success from './SuccessBanner'
 import CustomerLogos from './CustomerLogos'
+import HeroSection from './HeroSection'
 
 const HomePage = () => {
 const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -43,7 +44,8 @@ useEffect(()=>{
     <div>
       {showsuccess&&<Success message="We have successfully recorded your information."></Success>}
     {/* <Banner></Banner> */}
-    <Resource></Resource>
+    {/* <Resource></Resource> */}
+    <HeroSection/>
     <Skills></Skills>
     {/* <UnlockFuture></UnlockFuture> */}
     <Features></Features>

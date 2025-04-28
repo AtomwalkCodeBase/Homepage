@@ -97,7 +97,7 @@ const loginAndStore=async()=>{
           <Route path="/crm.html" element={<HerosectionCrm/>} />
           <Route path="/lms.html" element={<LmsHeroSection/>} />
           <Route path="/Blog.html" element={<Blog/>} />
-          <Route path="/BlogDetails.html" element={<BlogDetails/>} />
+          <Route path="/BlogDetails/:blogId.html" element={<BlogDetails/>} />
           <Route path="/hrm.html" element={<HrmComponent />} />
           <Route path="/leave.html" element={<HrmFeaturesManagement />} />
           <Route path="/claim.html" element={<HrmFeaturesManagement />} />

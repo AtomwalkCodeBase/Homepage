@@ -30,6 +30,23 @@ const SectionImage = styled.img`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
+const SubSection = styled.div`
+  margin-top: 24px;
+  padding-left: 16px;
+`;
+
+const SubSectionTitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 16px;
+  color: #000;
+`;
+
+const SubSectionImage = styled(SectionImage)`
+  max-width: 60%;
+  margin: 20px 0;
+`;
+
 // Paragraph style for text content
 const Paragraph = styled.p`
   font-size: 1.1rem;
@@ -43,6 +60,12 @@ const List = styled.ul`
   list-style: disc;
   padding-left: 24px;
   margin: 24px 0;
+`;
+
+const SubSectionList = styled.ul`
+  list-style: circle; /* Different bullet style */
+  padding-left: 32px; /* Slightly more indented */
+  margin: 16px 0; /* Tighter margin */
 `;
 
 // List item style
@@ -88,19 +111,48 @@ const BlogPage = ({ blog }) => {
         <Section key={`section-${index}`}>
           {/* Render section title */}
           <SectionTitle>{section.sectionTitle}</SectionTitle>
-          
+
           {/* Render image if present and not empty */}
           {section.image && section.image !== '' && (
             <div style={{ textAlign: 'center' }}>
               <SectionImage src={section.image} alt={section.sectionTitle} />
             </div>
           )}
-          
+
           {/* Render paragraphs if present and not empty */}
           {section.paragraphs && section.paragraphs.length > 0 && section.paragraphs.map((para, paraIndex) => (
             <Paragraph key={`para-${index}-${paraIndex}`}>{para}</Paragraph>
           ))}
-          
+
+          {/* Render subsections if present and not empty */}
+          {section.subsections && section.subsections.length > 0 && section.subsections.map((subsection, subIndex) => (
+            <SubSection key={`subsection-${index}-${subIndex}`}>
+              {/* Render subsection title */}
+              <SubSectionTitle>{subsection.title}</SubSectionTitle>
+
+              {subsection.image && subsection.image !== '' && (
+                <div style={{ textAlign: 'center' }}>
+                  <SubSectionImage src={subsection.image} alt={subsection.title} />
+                </div>
+              )}
+
+              {/* Render subsection paragraphs if present and not empty */}
+              {subsection.paragraphs && subsection.paragraphs.length > 0 && subsection.paragraphs.map((para, paraIndex) => (
+                <Paragraph key={`sub-para-${index}-${subIndex}-${paraIndex}`}>{para}</Paragraph>
+              ))}
+
+              {/* Render subsection list items if present and not empty */}
+              {subsection.listItems && subsection.listItems.length > 0 && (
+                <SubSectionList>
+                  {subsection.listItems.map((item, itemIndex) => (
+                    <ListItem key={`sub-item-${index}-${subIndex}-${itemIndex}`}>{item}</ListItem>
+                  ))}
+                </SubSectionList>
+              )}
+
+            </SubSection>
+          ))}
+
           {/* Render list items if present and not empty */}
           {section.listItems && section.listItems.length > 0 && (
             <List>
@@ -109,7 +161,7 @@ const BlogPage = ({ blog }) => {
               ))}
             </List>
           )}
-          
+
           {/* Render conclusion if present */}
           {section.conclusion && <Conclusion>{section.conclusion}</Conclusion>}
         </Section>

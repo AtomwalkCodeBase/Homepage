@@ -6,7 +6,7 @@ import blogDetailsData from './BlogDetailsData';
 
 const Container = styled.div`
   background-color: #a000ff;
-  padding: 60px 30px;
+  padding: 60px 100px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -59,6 +59,8 @@ const ImageWrapper = styled.div`
   img {
     max-width: 110%;
     height: auto;
+    aspect-ratio: 3/2;
+    object-fit: contain;
     border-radius: 12px;
   }
 `;

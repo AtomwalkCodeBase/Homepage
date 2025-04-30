@@ -51,7 +51,7 @@ const blogDetailsData = [
       title: "How AI and Marketplace Integration Boost Small Business Success",
       author: "Atomwalk Team",
       date: "April 28, 2025",
-      image: "",
+      image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/ai-marketplace-business-29042025/blog1_1.jpg",
       content: [
         {
           sectionTitle: "Introduction",
@@ -112,7 +112,7 @@ const blogDetailsData = [
             "Faster Issue Resolution: AI automates routine tasks like ticket classification and routing inquiries to the right agent, reducing average handling times.",
             "Personalized Experiences: AI analyzes customer data to deliver tailored recommendations and responses, fostering loyalty and enhancing the overall shopping experience."
           ],
-          image:""
+          image:"https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/ai-marketplace-business-29042025/blog1_2.png"
         },
         {
           sectionTitle: "Summary",
@@ -138,7 +138,7 @@ const blogDetailsData = [
       title: "The Green Side of AI: Eco-Intelligence based AI-Infused ERP Systems are Driving the Sustainable Growth",
       author: "Atomwalk Team",
       date: "April 28, 2025",
-      image: "",
+      image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/eco-ai-erp-29042025/blog3_1.jpg",
       content: [
         {
           sectionTitle: "Transforming Businesses While Sustaining the Future with AI-Powered ERP",
@@ -151,7 +151,7 @@ const blogDetailsData = [
         },
         {
           sectionTitle: "Optimizing Energy Efficiency While Driving Sustainable Business Growth",
-          image: "",
+          image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/eco-ai-erp-29042025/blog3_2.jpg",
           paragraphs: [
             "ERP systems act as a central hub for managing operations, finances, supply chains, and resources. When AI is integrated, raw data turns into actionable insights that drive sustainability. Real-time monitoring helps track energy consumption and pinpoint inefficiencies. Predictive analytics enable accurate demand forecasting, preventing overproduction and unnecessary waste. AI-powered smart maintenance detects potential equipment failures before they happen, avoiding costly breakdowns and extending asset lifespan. Meanwhile, optimized supply chains help businesses choose eco-friendly suppliers and reduce transportation emissions.",
             "Sustainable supply chains are becoming more critical. These systems offer transparency, helping businesses make greener choices by selecting responsible suppliers and optimizing logistics. Predictive maintenance also plays a key role by shifting from reactive to proactive servicing, keeping equipment running smoothly and reducing unnecessary resource consumption.",
@@ -160,7 +160,7 @@ const blogDetailsData = [
         },
         {
           sectionTitle: "Environmental Benefits of AI-Infused ERP Systems",
-          image: "",
+          image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/eco-ai-erp-29042025/blog3_3.jpg",
           paragraphs: [
             "This illustrates the environmental benefits of integrating intelligent business management systems. Through data and process optimization, these systems drive a reduction in carbon emissions and streamline energy usage across various operational phases. The presented data showcases tangible improvements, depicting a decrease in carbon footprint after implementing these advanced technologies. This emphasizes the potential of smart business systems as a sustainable strategy for organizations focused on minimizing their environmental impact and maximizing resource efficiency."
           ]
@@ -182,7 +182,7 @@ const blogDetailsData = [
       title: "Smart Manufacturing and Predictive Maintenance",
       author: "Atomwalk Team",
       date: "April 28, 2025",
-      image: "",
+      image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/smart-manufacturing-29042025/blog5_1.png",
       content: [
         {
           sectionTitle: "Revolutionizing Industry 4.0",
@@ -193,7 +193,7 @@ const blogDetailsData = [
         },
         {
           sectionTitle: "The Future of Smart Manufacturing and Predictive Maintenance",
-          image: "",
+          image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/smart-manufacturing-29042025/blog5_2.png",
           paragraphs: [
             "As AI, IoT, and data analytics continue to evolve, smart manufacturing will become even more autonomous and self-optimizing. Technologies such as digital twins, edge computing, and 5G connectivity will further enhance predictive maintenance capabilities, enabling real- time decision-making at an unprecedented scale.",
             "By leveraging these technologies, manufacturers can achieve higher efficiency, cost reduction, and improved quality. Additionally, smart factories enable mass customization, allowing businesses to tailor products to individual customer needs without compromising efficiency.",
@@ -202,6 +202,7 @@ const blogDetailsData = [
         },
         {
           sectionTitle: "Benefits of Smart Manufacturing & PDM",
+          image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/smart-manufacturing-29042025/blog5_3.png",
           listItems: [
             "Reduced Downtime: Predicting failures in advance prevents unexpected stoppages.",
             "Lower Maintenance Costs: Avoids unnecessary repairs and extends machine life.",
@@ -224,7 +225,7 @@ const blogDetailsData = [
       title: "From Data to Decisions: How AI Enhances ERP Insights",
       author: "Atomwalk Team",
       date: "April 28, 2025",
-      image: "",
+      image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/ai-erp-insights-29042025/blog2_1.jpg",
       content: [
         {
           sectionTitle: "Data, ERP, and AI – The Perfect Trio",
@@ -251,7 +252,7 @@ const blogDetailsData = [
             },
             {
               title: "Predictive Analytics – Seeing the Future Before It Happens",
-              image: "",
+              image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/ai-erp-insights-29042025/blog2_2.jpg",
               paragraphs: [
                 "Predictive analysis helps businesses look into the crystal ball and forecast future trends. By analyzing historical data, AI can predict sales trends, identify seasonal fluctuations, and even detect potential risks before they escalate. For instance, in the manufacturing industry, AI- driven ERP systems can forecast equipment failures by analyzing sensor data, allowing preventive maintenance before a costly breakdown occurs. Just like planning a surprise party based on past celebrations, businesses can prepare for the future rather than react to unexpected events."
               ]
@@ -264,7 +265,7 @@ const blogDetailsData = [
             },
             {
               title: "The Role of Blockchain in ERP",
-              image: "",
+              image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/ai-erp-insights-29042025/blog2_3.jpg",
               paragraphs: [
                 "As AI and ERP continue to evolve, blockchain technology is expected to play a crucial role in enhancing security and transparency. Blockchain ensures that data integrity is maintained across the system, preventing unauthorized access and reducing fraud risks. For example, a blockchain-powered ERP system in supply chain management can provide a transparent and tamper-proof record of every transaction. This makes it easier for businesses to track products, verify authenticity, and ensure compliance with regulations."
               ]
@@ -288,7 +289,7 @@ const blogDetailsData = [
       title: "Elevate Your Gym Business with CRM & Automation",
       author: "Atomwalk Team",
       date: "April 28, 2025",
-      image: "",
+      image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/gym-crm-automation-2904025/blog4_1.png",
       content: [
         {
           sectionTitle: "Introduction",
@@ -298,7 +299,7 @@ const blogDetailsData = [
         },
         {
           sectionTitle: "The Role of CRM in the Fitness Industry",
-          image: "",
+          image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/gym-crm-automation-2904025/blog4_2.png",
           paragraphs: [
             "A CRM system is essential for managing customer interactions, tracking memberships, and personalizing communication. Here’s how a CRM can benefit your gym:"   
           ],

@@ -23,11 +23,12 @@ const SectionTitle = styled.h2`
 
 // Image style for section images
 const SectionImage = styled.img`
-  max-width: 100%;
+  max-width: 70%;
+  aspect-ratio: 3/2;
+  object-fit: contain;
   height: auto;
   border-radius: 8px;
   margin: 24px 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const SubSection = styled.div`
@@ -44,6 +45,8 @@ const SubSectionTitle = styled.h3`
 
 const SubSectionImage = styled(SectionImage)`
   max-width: 60%;
+    aspect-ratio: 3/2;
+  object-fit: contain;
   margin: 20px 0;
 `;
 

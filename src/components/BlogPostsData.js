@@ -11,7 +11,7 @@ const blogPostsData = [
       id: 2,
       title: 'How AI and Marketplace Integration Boost Small Business Success',
       category: 'AI & Marketplace',
-      image: 'https://drive.google.com/uc?export=view&id=1FS2xdgVdEazr-e9yTzSX5eGTh_AspRti',
+      image: 'https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/ai-marketplace-business-29042025/blog1_1.jpg',
       author: 'Atomwalk Team',
       date: 'November 15, 2024',
     },
@@ -19,7 +19,7 @@ const blogPostsData = [
       id: 3,
       title: 'The Green Side of AI: Eco-Intelligence in ERP Systems',
       category: 'Sustainability & ERP',
-      image: 'https://www.dnkinfotelecom.com.br/wp-content/uploads/2021/01/WFM.png', // Replace with your image URL
+      image: 'https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/eco-ai-erp-29042025/blog3_1.jpg', // Replace with your image URL
       author: 'Atomwalk Team',
       date: 'April 28, 2025',
     },
@@ -27,7 +27,7 @@ const blogPostsData = [
       id: 4,
       title: 'Smart Manufacturing and Predictive Maintenance: Revolutionizing Industry 4.0',
       category: 'Industry 4.0',
-      image: '', // Replace with your image URL
+      image: 'https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/smart-manufacturing-29042025/blog5_1.png', // Replace with your image URL
       author: 'Atomwalk Team',
       date: 'April 28, 2025',
     },
@@ -35,7 +35,7 @@ const blogPostsData = [
       id: 5,
       title: 'From Data to Decisions: How AI Enhances ERP Insights',
       category: 'AI & ERP',
-      image: '', // Replace with your image URL
+      image: 'https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/ai-erp-insights-29042025/blog2_1.jpg', // Replace with your image URL
       author: 'Atomwalk Team',
       date: 'April 28, 2025',
     },
@@ -43,7 +43,7 @@ const blogPostsData = [
       id: 6,
       title: 'Elevate Your Gym Business with CRM & Automation',
       category: 'CRM & Business Automation',
-      image: '', // Replace with your image URL
+      image: 'https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/gym-crm-automation-2904025/blog4_1.png', // Replace with your image URL
       author: 'Atomwalk Team',
       date: 'April 28, 2025',
     }

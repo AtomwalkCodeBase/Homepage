@@ -175,7 +175,7 @@ const HeroBlog = () => {
 
       <ImageContainer>
         <BlogImageStyled src={BlogImage} alt="Blog Preview" />
-        <CardContainer>
+        {/* <CardContainer>
           <Card>
             <CardImage src={Pritam} alt="User 1" />
             <CardText>
@@ -190,7 +190,7 @@ const HeroBlog = () => {
               Tips You Must know: Atomwalk HRM On-the-Go
             </CardText>
           </Card>
-        </CardContainer>
+        </CardContainer> */}
       </ImageContainer>
     </HeroSection>
   );

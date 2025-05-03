@@ -78,6 +78,9 @@ import HmsHeroPage from "./components/hms/HmsHeroPage";
 import Smsheropage from "./components/sms/Smsheropage";
 import Profile from "./pages/Profile";
 import { ThemeProvider } from "./context/ThemeContext"
+import Manual from "./components/Manual";
+import ManualModuleDetails from "./components/ManualModuleDetails";
+import ManualSteps from "./components/ManualSteps";
 function App() {
   const [openslide, setOpenslide] = useState(false);
   const url = "https://www.atomwalk.com/rest-auth/login/";
@@ -124,7 +127,7 @@ function App() {
               <Route path="/demo.html" element={<FormComponent />} />
               <Route path="/seals.html" element={<ContactSalesPage />} />
               <Route path="/Blog.html" element={<Blog />} />
-              <Route path="/BlogDetails/:blogId.html.html" element={<BlogDetails />} />
+              <Route path="/BlogDetails/:blogId.html" element={<BlogDetails />} />
               <Route path="/careers.html" element={<Career />} />
               <Route path="/thankyou.html" element={<ThankYouPage />} />
               <Route path="/terms-and-conditions.html" element={<TermsAndConditions />} />
@@ -175,6 +178,10 @@ function App() {
               <Route path="/facilitymanagement.html" element={<Fmsheropage />} />
               <Route path="/hospitalmanagement.html" element={<HmsHeroPage />} />
               <Route path="/solarmanagement.html" element={<Smsheropage />} />
+              <Route path="/manual.html" element={<Manual/>} />
+              <Route path="/hrmanual.html" element={<ManualModuleDetails/>} />
+              <Route path="/crmanual.html" element={<ManualModuleDetails/>} />
+              <Route path="/manualsteps.html" element={<ManualSteps/>} />
     
               {/* Login Route */}
               <Route path="/login" element={<Login />} />

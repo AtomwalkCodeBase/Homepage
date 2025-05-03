@@ -347,7 +347,7 @@ export default function Footer2() {
       window.removeEventListener('popstate', handlePopState);
     };
   }, []);
-  
+
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -444,16 +444,16 @@ export default function Footer2() {
             <li>
               <a href="/Blog.html">Blog</a>
             </li>
-            {/* <li>
+            <li>
                   <DropdownContainer>
-                    <SupportLink href="https://www.atomwalk.com/login/" target="_blank">
-                      Support
+                    <SupportLink href="/manual.html">
+                      Manual
                     </SupportLink>
                     <DropdownBox>
-                    To raise a support ticket, please log in to your Atomwalk account. This ensures that we can track your issue.
+                      Access the manual for step-by-step instructions and guidance.
                     </DropdownBox>
                   </DropdownContainer>
-                </li> */}
+                </li>
             <li>
               {/* <a    onClick={()=>{setopenpop(!openpop)}}>Tutorials</a> */}
             </li>

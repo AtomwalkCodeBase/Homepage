@@ -1,0 +1,57 @@
+import axios from "axios";
+// import { endpoint } from "../constants";
+import { addEmpLeave, endpoint, getEmpLeavedata } from "../services/ConstantServies";
+
+// Utility function to get token from localStorage
+const getToken = () => {
+  return localStorage.getItem('userToken');
+};
+
+export const authAxios = async (url, data) => {
+  const token = getToken();
+  return axios.create({
+    baseURL: endpoint,
+    params: data,
+    headers: {
+      Authorization: `Token ${token}`
+    }
+  }).get(url);
+};
+
+export const authAxiosPost = async (url, data) => {
+  const token = getToken();
+  return axios.create({
+    baseURL: endpoint,
+    headers: {
+      Authorization: `Token ${token}`
+    }
+  }).post(url, data);
+};
+
+export const authAxiosFilePost = async (url, data) => {
+  const token = getToken();
+
+  if (!(data instanceof FormData)) {
+    console.error('Data is not FormData!');
+    return;
+  }
+
+  return axios.create({
+    baseURL: endpoint,
+    headers: {
+      Authorization: `Token ${token}`,
+      'Content-Type': 'multipart/form-data',
+    }
+  }).post(url, data);
+};
+
+export const publicAxiosRequest = axios.create({
+  baseURL: endpoint,
+});
+
+export default {
+  get: axios.get,
+  post: axios.post,
+  put: axios.put,
+  delete: axios.delete,
+};

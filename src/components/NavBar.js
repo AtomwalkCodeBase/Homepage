@@ -21,14 +21,42 @@ export const NavBar = () => {
   const [showLogin, setShowLogin] = useState(true);
   const [showProductMenu, setShowProductMenu] = useState(false);
   const[opennavbar,setOpennavbar]=useState(true);
-useEffect(()=>{
-  if(location.pathname.includes('assessment')){
-    setOpennavbar(false);
-  }
-  else{
-    setOpennavbar(true);
-  }
-},[location.pathname])
+  const pathsToHideNavbar = [
+    'assessment',
+    'login',
+    'dashboard',
+    'employees',
+    'attendance-tracking',
+    'leave-management',
+    'holidays',
+    'timesheet',
+    'shifts',
+    'appointees',
+    'analytics',
+    'helpdesk',
+    "requestdesk",
+    "profile",
+    "claims"
+  ];
+ useEffect(() => {
+    const checkPath = () => {
+      const currentPath = window.location.pathname;
+      const shouldHideNavbar = pathsToHideNavbar.some(path => currentPath.includes(path));
+      setOpennavbar(!shouldHideNavbar);
+    };
+  
+    checkPath();
+  
+    const handlePopState = () => {
+      checkPath();
+    };
+  
+    window.addEventListener('popstate', handlePopState);
+    
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
   useEffect(() => {
     const onScroll = () => {
       if (window.scrollY > 50) {

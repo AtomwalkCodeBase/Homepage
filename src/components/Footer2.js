@@ -309,24 +309,45 @@ export default function Footer2() {
  const[opennavbar,setOpennavbar]=useState(true);
   const[openpop,setopenpop]=useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+
+  const pathsToHideNavbar = [
+    'assessment',
+    'login',
+    'dashboard',
+    'employees',
+    'attendance-tracking',
+    'leave-management',
+    'holidays',
+    'timesheet',
+    'shifts',
+    'appointees',
+    'analytics',
+    'helpdesk',
+    "requestdesk",
+    "profile",
+    "claims"
+  ];
+  
   useEffect(() => {
     const checkPath = () => {
       const currentPath = window.location.pathname;
-      if (currentPath.includes('assessment')) {
-        setOpennavbar(false);
-      } else {
-        setOpennavbar(true);
-      }
+      const shouldHideNavbar = pathsToHideNavbar.some(path => currentPath.includes(path));
+      setOpennavbar(!shouldHideNavbar);
     };
+  
     checkPath();
+  
     const handlePopState = () => {
       checkPath();
     };
+  
     window.addEventListener('popstate', handlePopState);
+    
     return () => {
       window.removeEventListener('popstate', handlePopState);
     };
   }, []);
+  
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -342,7 +363,7 @@ export default function Footer2() {
 
   return (
     <>
-    {opennavbar?<div>
+    {opennavbar&&<div>
     <FooterContainer>
       <FooterLeft>
       <NewsletterContainer>
@@ -455,7 +476,7 @@ export default function Footer2() {
       <a href="/disclaimer.html" style={{ color: "white", textDecoration: "none" }}> Disclaimer</a> |  
       Made with <span>♥</span> Atomwalk
     </p>
-        <div className="social-icon">
+        <div style={{marginTop:"5px"}} className="social-icon">
               <a href="https://www.linkedin.com/company/atomwalk-technologies"><img src={navIcon1} alt="linkedin" /></a>
               <a href="https://www.facebook.com/profile.php?id=61572466203683"><img src={navIcon2} alt="facebook" /></a>
               <a href="https://www.instagram.com/atomwalktechnologies"><img src={navIcon3} alt="instagram" /></a>
@@ -464,14 +485,15 @@ export default function Footer2() {
             </div>
             </div>
       </FooterBottom>
-      </div>:<FooterBottom>
+      </div>}
+      {/* </div>:<FooterBottom>
       <div style={{padding:"25px"}}>
         <p>© 2024 Atomwalk. All Rights Reserved.</p>
         <p>
           Made with <span>♥</span> Atomwalk
         </p>
             </div>
-      </FooterBottom>}
+      </FooterBottom>} */}
       <UnderConstructionPopup visible={openpop} setvisible={setopenpop}></UnderConstructionPopup>
       </>
   );

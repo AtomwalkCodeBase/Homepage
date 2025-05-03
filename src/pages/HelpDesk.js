@@ -1,0 +1,468 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import styled from "styled-components"
+import {
+  FaQuestion,
+  FaTicketAlt,
+  FaSearch,
+  FaPlus,
+  FaFilter,
+  FaEye,
+  FaEdit,
+  FaTrash,
+  FaFileAlt,
+  FaBook,
+  FaHeadset,
+  FaCalendarAlt,
+  FaMoneyBillWave,
+  FaLaptop,
+} from "react-icons/fa"
+import Layout from "../components/Layout"
+import Card from "../components/Card"
+import Button from "../components/Button"
+import Badge from "../components/Badge"
+import { getEmployeeRequest } from "../services/productServices"
+import Modal from "../components/modals/Modal"
+import { toast } from "react-toastify"
+import RequestModal from "../components/modals/RequestModal"
+
+const HelpDeskHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  p{
+    color: ${({ theme }) => theme.colors.textLight};
+    font-size: 0.9rem;
+  }
+`
+
+const SearchContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`
+
+const SearchInput = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 4px;
+  padding: 0 1rem;
+  
+  svg {
+    color: ${({ theme }) => theme.colors.textLight};
+    margin-right: 0.5rem;
+  }
+  
+  input {
+    flex: 1;
+    border: none;
+    padding: 0.75rem 0;
+    outline: none;
+  }
+`
+
+const TabContainer = styled.div`
+  display: flex;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+`
+
+const Tab = styled.button`
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid ${(props) => (props.active ? props.theme.colors.primary : "transparent")};
+  color: ${(props) => (props.active ? props.theme.colors.primary : props.theme.colors.text)};
+  font-weight: ${(props) => (props.active ? "600" : "400")};
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`
+
+const FilterContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+`
+
+const FilterSelect = styled.select`
+  padding: 0.5rem 1rem;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 4px;
+  background: white;
+`
+
+const TableContainer = styled.div`
+  overflow-x: auto;
+`
+
+const ActionButtons = styled.div`
+  display: flex;
+  gap: 0.5rem;
+`
+
+const CategoryGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+`
+
+const CategoryCard = styled.div`
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  }
+`
+
+const CategoryIcon = styled.div`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  background: ${({ theme }) => theme.colors.primaryLight};
+  color: ${({ theme }) => theme.colors.primary};
+`
+
+const CategoryTitle = styled.h3`
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+`
+
+const CategoryDescription = styled.p`
+  color: ${({ theme }) => theme.colors.textLight};
+  font-size: 0.9rem;
+`
+const HelpDesk = () => {
+  const [activeTab, setActiveTab] = useState("tickets");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [allRequests, setAllRequests] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpens, setIsModalOpens] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState(null);
+  const[pageref,setPageRef] = useState(1);
+  const handleSuccess = () => {
+    setIsModalOpens(false);
+    toast.success("Request submitted successfully!");
+    setPageRef(pageref + 1);
+  };
+  const emp_id = localStorage.getItem("empId");
+  useEffect(() => {
+    fetchRequest();
+  }, [pageref]);
+
+  const fetchRequest = async () => {
+    try {
+      const res = await getEmployeeRequest();
+      setAllRequests(res.data);
+    } catch (err) {
+      console.log("Error fetching requests:", err);
+    }
+  };
+
+  const tickets = allRequests.filter(
+    (request) => request?.emp_id == emp_id && request?.request_type === "H"
+  );
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredTickets = tickets.filter(
+    (ticket) =>
+      ticket.request_text.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ticket.request_sub_type.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const getStatusInfo = (request) => {
+    switch (request.request_status) {
+      case "S":
+        return { text: "Submitted", variant: "warning" };
+      case "A":
+        return { text: "Assigned", variant: "info" };
+      case "X":
+        return { text: "Rejected", variant: "error" };
+      case "C":
+        return { text: "Completed", variant: "success" };
+      default:
+        return { text: request.status_display, variant: "warning" };
+    }
+  };
+
+  const getRequestIcon = (subType) => {
+    switch (subType) {
+      case "Asset Request":
+        return <FaLaptop />;
+      case "Document Request":
+        return <FaFileAlt />;
+      default:
+        return <FaTicketAlt />;
+    }
+  };
+
+  const openModal = (ticket) => {
+    setSelectedTicket(ticket);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedTicket(null);
+  };
+  const categories = [
+    {
+      id: 1,
+      title: "Getting Started",
+      description: "Basic guides and tutorials for new employees",
+      icon: <FaBook />,
+      articles: 12,
+    },
+    {
+      id: 2,
+      title: "Leave Management",
+      description: "How to apply, approve and manage leaves",
+      icon: <FaCalendarAlt />,
+      articles: 8,
+    },
+    {
+      id: 3,
+      title: "Payroll & Benefits",
+      description: "Information about salary, taxes and benefits",
+      icon: <FaMoneyBillWave />,
+      articles: 15,
+    },
+    {
+      id: 4,
+      title: "IT Support",
+      description: "Technical support and troubleshooting guides",
+      icon: <FaHeadset />,
+      articles: 10,
+    },
+    {
+      id: 5,
+      title: "HR Policies",
+      description: "Company policies and procedures",
+      icon: <FaFileAlt />,
+      articles: 20,
+    },
+    {
+      id: 6,
+      title: "FAQs",
+      description: "Frequently asked questions",
+      icon: <FaQuestion />,
+      articles: 25,
+    },
+  ]
+  return (
+    <Layout title="Help Desk">
+      <HelpDeskHeader>
+        <div>
+          <p>Get support and find answers to your questions</p>
+        </div>
+
+        <Button onClick={()=>setIsModalOpens(true)} variant="primary">
+          <FaPlus /> Create New Ticket
+        </Button>
+      </HelpDeskHeader>
+
+      <SearchContainer>
+        <SearchInput>
+          <FaSearch />
+          <input
+            type="text"
+            placeholder="Search tickets or knowledge base..."
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+        </SearchInput>
+      </SearchContainer>
+
+      <Card>
+        <TabContainer>
+          <Tab active={activeTab === "tickets"} onClick={() => setActiveTab("tickets")}>
+            <FaTicketAlt style={{ marginRight: "0.5rem" }} />
+            My Tickets
+          </Tab>
+          <Tab active={activeTab === "knowledge"} onClick={() => setActiveTab("knowledge")}>
+            <FaBook style={{ marginRight: "0.5rem" }} />
+            Knowledge Base
+          </Tab>
+        </TabContainer>
+
+        {activeTab === "tickets" && (
+          <>
+            <FilterContainer>
+              <FilterSelect>
+                <option>All Categories</option>
+                <option>System Access</option>
+                <option>Leave Management</option>
+                <option>Payroll</option>
+                <option>IT Support</option>
+                <option>Benefits</option>
+              </FilterSelect>
+
+              <FilterSelect>
+                <option>All Status</option>
+                <option>Open</option>
+                <option>In Progress</option>
+                <option>Closed</option>
+              </FilterSelect>
+
+              <FilterSelect>
+                <option>All Priorities</option>
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+              </FilterSelect>
+
+              <Button variant="outline" size="sm">
+                <FaFilter /> Filter
+              </Button>
+            </FilterContainer>
+            <TableContainer>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Request ID</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Remarks</th>
+                    <th>Created Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredTickets.map((request) => {
+                    const statusInfo = getStatusInfo(request);
+                    return (
+                      <tr key={request.id}>
+                        <td>{request.request_id}</td>
+                        <td>
+                          <div style={{ display: "flex", alignItems: "center" }}>
+                            <span style={{ marginRight: "0.5rem" }}>
+                              {getRequestIcon(request.request_sub_type)}
+                            </span>
+                            {request.request_sub_type}
+                          </div>
+                        </td>
+                        <td>{request.request_text}</td>
+                        <td>{request.remarks || "-"}</td>
+                        <td>{request.created_date}</td>
+                        <td>
+                          <Badge variant={statusInfo.variant}>
+                            {statusInfo.text}
+                          </Badge>
+                        </td>
+                        <td>
+                          <ActionButtons>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              title="View"
+                              onClick={() => openModal(request)}
+                            >
+                              <FaEye />
+                            </Button>
+                          </ActionButtons>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </TableContainer>
+          </>
+        )}
+
+        {activeTab === "knowledge" && (
+          <>
+            <CategoryGrid>
+              {categories.map((category) => (
+                <CategoryCard key={category.id}>
+                  <CategoryIcon>{category.icon}</CategoryIcon>
+                  <CategoryTitle>{category.title}</CategoryTitle>
+                  <CategoryDescription>{category.description}</CategoryDescription>
+                  <div style={{ marginTop: "1rem", fontSize: "0.9rem" }}>{category.articles} articles</div>
+                </CategoryCard>
+              ))}
+            </CategoryGrid>
+
+            <div style={{ textAlign: "center", marginTop: "2rem" }}>
+              <h3>Can't find what you're looking for?</h3>
+              <p style={{ margin: "1rem 0" }}>
+                Create a new support ticket and our team will assist you as soon as possible.
+              </p>
+              <Button variant="primary">
+                <FaPlus /> Create New Ticket
+              </Button>
+            </div>
+          </>
+        )}
+      </Card>
+
+      {isModalOpen && (
+        <Modal onClose={closeModal}>
+          <h2>Ticket Details</h2>
+          <p><strong>Request ID:</strong> {selectedTicket.request_id}</p>
+          <p><strong>Type:</strong> {selectedTicket.request_sub_type}</p>
+          <p><strong>Description:</strong> {selectedTicket.request_text}</p>
+          <p><strong>Remarks:</strong> {selectedTicket.remarks || "-"}</p>
+          <p><strong>Created Date:</strong> {selectedTicket.created_date}</p>
+          <p><strong>Status:</strong> {getStatusInfo(selectedTicket).text}</p>
+          <div style={{ marginTop: "1rem" }}>
+          <Button variant="primary" onClick={closeModal}>Close</Button>
+          </div>
+        </Modal>
+      )}
+       {isModalOpens && (
+        <RequestModal 
+          call_type="H" 
+          empId={emp_id} 
+          onClose={() => setIsModalOpens(false)}
+          onSuccess={handleSuccess}
+        />
+      )}
+    </Layout>
+  );
+};
+
+export default HelpDesk

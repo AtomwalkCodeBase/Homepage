@@ -354,12 +354,9 @@ const AttendanceTracking = () => {
   const [attData, setAttData] = useState([])
   const [employeeDatas, setEmployeeDatas] = useState([])
   const [holiday, setHoliday] = useState({})
-  const[datas, setDatas] = useState({
-    month: date.getMonth() + 1,
-    year: date.getFullYear()})
   const { profile } = useAuth()
   // Mock employee data
-  console.log(date,"hbff")
+  console.log("currentMonth",currentMonth)
 
   const employeeData = {
     id: profile?.emp_id,
@@ -415,8 +412,11 @@ const AttendanceTracking = () => {
     setAttData(attendanceMap);
   };
   useEffect(() => {
-    fetchAttendanceDetails(datas)
-  }, [date])
+    fetchAttendanceDetails({
+      month: currentMonth+1,
+      year: currentYear
+    });
+  }, [currentMonth, currentYear]);
   const processHolidayData = (data) => {
     const holidayMap = {};
 
@@ -667,7 +667,7 @@ const AttendanceTracking = () => {
                 $isWeekend={isWeekend(day) && !holiday[day]}
               >
                 <DayNumber>{day}</DayNumber>
-                {status && <DayStatus $status={status}>{status}</DayStatus>}
+                {status && <DayStatus $status={status=='A'?"P":status}>{status=='A'?"P":status}</DayStatus>}
               </DayCell>
             )
           })}

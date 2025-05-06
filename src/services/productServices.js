@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext, getAppointeeList, processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin } from "../services/ConstantServies";
+import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext, getAppointeeList, processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList } from "../services/ConstantServies";
 import { authAxios, authAxiosFilePost, authAxiosPost } from "./HttpMethod";
 
 export function getEmpLeave(leave_type , emp_id) {
@@ -87,7 +87,12 @@ export function getEmpLeave(leave_type , emp_id) {
     console.log('Final response data', data)
     return authAxios(getEmpHolidayData, data)
   }
-
+  export function getEventLists(datas) {
+    let data = {
+      'emp_id':datas,
+    };
+    return authAxios(getEventList, data)
+  }
   export function postCheckIn(checkin_data) {
     let data = {};
     if (checkin_data) {

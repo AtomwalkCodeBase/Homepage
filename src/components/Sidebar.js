@@ -212,6 +212,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
     // { path: "/analytics", name: "Analytics", icon: <FaChartBar /> },
     { path: "/helpdesk", name: "Help Desk", icon: <FaComments/> },
     { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
+    { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
     { path: "/profile", name: "My Profile", icon: <FaUserCircle />, section: "Account" },
   ]
 

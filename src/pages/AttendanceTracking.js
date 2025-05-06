@@ -15,15 +15,19 @@ import {
   FaHome,
   FaChevronLeft,
   FaChevronRight,
-  FaFilter
+  FaFilter,
+  FaSignInAlt,
+  FaSignOutAlt
 } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
 import Badge from "../components/Badge"
 import { useAuth } from "../context/AuthContext"
-import { getEmpAttendance, getEmpHoliday } from "../services/productServices"
+import { getEmpAttendance, getEmpHoliday, postCheckIn } from "../services/productServices"
 import Modal from "../components/modals/Modal"
+import { toast } from "react-toastify"
+import moment from "moment/moment"
 // import Modal from "../components/Modal"
 // import Input from "../components/Input"
 
@@ -343,6 +347,7 @@ const HistoryButton = styled.button`
 
 const AttendanceTracking = () => {
   const [currentTime, setCurrentTime] = useState(new Date())
+  const [currentDate, setCurrentDate] = useState('');
   const [checkedIn, setCheckedIn] = useState(false)
   const [startTime, setStartTime] = useState(null)
   const [attendance, setAttendance] = useState({})
@@ -354,9 +359,17 @@ const AttendanceTracking = () => {
   const [attData, setAttData] = useState([])
   const [employeeDatas, setEmployeeDatas] = useState([])
   const [holiday, setHoliday] = useState({})
+  const[relode,setReLoad]=useState(1);
   const { profile } = useAuth()
   // Mock employee data
-  console.log("currentMonth",currentMonth)
+  console.log("currentMonth",attendance)
+  const setdatatime = async () => {
+    let time = moment().format('hh:mm A');
+    if (moment().isBetween(moment().startOf('day').add(12, 'hours').add(1, 'minute'), moment().startOf('day').add(13, 'hours'))) {
+      time = time.replace(/^12/, '00');
+    }
+    return time;
+  }
 
   const employeeData = {
     id: profile?.emp_id,
@@ -410,13 +423,27 @@ const AttendanceTracking = () => {
       attendanceMap[day] = item.attendance_type;
     });
     setAttData(attendanceMap);
+    const currentDate = `${currentTime.getDate().toString().padStart(2, '0')}-${(currentTime.getMonth() + 1).toString().padStart(2, '0')}-${currentTime.getFullYear()}`;
+    const todayAttendance = data.find((item) => item.a_date === currentDate);
+    if (todayAttendance) {
+    setAttendance(todayAttendance);
+    setCheckedIn(todayAttendance.end_time === null);
+    }
+    else {
+      setAttendance({
+        start_time: null,
+        end_time: null,
+        geo_status: 'N'
+      });
+    }
+
   };
   useEffect(() => {
     fetchAttendanceDetails({
       month: currentMonth+1,
       year: currentYear
     });
-  }, [currentMonth, currentYear]);
+  }, [currentMonth, currentYear,relode]);
   const processHolidayData = (data) => {
     const holidayMap = {};
 
@@ -490,13 +517,8 @@ const AttendanceTracking = () => {
 
   const confirmCheckOut = () => {
     setCheckedIn(false)
-    setAttendance({
-      ...attendance,
-      end_time: currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      geo_status: 'O',
-      remarks: remark
-    })
-    setIsRemarkModalOpen(false)
+    handleCheck('UPDATE');
+    setIsRemarkModalOpen(false);
     setRemark('')
   }
 
@@ -547,7 +569,40 @@ const AttendanceTracking = () => {
     const dateObj = new Date(date.getFullYear(), date.getMonth(), day)
     return dateObj < today ? 'N' : ''
   }
+  const handleCheck = async (mode) => {
+    const currentDate = `${currentTime.getDate().toString().padStart(2, '0')}-${(currentTime.getMonth() + 1).toString().padStart(2, '0')}-${currentTime.getFullYear()}`;
+    const time = await setdatatime();
+    try {
+      const todayAttendance = employeeDatas.find((item) => item.a_date == currentDate);
+      const attendanceId = todayAttendance ? todayAttendance.id : null;
+      
+      const checkPayload = {
+        emp_id: localStorage.getItem('empNoId'),
+        call_mode: mode,
+        time: time,
+        geo_type: mode === 'ADD' ? 'I' : 'O',
+        a_date: currentDate,
+        latitude_id: ``,
+        longitude_id: ``,
+        remarks: mode === 'ADD' ? 'Check-in from Web' : remark,
+        id: attendanceId,
+      };
+    const Attdatarec =  await postCheckIn(checkPayload);
+    if (Attdatarec.status === 200) {
+      toast.success('Attendance processed successfully');
+    }
 
+    } catch (error) {
+      console.log("Error during check in/out:", error);
+      toast.error('Failed to process attendance');
+    }
+    setReLoad(relode+1); 
+  };
+
+  // Button states
+  const isCheckInDisabled = checkedIn || attendance.geo_status === 'O' || !!attendance.start_time;
+  const isCheckOutDisabled = !checkedIn || attendance.geo_status !== 'I' || !!attendance.end_time;
+  console.log(isCheckOutDisabled,"data")
   return (
     <Layout title="Attendance Tracking">
       <AttendanceHeader>
@@ -599,34 +654,37 @@ const AttendanceTracking = () => {
         </ProfileDetails>
       </ProfileCard>
       <AttendanceActions>
-        <ActionButton
-          onClick={handleCheckIn}
-          disabled={checkedIn || attendance.start_time}
-        >
-          <ActionIcon>
-            <FaCheckCircle style={{ color: checkedIn ? '#ccc' : '#4CAF50' }} />
-          </ActionIcon>
-          <ActionText>
-            {checkedIn || attendance.start_time
-              ? `Checked In at ${attendance.start_time}`
-              : 'Check In'}
-          </ActionText>
-        </ActionButton>
+              <ActionButton
+                onClick={() => handleCheck('ADD')}
+                disabled={isCheckInDisabled}
+              >
+                <ActionIcon>
+                  <FaSignInAlt style={{ color: isCheckInDisabled ? '#ccc' : '#4CAF50' }} />
+                </ActionIcon>
+                <ActionText>
+                  {isCheckInDisabled
+                    ? `Checked In • ${attendance.start_time}`
+                    : 'Check In'}
+                </ActionText>
+              </ActionButton>
 
-        <ActionButton
-          onClick={handleCheckOut}
-          disabled={!checkedIn || attendance.end_time}
-        >
-          <ActionIcon>
-            <FaTimesCircle style={{ color: !checkedIn ? '#ccc' : '#F44336' }} />
-          </ActionIcon>
-          <ActionText>
-            {attendance.end_time
-              ? `Checked Out at ${attendance.end_time}`
-              : 'Check Out'}
-          </ActionText>
-        </ActionButton>
-      </AttendanceActions>
+              <ActionButton
+                onClick={() => setIsRemarkModalOpen(true)}
+                disabled={isCheckOutDisabled}
+              >
+                <ActionIcon>
+                  <FaSignOutAlt style={{ color: isCheckOutDisabled ? '#ccc' : '#F44336' }} />
+                </ActionIcon>
+                <ActionText>
+                  {isCheckOutDisabled
+                    ? attendance.end_time
+                      ? `Checked Out • ${attendance.end_time}`
+                      : 'Check Out'
+                    : 'Check Out'}
+                </ActionText>
+              </ActionButton>
+            </AttendanceActions>
+
 
       {/* Calendar View */}
       <Card title="Monthly Attendance">

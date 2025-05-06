@@ -36,7 +36,8 @@ export const NavBar = () => {
     'helpdesk',
     "requestdesk",
     "profile",
-    "claims"
+    "claims",
+    "payslip"
   ];
  useEffect(() => {
     const checkPath = () => {

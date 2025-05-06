@@ -1,18 +1,9 @@
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// const getDbName = async () => {
-//   let dbName = await AsyncStorage.getItem('dbName');
-//   return dbName;
-// }
-// const localhost = "https://www.atomwalk.com"
 const localhost = "https://www.atomwalk.com"
-
 const apiURL = "/api";
 const db_name = "TR_012";
-
-// console.log("Db name===",AsyncStorage.getItem('dbName'));
-
 export const endpoint = `${localhost}${apiURL}`;
+export const hrendpoint = `${localhost}/hr_api`;
 
 export const productListURL = `${endpoint}/products/${db_name}/`;
 export const productDetailURL = id => `${endpoint}/products/${db_name}/${id}/`;
@@ -76,4 +67,5 @@ export const getEmployeeRequestList = `${endpoint}/get_employee_request/${db_nam
 export const getEmployeeRequestCategory = `${endpoint}/get_request_category/${db_name}/`;
 export const processEmployeeRequest = `${endpoint}/process_employee_request/${db_name}/`;
 export const setuserpin = `${endpoint}/set_user_pin/${db_name}/`;
+export const getEventList = `${hrendpoint}/get_employee_events/${db_name}/`;
 

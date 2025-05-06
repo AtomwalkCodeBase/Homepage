@@ -325,7 +325,8 @@ export default function Footer2() {
     'helpdesk',
     "requestdesk",
     "profile",
-    "claims"
+    "claims",
+    "payslip",
   ];
   
   useEffect(() => {

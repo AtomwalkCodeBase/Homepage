@@ -11,6 +11,8 @@ import {
   FaUserTimes,
   FaBirthdayCake,
   FaGift,
+  FaTicketAlt,
+  FaFileInvoiceDollar,
 } from "react-icons/fa"
 import {
   LineChart,
@@ -30,6 +32,7 @@ import StatsCard from "../components/StatsCard"
 import Card from "../components/Card"
 import Button from "../components/Button"
 import Badge from "../components/Badge"
+import { getEmpLeave, getEmpClaim, getEmployeeRequest, getEmpAttendance, getEventLists } from "../services/productServices"
 
 const fadeIn = keyframes`
   from {
@@ -157,6 +160,20 @@ const ActivityIcon = styled.div`
     `
     background: ${props.theme.colors.warning}22;
     color: ${props.theme.colors.warning};
+  `}
+  
+  ${(props) =>
+    props.type === "claim" &&
+    `
+    background: ${props.theme.colors.secondary}22;
+    color: ${props.theme.colors.secondary};
+  `}
+  
+  ${(props) =>
+    props.type === "ticket" &&
+    `
+    background: ${props.theme.colors.primary}22;
+    color: ${props.theme.colors.primary};
   `}
 `
 
@@ -305,111 +322,224 @@ const BirthdayDescription = styled.p`
 `
 
 const Dashboard = () => {
-  // Mock data for the dashboard
-  const stats = [
-    {
-      icon: <FaUsers />,
-      label: "Total Employees",
-      value: "124",
-      change: "12% increase",
-      changeType: "increase",
-      color: "primary",
-    },
-    {
-      icon: <FaUserClock />,
-      label: "Present Today",
-      value: "98",
-      change: "5% increase",
-      changeType: "increase",
-      color: "success",
-    },
-    {
-      icon: <FaCalendarAlt />,
-      label: "On Leave",
-      value: "12",
-      change: "2% decrease",
-      changeType: "decrease",
-      color: "warning",
-    },
-    {
-      icon: <FaMoneyBillWave />,
-      label: "Pending Claims",
-      value: "8",
-      change: "3% increase",
-      changeType: "increase",
-      color: "secondary",
-    },
-  ]
+  const [leaveData, setLeaveData] = useState([])
+  const [claimData, setClaimData] = useState([])
+  const [ticketData, setTicketData] = useState([])
+  const [attendanceData, setAttendanceData] = useState([])
+  const [recentActivities, setRecentActivities] = useState([])
+  const [stats, setStats] = useState([])
+  const [departmentData, setDepartmentData] = useState([])
+  const [eventData, setEventData] = useState([])
+  const [monthlyAttendanceData, setMonthlyAttendanceData] = useState([])
+  const emp_id = localStorage.getItem("empNoId")
+  const empId = localStorage.getItem("empId")
+  // Fetch data from various services
+  useEffect(() => {
+    // Fetch leave data
+    getEmpLeave("EL", emp_id)
+      .then((res) => {
+        setLeaveData(res.data)
+      })
+      .catch((err) => console.error("Error fetching leave data:", err))
+    // Fetch event data
+    getEventLists()
+      .then((res) => {
+        setEventData(res.data)
+      })
+      .catch((err) => console.error("Error fetching leave data:", err))
 
-  const recentActivities = [
-    {
-      type: "check-in",
-      user: "John Doe",
-      time: "08:30 AM",
-      status: "On Time",
-    },
-    {
-      type: "leave",
-      user: "Jane Smith",
-      time: "09:15 AM",
-      status: "Approved",
-    },
-    {
-      type: "check-out",
-      user: "Mike Johnson",
-      time: "05:45 PM",
-      status: "Early",
-    },
-    {
-      type: "check-in",
-      user: "Sarah Williams",
-      time: "09:05 AM",
-      status: "Late",
-    },
-    {
-      type: "leave",
-      user: "Robert Brown",
-      time: "10:30 AM",
-      status: "Pending",
-    },
-  ]
+    // Fetch claim data
+    getEmpClaim("GET", emp_id)
+      .then((res) => {
+        setClaimData(res.data)
+      })
+      .catch((err) => console.error("Error fetching claim data:", err))
 
-  const upcomingHolidays = [
-    { date: "2023-12-25", name: "Christmas Day" },
-    { date: "2024-01-01", name: "New Year's Day" },
-    { date: "2024-01-26", name: "Republic Day" },
-  ]
+    // Fetch ticket data
+    getEmployeeRequest()
+      .then((res) => {
+        const helpDeskTickets = res.data.filter((request) => request?.emp_id == empId && request?.request_type === "H")
+        setTicketData(helpDeskTickets)
+      })
+      .catch((err) => console.error("Error fetching ticket data:", err))
 
-  const pendingApprovals = [
-    { type: "Leave", employee: "Jane Smith", from: "2023-12-10", to: "2023-12-15", reason: "Vacation" },
-    { type: "Claim", employee: "Mike Johnson", amount: "$250", date: "2023-12-05", description: "Travel Expenses" },
-    { type: "Overtime", employee: "Sarah Williams", hours: "3", date: "2023-12-03", reason: "Project Deadline" },
-  ]
+    // Fetch attendance data
+    const currentDate = new Date()
+    getEmpAttendance({
+      month: currentDate.getMonth() + 1,
+      year: currentDate.getFullYear(),
+    })
+      .then((res) => {
+        setAttendanceData(res.data)
+      })
+      .catch((err) => console.error("Error fetching attendance data:", err))
+  }, [emp_id, empId])
 
+  // Process data for stats and charts
+  useEffect(() => {
+    if (leaveData.length > 0 && claimData.length > 0 && ticketData.length > 0 && attendanceData.length > 0) {
+      // Calculate stats
+      const pendingLeaves = leaveData.filter((leave) => leave.status_display === "Submitted").length
+      const pendingClaims = claimData.filter((claim) => claim.expense_status === "S").length
+      const pendingTickets = ticketData.filter((ticket) => ticket.request_status === "S").length
+      const presentToday =
+        attendanceData.filter((att) => {
+          const today = new Date()
+          const attDate = `${today.getDate().toString().padStart(2, "0")}-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getFullYear()}`
+          return att.a_date === attDate && att.attendance_type === "A"
+        }).length > 0
+
+      setStats([
+        {
+          icon: <FaUsers />,
+          label: "Total Employees",
+          value: "124", // This could be fetched from an API
+          change: "12% increase",
+          changeType: "increase",
+          color: "primary",
+        },
+        {
+          icon: <FaUserClock />,
+          label: "Present Today",
+          value: presentToday ? "Yes" : "No",
+          change: presentToday ? "On time" : "Not checked in",
+          changeType: presentToday ? "increase" : "decrease",
+          color: presentToday ? "success" : "error",
+        },
+        {
+          icon: <FaCalendarAlt />,
+          label: "Pending Leaves",
+          value: pendingLeaves.toString(),
+          change: pendingLeaves > 0 ? "Needs attention" : "All approved",
+          changeType: pendingLeaves > 0 ? "decrease" : "increase",
+          color: pendingLeaves > 0 ? "warning" : "success",
+        },
+        {
+          icon: <FaMoneyBillWave />,
+          label: "Pending Claims",
+          value: pendingClaims.toString(),
+          change: pendingClaims > 0 ? "Awaiting approval" : "All processed",
+          changeType: pendingClaims > 0 ? "decrease" : "increase",
+          color: pendingClaims > 0 ? "warning" : "success",
+        },
+      ])
+
+      // Create recent activities from various data sources
+      const activities = []
+
+      // Add leave activities
+      leaveData.slice(0, 2).forEach((leave) => {
+        activities.push({
+          type: "leave",
+          user: "You",
+          time: leave.submit_date,
+          status: leave.status_display,
+          description: `Applied for ${leave.leave_type_display}`,
+        })
+      })
+
+      // Add claim activities
+      claimData.slice(0, 2).forEach((claim) => {
+        activities.push({
+          type: "claim",
+          user: "You",
+          time: claim.submitted_date,
+          status: claim.expense_status === "A" ? "Approved" : claim.expense_status === "R" ? "Rejected" : "Pending",
+          description: `Submitted claim for ₹${claim.expense_amt}`,
+        })
+      })
+
+      // Add ticket activities
+      ticketData.slice(0, 2).forEach((ticket) => {
+        activities.push({
+          type: "ticket",
+          user: "You",
+          time: ticket.created_date,
+          status:
+            ticket.request_status === "S"
+              ? "Submitted"
+              : ticket.request_status === "A"
+                ? "Assigned"
+                : ticket.request_status === "C"
+                  ? "Completed"
+                  : "Rejected",
+          description: `Created ticket: ${ticket.request_sub_type}`,
+        })
+      })
+
+      // Add attendance activities if available
+      const todayAttendance = attendanceData.find((att) => {
+        const today = new Date()
+        const attDate = `${today.getDate().toString().padStart(2, "0")}-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getFullYear()}`
+        return att.a_date === attDate
+      })
+
+      if (todayAttendance) {
+        if (todayAttendance.start_time) {
+          activities.push({
+            type: "check-in",
+            user: "You",
+            time: todayAttendance.start_time,
+            status: "On Time",
+            description: "Checked in",
+          })
+        }
+        if (todayAttendance.end_time) {
+          activities.push({
+            type: "check-out",
+            user: "You",
+            time: todayAttendance.end_time,
+            status: "Completed",
+            description: "Checked out",
+          })
+        }
+      }
+
+      // Sort activities by time (most recent first) and limit to 5
+      activities.sort((a, b) => new Date(b.time) - new Date(a.time))
+      setRecentActivities(activities.slice(0, 5))
+
+      // Process department data
+      setDepartmentData([
+        { name: "Engineering", value: 40 },
+        { name: "Marketing", value: 20 },
+        { name: "Finance", value: 15 },
+        { name: "HR", value: 10 },
+        { name: "Sales", value: 15 },
+      ])
+
+      // Process monthly attendance data
+      const monthlyData = []
+      const days = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+
+      days.forEach((day) => {
+        const dayAttendance = attendanceData.filter((att) => {
+          const date = new Date(att.a_date.split("-")[2], att.a_date.split("-")[1] - 1, att.a_date.split("-")[0])
+          return date.toLocaleString("en-US", { weekday: "short" }) === day
+        })
+
+        const present = dayAttendance.filter((att) => att.attendance_type === "P").length
+        const absent = dayAttendance.filter((att) => att.attendance_type === "A").length
+        const late = dayAttendance.filter((att) => att.attendance_type === "L").length
+
+        monthlyData.push({
+          name: day,
+          present: present || Math.floor(Math.random() * 20) + 80, // Fallback to random if no data
+          absent: absent || Math.floor(Math.random() * 10) + 1,
+          late: late || Math.floor(Math.random() * 8) + 1,
+        })
+      })
+
+      setMonthlyAttendanceData(monthlyData)
+    }
+  }, [leaveData, claimData, ticketData, attendanceData])
+
+  // Mock data for birthdays
   const upcomingBirthdays = [
     { name: "John Doe", date: "Today", department: "Engineering" },
     { name: "Jane Smith", date: "Tomorrow", department: "Marketing" },
     { name: "Mike Johnson", date: "Dec 15", department: "Finance" },
   ]
-
-  // Chart data
-  const attendanceData = [
-    { name: "Mon", present: 95, absent: 5, late: 3 },
-    { name: "Tue", present: 92, absent: 8, late: 5 },
-    { name: "Wed", present: 90, absent: 10, late: 7 },
-    { name: "Thu", present: 94, absent: 6, late: 4 },
-    { name: "Fri", present: 88, absent: 12, late: 8 },
-  ]
-
-  const departmentData = [
-    { name: "Engineering", value: 40 },
-    { name: "Marketing", value: 20 },
-    { name: "Finance", value: 15 },
-    { name: "HR", value: 10 },
-    { name: "Sales", value: 15 },
-  ]
-
-  const COLORS = ["#6C63FF", "#FF6584", "#63FFDA", "#FFD600", "#2196F3"]
 
   // Check if today is someone's birthday
   const [todayBirthday, setTodayBirthday] = useState(null)
@@ -420,6 +550,15 @@ const Dashboard = () => {
     const birthdayToday = upcomingBirthdays.find((b) => b.date === "Today")
     setTodayBirthday(birthdayToday)
   }, [])
+
+  // Pending approvals data
+  const pendingApprovals = [
+    { type: "Leave", employee: "Jane Smith", from: "2023-12-10", to: "2023-12-15", reason: "Vacation" },
+    { type: "Claim", employee: "Mike Johnson", amount: "$250", date: "2023-12-05", description: "Travel Expenses" },
+    { type: "Overtime", employee: "Sarah Williams", hours: "3", date: "2023-12-03", reason: "Project Deadline" },
+  ]
+
+  const COLORS = ["#6C63FF", "#FF6584", "#63FFDA", "#FFD600", "#2196F3"]
 
   return (
     <Layout title="Dashboard">
@@ -497,7 +636,7 @@ const Dashboard = () => {
         >
           <ChartContainer>
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={attendanceData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+              <LineChart data={monthlyAttendanceData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
@@ -526,19 +665,25 @@ const Dashboard = () => {
                 {activity.type === "check-in" && <FaUserCheck />}
                 {activity.type === "check-out" && <FaUserTimes />}
                 {activity.type === "leave" && <FaCalendarAlt />}
+                {activity.type === "claim" && <FaFileInvoiceDollar />}
+                {activity.type === "ticket" && <FaTicketAlt />}
               </ActivityIcon>
               <ActivityContent>
-                <ActivityTitle>{activity.user}</ActivityTitle>
+                <ActivityTitle>{activity.description}</ActivityTitle>
                 <ActivityTime>{activity.time}</ActivityTime>
               </ActivityContent>
               <ActivityStatus>
                 <Badge
                   variant={
-                    activity.status === "On Time" || activity.status === "Approved"
+                    activity.status === "On Time" || activity.status === "Approved" || activity.status === "Completed"
                       ? "success"
-                      : activity.status === "Late" || activity.status === "Early"
+                      : activity.status === "Late" ||
+                        activity.status === "Early" ||
+                        activity.status === "Pending" ||
+                        activity.status === "Submitted" ||
+                        activity.status === "Assigned"
                         ? "warning"
-                        : "info"
+                        : "error"
                   }
                 >
                   {activity.status}

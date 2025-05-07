@@ -1,11 +1,10 @@
-"use client"
-
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
 import styled, { keyframes } from "styled-components"
 import { FaUser, FaLock, FaBuilding } from "react-icons/fa"
 import { useAuth } from "../context/AuthContext"
 import { toast } from "react-toastify"
+import { use } from "react"
+import { getCompanyName } from "../services/productServices"
 
 const fadeIn = keyframes`
   from {
@@ -192,15 +191,41 @@ const FormFooter = styled.div`
   }
 `
 
+const FormSelect = styled.select`
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 4px;
+  
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.colors.primary};
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primaryLight};
+  }
+`
+
 const Login = () => {
   const [formData, setFormData] = useState({
     mobile: "",
     password: "",
     company: "",
   })
+  const [company, setCompany] = useState("")
   const [loading, setLoading] = useState(false)
+  const [companies, setCompanies] = useState([])
   const { login } = useAuth()
-  const navigate = useNavigate()
+
+  console.log(company, "company")
+
+  useEffect(() => {
+    const fetchCompanyName = async () => {
+      const company = await getCompanyName()
+      if (company.status === 200) {
+        setCompanies(company.data)
+      }
+    }
+    fetchCompanyName()
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -210,13 +235,20 @@ const Login = () => {
     }))
   }
 
-  const handleSubmit = (e) => {
+  const handleCompanyChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      company: e.target.value,
+    }))
+    localStorage.setItem("dbName", e.target.value.split("_").slice(1).join("_"))
+  }
+
+  const handleSubmit = async(e) => {
     e.preventDefault()
     setLoading(true)
 
     // Simulate API call
-    setTimeout(() => {
-      // In a real app, you would validate credentials with an API
+    setTimeout(async () => {
       if (formData.mobile && formData.password) {
         const userData = {
           id: "1",
@@ -226,15 +258,12 @@ const Login = () => {
           role: "HR Manager",
           company: formData.company || "Acme Inc.",
         }
-
-        login(userData)
-        toast.success("Login successful!")
-        navigate("/dashboard")
+        await login(userData)
       } else {
         toast.error("Invalid credentials. Please try again.")
       }
       setLoading(false)
-    }, 1500)
+    }, 500)
   }
 
   return (
@@ -270,19 +299,27 @@ const Login = () => {
               <InputIcon>
                 <FaBuilding />
               </InputIcon>
-              <Input
-                type="text"
+              <FormSelect
                 id="company"
                 name="company"
-                placeholder="Your company name"
                 value={formData.company}
-                onChange={handleChange}
-              />
+                onChange={handleCompanyChange}
+                required
+              >
+                <option value="" disabled>
+                  Select your company
+                </option>
+                {companies.map((company) => (
+                  <option key={company.id} value={company.name}>
+                    {company.ref_cust_name}
+                  </option>
+                ))}
+              </FormSelect>
             </InputGroup>
           </FormGroup>
 
           <FormGroup>
-            <FormLabel htmlFor="mobile">mobile</FormLabel>
+            <FormLabel htmlFor="mobile">Mobile</FormLabel>
             <InputGroup>
               <InputIcon>
                 <FaUser />
@@ -309,7 +346,7 @@ const Login = () => {
                 type="password"
                 id="password"
                 name="password"
-                placeholder=" Enter your pin"
+                placeholder="Enter your pin"
                 value={formData.password}
                 onChange={handleChange}
                 required
@@ -322,7 +359,7 @@ const Login = () => {
           </LoginButton>
 
           <FormFooter>
-            <a href="#">Forgot password?</a>
+            <a href="#">Login With Mobile Number</a>
           </FormFooter>
         </LoginForm>
       </LoginFormContainer>

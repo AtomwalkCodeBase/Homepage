@@ -9,8 +9,20 @@ export function getProfileInfo() {
 export async function getEmployeeInfo() {
     try {
         const emp_id =  localStorage.getItem('empId');
-        // console.log("Auth Employee ID:", emp_id);
+        let data = {};
+        if (emp_id) {
+            data['emp_id'] = emp_id;
+        }
 
+        return authAxios(profileDtlURL, data);
+    } catch (error) {
+        console.error("Error fetching profile info:", error);
+        throw error;
+    }
+}
+export async function getEmployeesInfo() {
+    try {
+        const emp_id =  '';
         let data = {};
         if (emp_id) {
             data['emp_id'] = emp_id;

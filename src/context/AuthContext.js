@@ -1,9 +1,9 @@
-"use client"
-
 import { createContext, useState, useEffect, useContext } from "react"
 import { publicAxiosRequest } from "../services/HttpMethod"
 import { empLoginURL } from "../services/ConstantServies"
-import { getEmployeeInfo } from "../services/authServices"
+import { getCompanyInfo, getEmployeeInfo } from "../services/authServices"
+// import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
 const AuthContext = createContext()
 
@@ -13,7 +13,8 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const[profile, setProfile] = useState([])
-
+  const [companyInfo, setCompanyInfo] = useState([])   
+  // const navigate = useNavigate()
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -22,6 +23,13 @@ export const AuthProvider = ({ children }) => {
 
       } catch (error) {
         console.error('Failed to fetch profile:', error);
+      }
+      try {
+        const res = await getCompanyInfo();
+        setCompanyInfo(res?.data);
+      }
+      catch (error) {
+        console.log('Failed to fetch company info:', error);
       }
     };
     fetchProfile();
@@ -56,11 +64,15 @@ export const AuthProvider = ({ children }) => {
          localStorage.setItem('empNoId', String(e_id));
          localStorage.setItem('userPin', userData.password);
          localStorage.setItem("hrmsUser", JSON.stringify(userData))
-    setCurrentUser(userData)
+         localStorage.setItem("dbName", userData.company.split('_').slice(1).join('_'))
+         setCurrentUser(userData)
+            toast.success("Login successful!")
+            window.location.href="/dashboard"
     return true
   }
 } catch (error) {
   console.log("Login error:", error)
+  toast.error("Invalid credentials. Please try again.")
   if (error.response && error.response.status === 401) {
     console.log("Invalid credentials")
     return false
@@ -82,7 +94,8 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     loading,
-    profile
+    profile,
+    companyInfo
   }
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>

@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
-import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext, getAppointeeList, processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList } from "../services/ConstantServies";
-import { authAxios, authAxiosFilePost, authAxiosPost } from "./HttpMethod";
+import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext, getAppointeeList, processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip } from "../services/ConstantServies";
+import { authAxios, authAxiosFilePost, authAxiosget, authAxiosPost } from "./HttpMethod";
 
 export function getEmpLeave(leave_type , emp_id) {
     let data = {};
@@ -93,6 +93,19 @@ export function getEmpLeave(leave_type , emp_id) {
     };
     return authAxios(getEventList, data)
   }
+  export function getCompanyName() {
+    let data = {
+      'mobile_app_type':'HRM_E',
+    };
+    return authAxiosget(getCompany, data)
+  }
+  export function getemppayslip(datas) {
+    let data = {
+      "m_year": datas,
+      "emp_id": localStorage.getItem('empId'),
+    };
+    return authAxiosPost(getpayslip, data)
+  }
   export function postCheckIn(checkin_data) {
     let data = {};
     if (checkin_data) {
@@ -127,11 +140,11 @@ export function getEmpLeave(leave_type , emp_id) {
 
   export function getEmployeeRequest() { 
     let data = {
-      'emp_id':"EMP-001",
-      'request_sub_type':"Technical Support",
-      'request_type': "H"
+      'emp_id':localStorage.getItem('empId'),
+      // 'request_sub_type':"Technical Support",
+      // 'request_type': "R"
     };
-    return authAxios(getEmployeeRequestList)
+    return authAxios(getEmployeeRequestList,data)
   }
 
   export function getRequestCategory() { 

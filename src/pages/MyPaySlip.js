@@ -32,6 +32,9 @@ import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
 import { theme } from "../styles/Theme"
+import { getemppayslip } from "../services/productServices"
+import { toast } from "react-toastify"
+import { useAuth } from "../context/AuthContext"
 
 const PayslipHeader = styled.div`
   display: flex;
@@ -330,78 +333,26 @@ const MyPaySlip = () => {
   const [activeTab, setActiveTab] = useState("current")
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [salaryData, setSalaryData] = useState([])
-
-  // Sample salary data
-  const sampleSalaryData = [
-    {
-      name: "Testing Salary",
-      sg_type: "G",
-      sg_amt: 100000.0,
-      paid_frequency: "M",
-      c_method: "Not Applicable",
-      frequency_display: "Every Month",
-      sg_display: "Gross Salary",
-    },
-    {
-      name: "Variable Testing",
-      sg_type: "V",
-      sg_amt: 10000.0,
-      paid_frequency: "M",
-      c_method: "10.00-% of Gross Salary",
-      frequency_display: "Every Month",
-      sg_display: "Variable Salary (Part of Fixed not paid monthly)",
-    },
-    {
-      name: "Basic Salary",
-      sg_type: "B",
-      sg_amt: 50000.0,
-      paid_frequency: "M",
-      c_method: "50.00-% of Gross Salary",
-      frequency_display: "Every Month",
-      sg_display: "Basic Salary",
-    },
-    {
-      name: "Testing Salary",
-      sg_type: "P",
-      sg_amt: 20000.0,
-      paid_frequency: "M",
-      c_method: "20.00-% of Gross Salary",
-      frequency_display: "Every Month",
-      sg_display: "Part of Fixed (Gross) Salary",
-    },
-    {
-      name: "Special Allowance (Balance Amount)",
-      sg_type: "P",
-      sg_amt: 20000.0,
-      paid_frequency: "M",
-      c_method: "Balance Amount",
-      frequency_display: "Every Month",
-      sg_display: "Part of Fixed (Gross) Salary",
-    },
-    {
-      name: "TDS Deduction",
-      sg_type: "D",
-      sg_amt: 6364.0,
-      paid_frequency: "M",
-      c_method: "Setup Based Calculation",
-      frequency_display: "Every Month",
-      sg_display: "Deduction From Salary",
-    },
-    {
-      name: "Professional Tax Deduction",
-      sg_type: "D",
-      sg_amt: 200.0,
-      paid_frequency: "M",
-      c_method: "Setup Based Calculation",
-      frequency_display: "Every Month",
-      sg_display: "Deduction From Salary",
-    },
-  ]
-
+  const { profile, companyInfo } = useAuth()
+  console.log(currentMonth, "profile")
+  
   useEffect(() => {
-    // In a real app, you would fetch this data from an API
-    setSalaryData(sampleSalaryData)
-  }, [])
+    const fetchSalaryData = async () => {
+      const formattedMonth = `${currentMonth.getFullYear()}-${currentMonth.getMonth() + 1}`
+       await getemppayslip(formattedMonth).then((response) => {
+      if (response.status === 200) {
+        setSalaryData(response.data)
+      } 
+      else if (response.status === 400) {
+        toast.error("No salary data available for this month")
+      }
+    else {
+        toast.error("Failed to fetch salary data")
+      }
+        })
+    }
+    fetchSalaryData()
+  }, [currentMonth])
 
   // Calculate totals
   const grossSalary = salaryData.find((item) => item.sg_type === "G")?.sg_amt || 0
@@ -518,7 +469,8 @@ const MyPaySlip = () => {
           <PayslipContainer>
             <PayslipHeader2>
               <CompanyInfo>
-                <h2>ACME Corporation</h2>
+                <img src={companyInfo.image} alt="Company Logo" style={{ width: "70px", marginRight: "1rem" }} />
+                <h2>{companyInfo.name}</h2>
                 <p>Pay Slip for {currentMonth.toLocaleString("default", { month: "long", year: "numeric" })}</p>
               </CompanyInfo>
 
@@ -538,22 +490,22 @@ const MyPaySlip = () => {
             <EmployeeInfo>
               <InfoItem>
                 <h4>Employee Name</h4>
-                <p>John Doe</p>
+                <p>{profile.name}</p>
               </InfoItem>
 
               <InfoItem>
                 <h4>Employee ID</h4>
-                <p>EMP-001</p>
+                <p>{profile.emp_id}</p>
               </InfoItem>
 
               <InfoItem>
                 <h4>Department</h4>
-                <p>Engineering</p>
+                <p>{profile.department_name}</p>
               </InfoItem>
 
               <InfoItem>
                 <h4>Designation</h4>
-                <p>Senior Developer</p>
+                <p>{profile.grade_name}</p>
               </InfoItem>
 
               <InfoItem>
@@ -562,8 +514,8 @@ const MyPaySlip = () => {
               </InfoItem>
 
               <InfoItem>
-                <h4>PAN Number</h4>
-                <p>ABCDE1234F</p>
+                <h4>Mobile Number</h4>
+                <p>{profile.mobile_number}</p>
               </InfoItem>
             </EmployeeInfo>
 

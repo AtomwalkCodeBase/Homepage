@@ -14,6 +14,8 @@ import {
   FaSignOutAlt as FaCheckOut,
   FaQuestion,
   FaTicketAlt,
+  FaFileAlt,
+  FaGift,
 } from "react-icons/fa"
 import { useAuth } from "../context/AuthContext"
 import { theme } from "../styles/Theme"
@@ -249,7 +251,7 @@ const AttendanceButton = styled(ActionButton)`
 `
 
 const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
-  const { currentUser, logout } = useAuth()
+  const { currentUser, logout,profile } = useAuth()
   const [searchExpanded, setSearchExpanded] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [searchResults, setSearchResults] = useState([])
@@ -272,6 +274,8 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
     { path: "/analytics", name: "Analytics", icon: <FaUser /> },
     { path: "/helpdesk", name: "Help Desk", icon: <FaQuestion /> },
     { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
+    { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
+    { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
   ]
 
   const handleSearchClick = () => {
@@ -385,8 +389,8 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
         </ActionButton> */}
 
         <UserProfile>
-          <UserAvatar>{currentUser?.name?.charAt(0) || <FaUser />}</UserAvatar>
-          <UserName>{currentUser?.name || "User"}</UserName>
+          <UserAvatar>{profile?.name?.charAt(0) || <FaUser />}</UserAvatar>
+          <UserName>{profile?.name || "User"}</UserName>
         </UserProfile>
 
         <LogoutButton onClick={handleLogout} title="Logout">

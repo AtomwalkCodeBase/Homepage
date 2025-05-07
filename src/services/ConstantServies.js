@@ -1,9 +1,11 @@
 
 const localhost = "https://www.atomwalk.com"
+const newlocalhost = "https://crm.atomwalk.com"
 const apiURL = "/api";
-const db_name = "TR_012";
+const db_name = localStorage.getItem("dbName") || "TR_012";
 export const endpoint = `${localhost}${apiURL}`;
-export const hrendpoint = `${localhost}/hr_api`;
+export const hrendpoint = `${newlocalhost}/hr_api`;
+export const newhrendpoint = `${newlocalhost}/hr_api`;
 
 export const productListURL = `${endpoint}/products/${db_name}/`;
 export const productDetailURL = id => `${endpoint}/products/${db_name}/${id}/`;
@@ -37,7 +39,7 @@ export const getLeadListURL = `${endpoint}/lead_list/${db_name}/`;
 export const getLeadDataListURL = `${endpoint}/lead_data_list/${db_name}/`;
 export const addTaskURL = `${endpoint}/add_task/${db_name}/`;
 export const profileInfoURL = `${endpoint}/profile_info/${db_name}/`;
-export const profileDtlURL = `${endpoint}/get_employee_list/${db_name}/`;
+export const profileDtlURL = `${newhrendpoint}/get_employee_list/${db_name}/`;
 export const companyInfoURL = `${endpoint}/company_info/${db_name}/`;
 export const getTaskInterestListURL = `${endpoint}/task_interest_list/${db_name}/`;
 export const getProductCategoryListURL = `${endpoint}/product_category_list/${db_name}/`;
@@ -64,8 +66,11 @@ export const getfiletotext = `${endpoint}/get_file_to_text/${db_name}/`;
 // export const getAppointeeList = `${endpoint}/products/${db_name}/`;
 export const processAppointee = `${endpoint}/process_employee_job/${db_name}/`;
 export const getEmployeeRequestList = `${endpoint}/get_employee_request/${db_name}/`;
-export const getEmployeeRequestCategory = `${endpoint}/get_request_category/${db_name}/`;
+export const getEmployeeRequestCategory = `${hrendpoint}/get_request_category/${db_name}/`;
 export const processEmployeeRequest = `${endpoint}/process_employee_request/${db_name}/`;
 export const setuserpin = `${endpoint}/set_user_pin/${db_name}/`;
+export const getCompany = `${endpoint}/get_applicable_site/`;
 export const getEventList = `${hrendpoint}/get_employee_events/${db_name}/`;
+export const getpayslip = `${newhrendpoint}/get_emp_salary_data/${db_name}/`;
+export const processbarthdaywish = `${newhrendpoint}/process_emp_event_response/${db_name}/`;
 

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { jsPDF } from "jspdf";
 import styled from "styled-components"
 import {
   FaFileInvoiceDollar,
@@ -388,6 +389,155 @@ const MyPaySlip = () => {
     newDate.setMonth(newDate.getMonth() + direction)
     setCurrentMonth(newDate)
   }
+  const handleDownloadPayslip = () => {
+    // In a real app, this would download from an API
+    // For demo, we'll create a PDF using jsPDF (you'll need to install it)
+    const doc = new jsPDF();
+    
+    // Add company logo and header
+    doc.setFontSize(18);
+    doc.text("ACME Corporation", 105, 20, { align: 'center' });
+    doc.setFontSize(14);
+    doc.text(`Pay Slip for ${currentMonth.toLocaleString("default", { month: "long", year: "numeric" })}`, 105, 30, { align: 'center' });
+    
+    // Add employee info
+    doc.setFontSize(12);
+    doc.text("Employee Name: John Doe", 20, 45);
+    doc.text(`Employee ID: EMP-001`, 20, 55);
+    doc.text(`Department: Engineering`, 20, 65);
+    
+    // Add salary details
+    doc.setFontSize(14);
+    doc.text("Earnings", 20, 80);
+    
+    let yPosition = 90;
+    salaryData.filter((item) => item.sg_type !== "D" && item.sg_type !== "G").forEach(item => {
+      doc.text(`${item.name}: ₹${item.sg_amt.toLocaleString()}`, 25, yPosition);
+      yPosition += 10;
+    });
+    
+    doc.text(`Total Earnings: ₹${totalEarnings.toLocaleString()}`, 25, yPosition);
+    yPosition += 20;
+    
+    doc.text("Deductions", 20, yPosition);
+    yPosition += 10;
+    
+    salaryData.filter((item) => item.sg_type === "D").forEach(item => {
+      doc.text(`${item.name}: ₹${item.sg_amt.toLocaleString()}`, 25, yPosition);
+      yPosition += 10;
+    });
+    
+    doc.text(`Total Deductions: ₹${totalDeductions.toLocaleString()}`, 25, yPosition);
+    yPosition += 20;
+    
+    doc.setFontSize(16);
+    doc.text(`Net Salary: ₹${netSalary.toLocaleString()}`, 20, yPosition, { color: '#6C63FF' });
+    
+    // Save the PDF
+    doc.save(`payslip_${currentMonth.getFullYear()}_${currentMonth.getMonth() + 1}.pdf`);
+  };
+
+  const handlePrintPayslip = () => {
+    // Create a print-friendly version of the payslip
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Pay Slip - ${currentMonth.toLocaleString("default", { month: "long", year: "numeric" })}</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            h1, h2, h3 { color: #333; }
+            table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+            th { background-color: #f2f2f2; }
+            .total-row { font-weight: bold; background-color: #f9f9f9; }
+            .net-pay { font-size: 1.5em; color: #6C63FF; margin-top: 20px; }
+            @media print {
+              .no-print { display: none; }
+              body { margin: 0; padding: 10px; }
+            }
+          </style>
+        </head>
+        <body>
+        <img src="${companyInfo.image}" alt="Company Logo" style="width: 70px; margin-bottom: 20px;" />
+          <h1>${companyInfo.name}</h1>
+          <h2>Pay Slip for ${currentMonth.toLocaleString("default", { month: "long", year: "numeric" })}</h2>
+          
+          <div style="margin-bottom: 20px;">
+            <p><strong>Employee Name:</strong>${profile.name}</p>
+            <p><strong>Employee ID:</strong> ${profile.emp_id}</p>
+            <p><strong>Department:</strong>${profile.department_name} </p>
+          </div>
+          
+          <h3>Earnings</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>Amount (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${salaryData
+                .filter((item) => item.sg_type !== "D" && item.sg_type !== "G")
+                .map(item => `
+                  <tr>
+                    <td>${item.name}</td>
+                    <td>${item.sg_amt.toLocaleString()}</td>
+                  </tr>
+                `).join('')}
+              <tr class="total-row">
+                <td>Total Earnings</td>
+                <td>${totalEarnings.toLocaleString()}</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <h3>Deductions</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>Amount (₹)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${salaryData
+                .filter((item) => item.sg_type === "D")
+                .map(item => `
+                  <tr>
+                    <td>${item.name}</td>
+                    <td>${item.sg_amt.toLocaleString()}</td>
+                  </tr>
+                `).join('')}
+              <tr class="total-row">
+                <td>Total Deductions</td>
+                <td>${totalDeductions.toLocaleString()}</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <div class="net-pay">
+            <strong>Net Pay:</strong> ₹${netSalary.toLocaleString()}
+          </div>
+          
+          <p style="margin-top: 30px; font-style: italic;" class="no-print">
+            This is a system generated pay slip and does not require signature.
+          </p>
+          
+          <script>
+            window.onload = function() {
+              setTimeout(function() {
+                window.print();
+                window.close();
+              }, 200);
+            }
+          </script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+  };
 
   return (
     <Layout title="My Pay Slip">
@@ -396,7 +546,7 @@ const MyPaySlip = () => {
           <HeaderText>View and download your monthly salary statements</HeaderText>
         </div>
 
-        <Button variant="primary">
+        <Button onClick={handlePrintPayslip} variant="primary">
           <FaDownload style={{ marginRight: "0.5rem" }} /> Download Pay Slip
         </Button>
       </PayslipHeader>
@@ -475,13 +625,13 @@ const MyPaySlip = () => {
               </CompanyInfo>
 
               <PayslipActions>
-                <Button variant="outline" size="sm">
+                {/* <Button variant="outline" size="sm">
                   <FaEnvelope /> Email
-                </Button>
-                <Button variant="outline" size="sm">
+                </Button> */}
+                <Button onClick={handlePrintPayslip} variant="outline" size="sm">
                   <FaPrint /> Print
                 </Button>
-                <Button variant="primary" size="sm">
+                <Button onClick={handlePrintPayslip} variant="primary" size="sm">
                   <FaDownload /> Download
                 </Button>
               </PayslipActions>

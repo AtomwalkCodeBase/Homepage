@@ -203,6 +203,13 @@ const FormSelect = styled.select`
     box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primaryLight};
   }
 `
+const Link = styled.a`
+  color: ${({ theme }) => theme.colors.primary};
+  text-decoration: none;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }`
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -213,10 +220,8 @@ const Login = () => {
   const [company, setCompany] = useState("")
   const [loading, setLoading] = useState(false)
   const [companies, setCompanies] = useState([])
+  const [placeholderdatas,setPlaceholderdatas] = useState("Employee ID");
   const { login } = useAuth()
-
-  console.log(company, "company")
-
   useEffect(() => {
     const fetchCompanyName = async () => {
       const company = await getCompanyName()
@@ -226,7 +231,6 @@ const Login = () => {
     }
     fetchCompanyName()
   }, [])
-
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({
@@ -292,7 +296,6 @@ const Login = () => {
       <LoginFormContainer>
         <LoginForm onSubmit={handleSubmit}>
           <FormTitle>Login to your account</FormTitle>
-
           <FormGroup>
             <FormLabel htmlFor="company">Company</FormLabel>
             <InputGroup>
@@ -317,9 +320,8 @@ const Login = () => {
               </FormSelect>
             </InputGroup>
           </FormGroup>
-
           <FormGroup>
-            <FormLabel htmlFor="mobile">Mobile</FormLabel>
+            <FormLabel htmlFor="mobile">{placeholderdatas}</FormLabel>
             <InputGroup>
               <InputIcon>
                 <FaUser />
@@ -328,7 +330,7 @@ const Login = () => {
                 type="text"
                 id="mobile"
                 name="mobile"
-                placeholder="Enter mobile Number"
+                placeholder={"Enter your " + placeholderdatas}
                 value={formData.mobile}
                 onChange={handleChange}
                 required
@@ -337,7 +339,7 @@ const Login = () => {
           </FormGroup>
 
           <FormGroup>
-            <FormLabel htmlFor="password">Password</FormLabel>
+            <FormLabel htmlFor="password">Pin</FormLabel>
             <InputGroup>
               <InputIcon>
                 <FaLock />
@@ -357,10 +359,16 @@ const Login = () => {
           <LoginButton type="submit" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </LoginButton>
+           { placeholderdatas=="Employee ID" ?
 
-          <FormFooter>
-            <a href="#">Login With Mobile Number</a>
+          <FormFooter onClick={() => setPlaceholderdatas("Mobile Number")}>
+            <Link>Login With Mobile Number</Link>
           </FormFooter>
+          :
+          <FormFooter onClick={() => setPlaceholderdatas("Employee ID")}>
+            <Link>Login With Employee ID</Link>
+          </FormFooter>
+          }
         </LoginForm>
       </LoginFormContainer>
     </LoginContainer>

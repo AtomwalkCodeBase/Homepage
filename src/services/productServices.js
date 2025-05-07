@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext, getAppointeeList, processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip } from "../services/ConstantServies";
+import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext, getAppointeeList, processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip, processbarthdaywish, getResponseList } from "../services/ConstantServies";
 import { authAxios, authAxiosFilePost, authAxiosget, authAxiosPost } from "./HttpMethod";
 
 export function getEmpLeave(leave_type , emp_id) {
@@ -32,7 +32,13 @@ export function getEmpLeave(leave_type , emp_id) {
     // console.log('Data to be sent:', claim_data);
     return authAxiosFilePost(addClaim, claim_data)
   }
-
+  export function postvent(claim_data) {
+    let data = {};
+    if (claim_data) {
+      data = claim_data;
+    }
+    return authAxiosFilePost(processbarthdaywish, claim_data)
+  }
   export function postClaimAction(claim_type) {
     let data = {};
     if (claim_type) {
@@ -105,6 +111,12 @@ export function getEmpLeave(leave_type , emp_id) {
       "emp_id": localStorage.getItem('empId'),
     };
     return authAxiosPost(getpayslip, data)
+  }
+  export function getResponseLists(event_id) {
+    const data = {
+      event_id: event_id,
+    }
+    return authAxios(getResponseList, data)
   }
   export function postCheckIn(checkin_data) {
     let data = {};

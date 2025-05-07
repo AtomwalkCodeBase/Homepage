@@ -2,26 +2,11 @@
 
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import {
-  FaTicketAlt,
-  FaSearch,
-  FaPlus,
-  FaFilter,
-  FaEye,
-  FaEdit,
-  FaTrash,
-  FaBuilding,
-  FaLaptop,
-  FaIdCard,
-  FaFileAlt,
-  FaTools,
-  FaUserPlus,
-} from "react-icons/fa"
+import { FaTicketAlt, FaSearch, FaPlus, FaFilter, FaEye, FaEdit, FaLaptop, FaFileAlt } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
 import Badge from "../components/Badge"
-import { use } from "react"
 import { getEmployeeRequest, getRequestCategory } from "../services/productServices"
 import { toast } from "react-toastify"
 import RequestModal from "../components/modals/RequestModal"
@@ -174,48 +159,53 @@ const Paragraphdata = styled.p`
 const RequestDesk = () => {
   const [activeTab, setActiveTab] = useState("my-requests")
   const [searchTerm, setSearchTerm] = useState("")
-  const[allRequests,setAllRequests]=useState([])
-  const[requestTypes,setRequestTypes]=useState([])
-  const [isModalOpens, setIsModalOpens] = useState(false);
-  const emp_id=localStorage.getItem("empId")
-  const [selectedTicket, setSelectedTicket] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const[pageref,setPageRef] = useState(1);
-    const handleSuccess = () => {
-      setIsModalOpens(false);
-      toast.success("Request submitted successfully!");
-      setPageRef(pageref + 1);
-    };
-  useEffect(() => { 
+  const [allRequests, setAllRequests] = useState([])
+  const [requestTypes, setRequestTypes] = useState([])
+  const [isModalOpens, setIsModalOpens] = useState(false)
+  const emp_id = localStorage.getItem("empId")
+  const [selectedTicket, setSelectedTicket] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [pageref, setPageRef] = useState(1)
+  // Add these state variables after the existing state declarations
+  const [typeFilter, setTypeFilter] = useState("All Types")
+  const [statusFilter, setStatusFilter] = useState("All Status")
+  const [filteredRequestsData, setFilteredRequestsData] = useState([])
+
+  const handleSuccess = () => {
+    setIsModalOpens(false)
+    toast.success("Request submitted successfully!")
+    setPageRef(pageref + 1)
+  }
+  useEffect(() => {
     fetchRequest()
     fetchRequestCategory()
-  } ,[pageref])
-  
+  }, [pageref])
+
   const fetchRequestCategory = async () => {
     try {
-      const res = await getRequestCategory();
-      const filtered = res.data.filter(category => category.request_type === 'R');
-      setRequestTypes(filtered);
+      const res = await getRequestCategory()
+      const filtered = res.data.filter((category) => category.request_type === "R")
+      setRequestTypes(filtered)
     } catch (err) {
-      console.error("Error fetching categories:", err);
+      console.error("Error fetching categories:", err)
     }
-  };
+  }
   const fetchRequest = async () => {
     try {
-      const res = await getEmployeeRequest();
-      setAllRequests(res.data);
+      const res = await getEmployeeRequest()
+      setAllRequests(res.data)
     } catch (err) {
-      console.log("Error fetching requests:", err);
+      console.log("Error fetching requests:", err)
     }
-  };
-  const myRequests = allRequests.filter(request => request?.emp_id == emp_id&& request?.request_type === "R")
+  }
+  const myRequests = allRequests.filter((request) => request?.emp_id == emp_id && request?.request_type === "R")
   const handleSearch = (e) => {
     setSearchTerm(e.target.value)
   }
 
   // Get icon based on request sub type
   const getRequestIcon = (subType) => {
-    switch(subType) {
+    switch (subType) {
       case "Asset Request":
         return <FaLaptop />
       case "Document Request":
@@ -227,7 +217,7 @@ const RequestDesk = () => {
 
   // Get status info for badge
   const getStatusInfo = (request) => {
-    switch(request.request_status) {
+    switch (request.request_status) {
       case "S":
         return { text: "Submitted", variant: "warning" }
       case "A":
@@ -245,17 +235,105 @@ const RequestDesk = () => {
   const filteredRequests = (activeTab === "my-requests" ? myRequests : allRequests).filter(
     (request) =>
       request.request_text.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      request.request_sub_type.toLowerCase().includes(searchTerm.toLowerCase())
+      request.request_sub_type.toLowerCase().includes(searchTerm.toLowerCase()),
   )
   const openModal = (ticket) => {
-    setSelectedTicket(ticket);
-    setIsModalOpen(true);
-  };
+    setSelectedTicket(ticket)
+    setIsModalOpen(true)
+  }
 
   const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedTicket(null);
-  };
+    setIsModalOpen(false)
+    setSelectedTicket(null)
+  }
+
+  // Add function to get unique request types
+  const getUniqueRequestTypes = () => {
+    const types = ["All Types"]
+    allRequests.forEach((request) => {
+      if (request.request_sub_type && !types.includes(request.request_sub_type)) {
+        types.push(request.request_sub_type)
+      }
+    })
+    return types
+  }
+
+  // Add function to get unique statuses
+  const getUniqueStatuses = () => {
+    const statuses = ["All Status"]
+    allRequests.forEach((request) => {
+      let status = ""
+      switch (request.request_status) {
+        case "S":
+          status = "Submitted"
+          break
+        case "A":
+          status = "Assigned"
+          break
+        case "X":
+          status = "Cancelled"
+          break
+        case "C":
+          status = "Completed"
+          break
+        default:
+          status = request.status_display || "Unknown"
+      }
+      if (!statuses.includes(status)) {
+        statuses.push(status)
+      }
+    })
+    return statuses
+  }
+
+  // Add this useEffect to handle filtering
+  useEffect(() => {
+    const requests = activeTab === "my-requests" ? myRequests : allRequests
+
+    let filtered = requests.filter(
+      (request) =>
+        request.request_text.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        request.request_sub_type.toLowerCase().includes(searchTerm.toLowerCase()),
+    )
+
+    // Apply type filter
+    if (typeFilter !== "All Types") {
+      filtered = filtered.filter((request) => request.request_sub_type === typeFilter)
+    }
+
+    // Apply status filter
+    if (statusFilter !== "All Status") {
+      filtered = filtered.filter((request) => {
+        let status = ""
+        switch (request.request_status) {
+          case "S":
+            status = "Submitted"
+            break
+          case "A":
+            status = "Assigned"
+            break
+          case "X":
+            status = "Cancelled"
+            break
+          case "C":
+            status = "Completed"
+            break
+          default:
+            status = request.status_display || "Unknown"
+        }
+        return status === statusFilter
+      })
+    }
+
+    setFilteredRequestsData(filtered)
+  }, [myRequests, allRequests, activeTab, searchTerm, typeFilter, statusFilter])
+
+  // Add handleFilter function
+  const handleFilter = () => {
+    // Filtering is already handled by the useEffect
+    toast.info("Filters applied")
+  }
+
   return (
     <Layout title="Resource Request Desk">
       <RequestDeskHeader>
@@ -263,7 +341,7 @@ const RequestDesk = () => {
           <Paragraphdata>Submit and track your resource requests</Paragraphdata>
         </div>
 
-        <Button onClick={() => setIsModalOpens(true)}  variant="primary">
+        <Button onClick={() => setIsModalOpens(true)} variant="primary">
           <FaPlus /> New Request
         </Button>
       </RequestDeskHeader>
@@ -271,12 +349,7 @@ const RequestDesk = () => {
       <SearchContainer>
         <SearchInput>
           <FaSearch />
-          <input 
-            type="text" 
-            placeholder="Search resource requests..." 
-            value={searchTerm} 
-            onChange={handleSearch} 
-          />
+          <input type="text" placeholder="Search resource requests..." value={searchTerm} onChange={handleSearch} />
         </SearchInput>
       </SearchContainer>
 
@@ -300,22 +373,19 @@ const RequestDesk = () => {
         {activeTab === "my-requests" && (
           <>
             <FilterContainer>
-              <FilterSelect>
-                <option>All Types</option>
-                {requestTypes.map(type => (
-                  <option key={type.id}>{type.name}</option>
+              <FilterSelect value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
+                {getUniqueRequestTypes().map((type, index) => (
+                  <option key={index}>{type}</option>
                 ))}
               </FilterSelect>
 
-              <FilterSelect>
-                <option>All Status</option>
-                <option>Submitted</option>
-                <option>Assigned</option>
-                <option>Completed</option>
-                <option>Rejected</option>
+              <FilterSelect value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+                {getUniqueStatuses().map((status, index) => (
+                  <option key={index}>{status}</option>
+                ))}
               </FilterSelect>
 
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={handleFilter}>
                 <FaFilter /> Filter
               </Button>
             </FilterContainer>
@@ -334,47 +404,41 @@ const RequestDesk = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredRequests.map((request) => {
-                    const statusInfo = getStatusInfo(request)
-                    return (
-                      <tr key={request.id}>
-                        <td>{request.request_id}</td>
-                        <td>
-                          <div style={{ display: "flex", alignItems: "center" }}>
-                            <span style={{ marginRight: "0.5rem" }}>
-                              {getRequestIcon(request.request_sub_type)}
-                            </span>
-                            {request.request_sub_type}
-                          </div>
-                        </td>
-                        <td>{request.request_text}</td>
-                        <td>{request.remarks || "-"}</td>
-                        <td>{request.created_date}</td>
-                        <td>
-                          <Badge variant={statusInfo.variant}>
-                            {statusInfo.text}
-                          </Badge>
-                        </td>
-                        <td>
-                          <ActionButtons onClick={() => openModal(request)}>
-                            <Button variant="ghost" size="sm" title="View">
-                              <FaEye />
-                            </Button>
-                            {/* {request.request_status === "S" && (
-                              <>
-                                <Button variant="ghost" size="sm" title="Edit">
-                                  <FaEdit />
-                                </Button>
-                                <Button variant="ghost" size="sm" title="Cancel">
-                                  <FaTrash />
-                                </Button>
-                              </>
-                            )} */}
-                          </ActionButtons>
-                        </td>
-                      </tr>
-                    )
-                  })}
+                  {filteredRequestsData.length > 0 ? (
+                    filteredRequestsData.map((request) => {
+                      const statusInfo = getStatusInfo(request)
+                      return (
+                        <tr key={request.id}>
+                          <td>{request.request_id}</td>
+                          <td>
+                            <div style={{ display: "flex", alignItems: "center" }}>
+                              <span style={{ marginRight: "0.5rem" }}>{getRequestIcon(request.request_sub_type)}</span>
+                              {request.request_sub_type}
+                            </div>
+                          </td>
+                          <td>{request.request_text}</td>
+                          <td>{request.remarks || "-"}</td>
+                          <td>{request.created_date}</td>
+                          <td>
+                            <Badge variant={statusInfo.variant}>{statusInfo.text}</Badge>
+                          </td>
+                          <td>
+                            <ActionButtons onClick={() => openModal(request)}>
+                              <Button variant="ghost" size="sm" title="View">
+                                <FaEye />
+                              </Button>
+                            </ActionButtons>
+                          </td>
+                        </tr>
+                      )
+                    })
+                  ) : (
+                    <tr>
+                      <td colSpan={7} style={{ textAlign: "center", padding: "1rem" }}>
+                        No requests found for the selected filters
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </TableContainer>
@@ -385,16 +449,16 @@ const RequestDesk = () => {
           <RequestTypeGrid>
             {requestTypes.map((type) => (
               <RequestTypeCard key={type.id}>
-                <img 
-                  src={type.image} 
-                  alt={type.name} 
-                  style={{ 
-                    width: "80px", 
-                    height: "80px", 
-                    objectFit: "cover", 
+                <img
+                  src={type.image || "/placeholder.svg"}
+                  alt={type.name}
+                  style={{
+                    width: "80px",
+                    height: "80px",
+                    objectFit: "cover",
                     borderRadius: "8px",
-                    margin: "0 auto 1rem"
-                  }} 
+                    margin: "0 auto 1rem",
+                  }}
                 />
                 <RequestTypeTitle>{type.name}</RequestTypeTitle>
                 <Button variant="primary" style={{ marginTop: "1rem" }}>
@@ -408,22 +472,19 @@ const RequestDesk = () => {
         {activeTab === "all-requests" && (
           <>
             <FilterContainer>
-              <FilterSelect>
-                <option>All Types</option>
-                {requestTypes.map(type => (
-                  <option key={type.id}>{type.name}</option>
+              <FilterSelect value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
+                {getUniqueRequestTypes().map((type, index) => (
+                  <option key={index}>{type}</option>
                 ))}
               </FilterSelect>
 
-              <FilterSelect>
-                <option>All Status</option>
-                <option>Submitted</option>
-                <option>Assigned</option>
-                <option>Completed</option>
-                <option>Rejected</option>
+              <FilterSelect value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+                {getUniqueStatuses().map((status, index) => (
+                  <option key={index}>{status}</option>
+                ))}
               </FilterSelect>
 
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={handleFilter}>
                 <FaFilter /> Filter
               </Button>
             </FilterContainer>
@@ -451,9 +512,7 @@ const RequestDesk = () => {
                         <td>{request.emp_id}</td>
                         <td>
                           <div style={{ display: "flex", alignItems: "center" }}>
-                            <span style={{ marginRight: "0.5rem" }}>
-                              {getRequestIcon(request.request_sub_type)}
-                            </span>
+                            <span style={{ marginRight: "0.5rem" }}>{getRequestIcon(request.request_sub_type)}</span>
                             {request.request_sub_type}
                           </div>
                         </td>
@@ -461,20 +520,18 @@ const RequestDesk = () => {
                         <td>{request.remarks || "-"}</td>
                         <td>{request.created_date}</td>
                         <td>
-                          <Badge variant={statusInfo.variant}>
-                            {statusInfo.text}
-                          </Badge>
+                          <Badge variant={statusInfo.variant}>{statusInfo.text}</Badge>
                         </td>
                         <td>
-                          <ActionButtons>
+                          <ActionButtons onClick={() => openModal(request)}>
                             <Button variant="ghost" size="sm" title="View">
                               <FaEye />
                             </Button>
-                            {request.request_status === "S" && (
+                            {/* {request.request_status === "S" && (
                               <Button variant="ghost" size="sm" title="Assign">
                                 <FaEdit />
                               </Button>
-                            )}
+                            )} */}
                           </ActionButtons>
                         </td>
                       </tr>
@@ -486,28 +543,37 @@ const RequestDesk = () => {
           </>
         )}
       </Card>
-       {isModalOpen && (
-              <Modal onClose={closeModal}>
-                <h2>Ticket Details</h2>
-                <p><strong>Request ID:</strong> {selectedTicket.request_id}</p>
-                <p><strong>Type:</strong> {selectedTicket.request_sub_type}</p>
-                <p><strong>Description:</strong> {selectedTicket.request_text}</p>
-                <p><strong>Remarks:</strong> {selectedTicket.remarks || "-"}</p>
-                <p><strong>Created Date:</strong> {selectedTicket.created_date}</p>
-                <p><strong>Status:</strong> {getStatusInfo(selectedTicket).text}</p>
-                <div style={{ marginTop: "1rem" }}>
-                <Button variant="primary" onClick={closeModal}>Close</Button>
-                </div>
-              </Modal>
-            )}
+      {isModalOpen && (
+        <Modal onClose={closeModal}>
+          <h2>Ticket Details</h2>
+          <p>
+            <strong>Request ID:</strong> {selectedTicket.request_id}
+          </p>
+          <p>
+            <strong>Type:</strong> {selectedTicket.request_sub_type}
+          </p>
+          <p>
+            <strong>Description:</strong> {selectedTicket.request_text}
+          </p>
+          <p>
+            <strong>Remarks:</strong> {selectedTicket.remarks || "-"}
+          </p>
+          <p>
+            <strong>Created Date:</strong> {selectedTicket.created_date}
+          </p>
+          <p>
+            <strong>Status:</strong> {getStatusInfo(selectedTicket).text}
+          </p>
+          <div style={{ marginTop: "1rem" }}>
+            <Button variant="primary" onClick={closeModal}>
+              Close
+            </Button>
+          </div>
+        </Modal>
+      )}
       {isModalOpens && (
-              <RequestModal 
-                call_type="R" 
-                empId={emp_id} 
-                onClose={() => setIsModalOpens(false)}
-                onSuccess={handleSuccess}
-              />
-            )}
+        <RequestModal call_type="R" empId={emp_id} onClose={() => setIsModalOpens(false)} onSuccess={handleSuccess} />
+      )}
     </Layout>
   )
 }

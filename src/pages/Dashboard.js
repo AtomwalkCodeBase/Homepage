@@ -39,10 +39,11 @@ import StatsCard from "../components/StatsCard"
 import Card from "../components/Card"
 import Button from "../components/Button"
 import Badge from "../components/Badge"
-import { getEmpLeave, getEmpClaim, getEmployeeRequest, getEmpAttendance, getEventLists } from "../services/productServices"
+import { getEmpLeave, getEmpClaim, getEmployeeRequest, getEmpAttendance, getEventLists, postvent } from "../services/productServices"
 import Modal from "../components/modals/Modal"
 import { getEmployeesInfo } from "../services/authServices"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
 const float = keyframes`
   0% {
@@ -780,7 +781,7 @@ const Dashboard = () => {
   const empId = localStorage.getItem("empId")
   const navigation= useNavigate()
   // Fetch data from various services
-  console.log(stats, "attendanceData")
+  console.log(selectedBirthday, "attendanceData")
   useEffect(() => {
     // Fetch leave data
     getEmpLeave("EL", emp_id)
@@ -1018,15 +1019,31 @@ const Dashboard = () => {
       });
     }
   }, [eventData]);
-  const handleSendWish = () => {
+  const handleSendWish = async() => {
     if (wishMessage.trim() && selectedBirthday) {
       // Here you would typically call an API to send the wish
       console.log(`Sending wish to ${selectedBirthday.emp_id}: ${wishMessage}`);
       
-      // Close the popup and reset
-      setShowWishPopup(false);
-      setSelectedBirthday(null);
-      setWishMessage("");
+      const formDatas = new FormData() 
+          formDatas.append("r_file",  selectedFile)
+          formDatas.append("emp_id", selectedBirthday.emp_id)
+          formDatas.append("event_id", selectedBirthday?.id)
+          formDatas.append("call_mode", "ADD");
+          formDatas.append("r_text", wishMessage)
+          try {
+            const res = await postvent(formDatas)
+            if (res.status === 200) {
+              toast.success("Add response successfully")
+              setShowWishPopup(false);
+              setSelectedBirthday(null);
+              setWishMessage("");
+            } else {
+              console.log("Unexpected response:", res)
+              toast.error("response Submission Error")
+            }
+          } catch (error) {
+            toast.error(`${error.response?.data?.detail || error.message}`)
+          } 
     }
   };
 
@@ -1152,11 +1169,11 @@ const navigatetoattendance = () => {
         <Card
           title="Recent Activities"
           variant="secondary"
-          headerAction={
-            <Button variant="outline" size="sm">
-              View All
-            </Button>
-          }
+          // headerAction={
+          //   <Button variant="outline" size="sm">
+          //     View All
+          //   </Button>
+          // }
         >
           {recentActivities.map((activity, index) => (
             <ActivityItem key={index}>
@@ -1193,7 +1210,7 @@ const navigatetoattendance = () => {
         </Card>
       </ResponsiveGrid>
 
-      <ResponsiveGrid style={{ marginTop: "1.5rem" }}>
+      {/* <ResponsiveGrid style={{ marginTop: "1.5rem" }}>
         <Card title="Department Distribution" variant="accent">
           <ChartContainer>
             <ResponsiveContainer width="100%" height="100%">
@@ -1272,7 +1289,7 @@ const navigatetoattendance = () => {
             </table>
           </TableContainer>
         </Card>
-      </ResponsiveGrid>
+      </ResponsiveGrid> */}
       {showWishPopup && selectedBirthday && (
   <ModalOverlay>
     <ModalContainer>

@@ -1,11 +1,20 @@
-"use client"
-
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import styled, { keyframes } from "styled-components"
 import Layout from "../components/Layout"
 import Button from "../components/Button"
 import Badge from "../components/Badge"
-import { FaGift, FaHeart, FaBirthdayCake, FaCalendarAlt, FaUserFriends } from "react-icons/fa"
+import {
+  FaGift,
+  FaHeart,
+  FaBirthdayCake,
+  FaCalendarAlt,
+  FaUserFriends,
+  FaSpinner,
+  FaSearch,
+  FaEye,
+} from "react-icons/fa"
+import { getEventLists, getResponseLists } from "../services/productServices"
+import Modal from "../components/modals/Modal"
 
 // Animation keyframes
 const float = keyframes`
@@ -81,7 +90,6 @@ const HeaderTitle = styled.h1`
   z-index: 2;
   position: relative;
   color: wheat;
-  /* color: ${({ theme }) => theme.colors.text}; */
 `
 
 const HeaderSubtitle = styled.p`
@@ -141,6 +149,119 @@ const StatsValue = styled.div`
 const StatsLabel = styled.div`
   font-size: 1rem;
   color: #666;
+`
+
+const EventsContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`
+
+const EventCard = styled.div`
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid ${(props) => (props.selected ? "#6C63FF" : "transparent")};
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: ${(props) => (props.type === "B" ? "#FF6584" : props.type === "W" ? "#63FFDA" : "#FFD600")};
+  }
+`
+
+const EventHeader = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+`
+
+const EventIcon = styled.div`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: ${(props) => (props.type === "B" ? "#FF6584" : props.type === "W" ? "#63FFDA" : "#FFD600")};
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-right: 15px;
+`
+
+const EventInfo = styled.div`
+  flex: 1;
+`
+
+const EventTitle = styled.div`
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #333;
+`
+
+const EventDate = styled.div`
+  font-size: 0.9rem;
+  color: #666;
+`
+
+const EventDescription = styled.div`
+  margin-bottom: 15px;
+  color: #444;
+  font-size: 1rem;
+`
+
+const EventFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const ResponseCount = styled.div`
+  display: flex;
+  align-items: center;
+  color: #666;
+  font-size: 0.9rem;
+  
+  svg {
+    margin-right: 5px;
+  }
+`
+
+const ViewButton = styled.button`
+  background: transparent;
+  border: none;
+  color: #6C63FF;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  
+  svg {
+    margin-right: 5px;
+  }
+  
+  &:hover {
+    text-decoration: underline;
+  }
 `
 
 const WishesContainer = styled.div`
@@ -204,6 +325,13 @@ const WishAvatar = styled.div`
   font-weight: bold;
   font-size: 1.2rem;
   margin-right: 15px;
+  overflow: hidden;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `
 
 const WishSender = styled.div`
@@ -226,6 +354,19 @@ const WishContent = styled.div`
   line-height: 1.6;
   color: #444;
   font-size: 1rem;
+`
+
+const WishImage = styled.div`
+  margin-bottom: 15px;
+  border-radius: 8px;
+  overflow: hidden;
+  
+  img {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    object-fit: cover;
+  }
 `
 
 const WishFooter = styled.div`
@@ -474,119 +615,172 @@ const EmptyStateText = styled.div`
   margin-bottom: 20px;
 `
 
-const MyWishes = () => {
-  // Dummy data - in a real app, this would come from an API
-  const [wishes, setWishes] = useState([
-    {
-      id: 1,
-      sender: "John Smith",
-      senderInitial: "JS",
-      avatarColor: "#6C63FF",
-      date: "Today",
-      content:
-        "Happy Birthday! Wishing you a day filled with happiness and a year filled with joy. May all your dreams and wishes come true, and may you feel this happiness all year round!",
-      event: "Birthday",
-      likes: 15,
-      liked: false,
-      featured: true,
-    },
-    {
-      id: 2,
-      sender: "Sarah Johnson",
-      senderInitial: "SJ",
-      avatarColor: "#FF6584",
-      date: "Today",
-      content:
-        "Hope your special day brings you all that your heart desires! Here's wishing you a day full of pleasant surprises! Happy birthday!",
-      event: "Birthday",
-      likes: 8,
-      liked: false,
-      featured: false,
-    },
-    {
-      id: 3,
-      sender: "Mike Williams",
-      senderInitial: "MW",
-      avatarColor: "#63FFDA",
-      date: "Today",
-      content:
-        "Sending you smiles for every moment of your special day. Have a wonderful time and a very happy birthday!",
-      event: "Birthday",
-      likes: 12,
-      liked: true,
-      featured: false,
-    },
-    {
-      id: 4,
-      sender: "Emily Davis",
-      senderInitial: "ED",
-      avatarColor: "#FFD600",
-      date: "Today",
-      content:
-        "May the joy that you have spread in the past come back to you on this day. Wishing you a very happy birthday!",
-      event: "Birthday",
-      likes: 5,
-      liked: false,
-      featured: false,
-    },
-    {
-      id: 5,
-      sender: "Alex Brown",
-      senderInitial: "AB",
-      avatarColor: "#2196F3",
-      date: "Yesterday",
-      content:
-        "Congratulations on your work anniversary! It's been a pleasure working with you, and I appreciate your dedication and hard work.",
-      event: "Work Anniversary",
-      likes: 10,
-      liked: false,
-      featured: true,
-    },
-    {
-      id: 6,
-      sender: "Lisa Anderson",
-      senderInitial: "LA",
-      avatarColor: "#9C27B0",
-      date: "Last week",
-      content:
-        "Happy work anniversary! Your contributions to the team have been invaluable, and we're lucky to have you!",
-      event: "Work Anniversary",
-      likes: 7,
-      liked: true,
-      featured: false,
-    },
-  ])
+const LoadingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+`
 
-  const [activeFilter, setActiveFilter] = useState("All")
-  const [stats, setStats] = useState({
-    totalWishes: wishes.length,
-    birthdayWishes: wishes.filter((wish) => wish.event === "Birthday").length,
-    anniversaryWishes: wishes.filter((wish) => wish.event === "Work Anniversary").length,
-    featuredWishes: wishes.filter((wish) => wish.featured).length,
-  })
-
-  const toggleLike = (id) => {
-    setWishes(
-      wishes.map((wish) => {
-        if (wish.id === id) {
-          return {
-            ...wish,
-            liked: !wish.liked,
-            likes: wish.liked ? wish.likes - 1 : wish.likes + 1,
-          }
-        }
-        return wish
-      }),
-    )
+const LoadingSpinner = styled.div`
+  color: #6C63FF;
+  font-size: 2rem;
+  margin-bottom: 15px;
+  
+  svg {
+    animation: ${rotate} 1s linear infinite;
   }
+`
 
-  const filteredWishes =
-    activeFilter === "All"
-      ? wishes
-      : wishes.filter((wish) => (activeFilter === "Featured" ? wish.featured : wish.event === activeFilter))
+const LoadingText = styled.div`
+  color: #666;
+  font-size: 1.1rem;
+`
+
+const SearchContainer = styled.div`
+  position: relative;
+  margin-bottom: 20px;
+`
+
+const SearchInput = styled.input`
+  width: 100%;
+  padding: 12px 20px 12px 45px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  
+  &:focus {
+    outline: none;
+    border-color: #6C63FF;
+    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+  }
+`
+
+const SearchIcon = styled.div`
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+`
+
+const SectionTitle = styled.h2`
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #333;
+  position: relative;
+  display: inline-block;
+  color:${({ theme }) => theme.colors.primary};
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background:${({ theme }) => theme.colors.primary};
+    border-radius: 2px;
+  }
+`
+
+const ModalImageContainer = styled.div`
+  width: 100%;
+  max-height: 500px;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+`
+
+
+
+const MyWishes = () => {
+  const [events, setEvents] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [responses, setResponses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadingResponses, setLoadingResponses] = useState(false);
+  const [stats, setStats] = useState({
+    totalEvents: 0,
+    birthdayEvents: 0,
+    anniversaryEvents: 0,
+    otherEvents: 0,
+  });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState('');
+
+  // Fetch events
+  useEffect(() => {
+    const fetchEvents = async () => {
+      const id = localStorage.getItem('empId');
+      try {
+        const response = await getEventLists(id);
+        if (response.status === 200) {
+          const eventData = response.data;
+          setEvents(eventData);
+          
+          // Calculate stats
+          setStats({
+            totalEvents: eventData.length,
+            birthdayEvents: eventData.filter(event => event.event_type === 'B').length,
+            anniversaryEvents: eventData.filter(event => event.event_type === 'W').length,
+            otherEvents: eventData.filter(event => event.event_type !== 'B' && event.event_type !== 'W').length,
+          });
+          
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error);
+        setLoading(false);
+      }
+    };
+    
+    fetchEvents();
+  }, []);
+
+  // Handle event selection and fetch responses
+  const handleEventSelect = async (event) => {
+    setSelectedEvent(event);
+    setLoadingResponses(true);
+    
+    try {
+      const response = await getResponseLists(event.id);
+      if (response.status === 200) {
+        setResponses(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching responses:", error);
+      setResponses([]);
+    } finally {
+      setLoadingResponses(false);
+    }
+  };
+
+  // Handle image click
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setShowImageModal(true);
+  };
+
+  // Filter events based on search term
+  const filteredEvents = events.filter(event => 
+    event.event_text?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    event.emp_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    event.event_date?.includes(searchTerm)
+  );
 
   // Generate confetti pieces
-  const confettiColors = ["#6C63FF", "#FF6584", "#63FFDA", "#FFD600", "#FF80AB", "#4ECDC4"]
+  const confettiColors = ["#6C63FF", "#FF6584", "#63FFDA", "#FFD600", "#FF80AB", "#4ECDC4"];
   const confettiPieces = Array.from({ length: 30 }, (_, i) => ({
     id: i,
     color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
@@ -595,138 +789,243 @@ const MyWishes = () => {
     rotate: Math.random() * 360,
     duration: 5 + Math.random() * 10,
     delay: Math.random() * 5,
-  }))
+  }));
+
+  // Get event type display
+  const getEventTypeDisplay = (type) => {
+    switch(type) {
+      case 'B': return 'Birthday';
+      case 'W': return 'Work Anniversary';
+      default: return 'Event';
+    }
+  };
+
+  // Get event icon
+  const getEventIcon = (type) => {
+    switch(type) {
+      case 'B': return <FaBirthdayCake />;
+      case 'W': return <FaCalendarAlt />;
+      default: return <FaGift />;
+  };
+}
+
+  // Get avatar color based on event type
+  const getAvatarColor = (type) => {
+    switch(type) {
+      case 'B': return '#FF6584';
+      case 'W': return '#63FFDA';
+      default: return '#FFD600';
+    }
+  };
 
   return (
     <Layout title="My Wishes">
-      <PageContainer>
-        <ConfettiContainer>
-          {confettiPieces.map((piece) => (
-            <Confetti
-              key={piece.id}
-              color={piece.color}
-              top={piece.top}
-              left={piece.left}
-              rotate={piece.rotate}
-              duration={piece.duration}
-              delay={piece.delay}
-            />
-          ))}
-        </ConfettiContainer>
+    <PageContainer>
+      <ConfettiContainer>
+        {confettiPieces.map((piece) => (
+          <Confetti
+            key={piece.id}
+            color={piece.color}
+            top={piece.top}
+            left={piece.left}
+            rotate={piece.rotate}
+            duration={piece.duration}
+            delay={piece.delay}
+          />
+        ))}
+      </ConfettiContainer>
 
-        <Header>
-          {/* Decorative elements */}
-          <Balloon size={40} color="#FF6B6B" top={10} left={10} duration={6} />
-          <Balloon size={30} color="#4ECDC4" top={15} left={80} duration={7} delay={0.5} />
-          <Balloon size={35} color="#FFD166" top={20} left={30} duration={5} delay={1} />
-          <Balloon size={25} color="#FF70A6" top={5} left={60} duration={8} delay={1.5} />
+      <Header>
+        {/* Decorative elements */}
+        <Balloon size={40} color="#FF6B6B" top={10} left={10} duration={6} />
+        <Balloon size={30} color="#4ECDC4" top={15} left={80} duration={7} delay={0.5} />
+        <Balloon size={35} color="#FFD166" top={20} left={30} duration={5} delay={1} />
+        <Balloon size={25} color="#FF70A6" top={5} left={60} duration={8} delay={1.5} />
 
-          <Gift size={40} color="#FF6584" right={20} top={30} duration={7} delay={0.5} />
-          <Gift size={25} color="#6C63FF" right={30} top={50} duration={5} delay={1.2} />
+        <Gift size={40} color="#FF6584" right={20} top={30} duration={7} delay={0.5} />
+        <Gift size={25} color="#6C63FF" right={30} top={50} duration={5} delay={1.2} />
 
-          <Cake bottom={15} right={10} />
+        <Cake bottom={15} right={10} />
 
-          <Teddy bottom={20} left={15} delay={0.8} />
+        <Teddy bottom={20} left={15} delay={0.8} />
 
-          <HeaderTitle>My Special Wishes</HeaderTitle>
-          <HeaderSubtitle>
-            A collection of heartfelt messages from your colleagues and friends on your special occasions.
-          </HeaderSubtitle>
-        </Header>
+        <HeaderTitle>My Special Wishes</HeaderTitle>
+        <HeaderSubtitle>
+          A collection of heartfelt messages from your colleagues and friends on your special occasions.
+        </HeaderSubtitle>
+      </Header>
 
-        <StatsContainer>
-          <StatsCard>
-            <StatsIcon color="#6C63FF">
-              <FaHeart />
-            </StatsIcon>
-            <StatsValue>{stats.totalWishes}</StatsValue>
-            <StatsLabel>Total Wishes</StatsLabel>
-          </StatsCard>
+      <StatsContainer>
+        <StatsCard>
+          <StatsIcon color="#6C63FF">
+            <FaGift />
+          </StatsIcon>
+          <StatsValue>{stats.totalEvents}</StatsValue>
+          <StatsLabel>Total Events</StatsLabel>
+        </StatsCard>
 
-          <StatsCard>
-            <StatsIcon color="#FF6584">
-              <FaBirthdayCake />
-            </StatsIcon>
-            <StatsValue>{stats.birthdayWishes}</StatsValue>
-            <StatsLabel>Birthday Wishes</StatsLabel>
-          </StatsCard>
+        <StatsCard>
+          <StatsIcon color="#FF6584">
+            <FaBirthdayCake />
+          </StatsIcon>
+          <StatsValue>{stats.birthdayEvents}</StatsValue>
+          <StatsLabel>Birthdays</StatsLabel>
+        </StatsCard>
 
-          <StatsCard>
-            <StatsIcon color="#63FFDA">
-              <FaCalendarAlt />
-            </StatsIcon>
-            <StatsValue>{stats.anniversaryWishes}</StatsValue>
-            <StatsLabel>Anniversary Wishes</StatsLabel>
-          </StatsCard>
+        <StatsCard>
+          <StatsIcon color="#63FFDA">
+            <FaCalendarAlt />
+          </StatsIcon>
+          <StatsValue>{stats.anniversaryEvents}</StatsValue>
+          <StatsLabel>Work Anniversaries</StatsLabel>
+        </StatsCard>
 
-          <StatsCard>
-            <StatsIcon color="#FFD600">
-              <FaUserFriends />
-            </StatsIcon>
-            <StatsValue>{stats.featuredWishes}</StatsValue>
-            <StatsLabel>Featured Wishes</StatsLabel>
-          </StatsCard>
-        </StatsContainer>
+        <StatsCard>
+          <StatsIcon color="#FFD600">
+            <FaUserFriends />
+          </StatsIcon>
+          <StatsValue>{stats.otherEvents}</StatsValue>
+          <StatsLabel>Other Events</StatsLabel>
+        </StatsCard>
+      </StatsContainer>
 
-        <FilterContainer>
-          <Button variant={activeFilter === "All" ? "primary" : "outline"} onClick={() => setActiveFilter("All")}>
-            All Wishes
+      <SearchContainer>
+        <SearchIcon>
+          <FaSearch />
+        </SearchIcon>
+        <SearchInput 
+          type="text" 
+          placeholder="Search events by name, date, or description..." 
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </SearchContainer>
+
+      {loading ? (
+        <LoadingContainer>
+          <LoadingSpinner>
+            <FaSpinner />
+          </LoadingSpinner>
+          <LoadingText>Loading your events...</LoadingText>
+        </LoadingContainer>
+      ) : (
+        <>
+          <SectionTitle>My Events</SectionTitle>
+          {filteredEvents.length > 0 ? (
+            <EventsContainer>
+              {filteredEvents.map((event) => (
+                <EventCard 
+                  key={event.event_id} 
+                  type={event.event_type}
+                  selected={selectedEvent?.event_id === event.event_id}
+                  onClick={() => handleEventSelect(event)}
+                >
+                  <EventHeader>
+                    <EventIcon type={event.event_type}>
+                      {getEventIcon(event.event_type)}
+                    </EventIcon>
+                    <EventInfo>
+                      <EventTitle>{event.event_text || getEventTypeDisplay(event.event_type)}</EventTitle>
+                      <EventDate>{event.event_date}</EventDate>
+                    </EventInfo>
+                  </EventHeader>
+                  <EventDescription>
+                    {event.emp_name ? `For: ${event.emp_name}` : 'Special occasion'}
+                  </EventDescription>
+                  <EventFooter>
+                    <ResponseCount>
+                      <FaHeart /> {event.response_count || 0} wishes
+                    </ResponseCount>
+                    <ViewButton>
+                      <FaEye /> View Wishes
+                    </ViewButton>
+                  </EventFooter>
+                </EventCard>
+              ))}
+            </EventsContainer>
+          ) : (
+            <EmptyState>
+              <EmptyStateIcon>
+                <FaGift />
+              </EmptyStateIcon>
+              <EmptyStateText>No events found matching your search.</EmptyStateText>
+              {searchTerm && (
+                <Button variant="primary" onClick={() => setSearchTerm('')}>
+                  Clear Search
+                </Button>
+              )}
+            </EmptyState>
+          )}
+
+          {selectedEvent && (
+            <>
+              <SectionTitle>
+                Wishes for {selectedEvent.event_text || getEventTypeDisplay(selectedEvent.event_type)}
+              </SectionTitle>
+              
+              {loadingResponses ? (
+                <LoadingContainer>
+                  <LoadingSpinner>
+                    <FaSpinner />
+                  </LoadingSpinner>
+                  <LoadingText>Loading wishes...</LoadingText>
+                </LoadingContainer>
+              ) : responses.length > 0 ? (
+                <WishesContainer>
+                  {responses.map((response) => (
+                    <WishCard key={response.id}>
+                      <WishHeader>
+                        <WishAvatar color={getAvatarColor(selectedEvent.event_type)}>
+                          {response.r_emp_name ? response.r_emp_name.charAt(0) : 'U'}
+                        </WishAvatar>
+                        <WishSender>
+                          <WishSenderName>{response.r_emp_name}</WishSenderName>
+                          <WishDate>{response.response_date}</WishDate>
+                        </WishSender>
+                      </WishHeader>
+                      
+                      <WishContent>{response.r_text}</WishContent>
+                      
+                      {response.r_file && (
+                        <WishImage onClick={() => handleImageClick(response.r_file)}>
+                          <img src={response.r_file || "/placeholder.svg"} alt="Wish attachment" />
+                        </WishImage>
+                      )}
+                      
+                      <WishFooter>
+                        <Badge variant={selectedEvent.event_type === 'B' ? "secondary" : "primary"}>
+                          {getEventTypeDisplay(selectedEvent.event_type)}
+                        </Badge>
+                      </WishFooter>
+                    </WishCard>
+                  ))}
+                </WishesContainer>
+              ) : (
+                <EmptyState>
+                  <EmptyStateIcon>
+                    <FaHeart />
+                  </EmptyStateIcon>
+                  <EmptyStateText>No wishes found for this event yet.</EmptyStateText>
+                </EmptyState>
+              )}
+            </>
+          )}
+        </>
+      )}
+      
+      {showImageModal && (
+        <Modal onClose={() => setShowImageModal(false)}>
+          <ModalImageContainer>
+            <img src={selectedImage || "/placeholder.svg"} alt="Wish attachment" />
+          </ModalImageContainer>
+          <Button variant="primary" onClick={() => setShowImageModal(false)}>
+            Close
           </Button>
-          <Button
-            variant={activeFilter === "Birthday" ? "primary" : "outline"}
-            onClick={() => setActiveFilter("Birthday")}
-          >
-            Birthday
-          </Button>
-          <Button
-            variant={activeFilter === "Work Anniversary" ? "primary" : "outline"}
-            onClick={() => setActiveFilter("Work Anniversary")}
-          >
-            Work Anniversary
-          </Button>
-          <Button
-            variant={activeFilter === "Featured" ? "primary" : "outline"}
-            onClick={() => setActiveFilter("Featured")}
-          >
-            Featured
-          </Button>
-        </FilterContainer>
-
-        {filteredWishes.length > 0 ? (
-          <WishesContainer>
-            {filteredWishes.map((wish) => (
-              <WishCard key={wish.id} featured={wish.featured}>
-                <WishHeader>
-                  <WishAvatar color={wish.avatarColor}>{wish.senderInitial}</WishAvatar>
-                  <WishSender>
-                    <WishSenderName>{wish.sender}</WishSenderName>
-                    <WishDate>{wish.date}</WishDate>
-                  </WishSender>
-                </WishHeader>
-                <WishContent>{wish.content}</WishContent>
-                <WishFooter>
-                  <LikeButton liked={wish.liked} onClick={() => toggleLike(wish.id)}>
-                    <FaHeart /> {wish.likes} likes
-                  </LikeButton>
-                  <Badge variant={wish.event === "Birthday" ? "secondary" : "primary"}>{wish.event}</Badge>
-                </WishFooter>
-              </WishCard>
-            ))}
-          </WishesContainer>
-        ) : (
-          <EmptyState>
-            <EmptyStateIcon>
-              <FaGift />
-            </EmptyStateIcon>
-            <EmptyStateText>No wishes found with the selected filter.</EmptyStateText>
-            <Button variant="primary" onClick={() => setActiveFilter("All")}>
-              View All Wishes
-            </Button>
-          </EmptyState>
-        )}
-      </PageContainer>
-    </Layout>
+        </Modal>
+      )}
+    </PageContainer>
+  </Layout>
   )
 }
-
 export default MyWishes
+

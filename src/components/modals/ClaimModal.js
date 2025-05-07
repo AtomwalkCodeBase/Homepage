@@ -228,10 +228,7 @@ console.log(formData," formData")
     setIsLoading(true) // Show loader during submission
     const dateObj = new Date(formData.date)
     const expense_date = `${dateObj.getDate().toString().padStart(2, '0')}-${(dateObj.getMonth() + 1).toString().padStart(2, '0')}-${dateObj.getFullYear()}`
-    const formDatas = new FormData()
-
-
-      
+    const formDatas = new FormData() 
     formDatas.append("file_1",  formData.files)
     formDatas.append("remarks", formData.description)
     formDatas.append("item", formData.type)

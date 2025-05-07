@@ -4,8 +4,6 @@ import { useEffect, useState } from "react"
 import styled from "styled-components"
 import {
   FaPlus,
-  FaEdit,
-  FaTrash,
   FaEye,
   FaFileUpload,
   FaFilter,
@@ -22,6 +20,7 @@ import Button from "../components/Button"
 import Badge from "../components/Badge"
 import { getEmpClaim, getExpenseItem, getExpenseProjectList } from "../services/productServices"
 import ClaimModal from "../components/modals/ClaimModal"
+import { toast } from "react-toastify"
 
 const ClaimsHeader = styled.div`
   display: flex;
@@ -219,7 +218,7 @@ const ModalSection = styled.div`
 
 const ModalTitle = styled.h3`
  margin: 0;
-  color: ${({ theme }) => theme.colors.primary || '#3a86ff'};
+  color: ${({ theme }) => theme.colors.primary || "#3a86ff"};
   font-size: 1.6rem;
   font-weight: 600;
   display: flex;
@@ -230,7 +229,7 @@ const ModalTitle = styled.h3`
     display: inline-block;
     width: 8px;
     height: 24px;
-    background: ${({ theme }) => theme.colors.primary || '#3a86ff'};
+    background: ${({ theme }) => theme.colors.primary || "#3a86ff"};
     border-radius: 4px;
     margin-right: 12px;
   }
@@ -254,83 +253,148 @@ const ReceiptImage = styled.img`
   border: 1px solid ${({ theme }) => theme.colors.border};
 `
 
-
 const MyClaims = () => {
   const [activeTab, setActiveTab] = useState("all")
   const [isOpen, setIsOpen] = useState(false)
-  const [claims, setClaims] = useState([]);
-  const empId=localStorage.getItem("empNoId");
-  const [dropdownValue, setDropdownValue] = useState("All Types");
-  const [projecttype, setProjecttype] = useState("All Types");
-  const[isLoadings, setIsLoadings] = useState(1);
+  const [claims, setClaims] = useState([])
+  const empId = localStorage.getItem("empNoId")
+  const [dropdownValue, setDropdownValue] = useState("All Types")
+  const [projecttype, setProjecttype] = useState("All Types")
+  const [isLoadings, setIsLoadings] = useState(1)
   const [selectedClaim, setSelectedClaim] = useState(null)
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
-  console.log(projecttype,"dropdownValue");
-  
+  // Add these state variables after the existing state declarations
+  const [typeFilter, setTypeFilter] = useState("All Types")
+  const [timeFilter, setTimeFilter] = useState("All Time")
+  const [filteredClaims, setFilteredClaims] = useState([])
+  console.log(projecttype, "dropdownValue")
+
   const fetchProjectList = async () => {
     try {
-      const response = await getExpenseProjectList();
-      const data = response.data;
-      setProjecttype(data);
+      const response = await getExpenseProjectList()
+      const data = response.data
+      setProjecttype(data)
     } catch (error) {
-      console.log("Error fetching project list:", error);
+      console.log("Error fetching project list:", error)
     }
-  };
+  }
   const fetchClaimItemList = async () => {
     try {
-      const response = await getExpenseItem();
-      const data = response.data;
-      setDropdownValue(data);
+      const response = await getExpenseItem()
+      const data = response.data
+      setDropdownValue(data)
     } catch (error) {
-      console.log("Error fetching expense items:", error);
+      console.log("Error fetching expense items:", error)
     } finally {
-      console.log("Error fetching expense items:"); // Hide loader when data is fetched
+      console.log("Error fetching expense items:") // Hide loader when data is fetched
     }
-  };
+  }
   const handleClosePopup = () => {
-    setIsOpen(false);
-  };
-      const handleConfirm=()=>{
-        setIsOpen(true);
-      }
+    setIsOpen(false)
+  }
+  const handleConfirm = () => {
+    setIsOpen(true)
+  }
   const fetchClaimDetails = () => {
     // setIsLoading(true);
-     getEmpClaim("GET", empId).then((res) => {
-      setClaims(res.data);
-      // setIsLoading(false);
-    }).catch((err) => {
-      // setIsLoading(false);
-      console.log("Error fetching claim data:", err);
-    });
-  };
-  useEffect(() => {
-    fetchClaimItemList();
-    fetchClaimDetails();
-    fetchProjectList();
+    getEmpClaim("GET", empId)
+      .then((res) => {
+        setClaims(res.data)
+        // setIsLoading(false);
+      })
+      .catch((err) => {
+        // setIsLoading(false);
+        console.log("Error fetching claim data:", err)
+      })
   }
-  , [isLoadings]);
- 
+  useEffect(() => {
+    fetchClaimItemList()
+    fetchClaimDetails()
+    fetchProjectList()
+  }, [isLoadings])
 
-  // Filter claims based on active tab
-  const filteredClaims = claims.filter((claim) => {
-    if (activeTab === "all") return true
-    if (activeTab === "pending") return !claim.is_approved && claim.expense_status === "S"
-    if (activeTab === "approved") return claim.expense_status === "A"
-    if (activeTab === "rejected") return claim.expense_status === "R"
-    return true
-  })
+  // Add this useEffect after the existing useEffects
+  useEffect(() => {
+    if (claims.length > 0) {
+      let filtered = claims.filter((claim) => {
+        if (activeTab === "all") return true
+        if (activeTab === "pending") return !claim.is_approved && claim.expense_status === "S"
+        if (activeTab === "approved") return claim.expense_status === "A"
+        if (activeTab === "rejected") return claim.expense_status === "R"
+        return true
+      })
+
+      // Filter by expense type
+      if (typeFilter !== "All Types") {
+        filtered = filtered.filter((claim) => claim.item_name === typeFilter)
+      }
+
+      // Filter by time period
+      if (timeFilter !== "All Time") {
+        const today = new Date()
+        const getDateFromString = (dateStr) => {
+          if (!dateStr) return null
+          const parts = dateStr.split("-")
+          if (parts.length !== 3) return null
+          return new Date(parts[2], parts[1] - 1, parts[0])
+        }
+
+        if (timeFilter === "This Month") {
+          filtered = filtered.filter((claim) => {
+            const claimDate = getDateFromString(claim.submitted_date)
+            if (!claimDate) return false
+            return claimDate.getMonth() === today.getMonth() && claimDate.getFullYear() === today.getFullYear()
+          })
+        } else if (timeFilter === "Last Month") {
+          const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1)
+          filtered = filtered.filter((claim) => {
+            const claimDate = getDateFromString(claim.submitted_date)
+            if (!claimDate) return false
+            return claimDate.getMonth() === lastMonth.getMonth() && claimDate.getFullYear() === lastMonth.getFullYear()
+          })
+        } else if (timeFilter === "Last 3 Months") {
+          const threeMonthsAgo = new Date(today.getFullYear(), today.getMonth() - 3, today.getDate())
+          filtered = filtered.filter((claim) => {
+            const claimDate = getDateFromString(claim.submitted_date)
+            if (!claimDate) return false
+            return claimDate >= threeMonthsAgo
+          })
+        } else if (timeFilter === "This Year") {
+          filtered = filtered.filter((claim) => {
+            const claimDate = getDateFromString(claim.submitted_date)
+            if (!claimDate) return false
+            return claimDate.getFullYear() === today.getFullYear()
+          })
+        }
+      }
+
+      setFilteredClaims(filtered)
+    }
+  }, [claims, activeTab, typeFilter, timeFilter])
+
+  // Add this handleFilter function
+  const handleFilter = () => {
+    // The filtering is already handled by the useEffect
+    toast.info("Filters applied")
+  }
+
+  // Update the unique item types - add this function
+  const getUniqueItemTypes = () => {
+    const uniqueTypes = new Set(claims.map((claim) => claim.item_name))
+    return ["All Types", ...Array.from(uniqueTypes)]
+  }
 
   // Calculate summary data based on actual claims
-  const totalAmount = claims.reduce((sum, claim) => sum + parseFloat(claim.expense_amt), 0)
+  const totalAmount = claims.reduce((sum, claim) => sum + Number.parseFloat(claim.expense_amt), 0)
   const approvedAmount = claims
-    .filter(claim => claim.expense_status === "A")
-    .reduce((sum, claim) => sum + parseFloat(claim.expense_amt), 0)
+    .filter((claim) => claim.expense_status === "A")
+    .reduce((sum, claim) => sum + Number.parseFloat(claim.expense_amt), 0)
   const pendingAmount = claims
-    .filter(claim => !claim.is_approved && claim.expense_status === "S")
-    .reduce((sum, claim) => sum + parseFloat(claim.expense_amt), 0)
+    .filter((claim) => !claim.is_approved && claim.expense_status === "S")
+    .reduce((sum, claim) => sum + Number.parseFloat(claim.expense_amt), 0)
   const rejectedAmount = claims
-    .filter(claim => claim.expense_status === "R")
-    .reduce((sum, claim) => sum + parseFloat(claim.expense_amt), 0)
+    .filter((claim) => claim.expense_status === "R")
+    .reduce((sum, claim) => sum + Number.parseFloat(claim.expense_amt), 0)
 
   // Summary data
   const summaryData = [
@@ -362,7 +426,7 @@ const MyClaims = () => {
 
   // Get icon based on item name
   const getItemIcon = (itemName) => {
-    switch(itemName) {
+    switch (itemName) {
       case "Travel Expense":
         return <FaCarAlt />
       case "Meal Expense":
@@ -432,23 +496,21 @@ const MyClaims = () => {
         </TabContainer>
 
         <FilterContainer>
-          <FilterSelect>
-            <option>All Types</option>
-            <option>Travel Expense</option>
-            <option>Meal Expense</option>
-            <option>Accommodation</option>
-            <option>Other</option>
+          <FilterSelect value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
+            {getUniqueItemTypes().map((type, index) => (
+              <option key={index}>{type}</option>
+            ))}
           </FilterSelect>
 
-          <FilterSelect>
+          {/* <FilterSelect value={timeFilter} onChange={(e) => setTimeFilter(e.target.value)}>
             <option>All Time</option>
             <option>This Month</option>
             <option>Last Month</option>
             <option>Last 3 Months</option>
             <option>This Year</option>
-          </FilterSelect>
+          </FilterSelect> */}
 
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={handleFilter}>
             <FaFilter /> Filter
           </Button>
         </FilterContainer>
@@ -469,130 +531,119 @@ const MyClaims = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredClaims.map((claim) => {
-                const statusInfo = getStatusInfo(claim)
-                return (
-                  <tr key={claim.id}>
-                    <td>{claim.claim_id}</td>
-                    <td>
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <span style={{ marginRight: "0.5rem" }}>{getItemIcon(claim.item_name)}</span>
-                        {claim.item_name}
-                      </div>
-                    </td>
-                    <td>{claim.remarks}</td>
-                    <td>₹{claim.expense_amt}</td>
-                    <td>{claim.expense_date}</td>
-                    <td>{claim.submitted_date}</td>
-                    <td>
-                      {claim.submitted_file_1 ? (
-                        <Badge variant="success">Yes</Badge>
-                      ) : (
-                        <Badge variant="error">No</Badge>
-                      )}
-                    </td>
-                    <td>
-                      <Badge variant={statusInfo.variant}>
-                        {statusInfo.text}
-                      </Badge>
-                    </td>
-                    <td>
-                      <ActionButtons>
-                        <Button  onClick={() => handleViewDetails(claim)} variant="ghost" size="sm" title="View">
-                          <FaEye />
-                        </Button>
-                        {/* {!claim.is_approved && claim.expense_status === "S" && (
-                          <>
-                            <Button variant="ghost" size="sm" title="Edit">
-                              <FaEdit />
-                            </Button>
-                            <Button variant="ghost" size="sm" title="Delete">
-                              <FaTrash />
-                            </Button>
-                          </>
-                        )} */}
-                      </ActionButtons>
-                    </td>
-                  </tr>
-                )
-              })}
+              {filteredClaims.length > 0 ? (
+                filteredClaims.map((claim) => {
+                  const statusInfo = getStatusInfo(claim)
+                  return (
+                    <tr key={claim.id}>
+                      <td>{claim.claim_id}</td>
+                      <td>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <span style={{ marginRight: "0.5rem" }}>{getItemIcon(claim.item_name)}</span>
+                          {claim.item_name}
+                        </div>
+                      </td>
+                      <td>{claim.remarks}</td>
+                      <td>₹{claim.expense_amt}</td>
+                      <td>{claim.expense_date}</td>
+                      <td>{claim.submitted_date}</td>
+                      <td>
+                        {claim.submitted_file_1 ? (
+                          <Badge variant="success">Yes</Badge>
+                        ) : (
+                          <Badge variant="error">No</Badge>
+                        )}
+                      </td>
+                      <td>
+                        <Badge variant={statusInfo.variant}>{statusInfo.text}</Badge>
+                      </td>
+                      <td>
+                        <ActionButtons>
+                          <Button onClick={() => handleViewDetails(claim)} variant="ghost" size="sm" title="View">
+                            <FaEye />
+                          </Button>
+                        </ActionButtons>
+                      </td>
+                    </tr>
+                  )
+                })
+              ) : (
+                <tr>
+                  <td colSpan={9} style={{ textAlign: "center", padding: "1rem" }}>
+                    No claims found for the selected filters
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </TableContainer>
       </Card>
-      <ClaimModal isOpen={isOpen}
+      <ClaimModal
+        isOpen={isOpen}
         onClose={handleClosePopup}
         onConfirm={handleConfirm}
         dropdownValue={dropdownValue}
         projecttype={projecttype}
         setIsLoadings={setIsLoadings}
-        isLoadings={isLoadings}></ClaimModal>
-        {isDetailModalOpen && selectedClaim && (
+        isLoadings={isLoadings}
+      ></ClaimModal>
+      {isDetailModalOpen && selectedClaim && (
         <DetailModal>
           <ModalContent>
             <CloseButton onClick={handleCloseDetails}>
               <FaTimes />
             </CloseButton>
-            
+
             <ModalTitle>Claim Details</ModalTitle>
-            
+
             <ModalGrid>
               <div>
                 <ModalSection>
                   <ModalLabel>Claim ID</ModalLabel>
                   <ModalValue>{selectedClaim.claim_id}</ModalValue>
-                  
+
                   <ModalLabel>Expense Type</ModalLabel>
                   <ModalValue>
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <span style={{ marginRight: "0.5rem" }}>
-                        {getItemIcon(selectedClaim.item_name)}
-                      </span>
+                      <span style={{ marginRight: "0.5rem" }}>{getItemIcon(selectedClaim.item_name)}</span>
                       {selectedClaim.item_name}
                     </div>
                   </ModalValue>
-                  
+
                   <ModalLabel>Description</ModalLabel>
                   <ModalValue>{selectedClaim.remarks}</ModalValue>
                 </ModalSection>
-                
+
                 <ModalSection>
                   <ModalLabel>Amount</ModalLabel>
                   <ModalValue>₹{selectedClaim.expense_amt}</ModalValue>
-                  
+
                   <ModalLabel>Expense Date</ModalLabel>
                   <ModalValue>{selectedClaim.expense_date}</ModalValue>
-                  
+
                   <ModalLabel>Submitted Date</ModalLabel>
                   <ModalValue>{selectedClaim.submitted_date}</ModalValue>
                 </ModalSection>
               </div>
-              
+
               <div>
                 <ModalSection>
                   <ModalLabel>Status</ModalLabel>
                   <ModalValue>
-                    <Badge variant={getStatusInfo(selectedClaim).variant}>
-                      {getStatusInfo(selectedClaim).text}
-                    </Badge>
+                    <Badge variant={getStatusInfo(selectedClaim).variant}>{getStatusInfo(selectedClaim).text}</Badge>
                   </ModalValue>
-                  
+
                   <ModalLabel>Project</ModalLabel>
-                  <ModalValue>{selectedClaim.project_name || 'N/A'}</ModalValue>
-                  
+                  <ModalValue>{selectedClaim.project_name || "N/A"}</ModalValue>
+
                   <ModalLabel>Approver Notes</ModalLabel>
-                  <ModalValue>{selectedClaim.approver_notes || 'N/A'}</ModalValue>
+                  <ModalValue>{selectedClaim.approver_notes || "N/A"}</ModalValue>
                 </ModalSection>
-                
+
                 <ModalSection>
                   <ModalLabel>Receipt</ModalLabel>
                   {selectedClaim.submitted_file_1 ? (
-                    <ReceiptImage
-                      src={selectedClaim.submitted_file_1}
-                      alt="Receipt"
-                      width={400}
-                      height={300}
-                    />
+                    <ReceiptImage src={selectedClaim.submitted_file_1} alt="Receipt" width={400} height={300} />
                   ) : (
                     <ModalValue>No receipt attached</ModalValue>
                   )}

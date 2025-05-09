@@ -209,10 +209,18 @@ const ModalFooter = styled.div`
   padding: 1.5rem;
   border-top: 1px solid ${({ theme }) => theme.colors.border};
 `
+const ErrorMessage = styled.div`
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+  display: ${props => props.show ? 'block' : 'none'};
+  margin-bottom: 1rem;`
 
 const ClaimModal = ({ isOpen, onClose, dropdownValue, projecttype,setIsLoadings,isLoadings }) => {
   console.log(dropdownValue,"dropdownValue")
   const [isLoading, setIsLoading] = useState(false)
+  const [isFileError, setIsFileError] = useState(false)
   const [formData, setFormData] = useState({
     type: "",
     projecttype: "",
@@ -222,7 +230,7 @@ const ClaimModal = ({ isOpen, onClose, dropdownValue, projecttype,setIsLoadings,
     files:null,
     emp_id:localStorage.getItem("empId"),
   })
-console.log(formData," formData")
+console.log(projecttype," formData")
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true) // Show loader during submission
@@ -247,15 +255,28 @@ console.log(formData," formData")
         setIsLoadings(isLoadings + 1)
         toast.success("Add claim successfully")
         onClose() // Show success modal on successful submission
+        setIsFileError(false)
+        setFormData({
+          type: "",
+          projecttype: "",
+          amount: "",
+          date: "",
+          description: "",
+          files:null,
+          emp_id:localStorage.getItem("empId"),
+        })
       } else {
         console.log("Unexpected response:", res)
         toast.error("Claim Submission Error", "Failed to claim. Unexpected response.")
       }
     } catch (error) {
-      toast.error(`${error.response?.data?.detail || error.message}`)
+      // toast.error(`${error.response?.data?.detail || error.message}`)
+      setIsFileError("Please upload a file")
+      return
     } finally {
       setIsLoading(false)
     }
+
   }
 
   const handleChange = (e) => {
@@ -286,7 +307,7 @@ console.log(formData," formData")
   return (
     <ModalOverlay onClick={onClose}>
       <ModalContainer onClick={(e) => e.stopPropagation()}>
-        <form>
+        <form onSubmit={handleSubmit}>
           <ModalHeader>
             <ModalTitle>Submit a New Claim</ModalTitle>
             <CloseButton onClick={onClose}>
@@ -313,7 +334,7 @@ console.log(formData," formData")
                   <option value="">Select Project Type</option>
                   {projecttype.map((value, index) => (
                     <option key={index} value={value.id}>
-                      {value.name}
+                      {value.title}
                     </option>
                   ))}
                 </FormSelect>
@@ -375,6 +396,7 @@ console.log(formData," formData")
                 <FileUploadText>Click to upload or drag and drop files here</FileUploadText>
                 <div style={{ fontSize: "0.8rem", color: "#666" }}>Supported formats: JPG, PNG, PDF (Max 5MB)</div>
               </FileUploadContainer>
+              <ErrorMessage show={isFileError}>please upload or drag and drop files here</ErrorMessage>
 
               {formData.files && (
                 <div style={{ marginTop: "1rem" }}>
@@ -397,7 +419,7 @@ console.log(formData," formData")
             <Button variant="outline" type="button" onClick={onClose}>
               Cancel
             </Button>
-            <Button onClick={handleSubmit} variant="primary" type="submit" disabled={isLoading}>
+            <Button  variant="primary" type="submit" disabled={isLoading}>
               {isLoading ? "Submitting..." : "Submit Claim"}
             </Button>
           </ModalFooter>

@@ -90,7 +90,7 @@ const LoginFormContainer = styled.div`
   padding: 2rem;
   background: ${({ theme }) => theme.colors.background};
   animation: ${fadeIn} 1s ease 0.3s backwards;
-  
+
   @media (max-width: 768px) {
     padding: 1rem;
   }
@@ -103,6 +103,7 @@ const LoginForm = styled.form`
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 80px;
 `
 
 const FormTitle = styled.h2`
@@ -260,7 +261,7 @@ const Login = () => {
           mobile: formData.mobile,
           password: formData.password,
           role: "HR Manager",
-          company: formData.company || "Acme Inc.",
+          company: formData?.company?.split("_").slice(1).join("_") || "Acme Inc.",
         }
         await login(userData)
       } else {

@@ -924,9 +924,9 @@ const Profile = () => {
           <StyledCard>
             <ProfileImage>
               <img src={profileData.image || "/placeholder.svg"} alt={profileData.name} />
-              <ProfileImageOverlay>
+              {/* <ProfileImageOverlay>
                 <FaCamera /> Change Photo
-              </ProfileImageOverlay>
+              </ProfileImageOverlay> */}
             </ProfileImage>
 
             <ProfileInfo>

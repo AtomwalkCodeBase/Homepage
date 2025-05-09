@@ -451,50 +451,6 @@ const AttendanceTracking = () => {
     if (employeeDatas.length > 0) {
       let filtered = [...employeeDatas]
 
-      // Filter by time period
-      if (timeFilter !== "All Time") {
-        const today = new Date()
-        if (timeFilter === "This Month") {
-          filtered = filtered.filter((item) => {
-            const dateObj = new Date(
-              item.a_date.split("-")[2], // Year
-              item.a_date.split("-")[1] - 1, // Month (0-based)
-              item.a_date.split("-")[0], // Day
-            )
-            return dateObj.getMonth() === today.getMonth() && dateObj.getFullYear() === today.getFullYear()
-          })
-        } else if (timeFilter === "Last Month") {
-          const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1)
-          filtered = filtered.filter((item) => {
-            const dateObj = new Date(
-              item.a_date.split("-")[2], // Year
-              item.a_date.split("-")[1] - 1, // Month (0-based)
-              item.a_date.split("-")[0], // Day
-            )
-            return dateObj.getMonth() === lastMonth.getMonth() && dateObj.getFullYear() === lastMonth.getFullYear()
-          })
-        } else if (timeFilter === "Last 3 Months") {
-          const threeMonthsAgo = new Date(today.getFullYear(), today.getMonth() - 3, today.getDate())
-          filtered = filtered.filter((item) => {
-            const dateObj = new Date(
-              item.a_date.split("-")[2], // Year
-              item.a_date.split("-")[1] - 1, // Month (0-based)
-              item.a_date.split("-")[0], // Day
-            )
-            return dateObj >= threeMonthsAgo
-          })
-        } else if (timeFilter === "This Year") {
-          filtered = filtered.filter((item) => {
-            const dateObj = new Date(
-              item.a_date.split("-")[2], // Year
-              item.a_date.split("-")[1] - 1, // Month (0-based)
-              item.a_date.split("-")[0], // Day
-            )
-            return dateObj.getFullYear() === today.getFullYear()
-          })
-        }
-      }
-
       // Filter by status
       if (statusFilter !== "All Status") {
         filtered = filtered.filter((item) => {
@@ -523,7 +479,7 @@ const AttendanceTracking = () => {
 
       setFilteredAttendanceData(filtered)
     }
-  }, [employeeDatas, statusFilter, timeFilter, holiday])
+  }, [employeeDatas, statusFilter, holiday])
 
   const processHolidayData = (data) => {
     const holidayMap = {}

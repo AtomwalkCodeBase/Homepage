@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
   
       console.log('Sending payload:', payload);
   
-      const response = await publicAxiosRequest.post(empLoginURL, payload, {
+      const response = await publicAxiosRequest.post(empLoginURL+`${userData.company}/`, payload, {
         headers: { 'Content-Type': 'application/json' },
       });
   
@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('empNoId', String(e_id));
         localStorage.setItem('userPin', userData.password);
         localStorage.setItem("hrmsUser", JSON.stringify(userData));
-        localStorage.setItem("dbName", userData.company.split('_').slice(1).join('_'));
+        localStorage.setItem("dbName", userData.company);
         setCurrentUser(userData);
         toast.success("Login successful!");
         window.location.href = "/dashboard";
@@ -97,6 +97,10 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("hrmsUser")
+    localStorage.removeItem("dbName")
+    localStorage.removeItem("userToken")
+    localStorage.removeItem("empId")
+    localStorage.removeItem("empNoId")
     setCurrentUser(null)
   }
 

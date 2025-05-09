@@ -312,7 +312,7 @@ export default function Footer2() {
 
   const pathsToHideNavbar = [
     'assessment',
-    'login',
+    'wishes',
     'dashboard',
     'employees',
     'attendance-tracking',

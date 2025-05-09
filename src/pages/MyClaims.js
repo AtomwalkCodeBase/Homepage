@@ -267,7 +267,7 @@ const MyClaims = () => {
   const [typeFilter, setTypeFilter] = useState("All Types")
   const [timeFilter, setTimeFilter] = useState("All Time")
   const [filteredClaims, setFilteredClaims] = useState([])
-  console.log(projecttype, "dropdownValue")
+  console.log(selectedClaim, "dropdownValue")
 
   const fetchProjectList = async () => {
     try {

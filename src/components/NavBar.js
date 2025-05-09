@@ -23,7 +23,7 @@ export const NavBar = () => {
   const[opennavbar,setOpennavbar]=useState(true);
   const pathsToHideNavbar = [
     'assessment',
-    'login',
+    'wishes',
     'dashboard',
     'employees',
     'attendance-tracking',

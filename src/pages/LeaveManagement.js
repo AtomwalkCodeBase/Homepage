@@ -369,9 +369,9 @@ const openmodel = () => {
           <Tab active={activeTab === "wh-requests"} onClick={() =>   setActiveTab("wh-requests")}>
             Work From Home Requests
           </Tab>
-          <Tab active={activeTab === "team-requests"} onClick={() => setActiveTab("team-requests")}>
+          {/* <Tab active={activeTab === "team-requests"} onClick={() => setActiveTab("team-requests")}>
             Team Leave Requests
-          </Tab>
+          </Tab> */}
           <Tab active={activeTab === "calendar"} onClick={() => setActiveTab("calendar")}>
           Leave Analitics
           </Tab>
@@ -498,7 +498,7 @@ const openmodel = () => {
               </tbody>
             </table>
           )}
-          {activeTab === "team-requests" && (
+          {/* {activeTab === "team-requests" && (
             <table>
               <thead>
                 <tr>
@@ -549,7 +549,7 @@ const openmodel = () => {
                 ))}
               </tbody>
             </table>
-          )}
+          )} */}
 
           {activeTab === "calendar" && (
            <div style={{ padding: '20px' }}>
@@ -627,7 +627,7 @@ const openmodel = () => {
           )}
         </TableContainer>
       </Card>
-      <LeaveModal isOpen={isOpen} onClose={closemodel}></LeaveModal>
+      <LeaveModal isOpen={isOpen} onClose={closemodel}  setRelode={setRelode} relode={relode}></LeaveModal>
       <ConfirmationPopup  isOpen={showPopup}
         onClose={handleClosePopup}
         onConfirm={handleConfirm}></ConfirmationPopup>

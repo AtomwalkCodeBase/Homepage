@@ -2,28 +2,16 @@
 
 import { useState, useEffect } from "react"
 import styled from "styled-components"
-import {
-  FaClock,
-  FaCalendarAlt,
-  FaUser,
-  FaIdCard,
-  FaMapMarkerAlt,
-  FaHistory,
-  FaCheckCircle,
-  FaTimesCircle,
-  FaBuilding,
-  FaHome,
-  FaChevronLeft,
-  FaChevronRight,
-  FaFilter
-} from "react-icons/fa"
+import { FaHistory, FaChevronLeft, FaChevronRight, FaFilter, FaSignInAlt, FaSignOutAlt } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
 import Badge from "../components/Badge"
 import { useAuth } from "../context/AuthContext"
-import { getEmpAttendance, getEmpHoliday } from "../services/productServices"
+import { getEmpAttendance, getEmpHoliday, postCheckIn } from "../services/productServices"
 import Modal from "../components/modals/Modal"
+import { toast } from "react-toastify"
+import moment from "moment/moment"
 // import Modal from "../components/Modal"
 // import Input from "../components/Input"
 
@@ -183,13 +171,13 @@ const StatusBadge = styled.div`
   font-weight: 500;
   margin-top: 0.5rem;
   background: ${({ theme, $status }) =>
-    $status === 'present' ? theme.colors.successLight :
-      $status === 'leave' ? theme.colors.warningLight :
-        theme.colors.errorLight};
+    $status === "present"
+      ? theme.colors.successLight
+      : $status === "leave"
+        ? theme.colors.warningLight
+        : theme.colors.errorLight};
   color: ${({ theme, $status }) =>
-    $status === 'present' ? theme.colors.success :
-      $status === 'leave' ? theme.colors.warning :
-        theme.colors.error};
+    $status === "present" ? theme.colors.success : $status === "leave" ? theme.colors.warning : theme.colors.error};
 `
 
 const CalendarContainer = styled.div`
@@ -234,20 +222,21 @@ const Input = styled.input`
   &::placeholder {
     color: ${({ theme }) => theme.colors.textLight};
     opacity: 0.7;
-  }`;
+  }`
 const DayCell = styled.div`
   padding: 0.5rem;
   text-align: center;
   border-radius: 4px;
   background: ${({ $isCurrent, $isHoliday, $isWeekend, theme }) =>
-    $isCurrent ? theme.colors.primaryLight :
-      $isHoliday ? theme.colors.secondaryLight :
-        $isWeekend ? theme.colors.border :
-          'white'};
+    $isCurrent
+      ? theme.colors.primaryLight
+      : $isHoliday
+        ? theme.colors.secondaryLight
+        : $isWeekend
+          ? theme.colors.border
+          : "white"};
   color: ${({ $isCurrent, $isHoliday, theme }) =>
-    $isCurrent ? theme.colors.primary :
-      $isHoliday ? theme.colors.secondary :
-        theme.colors.text};
+    $isCurrent ? theme.colors.primary : $isHoliday ? theme.colors.secondary : theme.colors.text};
   border: 1px solid ${({ theme }) => theme.colors.border};
 `
 
@@ -260,11 +249,15 @@ const DayStatus = styled.div`
   font-size: 0.7rem;
   font-weight: bold;
   color: ${({ $status, theme }) =>
-    $status === 'P' ? theme.colors.success :
-      $status === 'L' ? theme.colors.warning :
-        $status === 'C' ? theme.colors.secondary :
-          $status === 'H' ? theme.colors.secondary :
-            theme.colors.error};
+    $status === "P"
+      ? theme.colors.success
+      : $status === "L"
+        ? theme.colors.warning
+        : $status === "C"
+          ? theme.colors.secondary
+          : $status === "H"
+            ? theme.colors.secondary
+            : theme.colors.error};
 `
 
 const StatusGuide = styled.div`
@@ -294,11 +287,15 @@ const StatusGuideItem = styled.div`
     border-radius: 50%;
     margin-right: 0.5rem;
     background: ${({ $status, theme }) =>
-    $status === 'P' ? theme.colors.success :
-      $status === 'L' ? theme.colors.warning :
-        $status === 'C' ? theme.colors.secondary :
-          $status === 'H' ? theme.colors.secondary :
-            theme.colors.error};
+      $status === "P"
+        ? theme.colors.success
+        : $status === "L"
+          ? theme.colors.warning
+          : $status === "C"
+            ? theme.colors.secondary
+            : $status === "H"
+              ? theme.colors.secondary
+              : theme.colors.error};
   }
 `
 
@@ -343,23 +340,40 @@ const HistoryButton = styled.button`
 
 const AttendanceTracking = () => {
   const [currentTime, setCurrentTime] = useState(new Date())
+  const [currentDate, setCurrentDate] = useState("")
   const [checkedIn, setCheckedIn] = useState(false)
   const [startTime, setStartTime] = useState(null)
   const [attendance, setAttendance] = useState({})
   const [isRemarkModalOpen, setIsRemarkModalOpen] = useState(false)
-  const [remark, setRemark] = useState('')
+  const [remark, setRemark] = useState("")
   const [date, setDate] = useState(new Date())
-  const currentMonth = date.getMonth();
-  const currentYear = date.getFullYear();
+  const currentMonth = date.getMonth()
+  const currentYear = date.getFullYear()
   const [attData, setAttData] = useState([])
   const [employeeDatas, setEmployeeDatas] = useState([])
   const [holiday, setHoliday] = useState({})
-  const[datas, setDatas] = useState({
-    month: date.getMonth() + 1,
-    year: date.getFullYear()})
+  const [relode, setReLoad] = useState(1)
   const { profile } = useAuth()
   // Mock employee data
-  console.log(date,"hbff")
+  console.log("currentMonth", attendance)
+
+  // In the component, add these state variables after the existing state declarations
+  const [statusFilter, setStatusFilter] = useState("All Status")
+  const [timeFilter, setTimeFilter] = useState("This Month")
+  const [filteredAttendanceData, setFilteredAttendanceData] = useState([])
+
+  const setdatatime = async () => {
+    let time = moment().format("hh:mm A")
+    if (
+      moment().isBetween(
+        moment().startOf("day").add(12, "hours").add(1, "minute"),
+        moment().startOf("day").add(13, "hours"),
+      )
+    ) {
+      time = time.replace(/^12/, "00")
+    }
+    return time
+  }
 
   const employeeData = {
     id: profile?.emp_id,
@@ -367,9 +381,8 @@ const AttendanceTracking = () => {
     emp_id: profile?.emp_id,
     grade_name: profile?.grade_name,
     department: profile?.department_name,
-    image: profile?.image || 'https://via.placeholder.com/100'
+    image: profile?.image || "https://via.placeholder.com/100",
   }
-
 
   const monthNameMap = {
     Jan: 0,
@@ -384,7 +397,7 @@ const AttendanceTracking = () => {
     Oct: 9,
     Nov: 10,
     Dec: 11,
-  };
+  }
   // Update time every second
   useEffect(() => {
     const timer = setInterval(() => {
@@ -398,89 +411,140 @@ const AttendanceTracking = () => {
 
   const fetchAttendanceDetails = (data) => {
     getEmpAttendance(data).then((res) => {
-      setEmployeeDatas(res.data);
-      processAttendanceData(res.data);
-    });
+      setEmployeeDatas(res.data)
+      processAttendanceData(res.data)
+    })
     getEmpHoliday(data).then((res) => {
       // console.log('Holiday Data---',res.data)
-      processHolidayData(res.data);
-    });
-  };
+      processHolidayData(res.data)
+    })
+  }
   const processAttendanceData = (data) => {
-    const attendanceMap = {};
+    const attendanceMap = {}
     data.forEach((item) => {
-      const day = parseInt(item.a_date.split('-')[0], 10);
-      attendanceMap[day] = item.attendance_type;
-    });
-    setAttData(attendanceMap);
-  };
+      const day = Number.parseInt(item.a_date.split("-")[0], 10)
+      attendanceMap[day] = item.attendance_type
+    })
+    setAttData(attendanceMap)
+    const currentDate = `${currentTime.getDate().toString().padStart(2, "0")}-${(currentTime.getMonth() + 1).toString().padStart(2, "0")}-${currentTime.getFullYear()}`
+    const todayAttendance = data.find((item) => item.a_date === currentDate)
+    if (todayAttendance) {
+      setAttendance(todayAttendance)
+      setCheckedIn(todayAttendance.end_time === null)
+    } else {
+      setAttendance({
+        start_time: null,
+        end_time: null,
+        geo_status: "N",
+      })
+    }
+  }
   useEffect(() => {
-    fetchAttendanceDetails(datas)
-  }, [date])
+    fetchAttendanceDetails({
+      month: currentMonth + 1,
+      year: currentYear,
+    })
+  }, [currentMonth, currentYear, relode])
+
+  // After the useEffect that fetches attendance data, add this effect to handle filtering
+  useEffect(() => {
+    if (employeeDatas.length > 0) {
+      let filtered = [...employeeDatas]
+
+      // Filter by status
+      if (statusFilter !== "All Status") {
+        filtered = filtered.filter((item) => {
+          const dateObj = new Date(item.year, item.month - 1, item.day)
+          const isWeekend = dateObj.getDay() === 0 || dateObj.getDay() === 6
+          const isHoliday = holiday[item.day]
+
+          if (statusFilter === "Present" && item.attendance_type_display === "Present") {
+            return true
+          } else if (statusFilter === "Leave" && item.attendance_type_display === "On Leave") {
+            return true
+          } else if (statusFilter === "Holiday" && (isHoliday || isWeekend)) {
+            return true
+          } else if (
+            statusFilter === "Absent" &&
+            item.attendance_type_display !== "Present" &&
+            item.attendance_type_display !== "On Leave" &&
+            !isHoliday &&
+            !isWeekend
+          ) {
+            return true
+          }
+          return false
+        })
+      }
+
+      setFilteredAttendanceData(filtered)
+    }
+  }, [employeeDatas, statusFilter, holiday])
+
   const processHolidayData = (data) => {
-    const holidayMap = {};
+    const holidayMap = {}
 
     // Process holiday_list
     if (data.holiday_list && Array.isArray(data.holiday_list)) {
       data.holiday_list.forEach((holidayDate) => {
         if (holidayDate) {
-          const [day, monthName, year] = holidayDate.split('-');
-          const month = monthNameMap[monthName];
+          const [day, monthName, year] = holidayDate.split("-")
+          const month = monthNameMap[monthName]
 
-          if (month !== undefined && month === currentMonth && parseInt(year, 10) === currentYear) {
-            holidayMap[parseInt(day, 10)] = 'C';
+          if (month !== undefined && month === currentMonth && Number.parseInt(year, 10) === currentYear) {
+            holidayMap[Number.parseInt(day, 10)] = "C"
           } else {
             // console.log(`Skipping holiday: ${holidayDate} (month mismatch or invalid month)`);
           }
         } else {
           // console.log('Skipping empty holiday date');
         }
-      });
+      })
     }
 
     // Process holiday_saturday_list
     if (data.holiday_saturday_list) {
-      const saturdayDates = data.holiday_saturday_list.split('|');
+      const saturdayDates = data.holiday_saturday_list.split("|")
 
       saturdayDates.forEach((saturdayDate) => {
         if (saturdayDate) {
-          const [day, monthName] = saturdayDate.split('-');
-          const year = currentYear; // Use the current year for Saturday holidays
-          const month = monthNameMap[monthName];
+          const [day, monthName] = saturdayDate.split("-")
+          const year = currentYear // Use the current year for Saturday holidays
+          const month = monthNameMap[monthName]
 
           if (month !== undefined && month === currentMonth) {
-            holidayMap[parseInt(day, 10)] = 'H';
+            holidayMap[Number.parseInt(day, 10)] = "H"
           } else {
             // console.log(`Skipping Saturday holiday: ${saturdayDate} (month mismatch or invalid month)`);
           }
         } else {
           // console.log('Skipping empty Saturday holiday date');
         }
-      });
+      })
     }
 
     // Mark all Sundays in the current month as 'H'
-    const daysInMonth = getDaysInMonth(currentMonth, currentYear);
+    const daysInMonth = getDaysInMonth(currentMonth, currentYear)
     for (let day = 1; day <= daysInMonth; day++) {
-      const date = new Date(currentYear, currentMonth, day);
+      const date = new Date(currentYear, currentMonth, day)
 
       // Check if the day is Sunday (0 represents Sunday)
       if (date.getDay() === 0) {
-        holidayMap[day] = 'H'; // Mark this day as a holiday
+        holidayMap[day] = "H" // Mark this day as a holiday
         // console.log(`Marking ${day}-${currentMonth + 1}-${currentYear} as holiday (Sunday)`);
       }
     }
 
-    setHoliday(holidayMap);
+    setHoliday(holidayMap)
     // console.log('Processed Holiday Map:', holidayMap);
-  };
+  }
   const handleCheckIn = () => {
     setCheckedIn(true)
-    setStartTime(currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
+    setStartTime(currentTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }))
     setAttendance({
       ...attendance,
-      start_time: currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      geo_status: 'I'
+      start_time: currentTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      geo_status: "I",
     })
   }
 
@@ -490,14 +554,9 @@ const AttendanceTracking = () => {
 
   const confirmCheckOut = () => {
     setCheckedIn(false)
-    setAttendance({
-      ...attendance,
-      end_time: currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      geo_status: 'O',
-      remarks: remark
-    })
+    handleCheck("UPDATE")
     setIsRemarkModalOpen(false)
-    setRemark('')
+    setRemark("")
   }
 
   const changeMonth = (direction) => {
@@ -515,15 +574,11 @@ const AttendanceTracking = () => {
   const daysInMonth = getDaysInMonth(date.getMonth(), date.getFullYear())
   const firstDayOfMonth = getFirstDayOfMonth(date.getMonth(), date.getFullYear())
 
-  const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+  const weekDays = ["S", "M", "T", "W", "T", "F", "S"]
 
   const isCurrentDay = (day) => {
     const today = new Date()
-    return (
-      day === today.getDate() &&
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear()
-    )
+    return day === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()
   }
 
   const isWeekend = (day) => {
@@ -545,7 +600,47 @@ const AttendanceTracking = () => {
     // Default to not submitted if it's a past day
     const today = new Date()
     const dateObj = new Date(date.getFullYear(), date.getMonth(), day)
-    return dateObj < today ? 'N' : ''
+    return dateObj < today ? "N" : ""
+  }
+  const handleCheck = async (mode) => {
+    const currentDate = `${currentTime.getDate().toString().padStart(2, "0")}-${(currentTime.getMonth() + 1).toString().padStart(2, "0")}-${currentTime.getFullYear()}`
+    const time = await setdatatime()
+    try {
+      const todayAttendance = employeeDatas.find((item) => item.a_date == currentDate)
+      const attendanceId = todayAttendance ? todayAttendance.id : null
+
+      const checkPayload = {
+        emp_id: localStorage.getItem("empNoId"),
+        call_mode: mode,
+        time: time,
+        geo_type: mode === "ADD" ? "I" : "O",
+        a_date: currentDate,
+        latitude_id: ``,
+        longitude_id: ``,
+        remarks: mode === "ADD" ? "Check-in from Web" : remark,
+        id: attendanceId,
+      }
+      const Attdatarec = await postCheckIn(checkPayload)
+      if (Attdatarec.status === 200) {
+        toast.success("Attendance processed successfully")
+      }
+    } catch (error) {
+      console.log("Error during check in/out:", error)
+      toast.error("Failed to process attendance")
+    }
+    setReLoad(relode + 1)
+  }
+
+  // Button states
+  const isCheckInDisabled = checkedIn || attendance.geo_status === "O" || !!attendance.start_time
+  const isCheckOutDisabled = !checkedIn || attendance.geo_status !== "I" || !!attendance.end_time
+  console.log(isCheckOutDisabled, "data")
+
+  // Update the handleFilter function
+  const handleFilter = () => {
+    // The filtering is now handled by the useEffect
+    // This is just for the button click animation
+    toast.info("Filters applied")
   }
 
   return (
@@ -557,10 +652,10 @@ const AttendanceTracking = () => {
       {/* Current Time Display */}
       <CurrentTimeContainer>
         <CurrentTime>
-          {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+          {currentTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
         </CurrentTime>
         <CurrentDate>
-          {currentTime.toLocaleDateString([], { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+          {currentTime.toLocaleDateString([], { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
         </CurrentDate>
       </CurrentTimeContainer>
       <ProfileCard>
@@ -568,25 +663,17 @@ const AttendanceTracking = () => {
         <ProfileInfo>
           <EmployeeName>{employeeData.name}</EmployeeName>
           {attendance.start_time ? (
-            <StatusBadge $status="present">
-              Checked In at {attendance.start_time}
-            </StatusBadge>
+            <StatusBadge $status="present">Checked In at {attendance.start_time}</StatusBadge>
           ) : attendance.end_time ? (
-            <StatusBadge $status="leave">
-              Checked Out at {attendance.end_time}
-            </StatusBadge>
+            <StatusBadge $status="leave">Checked Out at {attendance.end_time}</StatusBadge>
           ) : (
-            <StatusBadge $status="absent">
-              Not Checked In Today
-            </StatusBadge>
+            <StatusBadge $status="absent">Not Checked In Today</StatusBadge>
           )}
         </ProfileInfo>
         <ProfileDetails>
           <DetailItem>
             <DetailLabel>My Id</DetailLabel>
-            <DetailValue>
-              {employeeData.emp_id}
-            </DetailValue>
+            <DetailValue>{employeeData.emp_id}</DetailValue>
           </DetailItem>
           <DetailItem>
             <DetailLabel>Designation</DetailLabel>
@@ -599,31 +686,23 @@ const AttendanceTracking = () => {
         </ProfileDetails>
       </ProfileCard>
       <AttendanceActions>
-        <ActionButton
-          onClick={handleCheckIn}
-          disabled={checkedIn || attendance.start_time}
-        >
+        <ActionButton onClick={() => handleCheck("ADD")} disabled={isCheckInDisabled}>
           <ActionIcon>
-            <FaCheckCircle style={{ color: checkedIn ? '#ccc' : '#4CAF50' }} />
+            <FaSignInAlt style={{ color: isCheckInDisabled ? "#ccc" : "#4CAF50" }} />
           </ActionIcon>
-          <ActionText>
-            {checkedIn || attendance.start_time
-              ? `Checked In at ${attendance.start_time}`
-              : 'Check In'}
-          </ActionText>
+          <ActionText>{isCheckInDisabled ? `Checked In • ${attendance.start_time}` : "Check In"}</ActionText>
         </ActionButton>
 
-        <ActionButton
-          onClick={handleCheckOut}
-          disabled={!checkedIn || attendance.end_time}
-        >
+        <ActionButton onClick={() => setIsRemarkModalOpen(true)} disabled={isCheckOutDisabled}>
           <ActionIcon>
-            <FaTimesCircle style={{ color: !checkedIn ? '#ccc' : '#F44336' }} />
+            <FaSignOutAlt style={{ color: isCheckOutDisabled ? "#ccc" : "#F44336" }} />
           </ActionIcon>
           <ActionText>
-            {attendance.end_time
-              ? `Checked Out at ${attendance.end_time}`
-              : 'Check Out'}
+            {isCheckOutDisabled
+              ? attendance.end_time
+                ? `Checked Out • ${attendance.end_time}`
+                : "Check Out"
+              : "Check Out"}
           </ActionText>
         </ActionButton>
       </AttendanceActions>
@@ -634,9 +713,7 @@ const AttendanceTracking = () => {
           <Button variant="ghost" onClick={() => changeMonth(-1)}>
             <FaChevronLeft />
           </Button>
-          <MonthText>
-            {date.toLocaleDateString([], { month: 'long', year: 'numeric' })}
-          </MonthText>
+          <MonthText>{date.toLocaleDateString([], { month: "long", year: "numeric" })}</MonthText>
           <Button variant="ghost" onClick={() => changeMonth(1)}>
             <FaChevronRight />
           </Button>
@@ -667,7 +744,7 @@ const AttendanceTracking = () => {
                 $isWeekend={isWeekend(day) && !holiday[day]}
               >
                 <DayNumber>{day}</DayNumber>
-                {status && <DayStatus $status={status}>{status}</DayStatus>}
+                {status && <DayStatus $status={status == "A" ? "P" : status}>{status == "A" ? "P" : status}</DayStatus>}
               </DayCell>
             )
           })}
@@ -684,24 +761,26 @@ const AttendanceTracking = () => {
       </Card>
 
       {/* History Button */}
-      <HistoryButton>
+      {/* <HistoryButton>
         <FaHistory /> View Attendance History
-      </HistoryButton>
+      </HistoryButton> */}
       <Card title="Recent Attendance">
         <FilterContainer>
-          <FilterSelect>
+          {/* <FilterSelect value={timeFilter} onChange={(e) => setTimeFilter(e.target.value)}>
+            <option>All Time</option>
             <option>This Month</option>
             <option>Last Month</option>
             <option>Last 3 Months</option>
             <option>This Year</option>
-          </FilterSelect>
-          <FilterSelect>
+          </FilterSelect> */}
+          <FilterSelect value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
             <option>All Status</option>
             <option>Present</option>
             <option>Leave</option>
             <option>Holiday</option>
+            <option>Absent</option>
           </FilterSelect>
-          <Button variant="outline">
+          <Button variant="outline" onClick={handleFilter}>
             <FaFilter /> Filter
           </Button>
         </FilterContainer>
@@ -717,69 +796,82 @@ const AttendanceTracking = () => {
               </tr>
             </thead>
             <tbody>
-              {employeeDatas.map((data, index) => {
-                const dateObj = new Date(data.year, data.month - 1, data.day);
-                const isWeekend = dateObj.getDay() === 0 || dateObj.getDay() === 6;
-                const isHoliday = holiday[data.day];
-                const startTime = data.start_time || "N/A";
-                const endTime = data.end_time || "N/A";
-                const statusDisplay =
-                  data.attendance_type_display === "Present" ? "Present" :
-                    data.attendance_type_display === "On Leave" ? "Leave" :
-                      isHoliday ? "Holiday" :
-                        isWeekend ? "Weekend" :
-                          "Absent";
-                return (
-                  <tr key={index}>
-                    <td>{
-                      new Date(
-                        data.a_date.split('-')[2],  // Year
-                        data.a_date.split('-')[1] - 1, // Month (0-based)
-                        data.a_date.split('-')[0]   // Day
-                      ).toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })
-                    }</td>
-                    <td>{startTime}</td>
-                    <td>{endTime}</td>
-                    <td>
-                      <Badge
-                        variant={
-                          data.attendance_type_display === "Present" ? 'success' :
-                            data.attendance_type_display === "On Leave" ? 'warning' :
-                              statusDisplay === "Absent" ? 'error' :
-                                isHoliday || isWeekend ? 'secondary' : 'error'
-                        }
-                      >
-                        {statusDisplay}
-                      </Badge>
-                    </td>
-                  </tr>
-                );
-              })}
+              {filteredAttendanceData.length > 0 ? (
+                filteredAttendanceData.map((data, index) => {
+                  const dateObj = new Date(data.year, data.month - 1, data.day)
+                  const isWeekend = dateObj.getDay() === 0 || dateObj.getDay() === 6
+                  const isHoliday = holiday[data.day]
+                  const startTime = data.start_time || "N/A"
+                  const endTime = data.end_time || "N/A"
+                  const statusDisplay =
+                    data.attendance_type_display === "Present"
+                      ? "Present"
+                      : data.attendance_type_display === "On Leave"
+                        ? "Leave"
+                        : isHoliday
+                          ? "Holiday"
+                          : isWeekend
+                            ? "Weekend"
+                            : "Absent"
+                  return (
+                    <tr key={index}>
+                      <td>
+                        {new Date(
+                          data.a_date.split("-")[2], // Year
+                          data.a_date.split("-")[1] - 1, // Month (0-based)
+                          data.a_date.split("-")[0], // Day
+                        ).toLocaleDateString("en-GB", { day: "numeric", month: "long" })}
+                      </td>
+                      <td>{startTime}</td>
+                      <td>{endTime}</td>
+                      <td>
+                        <Badge
+                          variant={
+                            data.attendance_type_display === "Present"
+                              ? "success"
+                              : data.attendance_type_display === "On Leave"
+                                ? "warning"
+                                : statusDisplay === "Absent"
+                                  ? "error"
+                                  : isHoliday || isWeekend
+                                    ? "secondary"
+                                    : "error"
+                          }
+                        >
+                          {statusDisplay}
+                        </Badge>
+                      </td>
+                    </tr>
+                  )
+                })
+              ) : (
+                <tr>
+                  <td colSpan={4} style={{ textAlign: "center", padding: "1rem" }}>
+                    No attendance records found for the selected filters
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </TableContainer>
       </Card>
-      {isRemarkModalOpen&& <Modal 
-        isOpen={isRemarkModalOpen} 
-        onClose={() => setIsRemarkModalOpen(false)}
-        title="Check Out Remarks"
-      >
-        <Input
-          label="Remarks"
-          value={remark}
-          onChange={(e) => setRemark(e.target.value)}
-          placeholder="Enter reason for check out"
-          textarea
-        />
-        <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-          <Button variant="outline" onClick={() => setIsRemarkModalOpen(false)}>
-            Cancel
-          </Button>
-          <Button onClick={confirmCheckOut}>
-            Confirm Check Out
-          </Button>
-        </div>
-      </Modal>}
+      {isRemarkModalOpen && (
+        <Modal isOpen={isRemarkModalOpen} onClose={() => setIsRemarkModalOpen(false)} title="Check Out Remarks">
+          <Input
+            label="Remarks"
+            value={remark}
+            onChange={(e) => setRemark(e.target.value)}
+            placeholder="Enter reason for check out"
+            textarea
+          />
+          <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
+            <Button variant="outline" onClick={() => setIsRemarkModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={confirmCheckOut}>Confirm Check Out</Button>
+          </div>
+        </Modal>
+      )}
     </Layout>
   )
 }

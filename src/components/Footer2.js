@@ -312,7 +312,7 @@ export default function Footer2() {
 
   const pathsToHideNavbar = [
     'assessment',
-    'login',
+    'wishes',
     'dashboard',
     'employees',
     'attendance-tracking',
@@ -325,7 +325,8 @@ export default function Footer2() {
     'helpdesk',
     "requestdesk",
     "profile",
-    "claims"
+    "claims",
+    "payslip",
   ];
   
   useEffect(() => {

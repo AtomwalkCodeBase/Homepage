@@ -14,6 +14,8 @@ import {
   FaSignOutAlt as FaCheckOut,
   FaQuestion,
   FaTicketAlt,
+  FaFileAlt,
+  FaGift,
 } from "react-icons/fa"
 import { useAuth } from "../context/AuthContext"
 import { theme } from "../styles/Theme"
@@ -249,7 +251,7 @@ const AttendanceButton = styled(ActionButton)`
 `
 
 const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
-  const { currentUser, logout } = useAuth()
+  const { currentUser, logout,profile } = useAuth()
   const [searchExpanded, setSearchExpanded] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [searchResults, setSearchResults] = useState([])
@@ -272,6 +274,9 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
     { path: "/analytics", name: "Analytics", icon: <FaUser /> },
     { path: "/helpdesk", name: "Help Desk", icon: <FaQuestion /> },
     { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
+    { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
+    { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
+    { path: "/attendance-tracking", name: "check in", icon: <FaUser /> },
   ]
 
   const handleSearchClick = () => {
@@ -279,19 +284,56 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
   }
 
   const handleSearchChange = (e) => {
-    const query = e.target.value
+    const query = e.target.value.toLowerCase().trim()
     setSearchQuery(query)
-
-    if (query.trim() === "") {
+  
+    if (query === "") {
       setShowResults(false)
       return
     }
-
-    // Filter menu items based on search query
-    const results = menuItems.filter((item) => item.name.toLowerCase().includes(query.toLowerCase()))
-
+  
+    // Enhanced search with fuzzy matching and keyword mapping
+    const results = menuItems.filter((item) => {
+      const itemName = item.name.toLowerCase()
+      
+      // Exact match
+      if (itemName.includes(query)) return true
+      
+      // Keyword mapping for common terms
+      const keywordMap = {
+        'time': ['timesheet', 'attendance'],
+        'shift': ['shifts'],
+        'leave': ['leave management'],
+        'holiday': ['holidays'],
+        'pay': ['payslip'],
+        'help': ['helpdesk'],
+        'request': ['requestdesk'],
+        'wish': ['wishes'],
+        'employee': ['employees'],
+        'analytics': ['analytics'],
+        'check in': ['attendance'],
+        'check out': ['attendance'],
+        'clock in': ['attendance'],
+        'clock out': ['attendance']
+      }
+      
+      // Check if query matches any keywords
+      for (const [keyword, matches] of Object.entries(keywordMap)) {
+        if (query.includes(keyword)) {
+          return matches.some(match => itemName.includes(match))
+        }
+      }
+      
+      // Fuzzy matching - check if any word in the query partially matches
+      const queryWords = query.split(' ')
+      return queryWords.some(word => 
+        word.length > 2 && // Only check words longer than 2 characters
+        itemName.includes(word)
+      )
+    })
+  
     setSearchResults(results)
-    setShowResults(true)
+    setShowResults(results.length > 0)
   }
 
   const handleResultClick = (path) => {
@@ -362,7 +404,7 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
       </div>
 
       <HeaderActions>
-        {!checkedIn ? (
+        {/* {!checkedIn ? (
           <AttendanceButton onClick={handleCheckIn}>
             <FaSignInAlt />
             <span>Check In</span>
@@ -372,7 +414,7 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
             <FaCheckOut />
             <span>Check Out</span>
           </AttendanceButton>
-        )}
+        )} */}
 
         {/* <ActionButton>
           <FaBell />
@@ -385,8 +427,8 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
         </ActionButton> */}
 
         <UserProfile>
-          <UserAvatar>{currentUser?.name?.charAt(0) || <FaUser />}</UserAvatar>
-          <UserName>{currentUser?.name || "User"}</UserName>
+          <UserAvatar>{profile?.name?.charAt(0) || <FaUser />}</UserAvatar>
+          <UserName>{profile?.name || "User"}</UserName>
         </UserProfile>
 
         <LogoutButton onClick={handleLogout} title="Logout">

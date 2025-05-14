@@ -1,11 +1,10 @@
-"use client"
-
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
 import styled, { keyframes } from "styled-components"
 import { FaUser, FaLock, FaBuilding } from "react-icons/fa"
 import { useAuth } from "../context/AuthContext"
 import { toast } from "react-toastify"
+import { use } from "react"
+import { getCompanyName } from "../services/productServices"
 
 const fadeIn = keyframes`
   from {
@@ -91,7 +90,7 @@ const LoginFormContainer = styled.div`
   padding: 2rem;
   background: ${({ theme }) => theme.colors.background};
   animation: ${fadeIn} 1s ease 0.3s backwards;
-  
+
   @media (max-width: 768px) {
     padding: 1rem;
   }
@@ -104,6 +103,7 @@ const LoginForm = styled.form`
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 80px;
 `
 
 const FormTitle = styled.h2`
@@ -192,16 +192,46 @@ const FormFooter = styled.div`
   }
 `
 
+const FormSelect = styled.select`
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 4px;
+  
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.colors.primary};
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.primaryLight};
+  }
+`
+const Link = styled.a`
+  color: ${({ theme }) => theme.colors.primary};
+  text-decoration: none;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }`
+
 const Login = () => {
   const [formData, setFormData] = useState({
     mobile: "",
     password: "",
     company: "",
   })
+  const [company, setCompany] = useState("")
   const [loading, setLoading] = useState(false)
+  const [companies, setCompanies] = useState([])
+  const [placeholderdatas,setPlaceholderdatas] = useState("Employee ID");
   const { login } = useAuth()
-  const navigate = useNavigate()
-
+  useEffect(() => {
+    const fetchCompanyName = async () => {
+      const company = await getCompanyName()
+      if (company.status === 200) {
+        setCompanies(company.data)
+      }
+    }
+    fetchCompanyName()
+  }, [])
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({
@@ -210,13 +240,20 @@ const Login = () => {
     }))
   }
 
-  const handleSubmit = (e) => {
+  const handleCompanyChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      company: e.target.value,
+    }))
+    localStorage.setItem("dbName", e.target.value.split("_").slice(1).join("_"))
+  }
+
+  const handleSubmit = async(e) => {
     e.preventDefault()
     setLoading(true)
 
     // Simulate API call
-    setTimeout(() => {
-      // In a real app, you would validate credentials with an API
+    setTimeout(async () => {
       if (formData.mobile && formData.password) {
         const userData = {
           id: "1",
@@ -224,17 +261,14 @@ const Login = () => {
           mobile: formData.mobile,
           password: formData.password,
           role: "HR Manager",
-          company: formData.company || "Acme Inc.",
+          company: formData?.company?.split("_").slice(1).join("_") || "Acme Inc.",
         }
-
-        login(userData)
-        toast.success("Login successful!")
-        navigate("/dashboard")
+        await login(userData)
       } else {
         toast.error("Invalid credentials. Please try again.")
       }
       setLoading(false)
-    }, 1500)
+    }, 500)
   }
 
   return (
@@ -263,26 +297,32 @@ const Login = () => {
       <LoginFormContainer>
         <LoginForm onSubmit={handleSubmit}>
           <FormTitle>Login to your account</FormTitle>
-
           <FormGroup>
             <FormLabel htmlFor="company">Company</FormLabel>
             <InputGroup>
               <InputIcon>
                 <FaBuilding />
               </InputIcon>
-              <Input
-                type="text"
+              <FormSelect
                 id="company"
                 name="company"
-                placeholder="Your company name"
                 value={formData.company}
-                onChange={handleChange}
-              />
+                onChange={handleCompanyChange}
+                required
+              >
+                <option value="" disabled>
+                  Select your company
+                </option>
+                {companies.map((company) => (
+                  <option key={company.id} value={company.name}>
+                    {company.ref_cust_name}
+                  </option>
+                ))}
+              </FormSelect>
             </InputGroup>
           </FormGroup>
-
           <FormGroup>
-            <FormLabel htmlFor="mobile">mobile</FormLabel>
+            <FormLabel htmlFor="mobile">{placeholderdatas}</FormLabel>
             <InputGroup>
               <InputIcon>
                 <FaUser />
@@ -291,7 +331,7 @@ const Login = () => {
                 type="text"
                 id="mobile"
                 name="mobile"
-                placeholder="Enter mobile Number"
+                placeholder={"Enter your " + placeholderdatas}
                 value={formData.mobile}
                 onChange={handleChange}
                 required
@@ -300,7 +340,7 @@ const Login = () => {
           </FormGroup>
 
           <FormGroup>
-            <FormLabel htmlFor="password">Password</FormLabel>
+            <FormLabel htmlFor="password">Pin</FormLabel>
             <InputGroup>
               <InputIcon>
                 <FaLock />
@@ -309,7 +349,7 @@ const Login = () => {
                 type="password"
                 id="password"
                 name="password"
-                placeholder=" Enter your pin"
+                placeholder="Enter your pin"
                 value={formData.password}
                 onChange={handleChange}
                 required
@@ -320,10 +360,16 @@ const Login = () => {
           <LoginButton type="submit" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </LoginButton>
+           { placeholderdatas=="Employee ID" ?
 
-          <FormFooter>
-            <a href="#">Forgot password?</a>
+          <FormFooter onClick={() => setPlaceholderdatas("Mobile Number")}>
+            <Link>Login With Mobile Number</Link>
           </FormFooter>
+          :
+          <FormFooter onClick={() => setPlaceholderdatas("Employee ID")}>
+            <Link>Login With Employee ID</Link>
+          </FormFooter>
+          }
         </LoginForm>
       </LoginFormContainer>
     </LoginContainer>

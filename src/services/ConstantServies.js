@@ -1,18 +1,10 @@
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// const getDbName = async () => {
-//   let dbName = await AsyncStorage.getItem('dbName');
-//   return dbName;
-// }
-// const localhost = "https://www.atomwalk.com"
 const localhost = "https://www.atomwalk.com"
-
+const newlocalhost = "https://crm.atomwalk.com"
 const apiURL = "/api";
-const db_name = "TR_012";
-
-// console.log("Db name===",AsyncStorage.getItem('dbName'));
-
+const db_name = localStorage.getItem("dbName") || "TR_012";
 export const endpoint = `${localhost}${apiURL}`;
+export const hrendpoint = `${newlocalhost}/hr_api`;
+export const newhrendpoint = `${newlocalhost}/hr_api`;
 
 export const productListURL = `${endpoint}/products/${db_name}/`;
 export const productDetailURL = id => `${endpoint}/products/${db_name}/${id}/`;
@@ -33,7 +25,7 @@ export const addressDeleteURL = id => `${endpoint}/address/delete/${db_name}/${i
 export const userSignUpURL = `${endpoint}/customer_sign_up/${db_name}/`;
 export const userLoginURL = `${endpoint}/customer_login/${db_name}/`;
 export const loginURL = `${localhost}/rest-auth/login/`;
-export const empLoginURL = `${endpoint}/emp_user_login/${db_name}/`;
+export const empLoginURL = `${newhrendpoint}/emp_user_login/`;
 export const resetPasswordURL = `${endpoint}/reset_password/${db_name}/`;
 export const resetPasswordConfirmURL = `${endpoint}/reset_password_confirm/`;
 export const changePasswordURL = `${endpoint}/change_password/`;
@@ -46,7 +38,7 @@ export const getLeadListURL = `${endpoint}/lead_list/${db_name}/`;
 export const getLeadDataListURL = `${endpoint}/lead_data_list/${db_name}/`;
 export const addTaskURL = `${endpoint}/add_task/${db_name}/`;
 export const profileInfoURL = `${endpoint}/profile_info/${db_name}/`;
-export const profileDtlURL = `${endpoint}/get_employee_list/${db_name}/`;
+export const profileDtlURL = `${newhrendpoint}/get_employee_list/${db_name}/`;
 export const companyInfoURL = `${endpoint}/company_info/${db_name}/`;
 export const getTaskInterestListURL = `${endpoint}/task_interest_list/${db_name}/`;
 export const getProductCategoryListURL = `${endpoint}/product_category_list/${db_name}/`;
@@ -58,22 +50,27 @@ export const getOrderListURL = `${endpoint}/order_list/${db_name}/`;
 export const updateTaskURL = `${endpoint}/update_task/${db_name}/`;
 export const updateLeadStatusURL = `${endpoint}/update_lead_status/${db_name}/`;
 export const getUserListURL = `${endpoint}/user_list/${db_name}/`;
-export const getEmpLeavedata = `${endpoint}/get_employee_leave/${db_name}/`;
-export const addEmpLeave = `${endpoint}/process_employee_leave/${db_name}/`;
-export const addClaim = `${endpoint}/add_claim/${db_name}/`;
-export const processClaim= `${endpoint}/process_claim/${db_name}/`;
-export const getEmpClaimdata = `${endpoint}/get_claim_list/${db_name}/`;
-export const getExpenseItemList = `${endpoint}/expense_item_list/${db_name}/`;
+export const getEmpLeavedata = `${newhrendpoint}/get_employee_leave/${db_name}/`;
+export const addEmpLeave = `${newhrendpoint}/process_employee_leave/${db_name}/`;
+export const addClaim = `${newhrendpoint}/add_claim/${db_name}/`;
+export const processClaim= `${newhrendpoint}/process_claim/${db_name}/`;
+export const getEmpClaimdata = `${newhrendpoint}/get_claim_list/${db_name}/`;
+export const getExpenseItemList = `${newhrendpoint}/expense_item_list/${db_name}/`;
 export const getProjectList = `${endpoint}/project_list/${db_name}/`;
-export const getEmpAttendanceData = `${endpoint}/get_employee_attendance/${db_name}/`;
-export const getEmpHolidayData = `${endpoint}/get_holiday_data/${db_name}/`;
-export const empCheckData = `${endpoint}/process_employee_attendance/${db_name}/`;
+export const getEmpAttendanceData = `${newhrendpoint}/get_employee_attendance/${db_name}/`;
+export const getEmpHolidayData = `${newhrendpoint}/get_holiday_data/${db_name}/`;
+export const empCheckData = `${newhrendpoint}/process_employee_attendance/${db_name}/`;
 export const getClaimApproverList = `${endpoint}/get_claim_approve_list/${db_name}/`;
 export const getfiletotext = `${endpoint}/get_file_to_text/${db_name}/`;
 // export const getAppointeeList = `${endpoint}/products/${db_name}/`;
 export const processAppointee = `${endpoint}/process_employee_job/${db_name}/`;
-export const getEmployeeRequestList = `${endpoint}/get_employee_request/${db_name}/`;
-export const getEmployeeRequestCategory = `${endpoint}/get_request_category/${db_name}/`;
-export const processEmployeeRequest = `${endpoint}/process_employee_request/${db_name}/`;
+export const getEmployeeRequestList = `${newhrendpoint}/get_employee_request/${db_name}/`;
+export const getEmployeeRequestCategory = `${newhrendpoint}/get_request_category/${db_name}/`;
+export const processEmployeeRequest = `${newhrendpoint}/process_employee_request/${db_name}/`;
 export const setuserpin = `${endpoint}/set_user_pin/${db_name}/`;
+export const getCompany = `${endpoint}/get_applicable_site/`;
+export const getEventList = `${hrendpoint}/get_employee_events/${db_name}/`;
+export const getpayslip = `${newhrendpoint}/get_emp_salary_data/${db_name}/`;
+export const processbarthdaywish = `${newhrendpoint}/process_emp_event_response/${db_name}/`;
+export const getResponseList = `${newhrendpoint}/get_event_response/${db_name}/`;
 

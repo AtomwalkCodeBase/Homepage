@@ -81,6 +81,8 @@ import { ThemeProvider } from "./context/ThemeContext"
 import Manual from "./components/Manual";
 import ManualModuleDetails from "./components/ManualModuleDetails";
 import ManualSteps from "./components/ManualSteps";
+import MyPaySlip from "./pages/MyPaySlip";
+import MyWishes from "./pages/MyWishes";
 function App() {
   const [openslide, setOpenslide] = useState(false);
   const url = "https://www.atomwalk.com/rest-auth/login/";
@@ -210,6 +212,8 @@ function App() {
                 <Route path="/helpdesk" element={<HelpDesk />} />
                 <Route path="/requestdesk" element={<RequestDesk />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/payslip" element={<MyPaySlip />} />
+                <Route path="/wishes" element={<MyWishes />} />
               </Route>
     
               {/* Catch All */}

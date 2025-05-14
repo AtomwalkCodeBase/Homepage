@@ -20,7 +20,8 @@ import {
   FaQuestion,
   FaTicketAlt,
   FaUserCircle,
-  FaComments
+  FaComments,
+  FaGift
 } from "react-icons/fa"
 import { useAuth } from "../context/AuthContext"
 
@@ -185,7 +186,7 @@ const LogoutButton = styled.button`
 const Sidebar = ({ onToggle, initialOpen = true }) => {
   const [isOpen, setIsOpen] = useState(initialOpen)
   const location = useLocation()
-  const { currentUser, logout } = useAuth()
+  const { currentUser, logout,profile,companyInfo } = useAuth()
 
   useEffect(() => {
     setIsOpen(initialOpen)
@@ -212,13 +213,15 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
     // { path: "/analytics", name: "Analytics", icon: <FaChartBar /> },
     { path: "/helpdesk", name: "Help Desk", icon: <FaComments/> },
     { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
+    { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
+    { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
     { path: "/profile", name: "My Profile", icon: <FaUserCircle />, section: "Account" },
   ]
 
   return (
     <SidebarContainer isOpen={isOpen}>
       <SidebarHeader isOpen={isOpen}>
-        <Logo isOpen={isOpen}>HRMS</Logo>
+        <Logo isOpen={isOpen}><img src={companyInfo.image} alt="Company Logo" style={{ width: "70px", marginRight: "1rem",borderRadius:"10px" }} />HRMS</Logo>
         <ToggleButton onClick={toggleSidebar}>{isOpen ? <FaTimes /> : <FaBars />}</ToggleButton>
       </SidebarHeader>
 
@@ -235,8 +238,8 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
 
       <SidebarFooter isOpen={isOpen}>
         <UserInfo isOpen={isOpen}>
-          <UserAvatar>{currentUser?.name?.charAt(0) || "U"}</UserAvatar>
-          <UserName>{currentUser?.name || "User"}</UserName>
+          <UserAvatar>{profile?.name?.charAt(0) || "U"}</UserAvatar>
+          <UserName>{profile?.name || "User"}</UserName>
         </UserInfo>
         <LogoutButton onClick={logout} title="Logout">
           <FaSignOutAlt />

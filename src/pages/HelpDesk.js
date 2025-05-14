@@ -9,8 +9,6 @@ import {
   FaPlus,
   FaFilter,
   FaEye,
-  FaEdit,
-  FaTrash,
   FaFileAlt,
   FaBook,
   FaHeadset,
@@ -172,81 +170,163 @@ const CategoryDescription = styled.p`
   font-size: 0.9rem;
 `
 const HelpDesk = () => {
-  const [activeTab, setActiveTab] = useState("tickets");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [allRequests, setAllRequests] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalOpens, setIsModalOpens] = useState(false);
-  const [selectedTicket, setSelectedTicket] = useState(null);
-  const[pageref,setPageRef] = useState(1);
+  const [activeTab, setActiveTab] = useState("tickets")
+  const [searchTerm, setSearchTerm] = useState("")
+  const [allRequests, setAllRequests] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpens, setIsModalOpens] = useState(false)
+  const [selectedTicket, setSelectedTicket] = useState(null)
+  const [pageref, setPageRef] = useState(1)
+  // Add these state variables after the existing state declarations
+  const [categoryFilter, setCategoryFilter] = useState("All Categories")
+  const [statusFilter, setStatusFilter] = useState("All Status")
+  const [priorityFilter, setPriorityFilter] = useState("All Priorities")
+  const [filteredTickets, setFilteredTickets] = useState([])
   const handleSuccess = () => {
-    setIsModalOpens(false);
-    toast.success("Request submitted successfully!");
-    setPageRef(pageref + 1);
-  };
-  const emp_id = localStorage.getItem("empId");
+    setIsModalOpens(false)
+    toast.success("Request submitted successfully!")
+    setPageRef(pageref + 1)
+  }
+  const emp_id = localStorage.getItem("empId")
   useEffect(() => {
-    fetchRequest();
-  }, [pageref]);
+    fetchRequest()
+  }, [pageref])
 
   const fetchRequest = async () => {
     try {
-      const res = await getEmployeeRequest();
-      setAllRequests(res.data);
+      const res = await getEmployeeRequest()
+      setAllRequests(res.data)
     } catch (err) {
-      console.log("Error fetching requests:", err);
+      console.log("Error fetching requests:", err)
     }
-  };
+  }
 
-  const tickets = allRequests.filter(
-    (request) => request?.emp_id == emp_id && request?.request_type === "H"
-  );
+  const tickets = allRequests.filter((request) => request?.emp_id == emp_id && request?.request_type === "H")
 
   const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-  };
+    setSearchTerm(e.target.value)
+  }
 
-  const filteredTickets = tickets.filter(
-    (ticket) =>
-      ticket.request_text.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      ticket.request_sub_type.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Add function to get unique categories
+  const getUniqueCategories = () => {
+    const categories = ["All Categories"]
+    tickets.forEach((ticket) => {
+      if (ticket.request_sub_type && !categories.includes(ticket.request_sub_type)) {
+        categories.push(ticket.request_sub_type)
+      }
+    })
+    return categories
+  }
+
+  // Add function to get unique statuses
+  const getUniqueStatuses = () => {
+    const statuses = ["All Status"]
+    tickets.forEach((ticket) => {
+      let status = ""
+      switch (ticket.request_status) {
+        case "S":
+          status = "Submitted"
+          break
+        case "A":
+          status = "Assigned"
+          break
+        case "X":
+          status = "Rejected"
+          break
+        case "C":
+          status = "Completed"
+          break
+        default:
+          status = ticket.status_display || "Unknown"
+      }
+      if (!statuses.includes(status)) {
+        statuses.push(status)
+      }
+    })
+    return statuses
+  }
+
+  // Replace the existing filteredTickets definition with a useEffect
+  useEffect(() => {
+    let filtered = tickets.filter(
+      (ticket) =>
+        ticket.request_text.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        ticket.request_sub_type.toLowerCase().includes(searchTerm.toLowerCase()),
+    )
+
+    // Apply category filter
+    if (categoryFilter !== "All Categories") {
+      filtered = filtered.filter((ticket) => ticket.request_sub_type === categoryFilter)
+    }
+
+    // Apply status filter
+    if (statusFilter !== "All Status") {
+      filtered = filtered.filter((ticket) => {
+        let status = ""
+        switch (ticket.request_status) {
+          case "S":
+            status = "Submitted"
+            break
+          case "A":
+            status = "Assigned"
+            break
+          case "X":
+            status = "Rejected"
+            break
+          case "C":
+            status = "Completed"
+            break
+          default:
+            status = ticket.status_display || "Unknown"
+        }
+        return status === statusFilter
+      })
+    }
+
+    setFilteredTickets(filtered)
+  }, [tickets, searchTerm, categoryFilter, statusFilter, priorityFilter])
+
+  // Add handleFilter function
+  const handleFilter = () => {
+    // Filtering is already handled by the useEffect
+    toast.info("Filters applied")
+  }
 
   const getStatusInfo = (request) => {
     switch (request.request_status) {
       case "S":
-        return { text: "Submitted", variant: "warning" };
+        return { text: "Submitted", variant: "warning" }
       case "A":
-        return { text: "Assigned", variant: "info" };
+        return { text: "Assigned", variant: "info" }
       case "X":
-        return { text: "Rejected", variant: "error" };
+        return { text: "Rejected", variant: "error" }
       case "C":
-        return { text: "Completed", variant: "success" };
+        return { text: "Completed", variant: "success" }
       default:
-        return { text: request.status_display, variant: "warning" };
+        return { text: request.status_display, variant: "warning" }
     }
-  };
+  }
 
   const getRequestIcon = (subType) => {
     switch (subType) {
       case "Asset Request":
-        return <FaLaptop />;
+        return <FaLaptop />
       case "Document Request":
-        return <FaFileAlt />;
+        return <FaFileAlt />
       default:
-        return <FaTicketAlt />;
+        return <FaTicketAlt />
     }
-  };
+  }
 
   const openModal = (ticket) => {
-    setSelectedTicket(ticket);
-    setIsModalOpen(true);
-  };
+    setSelectedTicket(ticket)
+    setIsModalOpen(true)
+  }
 
   const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedTicket(null);
-  };
+    setIsModalOpen(false)
+    setSelectedTicket(null)
+  }
   const categories = [
     {
       id: 1,
@@ -298,7 +378,7 @@ const HelpDesk = () => {
           <p>Get support and find answers to your questions</p>
         </div>
 
-        <Button onClick={()=>setIsModalOpens(true)} variant="primary">
+        <Button onClick={() => setIsModalOpens(true)} variant="primary">
           <FaPlus /> Create New Ticket
         </Button>
       </HelpDeskHeader>
@@ -330,30 +410,26 @@ const HelpDesk = () => {
         {activeTab === "tickets" && (
           <>
             <FilterContainer>
-              <FilterSelect>
-                <option>All Categories</option>
-                <option>System Access</option>
-                <option>Leave Management</option>
-                <option>Payroll</option>
-                <option>IT Support</option>
-                <option>Benefits</option>
+              <FilterSelect value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
+                {getUniqueCategories().map((category, index) => (
+                  <option key={index}>{category}</option>
+                ))}
               </FilterSelect>
 
-              <FilterSelect>
-                <option>All Status</option>
-                <option>Open</option>
-                <option>In Progress</option>
-                <option>Closed</option>
+              <FilterSelect value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+                {getUniqueStatuses().map((status, index) => (
+                  <option key={index}>{status}</option>
+                ))}
               </FilterSelect>
 
-              <FilterSelect>
+              {/* <FilterSelect value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)}>
                 <option>All Priorities</option>
                 <option>High</option>
                 <option>Medium</option>
                 <option>Low</option>
-              </FilterSelect>
+              </FilterSelect> */}
 
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={handleFilter}>
                 <FaFilter /> Filter
               </Button>
             </FilterContainer>
@@ -371,42 +447,41 @@ const HelpDesk = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredTickets.map((request) => {
-                    const statusInfo = getStatusInfo(request);
-                    return (
-                      <tr key={request.id}>
-                        <td>{request.request_id}</td>
-                        <td>
-                          <div style={{ display: "flex", alignItems: "center" }}>
-                            <span style={{ marginRight: "0.5rem" }}>
-                              {getRequestIcon(request.request_sub_type)}
-                            </span>
-                            {request.request_sub_type}
-                          </div>
-                        </td>
-                        <td>{request.request_text}</td>
-                        <td>{request.remarks || "-"}</td>
-                        <td>{request.created_date}</td>
-                        <td>
-                          <Badge variant={statusInfo.variant}>
-                            {statusInfo.text}
-                          </Badge>
-                        </td>
-                        <td>
-                          <ActionButtons>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              title="View"
-                              onClick={() => openModal(request)}
-                            >
-                              <FaEye />
-                            </Button>
-                          </ActionButtons>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  {filteredTickets.length > 0 ? (
+                    filteredTickets.map((request) => {
+                      const statusInfo = getStatusInfo(request)
+                      return (
+                        <tr key={request.id}>
+                          <td>{request.request_id}</td>
+                          <td>
+                            <div style={{ display: "flex", alignItems: "center" }}>
+                              <span style={{ marginRight: "0.5rem" }}>{getRequestIcon(request.request_sub_type)}</span>
+                              {request.request_sub_type}
+                            </div>
+                          </td>
+                          <td>{request.request_text}</td>
+                          <td>{request.remarks || "-"}</td>
+                          <td>{request.created_date}</td>
+                          <td>
+                            <Badge variant={statusInfo.variant}>{statusInfo.text}</Badge>
+                          </td>
+                          <td>
+                            <ActionButtons>
+                              <Button variant="ghost" size="sm" title="View" onClick={() => openModal(request)}>
+                                <FaEye />
+                              </Button>
+                            </ActionButtons>
+                          </td>
+                        </tr>
+                      )
+                    })
+                  ) : (
+                    <tr>
+                      <td colSpan={7} style={{ textAlign: "center", padding: "1rem" }}>
+                        No tickets found for the selected filters
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </TableContainer>
@@ -442,27 +517,36 @@ const HelpDesk = () => {
       {isModalOpen && (
         <Modal onClose={closeModal}>
           <h2>Ticket Details</h2>
-          <p><strong>Request ID:</strong> {selectedTicket.request_id}</p>
-          <p><strong>Type:</strong> {selectedTicket.request_sub_type}</p>
-          <p><strong>Description:</strong> {selectedTicket.request_text}</p>
-          <p><strong>Remarks:</strong> {selectedTicket.remarks || "-"}</p>
-          <p><strong>Created Date:</strong> {selectedTicket.created_date}</p>
-          <p><strong>Status:</strong> {getStatusInfo(selectedTicket).text}</p>
+          <p>
+            <strong>Request ID:</strong> {selectedTicket.request_id}
+          </p>
+          <p>
+            <strong>Type:</strong> {selectedTicket.request_sub_type}
+          </p>
+          <p>
+            <strong>Description:</strong> {selectedTicket.request_text}
+          </p>
+          <p>
+            <strong>Remarks:</strong> {selectedTicket.remarks || "-"}
+          </p>
+          <p>
+            <strong>Created Date:</strong> {selectedTicket.created_date}
+          </p>
+          <p>
+            <strong>Status:</strong> {getStatusInfo(selectedTicket).text}
+          </p>
           <div style={{ marginTop: "1rem" }}>
-          <Button variant="primary" onClick={closeModal}>Close</Button>
+            <Button variant="primary" onClick={closeModal}>
+              Close
+            </Button>
           </div>
         </Modal>
       )}
-       {isModalOpens && (
-        <RequestModal 
-          call_type="H" 
-          empId={emp_id} 
-          onClose={() => setIsModalOpens(false)}
-          onSuccess={handleSuccess}
-        />
+      {isModalOpens && (
+        <RequestModal call_type="H" empId={emp_id} onClose={() => setIsModalOpens(false)} onSuccess={handleSuccess} />
       )}
     </Layout>
-  );
-};
+  )
+}
 
 export default HelpDesk

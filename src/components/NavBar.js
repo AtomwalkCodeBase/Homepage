@@ -23,7 +23,7 @@ export const NavBar = () => {
   const[opennavbar,setOpennavbar]=useState(true);
   const pathsToHideNavbar = [
     'assessment',
-    'login',
+    'wishes',
     'dashboard',
     'employees',
     'attendance-tracking',
@@ -36,7 +36,8 @@ export const NavBar = () => {
     'helpdesk',
     "requestdesk",
     "profile",
-    "claims"
+    "claims",
+    "payslip"
   ];
  useEffect(() => {
     const checkPath = () => {

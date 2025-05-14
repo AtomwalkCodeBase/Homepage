@@ -5,6 +5,7 @@ import styled from "styled-components"
 import { FaTimes, FaCalendarAlt, FaInfoCircle, FaRegClock } from "react-icons/fa"
 import Button from "../Button"
 import { postEmpLeave } from "../../services/productServices"
+import { toast } from "react-toastify"
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -329,7 +330,7 @@ const StyledButton = styled(Button)`
   }
 `
 
-const LeaveModal = ({ isOpen, onClose }) => {
+const LeaveModal = ({ isOpen, onClose,setRelode,relode }) => {
   const[error, setError] = useState("");
   const [formData, setFormData] = useState({
     leave_type: "",
@@ -368,7 +369,18 @@ const LeaveModal = ({ isOpen, onClose }) => {
 
     postEmpLeave(submissionData)
       .then(() => {
-        window.location.reload();
+        toast.success("Leave application submitted successfully!");
+        setFormData({
+          leave_type: "",
+          from_date: "",
+          to_date: "",
+          remarks: "",
+          contactInfo: "",
+          call_mode: "ADD",
+          emp_id: localStorage.getItem("empNoId")
+        });
+        setRelode(relode+1);
+        onClose();
       })
       .catch((error) => {
         setError(error.response.data.message);

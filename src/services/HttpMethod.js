@@ -17,6 +17,12 @@ export const authAxios = async (url, data) => {
     }
   }).get(url);
 };
+export const authAxiosget = async (url, data) => {
+  return axios.create({
+    baseURL: endpoint,
+    params: data,
+  }).get(url);
+};
 
 export const authAxiosPost = async (url, data) => {
   const token = getToken();

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import blogPostsData from './BlogPostsData'; // Import blog posts data
+import { useBlogs } from './hooks/useBlogs';
 
 // Styled Components
 const MainWrapper = styled.div`
@@ -25,7 +25,7 @@ const PostGrid = styled.div`
   gap: 40px;
   padding: 40px;
   @media (max-width: 768px) {
-    grid-template-columns: 1fr; /* Single column on mobile */
+    grid-template-columns: 1fr;
   }
 `;
 
@@ -79,7 +79,8 @@ const Author = styled.span`
   align-items: center;
 `;
 
-const Date = styled.span`
+// Renamed from Date to StyledDate to avoid shadowing global Date
+const StyledDate = styled.span`
   font-size: 12px;
 `;
 
@@ -128,15 +129,14 @@ const SearchButton = styled.button`
 
 const BlogPosts = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const { blogs, loading, error } = useBlogs();
 
-  // Filter posts based on search query
-  const filteredPosts = blogPostsData.filter(post =>
+  if (loading) return <div className="loading">Loading blogs...</div>;
+  if (error) return <div className="error">Error: {error}</div>;
+
+  const filteredPosts = blogs.filter(post =>
     post.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
-  const latestNavigatin = (id) => {
-    window.location.href = `/BlogDetails/${id}.html`;
-  };
 
   return (
     <MainWrapper>
@@ -154,15 +154,24 @@ const BlogPosts = () => {
       </Header>
       <PostGrid>
         {filteredPosts.length > 0 ? (
-          filteredPosts.map((post) => (
-            <PostCard key={post.id} onClick={() => latestNavigatin(post.id)}>
-              <PostImage src={post.image} alt={post.title} />
+          filteredPosts.map((blog) => (
+            <PostCard
+              key={blog.id}
+              onClick={() => {
+                window.location.href = `/Blog.html/${blog.id}`;
+              }}
+            >
+              <PostImage src={blog.coverImage} alt={blog.title} />
               <PostContent>
-                <PostCategory>{post.category}</PostCategory>
-                <PostTitle>{post.title}</PostTitle>
+                {/* <PostCategory>{blog.category}</PostCategory> */}
+                <PostTitle>{blog.title}</PostTitle>
                 <PostFooter>
-                  <Author>{post.author}</Author>
-                  <Date>{post.date}</Date>
+                  <Author>By Atomwalk team</Author>
+                  <StyledDate> {/* Use StyledDate instead of Date */}
+                    {blog.publishedAt?.seconds
+                      ? new Date(blog.publishedAt.seconds * 1000).toLocaleDateString()
+                      : 'No date'}
+                  </StyledDate>
                 </PostFooter>
               </PostContent>
             </PostCard>

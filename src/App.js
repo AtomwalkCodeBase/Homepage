@@ -33,14 +33,19 @@ import AbotUs from "./components/AbotUs";
 import PricingRoute from "./components/PricingRoute";
 import FormComponent from "./components/FormComponent";
 import ContactSalesPage from "./components/ContactSalesPage";
-import Blog from "./components/Blog";
-import BlogDetails from "./components/BlogDetails";
+import Blog from "./components/Blogs/Blog"
+// import BlogDetails from "./components/BlogDetails";
 import Career from "./components/Career";
 import ThankYouPage from "./components/ThankYouPage";
 import TermsAndConditions from "./components/TermConditions";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import Disclaimer from "./components/Disclaimer";
 import Commonfnadq from "./components/Commonfnadq";
+
+//blog imports
+import BlogDetails from "./components/Blogs/BlogDetails";
+// import BlogForm from "./components/Blogs/BlogForm";
+// import BlogList from "./components/Blogs/BlogList";
 
 // Protected Pages
 import Dashboard from "./pages/Dashboard";
@@ -83,6 +88,7 @@ import ManualModuleDetails from "./components/ManualModuleDetails";
 import ManualSteps from "./components/ManualSteps";
 import MyPaySlip from "./pages/MyPaySlip";
 import MyWishes from "./pages/MyWishes";
+import BlogForm from "./components/Blogs/BlogForm";
 function App() {
   const [openslide, setOpenslide] = useState(false);
   const url = "https://www.atomwalk.com/rest-auth/login/";
@@ -128,8 +134,7 @@ function App() {
               <Route path="/pricing.html" element={<PricingRoute />} />
               <Route path="/demo.html" element={<FormComponent />} />
               <Route path="/seals.html" element={<ContactSalesPage />} />
-              <Route path="/Blog.html" element={<Blog />} />
-              <Route path="/BlogDetails/:blogId.html" element={<BlogDetails />} />
+
               <Route path="/careers.html" element={<Career />} />
               <Route path="/thankyou.html" element={<ThankYouPage />} />
               <Route path="/terms-and-conditions.html" element={<TermsAndConditions />} />
@@ -187,6 +192,12 @@ function App() {
     
               {/* Login Route */}
               <Route path="/login" element={<Login />} />
+
+              {/*Blog route*/}
+              <Route path="/Blog.html" element={<Blog />} />
+              <Route path="/Blog.html/:id" element={<BlogDetails />} />
+              <Route path="/Blog.html/addblog.html" element={<BlogForm/>} />
+              <Route path="/Blog.html/edit/:id?" element={<BlogForm />} />
     
               {/* Protected Routes with GlobalStyles */}
               <Route

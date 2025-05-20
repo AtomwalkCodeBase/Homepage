@@ -1,15 +1,82 @@
+"use client"
+
+import { useContext } from "react"
 import styled, { css } from "styled-components"
+import { useTheme } from "../context/ThemeContext"
 
 const ButtonStyles = css`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: ${(props) => (props.size === "sm" ? "0.5rem 1rem" : props.size === "lg" ? "0.75rem 1.5rem" : "0.625rem 1.25rem")};
-  font-size: ${(props) => (props.size === "sm" ? "0.875rem" : props.size === "lg" ? "1.125rem" : "1rem")};
-  font-weight: 500;
-  border-radius: 4px;
+  padding: ${(props) => {
+    const { uiPreferences, size } = props
+    const layoutDensity = uiPreferences?.layout?.density || "comfortable"
+
+    // Base size from prop
+    let baseSize
+    if (size === "sm") baseSize = "small"
+    else if (size === "lg") baseSize = "large"
+    else baseSize = "medium"
+
+    // Adjust based on layout density
+    if (layoutDensity === "compact") {
+      if (baseSize === "small") return "0.4rem 0.8rem"
+      if (baseSize === "large") return "0.6rem 1.2rem"
+      return "0.5rem 1rem" // medium
+    } else if (layoutDensity === "spacious") {
+      if (baseSize === "small") return "0.6rem 1.2rem"
+      if (baseSize === "large") return "0.9rem 1.8rem"
+      return "0.75rem 1.5rem" // medium
+    } else {
+      // comfortable (default)
+      if (baseSize === "small") return "0.5rem 1rem"
+      if (baseSize === "large") return "0.75rem 1.5rem"
+      return "0.625rem 1.25rem" // medium
+    }
+  }};
+  
+  font-size: ${(props) => {
+    const { uiPreferences, size } = props
+    const fontSize = uiPreferences?.typography?.fontSize || "medium"
+
+    // Base size from prop
+    let baseSize
+    if (size === "sm") baseSize = 0.875
+    else if (size === "lg") baseSize = 1.125
+    else baseSize = 1
+
+    // Adjust based on typography preference
+    if (fontSize === "small") return `${baseSize * 0.9}rem`
+    if (fontSize === "large") return `${baseSize * 1.1}rem`
+    return `${baseSize}rem` // medium (default)
+  }};
+  
+  font-weight: ${(props) => {
+    const { uiPreferences } = props
+    const bodyWeight = uiPreferences?.typography?.bodyWeight || "regular"
+    if (bodyWeight === "light") return "400" // Still use 400 as minimum for buttons
+    if (bodyWeight === "medium") return "500"
+    return "500" // default for buttons
+  }};
+  
+  font-family: ${(props) => {
+    const { uiPreferences } = props
+    const fontFamily = uiPreferences?.typography?.fontFamily || "Poppins"
+    return `${fontFamily}, sans-serif`
+  }};
+  
+  border-radius: ${(props) => {
+    const { uiPreferences } = props
+    const buttonStyle = uiPreferences?.components?.buttonStyle || "default"
+    if (buttonStyle === "square") return "0"
+    if (buttonStyle === "pill") return "9999px"
+    return "4px" // default
+  }};
+  
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: ${(props) => `
+    all ${props.theme.transitions.fast}
+  `};
   border: none;
   outline: none;
   
@@ -65,8 +132,8 @@ const ButtonStyles = css`
     }
   `}
    ${(props) =>
-    props.variant === "outlines" &&
-    `
+     props.variant === "outlines" &&
+     `
     background: transparent;
     color: ${props.theme.colors.error};
     border: 1px solid ${props.theme.colors.primary};
@@ -102,7 +169,28 @@ const ButtonStyles = css`
   
   svg {
     margin-right: ${(props) => (props.iconOnly ? "0" : "0.5rem")};
+    font-size: ${(props) => {
+      const { uiPreferences } = props
+      const iconSize = uiPreferences?.components?.iconSize || "medium"
+      if (iconSize === "small") return "0.9em"
+      if (iconSize === "large") return "1.3em"
+      return "1.1em" // medium (default)
+    }};
   }
+  
+  ${(props) => {
+    const { uiPreferences } = props
+    const animations = uiPreferences?.components?.animations !== false
+    if (!animations) {
+      return `
+        transition: none;
+        &:hover, &:active {
+          transform: none;
+        }
+      `
+    }
+    return ""
+  }}
 `
 
 const StyledButton = styled.button`
@@ -123,20 +211,23 @@ const Button = ({
   as = "button",
   ...props
 }) => {
-  if (as === "a") {
-    return (
-      <StyledLink variant={variant} size={size} fullWidth={fullWidth} iconOnly={iconOnly} {...props}>
-        {children}
-      </StyledLink>
-    )
+  const { theme, uiPreferences } = useTheme();
+
+  const buttonProps = {
+    variant,
+    size,
+    fullWidth,
+    iconOnly,
+    theme,
+    uiPreferences,
+    ...props,
   }
 
-  return (
-    <StyledButton variant={variant} size={size} fullWidth={fullWidth} iconOnly={iconOnly} {...props}>
-      {children}
-    </StyledButton>
-  )
+  if (as === "a") {
+    return <StyledLink {...buttonProps}>{children}</StyledLink>
+  }
+
+  return <StyledButton {...buttonProps}>{children}</StyledButton>
 }
 
 export default Button
-

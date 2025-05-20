@@ -50,11 +50,11 @@ export const AuthProvider = ({ children }) => {
       const payload = isMobileNumber
         ? {
             mobile_number: userData.mobile,
-            pin: parseInt(userData.password, 10),
+            pin: userData.password,
           }
         : {
             emp_id: userData.mobile, // Using the same field but as emp_id
-            pin: parseInt(userData.password, 10),
+            pin: userData.password,
           };
   
       console.log('Sending payload:', payload);

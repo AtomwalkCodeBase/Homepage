@@ -21,8 +21,24 @@ import {
   FaMoon,
   FaSun,
   FaWater,
+  FaFillDrip,
+  FaPuzzlePiece,
+  FaFont,
+  FaColumns,
+  FaUserCog,
+  FaPaintBrush,
+  FaUndo,
+  FaSquare,
+  FaBars,
+  FaRulerHorizontal,
+  FaTextWidth,
+  FaTextHeight,
+  FaToggleOn,
+  FaStar,
+  FaSquareFull,
+  FaIcons,
+  FaSortAlphaDown,
 } from "react-icons/fa"
-import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
 import Badge from "../components/Badge"
@@ -30,18 +46,19 @@ import { useTheme } from "../context/ThemeContext"
 import { toast } from "react-toastify"
 import { getEmployeeInfo } from "../services/authServices"
 import { setuserpinview } from "../services/productServices"
+import Layout from "../components/Layout"
 
 const PageHeader = styled.div`
   background: linear-gradient(120deg, ${({ theme }) => theme.colors.primary} 0%, ${({ theme }) => theme.colors.secondary} 100%);
-  border-radius: 16px;
-  padding: 2rem;
-  margin-bottom: 2rem;
+  border-radius: ${({ theme }) => theme.borderRadius?.lg || "16px"};
+  padding: ${({ theme }) => theme.spacing?.lg || "2rem"};
+  margin-bottom: ${({ theme }) => theme.spacing?.lg || "2rem"};
   color: white;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   
   h1 {
     margin: 0;
-    font-size: 2rem;
+    font-size: ${({ theme }) => theme.fontSizes?.["2xl"] || "2rem"};
     font-weight: 700;
     color: white;
   }
@@ -55,7 +72,7 @@ const PageHeader = styled.div`
 const ProfileContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr;
-  gap: 2rem;
+  gap: ${({ theme }) => theme.spacing?.lg || "2rem"};
   
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
@@ -65,18 +82,18 @@ const ProfileContainer = styled.div`
 const ProfileSidebar = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: ${({ theme }) => theme.spacing?.lg || "2rem"};
 `
 
 const StyledCard = styled(Card)`
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-radius: ${({ theme }) => theme.borderRadius?.lg || "16px"};
+  box-shadow: ${({ theme }) => theme.shadows?.lg || "0 8px 24px rgba(0, 0, 0, 0.08)"};
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: ${({ theme }) => theme.transitions?.normal || "transform 0.3s ease, box-shadow 0.3s ease"};
   
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    transform: ${({ theme }) => (theme.cardStyle?.animation ? "translateY(-5px)" : "none")};
+    box-shadow: ${({ theme }) => (theme.cardStyle?.animation ? "0 12px 30px rgba(0, 0, 0, 0.12)" : theme.shadows?.lg || "0 8px 24px rgba(0, 0, 0, 0.08)")};
   }
 `
 
@@ -84,7 +101,7 @@ const ProfileImage = styled.div`
   position: relative;
   width: 100%;
   padding-bottom: 100%;
-  border-radius: 16px;
+  border-radius: ${({ theme }) => theme.borderRadius?.lg || "16px"};
   overflow: hidden;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
@@ -107,7 +124,7 @@ const ProfileImageOverlay = styled.div`
   right: 0;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.2));
   color: white;
-  padding: 1rem;
+  padding: ${({ theme }) => theme.spacing?.md || "1rem"};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -128,12 +145,12 @@ const ProfileImageOverlay = styled.div`
 const ProfileInfo = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0 1rem 1rem;
+  padding: 0 ${({ theme }) => theme.spacing?.md || "1rem"} ${({ theme }) => theme.spacing?.md || "1rem"};
 `
 
 const ProfileName = styled.h2`
   margin: 0;
-  font-size: 1.75rem;
+  font-size: ${({ theme }) => theme.fontSizes?.xl || "1.75rem"};
   font-weight: 700;
   color: ${({ theme }) => theme.colors.text};
   text-align: center;
@@ -157,7 +174,7 @@ const BadgesContainer = styled.div`
 
 const StyledBadge = styled(Badge)`
   padding: 0.5rem 1rem;
-  border-radius: 20px;
+  border-radius: ${({ theme }) => theme.borderRadius?.full || "20px"};
   font-weight: 600;
   font-size: 0.85rem;
   
@@ -177,7 +194,7 @@ const StyledBadge = styled(Badge)`
 const ProfileDetail = styled.div`
   display: flex;
   align-items: center;
-  padding: 0.8rem 0;
+  padding: ${({ theme }) => theme.spacing?.sm || "0.8rem"} 0;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   
   &:last-child {
@@ -186,9 +203,9 @@ const ProfileDetail = styled.div`
   
   svg {
     color: ${({ theme }) => theme.colors.primary};
-    margin-right: 1rem;
+    margin-right: ${({ theme }) => theme.spacing?.md || "1rem"};
     min-width: 1.2rem;
-    font-size: 1.2rem;
+    font-size: ${({ theme }) => theme.icons?.size || "1.2rem"};
   }
   
   span {
@@ -200,12 +217,12 @@ const ProfileDetail = styled.div`
 const ProfileContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: ${({ theme }) => theme.spacing?.lg || "2rem"};
 `
 
 const SectionTitle = styled.h3`
-  margin: 0 0 1.5rem 0;
-  font-size: 1.4rem;
+  margin: 0 0 ${({ theme }) => theme.spacing?.lg || "1.5rem"} 0;
+  font-size: ${({ theme }) => theme.fontSizes?.lg || "1.4rem"};
   color: ${({ theme }) => theme.colors.text};
   padding-bottom: 0.75rem;
   border-bottom: 2px solid ${({ theme }) => theme.colors.border};
@@ -225,20 +242,20 @@ const SectionTitle = styled.h3`
 const DetailGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
+  gap: ${({ theme }) => theme.spacing?.lg || "1.5rem"};
 `
 
 const DetailCard = styled.div`
   background: ${({ theme }) => theme.colors.card};
-  border-radius: 12px;
-  padding: 1.25rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: ${({ theme }) => theme.borderRadius?.md || "12px"};
+  padding: ${({ theme }) => theme.spacing?.md || "1.25rem"};
+  box-shadow: ${({ theme }) => theme.shadows?.sm || "0 4px 12px rgba(0, 0, 0, 0.05)"};
+  transition: ${({ theme }) => theme.transitions?.normal || "transform 0.3s ease, box-shadow 0.3s ease"};
   border-top: 4px solid ${(props) => props.color || props.theme.colors.primary};
   
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transform: ${({ theme }) => (theme.cardStyle?.animation ? "translateY(-3px)" : "none")};
+    box-shadow: ${({ theme }) => (theme.cardStyle?.animation ? "0 8px 16px rgba(0, 0, 0, 0.1)" : theme.shadows?.sm || "0 4px 12px rgba(0, 0, 0, 0.05)")};
   }
 `
 
@@ -262,27 +279,27 @@ const DetailValue = styled.div`
 `
 
 const PinResetSection = styled.div`
-  padding: 1.5rem;
+  padding: ${({ theme }) => theme.spacing?.lg || "1.5rem"};
   background: linear-gradient(to right, ${({ theme }) => theme.colors.backgroundAlt}, ${({ theme }) => theme.colors.background});
-  border-radius: 12px;
+  border-radius: ${({ theme }) => theme.borderRadius?.md || "12px"};
   box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
 `
 
 const PinInputGroup = styled.div`
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: ${({ theme }) => theme.spacing?.md || "1rem"};
+  margin-bottom: ${({ theme }) => theme.spacing?.lg || "1.5rem"};
   
   @media (max-width: 768px) {
     flex-direction: column;
-    gap: 1rem;
+    gap: ${({ theme }) => theme.spacing?.md || "1rem"};
   }
 `
 
 const PinInput = styled.input`
   padding: 0.9rem 1rem;
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.borderRadius?.sm || "8px"};
   flex: 1;
   font-size: 1rem;
   letter-spacing: 0.1em;
@@ -303,9 +320,9 @@ const PinInput = styled.input`
 `
 
 const AlertBox = styled.div`
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
+  padding: ${({ theme }) => theme.spacing?.md || "1rem"};
+  border-radius: ${({ theme }) => theme.borderRadius?.sm || "8px"};
+  margin-bottom: ${({ theme }) => theme.spacing?.lg || "1.5rem"};
   display: flex;
   align-items: center;
   
@@ -329,7 +346,7 @@ const AlertBox = styled.div`
 
 const ButtonGroup = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: ${({ theme }) => theme.spacing?.md || "1rem"};
   
   @media (max-width: 768px) {
     flex-direction: column;
@@ -339,9 +356,9 @@ const ButtonGroup = styled.div`
 
 const StyledButton = styled(Button)`
   padding: 0.75rem 1.5rem;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.buttons?.borderRadius || "8px"};
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: ${({ theme }) => theme.transitions?.normal || "all 0.3s ease"};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -354,11 +371,11 @@ const StyledButton = styled(Button)`
     background: linear-gradient(to right, ${({ theme }) => theme.colors.primary}, ${({ theme }) => theme.colors.secondary});
     border: none;
     color: white;
-    box-shadow: 0 4px 10px ${({ theme }) => theme.colors.shadow};
+    box-shadow: ${({ theme }) => (theme.buttons?.shadow ? "0 4px 10px " + theme.colors.shadow : "none")};
     
     &:hover {
-      box-shadow: 0 6px 15px ${({ theme }) => theme.colors.shadow};
-      transform: translateY(-2px);
+      box-shadow: ${({ theme }) => (theme.buttons?.shadow && theme.buttons?.animation ? "0 6px 15px " + theme.colors.shadow : theme.buttons?.shadow ? "0 4px 10px " + theme.colors.shadow : "none")};
+      transform: ${({ theme }) => (theme.buttons?.animation ? "translateY(-2px)" : "none")};
     }
   }
   
@@ -369,7 +386,7 @@ const StyledButton = styled(Button)`
     
     &:hover {
       background: ${({ theme }) => theme.colors.primaryLight};
-      transform: translateY(-2px);
+      transform: ${({ theme }) => (theme.buttons?.animation ? "translateY(-2px)" : "none")};
     }
   }
   
@@ -379,20 +396,20 @@ const StyledButton = styled(Button)`
     color: white;
     
     &:hover {
-      box-shadow: 0 6px 15px rgba(255, 75, 43, 0.4);
-      transform: translateY(-2px);
+      box-shadow: ${({ theme }) => (theme.buttons?.shadow && theme.buttons?.animation ? "0 6px 15px rgba(255, 75, 43, 0.4)" : "none")};
+      transform: ${({ theme }) => (theme.buttons?.animation ? "translateY(-2px)" : "none")};
     }
   }
 `
 
 const TabContainer = styled.div`
-  margin-bottom: 2rem;
+  margin-bottom: ${({ theme }) => theme.spacing?.lg || "2rem"};
 `
 
 const TabGroup = styled.div`
   display: flex;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  margin-bottom: 2rem;
+  margin-bottom: ${({ theme }) => theme.spacing?.lg || "2rem"};
   overflow-x: auto;
   
   &::-webkit-scrollbar {
@@ -402,7 +419,7 @@ const TabGroup = styled.div`
 `
 
 const TabButton = styled.button`
-  padding: 1rem 1.5rem;
+  padding: ${({ theme }) => theme.spacing?.md || "1rem"} ${({ theme }) => theme.spacing?.lg || "1.5rem"};
   background: transparent;
   border: none;
   border-bottom: 3px solid ${(props) => (props.active ? props.theme.colors.primary : "transparent")};
@@ -424,8 +441,8 @@ const TabButton = styled.button`
 
 const StatCard = styled.div`
   background: linear-gradient(135deg, ${(props) => props.bgStart || props.theme.colors.primary}, ${(props) => props.bgEnd || props.theme.colors.secondary});
-  border-radius: 12px;
-  padding: 1.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius?.md || "12px"};
+  padding: ${({ theme }) => theme.spacing?.lg || "1.5rem"};
   color: white;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -436,13 +453,13 @@ const StatCard = styled.div`
 `
 
 const StatValue = styled.div`
-  font-size: 2.5rem;
+  font-size: ${({ theme }) => theme.fontSizes?.["4xl"] || "2.5rem"};
   font-weight: 700;
   margin-bottom: 0.5rem;
 `
 
 const StatLabel = styled.div`
-  font-size: 1rem;
+  font-size: ${({ theme }) => theme.fontSizes?.md || "1rem"};
   opacity: 0.9;
   font-weight: 500;
 `
@@ -459,22 +476,22 @@ const StatIcon = styled.div`
 const ThemeGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  gap: ${({ theme }) => theme.spacing?.lg || "1.5rem"};
+  margin-bottom: ${({ theme }) => theme.spacing?.lg || "1.5rem"};
 `
 
 const ThemeCard = styled.div`
   background: ${({ theme }) => theme.colors.card};
-  border-radius: 12px;
+  border-radius: ${({ theme }) => theme.borderRadius?.md || "12px"};
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  box-shadow: ${({ theme }) => theme.shadows?.sm || "0 4px 12px rgba(0, 0, 0, 0.1)"};
+  transition: ${({ theme }) => theme.transitions?.normal || "all 0.3s ease"};
   cursor: pointer;
   border: 2px solid ${(props) => (props.isActive ? props.theme.colors.primary : "transparent")};
   
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transform: ${({ theme }) => (theme.cardStyle?.animation ? "translateY(-5px)" : "none")};
+    box-shadow: ${({ theme }) => (theme.cardStyle?.animation ? "0 8px 20px rgba(0, 0, 0, 0.15)" : theme.shadows?.sm || "0 4px 12px rgba(0, 0, 0, 0.1)")};
   }
 `
 
@@ -508,7 +525,7 @@ const ThemePreview = styled.div`
 `
 
 const ThemeInfo = styled.div`
-  padding: 1rem;
+  padding: ${({ theme }) => theme.spacing?.md || "1rem"};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -539,6 +556,673 @@ const ThemeIcon = styled.div`
   color: ${(props) => props.color || props.theme.colors.primary};
 `
 
+const ColorPickerCard = styled.div`
+  background: ${({ theme }) => theme.colors.card};
+  border-radius: ${({ theme }) => theme.borderRadius?.md || "12px"};
+  padding: ${({ theme }) => theme.spacing?.md || "1.25rem"};
+  box-shadow: ${({ theme }) => theme.shadows?.sm || "0 4px 12px rgba(0, 0, 0, 0.05)"};
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+`
+
+const ColorPickerLabel = styled.div`
+  font-size: 0.9rem;
+  color: ${({ theme }) => theme.colors.textLight};
+  display: flex;
+  align-items: center;
+  
+  svg {
+    margin-right: 0.5rem;
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`
+
+const ColorPickerInput = styled.input`
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-radius: ${({ theme }) => theme.borderRadius?.sm || "8px"};
+  cursor: pointer;
+  
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+  
+  &::-webkit-color-swatch {
+    border: none;
+    border-radius: ${({ theme }) => theme.borderRadius?.sm || "8px"};
+  }
+`
+
+const ColorPickerValue = styled.div`
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: ${({ theme }) => theme.colors.textLight};
+  text-align: center;
+`
+
+const PreviewSection = styled.div`
+  margin-top: ${({ theme }) => theme.spacing?.lg || "2rem"};
+`
+
+const PreviewContainer = styled.div`
+  max-width: 600px;
+  margin: 0 auto;
+`
+
+const PreviewCard = styled.div`
+  background: ${({ theme }) => theme.colors.card};
+  border-radius: ${({ theme }) => theme.borderRadius?.lg || "12px"};
+  box-shadow: ${({ theme }) => theme.shadows?.md || "0 4px 12px rgba(0, 0, 0, 0.1)"};
+  overflow: hidden;
+  
+  &.component-preview-card {
+    border-radius: ${({ theme }) =>
+      theme.uiPreferences?.cardStyle?.borderRadius === "square"
+        ? "0"
+        : theme.uiPreferences?.cardStyle?.borderRadius === "rounded"
+          ? "16px"
+          : "8px"};
+    box-shadow: ${({ theme }) =>
+      theme.uiPreferences?.cardStyle?.shadow === "none"
+        ? "none"
+        : theme.uiPreferences?.cardStyle?.shadow === "heavy"
+          ? "0 15px 25px rgba(0, 0, 0, 0.15)"
+          : "0 4px 12px rgba(0, 0, 0, 0.1)"};
+    transition: ${({ theme }) =>
+      theme.uiPreferences?.cardStyle?.animation ? "transform 0.3s ease, box-shadow 0.3s ease" : "none"};
+    
+    &:hover {
+      transform: ${({ theme }) => (theme.uiPreferences?.cardStyle?.animation ? "translateY(-5px)" : "none")};
+      box-shadow: ${({ theme }) =>
+        theme.uiPreferences?.cardStyle?.animation && theme.uiPreferences?.cardStyle?.shadow !== "none"
+          ? "0 20px 30px rgba(0, 0, 0, 0.15)"
+          : theme.uiPreferences?.cardStyle?.shadow === "none"
+            ? "none"
+            : theme.uiPreferences?.cardStyle?.shadow === "heavy"
+              ? "0 15px 25px rgba(0, 0, 0, 0.15)"
+              : "0 4px 12px rgba(0, 0, 0, 0.1)"};
+    }
+  }
+`
+
+const PreviewCardHeader = styled.div`
+  padding: ${({ theme }) => theme.spacing?.md || "1.25rem"};
+  background: linear-gradient(to right, ${({ theme }) => theme.colors.primary}, ${({ theme }) => theme.colors.secondary});
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+`
+
+const PreviewCardContent = styled.div`
+  padding: ${({ theme }) => theme.spacing?.md || "1.25rem"};
+  color: ${({ theme }) => theme.colors.text};
+`
+
+const PreviewButton = styled.button`
+  padding: 0.75rem 1.25rem;
+  margin-right: 10px;
+  border: none;
+  border-radius: ${({ theme }) =>
+    theme.uiPreferences?.buttonStyle?.borderRadius === "0"
+      ? "0"
+      : theme.uiPreferences?.buttonStyle?.borderRadius === "9999px"
+        ? "9999px"
+        : "8px"};
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: ${({ theme }) => (theme.uiPreferences?.buttonStyle?.animation ? "all 0.3s ease" : "none")};
+  box-shadow: ${({ theme }) => (theme.uiPreferences?.buttonStyle?.shadow ? "0 4px 6px rgba(0, 0, 0, 0.1)" : "none")};
+  
+  &:hover {
+    transform: ${({ theme }) => (theme.uiPreferences?.buttonStyle?.animation ? "translateY(-2px)" : "none")};
+    box-shadow: ${({ theme }) =>
+      theme.uiPreferences?.buttonStyle?.shadow && theme.uiPreferences?.buttonStyle?.animation
+        ? "0 6px 8px rgba(0, 0, 0, 0.15)"
+        : theme.uiPreferences?.buttonStyle?.shadow
+          ? "0 4px 6px rgba(0, 0, 0, 0.1)"
+          : "none"};
+  }
+  
+  ${(props) =>
+    props.primary &&
+    `
+    background: linear-gradient(to right, ${props.theme.colors.primary}, ${props.theme.colors.secondary});
+    color: white;
+  `}
+  
+  ${(props) =>
+    props.secondary &&
+    `
+    background: ${props.theme.colors.card};
+    color: ${props.theme.colors.primary};
+    border: 2px solid ${props.theme.colors.primary};
+  `}
+`
+
+const ComponentSection = styled.div`
+  margin-bottom: 2rem;
+`
+
+const ComponentSectionTitle = styled.h4`
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  margin: 1.5rem 0 1rem;
+  color: ${({ theme }) => theme.colors.text};
+  
+  svg {
+    margin-right: 0.5rem;
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`
+
+const OptionGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+`
+
+const OptionCard = styled.div`
+  background: ${({ theme }) => theme.colors.card};
+  border-radius: 12px;
+  padding: 0.75rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  border: 2px solid ${(props) => (props.isActive ? props.theme.colors.primary : "transparent")};
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  }
+`
+
+const OptionCardPreview = styled.div`
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+  border-radius: 8px;
+  overflow: hidden;
+  
+  .square-preview {
+    width: 60px;
+    height: 60px;
+    background: ${({ theme }) => theme.colors.card};
+    border-radius: 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .rounded-preview {
+    width: 60px;
+    height: 60px;
+    background: ${({ theme }) => theme.colors.card};
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .default-preview {
+    width: 60px;
+    height: 60px;
+    background: ${({ theme }) => theme.colors.card};
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .no-shadow-preview {
+    width: 60px;
+    height: 60px;
+    background: ${({ theme }) => theme.colors.card};
+    border-radius: 8px;
+    border: 1px solid ${({ theme }) => theme.colors.border};
+  }
+  
+  .medium-shadow-preview {
+    width: 60px;
+    height: 60px;
+    background: ${({ theme }) => theme.colors.card};
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .heavy-shadow-preview {
+    width: 60px;
+    height: 60px;
+    background: ${({ theme }) => theme.colors.card};
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .square-button-preview {
+    padding: 0.5rem 1rem;
+    background: linear-gradient(to right, ${({ theme }) => theme.colors.primary}, ${({ theme }) => theme.colors.secondary});
+    color: white;
+    font-weight: 600;
+    border-radius: 0;
+  }
+  
+  .default-button-preview {
+    padding: 0.5rem 1rem;
+    background: linear-gradient(to right, ${({ theme }) => theme.colors.primary}, ${({ theme }) => theme.colors.secondary});
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+  }
+  
+  .pill-button-preview {
+    padding: 0.5rem 1rem;
+    background: linear-gradient(to right, ${({ theme }) => theme.colors.primary}, ${({ theme }) => theme.colors.secondary});
+    color: white;
+    font-weight: 600;
+    border-radius: 9999px;
+  }
+  
+  .small-icon-preview {
+    font-size: 1.5rem;
+    color: ${({ theme }) => theme.colors.primary};
+  }
+  
+  .medium-icon-preview {
+    font-size: 2rem;
+    color: ${({ theme }) => theme.colors.primary};
+  }
+  
+  .large-icon-preview {
+    font-size: 2.5rem;
+    color: ${({ theme }) => theme.colors.primary};
+  }
+  
+  .animation-on-preview {
+    width: 60px;
+    height: 60px;
+    background: ${({ theme }) => theme.colors.card};
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      animation: shimmer 1.5s infinite;
+    }
+    
+    @keyframes shimmer {
+      100% {
+        left: 100%;
+      }
+    }
+  }
+  
+  .animation-off-preview {
+    width: 60px;
+    height: 60px;
+    background: ${({ theme }) => theme.colors.card};
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .small-font-preview {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.text};
+  }
+  
+  .medium-font-preview {
+    font-size: 2rem;
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.text};
+  }
+  
+  .large-font-preview {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.text};
+  }
+  
+  .light-heading-preview {
+    font-size: 2rem;
+    font-weight: 400;
+    color: ${({ theme }) => theme.colors.text};
+  }
+  
+  .medium-heading-preview {
+    font-size: 2rem;
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.text};
+  }
+  
+  .light-body-preview {
+    font-size: 1rem;
+    font-weight: 300;
+    color: ${({ theme }) => theme.colors.text};
+  }
+  
+  .regular-body-preview {
+    font-size: 1rem;
+    font-weight: 400;
+    color: ${({ theme }) => theme.colors.text};
+  }
+  
+  .medium-body-preview {
+    font-size: 1rem;
+    font-weight: 500;
+    color: ${({ theme }) => theme.colors.text};
+  }
+   .Centra-preview {
+    font-family: 'Centra', sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.text};
+  }
+  .poppins-preview {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.text};
+  }
+  
+  .roboto-preview {
+    font-family: 'Roboto', sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.text};
+  }
+  
+  .opensans-preview {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.text};
+  }
+  
+  .compact-preview {
+    width: 60px;
+    height: 60px;
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    
+    .density-line {
+      width: 80%;
+      height: 8px;
+      background: ${({ theme }) => theme.colors.card};
+      border-radius: 4px;
+    }
+  }
+  
+  .comfortable-preview {
+    width: 60px;
+    height: 60px;
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    
+    .density-line {
+      width: 80%;
+      height: 8px;
+      background: ${({ theme }) => theme.colors.card};
+      border-radius: 4px;
+    }
+  }
+  
+  .spacious-preview {
+    width: 60px;
+    height: 60px;
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    
+    .density-line {
+      width: 80%;
+      height: 8px;
+      background: ${({ theme }) => theme.colors.card};
+      border-radius: 4px;
+    }
+  }
+  
+  .narrow-container-preview {
+    width: 40px;
+    height: 60px;
+    background: ${({ theme }) => theme.colors.card};
+    border-radius: 8px;
+    margin: 0 auto;
+  }
+  
+  .standard-container-preview {
+    width: 50px;
+    height: 60px;
+    background: ${({ theme }) => theme.colors.card};
+    border-radius: 8px;
+    margin: 0 auto;
+  }
+  
+  .wide-container-preview {
+    width: 60px;
+    height: 60px;
+    background: ${({ theme }) => theme.colors.card};
+    border-radius: 8px;
+    margin: 0 auto;
+  }
+  
+  .compact-sidebar-preview {
+    width: 20px;
+    height: 60px;
+    background: ${({ theme }) => theme.colors.primary};
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    gap: 8px;
+    
+    .sidebar-icon {
+      width: 12px;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+    }
+  }
+  
+  .standard-sidebar-preview {
+    width: 40px;
+    height: 60px;
+    background: ${({ theme }) => theme.colors.primary};
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    gap: 8px;
+    
+    .sidebar-item {
+      width: 30px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 4px;
+    }
+  }
+  
+  .floating-sidebar-preview {
+    width: 40px;
+    height: 60px;
+    background: ${({ theme }) => theme.colors.card};
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    
+    .sidebar-item {
+      width: 30px;
+      height: 8px;
+      background: ${({ theme }) => theme.colors.primary};
+      border-radius: 4px;
+    }
+  }
+`
+
+const OptionCardLabel = styled.div`
+  font-size: 0.85rem;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.text};
+  font-weight: 500;
+`
+
+const LayoutPreview = styled.div`
+  display: flex;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 8px;
+
+  .layout-sidebar {
+    height: 100%;
+
+    &.compact {
+      width: 60px;
+      background: ${({ theme }) => theme.colors.primary};
+      padding: 1rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+
+      .sidebar-item {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.2);
+
+        &.active {
+          background: rgba(255, 255, 255, 0.8);
+        }
+      }
+    }
+
+    &.standard {
+      width: 200px;
+      background: ${({ theme }) => theme.colors.primary};
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      .sidebar-item {
+        height: 40px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.2);
+
+        &.active {
+          background: rgba(255, 255, 255, 0.8);
+        }
+      }
+    }
+
+    &.floating {
+      width: 200px;
+      background: ${({ theme }) => theme.colors.background};
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      .sidebar-item {
+        height: 40px;
+        border-radius: 8px;
+        background: ${({ theme }) => theme.colors.backgroundAlt};
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+        &.active {
+          background: ${({ theme }) => theme.colors.primary};
+        }
+      }
+    }
+  }
+
+  .layout-content {
+    flex: 1;
+    background: ${({ theme }) => theme.colors.background};
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto;
+
+    .content-header {
+      height: 40px;
+      border-radius: 8px;
+      background: ${({ theme }) => theme.colors.card};
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .content-card {
+      height: 100px;
+      border-radius: 8px;
+      background: ${({ theme }) => theme.colors.card};
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    &.narrow {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    &.standard {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    &.wide {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    &.compact {
+      gap: 0.5rem;
+
+      .content-card {
+        height: 80px;
+      }
+    }
+
+    &.comfortable {
+      gap: 1rem;
+    }
+
+    &.spacious {
+      gap: 1.5rem;
+
+      .content-card {
+        height: 120px;
+      }
+    }
+  }
+`
+
 const Profile = () => {
   const [isEditingPin, setIsEditingPin] = useState(false)
   const [currentPin, setCurrentPin] = useState("")
@@ -548,20 +1232,31 @@ const Profile = () => {
   const [pinSuccess, setPinSuccess] = useState("")
   const [activeTab, setActiveTab] = useState("personal")
   const [profileData, setProfileData] = useState({})
-  const { currentTheme, changeTheme, themes } = useTheme()
+  const [activeThemeTab, setActiveThemeTab] = useState("presets")
+  const {
+    theme,
+    currentTheme,
+    changeTheme,
+    baseThemes,
+    customColors,
+    updateCustomColors,
+    uiPreferences,
+    updateUIPreferences,
+    isCustomTheme,
+    resetCustomizations,
+  } = useTheme()
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await getEmployeeInfo();
-        setProfileData(res?.data[0]);
-
+        const res = await getEmployeeInfo()
+        setProfileData(res?.data[0])
       } catch (error) {
-        console.error('Failed to fetch profile:', error);
+        console.error("Failed to fetch profile:", error)
       }
-    };
-    fetchProfile();
-  }, []);
+    }
+    fetchProfile()
+  }, [])
 
   const getExperience = (joiningDate) => {
     if (!joiningDate) return "0 years"
@@ -583,10 +1278,10 @@ const Profile = () => {
 
   const handleThemeChange = (themeName) => {
     changeTheme(themeName)
-    toast.success(`Theme changed to ${themes[themeName].name}`)
+    toast.success(`Theme changed to ${theme[themeName]}`)
   }
 
-  const handlePinReset = async() => {
+  const handlePinReset = async () => {
     // Reset error and success messages
     setPinError("")
     setPinSuccess("")
@@ -607,17 +1302,16 @@ const Profile = () => {
       return
     }
 
-   const response=await setuserpinview(currentPin, newPin)
-   console.log("Pin response",response)
-    if (response?.status== 200) {
+    const response = await setuserpinview(currentPin, newPin)
+    console.log("Pin response", response)
+    if (response?.status == 200) {
       setPinSuccess("PIN reset successfully")
       setIsEditingPin(false)
-    }
-    else{
+    } else {
       setPinError("Failed to reset PIN. Please try again.")
       setIsEditingPin(true)
     }
-  
+
     setCurrentPin("")
     setNewPin("")
     setConfirmPin("")
@@ -698,45 +1392,45 @@ const Profile = () => {
           </>
         )
 
-      case "permissions":
-        return (
-          <>
-            <SectionTitle>Approval Permissions</SectionTitle>
-            <DetailGrid>
-              <StatCard bgStart="#4776E6" bgEnd="#8E54E9" style={{ position: "relative" }}>
-                <StatIcon>
-                  <FaTrophy />
-                </StatIcon>
-                <StatLabel>Grade Level</StatLabel>
-                <StatValue>{profileData.grade_level}</StatValue>
-              </StatCard>
+      // case "permissions":
+      //   return (
+      //     <>
+      //       <SectionTitle>Approval Permissions</SectionTitle>
+      //       <DetailGrid>
+      //         <StatCard bgStart="#4776E6" bgEnd="#8E54E9" style={{ position: "relative" }}>
+      //           <StatIcon>
+      //             <FaTrophy />
+      //           </StatIcon>
+      //           <StatLabel>Grade Level</StatLabel>
+      //           <StatValue>{profileData.grade_level}</StatValue>
+      //         </StatCard>
 
-              <StatCard bgStart="#11998e" bgEnd="#38ef7d" style={{ position: "relative" }}>
-                <StatIcon>
-                  <FaShieldAlt />
-                </StatIcon>
-                <StatLabel>Claim Grade Level</StatLabel>
-                <StatValue>{profileData.approve_data?.[0]?.claim_grade_level}</StatValue>
-              </StatCard>
+      //         <StatCard bgStart="#11998e" bgEnd="#38ef7d" style={{ position: "relative" }}>
+      //           <StatIcon>
+      //             <FaShieldAlt />
+      //           </StatIcon>
+      //           <StatLabel>Claim Grade Level</StatLabel>
+      //           <StatValue>{profileData.approve_data?.[0]?.claim_grade_level}</StatValue>
+      //         </StatCard>
 
-              <StatCard bgStart="#FF416C" bgEnd="#FF4B2B" style={{ position: "relative" }}>
-                <StatIcon>
-                  <FaCalendarAlt />
-                </StatIcon>
-                <StatLabel>Max Leave Days</StatLabel>
-                <StatValue>{profileData.approve_data?.[2]?.max_days}</StatValue>
-              </StatCard>
+      //         <StatCard bgStart="#FF416C" bgEnd="#FF4B2B" style={{ position: "relative" }}>
+      //           <StatIcon>
+      //             <FaCalendarAlt />
+      //           </StatIcon>
+      //           <StatLabel>Max Leave Days</StatLabel>
+      //           <StatValue>{profileData.approve_data?.[2]?.max_days}</StatValue>
+      //         </StatCard>
 
-              <StatCard bgStart="#6B46C1" bgEnd="#9F7AEA" style={{ position: "relative" }}>
-                <StatIcon>
-                  <FaIdCard />
-                </StatIcon>
-                <StatLabel>Max Claim Amount</StatLabel>
-                <StatValue>₹{profileData.approve_data?.[1]?.max_claim_amt}</StatValue>
-              </StatCard>
-            </DetailGrid>
-          </>
-        )
+      //         <StatCard bgStart="#6B46C1" bgEnd="#9F7AEA" style={{ position: "relative" }}>
+      //           <StatIcon>
+      //             <FaIdCard />
+      //           </StatIcon>
+      //           <StatLabel>Max Claim Amount</StatLabel>
+      //           <StatValue>₹{profileData.approve_data?.[1]?.max_claim_amt}</StatValue>
+      //         </StatCard>
+      //       </DetailGrid>
+      //     </>
+      //   )
 
       case "security":
         return (
@@ -827,83 +1521,823 @@ const Profile = () => {
           </>
         )
 
-      case "themes":
+      case "theme":
         return (
           <>
-            <SectionTitle>Theme Settings</SectionTitle>
+            <SectionTitle>Theme Personalization</SectionTitle>
             <p style={{ marginBottom: "1.5rem", color: "#4a5568" }}>
-              Customize the appearance of your HRMS dashboard by selecting a theme that suits your preference.
+              Customize every aspect of your HRMS interface to match your personal preferences.
             </p>
 
-            <ThemeGrid>
-              <ThemeCard isActive={currentTheme === "default"} onClick={() => handleThemeChange("default")}>
-                <ThemePreview colors={themes.default.colors} />
-                <ThemeInfo>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <ThemeIcon color={themes.default.colors.primary}>
-                      <FaPalette />
-                    </ThemeIcon>
-                    <ThemeName>{themes.default.name}</ThemeName>
-                  </div>
-                  {currentTheme === "default" && (
-                    <ThemeActiveIndicator>
-                      <FaCheck />
-                    </ThemeActiveIndicator>
-                  )}
-                </ThemeInfo>
-              </ThemeCard>
+            <TabContainer>
+              <TabGroup style={{ marginBottom: "1rem" }}>
+                <TabButton active={activeThemeTab === "presets"} onClick={() => setActiveThemeTab("presets")}>
+                  <FaPalette /> Theme Presets
+                </TabButton>
+                <TabButton active={activeThemeTab === "colors"} onClick={() => setActiveThemeTab("colors")}>
+                  <FaFillDrip /> Colors
+                </TabButton>
+                <TabButton active={activeThemeTab === "components"} onClick={() => setActiveThemeTab("components")}>
+                  <FaPuzzlePiece /> Components
+                </TabButton>
+                <TabButton active={activeThemeTab === "typography"} onClick={() => setActiveThemeTab("typography")}>
+                  <FaFont /> Typography
+                </TabButton>
+                <TabButton active={activeThemeTab === "layout"} onClick={() => setActiveThemeTab("layout")}>
+                  <FaColumns /> Layout
+                </TabButton>
+              </TabGroup>
 
-              <ThemeCard isActive={currentTheme === "ocean"} onClick={() => handleThemeChange("ocean")}>
-                <ThemePreview colors={themes.ocean.colors} />
-                <ThemeInfo>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <ThemeIcon color={themes.ocean.colors.primary}>
-                      <FaWater />
-                    </ThemeIcon>
-                    <ThemeName>{themes.ocean.name}</ThemeName>
-                  </div>
-                  {currentTheme === "ocean" && (
-                    <ThemeActiveIndicator>
-                      <FaCheck />
-                    </ThemeActiveIndicator>
-                  )}
-                </ThemeInfo>
-              </ThemeCard>
+              {activeThemeTab === "presets" && (
+                <>
+                  <ThemeGrid>
+                    <ThemeCard
+                      isActive={currentTheme === "default" && !isCustomTheme}
+                      onClick={() => handleThemeChange("default")}
+                    >
+                      <ThemePreview colors={baseThemes.default.colors} />
+                      <ThemeInfo>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <ThemeIcon color={baseThemes.default.colors.primary}>
+                            <FaPalette />
+                          </ThemeIcon>
+                          <ThemeName>{baseThemes.default.name}</ThemeName>
+                        </div>
+                        {currentTheme === "default" && !isCustomTheme && (
+                          <ThemeActiveIndicator>
+                            <FaCheck />
+                          </ThemeActiveIndicator>
+                        )}
+                      </ThemeInfo>
+                    </ThemeCard>
 
-              <ThemeCard isActive={currentTheme === "sunset"} onClick={() => handleThemeChange("sunset")}>
-                <ThemePreview colors={themes.sunset.colors} />
-                <ThemeInfo>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <ThemeIcon color={themes.sunset.colors.primary}>
-                      <FaSun />
-                    </ThemeIcon>
-                    <ThemeName>{themes.sunset.name}</ThemeName>
-                  </div>
-                  {currentTheme === "sunset" && (
-                    <ThemeActiveIndicator>
-                      <FaCheck />
-                    </ThemeActiveIndicator>
-                  )}
-                </ThemeInfo>
-              </ThemeCard>
+                    <ThemeCard
+                      isActive={currentTheme === "ocean" && !isCustomTheme}
+                      onClick={() => handleThemeChange("ocean")}
+                    >
+                      <ThemePreview colors={baseThemes.ocean.colors} />
+                      <ThemeInfo>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <ThemeIcon color={baseThemes.ocean.colors.primary}>
+                            <FaWater />
+                          </ThemeIcon>
+                          <ThemeName>{baseThemes.ocean.name}</ThemeName>
+                        </div>
+                        {currentTheme === "ocean" && !isCustomTheme && (
+                          <ThemeActiveIndicator>
+                            <FaCheck />
+                          </ThemeActiveIndicator>
+                        )}
+                      </ThemeInfo>
+                    </ThemeCard>
 
-              <ThemeCard isActive={currentTheme === "dark"} onClick={() => handleThemeChange("dark")}>
-                <ThemePreview colors={themes.dark.colors} />
-                <ThemeInfo>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <ThemeIcon color={themes.dark.colors.primary}>
-                      <FaMoon />
-                    </ThemeIcon>
-                    <ThemeName>{themes.dark.name}</ThemeName>
+                    <ThemeCard
+                      isActive={currentTheme === "sunset" && !isCustomTheme}
+                      onClick={() => handleThemeChange("sunset")}
+                    >
+                      <ThemePreview colors={baseThemes.sunset.colors} />
+                      <ThemeInfo>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <ThemeIcon color={baseThemes.sunset.colors.primary}>
+                            <FaSun />
+                          </ThemeIcon>
+                          <ThemeName>{baseThemes.sunset.name}</ThemeName>
+                        </div>
+                        {currentTheme === "sunset" && !isCustomTheme && (
+                          <ThemeActiveIndicator>
+                            <FaCheck />
+                          </ThemeActiveIndicator>
+                        )}
+                      </ThemeInfo>
+                    </ThemeCard>
+
+                    <ThemeCard
+                      isActive={currentTheme === "dark" && !isCustomTheme}
+                      onClick={() => handleThemeChange("dark")}
+                    >
+                      <ThemePreview colors={baseThemes.dark.colors} />
+                      <ThemeInfo>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <ThemeIcon color={baseThemes.dark.colors.primary}>
+                            <FaMoon />
+                          </ThemeIcon>
+                          <ThemeName>{baseThemes.dark.name}</ThemeName>
+                        </div>
+                        {currentTheme === "dark" && !isCustomTheme && (
+                          <ThemeActiveIndicator>
+                            <FaCheck />
+                          </ThemeActiveIndicator>
+                        )}
+                      </ThemeInfo>
+                    </ThemeCard>
+
+                    {isCustomTheme && (
+                      <ThemeCard isActive={isCustomTheme} onClick={() => {}}>
+                        <ThemePreview colors={theme.colors} />
+                        <ThemeInfo>
+                          <div style={{ display: "flex", alignItems: "center" }}>
+                            <ThemeIcon color={theme.colors.primary}>
+                              <FaUserCog />
+                            </ThemeIcon>
+                            <ThemeName>Custom</ThemeName>
+                          </div>
+                          <ThemeActiveIndicator>
+                            <FaCheck />
+                          </ThemeActiveIndicator>
+                        </ThemeInfo>
+                      </ThemeCard>
+                    )}
+                  </ThemeGrid>
+
+                  <div style={{ marginTop: "1.5rem", display: "flex", justifyContent: "flex-end" }}>
+                    <StyledButton className="outline" onClick={resetCustomizations} style={{ marginRight: "1rem" }}>
+                      <FaUndo /> Reset All Customizations
+                    </StyledButton>
+                    <StyledButton className="primary" onClick={() => setActiveThemeTab("colors")}>
+                      <FaPaintBrush /> Customize Theme
+                    </StyledButton>
                   </div>
-                  {currentTheme === "dark" && (
-                    <ThemeActiveIndicator>
-                      <FaCheck />
-                    </ThemeActiveIndicator>
-                  )}
-                </ThemeInfo>
-              </ThemeCard>
-            </ThemeGrid>
+                </>
+              )}
+
+              {activeThemeTab === "colors" && (
+                <>
+                  <SectionTitle>Color Customization</SectionTitle>
+                  <DetailGrid>
+                    <ColorPickerCard>
+                      <ColorPickerLabel>
+                        <FaPalette /> Primary Color
+                      </ColorPickerLabel>
+                      <ColorPickerInput
+                        type="color"
+                        value={customColors.primary || theme.colors.primary}
+                        onChange={(e) => updateCustomColors({ primary: e.target.value })}
+                      />
+                      <ColorPickerValue>{customColors.primary || theme.colors.primary}</ColorPickerValue>
+                    </ColorPickerCard>
+
+                    <ColorPickerCard>
+                      <ColorPickerLabel>
+                        <FaPalette /> Secondary Color
+                      </ColorPickerLabel>
+                      <ColorPickerInput
+                        type="color"
+                        value={customColors.secondary || theme.colors.secondary}
+                        onChange={(e) => updateCustomColors({ secondary: e.target.value })}
+                      />
+                      <ColorPickerValue>{customColors.secondary || theme.colors.secondary}</ColorPickerValue>
+                    </ColorPickerCard>
+
+                    <ColorPickerCard>
+                      <ColorPickerLabel>
+                        <FaPalette /> Accent Color
+                      </ColorPickerLabel>
+                      <ColorPickerInput
+                        type="color"
+                        value={customColors.accent || theme.colors.accent}
+                        onChange={(e) => updateCustomColors({ accent: e.target.value })}
+                      />
+                      <ColorPickerValue>{customColors.accent || theme.colors.accent}</ColorPickerValue>
+                    </ColorPickerCard>
+
+                    <ColorPickerCard>
+                      <ColorPickerLabel>
+                        <FaPalette /> Background Color
+                      </ColorPickerLabel>
+                      <ColorPickerInput
+                        type="color"
+                        value={customColors.background || theme.colors.background}
+                        onChange={(e) => updateCustomColors({ background: e.target.value })}
+                      />
+                      <ColorPickerValue>{customColors.background || theme.colors.background}</ColorPickerValue>
+                    </ColorPickerCard>
+
+                    <ColorPickerCard>
+                      <ColorPickerLabel>
+                        <FaPalette /> Card Background
+                      </ColorPickerLabel>
+                      <ColorPickerInput
+                        type="color"
+                        value={customColors.card || theme.colors.card}
+                        onChange={(e) => updateCustomColors({ card: e.target.value })}
+                      />
+                      <ColorPickerValue>{customColors.card || theme.colors.card}</ColorPickerValue>
+                    </ColorPickerCard>
+
+                    <ColorPickerCard>
+                      <ColorPickerLabel>
+                        <FaPalette /> Text Color
+                      </ColorPickerLabel>
+                      <ColorPickerInput
+                        type="color"
+                        value={customColors.text || theme.colors.text}
+                        onChange={(e) => updateCustomColors({ text: e.target.value })}
+                      />
+                      <ColorPickerValue>{customColors.text || theme.colors.text}</ColorPickerValue>
+                    </ColorPickerCard>
+
+                    <ColorPickerCard>
+                      <ColorPickerLabel>
+                        <FaPalette /> Success Color
+                      </ColorPickerLabel>
+                      <ColorPickerInput
+                        type="color"
+                        value={customColors.success || theme.colors.success}
+                        onChange={(e) => updateCustomColors({ success: e.target.value })}
+                      />
+                      <ColorPickerValue>{customColors.success || theme.colors.success}</ColorPickerValue>
+                    </ColorPickerCard>
+
+                    <ColorPickerCard>
+                      <ColorPickerLabel>
+                        <FaPalette /> Error Color
+                      </ColorPickerLabel>
+                      <ColorPickerInput
+                        type="color"
+                        value={customColors.error || theme.colors.error}
+                        onChange={(e) => updateCustomColors({ error: e.target.value })}
+                      />
+                      <ColorPickerValue>{customColors.error || theme.colors.error}</ColorPickerValue>
+                    </ColorPickerCard>
+                  </DetailGrid>
+
+                  <PreviewSection>
+                    <SectionTitle>Preview</SectionTitle>
+                    <PreviewContainer>
+                      <PreviewCard>
+                        <PreviewCardHeader>Sample Card</PreviewCardHeader>
+                        <PreviewCardContent>
+                          <p>This is how your cards will look with the selected colors.</p>
+                          <PreviewButton primary>Primary Button</PreviewButton>
+                          <PreviewButton secondary>Secondary Button</PreviewButton>
+                        </PreviewCardContent>
+                      </PreviewCard>
+                    </PreviewContainer>
+                  </PreviewSection>
+                </>
+              )}
+
+              {activeThemeTab === "components" && (
+                <>
+                  <SectionTitle>Component Styles</SectionTitle>
+
+                  <ComponentSection>
+                    <ComponentSectionTitle>
+                      <FaSquare /> Card Style
+                    </ComponentSectionTitle>
+                    <OptionGrid>
+                      <OptionCard
+                        isActive={uiPreferences.cardStyle.borderRadius === "square"}
+                        onClick={() => updateUIPreferences("cardStyle", { borderRadius: "square" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="square-preview"></div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Square</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.cardStyle.borderRadius === "rounded"}
+                        onClick={() => updateUIPreferences("cardStyle", { borderRadius: "rounded" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="rounded-preview"></div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Rounded</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.cardStyle.borderRadius === "16px"}
+                        onClick={() => updateUIPreferences("cardStyle", { borderRadius: "16px" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="default-preview"></div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Default</OptionCardLabel>
+                      </OptionCard>
+                    </OptionGrid>
+
+                    <ComponentSectionTitle>
+                      <FaSortAlphaDown /> Shadow Style
+                    </ComponentSectionTitle>
+                    <OptionGrid>
+                      <OptionCard
+                        isActive={uiPreferences.cardStyle.shadow === "none"}
+                        onClick={() => updateUIPreferences("cardStyle", { shadow: "none" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="no-shadow-preview"></div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>No Shadow</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.cardStyle.shadow === "medium"}
+                        onClick={() => updateUIPreferences("cardStyle", { shadow: "medium" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="medium-shadow-preview"></div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Medium</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.cardStyle.shadow === "heavy"}
+                        onClick={() => updateUIPreferences("cardStyle", { shadow: "heavy" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="heavy-shadow-preview"></div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Heavy</OptionCardLabel>
+                      </OptionCard>
+                    </OptionGrid>
+
+                    <ComponentSectionTitle>
+                      <FaSquareFull /> Button Style
+                    </ComponentSectionTitle>
+                    <OptionGrid>
+                      <OptionCard
+                        isActive={uiPreferences.buttonStyle.borderRadius === "0"}
+                        onClick={() => updateUIPreferences("buttonStyle", { borderRadius: "0" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="square-button-preview">Button</div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Square</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.buttonStyle.borderRadius === "8px"}
+                        onClick={() => updateUIPreferences("buttonStyle", { borderRadius: "8px" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="default-button-preview">Button</div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Default</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.buttonStyle.borderRadius === "9999px"}
+                        onClick={() => updateUIPreferences("buttonStyle", { borderRadius: "9999px" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="pill-button-preview">Button</div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Pill</OptionCardLabel>
+                      </OptionCard>
+                    </OptionGrid>
+
+                    <ComponentSectionTitle>
+                      <FaIcons /> Icon Style
+                    </ComponentSectionTitle>
+                    <OptionGrid>
+                      <OptionCard
+                        isActive={uiPreferences.iconStyle.size === "small"}
+                        onClick={() => updateUIPreferences("iconStyle", { size: "small" })}
+                      >
+                        <OptionCardPreview>
+                          <FaStar className="small-icon-preview" />
+                        </OptionCardPreview>
+                        <OptionCardLabel>Small</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.iconStyle.size === "medium"}
+                        onClick={() => updateUIPreferences("iconStyle", { size: "medium" })}
+                      >
+                        <OptionCardPreview>
+                          <FaStar className="medium-icon-preview" />
+                        </OptionCardPreview>
+                        <OptionCardLabel>Medium</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.iconStyle.size === "large"}
+                        onClick={() => updateUIPreferences("iconStyle", { size: "large" })}
+                      >
+                        <OptionCardPreview>
+                          <FaStar className="large-icon-preview" />
+                        </OptionCardPreview>
+                        <OptionCardLabel>Large</OptionCardLabel>
+                      </OptionCard>
+                    </OptionGrid>
+
+                    <ComponentSectionTitle>
+                      <FaToggleOn /> Animation
+                    </ComponentSectionTitle>
+                    <OptionGrid>
+                      <OptionCard
+                        isActive={uiPreferences.cardStyle.animation}
+                        onClick={() => updateUIPreferences("cardStyle", { animation: true })}
+                      >
+                        <OptionCardPreview>
+                          <div className="animation-on-preview"></div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Enabled</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={!uiPreferences.cardStyle.animation}
+                        onClick={() => updateUIPreferences("cardStyle", { animation: false })}
+                      >
+                        <OptionCardPreview>
+                          <div className="animation-off-preview"></div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Disabled</OptionCardLabel>
+                      </OptionCard>
+                    </OptionGrid>
+                  </ComponentSection>
+
+                  <PreviewSection>
+                    <SectionTitle>Component Preview</SectionTitle>
+                    <PreviewContainer>
+                      <PreviewCard className="component-preview-card">
+                        <PreviewCardHeader>Sample Card</PreviewCardHeader>
+                        <PreviewCardContent>
+                          <p>This is how your components will look with the selected styles.</p>
+                          <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
+                            <PreviewButton primary>
+                              {uiPreferences.buttonStyle.iconPosition === "left" && (
+                                <FaCheck style={{ marginRight: "0.5rem" }} />
+                              )}
+                              Primary Button
+                              {uiPreferences.buttonStyle.iconPosition === "right" && (
+                                <FaCheck style={{ marginLeft: "0.5rem" }} />
+                              )}
+                            </PreviewButton>
+                            <PreviewButton secondary>
+                              {uiPreferences.buttonStyle.iconPosition === "left" && (
+                                <FaTimes style={{ marginRight: "0.5rem" }} />
+                              )}
+                              Secondary Button
+                              {uiPreferences.buttonStyle.iconPosition === "right" && (
+                                <FaTimes style={{ marginLeft: "0.5rem" }} />
+                              )}
+                            </PreviewButton>
+                          </div>
+                        </PreviewCardContent>
+                      </PreviewCard>
+                    </PreviewContainer>
+                  </PreviewSection>
+                </>
+              )}
+
+              {activeThemeTab === "typography" && (
+                <>
+                  <SectionTitle>Typography Settings</SectionTitle>
+
+                  <ComponentSection>
+                    <ComponentSectionTitle>
+                      <FaFont /> Font Size
+                    </ComponentSectionTitle>
+                    <OptionGrid>
+                      <OptionCard
+                        isActive={uiPreferences.typography.fontSize === "small"}
+                        onClick={() => updateUIPreferences("typography", { fontSize: "small" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="small-font-preview">Aa</div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Small</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.typography.fontSize === "medium"}
+                        onClick={() => updateUIPreferences("typography", { fontSize: "medium" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="medium-font-preview">Aa</div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Medium</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.typography.fontSize === "large"}
+                        onClick={() => updateUIPreferences("typography", { fontSize: "large" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="large-font-preview">Aa</div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Large</OptionCardLabel>
+                      </OptionCard>
+                    </OptionGrid>
+
+                    <ComponentSectionTitle>
+                      <FaTextHeight /> Heading Weight
+                    </ComponentSectionTitle>
+                    <OptionGrid>
+                      <OptionCard
+                        isActive={uiPreferences.typography.headingWeight === "400"}
+                        onClick={() => updateUIPreferences("typography", { headingWeight: "400" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="light-heading-preview">Aa</div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Regular</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.typography.headingWeight === "600"}
+                        onClick={() => updateUIPreferences("typography", { headingWeight: "600" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="medium-heading-preview">Aa</div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Semi-Bold</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.typography.headingWeight === "700"}
+                        onClick={() => updateUIPreferences("typography", { headingWeight: "700" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="bold-heading-preview">Aa</div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Bold</OptionCardLabel>
+                      </OptionCard>
+                    </OptionGrid>
+
+                    <ComponentSectionTitle>
+                      <FaTextWidth /> Body Text Weight
+                    </ComponentSectionTitle>
+                    <OptionGrid>
+                      <OptionCard
+                        isActive={uiPreferences.typography.bodyWeight === "300"}
+                        onClick={() => updateUIPreferences("typography", { bodyWeight: "300" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="light-body-preview">Aa</div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Light</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.typography.bodyWeight === "400"}
+                        onClick={() => updateUIPreferences("typography", { bodyWeight: "400" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="regular-body-preview">Aa</div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Regular</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.typography.bodyWeight === "500"}
+                        onClick={() => updateUIPreferences("typography", { bodyWeight: "500" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="medium-body-preview">Aa</div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Medium</OptionCardLabel>
+                      </OptionCard>
+                    </OptionGrid>
+
+                    <ComponentSectionTitle>
+                      <FaFont /> Font Family
+                    </ComponentSectionTitle>
+                    <OptionGrid>
+                        <OptionCard
+                        isActive={uiPreferences.typography.fontFamily === "'Centra', sans-serif"}
+                        onClick={() => updateUIPreferences("typography", { fontFamily: "'Centra', sans-serif" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="Centra-preview">Aa</div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Centra</OptionCardLabel>
+                      </OptionCard>
+                      <OptionCard
+                        isActive={uiPreferences.typography.fontFamily === "'poppins', sans-serif"}
+                        onClick={() => updateUIPreferences("typography", { fontFamily: "'poppins', sans-serif" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="poppins-preview">Aa</div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Poppins</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.typography.fontFamily === "'Roboto', sans-serif"}
+                        onClick={() => updateUIPreferences("typography", { fontFamily: "'Roboto', sans-serif" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="roboto-preview">Aa</div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Roboto</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.typography.fontFamily === "'Open Sans', sans-serif"}
+                        onClick={() => updateUIPreferences("typography", { fontFamily: "'Open Sans', sans-serif" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="opensans-preview">Aa</div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Open Sans</OptionCardLabel>
+                      </OptionCard>
+                    </OptionGrid>
+                  </ComponentSection>
+
+                  <PreviewSection>
+                    <SectionTitle>Typography Preview</SectionTitle>
+                    <PreviewContainer>
+                      <PreviewCard className="typography-preview-card">
+                        <PreviewCardHeader>Typography Sample</PreviewCardHeader>
+                        <PreviewCardContent>
+                          <h1 style={{ marginBottom: "0.5rem" }}>Heading 1</h1>
+                          <h2 style={{ marginBottom: "0.5rem" }}>Heading 2</h2>
+                          <h3 style={{ marginBottom: "0.5rem" }}>Heading 3</h3>
+                          <p style={{ marginBottom: "1rem" }}>
+                            This is a paragraph of text that demonstrates how body text will appear with your selected
+                            typography settings. The quick brown fox jumps over the lazy dog.
+                          </p>
+                          <p>
+                            <strong>Bold text</strong> and <em>italic text</em> examples.
+                          </p>
+                        </PreviewCardContent>
+                      </PreviewCard>
+                    </PreviewContainer>
+                  </PreviewSection>
+                </>
+              )}
+
+              {activeThemeTab === "layout" && (
+                <>
+                  <SectionTitle>Layout Settings</SectionTitle>
+
+                  <ComponentSection>
+                    <ComponentSectionTitle>
+                      <FaRulerHorizontal /> Layout Density
+                    </ComponentSectionTitle>
+                    <OptionGrid>
+                      <OptionCard
+                        isActive={uiPreferences.layout.density === "compact"}
+                        onClick={() => updateUIPreferences("layout", { density: "compact" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="compact-preview">
+                            <div className="density-line"></div>
+                            <div className="density-line"></div>
+                            <div className="density-line"></div>
+                          </div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Compact</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.layout.density === "comfortable"}
+                        onClick={() => updateUIPreferences("layout", { density: "comfortable" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="comfortable-preview">
+                            <div className="density-line"></div>
+                            <div className="density-line"></div>
+                            <div className="density-line"></div>
+                          </div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Comfortable</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.layout.density === "spacious"}
+                        onClick={() => updateUIPreferences("layout", { density: "spacious" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="spacious-preview">
+                            <div className="density-line"></div>
+                            <div className="density-line"></div>
+                            <div className="density-line"></div>
+                          </div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Spacious</OptionCardLabel>
+                      </OptionCard>
+                    </OptionGrid>
+
+                    <ComponentSectionTitle>
+                      <FaColumns /> Container Width
+                    </ComponentSectionTitle>
+                    <OptionGrid>
+                      <OptionCard
+                        isActive={uiPreferences.layout.containerWidth === "narrow"}
+                        onClick={() => updateUIPreferences("layout", { containerWidth: "narrow" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="narrow-container-preview"></div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Narrow</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.layout.containerWidth === "standard"}
+                        onClick={() => updateUIPreferences("layout", { containerWidth: "standard" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="standard-container-preview"></div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Standard</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.layout.containerWidth === "wide"}
+                        onClick={() => updateUIPreferences("layout", { containerWidth: "wide" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="wide-container-preview"></div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Wide</OptionCardLabel>
+                      </OptionCard>
+                    </OptionGrid>
+
+                    <ComponentSectionTitle>
+                      <FaBars /> Sidebar Style
+                    </ComponentSectionTitle>
+                    <OptionGrid>
+                      <OptionCard
+                        isActive={uiPreferences.layout.sidebarStyle === "compact"}
+                        onClick={() => updateUIPreferences("layout", { sidebarStyle: "compact" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="compact-sidebar-preview">
+                            <div className="sidebar-icon"></div>
+                            <div className="sidebar-icon"></div>
+                            <div className="sidebar-icon"></div>
+                          </div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Compact</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.layout.sidebarStyle === "standard"}
+                        onClick={() => updateUIPreferences("layout", { sidebarStyle: "standard" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="standard-sidebar-preview">
+                            <div className="sidebar-item"></div>
+                            <div className="sidebar-item"></div>
+                            <div className="sidebar-item"></div>
+                          </div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Standard</OptionCardLabel>
+                      </OptionCard>
+
+                      <OptionCard
+                        isActive={uiPreferences.layout.sidebarStyle === "floating"}
+                        onClick={() => updateUIPreferences("layout", { sidebarStyle: "floating" })}
+                      >
+                        <OptionCardPreview>
+                          <div className="floating-sidebar-preview">
+                            <div className="sidebar-item"></div>
+                            <div className="sidebar-item"></div>
+                            <div className="sidebar-item"></div>
+                          </div>
+                        </OptionCardPreview>
+                        <OptionCardLabel>Floating</OptionCardLabel>
+                      </OptionCard>
+                    </OptionGrid>
+                  </ComponentSection>
+
+                  <PreviewSection>
+                    <SectionTitle>Layout Preview</SectionTitle>
+                    <PreviewContainer>
+                      <PreviewCard className="layout-preview-card">
+                        <div className="layout-preview">
+                          <div
+                            className={`
+layout - sidebar
+$
+{
+  uiPreferences.layout.sidebarStyle
+}
+;`}
+                          >
+                            <div className="sidebar-item active"></div>
+                            <div className="sidebar-item"></div>
+                            <div className="sidebar-item"></div>
+                            <div className="sidebar-item"></div>
+                          </div>
+                          <div
+                            className={`
+layout - content
+$
+{
+  uiPreferences.layout.containerWidth
+}
+$
+{
+  uiPreferences.layout.density
+}
+`}
+                          >
+                            <div className="content-header"></div>
+                            <div className="content-card"></div>
+                            <div className="content-card"></div>
+                          </div>
+                        </div>
+                      </PreviewCard>
+                    </PreviewContainer>
+                  </PreviewSection>
+                </>
+              )}
+            </TabContainer>
           </>
         )
 
@@ -990,13 +2424,13 @@ const Profile = () => {
                 <TabButton active={activeTab === "personal"} onClick={() => setActiveTab("personal")}>
                   <FaIdCard /> Personal Info
                 </TabButton>
-                <TabButton active={activeTab === "permissions"} onClick={() => setActiveTab("permissions")}>
+                {/* <TabButton active={activeTab === "permissions"} onClick={() => setActiveTab("permissions")}>
                   <FaShieldAlt /> Permissions
-                </TabButton>
+                </TabButton> */}
                 <TabButton active={activeTab === "security"} onClick={() => setActiveTab("security")}>
                   <FaLock /> Security
                 </TabButton>
-                <TabButton active={activeTab === "themes"} onClick={() => setActiveTab("themes")}>
+                <TabButton active={activeTab === "theme"} onClick={() => setActiveTab("theme")}>
                   <FaPalette /> Themes
                 </TabButton>
               </TabGroup>

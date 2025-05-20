@@ -1098,11 +1098,11 @@ const navigatetoattendance = () => {
       )}
 
       {/* Birthday Card */}
+         {todayBirthday.upcoming && todayBirthday.upcoming.length > 0 && 
       <BirthdayCard
         title="Upcoming Birthdays"
         variant="primary"
       >
-        {todayBirthday.upcoming && todayBirthday.upcoming.length > 0 ? (
           <BirthdayList>
             {todayBirthday.upcoming.map((birthday) => (
               <BirthdayItem key={birthday.event_id}>
@@ -1121,11 +1121,7 @@ const navigatetoattendance = () => {
               </BirthdayItem>
             ))}
           </BirthdayList>
-        ) : (
-          <EmptyState>No upcoming birthdays</EmptyState>
-        )}
-      </BirthdayCard>
-
+      </BirthdayCard>}
       <DashboardGrid>
         {stats.map((stat, index) => (
           <StatsCard

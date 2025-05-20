@@ -8,18 +8,18 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    font-family: 'Poppins', sans-serif;
+    font-family: ${({ theme }) => theme.fonts?.body || "'Poppins', sans-serif"};
     background-color: ${({ theme }) => theme.colors.background};
-    /* color: ${({ theme }) => theme.colors.text}; */
+    color: ${({ theme }) => theme.colors.text};
     transition: all 0.3s ease;
-    color: #262626;
+    font-size: ${({ theme }) => theme.fontSizes?.md || "1rem"};
+    font-weight: ${({ theme }) => theme.fontWeights?.body || "400"};
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-weight: 600;
+    font-weight: ${({ theme }) => theme.fontWeights?.heading || "600"};
     margin-bottom: 1rem;
     color: ${({ theme }) => theme.colors.primary};
- 
   }
 
   a {
@@ -36,10 +36,12 @@ export const GlobalStyles = createGlobalStyle`
     cursor: pointer;
     border: none;
     outline: none;
-    transition: all 0.3s ease;
+    transition: ${({ theme }) => theme.transitions?.normal || "all 0.3s ease"};
+    border-radius: ${({ theme }) => theme.buttons?.borderRadius || "8px"};
   }
+
   input, select, textarea {
-    font-family: 'Poppins', sans-serif;
+    font-family: ${({ theme }) => theme.fonts?.body || "'Poppins', sans-serif"};
     padding: 10px;
     border: 1px solid ${({ theme }) => theme.colors.border};
     border-radius: 4px;
@@ -58,7 +60,7 @@ export const GlobalStyles = createGlobalStyle`
     margin: 1rem 0;
     
     th, td {
-      padding: 12px 15px;
+      padding: ${({ theme }) => theme.spacing?.md || "12px 15px"};
       text-align: left;
       border-bottom: 1px solid ${({ theme }) => theme.colors.border};
       color: ${({ theme }) => theme.colors.textLight};
@@ -66,26 +68,29 @@ export const GlobalStyles = createGlobalStyle`
     
     th {
       background-color: ${({ theme }) => theme.colors.primaryLight};
-      /* color: ${({ theme }) => theme.colors.primary}; */
-      font-weight: 600;
       color: ${({ theme }) => theme.colors.textLight};
+      font-weight: 600;
     }
     
     tr:hover {
       background-color: ${({ theme }) => theme.colors.backgroundAlt};
     }
   }
+
   .card {
     background: ${({ theme }) => theme.colors.card};
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: ${({ theme }) => theme.borderRadius?.lg || "8px"};
+    box-shadow: ${({ theme }) => theme.shadows?.md || "0 4px 6px rgba(0, 0, 0, 0.1)"};
     padding: 1.5rem;
     margin-bottom: 1.5rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: ${({ theme }) => theme.transitions?.normal || "transform 0.3s ease, box-shadow 0.3s ease"};
     
     &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+      transform: ${({ theme }) => (theme.cardStyle?.animation ? "translateY(-5px)" : "none")};
+      box-shadow: ${({ theme }) =>
+        theme.cardStyle?.animation
+          ? "0 10px 15px rgba(0, 0, 0, 0.1)"
+          : theme.shadows?.md || "0 4px 6px rgba(0, 0, 0, 0.1)"};
     }
     
     @media (max-width: 768px) {
@@ -99,7 +104,12 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   .container {
-    max-width: 1200px;
+    max-width: ${({ theme }) =>
+      theme.layout?.containerWidth === "narrow"
+        ? "800px"
+        : theme.layout?.containerWidth === "wide"
+          ? "1400px"
+          : "1200px"};
     margin: 0 auto;
     padding: 0 1rem;
   }
@@ -137,23 +147,23 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   .gap-4 {
-    gap: 1rem;
+    gap: ${({ theme }) => theme.spacing?.md || "1rem"};
   }
 
   .p-4 {
-    padding: 1rem;
+    padding: ${({ theme }) => theme.spacing?.md || "1rem"};
   }
 
   .m-4 {
-    margin: 1rem;
+    margin: ${({ theme }) => theme.spacing?.md || "1rem"};
   }
 
   .mb-4 {
-    margin-bottom: 1rem;
+    margin-bottom: ${({ theme }) => theme.spacing?.md || "1rem"};
   }
 
   .mt-4 {
-    margin-top: 1rem;
+    margin-top: ${({ theme }) => theme.spacing?.md || "1rem"};
   }
 
   .text-center {
@@ -165,11 +175,11 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   .rounded {
-    border-radius: 4px;
+    border-radius: ${({ theme }) => theme.borderRadius?.md || "4px"};
   }
 
   .shadow {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: ${({ theme }) => theme.shadows?.md || "0 4px 6px rgba(0, 0, 0, 0.1)"};
   }
 
   @keyframes fadeIn {
@@ -195,7 +205,7 @@ export const GlobalStyles = createGlobalStyle`
   .responsive-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
+    gap: ${({ theme }) => theme.spacing?.md || "1rem"};
   }
 
   @media (max-width: 768px) {
@@ -231,6 +241,83 @@ export const GlobalStyles = createGlobalStyle`
   @media (min-width: 769px) and (max-width: 1024px) {
     .grid-cols-3, .grid-cols-4 {
       grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* Layout density styles */
+  ${({ theme }) =>
+    theme.layout?.density === "compact" &&
+    `
+    .card, .p-4 {
+      padding: 0.75rem;
+    }
+    
+    .gap-4 {
+      gap: 0.75rem;
+    }
+    
+    table th, table td {
+      padding: 8px 12px;
+    }
+    
+    .mb-4, .mt-4, .m-4 {
+      margin: 0.75rem;
+    }
+  `}
+
+  ${({ theme }) =>
+    theme.layout?.density === "spacious" &&
+    `
+    .card, .p-4 {
+      padding: 2rem;
+    }
+    
+    .gap-4 {
+      gap: 1.5rem;
+    }
+    
+    table th, table td {
+      padding: 16px 20px;
+    }
+    
+    .mb-4, .mt-4, .m-4 {
+      margin: 1.5rem;
+    }
+  `}
+
+  /* Icon size styles */
+  ${({ theme }) =>
+    theme.icons?.size === "small" &&
+    `
+    .icon, svg {
+      font-size: 0.85em;
+    }
+  `}
+
+  ${({ theme }) =>
+    theme.icons?.size === "large" &&
+    `
+    .icon, svg {
+      font-size: 1.25em;
+    }
+  `}
+
+  /* Button styles */
+  button, .btn {
+    border-radius: ${({ theme }) =>
+      theme.buttons?.borderRadius === "0" ? "0" : theme.buttons?.borderRadius === "9999px" ? "9999px" : "8px"};
+    
+    box-shadow: ${({ theme }) => (theme.buttons?.shadow ? "0 4px 6px rgba(0, 0, 0, 0.1)" : "none")};
+    
+    &:hover {
+      transform: ${({ theme }) => (theme.buttons?.animation ? "translateY(-2px)" : "none")};
+      
+      box-shadow: ${({ theme }) =>
+        theme.buttons?.shadow && theme.buttons?.animation
+          ? "0 6px 8px rgba(0, 0, 0, 0.15)"
+          : theme.buttons?.shadow
+            ? "0 4px 6px rgba(0, 0, 0, 0.1)"
+            : "none"};
     }
   }
 `

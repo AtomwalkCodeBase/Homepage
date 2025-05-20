@@ -4,6 +4,8 @@ import { useState, useEffect } from "react"
 import styled from "styled-components"
 import Sidebar from "./Sidebar"
 import Header from "./Header"
+import { FaTachometerAlt, FaUserClock, FaCalendarAlt, FaReceipt, FaFileInvoiceDollar } from "react-icons/fa" // Import necessary icons
+import "../styles/fonts.css" // Import global styles
 
 const LayoutContainer = styled.div`
   display: flex;
@@ -83,9 +85,18 @@ const Layout = ({ children, title }) => {
     }
   }
 
+  // Example navItems array (assuming Sidebar uses this)
+  const navItems = [
+    { label: "Dashboard", icon: <FaTachometerAlt />, path: "/dashboard" },
+    { label: "Attendance Tracking", icon: <FaUserClock />, path: "/attendance-tracking" },
+    { label: "Leave Management", icon: <FaCalendarAlt />, path: "/leave-management" },
+    { label: "My Claims", icon: <FaReceipt />, path: "/my-claims" },
+    { label: "My Pay Slip", icon: <FaFileInvoiceDollar />, path: "/my-pay-slip" },
+  ]
+
   return (
     <LayoutContainer>
-      <Sidebar onToggle={handleSidebarToggle} initialOpen={sidebarOpen} />
+      <Sidebar onToggle={handleSidebarToggle} initialOpen={sidebarOpen} navItems={navItems} />
       <Overlay show={isMobile && sidebarOpen} onClick={handleOverlayClick} />
       <MainContent sidebarWidth={sidebarOpen ? "250px" : "70px"}>
         <Header sidebarWidth={sidebarOpen ? "250px" : "70px"} onMobileMenuClick={handleMobileMenuClick} />

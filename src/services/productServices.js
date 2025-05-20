@@ -96,6 +96,7 @@ export function getEmpLeave(leave_type , emp_id) {
   export function getEventLists(datas) {
     let data = {
       'emp_id':datas,
+      'date_range':"D7",
     };
     return authAxios(getEventList, data)
   }

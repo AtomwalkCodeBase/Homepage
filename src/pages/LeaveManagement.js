@@ -422,7 +422,7 @@ const openmodel = () => {
                     <td>
                       {request.from_date} to {request.to_date}
                     </td>
-                    <td>{Math.floor(parseFloat(request.no_leave_count))}</td>
+                    <td>{request.no_leave_count === "0.5" ? request.no_leave_count : Math.floor(parseFloat(request.no_leave_count))}</td>
                     <td>{request.remarks}</td>
                     <td>{request.submit_date}</td>
                     <td>
@@ -614,7 +614,7 @@ const openmodel = () => {
                       <td>
                         {request.from_date} to {request.to_date}
                       </td>
-                      <td>{Math.floor(parseFloat(request.no_leave_count))}</td>
+                      <td>{request.no_leave_count === "0.5" ? request.no_leave_count : Math.floor(parseFloat(request.no_leave_count))}</td>
                       <td>{request.remarks}</td>
                       <td>{request.submit_date}</td>
                       <td>

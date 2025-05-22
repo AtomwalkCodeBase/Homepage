@@ -6,6 +6,7 @@ import {
   FaChevronDown,
   FaChevronRight,
   FaBook,
+  FaCogs,
   FaUsers,
   FaBoxOpen,
   FaRocket,
@@ -104,24 +105,45 @@ const AppContainer = styled.div`
   background-color: ${(props) => props.theme.colors.background};
 `;
 
+// const MainContainer = styled.main`
+//   flex: 1;
+//   padding: ${(props) => props.theme.spacing.xxl};
+//   padding-top: 80px;
+//   max-width: 1600px;
+//   margin: 0 auto;
+//   width: 100%;
+
+//   @media (max-width: ${(props) => props.theme.breakpoints.lg}) {
+//     padding: ${(props) => props.theme.spacing.xl};
+//     padding-top: 80px;
+//   }
+
+//   @media (max-width: ${(props) => props.theme.breakpoints.md}) {
+//     padding: ${(props) => props.theme.spacing.lg};
+//     padding-top: 70px;
+//   }
+// `;
 const MainContainer = styled.main`
+  margin-left: 280px; /* Leave space for sidebar */
   flex: 1;
   padding: ${(props) => props.theme.spacing.xxl};
   padding-top: 80px;
   max-width: 1600px;
-  margin: 0 auto;
   width: 100%;
 
   @media (max-width: ${(props) => props.theme.breakpoints.lg}) {
+    margin-left: 240px;
     padding: ${(props) => props.theme.spacing.xl};
     padding-top: 80px;
   }
 
   @media (max-width: ${(props) => props.theme.breakpoints.md}) {
+    margin-left: 0;
     padding: ${(props) => props.theme.spacing.lg};
     padding-top: 70px;
   }
 `;
+
 const LoadingState = styled.div`
   display: flex;
   justify-content: center;
@@ -148,24 +170,49 @@ const LoadingState = styled.div`
 `;
 
 // Navigation Components
+// const SidebarNav = styled.nav`
+//   width: 280px;
+//   background: ${(props) => props.theme.colors.card};
+//   border-right: 1px solid ${(props) => props.theme.colors.borderColor};
+//   height: 100vh;
+//   position: sticky;
+//   margin-top: 120px;
+//   top: 0;
+//   overflow-y: auto;
+//   padding: ${(props) => props.theme.spacing.lg} 0;
+
+//   @media (max-width: ${(props) => props.theme.breakpoints.lg}) {
+//     width: 240px;
+//   }
+
+//   @media (max-width: ${(props) => props.theme.breakpoints.md}) {
+//     position: fixed;
+//     z-index: 100;
+//     width: 280px;
+//     transform: ${(props) =>
+//       props.isOpen ? "translateX(0)" : "translateX(-100%)"};
+//     transition: transform 0.3s ease;
+//     box-shadow: ${(props) => props.theme.shadows.lg};
+//   }
+// `;
 const SidebarNav = styled.nav`
   width: 280px;
   background: ${(props) => props.theme.colors.card};
   border-right: 1px solid ${(props) => props.theme.colors.borderColor};
-  height: 100vh;
-  position: sticky;
-  margin-top: 120px;
-  top: 0;
+  height: calc(100vh - 120px);
+  position: fixed;
+  top: 120px; 
+  left: 0;
   overflow-y: auto;
   padding: ${(props) => props.theme.spacing.lg} 0;
+  z-index: 100;
 
   @media (max-width: ${(props) => props.theme.breakpoints.lg}) {
     width: 240px;
   }
 
   @media (max-width: ${(props) => props.theme.breakpoints.md}) {
-    position: fixed;
-    z-index: 100;
+    top: 0;
     width: 280px;
     transform: ${(props) =>
       props.isOpen ? "translateX(0)" : "translateX(-100%)"};
@@ -173,6 +220,7 @@ const SidebarNav = styled.nav`
     box-shadow: ${(props) => props.theme.shadows.lg};
   }
 `;
+
 
 const NavHeader = styled.div`
   padding: 0 ${(props) => props.theme.spacing.lg};
@@ -470,15 +518,15 @@ const getModuleData = () => ({
   hrmanual: {
     title: "HR Manual",
     icon: <FaUsers size={20} />,
-    description: "Complete guide to HR processes, policies, and platform usage",
+    description: "Complete guide to HR processes, policies, and Application usage",
     subModules: {
       "Getting Started": {
         icon: <FaRocket size={16} />,
         topics: [
           { name: "Overview", subtopics: ["Dashboard Overview & Navigation"] },
           {
-            name: "Accessing the Platform",
-            subtopics: ["Accessing the Platform"],
+            name: "Accessing the Application",
+            subtopics: ["Accessing the Application"],
           },
         ],
       },
@@ -527,31 +575,31 @@ const getModuleData = () => ({
         icon: <FaBriefcase size={16} />,
         topics: [
           {
-            name: "Setup(Department)",
+            name: "Setup Department",
             subtopics: ["Department Setup", "Add Department", "Update Department"],
           },
           {
-            name: "Setup(Grade)",
+            name: "Setup Grade",
             subtopics: ["Grade Setup", "Add Grade", "Update Grade"],
           },
           {
-            name: "Setup(Holiday Calendar)",
+            name: "Setup Holiday Calendar",
             subtopics: ["Holiday Calendar Setup", "Add Holiday Calendar", "Update Holiday Calendar", "Add New Holiday", "Edit Holiday", "Add Shift", "Edit Shift"],
           },
           {
-            name: "Setup(HR Policy Documents)",
+            name: "Setup HR Policy Documents",
             subtopics: ["HR Policy Documents Setup", "Add HR Policy Documents", "Update HR Policy Documents"],
           },
           {
-            name: "Setup(Approval Limit)",
+            name: "Setup Approval Limit",
             subtopics: ["Approval Limit Setup", "Add Approval Limit","Update Approval Limit"],
           },
           {
-            name: "Setup(Appraisal Structure)",
+            name: "Setup Appraisal Structure",
             subtopics: ["Appraisal Structure Setup", "Add Appraisal Structure", "Update Appraisal Structure"],
           },
           {
-            name: "Setup(Exit Process)",
+            name: "Setup Exit Process",
             subtopics: ["Exit process Setup", "Add Exit Process", "Update Exit Process"],
           },
           {
@@ -597,7 +645,7 @@ const getModuleData = () => ({
         topics: [
           {
             name: "Claim Setup",
-            subtopics: ["Expense Category(Add Expense Category)","Add Expense Item"],
+            subtopics: ["Add Expense Category","Add Expense Item"],
           },
           {
             name: "Claims Expense",
@@ -609,11 +657,11 @@ const getModuleData = () => ({
           },
           {
             name: "Approve Claims",
-            subtopics: ["Dashboard","New Claim"],
+            subtopics: ["Approve Claims Dashboard","New Approve Claim"],
           },
           {
             name: "Settle Claims",
-            subtopics: ["Dashboard"],
+            subtopics: ["Settle Claims Dashboard"],
           },
           
         ],
@@ -641,7 +689,7 @@ const getModuleData = () => ({
           
           {
             name: "Resolve Request",
-            subtopics: ["Resolve Request Dashboard", "Complete Request", "Views Employees Request details1"],
+            subtopics: ["Resolve Request Dashboard", "Complete Request", "Views Employees Request details"],
           },
           {
             name: "Request Dashboard",
@@ -656,7 +704,7 @@ const getModuleData = () => ({
         topics: [
           {
             name: "Setup",
-            subtopics: ["Set Up(Item Category)", "Set Up(Location Code)"],
+            subtopics: ["Set Up (Item Category)", "Set Up (Location Code)"],
           },
           {
             name: "Asset Item Type",
@@ -748,95 +796,144 @@ const getModuleData = () => ({
     title: "Client Relations Manual",
     icon: <FaHeartbeat size={20} />,
     description:
-      "Guide to managing client relationships and using the CRM platform",
+      "Guide to managing client relationships and using the CRM Application",
     subModules: {
       "Getting Started": {
         icon: <FaRocket size={16} />,
         topics: [
           {
             name: "Overview",
-            subtopics: ["Overview For CRM"],
+            subtopics: ["CRM Overview and Dashboard Navigation"],
           },
           {
             name: "Accessing Client Portal",
             subtopics: ["Accessing Client Portal"],
           },
-          {
-            name: "Dashboard Navigation",
-            subtopics: ["Dashboard Navigation"],
-          },
+          // {
+          //   name: "Dashboard Navigation",
+          //   subtopics: ["Dashboard Navigation"],
+          // },
         ],
       },
       "Client Management": {
         icon: <FaUsers size={16} />,
         topics: [
           {
-            name: "Client",
+            name: "Customer List",
             subtopics: [
-              "Create Profile",
-              "Update Information",
-              // "Client History",
-              "Task List",
-              "Product Interest",
+              "Add Customer",
+              "Customer List Dashboard",
+              "Customer Task List",
+              "Customer Product Interest",
+              "Customer Add Product Interest",
+              "Customer TDS Received",
+              "Customer Add TDS Record",
+              "Update Customer",
+              "Customer Document List",
+              "Add New Document",
+              "Customer View Audit",
+              "Customer Generate Agreement",
               "Add Account",
-              "Generate Agreement",
-              "TDS Received",
-              "Document Received",
             ],
           },
           {
             name: "Supplier",
             subtopics: [
-              "Add Suplier",
+              "Add Supplier",
+              "Supplier List View",
               "Update Information",
               "Delete Information",
               "Document List",
               "Document List Updates",
-              "Generates Agreement",
-              "Task List",
-              "Product Interest",
-              "TDS Received",
+              "Generate Supplier Agreement",
+              "Add Task Detail",
+              "View Product Interest",
+              "Add Product Interest",
+              "View TDS Received",
+              "Add TDS Record",
             ],
           },
           {
-            name: "Service Agreements",
-            subtopics: ["Create Agreement", "Renewal Process", "Terms Setup"],
+            name: "My Partner List",
+            subtopics: ["Add Channel Partner", "Add My Partner Task Detail", "My Partner Product Interest","Customer ProductInterest Data Dashboard","PartnerList - TDS Received", "PartnerList- Add TDS","Update Channel Partner","My PartnerList (Update Address)","My PartnerList (Add Address)","PartnerList (Update Other Contacts)","PartnerList (Add Other Contacts)","PartnerList (Add Bank Account)","PartnerList (Owned By)","PartnerList (Update Bank Account)"],
           },
           {
-            name: "Client Feedback",
-            subtopics: ["Collect Feedback", "Analysis Tools", "Action Plans"],
+            name: "My Lead Management",
+            subtopics: ["Lead Analytics and Actions Overview", "My Lead Management (Product Interest List)", "My LeadManagement (Add Product Interest)","My Lead Management (Task List View)","My Lead Management (Add Task List)","My Lead Management (Update)","My Lead Management (Add Leads)","My Lead Management (Status History)","My Lead Management (Current Task)","My Lead Management (Contact Details)"],
           },
           {
-            name: "Issue Resolution",
-            subtopics: [
-              "Ticket System",
-              "Escalation Process",
-              "Resolution Tracking",
-            ],
+            name: "My Task Calender",
+            subtopics: ["Task Calendar Overview"],
+          },
+          {
+            name: "AMC item List",
+            subtopics: ["AMC Item List Overview", "Add AMC Details", "AMC Item List (Updates)"],
+          },
+          {
+            name: "GEM Tender List",
+            subtopics: ["GEM Tender Data Overview", "Add GEM Tender", "GEM Tender Data List Update"],
+          },
+          {
+            name: "Customer Mail Compaign",
+            subtopics: ["Customer Mail Campaign Overview", "Customer Mail Campaign(List Response)","Add Campaign", "Update Customer Mail Campaign"],
           },
         ],
       },
-      Reporting: {
-        icon: <FaFileAlt size={16} />,
-        topics: [
+      "CRM Setup": {
+        icon: <FaCogs size={16} />,
+        topics: [ 
+           {
+            name: "Customer Group",
+            subtopics: ["Customer Group (View Record List)","Customer Group (Add)","Customer Group (Update)",],
+          }, 
           {
-            name: "Client Activity Reports",
-            subtopics: [
-              "Generate Reports",
-              "Scheduled Reports",
-              "Custom Filters",
-            ],
+            name: "Customer Secondary Group",
+            subtopics: ["Customer Secondary Group (View Record List)","Customer Secondary Group (Add)","Customer Secondary Group (Update)",],
           },
           {
-            name: "Satisfaction Metrics",
-            subtopics: [
-              "NPS Score",
-              "Satisfaction Trends",
-              "Comparative Analysis",
-            ],
+            name: "Lead Group",
+            subtopics: ["Lead Group (View Record List)","Lead Group (Add)","Lead Group (Update)"],
           },
+          {
+            name: "Lead Secondary Group",
+            subtopics: ["Lead Secondary Group (View Record List)","Lead Secondary Group (Add)","Lead Secondary Group (Update)"],
+          },    
+          {
+            name: "Campaign Template",
+            subtopics: [
+              "Campaign Template (View Record List)","Add Campaign Template","Update Campaign Template"],
+          },
+          {
+            name: "Task Category",
+            subtopics: ["Task Category (View Record List)","Add Task Category","Update Task Category","Add Task SLA"],
+          },
+          {
+            name: "Task Sub Category",
+            subtopics: ["Task Sub Category (View Record List)","Add Task Sub Category","Update Task Sub Category"],
+          }, 
         ],
       },
+      // Reporting: {
+      //   icon: <FaFileAlt size={16} />,
+      //   topics: [
+      //     {
+      //       name: "Client Activity Reports",
+      //       subtopics: [
+      //         "Generate Reports",
+      //         "Scheduled Reports",
+      //         "Custom Filters",
+      //       ],
+      //     },
+      //     {
+      //       name: "Satisfaction Metrics",
+      //       subtopics: [
+      //         "NPS Score",
+      //         "Satisfaction Trends",
+      //         "Comparative Analysis",
+      //       ],
+      //     },
+      //   ],
+      // },
     },
   },
   inventorymanual: {

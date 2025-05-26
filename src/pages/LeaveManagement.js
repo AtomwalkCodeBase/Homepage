@@ -155,8 +155,18 @@ const LeaveManagement = () => {
     const [year, month, day] = dateString.split("-");
     return `${day}-${month}-${year}`;
   };
+  console.log(workleaveRequests,"leaveRequests")
+  // Calculate total leave days per leave type (summing no_leave_count)
   const count = leaveRequests.reduce((acc, request) => {
-    acc[request.leave_type_display] = (acc[request.leave_type_display] || 0) + 1;
+    const leaveType = request.leave_type_display;
+    const days = parseFloat(request.no_leave_count) || 0;
+    acc[leaveType] = (acc[leaveType] || 0) + days;
+    return acc;
+  }, {});
+    const counts = workleaveRequests.reduce((acc, request) => {
+    const leaveType = request.leave_type_display;
+    const days = parseFloat(request.no_leave_count) || 0;
+    acc[leaveType] = (acc[leaveType] || 0) + days;
     return acc;
   }, {});
   const [formData, setFormData] = useState({
@@ -176,7 +186,7 @@ const LeaveManagement = () => {
         leave_type: leaveRequests.leave_type,
         from_date: leaveRequests.from_date,
         to_date: leaveRequests.to_date,
-        remarks: leaveRequests.remarks,
+        // remarks: leaveRequests.remarks,
         call_mode: "CANCEL",
         hrm_lite:"",
         leave_id: leaveRequests.id,
@@ -193,8 +203,8 @@ const LeaveManagement = () => {
     //   // Add your cancellation logic here
     //   setShowPopup(false);
     // };
-    const handleConfirm=()=>{
-      postEmpLeave(formData)
+    const handleConfirm=(remark)=>{
+      postEmpLeave({ ...formData, remarks: remark })
             .then(() => {
               setRelode(relode + 1);
               handleClosePopup();
@@ -208,27 +218,36 @@ const LeaveManagement = () => {
     {
       type: "Earned Leave",
       icon: <FaCalendarAlt />,
-      balance:count["Earned Leave"] ?count["Earned Leave"] + " " +"Applied": "No Earned Leave Applied", 
+      balance: count["Earned Leave"] ? count["Earned Leave"] + " " + "Applied" : "No Earned Leave Applied",
       color: "primary",
+    },
+        {
+      type: "Half Day Leave",
+      icon: <FaCalendarTimes />, // Changed icon for Half Day Leave
+      balance: count["Half Day Leave"] ? count["Half Day Leave"] + " " + "Applied" : "No Half Day Leave Applied",
+      color: "info",
     },
     {
       type: "Work from Home",
-      icon: <FaCalendarPlus  />,
-      balance: workleaveRequests.length + " " +"Applied",
+      icon: <FaCalendarPlus />,
+      balance: counts["Work from Home"] ? counts["Work from Home"] + " " + "Applied" : "No Work from Home Applied",
       color: "success",
     },
+
     {
       type: "Leave without Pay",
       icon: <FaCalendarCheck />,
-      balance: count["Leave without Pay"]?count["Leave without Pay"]+ " " +"Applied":"No LOP Applied",
-      color: "secondary",
+      balance: count["Leave without Pay"] ? count["Leave without Pay"] + " " + "Applied" : "No LOP Applied",
+      color: "error",
     },
   ]
 
   const prepareChartData = () => {
     // Count leave types
     const leaveTypeCounts = leaveRequests.reduce((acc, request) => {
-      acc[request.leave_type_display] = (acc[request.leave_type_display] || 0) + 1;
+      const leaveType = request.leave_type_display;
+      const days = parseFloat(request.no_leave_count) || 0;
+       acc[leaveType] = (acc[leaveType] || 0) + days;
       return acc;
     }, {});
     // Count leave statuses
@@ -333,7 +352,15 @@ const openmodel = () => {
     workfromhome("WH")
   }
   , [relode]);
-
+const formatDateDisplay = (dateString) => {
+  const [day, month, year] = dateString.split('-');
+  const date = new Date(`${year}-${month}-${day}`);
+  return date.toLocaleDateString('en-US', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  });
+};
 
   return (
     <Layout title="Leave Management">
@@ -420,7 +447,7 @@ const openmodel = () => {
                   <tr key={request.id}>
                     <td>{request.leave_type_display}</td>
                     <td>
-                      {request.from_date} to {request.to_date}
+                       {formatDateDisplay(request.from_date)} to {formatDateDisplay(request.to_date)}
                     </td>
                     <td>{request.no_leave_count === "0.5" ? request.no_leave_count : Math.floor(parseFloat(request.no_leave_count))}</td>
                     <td>{request.remarks}</td>
@@ -468,7 +495,7 @@ const openmodel = () => {
                   <tr key={request.id}>
                     <td>{request.leave_type_display}</td>
                     <td>
-                      {request.from_date} to {request.to_date}
+                       {formatDateDisplay(request.from_date)} to {formatDateDisplay(request.to_date)}
                     </td>
                     <td>{Math.floor(parseFloat(request.no_leave_count))}</td>
                     <td>{request.remarks}</td>

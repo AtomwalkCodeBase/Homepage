@@ -33,6 +33,8 @@ import {
   Legend,
   ResponsiveContainer,
   Cell,
+  BarChart,
+  Bar,
 } from "recharts"
 import Layout from "../components/Layout"
 import StatsCard from "../components/StatsCard"
@@ -44,6 +46,7 @@ import Modal from "../components/modals/Modal"
 import { getEmployeesInfo } from "../services/authServices"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+// import { Bar } from "react-chartjs-2"
 
 const float = keyframes`
   0% {
@@ -772,7 +775,7 @@ const Dashboard = () => {
   const [stats, setStats] = useState([])
   const [departmentData, setDepartmentData] = useState([])
   const [eventData, setEventData] = useState([])
-  const [monthlyAttendanceData, setMonthlyAttendanceData] = useState([])
+  const [workingHoursData, setWorkingHoursData] = useState([])
   const [showWishPopup, setShowWishPopup] = useState(false);
   const [selectedBirthday, setSelectedBirthday] = useState(null);
   const [wishMessage, setWishMessage] = useState("");
@@ -781,7 +784,7 @@ const Dashboard = () => {
   const empId = localStorage.getItem("empId")
   const navigation= useNavigate()
   // Fetch data from various services
-  console.log(selectedBirthday, "attendanceData")
+  console.log("eventData", attendanceData);
   useEffect(() => {
     // Fetch leave data
     getEmpLeave("EL", emp_id)
@@ -828,7 +831,78 @@ const Dashboard = () => {
     })
     .catch((err) => console.error("Error fetching claim data:", err))
   }, [emp_id, empId])
+// Process working hours data
+const processWorkingHours = (attendanceData) => {
+  if (!Array.isArray(attendanceData)) return [];
+  
+  return attendanceData.map(att => {
+    try {
+      // Safely parse start time
+      let startHour = 0, startMin = 0;
+      if (att.start_time && typeof att.start_time === 'string') {
+        const startParts = att.start_time.split(':');
+        startHour = parseInt(startParts[0]) || 0;
+        startMin = parseInt(startParts[1]) || 0;
+      }
 
+      // Safely parse end time
+      let endHour = 0, endMin = 0;
+      if (att.end_time && typeof att.end_time === 'string') {
+        const endParts = att.end_time.split(':');
+        endHour = parseInt(endParts[0]) || 0;
+        endMin = parseInt(endParts[1]) || 0;
+      }
+
+      // Calculate working hours
+      const startInMinutes = startHour * 60 + startMin;
+      const endInMinutes = endHour * 60 + endMin;
+      const workingMinutes = Math.max(0, endInMinutes - startInMinutes);
+      const workingHours = (workingMinutes / 60).toFixed(2);
+      
+      // Format times for display
+      const formatTime = (hours, mins) => {
+        const period = hours >= 12 ? 'PM' : 'AM';
+        const displayHours = hours % 12 || 12;
+        return `${displayHours}:${mins.toString().padStart(2, '0')} ${period}`;
+      };
+      
+      return {
+        date: att.a_date || 'Unknown Date',
+        startTime: startHour + (startMin / 60),
+        endTime: endHour + (endMin / 60),
+        workingHours: parseFloat(workingHours),
+        displayStart: formatTime(startHour, startMin),
+        displayEnd: formatTime(endHour, endMin)
+      };
+    } catch (error) {
+      console.error('Error processing attendance record:', error);
+      return {
+        date: att.a_date || 'Unknown Date',
+        startTime: 0,
+        endTime: 0,
+        workingHours: 0,
+        displayStart: 'N/A',
+        displayEnd: 'N/A'
+      };
+    }
+  });
+};
+
+// Custom tooltip component
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    const data = payload[0].payload;
+    return (
+      <div className="custom-tooltip" style={{ background: '#fff', padding: '10px', border: '1px solid #ccc',color: '#000' }}>
+        <p>Date: {label}</p>
+        <p>Start: {data.displayStart}</p>
+        <p>End: {data.displayEnd}</p>
+        <p>Working Hours: {data.workingHours} hrs</p>
+      </div>
+    );
+  }
+  return null;
+};
   // Process data for stats and charts
   useEffect(() => {
     // if (leaveData.length > 0 && claimData.length > 0 && ticketData.length > 0 && attendanceData.length > 0) {
@@ -846,7 +920,7 @@ const Dashboard = () => {
       setStats([
         {
           icon: <FaMoneyBillWave />,
-          label: "Pending Tickets",
+          label: "Pending Help Tickets",
           value: pendingTickets, // This could be fetched from an API
           change: pendingTickets > 0 ? "Needs attention" : "All approved",
           changeType: pendingTickets > 0 ? "decrease" : "increase",
@@ -856,7 +930,7 @@ const Dashboard = () => {
           icon: <FaUserClock />,
           label: "Present Today",
           value: presentToday ? "Yes" : "No",
-          change: presentToday ? "On time" : "Not checked in",
+          change: presentToday ? "Checked in" : "Not checked in",
           changeType: presentToday ? "increase" : "decrease",
           color: presentToday ? "success" : "error",
         },
@@ -969,28 +1043,8 @@ const Dashboard = () => {
       setDepartmentData(departmentData);
 
       // Process monthly attendance data
-      const monthlyData = []
-      const days = ["Mon", "Tue", "Wed", "Thu", "Fri","sat"]
-
-      days.forEach((day) => {
-        const dayAttendance = attendanceData.filter((att) => {
-          const date = new Date(att.a_date.split("-")[2], att.a_date.split("-")[1] - 1, att.a_date.split("-")[0])
-          return date.toLocaleString("en-US", { weekday: "short" }) === day
-        })
-
-        const present = dayAttendance.filter((att) => att.attendance_type === "A").length
-        const absent = dayAttendance.filter((att) => att.attendance_type === "N").length
-        const late = dayAttendance.filter((att) => att.attendance_type === "H").length
-
-        monthlyData.push({
-          name: day,
-          present: present , // Fallback to random if no data
-          absent: absent,
-          Holiday: late ,
-        })
-      })
-
-      setMonthlyAttendanceData(monthlyData)
+     const workingHoursData = processWorkingHours(attendanceData||[]);
+     setWorkingHoursData(workingHoursData);
     }
   , [leaveData, claimData, ticketData, attendanceData])
   // Check if today is someone's birthday
@@ -1005,7 +1059,7 @@ const Dashboard = () => {
       
       // Find today's birthdays
       const birthdaysToday = eventData.filter(
-        event => event.event_type === 'B' && event.event_date === todayFormatted
+        event => event.event_type === 'B' && event.event_date === todayFormatted && (event.event_status == "A" || event.event_status == "P")
       );
       
       // Find upcoming birthdays (excluding today)
@@ -1146,20 +1200,43 @@ const navigatetoattendance = () => {
             </Button>
           }
         >
-          <ChartContainer>
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={monthlyAttendanceData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="present" stroke="#6C63FF" activeDot={{ r: 8 }} />
-                <Line type="monotone" dataKey="absent" stroke="#FF6584" />
-                <Line type="monotone" dataKey="Holiday" stroke="#FFD600" />
-              </LineChart>
-            </ResponsiveContainer>
-          </ChartContainer>
+<ChartContainer>
+  <ResponsiveContainer width="100%" height="100%">
+    <BarChart 
+      data={workingHoursData} 
+      margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+    >
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="date" />
+      <YAxis yAxisId="hours" label={{ value: 'Hours', angle: -90, position: 'insideLeft' }}/>
+      <Tooltip 
+        content={<CustomTooltip />}
+      />
+      <Legend />
+      <Bar 
+        yAxisId="hours" 
+        dataKey="workingHours" 
+        name="Working Hours" 
+        fill="#4CAF50" 
+      />
+      <Line 
+        yAxisId="hours" 
+        type="monotone" 
+        dataKey="startTime" 
+        name="Start Time" 
+        stroke="#2196F3" 
+        activeDot={{ r: 8 }}
+      />
+      <Line 
+        yAxisId="hours" 
+        type="monotone" 
+        dataKey="endTime" 
+        name="End Time" 
+        stroke="#FF5722" 
+      />
+    </BarChart>
+  </ResponsiveContainer>
+</ChartContainer>
         </Card>
 
         <Card

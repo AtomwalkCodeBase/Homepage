@@ -336,21 +336,21 @@ const MyPaySlip = () => {
   const [salaryData, setSalaryData] = useState([])
   const { profile, companyInfo } = useAuth()
   console.log(currentMonth, "profile")
-  
+
   useEffect(() => {
     const fetchSalaryData = async () => {
       const formattedMonth = `${currentMonth.getFullYear()}-${currentMonth.getMonth() + 1}`
-       await getemppayslip(formattedMonth).then((response) => {
-      if (response.status === 200) {
-        setSalaryData(response.data)
-      } 
-      else if (response.status === 400) {
-        toast.error("No salary data available for this month")
-      }
-    else {
-        toast.error("Failed to fetch salary data")
-      }
-        })
+      await getemppayslip(formattedMonth).then((response) => {
+        if (response.status === 200) {
+          setSalaryData(response.data)
+        }
+        else if (response.status === 400) {
+          toast.error("No salary data available for this month")
+        }
+        else {
+          toast.error("Failed to fetch salary data")
+        }
+      })
     }
     fetchSalaryData()
   }, [currentMonth])
@@ -393,50 +393,138 @@ const MyPaySlip = () => {
     // In a real app, this would download from an API
     // For demo, we'll create a PDF using jsPDF (you'll need to install it)
     const doc = new jsPDF();
-    
+
     // Add company logo and header
     doc.setFontSize(18);
     doc.text("ACME Corporation", 105, 20, { align: 'center' });
     doc.setFontSize(14);
     doc.text(`Pay Slip for ${currentMonth.toLocaleString("default", { month: "long", year: "numeric" })}`, 105, 30, { align: 'center' });
-    
+
     // Add employee info
     doc.setFontSize(12);
     doc.text("Employee Name: John Doe", 20, 45);
     doc.text(`Employee ID: EMP-001`, 20, 55);
     doc.text(`Department: Engineering`, 20, 65);
-    
+
     // Add salary details
     doc.setFontSize(14);
     doc.text("Earnings", 20, 80);
-    
+
     let yPosition = 90;
     salaryData.filter((item) => item.sg_type !== "D" && item.sg_type !== "G").forEach(item => {
       doc.text(`${item.name}: ₹${item.sg_amt.toLocaleString()}`, 25, yPosition);
       yPosition += 10;
     });
-    
+
     doc.text(`Total Earnings: ₹${totalEarnings.toLocaleString()}`, 25, yPosition);
     yPosition += 20;
-    
+
     doc.text("Deductions", 20, yPosition);
     yPosition += 10;
-    
+
     salaryData.filter((item) => item.sg_type === "D").forEach(item => {
       doc.text(`${item.name}: ₹${item.sg_amt.toLocaleString()}`, 25, yPosition);
       yPosition += 10;
     });
-    
+
     doc.text(`Total Deductions: ₹${totalDeductions.toLocaleString()}`, 25, yPosition);
     yPosition += 20;
-    
+
     doc.setFontSize(16);
     doc.text(`Net Salary: ₹${netSalary.toLocaleString()}`, 20, yPosition, { color: '#6C63FF' });
-    
+
     // Save the PDF
     doc.save(`payslip_${currentMonth.getFullYear()}_${currentMonth.getMonth() + 1}.pdf`);
   };
+  const handleViewPayslip = async (monthDate) => {
+    try {
+      const formattedMonth = `${monthDate.getFullYear()}-${monthDate.getMonth() + 1}`;
+      const response = await getemppayslip(formattedMonth);
 
+      if (response.status === 200) {
+        // Set the current month to the viewed month and update salary data
+        setCurrentMonth(monthDate);
+        setSalaryData(response.data);
+      } else if (response.status === 400) {
+        toast.error("Payslip not generated for this month yet");
+      } else {
+        toast.error("Failed to fetch payslip data");
+      }
+    } catch (error) {
+      toast.error("Error fetching payslip data");
+    }
+  };
+  const handleDownloadPayslipForMonth = async (monthDate) => {
+    try {
+      const formattedMonth = `${monthDate.getFullYear()}-${monthDate.getMonth() + 1}`;
+      const response = await getemppayslip(formattedMonth);
+
+      if (response.status === 200) {
+        // Generate PDF with the response data
+        generatePdf(response.data, monthDate);
+      } else if (response.status === 400) {
+        toast.error("Cannot download - Payslip not generated for this month yet");
+      } else {
+        toast.error("Failed to download payslip");
+      }
+    } catch (error) {
+      toast.error("Error downloading payslip");
+    }
+  };
+
+  const generatePdf = (data, monthDate) => {
+    // Calculate totals from the data
+    const grossSalary = data.find((item) => item.sg_type === "G")?.sg_amt || 0;
+    const totalEarnings = data
+      .filter((item) => item.sg_type !== "D" && item.sg_type !== "G")
+      .reduce((sum, item) => sum + item.sg_amt, 0);
+    const totalDeductions = data.filter((item) => item.sg_type === "D").reduce((sum, item) => sum + item.sg_amt, 0);
+    const netSalary = grossSalary - totalDeductions;
+
+    const doc = new jsPDF();
+
+    // Add company logo and header
+    doc.setFontSize(18);
+    doc.text(companyInfo.name, 105, 20, { align: 'center' });
+    doc.setFontSize(14);
+    doc.text(`Pay Slip for ${monthDate.toLocaleString("default", { month: "long", year: "numeric" })}`, 105, 30, { align: 'center' });
+
+    // Add employee info
+    doc.setFontSize(12);
+    doc.text(`Employee Name: ${profile.name}`, 20, 45);
+    doc.text(`Employee ID: ${profile.emp_id}`, 20, 55);
+    doc.text(`Department: ${profile.department_name}`, 20, 65);
+
+    // Add salary details
+    doc.setFontSize(14);
+    doc.text("Earnings", 20, 80);
+
+    let yPosition = 90;
+    data.filter((item) => item.sg_type !== "D" && item.sg_type !== "G").forEach(item => {
+      doc.text(`${item.name}: ₹${item.sg_amt.toLocaleString()}`, 25, yPosition);
+      yPosition += 10;
+    });
+
+    doc.text(`Total Earnings: ₹${totalEarnings.toLocaleString()}`, 25, yPosition);
+    yPosition += 20;
+
+    doc.text("Deductions", 20, yPosition);
+    yPosition += 10;
+
+    data.filter((item) => item.sg_type === "D").forEach(item => {
+      doc.text(`${item.name}: ₹${item.sg_amt.toLocaleString()}`, 25, yPosition);
+      yPosition += 10;
+    });
+
+    doc.text(`Total Deductions: ₹${totalDeductions.toLocaleString()}`, 25, yPosition);
+    yPosition += 20;
+
+    doc.setFontSize(16);
+    doc.text(`Net Salary: ₹${netSalary.toLocaleString()}`, 20, yPosition, { color: '#6C63FF' });
+
+    // Save the PDF
+    doc.save(`payslip_${monthDate.getFullYear()}_${monthDate.getMonth() + 1}.pdf`);
+  };
   const handlePrintPayslip = () => {
     // Create a print-friendly version of the payslip
     const printWindow = window.open('', '_blank');
@@ -479,8 +567,8 @@ const MyPaySlip = () => {
             </thead>
             <tbody>
               ${salaryData
-                .filter((item) => item.sg_type !== "D" && item.sg_type !== "G")
-                .map(item => `
+        .filter((item) => item.sg_type !== "D" && item.sg_type !== "G")
+        .map(item => `
                   <tr>
                     <td>${item.name}</td>
                     <td>${item.sg_amt.toLocaleString()}</td>
@@ -503,8 +591,8 @@ const MyPaySlip = () => {
             </thead>
             <tbody>
               ${salaryData
-                .filter((item) => item.sg_type === "D")
-                .map(item => `
+        .filter((item) => item.sg_type === "D")
+        .map(item => `
                   <tr>
                     <td>${item.name}</td>
                     <td>${item.sg_amt.toLocaleString()}</td>
@@ -802,7 +890,6 @@ const MyPaySlip = () => {
             </ChartContainer>
           </div>
         )}
-
         {activeTab === "history" && (
           <div>
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
@@ -818,28 +905,41 @@ const MyPaySlip = () => {
               </thead>
               <tbody>
                 {Array.from({ length: 6 }).map((_, index) => {
-                  const date = new Date()
-                  date.setMonth(date.getMonth() - index)
+                  const date = new Date();
+                  date.setMonth(date.getMonth() - index);
+
+                  // Check if this is the current month being displayed
+                  const isCurrentMonth =
+                    date.getMonth() === currentMonth.getMonth() &&
+                    date.getFullYear() === currentMonth.getFullYear();
 
                   return (
                     <tr key={index}>
                       <td>{date.toLocaleString("default", { month: "long", year: "numeric" })}</td>
-                      <td>₹{grossSalary.toLocaleString()}</td>
-                      <td>₹{totalEarnings.toLocaleString()}</td>
-                      <td>₹{totalDeductions.toLocaleString()}</td>
-                      <td>₹{netSalary.toLocaleString()}</td>
+                      <td>₹{isCurrentMonth ? grossSalary.toLocaleString() : "-"}</td>
+                      <td>₹{isCurrentMonth ? totalEarnings.toLocaleString() : "-"}</td>
+                      <td>₹{isCurrentMonth ? totalDeductions.toLocaleString() : "-"}</td>
+                      <td>₹{isCurrentMonth ? netSalary.toLocaleString() : "-"}</td>
                       <td>
                         <div style={{ display: "flex", gap: "0.5rem" }}>
-                          <Button variant="ghost" size="sm">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleViewPayslip(date)}
+                          >
                             <FaEye />
                           </Button>
-                          <Button variant="ghost" size="sm">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDownloadPayslipForMonth(date)}
+                          >
                             <FaDownload />
                           </Button>
                         </div>
                       </td>
                     </tr>
-                  )
+                  );
                 })}
               </tbody>
             </table>

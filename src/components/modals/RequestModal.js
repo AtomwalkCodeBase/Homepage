@@ -4,12 +4,12 @@ import { getRequestCategory, postEmpRequest } from '../../services/productServic
 import { FaTimes, FaUpload } from 'react-icons/fa';
 import Button from '../Button';
 
-const RequestModal = ({ call_type, empId, onClose, onSuccess }) => {
+const RequestModal = ({ call_type, empId, onClose, onSuccess,dropdownValue  }) => {
   const [requestText, setRequestText] = useState('');
   const [remark, setRemark] = useState('');
   const [file, setFile] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(dropdownValue);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isHelpRequest = call_type;
@@ -113,7 +113,11 @@ const RequestModal = ({ call_type, empId, onClose, onSuccess }) => {
                   ? "Describe your help request in detail..." 
                   : "Describe your request in detail..."}
                 error={errors.requestText}
+                maxLength={100}
               />
+              <div style={{ fontSize: "0.8rem", color: "#888", textAlign: "right" }}>
+                {requestText.length}/100
+              </div>
               {errors.requestText && <ErrorText>{errors.requestText}</ErrorText>}
             </FormGroup>
 
@@ -122,9 +126,13 @@ const RequestModal = ({ call_type, empId, onClose, onSuccess }) => {
               <TextArea
                 value={remark}
                 onChange={(e) => setRemark(e.target.value)}
-                placeholder="Additional remarks (optional)"
+                placeholder="Additional remarks or comments..."
                 error={errors.remarks}
+                 maxLength={100}
               />
+              <div style={{ fontSize: "0.8rem", color: "#888", textAlign: "right" }}>
+                {requestText.length}/100
+              </div>
               {errors.remarks && <ErrorText>{errors.remarks}</ErrorText>}
             </FormGroup>
 

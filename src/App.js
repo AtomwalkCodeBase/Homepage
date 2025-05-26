@@ -89,9 +89,10 @@ import ManualSteps from "./components/ManualSteps";
 import MyPaySlip from "./pages/MyPaySlip";
 import MyWishes from "./pages/MyWishes";
 import BlogForm from "./components/Blogs/BlogForm";
+import Logins from "./components/loginpage/Login";
 function App() {
   const [openslide, setOpenslide] = useState(false);
-  const url = "https://www.atomwalk.com/rest-auth/login/";
+  const url = "https://www.atomwalk.com/rest-auth/login/";  
   const data = {
     username: "ASHUTOSH@PMA_00001",
     password: "ashutosh@11",
@@ -134,7 +135,7 @@ function App() {
               <Route path="/pricing.html" element={<PricingRoute />} />
               <Route path="/demo.html" element={<FormComponent />} />
               <Route path="/seals.html" element={<ContactSalesPage />} />
-
+              <Route path="/customer/login.html" element={<Logins/>} />  
               <Route path="/careers.html" element={<Career />} />
               <Route path="/thankyou.html" element={<ThankYouPage />} />
               <Route path="/terms-and-conditions.html" element={<TermsAndConditions />} />

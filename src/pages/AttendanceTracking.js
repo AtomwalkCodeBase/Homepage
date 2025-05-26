@@ -479,6 +479,9 @@ const AttendanceTracking = () => {
 
       setFilteredAttendanceData(filtered)
     }
+    else{
+      setFilteredAttendanceData([])
+    }
   }, [employeeDatas, statusFilter, holiday])
 
   const processHolidayData = (data) => {
@@ -537,19 +540,6 @@ const AttendanceTracking = () => {
 
     setHoliday(holidayMap)
     // console.log('Processed Holiday Map:', holidayMap);
-  }
-  const handleCheckIn = () => {
-    setCheckedIn(true)
-    setStartTime(currentTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }))
-    setAttendance({
-      ...attendance,
-      start_time: currentTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-      geo_status: "I",
-    })
-  }
-
-  const handleCheckOut = () => {
-    setIsRemarkModalOpen(true)
   }
 
   const confirmCheckOut = () => {
@@ -847,7 +837,7 @@ const AttendanceTracking = () => {
               ) : (
                 <tr>
                   <td colSpan={4} style={{ textAlign: "center", padding: "1rem" }}>
-                    No attendance records found for the selected filters
+                    No attendance records found
                   </td>
                 </tr>
               )}
@@ -861,7 +851,7 @@ const AttendanceTracking = () => {
             label="Remarks"
             value={remark}
             onChange={(e) => setRemark(e.target.value)}
-            placeholder="Enter reason for check out"
+            placeholder="Enter check-out remark"
             textarea
           />
           <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>

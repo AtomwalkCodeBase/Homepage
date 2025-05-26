@@ -16,7 +16,8 @@ import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
 import Badge from "../components/Badge"
-import { getEmpHoliday } from "../services/productServices"
+import { getEmpHoliday, postEmpLeave } from "../services/productServices"
+import { toast } from "react-toastify"
 
 // Enhanced styling for a modern, cleaner look
 const PageHeader = styled.div`
@@ -423,6 +424,7 @@ const ListViewToggle = styled.div`
   border-radius: 4px;
   overflow: hidden;
   margin-left: auto;
+  color: #333;
 `;
 
 const ViewButton = styled.button`
@@ -457,7 +459,7 @@ const Skeleton = styled.div`
 `;
 
 const MobileCalendarList = styled.div`
-  display: none;
+  /* display: none; */
   
   @media (max-width: 768px) {
     display: block;
@@ -476,6 +478,8 @@ const MobileCalendarList = styled.div`
       
       .date {
         font-weight: 600;
+        color: ${({ theme }) => theme.colors.primary};
+        font-size: 1.2rem;
       }
       
       .day {
@@ -522,6 +526,18 @@ const NoHolidaysMessage = styled.div`
   color: ${({ theme }) => theme.colors.textLight};
   font-style: italic;
 `;
+const Message = styled.div`
+  text-align: center;
+  padding: 2rem;
+  color: ${({ theme }) => theme.colors.textLight};
+  font-style: italic;
+  font-size: 1.1rem;
+  font-weight: 500;
+  display: none;
+  @media (max-width: 768px) {
+    display: block;
+  }
+  `;
 
 const HolidayCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -535,7 +551,56 @@ const HolidayCalendar = () => {
   const [activeTab, setActiveTab] = useState("calendar");
   const [viewType, setViewType] = useState("grid");
   const [holidayFilter, setHolidayFilter] = useState("all");
-console.log(holidayData,"holidayFilter")
+   const[relode, setRelode] = useState(0);
+  const [formData, setFormData] = useState({
+    leave_type: "OH",
+    from_date: "",
+    hrm_lite: "",
+    to_date: "",
+    remarks: "Optional Holiday",
+    contactInfo: "",
+    call_mode: "ADD",
+    emp_id: localStorage.getItem("empNoId")
+  });
+      console.log("Date String:", holidayData);
+    // Accepts date in "YYYY-MMM-DD" (e.g., "2025-Apr-18") and returns "18-03-2025"
+    const formatDate = (dateString) => {
+
+      if (!dateString) return "";
+      const [day, monthAbbr,year ] = dateString.split("-");
+      // Convert month abbreviation to month number
+      const monthMap = {
+      Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06",
+      Jul: "07", Aug: "08", Sep: "09", Oct: "10", Nov: "11", Dec: "12"
+      };
+      const monthNum = monthMap[monthAbbr] || "01";
+      return `${day}-${monthNum}-${year}`;
+    };
+const handleSubmit = (formattedDate,type,id) => {
+    // e.preventDefault();
+    // Prepare data for submission with formatted dates
+    const submissionData = {
+      ...formData,
+      call_mode: type,
+      from_date: formatDate(formattedDate),
+      to_date: formatDate(formattedDate),
+      leave_id: id? id : "",
+    };
+    const adddata = {
+      ...formData,
+      from_date: formatDate(formattedDate),
+      to_date: formatDate(formattedDate),
+    };
+    postEmpLeave(id?submissionData:adddata)
+      .then(() => {
+        toast.success("Leave application submitted successfully!");
+        setRelode(relode + 1);
+      })
+      .catch((error) => {
+       toast.error(error.response.data.message);
+        console.log('Error==', error);
+      });
+  };
   const fetchAttendanceDetails = async (data) => {
     try {
       setLoading(true);
@@ -565,7 +630,7 @@ console.log(holidayData,"holidayFilter")
       eId: emp_id
     };
     fetchAttendanceDetails(data);
-  }, []);
+  }, [relode]);
 
   const holidaySaturdayList = holidayData?.holiday_saturday_list?.split('|')?.filter(Boolean) || [];
 
@@ -754,7 +819,7 @@ console.log(holidayData,"holidayFilter")
 
   // Calculate progress percentage
   const selectionProgress = holidayData.no_optional_holidays > 0 
-    ? (selectedHolidays.length / holidayData.no_optional_holidays) * 100 
+    ? (filteredHolidays.filter(h => h.is_opted ==true).length / holidayData.no_optional_holidays) * 100 
     : 0;
 
   if (loading) {
@@ -827,13 +892,11 @@ console.log(holidayData,"holidayFilter")
             <FaCheckCircle />
           </StatIcon>
           <StatContent>
-            <h4>{selectedHolidays.length}/{holidayData.no_optional_holidays || 0}</h4>
+            <h4>{filteredHolidays.filter(h => h.is_opted ==true).length}/{holidayData.no_optional_holidays || 0}</h4>
             <p>Selected Optional Holidays</p>
           </StatContent>
         </StatCard>
       </StatsContainer>
-
-      {selectedHolidays.length > 0 && (
         <OptionalHolidayCard>
           <h3><FaCheckCircle /> Your Selected Optional Holidays</h3>
           <SelectionProgress progress={selectionProgress}>
@@ -841,52 +904,71 @@ console.log(holidayData,"holidayFilter")
               <div className="filled"></div>
             </div>
             <div className="progress-text">
-              {selectedHolidays.length} of {holidayData.no_optional_holidays} selected
+              {filteredHolidays.filter(h => h.is_opted ==true).length} of {holidayData.no_optional_holidays} selected
             </div>
-          </SelectionProgress>
-          <TableContainer>
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Holiday Name</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {optionalLeaves
-                  .filter(holiday => selectedHolidays.includes(holiday.key))
-                  .map(holiday => {
-                    const holidayDate = new Date(holiday.day.split('-').reverse().join('-'));
-                    const formattedDate = holidayDate.toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      weekday: 'long'
-                    });
-
-                    return (
-                      <tr key={holiday.key}>
-                        <td>{formattedDate}</td>
-                        <td>{holiday.remarks}</td>
-                        <td>
-                          <Button 
-                            variant="danger"
-                            size="sm"
-                            onClick={() => toggleOptionalHoliday(holiday.key)}
-                          >
-                            Remove
-                          </Button>
-                        </td>
+              </SelectionProgress>
+                   <TableContainer>
+                {filteredHolidays.filter(h => h.is_opted ==true).length > 0 ? (
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Day</th>
+                        <th>Holiday Name</th>
+                        <th>Action</th>
                       </tr>
-                    );
-                  })}
-              </tbody>
-            </table>
-          </TableContainer>
-        </OptionalHolidayCard>
-      )}
+                    </thead>
+                    <tbody>
+                      {filteredHolidays
+                        .filter(h => h.is_opted ==true)
+                        .sort((a, b) => {
+                          const dateA = new Date(a.day.split('-').reverse().join('-'));
+                          const dateB = new Date(b.day.split('-').reverse().join('-'));
+                          return dateA - dateB;
+                        })
+                        .map(holiday => {
+                          const holidayDate = new Date(holiday.day.split('-').reverse().join('-'));
+                          const dayName = holidayDate.toLocaleDateString('en-US', { weekday: 'long' });
+                          const formattedDate = holidayDate.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          });
+                          const isSelected = holiday.is_opted;
 
+                          return (
+                            <tr key={holiday.key}>
+                              <td>{formattedDate}</td>
+                              <td>{dayName}</td>
+                              <td>{holiday.remarks}</td>
+                              <td>
+                                {isSelected ? (
+                                  <Button 
+                                    variant="outlines" size="sm"
+                                    onClick={() =>  handleSubmit(holiday.day,"CANCEL",999999999)}
+                                  >
+                                     ❌ Remove
+                                  </Button>
+                                ) : (
+                                  <Button 
+                                   variant="primary" size="sm"
+                                    disabled={selectedHolidays.length >= (holidayData.no_optional_holidays || 0) && !isSelected}
+                                    onClick={() => handleSubmit(holiday.day)}
+                                  >
+                                    ✅ Select
+                                  </Button>
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                ) : (
+                  <NoHolidaysMessage>No optional holidays to display</NoHolidaysMessage>
+                )}
+              </TableContainer>
+             </OptionalHolidayCard>
 {activeTab === "calendar" && (
         <CalendarContainer>
           <MonthNavigation>
@@ -920,9 +1002,12 @@ console.log(holidayData,"holidayFilter")
           </FilterContainer>
 
           {viewType === "grid" ? (
+            <>
             <CalendarGrid>
               {generateCalendarDays()}
             </CalendarGrid>
+             <Message>To access the list, please navigate to the List View.</Message>
+             </>
           ) : (
             <MobileCalendarList>
               {generateMobileCalendarList()}
@@ -1030,7 +1115,7 @@ console.log(holidayData,"holidayFilter")
                             month: 'long',
                             day: 'numeric'
                           });
-                          const isSelected = selectedHolidays.includes(holiday.key);
+                          const isSelected = holiday.is_opted;
 
                           return (
                             <tr key={holiday.key}>
@@ -1041,7 +1126,7 @@ console.log(holidayData,"holidayFilter")
                                 {isSelected ? (
                                   <Button 
                                     variant="outlines" size="sm"
-                                    onClick={() => toggleOptionalHoliday(holiday.key)}
+                                    onClick={() =>  handleSubmit(holiday.day,"CANCEL",999999999)}
                                   >
                                      ❌ Remove
                                   </Button>
@@ -1049,7 +1134,7 @@ console.log(holidayData,"holidayFilter")
                                   <Button 
                                    variant="primary" size="sm"
                                     disabled={selectedHolidays.length >= (holidayData.no_optional_holidays || 0) && !isSelected}
-                                    onClick={() => toggleOptionalHoliday(holiday.key)}
+                                    onClick={() => handleSubmit(holiday.day)}
                                   >
                                     ✅ Select
                                   </Button>

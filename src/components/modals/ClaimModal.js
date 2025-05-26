@@ -381,9 +381,17 @@ console.log(projecttype," formData")
                 name="description"
                 placeholder="Provide details about your expense claim"
                 value={formData.description}
-                onChange={handleChange}
+                onChange={e => {
+                  if (e.target.value.length <= 100) {
+                    handleChange(e)
+                  }
+                }}
                 required
+                maxLength={100}
               />
+              <div style={{ fontSize: "0.8rem", color: "#888", textAlign: "right" }}>
+                {formData.description.length}/100
+              </div>
             </FormGroup>
 
             <FormGroup>

@@ -336,6 +336,7 @@ const LeaveModal = ({ isOpen, onClose,setRelode,relode }) => {
     leave_type: "",
     from_date: "",
     to_date: "",
+    hrm_lite: "",
     remarks: "",
     contactInfo: "",
     call_mode: "ADD",
@@ -359,7 +360,15 @@ const LeaveModal = ({ isOpen, onClose,setRelode,relode }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
+    // Check if to_date is before from_date
+    if (formData.from_date && formData.to_date && formData.to_date < formData.from_date) {
+      setError("End date cannot be before start date.");
+      return;
+    } else {
+      setError("");
+    }
+
     // Prepare data for submission with formatted dates
     const submissionData = {
       ...formData,
@@ -379,7 +388,7 @@ const LeaveModal = ({ isOpen, onClose,setRelode,relode }) => {
           call_mode: "ADD",
           emp_id: localStorage.getItem("empNoId")
         });
-        setRelode(relode+1);
+        setRelode(relode + 1);
         onClose();
       })
       .catch((error) => {

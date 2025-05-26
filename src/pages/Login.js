@@ -23,6 +23,7 @@ const LoginContainer = styled.div`
   
   @media (max-width: 768px) {
     flex-direction: column;
+    margin-top: 30px;
   }
 `
 
@@ -44,6 +45,10 @@ const LoginBanner = styled.div`
 const BannerContent = styled.div`
   max-width: 500px;
   animation: ${fadeIn} 1s ease;
+
+    @media (max-width: 768px) {
+    margin-top: 60px;
+  }
 `
 
 const BannerTitle = styled.h1`
@@ -211,6 +216,11 @@ const Link = styled.a`
   &:hover {
     text-decoration: underline;
   }`
+  const InputError = styled.p`
+  color: red;
+  font-size: 0.875rem;
+  /* margin-top: 0.25rem; */
+  margin-bottom: 0.5rem;`;
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -222,7 +232,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false)
   const [companies, setCompanies] = useState([])
   const [placeholderdatas,setPlaceholderdatas] = useState("Employee ID");
-  const { login } = useAuth()
+  const { login,error } = useAuth()
   useEffect(() => {
     const fetchCompanyName = async () => {
       const company = await getCompanyName()
@@ -356,7 +366,7 @@ const Login = () => {
               />
             </InputGroup>
           </FormGroup>
-
+          {error&&<InputError>{error}</InputError>}
           <LoginButton type="submit" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </LoginButton>

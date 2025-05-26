@@ -24,6 +24,7 @@ import { getEmployeeRequest } from "../services/productServices"
 import Modal from "../components/modals/Modal"
 import { toast } from "react-toastify"
 import RequestModal from "../components/modals/RequestModal"
+import { useNavigate } from "react-router-dom"
 
 const HelpDeskHeader = styled.div`
   display: flex;
@@ -182,6 +183,7 @@ const HelpDesk = () => {
   const [statusFilter, setStatusFilter] = useState("All Status")
   const [priorityFilter, setPriorityFilter] = useState("All Priorities")
   const [filteredTickets, setFilteredTickets] = useState([])
+  const navigatin = useNavigate()
   const handleSuccess = () => {
     setIsModalOpens(false)
     toast.success("Request submitted successfully!")
@@ -334,6 +336,7 @@ const HelpDesk = () => {
       description: "Basic guides and tutorials for new employees",
       icon: <FaBook />,
       articles: 12,
+      link: "/manual.html",
     },
     {
       id: 2,
@@ -341,6 +344,7 @@ const HelpDesk = () => {
       description: "How to apply, approve and manage leaves",
       icon: <FaCalendarAlt />,
       articles: 8,
+      link: "/manualsteps.html?topic=Apply%20Leave",
     },
     {
       id: 3,
@@ -348,6 +352,7 @@ const HelpDesk = () => {
       description: "Information about salary, taxes and benefits",
       icon: <FaMoneyBillWave />,
       articles: 15,
+      link:'/hrmanual.html'
     },
     {
       id: 4,
@@ -355,6 +360,7 @@ const HelpDesk = () => {
       description: "Technical support and troubleshooting guides",
       icon: <FaHeadset />,
       articles: 10,
+      link:"/contactUs.html"
     },
     {
       id: 5,
@@ -362,6 +368,7 @@ const HelpDesk = () => {
       description: "Company policies and procedures",
       icon: <FaFileAlt />,
       articles: 20,
+      link:"/hrm.html"
     },
     {
       id: 6,
@@ -369,8 +376,13 @@ const HelpDesk = () => {
       description: "Frequently asked questions",
       icon: <FaQuestion />,
       articles: 25,
+      link: "/faq.html",
     },
   ]
+
+  const handleCategoryClick = (category) => {
+      navigatin(category)
+  }
   return (
     <Layout title="Help Desk">
       <HelpDeskHeader>
@@ -492,7 +504,7 @@ const HelpDesk = () => {
           <>
             <CategoryGrid>
               {categories.map((category) => (
-                <CategoryCard key={category.id}>
+                <CategoryCard key={category.id} onClick={() => handleCategoryClick(category.link)}>
                   <CategoryIcon>{category.icon}</CategoryIcon>
                   <CategoryTitle>{category.title}</CategoryTitle>
                   <CategoryDescription>{category.description}</CategoryDescription>
@@ -506,7 +518,7 @@ const HelpDesk = () => {
               <p style={{ margin: "1rem 0" }}>
                 Create a new support ticket and our team will assist you as soon as possible.
               </p>
-              <Button variant="primary">
+              <Button variant="primary" onClick={() => setIsModalOpens(true)}>
                 <FaPlus /> Create New Ticket
               </Button>
             </div>

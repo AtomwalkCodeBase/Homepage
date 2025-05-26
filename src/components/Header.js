@@ -61,7 +61,7 @@ const SearchBar = styled.div`
   border-radius: 20px;
   padding: 8px 15px;
   width: 300px;
-  
+  position: relative;
   @media (max-width: 768px) {
     width: 40px;
     transition: all 0.3s ease;
@@ -70,7 +70,7 @@ const SearchBar = styled.div`
       props.expanded &&
       `
       position: absolute;
-      top: 15px;
+      top: 5px;
       left: 60px;
       right: 15px;
       width: auto;
@@ -377,7 +377,6 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
         <MobileMenuButton onClick={onMobileMenuClick}>
           <FaBars />
         </MobileMenuButton>
-        <div style={{ position: "relative" }}>
           <SearchBar expanded={searchExpanded}>
             <FaSearch onClick={handleSearchClick} style={{ cursor: "pointer", color:`${theme.colors.textLight}` }} />
             <SearchInput
@@ -400,7 +399,6 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
               <SearchResultItem>No results found</SearchResultItem>
             )}
           </SearchResults>
-        </div>
       </div>
 
       <HeaderActions>

@@ -13,7 +13,8 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const[profile, setProfile] = useState([])
-  const [companyInfo, setCompanyInfo] = useState([])   
+  const [companyInfo, setCompanyInfo] = useState([]) 
+   const [error, setError] = useState("")  
   // const navigate = useNavigate()
   useEffect(() => {
     const fetchProfile = async () => {
@@ -66,6 +67,7 @@ export const AuthProvider = ({ children }) => {
       console.log('API Response:', response);
   
       if (response.status === 200) {
+        setError("");
         const { token, emp_id, e_id } = response.data;
         // Store token and emp_id in AsyncStorage
         localStorage.setItem('userToken', token);
@@ -81,8 +83,9 @@ export const AuthProvider = ({ children }) => {
         return true;
       }
     } catch (error) {
-      console.log("Login error:", error);
-      toast.error("Invalid credentials. Please try again.");
+      console.log("Login error:", error.response.data.error);
+      setError(error.response.data.error);
+      toast.error(error.response.data.error);
       if (error.response && error.response.status === 401) {
         console.log("Invalid credentials");
         return false;
@@ -110,7 +113,8 @@ export const AuthProvider = ({ children }) => {
     logout,
     loading,
     profile,
-    companyInfo
+    companyInfo,
+    error
   }
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>

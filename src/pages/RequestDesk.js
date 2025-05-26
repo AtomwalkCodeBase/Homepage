@@ -162,6 +162,7 @@ const RequestDesk = () => {
   const [allRequests, setAllRequests] = useState([])
   const [requestTypes, setRequestTypes] = useState([])
   const [isModalOpens, setIsModalOpens] = useState(false)
+  const [dropdownValue, setDropdownValue] = useState("")
   const emp_id = localStorage.getItem("empId")
   const [selectedTicket, setSelectedTicket] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -461,7 +462,7 @@ const RequestDesk = () => {
                   }}
                 />
                 <RequestTypeTitle>{type.name}</RequestTypeTitle>
-                <Button variant="primary" style={{ marginTop: "1rem" }}>
+                <Button variant="primary" style={{ marginTop: "1rem" }} onClick={() => { setIsModalOpens(true); setDropdownValue(type.id); }}>    
                   Submit Request
                 </Button>
               </RequestTypeCard>
@@ -572,7 +573,7 @@ const RequestDesk = () => {
         </Modal>
       )}
       {isModalOpens && (
-        <RequestModal call_type="R" empId={emp_id} onClose={() => setIsModalOpens(false)} onSuccess={handleSuccess} />
+        <RequestModal call_type="R" empId={emp_id} onClose={() => setIsModalOpens(false)} onSuccess={handleSuccess} dropdownValue={dropdownValue} />
       )}
     </Layout>
   )

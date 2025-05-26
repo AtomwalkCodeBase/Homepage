@@ -34,6 +34,15 @@ const Message = styled.p`
   color: #555;
 `;
 
+const Input = styled.input`
+  width: 100%;
+  padding: 8px;
+  margin: 12px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+`;
+
 const ButtonGroup = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -74,16 +83,40 @@ const SubmitButton = styled(Button)`
 
 // Confirmation Popup Component
 const ConfirmationPopup = ({ isOpen, onClose, onConfirm }) => {
+  const [remark, setRemark] = useState('');
+
   if (!isOpen) return null;
 
   return (
     <Overlay>
       <PopupContainer>
-        <Title>Confirmation</Title>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Title style={{ margin: 0 }}>Confirmation</Title>
+          <button
+            onClick={onClose}
+            style={{
+              fontSize: '25px',
+              cursor: 'pointer',
+              color: 'rgb(228, 24, 24)',
+              padding: 0,
+              marginLeft: '16px',
+              lineHeight: 1,
+            }}
+            aria-label="Close"
+          >
+            &#10005;
+          </button>
+        </div>
         <Message>Do you want to cancel your live?</Message>
+        <Input
+          type="text"
+          placeholder="Remark"
+          value={remark}
+          onChange={e => setRemark(e.target.value)}
+        />
         <ButtonGroup>
           <CancelButton onClick={onClose}>No, keep it</CancelButton>
-          <SubmitButton onClick={onConfirm}>Yes, cancel</SubmitButton>
+          <SubmitButton onClick={() => onConfirm(remark)}>Yes, cancel</SubmitButton>
         </ButtonGroup>
       </PopupContainer>
     </Overlay>

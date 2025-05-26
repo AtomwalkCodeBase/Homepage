@@ -20,6 +20,8 @@ const HrmFeaturesManagement = () => {
   const isPayrollPage = location.pathname === '/payroll.html';
   const isAttendancePage = location.pathname === '/attendance.html';
   const isAppraisalPage = location.pathname === '/appraisal.html';
+  const isHelpDeskPage = location.pathname === '/emphelp.html';
+  const isEventPage = location.pathname === '/empevent.html';
 
   const content = useMemo(() => {
     if (isClaimPage) {
@@ -53,6 +55,24 @@ const HrmFeaturesManagement = () => {
       data: "Attendance"
       };
     }
+    else if (isHelpDeskPage) {
+      return {
+        title: "Help & Request Desk",
+      description: "Intelligent ticketing system for employee support with automated routing, SLA tracking, and knowledge base integration. Real-time status updates and analytics for HR service management.",
+      image: HrHeadBG,
+      data: "Help & Request"
+      };
+    }
+    else if (isEventPage) {
+      return {
+        title: "Employee Engagement & Events",
+        description: "Keep your workforce informed and connected with real-time company announcements, personalized birthday and work anniversary recognitions, and interactive features that promote team bonding and employee participation.",
+        image: 'https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/HRM-Events.png',
+        data: "Event Updates"
+      };
+    }
+
+
     else if (isPayrollPage) {
       return {
         title: "Accurate and Automated Payroll Solutions",
@@ -75,7 +95,7 @@ const HrmFeaturesManagement = () => {
       image: HrHeadBG,
       data: "HR"
     };
-  }, [isClaimPage, isLeavePage,isEmployeePage]);
+  }, [isClaimPage, isLeavePage,isEmployeePage, isPayrollPage, isAttendancePage, isAppraisalPage, isHelpDeskPage, isEventPage]);
 
   const demo = () => {
     window.location.href = '/demo.html';
@@ -86,8 +106,7 @@ const navback=()=>{
 }
   return (
     <>
-      <LetsConnect title={content.title} description={content.description} background={"#eae3ff"} lead={true} img={content.image}></LetsConnect>
-
+      <LetsConnect title={content.title} description={content.description} background={"#eae3ff"} lead={true} img={content.image}/>
       <ProcessFlow data={content.data} />
       <FeatureDescription data={content.data} />
     </>

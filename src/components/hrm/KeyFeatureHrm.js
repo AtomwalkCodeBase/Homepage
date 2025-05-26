@@ -210,6 +210,48 @@ const KeyFeatureHrm = () => {
         </FeatureBox>
         
       </FeaturesContainer>
+
+      <FeaturesContainer>
+      <FeatureBox 
+      onClick={()=>{handleCardPress('emphelp')}}>
+          <IconContainer bgColor="#EFF498">
+            <img src={ClaimManagementIcon} alt="Reliability" />
+          </IconContainer>
+          <FeatureTitle>Help & Request Desk:</FeatureTitle>
+          <FeatureDescription>
+          Intelligent ticketing system for employee support with automated routing, SLA tracking, and knowledge base integration. Real-time status updates and analytics for HR service management.
+          </FeatureDescription>
+        </FeatureBox>
+
+        <FeatureBox onClick={()=>{handleCardPress('empevent')}}>
+          <IconContainer bgColor="#D99B80">
+            <img src={Payroll} alt="Reliability" />
+          </IconContainer>
+          <FeatureTitle>Event Updates:</FeatureTitle>
+          <FeatureDescription>
+          Foster employee engagement through company announcements, birthday and work anniversary recognitions, and interactive features like employee interaction.
+          </FeatureDescription>
+        </FeatureBox>
+        <FeatureBox onClick={()=>{handleCardPress('empliteapp')}}>
+          <IconContainer bgColor="#F7DAF4">
+            <img src={PerformanceManagementIcon} alt="Performance Mangement" />
+          </IconContainer>
+          <FeatureTitle>HRM Lite App:</FeatureTitle>
+          <FeatureDescription>
+          Mobile-first HR solution with all essential features in a lightweight interface. Employee self-service portal with secure authentication and offline capabilities.
+          </FeatureDescription>
+        </FeatureBox>
+        {/* <FeatureBox onClick={()=>{handleCardPress('employeehr')}}>
+          <IconContainer bgColor="#F7DADB">
+            <img src={ExitProcessIcon} alt="Reliability" />
+          </IconContainer>
+          <FeatureTitle>Exit Process:</FeatureTitle>
+          <FeatureDescription>
+          Simplify the employee exit process, from resignation submission to final clearance. Atomwalk HRM allows companies to set up exit process documentation, ensuring all required documents and company assets are managed efficiently and securely stored for future reference.
+          </FeatureDescription>
+        </FeatureBox> */}
+        
+      </FeaturesContainer>
       
     </SectionContainer>
   );

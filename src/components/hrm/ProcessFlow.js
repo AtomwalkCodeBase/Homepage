@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { useNavigate, useLocation } from "react-router-dom";
 
 const PageContainer = styled.div`
@@ -38,10 +38,11 @@ const IndustryContainer = styled.div`
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  width: 100%;
+  overflow-x: auto;
 
   @media (min-width: 768px) {
-    flex-direction: row;
-    align-items: center;
+    padding: 30px;
   }
 `;
 
@@ -50,27 +51,26 @@ const FlowContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  padding: 25px;
+  padding: 15px;
+  width: 100%;
+
   @media (max-width: 768px) {
     flex-direction: column;
     padding: 10px;
   }
 `;
 
-
-// Each step box
 const Step = styled.div`
   background-color: #ffffff;
-  
-  /* text-align: center; */
-  height: 100px;
-  padding: 10px;
-  padding-top: 20px;
+  text-align: center;
+  min-height: 100px;
+  padding: 15px;
   margin: 10px;
   border-radius: 8px;
   border: 1px solid #4A90E2;
-  width: 185px;
-  /* flex: 1; */
+  min-width: 160px;
+  max-width: 200px;
+  flex: 1 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -83,36 +83,46 @@ const Step = styled.div`
   }
 
   @media (max-width: 768px) {
-    min-width: 100%;
-    max-height: fit-content;
+    min-width: 160px;
+    min-height: 80px;
+    margin: 8px;
+    padding: 10px;
+    flex: 0 0 auto;
   }
 `;
 
-const DocText =styled.p`
+const DocText = styled.p`
   text-align: center;
   color: #4A90E2;
   font-weight: bold;
+  margin: 0;
+  font-size: 14px;
 
+  @media (min-width: 768px) {
+    font-size: 15px;
+  }
 `;
 
-
-// Arrow between steps
 const Arrow = styled.div`
   width: 0;
   height: 0;
-  border-left: 15px solid transparent;
-  border-right: 15px solid transparent;
-  border-top: 30px solid #4A90E2;
-  margin: 0 10px;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 20px solid #4A90E2;
+  margin: 0 5px;
+  flex-shrink: 0;
   transform: rotate(-90deg);
 
   @media (max-width: 768px) {
     transform: rotate(360deg);
+    margin: 0 3px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 15px solid #4A90E2;
   }
 `;
 
-export const ProcessFlow = ({ data,bgcolors}) => {
-  // Define different flows for each type
+export const ProcessFlow = ({ data, bgcolors }) => {
   const flows = {
     Claim: [
       { step: 'Expense Item Setup'},
@@ -152,6 +162,18 @@ export const ProcessFlow = ({ data,bgcolors}) => {
         { step: 'Employee Data'},
         { step: 'Asset Management'},
         { step: 'Exit Process'},
+    ],
+    "Help & Request":[
+      { step: 'Request Category Setup'},
+      { step: 'Add New Help/ Request Ticket'},
+      { step: 'Assign to a Employee'},
+      { step: 'Resolve Help/ Request'},
+      { step: 'Help/ Request Dashboard'},
+    ],
+    "Event Updates":[
+      { step: 'Company Event Creation'},
+      { step: 'Employee Event Creation'},
+      { step: 'Employee Response'},
     ],
     Lead: [
       { step: 'Lead Capture', color: '#4A90E2' },
@@ -284,11 +306,8 @@ export const ProcessFlow = ({ data,bgcolors}) => {
       { step: 'Stock Aging Report ', color: '#4A90E2' },
     ],
 
-
-   
   };
 
-  // Get the appropriate flow based on the data prop
   const processSteps = flows[data] || flows["Work Order"] || flows["Project Management"] || flows["Report & Dashboard"] || flows["Inventory Operation"] || [];
   const navigate = useNavigate();
   const location = useLocation();
@@ -301,17 +320,14 @@ export const ProcessFlow = ({ data,bgcolors}) => {
     <PageContainer bgcolor={bgcolors}>
       <Title>Process Flow for {data}</Title>
       <Section>
-        <IndustryContainer style={{ backgroundColor: "#ffffff" }}>
-          
+        <IndustryContainer>
           <FlowContainer>
             {processSteps.map((step, index) => (
               <React.Fragment key={index}>
-              <Step onClick={() => handleStepClick(index)}>
+                <Step onClick={() => handleStepClick(index)}>
                   <DocText>{step.step}</DocText>
                 </Step>
-                {index < processSteps.length - 1 && (
-                  <Arrow/>
-                )}
+                {index < processSteps.length - 1 && <Arrow />}
               </React.Fragment>
             ))}
           </FlowContainer>

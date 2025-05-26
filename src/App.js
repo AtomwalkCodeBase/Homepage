@@ -90,6 +90,7 @@ import MyPaySlip from "./pages/MyPaySlip";
 import MyWishes from "./pages/MyWishes";
 import BlogForm from "./components/Blogs/BlogForm";
 import Logins from "./components/loginpage/Login";
+import NewFeatures from "./components/hrm/NewFeatures";
 function App() {
   const [openslide, setOpenslide] = useState(false);
   const url = "https://www.atomwalk.com/rest-auth/login/";  
@@ -153,6 +154,9 @@ function App() {
               <Route path="/payroll.html" element={<HrmFeaturesManagement />} />
               <Route path="/appraisal.html" element={<HrmFeaturesManagement />} />
               <Route path="/attendance.html" element={<HrmFeaturesManagement />} />
+              <Route path="/emphelp.html" element={<HrmFeaturesManagement />} />
+              <Route path="/empevent.html" element={<HrmFeaturesManagement />} />
+              <Route path="/empliteapp.html" element={<NewFeatures />} />
               <Route path="/leadManagement.html" element={<LeadManagement />} />
               <Route path="/CustomerManagement.html" element={<LeadManagement />} />
               <Route path="/Channelpartner.html" element={<LeadManagement />} />

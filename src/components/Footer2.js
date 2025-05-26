@@ -452,9 +452,9 @@ export default function Footer2() {
                     <SupportLink href="/manual.html">
                       Manual
                     </SupportLink>
-                    <DropdownBox>
+                    {/* <DropdownBox>
                       Access the manual for step-by-step instructions and guidance.
-                    </DropdownBox>
+                    </DropdownBox> */}
                   </DropdownContainer>
                 </li>
             <li>

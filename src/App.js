@@ -93,7 +93,7 @@ import Logins from "./components/loginpage/Login";
 import NewFeatures from "./components/hrm/NewFeatures";
 function App() {
   const [openslide, setOpenslide] = useState(false);
-  const url = "https://www.atomwalk.com/rest-auth/login/";  
+  const url = "https://www.atomwalk.com/rest-auth/login/";
   const data = {
     username: "ASHUTOSH@PMA_00001",
     password: "ashutosh@11",
@@ -201,7 +201,7 @@ function App() {
               {/*Blog route*/}
               <Route path="/Blog.html" element={<Blog />} />
               <Route path="/Blog.html/:id" element={<BlogDetails />} />
-              <Route path="/Blog.html/addblog.html" element={<BlogForm/>} />
+              <Route path="/Blog.html/addblog" element={<BlogForm/>} />
               <Route path="/Blog.html/edit/:id?" element={<BlogForm />} />
     
               {/* Protected Routes with GlobalStyles */}
@@ -241,7 +241,6 @@ function App() {
         </ThemeProvider>
       </AuthProvider>
     );
-    
 }
 
 export default App;

@@ -22,7 +22,8 @@ const BlogForm = () => {
     tagline: '',
     coverImagePath: '',
     date: getToday(),
-    sections: []
+    sections: [],
+    category:''
   });
 
   useEffect(() => {
@@ -32,7 +33,8 @@ const BlogForm = () => {
         tagline: blog.tagline,
         coverImagePath: blog.coverImage.replace('https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/', ''),
         date: blog.date || getToday(),
-        sections: blogContent.sections
+        sections: blogContent.sections,
+        category: blog.category || ''
       });
     }
   }, [id, blog, blogContent]);
@@ -167,7 +169,8 @@ const BlogForm = () => {
         title: formData.title,
         tagline: formData.tagline,
         coverImage: coverImageUrl,
-        date: formData.date // Save as string YYYY-MM-DD
+        category: formData.category,
+        date: formData.date 
       });
 
       // Process sections to convert image paths to full URLs
@@ -208,7 +211,8 @@ const BlogForm = () => {
             value={content.data}
             onChange={(e) => updateContent(sectionIndex, contentIndex, e.target.value)}
             placeholder="Enter paragraph text..."
-            rows={4}
+            rows={8}
+            style={{width: 650}}
           />
         );
       case 'image':
@@ -287,6 +291,17 @@ const BlogForm = () => {
             value={formData.coverImagePath}
             onChange={(e) => setFormData(prev => ({ ...prev, coverImagePath: e.target.value }))}
             placeholder="folder/image.jpg"
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Category</label>
+          <input
+            type="text"
+            value={formData.category}
+            onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
+            placeholder="Enter category e.g. Web Development"
             required
           />
         </div>

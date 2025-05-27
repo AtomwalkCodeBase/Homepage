@@ -132,7 +132,9 @@ export const NavBar = () => {
   const handleHRMSLogin = () => {
     window.location.href = "https://home.atomwalk.com/login/";
   };
-
+ const handlecustomerLogin = () => {
+    window.location.href = "https://home.atomwalk.com/customer/login.html";
+  };
   const handleLoginClick = () => {
     // On mobile, toggle the dropdown instead of navigating directly
     if (window.innerWidth < 768) {
@@ -206,6 +208,10 @@ export const NavBar = () => {
                     <LoginOption onClick={handleHRMSLogin}>
                       <span role="img" aria-label="HRMS" style={{ marginRight: 8 }}>👤</span>
                       Login to Employee HRMS
+                    </LoginOption>
+                       <LoginOption onClick={handleHRMSLogin}>
+                      <span role="img" aria-label="HRMS" style={{ marginRight: 8 }}>🛃</span>
+                      Login as Customer
                     </LoginOption>
                   </LoginDropdownMenu>
                 </LoginDropdownWrapper>

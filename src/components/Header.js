@@ -353,10 +353,8 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
     // In a real app, you would save this to a database
   }
 
-  const handleCheckOut = () => {
-    setCheckedIn(false)
-    setCheckInTime(null)
-    // In a real app, you would calculate hours worked and save to a database
+  const handleprofile = () => {
+    navigate("/profile")
   }
 
   // Close search results when clicking outside
@@ -424,7 +422,7 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
           <NotificationBadge>5</NotificationBadge>
         </ActionButton> */}
 
-        <UserProfile>
+        <UserProfile onClick={handleprofile}>
           <UserAvatar>{profile?.name?.charAt(0) || <FaUser />}</UserAvatar>
           <UserName>{profile?.name || "User"}</UserName>
         </UserProfile>

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
 import styled, { keyframes } from "styled-components"
-import { FaUser, FaLock, FaBuilding } from "react-icons/fa"
+import { FaUser, FaLock, FaBuilding, FaSyncAlt } from "react-icons/fa"
 import { useAuth } from "../context/AuthContext"
 import { toast } from "react-toastify"
 import { use } from "react"
-import { getCompanyName } from "../services/productServices"
+import { forgetUserPinView, getCompanyName } from "../services/productServices"
+import { useNavigate } from "react-router-dom"
 
 const fadeIn = keyframes`
   from {
@@ -221,18 +222,74 @@ const Link = styled.a`
   font-size: 0.875rem;
   /* margin-top: 0.25rem; */
   margin-bottom: 0.5rem;`;
+const CaptchaContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+`
 
+const CaptchaText = styled.div`
+  font-family: 'Courier New', monospace;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  padding: 5px 10px;
+  background: #f0f0f0;
+  border-radius: 4px;
+  color: #333;
+  user-select: none;
+`
+
+const RefreshButton = styled.button`
+  background: #f0f0f0;
+  border: none;
+  border-radius: 4px;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  
+  &:hover {
+    background: #e0e0e0;
+  }
+`
+
+const CaptchaInput = styled.input`
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 20px;
+`;
 const Login = () => {
   const [formData, setFormData] = useState({
     mobile: "",
     password: "",
     company: "",
+    captcha: ""
   })
   const [company, setCompany] = useState("")
   const [loading, setLoading] = useState(false)
   const [companies, setCompanies] = useState([])
-  const [placeholderdatas,setPlaceholderdatas] = useState("Employee ID");
-  const { login,error } = useAuth()
+  const [placeholderdatas, setPlaceholderdatas] = useState("Employee ID/Mobile Number");
+  const [loginData, setLoginData] = useState(true)
+  const [captchaText, setCaptchaText] = useState("")
+  const { login, error } = useAuth()
+  const navigation = useNavigate()
+  // Generate random captcha
+  const generateCaptcha = () => {
+    const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let captcha = "";
+    for (let i = 0; i < 6; i++) {
+      captcha += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return captcha;
+  }
+
   useEffect(() => {
     const fetchCompanyName = async () => {
       const company = await getCompanyName()
@@ -241,9 +298,32 @@ const Login = () => {
       }
     }
     fetchCompanyName()
+    setCaptchaText(generateCaptcha())
+    if (localStorage.getItem("userToken")) {
+      navigation("/dashboard")
+    }
   }, [])
+
+  const refreshCaptcha = () => {
+    setCaptchaText(generateCaptcha())
+    setFormData(prev => ({...prev, captcha: ""}))
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target
+    
+    // Validation for mobile (max 12 characters)
+    if (name === "mobile" && value.length > 12) {
+      return
+    }
+    
+    // Validation for password/pin (only numbers, max 6 digits)
+    if (name === "password") {
+      if (value.length > 6 || !/^\d*$/.test(value)) {
+        return
+      }
+    }
+    
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -258,8 +338,16 @@ const Login = () => {
     localStorage.setItem("dbName", e.target.value.split("_").slice(1).join("_"))
   }
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
+    
+    // Validate captcha
+    if (formData.captcha !== captchaText) {
+      toast.error("Invalid captcha. Please try again.")
+      refreshCaptcha()
+      return
+    }
+    
     setLoading(true)
 
     // Simulate API call
@@ -278,7 +366,37 @@ const Login = () => {
         toast.error("Invalid credentials. Please try again.")
       }
       setLoading(false)
+      refreshCaptcha()
     }, 500)
+  }
+
+  const handleForgotPass = async (e) => {
+    e.preventDefault()
+    
+    // Validate captcha
+    if (formData.captcha !== captchaText) {
+      toast.error("Invalid captcha. Please try again.")
+      refreshCaptcha()
+      return
+    }
+    
+    setLoading(true)
+    const isMobileNumber = /^\d{10}$/.test(formData.mobile);
+    const dbName = formData?.company?.split("_").slice(1).join("_") || "Acme Inc.";
+    const userData = 
+      isMobileNumber 
+      ? { mobile_number: formData.mobile, dbName: dbName }
+      : { emp_id: formData.mobile, dbName: dbName };
+      
+    const response = await forgetUserPinView(userData, dbName)
+    if (response.status === 200) {
+      toast.success("Pin sent to your registered E-mail Address.")
+      setLoginData(true)
+    } else {
+      toast.error("Failed to send pin. Please try again.")
+    }
+    setLoading(false)
+    refreshCaptcha()
   }
 
   return (
@@ -305,86 +423,178 @@ const Login = () => {
       </LoginBanner>
 
       <LoginFormContainer>
-        <LoginForm onSubmit={handleSubmit}>
-          <FormTitle>Login to your account</FormTitle>
-          <FormGroup>
-            <FormLabel htmlFor="company">Company</FormLabel>
-            <InputGroup>
-              <InputIcon>
-                <FaBuilding />
-              </InputIcon>
-              <FormSelect
-                id="company"
-                name="company"
-                value={formData.company}
-                onChange={handleCompanyChange}
-                required
-              >
-                <option value="" disabled>
-                  Select your company
-                </option>
-                {companies.map((company) => (
-                  <option key={company.id} value={company.name}>
-                    {company.ref_cust_name}
+        {loginData ? (
+          <LoginForm onSubmit={handleSubmit}>
+            <FormTitle>Login to your account</FormTitle>
+            <FormGroup>
+              <FormLabel htmlFor="company">Company</FormLabel>
+              <InputGroup>
+                <InputIcon>
+                  <FaBuilding />
+                </InputIcon>
+                <FormSelect
+                  id="company"
+                  name="company"
+                  value={formData.company}
+                  onChange={handleCompanyChange}
+                  required
+                >
+                  <option value="" disabled>
+                    Select your company
                   </option>
-                ))}
-              </FormSelect>
-            </InputGroup>
-          </FormGroup>
-          <FormGroup>
-            <FormLabel htmlFor="mobile">{placeholderdatas}</FormLabel>
-            <InputGroup>
-              <InputIcon>
-                <FaUser />
-              </InputIcon>
-              <Input
-                type="text"
-                id="mobile"
-                name="mobile"
-                placeholder={"Enter your " + placeholderdatas}
-                value={formData.mobile}
-                onChange={handleChange}
-                required
-              />
-            </InputGroup>
-          </FormGroup>
+                  {companies.map((company) => (
+                    <option key={company.id} value={company.name}>
+                      {company.ref_cust_name}
+                    </option>
+                  ))}
+                </FormSelect>
+              </InputGroup>
+            </FormGroup>
+            <FormGroup>
+              <FormLabel htmlFor="mobile">{placeholderdatas}</FormLabel>
+              <InputGroup>
+                <InputIcon>
+                  <FaUser />
+                </InputIcon>
+                <Input
+                  type="text"
+                  id="mobile"
+                  name="mobile"
+                  placeholder={"Enter " + placeholderdatas}
+                  value={formData.mobile}
+                  onChange={handleChange}
+                  maxLength={12}
+                  required
+                />
+              </InputGroup>
+            </FormGroup>
 
-          <FormGroup>
-            <FormLabel htmlFor="password">Pin</FormLabel>
-            <InputGroup>
-              <InputIcon>
-                <FaLock />
-              </InputIcon>
-              <Input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Enter your pin"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-            </InputGroup>
-          </FormGroup>
-          {error&&<InputError>{error}</InputError>}
-          <LoginButton type="submit" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
-          </LoginButton>
-           { placeholderdatas=="Employee ID" ?
-
-          <FormFooter onClick={() => setPlaceholderdatas("Mobile Number")}>
-            <Link>Login With Mobile Number</Link>
-          </FormFooter>
-          :
-          <FormFooter onClick={() => setPlaceholderdatas("Employee ID")}>
-            <Link>Login With Employee ID</Link>
-          </FormFooter>
-          }
-        </LoginForm>
+            <FormGroup>
+              <FormLabel htmlFor="password">Pin</FormLabel>
+              <InputGroup>
+                <InputIcon>
+                  <FaLock />
+                </InputIcon>
+                <Input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Enter your  pin"
+                  value={formData.password}
+                  onChange={handleChange}
+                  maxLength={6}
+                  // pattern="\d{6}"
+                  required
+                />
+              </InputGroup>
+            </FormGroup>
+            
+            {/* Captcha Section */}
+            <FormGroup>
+              <FormLabel>Captcha</FormLabel>
+              <CaptchaContainer>
+                <CaptchaText>{captchaText}</CaptchaText>
+                <RefreshButton type="button" onClick={refreshCaptcha}>
+                  <FaSyncAlt />
+                </RefreshButton>
+                <CaptchaInput
+                  type="text"
+                  name="captcha"
+                  placeholder="Enter captcha"
+                  value={formData.captcha}
+                  onChange={handleChange}
+                  required
+                />
+              </CaptchaContainer>
+            </FormGroup>
+            
+            {error && <InputError>{error}</InputError>}
+            <LoginButton type="submit" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </LoginButton>
+            <FormFooter onClick={() => setLoginData(false)}>
+              <Link>Forgot Pin</Link>
+            </FormFooter>
+          </LoginForm>
+        ) : (
+          <LoginForm onSubmit={handleForgotPass}>
+            <FormTitle>Forgot Pin</FormTitle>
+            <FormGroup>
+              <FormLabel htmlFor="company">Company</FormLabel>
+              <InputGroup>
+                <InputIcon>
+                  <FaBuilding />
+                </InputIcon>
+                <FormSelect
+                  id="company"
+                  name="company"
+                  value={formData.company}
+                  onChange={handleCompanyChange}
+                  required
+                >
+                  <option value="" disabled>
+                    Select your company
+                  </option>
+                  {companies.map((company) => (
+                    <option key={company.id} value={company.name}>
+                      {company.ref_cust_name}
+                    </option>
+                  ))}
+                </FormSelect>
+              </InputGroup>
+            </FormGroup>
+            <FormGroup>
+              <FormLabel htmlFor="mobile">{placeholderdatas}</FormLabel>
+              <InputGroup>
+                <InputIcon>
+                  <FaUser />
+                </InputIcon>
+                <Input
+                  type="text"
+                  id="mobile"
+                  name="mobile"
+                  placeholder={"Enter " + placeholderdatas}
+                  value={formData.mobile}
+                  onChange={handleChange}
+                  maxLength={12}
+                  required
+                />
+              </InputGroup>
+            </FormGroup>
+            
+            {/* Captcha Section */}
+            <FormGroup>
+              <FormLabel>Captcha</FormLabel>
+              <CaptchaContainer>
+                <CaptchaText>{captchaText}</CaptchaText>
+                <RefreshButton type="button" onClick={refreshCaptcha}>
+                  <FaSyncAlt />
+                </RefreshButton>
+                <CaptchaInput
+                  type="text"
+                  name="captcha"
+                  placeholder="Enter captcha"
+                  value={formData.captcha}
+                  onChange={handleChange}
+                  required
+                />
+              </CaptchaContainer>
+            </FormGroup>
+            
+            {error && <InputError>{error}</InputError>}
+            <LoginButton type="submit" disabled={loading}>
+              {loading ? "Submitting..." : "Submit"}
+            </LoginButton>
+            <FormFooter onClick={() => setLoginData(true)}>
+              <Link>Back to Login</Link>
+            </FormFooter>
+          </LoginForm>
+        )}
       </LoginFormContainer>
     </LoginContainer>
   )
 }
+
 
 export default Login
 

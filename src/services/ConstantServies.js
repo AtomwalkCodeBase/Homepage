@@ -73,4 +73,5 @@ export const getEventList = `${newhrendpoint}/get_employee_events/${db_name}/`;
 export const getpayslip = `${newhrendpoint}/get_emp_salary_data/${db_name}/`;
 export const processbarthdaywish = `${newhrendpoint}/process_emp_event_response/${db_name}/`;
 export const getResponseList = `${newhrendpoint}/get_event_response/${db_name}/`;
-
+export const forgetPin = `${newhrendpoint}/emp_forget_pin/`;
+export const customerslogin = `${hrendpoint}/customer_user_login/`;

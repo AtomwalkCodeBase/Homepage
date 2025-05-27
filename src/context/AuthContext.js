@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect, useContext } from "react"
 import { publicAxiosRequest } from "../services/HttpMethod"
-import { empLoginURL } from "../services/ConstantServies"
+import { customerslogin, empLoginURL } from "../services/ConstantServies"
 import { getCompanyInfo, getEmployeeInfo } from "../services/authServices"
 // import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -106,7 +106,32 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("empNoId")
     setCurrentUser(null)
   }
+const customerlogin = async(userData) => {
+  try{
 
+  
+    const payload = {
+            mobile_number: userData.mobile,
+            pin: userData.password,
+          }
+      console.log('Sending payload:', payload);
+  
+      const response = await publicAxiosRequest.post(customerslogin +`${userData.company}/`, payload, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+       if (response.status === 200) {
+        const { token, customer_id } = response.data;
+        localStorage.setItem('customerToken', token);
+        localStorage.setItem('custId', String(customer_id));
+        toast.success("Login successful!");
+        window.location.href = "/customerdashboard";
+       }
+   }
+  catch (error) {
+      console.log("Login error:", error.response.data.error);
+      toast.error(error.response.data.error);
+  }
+  }
   const value = {
     currentUser,
     login,
@@ -114,7 +139,8 @@ export const AuthProvider = ({ children }) => {
     loading,
     profile,
     companyInfo,
-    error
+    error,
+    customerlogin
   }
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>

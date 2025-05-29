@@ -557,7 +557,7 @@ const BlogDetail = () => {
     <PageContainer>
       <HeaderSection>
         <HeaderContainer>
-          <CategoryLabel>Featured Story</CategoryLabel>
+          <CategoryLabel>{blog.category}</CategoryLabel>
           <MainTitle>{blogContent.header.title}</MainTitle>
           <Subtitle>{blogContent.header.tagline}</Subtitle>
           

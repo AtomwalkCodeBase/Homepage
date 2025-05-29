@@ -22414,7 +22414,7 @@ const ManualSteps = () => {
         <ActionBar>
           <BackButton onClick={handleBackClick}>
             <BackButtonIcon />
-            Back to Manual
+            Return to Previous
           </BackButton>
           <ProgressIndicator>
             Step <span>{filteredSteps.length > 0 ? 1 : 0}</span> to{" "}

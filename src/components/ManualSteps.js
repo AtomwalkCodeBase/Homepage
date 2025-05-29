@@ -772,6 +772,25 @@ const manualStepsData = {
       ],
     },
     {
+    title: "Forgot or Reset Password",
+    description:
+      "If you have forgotten your password or wish to reset it, use the provided links below the login form.",
+    sections: [
+      {
+        title: "Password Assistance Options",
+        icon: <FaEdit />,
+        items: [
+          "<strong>Forgot Password?</strong> – Click to initiate the password recovery process via email or OTP verification.",
+          "<strong>Reset Password</strong> – Redirects to a form where a new password can be set after identity verification."
+        ]
+      }
+    ],
+    notes: [
+      "Ensure your registered email or mobile number is active to receive reset links or OTPs.",
+      "Contact system administrator if reset links do not work or if credentials are locked."
+    ]
+  },
+    {
       title: "Post-login Navigation",
       description:
         "After successful login, users are redirected to the dashboard or landing page:",

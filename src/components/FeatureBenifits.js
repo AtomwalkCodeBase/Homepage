@@ -212,16 +212,27 @@ const Solar = [
   { title: 'Predictive Maintenance', text: 'Uses data and analytics to anticipate equipment issues before they occur.', bgColor: '#ffe8cc', icon: Icon27 },
   { title: 'Real-Time Task Management', text: 'In solar operations, it ensures tasks are efficiently assigned to the right team members for smooth workflow', bgColor: '#d9f5e3', icon: Icon28 },
 ];
+const Ai = [
+  { title: 'PPE Detection', text: ' Real-time verification of safety gear—helmets, gloves, vests—ensures worker compliance before entering critical zones', bgColor: '#d7faff', icon: 'https://github.com/AtomwalkCodeBase/Blogs/blob/main/Website-images/pde.png?raw=true'},
+  { title: 'Surveillance & Activity Monitoring', text: '24/7 AI-powered monitoring for motion detection, zone violations, crowd density, and action recognition like running or fighting.', bgColor: '#d9f5e3', icon: 'https://github.com/AtomwalkCodeBase/Blogs/blob/main/Website-images/Surveillance.png?raw=true' },
+  { title: 'Text Extraction', text: 'Extract machine labels, maintenance logs, and operator notes using OCR for digital record-keeping and compliance tracking.', bgColor: '#fff1d0', icon: 'https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/text.png' },
+  { title: 'Anomaly Detection', text: 'Identify irregularities in machine behavior, product flow, or process parameters using unsupervised learning models.', bgColor: '#f2e3ff', icon: 'https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Anomaly.png' },
+  { title: 'Bottleneck Alerts', text: 'Track production delays at different stages. Get instant alerts on where the workflow slows down to optimize throughput.', bgColor: '#ffe8cc', icon: 'https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Bottleneck.png' },
+  { title: 'Predictive Maintenance', text: 'Forecast machine failures or end-of-life using historical usage, vibration, and temperature data—preventing unplanned downtime.', bgColor: '#d9f5e3', icon: 'https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Predictive.png' },
+];
+
 
 const FeatureBenifits = ({ data }) => {
   // Determine which set of benefits to display based on the response data
-  const benefits = data == 'Solar' ? Solar : data == 'Hospital' ? Hospital : data == 'Facility' ? Facility : data === 'LMS' ? labManagement : data === 'Claim' ? claimBenefits : data == 'Customer' ? leadBenefits : data == 'HR' ? hrmBenefits : data == 'Equipment' ? labEquipment : data == 'Waste' ? wasteManagement : data == 'Sales and Procurement' ? sales : leaveBenefits;
+  const benefits = data == 'AI' ? Ai : data == 'Solar' ? Solar : data == 'Hospital' ? Hospital : data == 'Facility' ? Facility : data === 'LMS' ? labManagement : data === 'Claim' ? claimBenefits : data == 'Customer' ? leadBenefits : data == 'HR' ? hrmBenefits : data == 'Equipment' ? labEquipment : data == 'Waste' ? wasteManagement : data == 'Sales and Procurement' ? sales : leaveBenefits;
 
   return (
     <Section>
       {data === 'Solar' ? (<Title>Solar Intelligence <span>Optimize, Control, and Grow.</span></Title>
       ) : data === 'Facility' ? (
         <Title>All-in-One Facility Management, <span>Streamlined and Smarter.</span></Title>
+      ) : data === 'Ai' ? (
+        <Title>All-in-One Ai Management, <span>Streamlined and Smarter.</span></Title>
       ) : (
         <Title>All-in-One {data} Management, <span>Faster and Easier.</span></Title>
       )}

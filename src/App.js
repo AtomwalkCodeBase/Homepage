@@ -41,6 +41,7 @@ import TermsAndConditions from "./components/TermConditions";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 import Disclaimer from "./components/Disclaimer";
 import Commonfnadq from "./components/Commonfnadq";
+import HmsHeroPage from "./components/hms/HmsHeroPage"
 
 //blog imports
 import BlogDetails from "./components/Blogs/BlogDetails";
@@ -79,8 +80,8 @@ import InventoryManagementSystem from "./components/inventory/InventoryManagemen
 import Assessment from "./components/Assessment";
 import WasteManagementHeroPage from "./components/wasteManagement/WasteManagementHeroPage";
 import Fmsheropage from "./components/fms/Fmsheropage";
-import HmsHeroPage from "./components/hms/HmsHeroPage";
-import Smsheropage from "./components/sms/Smsheropage";
+import PpeHeroPage from "./components/ppe/PpeHeroPage";
+import Smsheropage from "./components/sms/Smsheropage"
 import Profile from "./pages/Profile";
 import { ThemeProvider } from "./context/ThemeContext"
 import Manual from "./components/Manual";
@@ -89,8 +90,6 @@ import ManualSteps from "./components/ManualSteps";
 import MyPaySlip from "./pages/MyPaySlip";
 import MyWishes from "./pages/MyWishes";
 import BlogForm from "./components/Blogs/BlogForm";
-import Logins from "./components/loginpage/Login";
-import NewFeatures from "./components/hrm/NewFeatures";
 function App() {
   const [openslide, setOpenslide] = useState(false);
   const url = "https://www.atomwalk.com/rest-auth/login/";
@@ -136,7 +135,7 @@ function App() {
               <Route path="/pricing.html" element={<PricingRoute />} />
               <Route path="/demo.html" element={<FormComponent />} />
               <Route path="/seals.html" element={<ContactSalesPage />} />
-              <Route path="/customer/login.html" element={<Logins/>} />  
+
               <Route path="/careers.html" element={<Career />} />
               <Route path="/thankyou.html" element={<ThankYouPage />} />
               <Route path="/terms-and-conditions.html" element={<TermsAndConditions />} />
@@ -154,9 +153,6 @@ function App() {
               <Route path="/payroll.html" element={<HrmFeaturesManagement />} />
               <Route path="/appraisal.html" element={<HrmFeaturesManagement />} />
               <Route path="/attendance.html" element={<HrmFeaturesManagement />} />
-              <Route path="/emphelp.html" element={<HrmFeaturesManagement />} />
-              <Route path="/empevent.html" element={<HrmFeaturesManagement />} />
-              <Route path="/empliteapp.html" element={<NewFeatures />} />
               <Route path="/leadManagement.html" element={<LeadManagement />} />
               <Route path="/CustomerManagement.html" element={<LeadManagement />} />
               <Route path="/Channelpartner.html" element={<LeadManagement />} />
@@ -190,6 +186,7 @@ function App() {
               <Route path="/facilitymanagement.html" element={<Fmsheropage />} />
               <Route path="/hospitalmanagement.html" element={<HmsHeroPage />} />
               <Route path="/solarmanagement.html" element={<Smsheropage />} />
+              <Route path="/aimanagement.html" element={<PpeHeroPage/>} />
               <Route path="/manual.html" element={<Manual/>} />
               <Route path="/hrmanual.html" element={<ManualModuleDetails/>} />
               <Route path="/crmanual.html" element={<ManualModuleDetails/>} />
@@ -201,7 +198,7 @@ function App() {
               {/*Blog route*/}
               <Route path="/Blog.html" element={<Blog />} />
               <Route path="/Blog.html/:id" element={<BlogDetails />} />
-              <Route path="/Blog.html/addblog" element={<BlogForm/>} />
+              <Route path="/Blog.html/addblog.html" element={<BlogForm/>} />
               <Route path="/Blog.html/edit/:id?" element={<BlogForm />} />
     
               {/* Protected Routes with GlobalStyles */}
@@ -241,6 +238,7 @@ function App() {
         </ThemeProvider>
       </AuthProvider>
     );
+    
 }
 
 export default App;

@@ -157,19 +157,19 @@ const FeatureBox = styled.div`
   overflow: hidden;
   z-index: 1;
 
-  &:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-  }
+  // &:hover {
+  //   transform: translateY(-10px);
+  //   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+  // }
 
-  &:hover ${IconContainer} {
-    animation: ${float} 2s ease-in-out infinite;
-    background-color: ${props => props.hoverColor || props.bgColor || "#7d3eff"};
+  // &:hover ${IconContainer} {
+  //   animation: ${float} 2s ease-in-out infinite;
+  //   background-color: ${props => props.hoverColor || props.bgColor || "#7d3eff"};
     
-    img {
-      filter: brightness(0) invert(1);
-    }
-  }
+  //   img {
+  //     filter: brightness(0) invert(1);
+  //   }
+  // }
 
   &::before {
     content: '';
@@ -369,8 +369,46 @@ const KeyFeaturesWaste = (props) => {
       iconHover: "#ff7d3e"
     },
   ];
+
+  const Aifeatures = [
+    {
+      icon: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Manufacturing.png",
+      title: "Manufacturing Plant Operators ",
+      description: "People who oversee daily operations, safety compliance, and efficiency. They rely on AI insights for PPE monitoring, anomaly detection, and process optimization.",
+      accentColor: "#7d3eff",
+      iconBg: "https://github.com/AtomwalkCodeBase/Blogs/blob/main/Website-images/Manufacturing.png",
+      // iconHover: "#7d3eff"
+    },
+    {
+      icon: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/AI%26Surveillance.png", 
+      title: "AI & Surveillance Integrators",
+      description: "Experts who implement AI vision systems, camera setups, and model integrations (like PPE detection, ReID, OCR) for real-time, intelligent monitoring.",
+      accentColor: "#7d3eff",
+      iconBg: "#f0e7ff",
+      iconHover: "#7d3eff"
+    },
+    {
+      icon: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Maintenance%26SafetyTeams.png",
+      title: "Maintenance & Safety Teams ",
+      description: "Teams responsible for machine health, predictive repairs, and enforcing safety protocols—now empowered by real-time alerts and failure predictions.",
+      accentColor: "#7d3eff",
+      iconBg: "#f0e7ff",
+      iconHover: "#7d3eff"
+    },
+    {
+      icon: 'https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/ERPSystemManagers.png',
+      title: "ERP System Managers ",
+      description: "Tech professionals who integrate AI outputs with ERP dashboards—ensuring data visibility, compliance tracking, and centralized system control",
+      accentColor: "#7d3eff",
+      iconBg: "#f0e7ff",
+      iconHover: "#7d3eff"
+    },
+  ];
   const[data, setdata] = useState(features);
   useEffect(() => {
+    if(window.location.pathname == '/aimanagement.html'){
+      setdata(Aifeatures);
+    }
     if(window.location.pathname == '/facilitymanagement.html') {
       setdata(fmsfeatures);
     }

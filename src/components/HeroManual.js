@@ -342,7 +342,7 @@ const HeroManual = () => {
           <StatLabel>Access Available</StatLabel>
         </StatItem>
         <StatItem>
-          <StatNumber>97%</StatNumber>
+          <StatNumber>100%</StatNumber>
           <StatLabel>Customer Satisfaction</StatLabel>
         </StatItem>
       </StatsContainer>

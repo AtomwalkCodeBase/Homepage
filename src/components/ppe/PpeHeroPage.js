@@ -13,7 +13,7 @@ function PpeHeroPage() {
   description={
     "The Atomwalk Smart AI Management System is designed for modern manufacturing floors. Built using advanced computer vision, machine learning, and intelligent automation, it delivers real-time safety checks, operational monitoring, anomaly detection, and predictive analytics. Whether you're preventing bottlenecks, ensuring worker safety, or forecasting machine failures—our system brings it all together in one powerful platform."
   }
-  background={"#ECEFF1"}
+  background={"rgb(248 244 235)"}
   lead={true}
   img={"https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/ppe-1.png"}
 />

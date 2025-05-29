@@ -375,7 +375,9 @@ export const Skills = () => {
       image:
         "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/IntelliAI.png",
       path: "/aimanagement.html",
-      
+      "bgColor": "rgb(248 244 235)",
+  "accentColor": "#8B5A2B",
+  "accentColor2": "#D2A679"
     },
   ];
 

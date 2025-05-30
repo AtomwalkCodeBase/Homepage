@@ -348,6 +348,12 @@ const BenefitsImage = styled.div`
     object-fit: cover;
   }
 
+   @media (max-width: 767px) {
+    img {
+      height: 300px; /* Adjust this as needed for mobile */
+    }
+  }
+
   @media (min-width: 992px) {
     order: 2;
     height: 100%;

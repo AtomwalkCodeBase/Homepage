@@ -16,6 +16,7 @@ import {
   FaTicketAlt,
   FaFileAlt,
   FaGift,
+  FaUserCircle,
 } from "react-icons/fa"
 import { useAuth } from "../context/AuthContext"
 import { theme } from "../styles/Theme"
@@ -277,6 +278,7 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
     { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
     { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
     { path: "/attendance-tracking", name: "check in", icon: <FaUser /> },
+    { path: "/profile", name: "profile", icon: <FaUserCircle /> },
   ]
 
   const handleSearchClick = () => {

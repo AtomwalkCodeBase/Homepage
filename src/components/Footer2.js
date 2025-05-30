@@ -329,6 +329,8 @@ export default function Footer2() {
     "profile",
     "claims",
     "payslip",
+    "invoices",
+    "tickets",
   ];
   
   useEffect(() => {

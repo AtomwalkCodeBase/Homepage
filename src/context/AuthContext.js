@@ -4,6 +4,7 @@ import { customerslogin, empLoginURL } from "../services/ConstantServies"
 import { getCompanyInfo, getEmployeeInfo } from "../services/authServices"
 // import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import { getCustomerDetailList } from "../services/productServices"
 
 const AuthContext = createContext()
 
@@ -15,6 +16,7 @@ export const AuthProvider = ({ children }) => {
   const[profile, setProfile] = useState([])
   const [companyInfo, setCompanyInfo] = useState([]) 
    const [error, setError] = useState("")  
+   const iscoustomerLogin = localStorage.getItem("customerUser") ? true : false
   // const navigate = useNavigate()
   useEffect(() => {
     const fetchProfile = async () => {
@@ -33,9 +35,24 @@ export const AuthProvider = ({ children }) => {
         console.log('Failed to fetch company info:', error);
       }
     };
-    fetchProfile();
+     const fetchcustomerProfile = async () => {
+      const custId = localStorage.getItem("custId");
+      try {
+        const res = await getCustomerDetailList(custId);
+        setProfile(res?.data[0]);
+      } catch (error) {
+        console.error('Failed to fetch profile:', error);
+      }
+    };
+    if(iscoustomerLogin){
+     fetchcustomerProfile();
+    }
+    else{
+      fetchProfile();
+    }
+    
     // Check if user is logged in from localStorage
-    const user = localStorage.getItem("hrmsUser")
+    const user = localStorage.getItem("hrmsUser")||localStorage.getItem("customerUser");
     if (user) {
       setCurrentUser(JSON.parse(user))
     }
@@ -99,6 +116,13 @@ export const AuthProvider = ({ children }) => {
  
 
   const logout = () => {
+    if(iscoustomerLogin){
+      localStorage.removeItem("customerToken")
+      localStorage.removeItem("custId")
+      localStorage.removeItem("customerUser")
+      toast.success("Logout successful!");
+      window.location.href = "/customer/login.html";
+    }
     localStorage.removeItem("hrmsUser")
     localStorage.removeItem("dbName")
     localStorage.removeItem("userToken")
@@ -107,9 +131,7 @@ export const AuthProvider = ({ children }) => {
     setCurrentUser(null)
   }
 const customerlogin = async(userData) => {
-  try{
-
-  
+  try{ 
     const payload = {
             mobile_number: userData.mobile,
             pin: userData.password,
@@ -123,8 +145,9 @@ const customerlogin = async(userData) => {
         const { token, customer_id } = response.data;
         localStorage.setItem('customerToken', token);
         localStorage.setItem('custId', String(customer_id));
+        localStorage.setItem('customerUser', JSON.stringify(userData));
         toast.success("Login successful!");
-        window.location.href = "/customerdashboard";
+        window.location.href = "/invoices";
        }
    }
   catch (error) {
@@ -140,7 +163,8 @@ const customerlogin = async(userData) => {
     profile,
     companyInfo,
     error,
-    customerlogin
+    customerlogin,
+    iscoustomerLogin
   }
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>

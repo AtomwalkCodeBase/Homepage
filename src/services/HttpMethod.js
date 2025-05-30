@@ -4,7 +4,7 @@ import { addEmpLeave, endpoint, getEmpLeavedata } from "../services/ConstantServ
 
 // Utility function to get token from localStorage
 const getToken = () => {
-  return localStorage.getItem('userToken');
+  return localStorage.getItem('userToken')?localStorage.getItem('userToken'):localStorage.getItem('customerToken');
 };
 
 export const authAxios = async (url, data) => {

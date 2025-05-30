@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext, getAppointeeList, processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip, processbarthdaywish, getResponseList, forgetPin } from "../services/ConstantServies";
+import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext, getAppointeeList, processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip, processbarthdaywish, getResponseList, forgetPin, getCustomerDetailListURL, userTaskListURL } from "../services/ConstantServies";
 import { authAxios, authAxiosFilePost, authAxiosget, authAxiosPost } from "./HttpMethod";
 
 export function getEmpLeave(leave_type , emp_id) {
@@ -172,8 +172,25 @@ export function getEmpLeave(leave_type , emp_id) {
     console.log('Data to be sent:', request_data);
     return authAxiosFilePost(processEmployeeRequest, request_data)
   }
-  export async function forgetUserPinView(data, dbName) {
+  export function forgetUserPinView(data, dbName) {
     return authAxiosPost(`${forgetPin + dbName}/`, data);
+}
+export function getCustomerDetailList(customerId) {
+  let data={}
+  if(customerId){
+    data['customer_id']=customerId;
+  }
+  return authAxios(getCustomerDetailListURL,data);
+}
+export  function getTasksList(task_type, customer_id) {
+  let data = {};
+  if (task_type){
+      data['task_type'] = task_type;
+  }
+  if (customer_id){
+      data['customer_id'] = customer_id;
+  }
+  return authAxios(userTaskListURL, data)
 }
   export async function setuserpinview(o_pin, n_pin) {
     try {

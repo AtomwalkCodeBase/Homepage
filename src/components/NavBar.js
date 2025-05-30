@@ -74,7 +74,9 @@ export const NavBar = () => {
     "requestdesk",
     "profile",
     "claims",
-    "payslip"
+    "payslip",
+    "invoices",
+    "tickets"
   ];
   
   useEffect(() => {
@@ -83,20 +85,12 @@ export const NavBar = () => {
       const shouldHideNavbar = pathsToHideNavbar.some(path => currentPath.includes(path));
       setOpennavbar(!shouldHideNavbar);
     };
-  
+
     checkPath();
-  
-    const handlePopState = () => {
-      checkPath();
-    };
-  
-    window.addEventListener('popstate', handlePopState);
-    
-    return () => {
-      window.removeEventListener('popstate', handlePopState);
-    };
-  }, []);
-  
+
+    // Listen to route changes via react-router
+    // location changes when route changes
+  }, [location]);
   useEffect(() => {
     const onScroll = () => {
       if (window.scrollY > 50) {
@@ -209,7 +203,7 @@ export const NavBar = () => {
                       <span role="img" aria-label="HRMS" style={{ marginRight: 8 }}>👤</span>
                       Login to Employee HRMS
                     </LoginOption>
-                       <LoginOption onClick={handleHRMSLogin}>
+                       <LoginOption onClick={handlecustomerLogin}>
                       <span role="img" aria-label="HRMS" style={{ marginRight: 8 }}>🛃</span>
                       Login as Customer
                     </LoginOption>

@@ -17,6 +17,8 @@ import {
   FaUserCircle,
   FaComments,
   FaGift,
+  FaFileInvoiceDollar,
+  FaLifeRing,
 } from "react-icons/fa"
 import { useAuth } from "../context/AuthContext"
 import { useTheme } from "../context/ThemeContext"
@@ -375,9 +377,9 @@ const LogoutButton = styled.button`
 const Sidebar = ({ onToggle, initialOpen = true }) => {
   const [isOpen, setIsOpen] = useState(initialOpen)
   const location = useLocation()
-  const { currentUser, logout, profile,companyInfo  } = useAuth()
+  const { currentUser, logout, profile,companyInfo,iscoustomerLogin  } = useAuth()
   const { theme, uiPreferences } = useTheme();
-
+  const customerdata=localStorage.getItem("customerUser");
   useEffect(() => {
     setIsOpen(initialOpen)
   }, [initialOpen])
@@ -390,7 +392,12 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
     }
   }
 
-  const menuItems = [
+  const menuItems =customerdata ? [ 
+    { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
+    { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
+    ]
+    :
+     [
     { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },
     // { path: "/employees", name: "Employees", icon: <FaUsers /> },
     { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
@@ -411,9 +418,12 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
   return (
     <SidebarContainer isOpen={isOpen} theme={theme} uiPreferences={uiPreferences}>
       <SidebarHeader isOpen={isOpen} uiPreferences={uiPreferences}>
-        <Logo isOpen={isOpen} uiPreferences={uiPreferences}>
-         <img src={companyInfo.image} alt="Company Logo" style={{ width: "70px", marginRight: "1rem",borderRadius:"10px" }} /> HRMS
+      {iscoustomerLogin? <Logo isOpen={isOpen} uiPreferences={uiPreferences}>
+        <img src={profile.image} alt="Company Logo" style={{ width: "70px",height:"70px", marginRight: "1rem",borderRadius:"50%" }} />
         </Logo>
+        : <Logo isOpen={isOpen} uiPreferences={uiPreferences}>
+         <img src={companyInfo.image} alt="Company Logo" style={{ width: "70px", marginRight: "1rem",borderRadius:"10px" }} /> HRMS
+        </Logo>}
         <ToggleButton onClick={toggleSidebar} uiPreferences={uiPreferences}>
           {isOpen ? <FaTimes /> : <FaBars />}
         </ToggleButton>

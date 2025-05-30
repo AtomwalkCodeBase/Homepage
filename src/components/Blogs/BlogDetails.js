@@ -85,7 +85,6 @@ const HeaderSection = styled.section`
     transform: translateX(-50%);
     width: 100px;
     height: 2px;
-    background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
   }
 
   @media (max-width: 768px) {
@@ -193,7 +192,7 @@ const MetaItem = styled.div`
 
 const FeaturedImageSection = styled.section`
   background: #ffffff;
-  padding: 0 0 80px 0;
+  padding: 0 0 40px 0;
 `;
 
 const ImageContainer = styled.div`
@@ -208,8 +207,9 @@ const ImageContainer = styled.div`
 `;
 
 const FeaturedImage = styled.img`
-  width: 100%;
-  height: 500px;
+  display: block;
+  margin: 1rem auto;
+  width: 70%;
   object-fit: cover;
   border-radius: 8px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
@@ -221,7 +221,6 @@ const FeaturedImage = styled.img`
   }
 
   @media (max-width: 768px) {
-    height: 300px;
     border-radius: 4px;
   }
 `;
@@ -229,7 +228,7 @@ const FeaturedImage = styled.img`
 // Content Section
 const ContentSection = styled.section`
   background: #ffffff;
-  padding: 80px 0 100px 0;
+  padding: 30px 0 100px 0;
   position: relative;
 `;
 

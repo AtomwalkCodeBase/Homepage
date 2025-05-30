@@ -30,6 +30,9 @@ cursor: pointer;
   min-width: 270px;
   z-index: 1000;
   display: ${props => props.show ? 'block' : 'none'};
+  @media (max-width: 768px) {
+  margin-right: -150px;
+  }
 `;
 
 const LoginOption = styled.div`

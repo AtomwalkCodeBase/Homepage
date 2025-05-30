@@ -43,6 +43,9 @@ const LoginBanner = styled.div`
 const BannerContent = styled.div`
   max-width: 500px;
   animation: ${fadeIn} 1s ease;
+     @media (max-width: 768px) {
+    margin-top: 100px;
+  }
 `
 
 const BannerTitle = styled.h1`

@@ -24,7 +24,7 @@ const LoginContainer = styled.div`
   
   @media (max-width: 768px) {
     flex-direction: column;
-    margin-top: 30px;
+    /* margin-top: 30px; */
   }
 `
 
@@ -48,7 +48,7 @@ const BannerContent = styled.div`
   animation: ${fadeIn} 1s ease;
 
     @media (max-width: 768px) {
-    margin-top: 60px;
+    margin-top: 100px;
   }
 `
 

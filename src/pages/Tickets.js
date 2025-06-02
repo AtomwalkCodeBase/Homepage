@@ -11,12 +11,14 @@ import {
   FaExclamationCircle,
   FaSpinner,
   FaLifeRing,
+  FaUpload,
+  FaTimes,
 } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
 import Modal from "../components/modals/Modal"
-import { getTasksList } from "../services/productServices"
+import { addCustomerTicket, getTaskCategory, getTasksList } from "../services/productServices"
 
 const TicketsContainer = styled.div`
   width: 100%;
@@ -434,6 +436,74 @@ const FormGroup = styled.div`
     font-family: inherit;
   }
 `
+
+
+const FormLabel = styled.label`
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+`
+const FileUploadContainer = styled.div`
+  border: 2px dashed ${({ theme }) => theme.colors.border};
+  border-radius: 4px;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.primaryLight}22;
+  }
+`
+
+const FileUploadIcon = styled.div`
+  font-size: 2rem;
+  color: ${({ theme }) => theme.colors.primary};
+  margin-bottom: 0.5rem;
+`
+
+const FileUploadText = styled.div`
+  color: ${({ theme }) => theme.colors.textLight};
+  margin-bottom: 0.5rem;
+`
+
+const FileInput = styled.input`
+  display: none;
+`
+
+const UploadedFile = styled.div`
+  display: flex;
+  align-items: center;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  
+  span {
+    flex: 1;
+    margin-left: 0.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  button {
+    background: transparent;
+    border: none;
+    color: ${({ theme }) => theme.colors.error};
+    cursor: pointer;
+  }
+`
+
+const ErrorMessage = styled.div`
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+  display: ${props => props.show ? 'block' : 'none'};
+  margin-bottom: 1rem;`
+
 const Paragraphdata = styled.p`
   color: ${({ theme }) => theme.colors.textLight};
 `
@@ -448,18 +518,24 @@ const Tickets = () => {
   const [showNewTicketModal, setShowNewTicketModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const [selectedTicket, setSelectedTicket] = useState(null)
-  const [newTicket, setNewTicket] = useState({
-    category: "",
-    title: "",
-    description: "",
-    priority: "medium",
-  })
   const cid = localStorage.getItem("custId")
   
   // State for dynamic categories and statuses from API
-  const [categories, setCategories] = useState([])
+  const [categories, setCategories] = useState({ main: [], sub: [] });
   const [statuses, setStatuses] = useState([])
-console.log(categories,"setCategories")
+  const [isFileError, setIsFileError] = useState(false)
+  const [formData, setFormData] = useState({
+      category: "",
+      sub_category: "",
+      description: "",
+      files:null,
+    })
+  const [editForm, setEditForm] = useState({
+    remarks: "",
+    ref_file: null,
+  });
+  const [showViewImageModal, setShowViewImageModal] = useState(false);
+// console.log(categories,"setCategories")
   // Map API status to simplified status for UI
   const statusMap = {
     "Planned": "open",
@@ -489,12 +565,37 @@ console.log(categories,"setCategories")
     "low": "03"
   }
 
+    useEffect(() => {
+      const fetchCategory = async () => {
+        try {
+          const res = await getTaskCategory();
+          const mainCategories = res?.data?.filter((item) => item.e_type === 'TASK') || [];
+          const subCategories = res?.data?.filter((item) => item.e_type === 'T_SUB') || [];
+          setCategories({
+            main: mainCategories,
+            sub: subCategories,
+          });
+        } catch (error) {
+          console.error("error fetching category: ", error);
+        }
+      };
+      fetchCategory();
+    }, []);
+
+    const subCategoriesForSelected = categories.sub.filter(
+      (sub) => {
+        const selectedCategory = categories.main.find(cat => cat.id === parseInt(formData.category));
+        return selectedCategory ? sub.parent_category_name === selectedCategory.name : false;
+      }
+    );
+
+
   useEffect(() => {
     const fetchTickets = async () => {
       try {
         setLoading(true)
         const response = await getTasksList("ALL", cid)
-        console.log(response,"response")
+        // console.log(response.data,"response")
         // Process API response to match our UI format
         const processedTickets = response?.data?.map(ticket => ({
           id: ticket.task_ref_id || `TKT-${ticket.id}`,
@@ -508,12 +609,14 @@ console.log(categories,"setCategories")
           lastUpdated: ticket.task_date || new Date().toISOString().split('T')[0],
           apiData: ticket // Keep original API data for reference
         }))
+
+        // console.log("ticket", processedTickets)
         
         setTickets(processedTickets)
         setFilteredTickets(processedTickets)
         // Extract unique categories from tickets
-        const uniqueCategories = [...new Set(response?.data?.map(t => t.task_category_name || "General"))]
-        setCategories(uniqueCategories)
+        // const uniqueCategories = [...new Set(response?.data?.map(t => t.task_category_name || "General"))]
+        // setCategories(uniqueCategories)
         
         // Extract unique statuses from API
         const uniqueStatuses = [...new Set(response?.data?.map(t => t.task_status))]
@@ -582,56 +685,97 @@ console.log(categories,"setCategories")
 
   const handleEditTicket = (ticket) => {
     setSelectedTicket(ticket)
+    console.log("jhsdkhc",ticket);
+    setEditForm({
+    remarks: ticket.description || "",
+    ref_file: null,
+  });
+    
     setShowEditModal(true)
   }
 
-  const handleViewTicket = (ticket) => {
-    // Implement view functionality
-    console.log(`Viewing ticket ${ticket.id}`)
+  
+// Handle file change for edit
+const handleEditFileChange = (e) => {
+  setEditForm((prev) => ({
+    ...prev,
+    ref_file: e.target.files[0],
+  }));
+};
+
+  const removeEditFile = () => {
+    setEditForm((prev) => ({
+      ...prev,
+      ref_file: null,
+    }));
+  };
+
+ const handleViewTicket = (ticket) => {
+    setSelectedTicket(ticket);
+    setShowViewImageModal(true);
+    console.log(`Viewing ticket ${ticket.id} image:`, ticket.apiData.ref_file);
+  };
+
+  
+  const handleFileChange = (e) => {
+      setFormData((prev) => ({
+        ...prev,
+        files: (e.target.files[0]),
+      }))
+    }
+
+  const removeFile = () => {
+    setFormData((prev) => ({
+      ...prev,
+      files: null,
+    }))
   }
 
+  const onClose = () => {
+    setShowNewTicketModal(false);
+    setShowEditModal(false);
+    setShowViewImageModal(false);
+     setFormData({
+        category: "",
+        sub_category: "",
+        description: "",
+        files:null,
+      })
+
+  }
+  
+
   const handleSubmitNewTicket = async () => {
-    if (!newTicket.category || !newTicket.title || !newTicket.description) {
+    if (!formData.category || !formData.description || !formData.files) {
       alert("Please fill in all required fields")
       return
     }
 
+    const formDatas = new FormData();
+    formDatas.append('cust_id', cid);
+    formDatas.append('call_mode', 'TICKET_ADD');
+    formDatas.append('remarks', formData.description.trim());
+    formDatas.append('task_category_id', formData.category);
+     if (formData.sub_category) {
+    formDatas.append('task_sub_category_id', formData.sub_category);
+  }
+
+    if (formDatas.file) {
+      formData.append('uploaded_file', formData.files);
+    }
+
     try {
-      // Here you would call your API to create a new ticket
-      // This is a mock implementation - replace with actual API call
-      const newTicketData = {
-        name: newTicket.title,
-        remarks: newTicket.description,
-        task_category_name: newTicket.category,
-        priority: reversePriorityMap[newTicket.priority] || "02",
-        task_status: "Planned", // Default status
-        task_type: "TICKET",
-        task_date: new Date().toISOString().split('T')[0]
-      }
 
-      // Simulate API response
-      const response = { 
-        id: Math.floor(Math.random() * 1000),
-        task_ref_id: `TICKET${String(Math.floor(Math.random() * 1000000)).padStart(6, '0')}_${new Date().getFullYear()}`,
-        ...newTicketData
-      }
+      const res = await addCustomerTicket(formDatas)
+      if(res.status === 200){
+        setFormData({
+        category: "",
+        sub_category: "",
+        description: "",
+        files:null,
+      })
+    }
 
-      const processedTicket = {
-        id: response.task_ref_id || `TKT-${response.id}`,
-        category: response.task_category_name,
-        title: response.name,
-        description: response.remarks,
-        status: statusMap[response.task_status] || "open",
-        originalStatus: response.task_status,
-        priority: priorityMap[response.priority] || "medium",
-        dateSubmitted: response.task_date,
-        lastUpdated: response.task_date,
-        apiData: response
-      }
-
-      setTickets([processedTicket, ...tickets])
-      setNewTicket({ category: "", title: "", description: "", priority: "medium" })
-      setShowNewTicketModal(false)
     } catch (error) {
       console.error("Error creating ticket:", error)
       alert("Failed to create ticket. Please try again.")
@@ -641,34 +785,46 @@ console.log(categories,"setCategories")
   const handleUpdateTicket = async () => {
     if (!selectedTicket) return
 
+    const formData = new FormData();
+    formData.append('cust_id', cid);
+    formData.append('call_mode', 'TICKET_UPDATE');
+    formData.append('remarks', editForm.remarks.trim());
+    formData.append('task_id', selectedTicket.apiData.id?.toString() || "");
+    if (editForm.ref_file) {
+      formData.append('uploaded_file', editForm.ref_file);
+    }
+
+    // Log FormData contents
+    const formDataEntries = {};
+    for (const [key, value] of formData.entries()) {
+      formDataEntries[key] = value instanceof File ? value.name : value;
+    }
+    console.log("update data", formData);
+
     try {
-      // Here you would call your API to update the ticket
-      // This is a mock implementation - replace with actual API call
-      const updatedTicket = {
-        ...selectedTicket.apiData,
-        task_status: selectedTicket.originalStatus,
-        priority: reversePriorityMap[selectedTicket.priority] || "02",
-        remarks: selectedTicket.description
-      }
 
-      // Simulate API response
-      const response = updatedTicket
-
-      const updatedTickets = tickets.map(ticket => 
-        ticket.id === selectedTicket.id ? {
-          ...ticket,
-          description: response.remarks,
-          priority: priorityMap[response.priority] || ticket.priority,
-          status: statusMap[response.task_status] || ticket.status,
-          originalStatus: response.task_status,
-          lastUpdated: new Date().toISOString().split('T')[0],
-          apiData: response
-        } : ticket
-      )
+      const response = await addCustomerTicket(formData); // Assuming this handles updates
+      if (response.status === 200) {
+        const updatedTickets = tickets.map((ticket) =>
+          ticket.id === selectedTicket.id
+            ? {
+                ...ticket,
+                description: editForm.remarks,
+                apiData: {
+                  ...ticket.apiData,
+                  remarks: editForm.remarks,
+                  ref_file: editForm.ref_file,
+                },
+              }
+            : ticket
+        );
+     
 
       setTickets(updatedTickets)
       setShowEditModal(false)
       setSelectedTicket(null)
+      setEditForm({ remarks: "", ref_file: null });
+}
     } catch (error) {
       console.error("Error updating ticket:", error)
       alert("Failed to update ticket. Please try again.")
@@ -782,9 +938,9 @@ console.log(categories,"setCategories")
             <label>Filter by Category</label>
             <FilterSelect value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
               <option value="all">All Categories</option>
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
+              {categories.main.map((category) => (
+                <option key={category.name} value={category.name}>
+                  {category.name}
                 </option>
               ))}
             </FilterSelect>
@@ -859,34 +1015,53 @@ console.log(categories,"setCategories")
 
         {/* New Ticket Modal */}
         {showNewTicketModal && (
-          <Modal onClose={() => setShowNewTicketModal(false)} title="Submit New Ticket">
+          <Modal onClose={onClose} title="Submit New Ticket">
             <ModalContent>
               <FormGroup>
                 <label>Category *</label>
                 <select
-                  value={newTicket.category}
-                  onChange={(e) => setNewTicket({ ...newTicket, category: e.target.value })}
+                  value={formData.category}
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value, sub_category: "" })}
                 >
                   <option value="">Select Category</option>
-                  {categories.map((category) => (
-                    <option key={category} value={category}>
-                      {category}
+                  {categories.main.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
                     </option>
                   ))}
                 </select>
               </FormGroup>
 
-              <FormGroup>
+              {formData.category && subCategoriesForSelected.length > 0 && (
+                <FormGroup>
+                  <label>Sub Category</label>
+                  <select
+                    value={formData.sub_category}
+                    onChange={(e) =>
+                      setFormData({ ...formData, sub_category: e.target.value })
+                    }
+                  >
+                    <option value="">Select Sub Category</option>
+                    {subCategoriesForSelected.map((sub) => (
+                      <option key={sub.id} value={sub.id}>
+                        {sub.name}
+                      </option>
+                    ))}
+                  </select>
+                </FormGroup>
+              )}
+
+              {/* <FormGroup>
                 <label>Title *</label>
                 <input
                   type="text"
-                  value={newTicket.title}
-                  onChange={(e) => setNewTicket({ ...newTicket, title: e.target.value })}
+                  value={formData.remarks}
+                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   placeholder="Brief description of the issue"
                 />
-              </FormGroup>
+              </FormGroup> */}
 
-              <FormGroup>
+              {/* <FormGroup>
                 <label>Priority</label>
                 <select
                   value={newTicket.priority}
@@ -896,19 +1071,47 @@ console.log(categories,"setCategories")
                   <option value="medium">Medium</option>
                   <option value="high">High</option>
                 </select>
-              </FormGroup>
+              </FormGroup> */}
 
               <FormGroup>
-                <label>Description *</label>
+                <label>remarks *</label>
                 <textarea
-                  value={newTicket.description}
-                  onChange={(e) => setNewTicket({ ...newTicket, description: e.target.value })}
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   placeholder="Detailed description of the issue or request"
                 />
               </FormGroup>
 
+              <FormGroup>
+                            <FormLabel>Receipts/Attachments</FormLabel>
+                            <FileUploadContainer onClick={() => document.getElementById("file-upload").click()}>
+                              <FileInput id="file-upload" type="file"  onChange={handleFileChange} />
+                              <FileUploadIcon>
+                                <FaUpload />
+                              </FileUploadIcon>
+                              <FileUploadText>Click to upload or drag and drop files here</FileUploadText>
+                              <div style={{ fontSize: "0.8rem", color: "#666" }}>Supported formats: JPG, PNG, PDF (Max 5MB)</div>
+                            </FileUploadContainer>
+                            <ErrorMessage show={isFileError}>please upload or drag and drop files here</ErrorMessage>
+              
+                            {formData.files && (
+                              <div style={{ marginTop: "1rem" }}>
+                                <div style={{ fontWeight: "500", marginBottom: "0.5rem" }}>
+                                  Uploaded Files (1)
+                                </div>
+                                  <UploadedFile >
+                                    <FaUpload />
+                                    <span>{formData?.files.name}</span>
+                                    <button type="button" onClick={() => removeFile(1)}>
+                                      <FaTimes />
+                                    </button>
+                                  </UploadedFile>
+                              </div>
+                            )}
+                          </FormGroup>
+
               <div style={{ display: "flex", gap: "1rem", justifyContent: "flex-end" }}>
-                <Button variant="outline" onClick={() => setShowNewTicketModal(false)}>
+                <Button variant="outline" onClick={onClose}>
                   Cancel
                 </Button>
                 <Button onClick={handleSubmitNewTicket}>Submit Ticket</Button>
@@ -919,61 +1122,147 @@ console.log(categories,"setCategories")
 
         {/* Edit Ticket Modal */}
         {showEditModal && selectedTicket && (
-          <Modal onClose={() => setShowEditModal(false)} title="Edit Ticket">
+          <Modal onClose={onClose} title="Edit Ticket">
             <ModalContent>
-              <FormGroup>
-                <label>Ticket ID</label>
-                <input type="text" value={selectedTicket.id} disabled />
-              </FormGroup>
 
               <FormGroup>
-                <label>Status</label>
-                <select 
-                  value={selectedTicket.originalStatus}
-                  onChange={(e) => setSelectedTicket({
-                    ...selectedTicket,
-                    originalStatus: e.target.value,
-                    status: statusMap[e.target.value] || "open"
-                  })}
-                >
-                  {statuses.map(status => (
-                    <option key={status} value={status}>{status}</option>
-                  ))}
-                </select>
+                <label>Category</label>
+                <input 
+                 type="text"
+                 value={selectedTicket.category}
+                 disabled
+                />
               </FormGroup>
 
-              <FormGroup>
-                <label>Priority</label>
-                <select 
-                  value={selectedTicket.priority}
-                  onChange={(e) => setSelectedTicket({
-                    ...selectedTicket,
-                    priority: e.target.value
-                  })}
-                >
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
-                </select>
-              </FormGroup>
+              {selectedTicket.apiData.task_sub_category_name && (
+                <FormGroup>
+                  <label>Sub Category</label>
+                  <input
+                    type="text"
+                    value={selectedTicket.apiData.task_sub_category_name}
+                    disabled
+                  />
+                </FormGroup>
+              )}
 
               <FormGroup>
-                <label>Description</label>
+               <label>Description</label>
                 <textarea
-                  value={selectedTicket.description}
-                  onChange={(e) => setSelectedTicket({
-                    ...selectedTicket,
-                    description: e.target.value
-                  })}
+                  value={editForm.remarks}
+                  onChange={(e) => setEditForm({ ...editForm, remarks: e.target.value })}
                   placeholder="Ticket description"
                 />
               </FormGroup>
 
+              <FormGroup>
+                <FormLabel>Attachment</FormLabel>
+                <FileUploadContainer onClick={() => document.getElementById("edit-file-upload").click()}>
+                  <FileInput id="edit-file-upload" type="file" onChange={handleEditFileChange} />
+                  <FileUploadIcon>
+                    <FaUpload />
+                  </FileUploadIcon>
+                  <FileUploadText>Click to upload or drag and drop files here</FileUploadText>
+                  <div style={{ fontSize: "0.8rem", color: "#666" }}>Supported formats: JPG, PNG, PDF (Max 5MB)</div>
+                </FileUploadContainer>
+                {/* Show uploaded file if present */}
+                {editForm.ref_file && (
+                  <div style={{ marginTop: "1rem" }}>
+                    <div style={{ fontWeight: "500", marginBottom: "0.5rem" }}>
+                      Uploaded File
+                    </div>
+                    <UploadedFile>
+                      <FaUpload />
+                      <span>{editForm.ref_file.name}</span>
+                      <button type="button" onClick={removeEditFile}>
+                        <FaTimes />
+                      </button>
+                    </UploadedFile>
+                    {/* If image, show preview */}
+                    {editForm.ref_file.type && (
+                      <div style={{ marginTop: "0.5rem" }}>
+                        <img
+                          src={URL.createObjectURL(editForm.ref_file)}
+                          alt="Preview"
+                          style={{ maxWidth: "200px", maxHeight: "120px", borderRadius: "6px", border: "1px solid #eee" }}
+                        />
+                      </div>
+                    )}
+    </div>
+  )}
+            {/* Show existing file if present and no new file selected */}
+            {!editForm.ref_file && selectedTicket.apiData.ref_file && (
+              <div style={{ marginTop: "1rem" }}>
+                <div style={{ fontWeight: "500", marginBottom: "0.5rem" }}>
+                  Existing File
+                </div>
+                <UploadedFile>
+                  <FaUpload />
+                  <span>{selectedTicket.apiData.ref_file}</span>
+                </UploadedFile>
+                {/* If existing file is image, show preview */}
+                {(selectedTicket.apiData.ref_file) && (
+                  <div style={{ marginTop: "0.5rem" }}>
+                    <img
+                      src={selectedTicket.apiData.ref_file}
+                      alt="Preview"
+                      style={{ maxWidth: "200px", maxHeight: "120px", borderRadius: "6px", border: "1px solid #eee" }}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+          </FormGroup>
+
               <div style={{ display: "flex", gap: "1rem", justifyContent: "flex-end" }}>
-                <Button variant="outline" onClick={() => setShowEditModal(false)}>
+                <Button variant="outline" onClick={onClose}>
                   Cancel
                 </Button>
                 <Button onClick={handleUpdateTicket}>Update Ticket</Button>
+              </div>
+            </ModalContent>
+          </Modal>
+        )}
+
+        {/* View Image Modal */}
+        {showViewImageModal && selectedTicket && (
+          <Modal onClose={onClose} title={`View Image for Ticket ${selectedTicket.id}`}>
+            <ModalContent>
+              <div style={{ textAlign: "center" }}>
+                {selectedTicket.apiData.ref_file ? (
+                  <div>
+                    <img
+                      src={selectedTicket.apiData.ref_file}
+                      alt={`Attachment for ${selectedTicket.id}`}
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "500px",
+                        borderRadius: "6px",
+                        border: "1px solid #eee",
+                        marginBottom: "1rem",
+                      }}
+                      onError={(e) => (e.target.src = "/placeholder-image.jpg")} // Fallback for broken images
+                    />
+                    <a
+                      href={selectedTicket.apiData.ref_file}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: "#3B82F6", textDecoration: "none" }}
+                    >
+                      View Full Image
+                    </a>
+                  </div>
+                ) : (
+                  <p style={{ color: "#666", fontSize: "1rem" }}>
+                    {selectedTicket.apiData.ref_file
+                      ? "No image available. File is not an image."
+                      : "No attachment available for this ticket."}
+                  </p>
+                )}
+              </div>
+              <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1rem" }}>
+                <Button variant="outline" onClick={onClose}>
+                  Close
+                </Button>
               </div>
             </ModalContent>
           </Modal>

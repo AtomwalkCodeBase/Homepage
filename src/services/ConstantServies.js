@@ -75,3 +75,6 @@ export const processbarthdaywish = `${newhrendpoint}/process_emp_event_response/
 export const getResponseList = `${newhrendpoint}/get_event_response/${db_name}/`;
 export const forgetPin = `${newhrendpoint}/emp_forget_pin/`;
 export const customerslogin = `${hrendpoint}/customer_user_login/`;
+export const addCustomerTicketURL = `${endpoint}/process_customer_ticket/${db_name}/`;
+export const getTaskCategoryURL = `${endpoint}/get_task_category/${db_name}/`;
+

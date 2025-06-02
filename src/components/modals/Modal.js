@@ -41,6 +41,8 @@ const ModalContent = styled.div`
   box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
   animation: ${scaleUp} 0.3s ease;
   position: relative;
+  overflow-y: scroll;
+  height: 80%
 `;
 
 const CloseButton = styled.button`

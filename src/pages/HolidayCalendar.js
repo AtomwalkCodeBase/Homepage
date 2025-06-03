@@ -814,7 +814,7 @@ const handleSubmit = (formattedDate,type,id) => {
       }
     }
     
-    return dates.length > 0 ? dates : <p style={{ padding: '1rem', textAlign: 'center' }}>No holidays in this month</p>;
+    return dates.length > 0 ? dates : <NoHolidaysMessage style={{ padding: '1rem', textAlign: 'center' }}>No holidays in this month</NoHolidaysMessage>;
   };
 
   // Calculate progress percentage
@@ -969,7 +969,7 @@ const handleSubmit = (formattedDate,type,id) => {
                 )}
               </TableContainer>
              </OptionalHolidayCard>
-{activeTab === "calendar" && (
+           {activeTab === "calendar" && (
         <CalendarContainer>
           <MonthNavigation>
             <NavButton onClick={prevMonth}>
@@ -1085,7 +1085,7 @@ const handleSubmit = (formattedDate,type,id) => {
                   <div className="filled"></div>
                 </div>
                 <div className="progress-text">
-                  {selectedHolidays.length} of {holidayData.no_optional_holidays} selected
+                  {filteredHolidays.filter(h => h.is_opted ==true).length} of {holidayData.no_optional_holidays} selected
                 </div>
               </SelectionProgress>
               <TableContainer>

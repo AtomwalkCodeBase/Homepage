@@ -19,6 +19,7 @@ import {
   FaGift,
   FaFileInvoiceDollar,
   FaLifeRing,
+  FaExchangeAlt,
 } from "react-icons/fa"
 import { useAuth } from "../context/AuthContext"
 import { useTheme } from "../context/ThemeContext"
@@ -411,6 +412,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
     { path: "/helpdesk", name: "Help Desk", icon: <FaComments/> },
     { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
     { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
+    { path: "/shift-detail", name: "My Shifts", icon: <FaExchangeAlt /> },
     { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
     { path: "/profile", name: "My Profile", icon: <FaUserCircle />, section: "Account" },
   ]

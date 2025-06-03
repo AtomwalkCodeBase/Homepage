@@ -38,6 +38,7 @@ import {
   FaSquareFull,
   FaIcons,
   FaSortAlphaDown,
+  FaExchangeAlt,
 } from "react-icons/fa"
 import Card from "../components/Card"
 import Button from "../components/Button"
@@ -1245,7 +1246,7 @@ const Profile = () => {
     isCustomTheme,
     resetCustomizations,
   } = useTheme()
-
+console.log(profileData,"activeTab")
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -1325,6 +1326,18 @@ const Profile = () => {
     setPinError("")
     setPinSuccess("")
   }
+    const getShiftLabel = (shiftNo) => {
+    switch (shiftNo) {
+      case 1:
+        return "Morning Shift"
+      case 2:
+        return "Evening Shift"
+      case 3:
+        return "Night Shift"
+      default:
+        return "Working Day"
+    }
+  }
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -1384,9 +1397,9 @@ const Profile = () => {
 
               <DetailCard color="#2B6CB0">
                 <DetailLabel iconColor="#2B6CB0">
-                  <FaMapMarkerAlt /> Location
+                  <FaExchangeAlt /> My Shift
                 </DetailLabel>
-                <DetailValue>{profileData.location || "Not specified"}</DetailValue>
+                <DetailValue>{getShiftLabel(profileData.current_shift) || "Not specified"}</DetailValue>
               </DetailCard>
             </DetailGrid>
           </>
@@ -2394,8 +2407,8 @@ $
                   <span>Joined: {profileData.date_of_join || "Not specified"}</span>
                 </ProfileDetail>
                 <ProfileDetail>
-                  <FaMapMarkerAlt />
-                  <span>{profileData.location || "Not specified"}</span>
+                  <FaExchangeAlt/>
+                  <span>{getShiftLabel(profileData.current_shift) || "Not specified"}</span>
                 </ProfileDetail>
               </div>
             </ProfileInfo>

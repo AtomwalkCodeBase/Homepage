@@ -79,7 +79,8 @@ export const NavBar = () => {
     "claims",
     "payslip",
     "invoices",
-    "tickets"
+    "tickets",
+    "shift-detail"
   ];
   
   useEffect(() => {

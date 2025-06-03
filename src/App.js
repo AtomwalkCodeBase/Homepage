@@ -94,6 +94,7 @@ import Logins from "./components/loginpage/Login";
 import NewFeatures from "./components/hrm/NewFeatures";
 import Invoices from "./pages/Invoices";
 import Tickets from "./pages/Tickets";
+import MyShiftDetail from "./pages/MyShiftDetail";
 function App() {
   const [openslide, setOpenslide] = useState(false);
   const url = "https://www.atomwalk.com/rest-auth/login/";
@@ -146,7 +147,6 @@ function App() {
               <Route path="/privacy-policy.html" element={<PrivacyPolicy />} />
               <Route path="/disclaimer.html" element={<Disclaimer />} />
               <Route path="/faq.html" element={<Commonfnadq />} />
-    
               {/* Domain Specific Routes */}
               <Route path="/crm.html" element={<HerosectionCrm />} />
               <Route path="/lms.html" element={<LmsHeroSection />} />
@@ -236,6 +236,7 @@ function App() {
                 <Route path="/wishes" element={<MyWishes />} />
                 <Route path="/invoices" element={<Invoices />} />
                 <Route path="/tickets" element={<Tickets />} />
+                <Route path="/shift-detail" element={<MyShiftDetail />} />
               </Route>
     
               {/* Catch All */}

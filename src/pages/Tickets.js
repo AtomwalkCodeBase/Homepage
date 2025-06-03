@@ -395,7 +395,7 @@ const LoadingState = styled.div`
   justify-content: center;
   align-items: center;
   padding: 4rem;
-  color: ${({ theme }) => theme.colors.textSecondary};
+  color: ${({ theme }) => theme.colors.text};
   font-size: 1.1rem;
 `
 

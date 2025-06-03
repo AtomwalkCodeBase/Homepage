@@ -6,6 +6,7 @@ import { FaFileInvoiceDollar, FaDownload, FaEye } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
+import { getInvoiceList } from "../services/productServices"
 
 const InvoicesContainer = styled.div`
   width: 100%;
@@ -359,10 +360,12 @@ const LoadingState = styled.div`
   justify-content: center;
   align-items: center;
   padding: 4rem;
-  color: ${({ theme }) => theme.colors.textSecondary};
+  color: ${({ theme }) => theme.colors.text};
   font-size: 1.1rem;
 `
-
+const ItemsSummary = styled.div`
+  margin-top: 1rem;
+  color: ${({ theme }) => theme.colors.text};`
 const Invoices = () => {
   const [invoices, setInvoices] = useState([])
   const [filteredInvoices, setFilteredInvoices] = useState([])
@@ -371,57 +374,58 @@ const Invoices = () => {
   const [dateFilter, setDateFilter] = useState("")
   const [loading, setLoading] = useState(true)
 
-  // Mock data - replace with actual API call
-  const mockInvoices = [
-    {
-      id: "INV-001",
-      name: "Monthly Subscription",
-      dateIssued: "2024-01-15",
-      amount: 299.99,
-      status: "paid",
-      dueDate: "2024-02-15",
-    },
-    {
-      id: "INV-002",
-      name: "Professional Services",
-      dateIssued: "2024-01-20",
-      amount: 1500.0,
-      status: "pending",
-      dueDate: "2024-02-20",
-    },
-    {
-      id: "INV-003",
-      name: "Software License",
-      dateIssued: "2024-01-10",
-      amount: 599.99,
-      status: "overdue",
-      dueDate: "2024-01-25",
-    },
-    {
-      id: "INV-004",
-      name: "Consulting Fee",
-      dateIssued: "2024-01-25",
-      amount: 2000.0,
-      status: "paid",
-      dueDate: "2024-02-25",
-    },
-    {
-      id: "INV-005",
-      name: "Training Program",
-      dateIssued: "2024-01-30",
-      amount: 750.0,
-      status: "pending",
-      dueDate: "2024-03-01",
-    },
-  ]
+  // Map API status to simplified status for UI
+  const statusMap = {
+    "A": "paid",
+    "P": "pending",
+    "D": "overdue"
+    // Add other status mappings as needed
+  }
+
+  // Reverse status map for API calls
+  const reverseStatusMap = {
+    "paid": "A",
+    "pending": "P",
+    "overdue": "D"
+  }
 
   useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      setInvoices(mockInvoices)
-      setFilteredInvoices(mockInvoices)
-      setLoading(false)
-    }, 1000)
+    const fetchInvoices = async () => {
+      try {
+        setLoading(true)
+        const response = await getInvoiceList()
+        
+        if (response.status === 200) {
+          // Process API response to match our UI format
+          const processedInvoices = response.data.map(invoice => ({
+            id: invoice.invoice_number,
+            name: `Invoice for ${invoice.customer_name}`,
+            dateIssued: invoice.invoice_date,
+            amount: invoice.total,
+            status: statusMap[invoice.invoice_status] || "pending",
+            originalStatus: invoice.invoice_status,
+            dueDate: invoice.invoice_due_date,
+            currencySymbol: invoice.currency_symbol || "₹",
+            isOverdue: invoice.is_over_due,
+            customerName: invoice.customer_name,
+            orderItems: invoice.order_items,
+            taxAmount: invoice.tax_amount,
+            apiData: invoice // Keep original API data for reference
+          }))
+          
+          setInvoices(processedInvoices)
+          setFilteredInvoices(processedInvoices)
+        } else {
+          console.error("Failed to fetch invoices:", response.statusText)
+        }
+      } catch (error) {
+        console.error("Error fetching invoices:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    fetchInvoices()
   }, [])
 
   useEffect(() => {
@@ -431,7 +435,7 @@ const Invoices = () => {
     if (searchTerm) {
       filtered = filtered.filter(
         (invoice) =>
-          invoice.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          invoice.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
           invoice.id.toLowerCase().includes(searchTerm.toLowerCase()),
       )
     }
@@ -443,7 +447,11 @@ const Invoices = () => {
 
     // Filter by date
     if (dateFilter) {
-      filtered = filtered.filter((invoice) => invoice.dateIssued >= dateFilter)
+      filtered = filtered.filter((invoice) => {
+        const invoiceDate = new Date(invoice.dateIssued)
+        const filterDate = new Date(dateFilter)
+        return invoiceDate >= filterDate
+      })
     }
 
     setFilteredInvoices(filtered)
@@ -455,20 +463,40 @@ const Invoices = () => {
     // You can add actual download logic here
   }
 
-  const handleView = (invoiceId) => {
+  const handleView = (invoice) => {
     // Implement view functionality
-    console.log(`Viewing invoice ${invoiceId}`)
+    console.log(`Viewing invoice ${invoice.id}`)
     // You can add modal or navigation logic here
+    // For now, just show a detailed view in console
+    console.log("Invoice details:", invoice)
   }
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("en-US", {
+  const formatCurrency = (amount, currencySymbol = "₹") => {
+    return new Intl.NumberFormat("en-IN", {
       style: "currency",
-      currency: "USD",
-    }).format(amount)
+      currency: "INR",
+      currencyDisplay: "symbol",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(amount).replace("₹", currencySymbol)
   }
 
   const formatDate = (dateString) => {
+    if (!dateString) return "N/A"
+    
+    // Handle dates in format "30-May-2025"
+    if (dateString.includes("-")) {
+      const [day, month, year] = dateString.split("-")
+      const monthIndex = new Date(`${month} 1, 2020`).getMonth()
+      const date = new Date(year, monthIndex, day)
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+    }
+    
+    // Fallback for other date formats
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
@@ -528,7 +556,7 @@ const Invoices = () => {
             <label>Search Invoices</label>
             <SearchInput
               type="text"
-              placeholder="Search by name or ID..."
+              placeholder="Search by customer name or invoice number..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -560,10 +588,12 @@ const Invoices = () => {
               <InvoiceCard key={invoice.id}>
                 <InvoiceHeader>
                   <InvoiceInfo>
-                    <InvoiceName>{invoice.name}</InvoiceName>
+                    <InvoiceName>Invoice for {invoice.customerName}</InvoiceName>
                     <InvoiceId>{invoice.id}</InvoiceId>
                   </InvoiceInfo>
-                  <StatusBadge status={invoice.status}>{invoice.status}</StatusBadge>
+                  <StatusBadge status={invoice.status}>
+                    {invoice.status} {invoice.isOverdue && "(Overdue)"}
+                  </StatusBadge>
                 </InvoiceHeader>
 
                 <InvoiceDetails>
@@ -576,16 +606,29 @@ const Invoices = () => {
                     <p>{formatDate(invoice.dueDate)}</p>
                   </DetailItem>
                 </InvoiceDetails>
-
+                <ItemsSummary>
+                  <h4>Items ({invoice.orderItems.length})</h4>
+                  <ul>
+                    {invoice.orderItems.slice(0, 2).map((item, index) => (
+                      <li key={index}>
+                        {item.product.product_name} × {item.quantity}
+                      </li>
+                    ))}
+                    {invoice.orderItems.length > 2 && (
+                      <li>+{invoice.orderItems.length - 2} more items</li>
+                    )}
+                  </ul>
+                </ItemsSummary>
+                
                 <Amount>
                   <h4>Amount</h4>
-                  <p>{formatCurrency(invoice.amount)}</p>
+                  <p>{formatCurrency(invoice.amount, invoice.currencySymbol)}</p>
                 </Amount>
 
                 <ActionButtons>
-                  <Button variant="outline" size="sm" onClick={() => handleView(invoice.id)}>
+                  <Button variant="outline" size="sm" onClick={() => handleView(invoice)}>
                     <FaEye />
-                    View
+                    View Details
                   </Button>
                   <Button variant="primary" size="sm" onClick={() => handleDownload(invoice.id)}>
                     <FaDownload />

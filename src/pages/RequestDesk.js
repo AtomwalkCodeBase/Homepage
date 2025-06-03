@@ -565,6 +565,11 @@ const RequestDesk = () => {
           <p>
             <strong>Status:</strong> {getStatusInfo(selectedTicket).text}
           </p>
+          <img
+            src={selectedTicket.submitted_file_1 || "/placeholder.svg"}
+            alt="Request Image"
+            style={{ width: "100%", height: "auto", borderRadius: "8px", marginTop: "1rem" }}
+          />
           <div style={{ marginTop: "1rem" }}>
             <Button variant="primary" onClick={closeModal}>
               Close

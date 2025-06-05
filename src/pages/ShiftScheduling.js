@@ -1,519 +1,597 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import styled from "styled-components"
+import { format, startOfWeek, addDays, addWeeks, subWeeks } from "date-fns"
 import {
   FaCalendarAlt,
-  FaExchangeAlt,
-  FaPlus,
-  FaEdit,
-  FaTrash,
-  FaFilter,
-  FaFileExport,
-  FaUserClock,
+  FaChevronLeft,
+  FaChevronRight,
+  FaSun,
+  FaMoon,
+  FaCloudSun,
+  FaBriefcase,
+  FaUmbrellaBeach,
+  FaHome,
+  FaStarOfDavid,
+  // FaToday,
 } from "react-icons/fa"
 import Layout from "../components/Layout"
-import Card from "../components/Card"
+import { empshiftData, empshiftDatas } from "../services/productServices"
 import Button from "../components/Button"
-import Badge from "../components/Badge"
+// Styled Components
+const Card = styled.div`
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  margin: 1rem;
 
-const ShiftHeader = styled.div`
+  @media (max-width: 768px) {
+    margin: 0.5rem;
+    padding: 1rem;
+  }
+`
+
+const WeekNavigation = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   flex-wrap: wrap;
   gap: 1rem;
-  
+
   @media (max-width: 768px) {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+  }
+`
+
+const NavButton = styled.button`
+  background:${({ theme }) => theme.colors.primary};;
+  border: ${({ theme }) => theme.colors.primary};;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+
+  &:hover {
+    background: #f1f5f9;
+  }
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+`
+
+const NavButtonGroup = styled.div`
+  display: flex;
+  gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
+  }
+`
+
+const TodayButton = styled(NavButton)`
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.text};
+  border-color: ${({ theme }) => theme.colors.primary};
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primaryLight};
+  }
+`
+
+const WeekTitle = styled.h3`
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.primary};
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    text-align: center;
+    justify-content: center;
   }
 `
 
 const FilterContainer = styled.div`
   display: flex;
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   flex-wrap: wrap;
 `
 
 const FilterSelect = styled.select`
   padding: 0.5rem 1rem;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
   background: white;
-`
+  min-width: 250px;
+  font-size: 0.875rem;
 
-const TableContainer = styled.div`
-  overflow-x: auto;
-`
-
-const ActionButtons = styled.div`
-  display: flex;
-  gap: 0.5rem;
-`
-
-const WeekNavigation = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-`
-
-const WeekTitle = styled.h3`
-  margin: 0;
-`
-
-const NavButton = styled.button`
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  &:hover {
-    color: ${({ theme }) => theme.colors.primary};
+  @media (max-width: 768px) {
+    min-width: 100%;
   }
 `
 
-const ShiftGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
+const EmployeeInfo = styled.div`
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e2e8f0;
+`
+
+const EmployeeDetails = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: 0.5rem;
+`
+
+const EmployeeName = styled.h4`
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+`
+
+const EmployeeId = styled.div`
+  font-size: 0.875rem;
+  color: #64748b;
+`
+
+const ShiftApplicable = styled.div`
+  font-size: 0.875rem;
+  color: #059669;
+  font-weight: 500;
+`
+
+const ShiftCalendar = styled.div`
   margin-bottom: 2rem;
-  
-  @media (max-width: 1024px) {
+`
+
+const CalendarHeader = styled.h4`
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1rem;
+`
+
+const CalendarGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.25rem;
+  }
+`
+
+const CalendarDay = styled.div`
+  border: 2px solid ${({ isToday,theme }) => (isToday ? theme.colors.primary : "#e2e8f0")};
+  border-radius: 8px;
+  overflow: hidden;
+  background: ${({ isToday }) => (isToday ? "#eff6ff" : "white")};
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+`
+
+const DayHeader = styled.div`
+  background: ${({ isToday, theme }) => (isToday ? theme.colors.primary : "#f8fafc")};
+  color: ${({ isToday }) => (isToday ? "white" : "#64748b")};
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: 600;
+
+  @media (max-width: 768px) {
+    padding: 0.25rem;
+  }
+`
+
+const DayName = styled.div`
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  @media (max-width: 768px) {
+    font-size: 0.625rem;
+  }
+`
+
+const DayDate = styled.div`
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+  }
+`
+
+const ShiftContent = styled.div`
+  padding: 0.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60px;
+
+  @media (max-width: 768px) {
+    padding: 0.5rem 0.25rem;
+    min-height: 50px;
+  }
+`
+
+const ShiftBadge = styled.div`
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: ${({ variant }) =>
+    variant === "orange"
+      ? "#ffedd5"
+      : variant === "blue"
+        ? "#dbeafe"
+        : variant === "purple"
+          ? "#ede9fe"
+          : variant === "green"
+            ? "#dcfce7"
+            : variant === "red"
+              ? "#fee2e2"
+              : "#f1f5f9"};
+  color: ${({ variant }) =>
+    variant === "orange"
+      ? "#9a3412"
+      : variant === "blue"
+        ? "#1e40af"
+        : variant === "purple"
+          ? "#5b21b6"
+          : variant === "green"
+            ? "#166534"
+            : variant === "red"
+              ? "#991b1b"
+              : "#475569"};
+
+  @media (max-width: 768px) {
+    padding: 0.25rem;
+    font-size: 0.625rem;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+`
+
+const ShiftText = styled.span`
+  @media (max-width: 768px) {
     display: none;
   }
 `
 
-const ShiftGridHeader = styled.div`
-  font-weight: 500;
-  text-align: center;
-  padding: 0.5rem;
-  
-  &:first-child {
-    text-align: left;
+const Legend = styled.div`
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+`
+
+const LegendTitle = styled.h4`
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1rem;
+`
+
+const LegendGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
   }
 `
 
-const ShiftGridRow = styled.div`
-  display: contents;
-  
-  &:hover > div {
-    background: ${({ theme }) => theme.colors.backgroundAlt};
-  }
-`
-
-const ShiftGridCell = styled.div`
-  background: white;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  padding: 0.5rem;
-  min-height: 60px;
+const LegendItem = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  
-  &:first-child {
-    font-weight: 500;
-    justify-content: flex-start;
-  }
 `
 
-const ShiftTag = styled.div`
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  text-align: center;
-  
-  ${(props) =>
-    props.type === "morning" &&
-    `
-    background: ${props.theme.colors.primaryLight};
-    color: ${props.theme.colors.primary};
-  `}
-  
-  ${(props) =>
-    props.type === "afternoon" &&
-    `
-    background: ${props.theme.colors.secondaryLight};
-    color: ${props.theme.colors.secondary};
-  `}
-  
-  ${(props) =>
-    props.type === "night" &&
-    `
-    background: ${props.theme.colors.info}22;
-    color: ${props.theme.colors.info};
-  `}
-  
-  ${(props) =>
-    props.type === "off" &&
-    `
-    background: ${props.theme.colors.error}22;
-    color: ${props.theme.colors.error};
-  `}
-`
-
-const TabContainer = styled.div`
+const LegendBadge = styled.div`
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
   display: flex;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  margin-bottom: 1.5rem;
-  overflow-x: auto;
+  align-items: center;
+  background: ${({ variant }) =>
+    variant === "orange"
+      ? "#ffedd5"
+      : variant === "blue"
+        ? "#dbeafe"
+        : variant === "purple"
+          ? "#ede9fe"
+          : variant === "green"
+            ? "#dcfce7"
+            : variant === "red"
+              ? "#fee2e2"
+              : "#f1f5f9"};
+  color: ${({ variant }) =>
+    variant === "orange"
+      ? "#9a3412"
+      : variant === "blue"
+        ? "#1e40af"
+        : variant === "purple"
+          ? "#5b21b6"
+          : variant === "green"
+            ? "#166534"
+            : variant === "red"
+              ? "#991b1b"
+              : "#475569"};
 `
 
-const Tab = styled.button`
-  padding: 0.75rem 1.5rem;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid ${(props) => (props.active ? props.theme.colors.primary : "transparent")};
-  color: ${(props) => (props.active ? props.theme.colors.primary : props.theme.colors.text)};
-  font-weight: ${(props) => (props.active ? "600" : "400")};
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  
-  &:hover {
-    color: ${({ theme }) => theme.colors.primary};
+const LoadingMessage = styled.div`
+  padding: 2rem;
+  text-align: center;
+  color: #64748b;
+  font-size: 1rem;
+`
+
+const ErrorMessage = styled.div`
+  padding: 2rem;
+  text-align: center;
+  color: #dc2626;
+  background: #fee2e2;
+  border-radius: 8px;
+  font-size: 1rem;
+`
+
+
+
+const MyShiftDetail = () => {
+  const [currentDate, setCurrentDate] = useState(new Date())
+  const [weekDates, setWeekDates] = useState([])
+  const [shiftData, setShiftData] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [selectedEmployee, setSelectedEmployee] = useState(null)
+
+  // Define shift types based on API data
+  const shiftTypes = {
+    0: { name: "Not Applicable", color: "gray", icon: FaBriefcase },
+    1: { name: "Morning Shift", color: "orange", icon: FaSun },
+    2: { name: "Evening Shift", color: "blue", icon: FaCloudSun },
+    3: { name: "Night Shift", color: "purple", icon: FaMoon },
   }
-`
 
-const ShiftScheduling = () => {
-  const [currentWeek, setCurrentWeek] = useState("Dec 04 - Dec 10, 2023")
-  const [activeTab, setActiveTab] = useState("schedule")
-
-  // Mock data for shifts
-  const shifts = [
-    { id: 1, name: "Morning Shift", time: "06:00 AM - 02:00 PM", type: "morning" },
-    { id: 2, name: "Afternoon Shift", time: "02:00 PM - 10:00 PM", type: "afternoon" },
-    { id: 3, name: "Night Shift", time: "10:00 PM - 06:00 AM", type: "night" },
-    { id: 4, name: "Day Off", time: "-", type: "off" },
-  ]
-
-  // Mock data for employees
-  const employees = [
-    { id: 1, name: "Ashutosh Mohapatra", department: "Engineering" },
-    { id: 2, name: "Jane Smith", department: "Marketing" },
-    { id: 3, name: "Mike Johnson", department: "HR" },
-    { id: 4, name: "Sarah Williams", department: "Finance" },
-    { id: 5, name: "Robert Brown", department: "Sales" },
-  ]
-
-  // Mock data for schedule
-  const schedule = [
-    {
-      employee: employees[0],
-      shifts: [shifts[0], shifts[0], shifts[0], shifts[0], shifts[3], shifts[3], shifts[0]],
-    },
-    {
-      employee: employees[1],
-      shifts: [shifts[1], shifts[1], shifts[1], shifts[1], shifts[1], shifts[3], shifts[3]],
-    },
-    {
-      employee: employees[2],
-      shifts: [shifts[2], shifts[2], shifts[2], shifts[3], shifts[2], shifts[2], shifts[2]],
-    },
-    {
-      employee: employees[3],
-      shifts: [shifts[0], shifts[0], shifts[3], shifts[0], shifts[0], shifts[0], shifts[3]],
-    },
-    {
-      employee: employees[4],
-      shifts: [shifts[1], shifts[1], shifts[1], shifts[1], shifts[1], shifts[3], shifts[3]],
-    },
-  ]
-
-  // Mock data for shift requests
-  const shiftRequests = [
-    {
-      id: 1,
-      employee: "Ashutosh Mohapatra",
-      currentShift: "Morning Shift (Dec 09)",
-      requestedShift: "Day Off",
-      reason: "Personal appointment",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      employee: "Jane Smith",
-      currentShift: "Afternoon Shift (Dec 07)",
-      requestedShift: "Morning Shift",
-      reason: "Doctor appointment in the evening",
-      status: "Approved",
-    },
-    {
-      id: 3,
-      employee: "Mike Johnson",
-      currentShift: "Night Shift (Dec 08)",
-      requestedShift: "Afternoon Shift",
-      reason: "Family event",
-      status: "Rejected",
-    },
-  ]
+  const holidayTypes = {
+    NA: { name: "Working Day", color: "default", icon: FaBriefcase },
+    WEEKLY_OFF: { name: "Weekly Off", color: "green", icon: FaHome },
+    COMPANY_OFF: { name: "Company Holiday", color: "red", icon: FaUmbrellaBeach },
+  }
 
   // Days of the week
   const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+  const weekdaysShort = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+
+  useEffect(() => {
+    const start = startOfWeek(currentDate, { weekStartsOn: 1 }) // Week starts on Monday
+    const dates = Array.from({ length: 7 }, (_, i) => addDays(start, i))
+    setWeekDates(dates)
+
+    // Format the date for API call (YYYYMMDD)
+    const apiDateFormat = format(start, "yyyyMMdd")
+    fetchShiftData(apiDateFormat)
+  }, [currentDate])
+
+  const fetchShiftData = async (dateString) => {
+    setLoading(true)
+    setError(null)
+    try {
+      const response = await empshiftDatas(dateString)
+      if (response && response.data) {
+        setShiftData(response.data)
+        // Auto-select first employee if available
+        if (response.data.w_shift_list && response.data.w_shift_list.length > 0) {
+          setSelectedEmployee(response.data.w_shift_list[0])
+        }
+      } else {
+        setError("No shift data available")
+      }
+    } catch (error) {
+      console.error("Error fetching shift data:", error)
+      setError("Failed to load shift data. Please try again later.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handlePreviousWeek = () => {
+    setCurrentDate((prevDate) => subWeeks(prevDate, 1))
+  }
+
+  const handleNextWeek = () => {
+    setCurrentDate((prevDate) => addWeeks(prevDate, 1))
+  }
+
+  const handleToday = () => {
+    setCurrentDate(new Date())
+  }
+
+  const getShiftForDay = (employee, dayIndex) => {
+    if (!employee?.shift_list || dayIndex >= employee.shift_list.length) return null
+    return employee.shift_list[dayIndex]
+  }
+
+  const getShiftBadgeProps = (shift) => {
+    if (shift.holiday_type !== "NA") {
+      const holidayInfo = holidayTypes[shift.holiday_type]
+      return {
+        variant: holidayInfo.color,
+        icon: holidayInfo.icon,
+        children: holidayInfo.name,
+      }
+    }
+    const shiftInfo = shiftTypes[shift.shift_no] || shiftTypes[0]
+    return {
+      variant: shiftInfo.color,
+      icon: shiftInfo.icon,
+      children: shiftInfo.name,
+    }
+  }
+
+  const isToday = (date) => {
+    const today = new Date()
+    return format(date, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
+  }
 
   return (
-    <Layout title="Shift Scheduling">
-      <ShiftHeader>
-        <div>
-          <h2>Shift Scheduling</h2>
-          <p>Manage employee shifts and schedules</p>
-        </div>
-
-        <div>
-          <Button variant="outline" style={{ marginRight: "0.5rem" }}>
-            <FaFileExport /> Export Schedule
-          </Button>
-          <Button variant="primary">
-            <FaPlus /> Create Schedule
-          </Button>
-        </div>
-      </ShiftHeader>
-
+    <Layout title="Shift Details">
       <Card>
-        <TabContainer>
-          <Tab active={activeTab === "schedule"} onClick={() => setActiveTab("schedule")}>
-            Weekly Schedule
-          </Tab>
-          <Tab active={activeTab === "shifts"} onClick={() => setActiveTab("shifts")}>
-            Manage Shifts
-          </Tab>
-          <Tab active={activeTab === "requests"} onClick={() => setActiveTab("requests")}>
-            Shift Change Requests
-          </Tab>
-        </TabContainer>
+        <WeekNavigation>
+          <Button onClick={handlePreviousWeek}>
+            <FaChevronLeft /> Previous Week
+          </Button>
+          <WeekTitle>
+            <FaCalendarAlt style={{ marginRight: "0.5rem" }} />
+            {weekDates.length === 7
+              ? `${format(weekDates[0], "MMM dd")} - ${format(weekDates[6], "MMM dd, yyyy")}`
+              : "Loading week..."}
+          </WeekTitle>
+          <NavButtonGroup>
+            <Button onClick={handleToday}>
+               Today
+            </Button>
+            <Button onClick={handleNextWeek}>
+              Next Week <FaChevronRight />
+            </Button>
+          </NavButtonGroup>
+        </WeekNavigation>
 
-        {activeTab === "schedule" && (
-          <>
-            <WeekNavigation>
-              <NavButton>&lt; Previous Week</NavButton>
-              <WeekTitle>
-                <FaCalendarAlt style={{ marginRight: "0.5rem" }} />
-                {currentWeek}
-              </WeekTitle>
-              <NavButton>Next Week &gt;</NavButton>
-            </WeekNavigation>
-
-            <FilterContainer>
-              <FilterSelect>
-                <option>All Departments</option>
-                <option>Engineering</option>
-                <option>Marketing</option>
-                <option>HR</option>
-                <option>Finance</option>
-                <option>Sales</option>
-              </FilterSelect>
-
-              <FilterSelect>
-                <option>All Shifts</option>
-                <option>Morning Shift</option>
-                <option>Afternoon Shift</option>
-                <option>Night Shift</option>
-              </FilterSelect>
-
-              <Button variant="outline" size="sm">
-                <FaFilter /> Filter
-              </Button>
-            </FilterContainer>
-
-            <ShiftGrid>
-              <ShiftGridHeader>Employee</ShiftGridHeader>
-              {weekdays.map((day) => (
-                <ShiftGridHeader key={day}>{day}</ShiftGridHeader>
+        {/* Employee Selection */}
+        {shiftData?.w_shift_list && shiftData.w_shift_list.length > 1 && (
+          <FilterContainer>
+            <FilterSelect
+              value={selectedEmployee?.emp_id || ""}
+              onChange={(e) => {
+                const employee = shiftData.w_shift_list.find((emp) => emp.emp_id === e.target.value)
+                setSelectedEmployee(employee)
+              }}
+            >
+              {shiftData.w_shift_list.map((employee) => (
+                <option key={employee.emp_id} value={employee.emp_id}>
+                  {employee.emp_name} ({employee.emp_id})
+                </option>
               ))}
-
-              {schedule.map((item, index) => (
-                <ShiftGridRow key={index}>
-                  <ShiftGridCell>{item.employee.name}</ShiftGridCell>
-                  {item.shifts.map((shift, shiftIndex) => (
-                    <ShiftGridCell key={shiftIndex}>
-                      <ShiftTag type={shift.type}>{shift.name}</ShiftTag>
-                    </ShiftGridCell>
-                  ))}
-                </ShiftGridRow>
-              ))}
-            </ShiftGrid>
-
-            <TableContainer>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Employee</th>
-                    <th>Department</th>
-                    <th>Mon</th>
-                    <th>Tue</th>
-                    <th>Wed</th>
-                    <th>Thu</th>
-                    <th>Fri</th>
-                    <th>Sat</th>
-                    <th>Sun</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {schedule.map((item, index) => (
-                    <tr key={index}>
-                      <td>{item.employee.name}</td>
-                      <td>{item.employee.department}</td>
-                      {item.shifts.map((shift, shiftIndex) => (
-                        <td key={shiftIndex}>
-                          <Badge
-                            variant={
-                              shift.type === "morning"
-                                ? "primary"
-                                : shift.type === "afternoon"
-                                  ? "secondary"
-                                  : shift.type === "night"
-                                    ? "info"
-                                    : "error"
-                            }
-                          >
-                            {shift.type === "off" ? "Off" : shift.name.split(" ")[0]}
-                          </Badge>
-                        </td>
-                      ))}
-                      <td>
-                        <ActionButtons>
-                          <Button variant="ghost" size="sm" title="Edit">
-                            <FaEdit />
-                          </Button>
-                        </ActionButtons>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </TableContainer>
-          </>
+            </FilterSelect>
+          </FilterContainer>
         )}
 
-        {activeTab === "shifts" && (
+        {loading ? (
+          <LoadingMessage>Loading shift data...</LoadingMessage>
+        ) : error ? (
+          <ErrorMessage>{error}</ErrorMessage>
+        ) : selectedEmployee ? (
           <>
-            <Button variant="primary" style={{ marginBottom: "1rem" }}>
-              <FaPlus /> Add New Shift
-            </Button>
+            {/* Employee Info */}
+            <EmployeeInfo>
+              <EmployeeDetails>
+                <EmployeeName>{selectedEmployee.emp_name}</EmployeeName>
+                <EmployeeId>
+                  ID: {selectedEmployee.emp_id} | Type: {selectedEmployee.emp_type}
+                </EmployeeId>
+                <ShiftApplicable>
+                  Shift Applicable: {selectedEmployee.is_shift_applicable ? "Yes" : "No"}
+                </ShiftApplicable>
+              </EmployeeDetails>
+            </EmployeeInfo>
 
-            <TableContainer>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Shift Name</th>
-                    <th>Timing</th>
-                    <th>Type</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {shifts.map((shift) => (
-                    <tr key={shift.id}>
-                      <td>{shift.name}</td>
-                      <td>{shift.time}</td>
-                      <td>
-                        <Badge
-                          variant={
-                            shift.type === "morning"
-                              ? "primary"
-                              : shift.type === "afternoon"
-                                ? "secondary"
-                                : shift.type === "night"
-                                  ? "info"
-                                  : "error"
-                          }
-                        >
-                          {shift.type.charAt(0).toUpperCase() + shift.type.slice(1)}
-                        </Badge>
-                      </td>
-                      <td>
-                        <ActionButtons>
-                          <Button variant="ghost" size="sm" title="Edit">
-                            <FaEdit />
-                          </Button>
-                          <Button variant="ghost" size="sm" title="Delete">
-                            <FaTrash />
-                          </Button>
-                        </ActionButtons>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </TableContainer>
+            {/* Weekly Calendar View */}
+            <ShiftCalendar>
+              <CalendarHeader>Weekly Schedule</CalendarHeader>
+              <CalendarGrid>
+                {weekDates.map((date, index) => {
+                  const shift = getShiftForDay(selectedEmployee, index)
+                  const shiftProps = shift ? getShiftBadgeProps(shift) : null
+                  const IconComponent = shiftProps?.icon || FaBriefcase
+
+                  return (
+                    <CalendarDay key={index} isToday={isToday(date)}>
+                      <DayHeader isToday={isToday(date)}>
+                        <DayName>{weekdaysShort[index]}</DayName>
+                        <DayDate>{format(date, "dd")}</DayDate>
+                      </DayHeader>
+                      <ShiftContent>
+                        {shift ? (
+                          <ShiftBadge variant={shiftProps.variant}>
+                            <IconComponent style={{ marginRight: "0.5rem", fontSize: "0.875rem" }} />
+                            <ShiftText>{shiftProps.children}</ShiftText>
+                          </ShiftBadge>
+                        ) : (
+                          <ShiftBadge variant="gray">
+                            <FaBriefcase style={{ marginRight: "0.5rem", fontSize: "0.875rem" }} />
+                            <ShiftText>No Data</ShiftText>
+                          </ShiftBadge>
+                        )}
+                      </ShiftContent>
+                    </CalendarDay>
+                  )
+                })}
+              </CalendarGrid>
+            </ShiftCalendar>
+
+            {/* Legend */}
+            <Legend>
+              <LegendTitle>Shift Types</LegendTitle>
+              <LegendGrid>
+                {Object.entries(shiftTypes).map(([key, shift]) => {
+                  const IconComponent = shift.icon
+                  return (
+                    <LegendItem key={key}>
+                      <LegendBadge variant={shift.color}>
+                        <IconComponent style={{ marginRight: "0.5rem" }} />
+                        {shift.name}
+                      </LegendBadge>
+                    </LegendItem>
+                  )
+                })}
+                {Object.entries(holidayTypes)
+                  .filter(([key]) => key !== "NA")
+                  .map(([key, holiday]) => {
+                    const IconComponent = holiday.icon
+                    return (
+                      <LegendItem key={key}>
+                        <LegendBadge variant={holiday.color}>
+                          <IconComponent style={{ marginRight: "0.5rem" }} />
+                          {holiday.name}
+                        </LegendBadge>
+                      </LegendItem>
+                    )
+                  })}
+              </LegendGrid>
+            </Legend>
           </>
-        )}
-
-        {activeTab === "requests" && (
-          <>
-            <Button variant="primary" style={{ marginBottom: "1rem" }}>
-              <FaExchangeAlt /> Request Shift Change
-            </Button>
-
-            <TableContainer>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Employee</th>
-                    <th>Current Shift</th>
-                    <th>Requested Shift</th>
-                    <th>Reason</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {shiftRequests.map((request) => (
-                    <tr key={request.id}>
-                      <td>{request.employee}</td>
-                      <td>{request.currentShift}</td>
-                      <td>{request.requestedShift}</td>
-                      <td>{request.reason}</td>
-                      <td>
-                        <Badge
-                          variant={
-                            request.status === "Approved"
-                              ? "success"
-                              : request.status === "Pending"
-                                ? "warning"
-                                : "error"
-                          }
-                        >
-                          {request.status}
-                        </Badge>
-                      </td>
-                      <td>
-                        <ActionButtons>
-                          {request.status === "Pending" && (
-                            <>
-                              <Button variant="primary" size="sm">
-                                Approve
-                              </Button>
-                              <Button variant="outline" size="sm">
-                                Reject
-                              </Button>
-                            </>
-                          )}
-                          {request.status !== "Pending" && (
-                            <Button variant="ghost" size="sm" title="View">
-                              <FaUserClock />
-                            </Button>
-                          )}
-                        </ActionButtons>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </TableContainer>
-          </>
+        ) : (
+          <ErrorMessage>No employee data available</ErrorMessage>
         )}
       </Card>
     </Layout>
   )
 }
 
-export default ShiftScheduling
-
+export default MyShiftDetail

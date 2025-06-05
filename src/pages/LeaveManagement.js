@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import {
@@ -25,6 +23,7 @@ import { Pie, Bar } from 'react-chartjs-2';
 import ConfirmationPopup from "../components/modals/ConfirmationPopup"
 import { toast } from "react-toastify"
 import { theme } from "../styles/Theme"
+import { useAuth } from "../context/AuthContext"
 
 // Register ChartJS components
 ChartJS.register(
@@ -142,14 +141,17 @@ const ActionButtons = styled.div`
 `
 
 const LeaveManagement = () => {
+  const { profile  } = useAuth()
   const [activeTab, setActiveTab] = useState("my-requests")
   const [isOpen, setIsOpen] = useState(false)
   const emp_id = localStorage.getItem("empNoId") 
   const [leaveRequests, setLeaveRequests] = useState([])
   const [workleaveRequests, setworkleaveRequests] = useState([])
   const[teamLeaveRequests, setTeamLeaveRequests] = useState([])
+  const[approveTeamLeaveRequests, setApproveTeamLeaveRequests] = useState([])
   const [relode, setRelode] = useState(1)
   const [showPopup, setShowPopup] = useState(false);
+  const [approve , setApprove] = useState(false);
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const [year, month, day] = dateString.split("-");
@@ -179,7 +181,13 @@ const LeaveManagement = () => {
       emp_id: localStorage.getItem("empNoId"),
       leave_id: ""
     });
-    const handleOpenPopup = (leaveRequests) => {
+    const handleOpenPopup = (leaveRequests,data) => {
+      if(data === "APPROVE"){
+        setApprove(true);
+      }
+      else{
+        setApprove(false);
+      }
       setShowPopup(true);
       setFormData({
         ...formData,
@@ -187,7 +195,7 @@ const LeaveManagement = () => {
         from_date: leaveRequests.from_date,
         to_date: leaveRequests.to_date,
         // remarks: leaveRequests.remarks,
-        call_mode: "CANCEL",
+        call_mode:data?data:"CANCEL",
         hrm_lite:"",
         leave_id: leaveRequests.id,
         emp_id: localStorage.getItem("empNoId")
@@ -203,12 +211,12 @@ const LeaveManagement = () => {
     //   // Add your cancellation logic here
     //   setShowPopup(false);
     // };
-    const handleConfirm=(remark)=>{
+    const handleConfirm=(remark,data)=>{
       postEmpLeave({ ...formData, remarks: remark })
             .then(() => {
               setRelode(relode + 1);
               handleClosePopup();
-              toast.success("Leave cancelled successfully");
+              toast.success(`Leave ${data} successfully`);
             })
             .catch((error) => {
               toast.error(error.response.data.message);
@@ -346,9 +354,16 @@ const openmodel = () => {
         setTeamLeaveRequests(res.data);
       })
   };
+    const approveteamleaveDetails = () => {
+    getEmpLeave('AH', emp_id)
+      .then((res) => {
+        setApproveTeamLeaveRequests(res.data);
+      })
+  };
   useEffect(() => {
     leaveDetails('EL');
     teamleaveDetails();
+    approveteamleaveDetails()
     workfromhome("WH")
   }
   , [relode]);
@@ -396,15 +411,18 @@ const formatDateDisplay = (dateString) => {
           <Tab active={activeTab === "wh-requests"} onClick={() =>   setActiveTab("wh-requests")}>
             Work From Home Requests
           </Tab>
-          {/* <Tab active={activeTab === "team-requests"} onClick={() => setActiveTab("team-requests")}>
-            Team Leave Requests
-          </Tab> */}
           <Tab active={activeTab === "calendar"} onClick={() => setActiveTab("calendar")}>
           Leave Analitics
           </Tab>
           <Tab active={activeTab === "history"} onClick={() => setActiveTab("history")}>
             Leave History
           </Tab>
+         {profile.is_manager && <Tab active={activeTab === "team-requests"} onClick={() => setActiveTab("team-requests")}>
+            Team Leave Requests
+          </Tab>}
+          {profile.is_manager && <Tab active={activeTab === "team-approve"} onClick={() => setActiveTab("team-approve")}>
+           Approve Team Leave
+          </Tab>}
         </TabContainer>
 
         {/* <FilterContainer>
@@ -525,7 +543,7 @@ const formatDateDisplay = (dateString) => {
               </tbody>
             </table>
           )}
-          {/* {activeTab === "team-requests" && (
+          {activeTab === "team-requests" && (
             <table>
               <thead>
                 <tr>
@@ -564,10 +582,10 @@ const formatDateDisplay = (dateString) => {
                         <Button variant="ghost" size="sm" title="View">
                           <FaEye />
                         </Button>
-                        <Button variant="primary" size="sm">
+                        <Button onClick={()=>handleOpenPopup(request,"APPROVE")} variant="primary" size="sm">
                           Approve
                         </Button>
-                        <Button variant="outline" size="sm">
+                        <Button onClick={()=>handleOpenPopup(request,"REJECT")} variant="outline" size="sm">
                           Reject
                         </Button>
                       </ActionButtons>
@@ -576,8 +594,60 @@ const formatDateDisplay = (dateString) => {
                 ))}
               </tbody>
             </table>
-          )} */}
-
+          )}
+            {activeTab === "team-approve" && (
+            <table>
+              <thead>
+                <tr>
+                  <th>Employee</th>
+                  <th>Type</th>
+                  <th>Period</th>
+                  <th>Days</th>
+                  <th>Reason</th>
+                  <th>Applied On</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {approveTeamLeaveRequests.map((request) => (
+                  <tr key={request.id}>
+                    <td>{request.emp_data?.name}</td>
+                    <td>{request.leave_type_display}</td>
+                    <td>
+                    {request.from_date} to {request.to_date}
+                    </td>
+                    <td>{Math.floor(parseFloat(request.no_leave_count))}</td>
+                    <td>{request.remarks}</td>
+                    <td>{request.submit_date}</td>
+                    <td>
+                      <Badge
+                        variant={
+                          request.status_display === "Approved" ? "success" : request.status_display === "Submitted" ? "warning" : "error"
+                        }
+                      >
+                        {request.status_display}
+                      </Badge>
+                    </td>
+                    <td>
+                      <ActionButtons>
+                         <Button variant="ghost" size="sm" title="View">
+                          <FaEye />
+                        </Button>
+                          {request.status_display === "Approved"?  
+                        <Button onClick={()=>handleOpenPopup(request,"REJECT")} variant="outline" size="sm">
+                          Reject
+                        </Button>:
+                         <Button onClick={()=>handleOpenPopup(request,"APPROVE")} variant="primary" size="sm">
+                          Approve
+                        </Button>}
+                      </ActionButtons>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
           {activeTab === "calendar" && (
            <div style={{ padding: '20px' }}>
            <h3 style={{ color:`${theme.primary}`, marginBottom: '20px' }}>Leave Analytics</h3>
@@ -657,7 +727,7 @@ const formatDateDisplay = (dateString) => {
       <LeaveModal isOpen={isOpen} onClose={closemodel}  setRelode={setRelode} relode={relode}></LeaveModal>
       <ConfirmationPopup  isOpen={showPopup}
         onClose={handleClosePopup}
-        onConfirm={handleConfirm}></ConfirmationPopup>
+        onConfirm={handleConfirm} approve={approve}></ConfirmationPopup>
     </Layout>
   )
 }

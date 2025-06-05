@@ -21,6 +21,7 @@ import {
   FaLifeRing,
   FaExchangeAlt,
 } from "react-icons/fa"
+import { SiGooglecalendar } from "react-icons/si";
 import { useAuth } from "../context/AuthContext"
 import { useTheme } from "../context/ThemeContext"
 
@@ -166,6 +167,7 @@ const SidebarMenu = styled.ul`
   }};
   height: calc(100vh - 140px);
   overflow-y: auto;
+  padding-bottom: 48px;
   
   /* Scrollbar styling */
   &::-webkit-scrollbar {
@@ -393,29 +395,35 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
     }
   }
 
-  const menuItems =customerdata ? [ 
-    { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
-    { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
-    ]
-    :
-     [
-    { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },
-    // { path: "/employees", name: "Employees", icon: <FaUsers /> },
-    { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
-    { path: "/leave-management", name: "Leave Management", icon: <FaCalendarAlt /> },
-    { path: "/holidays", name: "Holiday Calendar", icon: <FaCalendarCheck /> },
-    // { path: "/timesheet", name: "Timesheet", icon: <FaFileAlt /> },
-    // { path: "/shifts", name: "Shift Scheduling", icon: <FaExchangeAlt /> },
-    { path: "/claims", name: "My Claims", icon: <FaMoneyBillWave /> },
-    // { path: "/appointees", name: "Appointees", icon: <FaUserPlus /> },
-    // { path: "/analytics", name: "Analytics", icon: <FaChartBar /> },
-    { path: "/helpdesk", name: "Help Desk", icon: <FaComments/> },
-    { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
-    { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
-    { path: "/shift-detail", name: "My Shifts", icon: <FaExchangeAlt /> },
-    { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
-    { path: "/profile", name: "My Profile", icon: <FaUserCircle />, section: "Account" },
-  ]
+  const menuItems = customerdata
+    ? [
+        { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
+        { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
+      ]
+    : [
+        { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },
+        // { path: "/employees", name: "Employees", icon: <FaUsers /> },
+        { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
+        { path: "/leave-management", name: "Leave Management", icon: <FaCalendarAlt /> },
+        { path: "/holidays", name: "Holiday Calendar", icon: <FaCalendarCheck /> },
+        // { path: "/timesheet", name: "Timesheet", icon: <FaFileAlt /> },
+        ...(profile?.is_manager
+          ? [{ path: "/shifts", name: "Shift Scheduling", icon: <SiGooglecalendar /> }]
+          : []),
+           ...(profile?.is_manager
+          ? [ { path: "/claims", name: "Claims Management", icon: <FaMoneyBillWave /> }]
+          : [ { path: "/claims", name: "My Claims", icon: <FaMoneyBillWave /> }]),
+        // { path: "/appointees", name: "Appointees", icon: <FaUserPlus /> },
+        // { path: "/analytics", name: "Analytics", icon: <FaChartBar /> },
+        { path: "/helpdesk", name: "Help Desk", icon: <FaComments /> },
+        { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
+        { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
+      ...(profile?.is_shift_applicable
+          ? [{ path: "/shift-detail", name: "My Shifts", icon: <FaExchangeAlt /> }]
+          : []),
+        { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
+        { path: "/profile", name: "My Profile", icon: <FaUserCircle />, section: "Account" },
+      ]
 
   return (
     <SidebarContainer isOpen={isOpen} theme={theme} uiPreferences={uiPreferences}>

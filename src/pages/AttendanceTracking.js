@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import styled from "styled-components"
-import { FaHistory, FaChevronLeft, FaChevronRight, FaFilter, FaSignInAlt, FaSignOutAlt } from "react-icons/fa"
+import { FaChevronLeft, FaChevronRight, FaFilter, FaSignInAlt, FaSignOutAlt, FaPlus } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
@@ -10,6 +10,7 @@ import Badge from "../components/Badge"
 import { useAuth } from "../context/AuthContext"
 import { getEmpAttendance, getEmpHoliday, postCheckIn } from "../services/productServices"
 import Modal from "../components/modals/Modal"
+import AttendanceModal from "../components/modals/AttendanceModal"
 import { toast } from "react-toastify"
 import moment from "moment/moment"
 // import Modal from "../components/Modal"
@@ -27,6 +28,17 @@ const AttendanceHeader = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: flex-start;
+  }
+`
+
+const HeaderActions = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
   }
 `
 
@@ -345,6 +357,7 @@ const AttendanceTracking = () => {
   const [startTime, setStartTime] = useState(null)
   const [attendance, setAttendance] = useState({})
   const [isRemarkModalOpen, setIsRemarkModalOpen] = useState(false)
+  const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false)
   const [remark, setRemark] = useState("")
   const [date, setDate] = useState(new Date())
   const currentMonth = date.getMonth()
@@ -478,8 +491,7 @@ const AttendanceTracking = () => {
       }
 
       setFilteredAttendanceData(filtered)
-    }
-    else{
+    } else {
       setFilteredAttendanceData([])
     }
   }, [employeeDatas, statusFilter, holiday])
@@ -621,6 +633,20 @@ const AttendanceTracking = () => {
     setReLoad(relode + 1)
   }
 
+  const handleAttendanceSubmit = async (attendanceData) => {
+    try {
+      const response = await postCheckIn(attendanceData)
+      if (response.status === 200) {
+        toast.success("Attendance added successfully")
+        setReLoad(relode + 1) // Refresh the data
+      }
+    } catch (error) {
+      console.error("Error adding attendance:", error)
+      toast.error("Failed to add attendance")
+      throw error // Re-throw to let modal handle the error state
+    }
+  }
+
   // Button states
   const isCheckInDisabled = checkedIn || attendance.geo_status === "O" || !!attendance.start_time
   const isCheckOutDisabled = !checkedIn || attendance.geo_status !== "I" || !!attendance.end_time
@@ -637,6 +663,12 @@ const AttendanceTracking = () => {
     <Layout title="Attendance Tracking">
       <AttendanceHeader>
         <p>Track your daily attendance and view your history</p>
+        <HeaderActions>
+          <Button variant="primary" onClick={() => setIsAttendanceModalOpen(true)}>
+            <FaPlus style={{ marginRight: "0.5rem" }} />
+            Add Attendance
+          </Button>
+        </HeaderActions>
       </AttendanceHeader>
 
       {/* Current Time Display */}
@@ -862,6 +894,13 @@ const AttendanceTracking = () => {
           </div>
         </Modal>
       )}
+
+      {/* New Add Attendance Modal */}
+      <AttendanceModal
+        isOpen={isAttendanceModalOpen}
+        onClose={() => setIsAttendanceModalOpen(false)}
+        onSubmit={handleAttendanceSubmit}
+      />
     </Layout>
   )
 }

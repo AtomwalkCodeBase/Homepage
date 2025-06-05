@@ -13,6 +13,8 @@ import {
   FaUtensils,
   FaHotel,
   FaTimes,
+  FaCheck,
+  FaBan,
 } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
@@ -20,7 +22,9 @@ import Button from "../components/Button"
 import Badge from "../components/Badge"
 import { getEmpClaim, getExpenseItem, getExpenseProjectList } from "../services/productServices"
 import ClaimModal from "../components/modals/ClaimModal"
+import ClaimActionModal from "../components/modals/ClaimActionModal"
 import { toast } from "react-toastify"
+import { useAuth } from "../context/AuthContext"
 
 const ClaimsHeader = styled.div`
   display: flex;
@@ -151,11 +155,13 @@ const Tab = styled.button`
     color: ${({ theme }) => theme.colors.primary};
   }
 `
+
 const Paragraphdata = styled.p`
   color: ${({ theme }) => theme.colors.textLight};
 `
+
 const DetailModal = styled.div`
- position: fixed;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -217,7 +223,7 @@ const ModalSection = styled.div`
 `
 
 const ModalTitle = styled.h3`
- margin: 0;
+  margin: 0;
   color: ${({ theme }) => theme.colors.primary || "#3a86ff"};
   font-size: 1.6rem;
   font-weight: 600;
@@ -257,17 +263,21 @@ const MyClaims = () => {
   const [activeTab, setActiveTab] = useState("all")
   const [isOpen, setIsOpen] = useState(false)
   const [claims, setClaims] = useState([])
+  const [empClaims, setEmpClaims] = useState([])
   const empId = localStorage.getItem("empNoId")
   const [dropdownValue, setDropdownValue] = useState("All Types")
   const [projecttype, setProjecttype] = useState("All Types")
   const [isLoadings, setIsLoadings] = useState(1)
   const [selectedClaim, setSelectedClaim] = useState(null)
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
-  // Add these state variables after the existing state declarations
   const [typeFilter, setTypeFilter] = useState("All Types")
   const [timeFilter, setTimeFilter] = useState("All Time")
   const [filteredClaims, setFilteredClaims] = useState([])
-  console.log(selectedClaim, "dropdownValue")
+  const { profile } = useAuth()
+  // Claim Action Modal States
+  const [isActionModalOpen, setIsActionModalOpen] = useState(false)
+  const [actionType, setActionType] = useState("")
+  const [selectedClaimForAction, setSelectedClaimForAction] = useState(null)
 
   const fetchProjectList = async () => {
     try {
@@ -278,6 +288,7 @@ const MyClaims = () => {
       console.log("Error fetching project list:", error)
     }
   }
+
   const fetchClaimItemList = async () => {
     try {
       const response = await getExpenseItem()
@@ -285,35 +296,44 @@ const MyClaims = () => {
       setDropdownValue(data)
     } catch (error) {
       console.log("Error fetching expense items:", error)
-    } finally {
-      console.log("Error fetching expense items:") // Hide loader when data is fetched
     }
   }
+
   const handleClosePopup = () => {
     setIsOpen(false)
   }
+
   const handleConfirm = () => {
     setIsOpen(true)
   }
+
   const fetchClaimDetails = () => {
-    // setIsLoading(true);
     getEmpClaim("GET", empId)
       .then((res) => {
         setClaims(res.data)
-        // setIsLoading(false);
       })
       .catch((err) => {
-        // setIsLoading(false);
         console.log("Error fetching claim data:", err)
       })
   }
+
+  const fetchClaimDetailsofemp = () => {
+    getEmpClaim("APPROVE", empId)
+      .then((res) => {
+        setEmpClaims(res.data)
+      })
+      .catch((err) => {
+        console.log("Error fetching claim data:", err)
+      })
+  }
+
   useEffect(() => {
     fetchClaimItemList()
     fetchClaimDetails()
     fetchProjectList()
+    fetchClaimDetailsofemp()
   }, [isLoadings])
 
-  // Add this useEffect after the existing useEffects
   useEffect(() => {
     if (claims.length > 0) {
       let filtered = claims.filter((claim) => {
@@ -324,12 +344,10 @@ const MyClaims = () => {
         return true
       })
 
-      // Filter by expense type
       if (typeFilter !== "All Types") {
         filtered = filtered.filter((claim) => claim.item_name === typeFilter)
       }
 
-      // Filter by time period
       if (timeFilter !== "All Time") {
         const today = new Date()
         const getDateFromString = (dateStr) => {
@@ -372,13 +390,10 @@ const MyClaims = () => {
     }
   }, [claims, activeTab, typeFilter, timeFilter])
 
-  // Add this handleFilter function
   const handleFilter = () => {
-    // The filtering is already handled by the useEffect
     toast.info("Filters applied")
   }
 
-  // Update the unique item types - add this function
   const getUniqueItemTypes = () => {
     const uniqueTypes = new Set(claims.map((claim) => claim.item_name))
     return ["All Types", ...Array.from(uniqueTypes)]
@@ -396,7 +411,6 @@ const MyClaims = () => {
     .filter((claim) => claim.expense_status === "R")
     .reduce((sum, claim) => sum + Number.parseFloat(claim.expense_amt), 0)
 
-  // Summary data
   const summaryData = [
     {
       icon: <FaMoneyBillWave />,
@@ -424,7 +438,6 @@ const MyClaims = () => {
     },
   ]
 
-  // Get icon based on item name
   const getItemIcon = (itemName) => {
     switch (itemName) {
       case "Travel Expense":
@@ -438,7 +451,6 @@ const MyClaims = () => {
     }
   }
 
-  // Get status text and variant
   const getStatusInfo = (claim) => {
     if (claim.expense_status === "A") {
       return { text: "Approved", variant: "success" }
@@ -448,6 +460,7 @@ const MyClaims = () => {
     }
     return { text: "Pending", variant: "warning" }
   }
+
   const handleViewDetails = (claim) => {
     setSelectedClaim(claim)
     setIsDetailModalOpen(true)
@@ -457,6 +470,33 @@ const MyClaims = () => {
     setIsDetailModalOpen(false)
     setSelectedClaim(null)
   }
+
+  // Claim Action Handlers
+  const handleApprove = (claim) => {
+    setSelectedClaimForAction(claim)
+    setActionType("APPROVE")
+    setIsActionModalOpen(true)
+  }
+
+  const handleReject = (claim) => {
+    setSelectedClaimForAction(claim)
+    setActionType("REJECT")
+    setIsActionModalOpen(true)
+  }
+
+  const handleCloseActionModal = () => {
+    setIsActionModalOpen(false)
+    setSelectedClaimForAction(null)
+    setActionType("")
+  }
+
+  const handleActionSuccess = () => {
+    // Refresh the claims data after successful action
+    fetchClaimDetailsofemp()
+    setIsLoadings((prev) => prev + 1)
+    handleCloseActionModal()
+  }
+
   return (
     <Layout title="My Claims">
       <ClaimsHeader>
@@ -482,7 +522,7 @@ const MyClaims = () => {
       <Card>
         <TabContainer>
           <Tab active={activeTab === "all"} onClick={() => setActiveTab("all")}>
-            All Claims
+            MY Claims
           </Tab>
           <Tab active={activeTab === "pending"} onClick={() => setActiveTab("pending")}>
             Pending
@@ -493,6 +533,9 @@ const MyClaims = () => {
           <Tab active={activeTab === "rejected"} onClick={() => setActiveTab("rejected")}>
             Rejected
           </Tab>
+          {profile.is_manager && <Tab active={activeTab === "empdata"} onClick={() => setActiveTab("empdata")}>
+            Employee Claims
+          </Tab>}
         </TabContainer>
 
         <FilterContainer>
@@ -516,68 +559,140 @@ const MyClaims = () => {
         </FilterContainer>
 
         <TableContainer>
-          <table>
-            <thead>
-              <tr>
-                <th>Claim ID</th>
-                <th>Expense Type</th>
-                <th>Description</th>
-                <th>Amount</th>
-                <th>Expense Date</th>
-                <th>Submitted Date</th>
-                <th>Receipt</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredClaims.length > 0 ? (
-                filteredClaims.map((claim) => {
-                  const statusInfo = getStatusInfo(claim)
-                  return (
-                    <tr key={claim.id}>
-                      <td>{claim.claim_id}</td>
-                      <td>
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <span style={{ marginRight: "0.5rem" }}>{getItemIcon(claim.item_name)}</span>
-                          {claim.item_name}
-                        </div>
-                      </td>
-                      <td>{claim.remarks}</td>
-                      <td>₹{claim.expense_amt}</td>
-                      <td>{claim.expense_date}</td>
-                      <td>{claim.submitted_date}</td>
-                      <td>
-                        {claim.submitted_file_1 ? (
-                          <Badge variant="success">Yes</Badge>
-                        ) : (
-                          <Badge variant="error">No</Badge>
-                        )}
-                      </td>
-                      <td>
-                        <Badge variant={statusInfo.variant}>{statusInfo.text}</Badge>
-                      </td>
-                      <td>
-                        <ActionButtons>
-                          <Button onClick={() => handleViewDetails(claim)} variant="ghost" size="sm" title="View">
-                            <FaEye />
-                          </Button>
-                        </ActionButtons>
-                      </td>
-                    </tr>
-                  )
-                })
-              ) : (
+          {activeTab === "empdata" ? (
+            <table>
+              <thead>
                 <tr>
-                  <td colSpan={9} style={{ textAlign: "center", padding: "1rem" }}>
-                    No claims found for the selected filters
-                  </td>
+                  <th>Claim ID</th>
+                  <th>Expense Type</th>
+                  <th>Amount</th>
+                  <th>Expense Date</th>
+                  <th>Submitted Date</th>
+                  <th>Employee Name</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {empClaims.length > 0 ? (
+                  empClaims.map((claim) => {
+                    const statusInfo = getStatusInfo(claim)
+                    return (
+                      <tr key={claim.id}>
+                        <td>{claim.claim_id}</td>
+                        <td>
+                          <div style={{ display: "flex", alignItems: "center" }}>
+                            <span style={{ marginRight: "0.5rem" }}>{getItemIcon(claim.item_name)}</span>
+                            {claim.item_name}
+                          </div>
+                        </td>
+                        <td>₹{claim.expense_amt}</td>
+                        <td>{claim.expense_date}</td>
+                        <td>{claim.submitted_date}</td>
+                        <td>{claim.employee_name}</td>
+                        <td>
+                          <Badge variant={statusInfo.variant}>{statusInfo.text}</Badge>
+                        </td>
+                        <td>
+                          <ActionButtons>
+                            <Button onClick={() => handleViewDetails(claim)} variant="ghost" size="sm" title="View">
+                              <FaEye />
+                            </Button>
+                            {statusInfo.text !== "Approved" && statusInfo.text !== "Rejected" && (
+                              <>
+                                <Button
+                                  onClick={() => handleApprove(claim)}
+                                  variant="primary"
+                                  size="sm"
+                                  title="Approve"
+                                >
+                                  <FaCheck />
+                                </Button>
+                                <Button onClick={() => handleReject(claim)} variant="outline" size="sm" title="Reject">
+                                  <FaBan />
+                                </Button>
+                              </>
+                            )}
+                          </ActionButtons>
+                        </td>
+                      </tr>
+                    )
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan={8} style={{ textAlign: "center", padding: "1rem" }}>
+                      No claims found for the selected filters
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th>Claim ID</th>
+                  <th>Expense Type</th>
+                  <th>Description</th>
+                  <th>Amount</th>
+                  <th>Expense Date</th>
+                  <th>Submitted Date</th>
+                  <th>Receipt</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredClaims.length > 0 ? (
+                  filteredClaims.map((claim) => {
+                    const statusInfo = getStatusInfo(claim)
+                    return (
+                      <tr key={claim.id}>
+                        <td>{claim.claim_id}</td>
+                        <td>
+                          <div style={{ display: "flex", alignItems: "center" }}>
+                            <span style={{ marginRight: "0.5rem" }}>{getItemIcon(claim.item_name)}</span>
+                            {claim.item_name}
+                          </div>
+                        </td>
+                        <td>{claim.remarks}</td>
+                        <td>₹{claim.expense_amt}</td>
+                        <td>{claim.expense_date}</td>
+                        <td>{claim.submitted_date}</td>
+                        <td>
+                          {claim.submitted_file_1 ? (
+                            <Badge variant="success">Yes</Badge>
+                          ) : (
+                            <Badge variant="error">No</Badge>
+                          )}
+                        </td>
+                        <td>
+                          <Badge variant={statusInfo.variant}>{statusInfo.text}</Badge>
+                        </td>
+                        <td>
+                          <ActionButtons>
+                            <Button onClick={() => handleViewDetails(claim)} variant="ghost" size="sm" title="View">
+                              <FaEye />
+                            </Button>
+                          </ActionButtons>
+                        </td>
+                      </tr>
+                    )
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan={9} style={{ textAlign: "center", padding: "1rem" }}>
+                      No claims found for the selected filters
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
         </TableContainer>
       </Card>
+
+      {/* Claim Submission Modal */}
       <ClaimModal
         isOpen={isOpen}
         onClose={handleClosePopup}
@@ -586,7 +701,18 @@ const MyClaims = () => {
         projecttype={projecttype}
         setIsLoadings={setIsLoadings}
         isLoadings={isLoadings}
-      ></ClaimModal>
+      />
+
+      {/* Claim Action Modal */}
+      <ClaimActionModal
+        isOpen={isActionModalOpen}
+        onClose={handleCloseActionModal}
+        claim={selectedClaimForAction}
+        actionType={actionType}
+        onSuccess={handleActionSuccess}
+      />
+
+      {/* Claim Details Modal */}
       {isDetailModalOpen && selectedClaim && (
         <DetailModal>
           <ModalContent>

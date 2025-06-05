@@ -73,16 +73,16 @@ const CancelButton = styled(Button)`
 `;
 
 const SubmitButton = styled(Button)`
-  background-color: #dc3545;
+  background-color: ${props => props.approve ? '#28a745' : '#dc3545'};
   color: white;
   
   &:hover {
-    background-color: #c82333;
+    background-color: ${props => props.approve ? 'rgb(86, 230, 119)' : '#dc3545'};
   }
 `;
 
 // Confirmation Popup Component
-const ConfirmationPopup = ({ isOpen, onClose, onConfirm }) => {
+const ConfirmationPopup = ({ isOpen, onClose, onConfirm,approve }) => {
   const [remark, setRemark] = useState('');
 
   if (!isOpen) return null;
@@ -97,26 +97,26 @@ const ConfirmationPopup = ({ isOpen, onClose, onConfirm }) => {
             style={{
               fontSize: '25px',
               cursor: 'pointer',
-              color: 'rgb(228, 24, 24)',
+              color:approve?'rgb(24, 228, 44)': 'rgb(228, 24, 24)',
               padding: 0,
               marginLeft: '16px',
               lineHeight: 1,
             }}
             aria-label="Close"
           >
-            &#10005;
+            ❌
           </button>
         </div>
-        <Message>Do you want to cancel your live?</Message>
+        <Message>Do you want to {approve?"Approve":"cancel"} your leave?</Message>
         <Input
           type="text"
           placeholder="Remark"
-          value={remark}
+          // value={remark}
           onChange={e => setRemark(e.target.value)}
         />
         <ButtonGroup>
           <CancelButton onClick={onClose}>No, keep it</CancelButton>
-          <SubmitButton onClick={() => onConfirm(remark)}>Yes, cancel</SubmitButton>
+          <SubmitButton approve={approve}  onClick={() => onConfirm(remark,approve?"Approved":"cancelled")}>Yes,{approve?"Approve":"cancel"}</SubmitButton>
         </ButtonGroup>
       </PopupContainer>
     </Overlay>

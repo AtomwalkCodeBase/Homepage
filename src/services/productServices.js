@@ -135,6 +135,12 @@ export function empshiftData(empdat) {
  }
   return authAxiosPost(getEmpShiftData, data)
 }
+export function empshiftDatas(empdat) {
+  let data={
+    "w_start":empdat
+ }
+  return authAxiosPost(getEmpShiftData, data)
+}
 
 export function imagetotext(Uri) {
   // console.log('getUserList3434',Uri)
@@ -165,7 +171,9 @@ export function getEmployeeRequest() {
   };
   return authAxios(getEmployeeRequestList, data)
 }
-
+export function getEmployeeclaimlist() {
+  return authAxios(getClaimApproverList)
+}
 export function getRequestCategory() {
   return authAxios(getEmployeeRequestCategory)
 }

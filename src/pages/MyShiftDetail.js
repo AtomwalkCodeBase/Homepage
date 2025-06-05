@@ -198,7 +198,8 @@ const Legend = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
-  margin-top: 20px;
+  margin-top: 80px;
+  margin-bottom: 20px;
   padding: 15px;
   background-color: white;
   border-radius: 8px;
@@ -253,6 +254,14 @@ const ShiftHeader = styled.div`
     align-items: flex-start;
   }
 `
+// Styled Components
+
+
+
+
+
+
+
 const MyShiftDetail = () => {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [weekDates, setWeekDates] = useState([])
@@ -415,47 +424,6 @@ const MyShiftDetail = () => {
           <LoadingContainer theme={theme}>Loading shift data...</LoadingContainer>
         ) : (
           <>
-            <ShiftCalendarContainer>
-              <CalendarHeader theme={theme}>
-                {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day, index) => (
-                  <DayHeader key={index}>{window.innerWidth <= 480 ? day.substring(0, 3) : day}</DayHeader>
-                ))}
-              </CalendarHeader>
-
-              <ShiftGrid>
-                {weekDates.map((date, index) => {
-                  const shiftInfo = getShiftInfo(date)
-                  const todayFlag = isToday(date)
-
-                  return (
-                    <ShiftCell key={index} isToday={todayFlag}>
-                      <DateLabel isToday={todayFlag}>{format(date, "d")}</DateLabel>
-
-                      {shiftInfo ? (
-                        <ShiftBadge
-                          shiftType={shiftInfo.holiday_type !== "NA" ? shiftInfo.holiday_type : shiftInfo.shift_no}
-                        >
-                          <ShiftIcon>{getShiftIcon(shiftInfo)}</ShiftIcon>
-                          {shiftInfo.holiday_type === "COMPANY_OFF"
-                            ? "Company Holiday"
-                            : shiftInfo.holiday_type === "WEEKLY_OFF"
-                              ? "Day Off"
-                              : getShiftLabel(shiftInfo.shift_no)}
-                        </ShiftBadge>
-                      ) : (
-                        <ShiftBadge shiftType="default">
-                          <ShiftIcon>
-                            <FaBriefcase />
-                          </ShiftIcon>
-                          No shift data
-                        </ShiftBadge>
-                      )}
-                    </ShiftCell>
-                  )
-                })}
-              </ShiftGrid>
-            </ShiftCalendarContainer>
-
             <Legend>
               <LegendItem>
                 <ShiftBadge shiftType={1} style={{ minWidth: "auto" }}>
@@ -495,10 +463,50 @@ const MyShiftDetail = () => {
                     <FaHome />
                   </ShiftIcon>
                 </ShiftBadge>
-                Day Off
+                Weekly Off
               </LegendItem>
             </Legend>
+            <ShiftCalendarContainer>
+              <CalendarHeader theme={theme}>
+                {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day, index) => (
+                  <DayHeader key={index}>{window.innerWidth <= 480 ? day.substring(0, 3) : day}</DayHeader>
+                ))}
+              </CalendarHeader>
 
+              <ShiftGrid>
+                {weekDates.map((date, index) => {
+                  const shiftInfo = getShiftInfo(date)
+                  const todayFlag = isToday(date)
+
+                  return (
+                    <ShiftCell key={index} isToday={todayFlag}>
+                      <DateLabel isToday={todayFlag}>{format(date, "d")}</DateLabel>
+
+                      {shiftInfo ? (
+                        <ShiftBadge
+                          shiftType={shiftInfo.holiday_type !== "NA" ? shiftInfo.holiday_type : shiftInfo.shift_no}
+                        >
+                          <ShiftIcon>{getShiftIcon(shiftInfo)}</ShiftIcon>
+                          {shiftInfo.holiday_type === "COMPANY_OFF"
+                            ? "Company Holiday"
+                            : shiftInfo.holiday_type === "WEEKLY_OFF"
+                              ? "Weekly Off"
+                              : getShiftLabel(shiftInfo.shift_no)}
+                        </ShiftBadge>
+                      ) : (
+                        <ShiftBadge shiftType="default">
+                          <ShiftIcon>
+                            <FaBriefcase />
+                          </ShiftIcon>
+                          No shift data
+                        </ShiftBadge>
+                      )}
+                    </ShiftCell>
+                  )
+                })}
+              </ShiftGrid>
+            </ShiftCalendarContainer>
+{/* 
             {shiftData && shiftData.w_shift_list && shiftData.w_shift_list.length > 0 && (
               <div
                 style={{
@@ -522,7 +530,7 @@ const MyShiftDetail = () => {
                   {shiftData.w_shift_list[0].emp_type === "P" ? "Permanent" : "Contract"}
                 </p>
               </div>
-            )}
+            )} */}
           </>
         )}
       </PageContainer>

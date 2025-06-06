@@ -216,6 +216,22 @@ const Answer = styled.div`
     padding: 0.75rem 1rem;
   }
 `
+const ModuleHeader = styled.h2`
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #4f46e5;
+  margin-bottom: 1rem;
+  position: relative;
+
+  &::after {
+    content: "";
+    display: block;
+    width: 80px;
+    height: 3px;
+    background: #7c3aed;
+    margin-top: 4px;
+  }
+`;
 
 export default function Commonfnadq({ data }) {
   const [openItems, setOpenItems] = useState([]);
@@ -758,20 +774,3 @@ function getModuleTitle(moduleKey) {
   }
 }
 
-// Styled-component for module header
-const ModuleHeader = styled.h2`
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #4f46e5;
-  margin-bottom: 1rem;
-  position: relative;
-
-  &::after {
-    content: "";
-    display: block;
-    width: 80px;
-    height: 3px;
-    background: #7c3aed;
-    margin-top: 4px;
-  }
-`;

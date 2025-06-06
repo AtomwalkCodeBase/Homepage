@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import Bg from "../components/loginpage/images/about-us-bg.png"
-import Button from './loginpage/Button'
 import { P } from './CommonStyle'
 
 

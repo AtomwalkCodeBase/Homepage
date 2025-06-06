@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import contactus from "../assets/img/contactus.jpg";
 import colorSharp from "../assets/img/color-sharp.png"
 import LetsConnect from './LetsConnect';
 import ContactCards from './ContactCards';

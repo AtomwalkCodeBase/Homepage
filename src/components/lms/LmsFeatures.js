@@ -1,17 +1,11 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
-import ClaimImgDemo from '../../assets/img/Claim_Image_demo.png';
-import ClaimImgDemo2 from '../../assets/img/Claim_Image_Demo2.png';
 import CheckMark from '../../assets/img/check_mark.png';
 import img1 from '../../assets/img/Labprojectcreation.svg';
 import img2 from '../../assets/img/Activitydetails.svg';
 import img3 from '../../assets/img/emp_advance.svg';
 import img4 from '../../assets/img/Labdocset.svg'
 import img5 from '../../assets/img/Labobjective.svg'
-import img6 from '../../assets/img/stepsoflab.svg'
-import img7 from '../../assets/img/Admin.svg'
-import img8 from '../../assets/img/Manager.svg'
-import img9 from '../../assets/img/userGroup.svg'
 import labProcessemplate1 from '../../assets/img/processtemplate1.svg'
 import { useLocation } from "react-router-dom";
 const Container = styled.div`
@@ -315,7 +309,7 @@ const LmsFeatures = ({data,bgcolors}) => {
           subtitle: 'Empowering Admins to Manage Every Aspect of Lab Operations',
           description: 'Atomwalk’s LEM provides admins with powerful tools to manage user profiles, oversee equipment usage, handle emergencies, and generate insightful reports. This allows admins to ensure smooth lab operations and maintain compliance effortlessly.',
           benefits: ['Create and manage profiles', 'Oversee bookings and usage', 'Handle emergencies and generate reports'],
-          imageSrc: img7, // Replace with your relevant image variable
+          imageSrc: 'https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/Admin.svg', // Replace with your relevant image variable
           imageAlt: 'Lead Engagement Overview',
           imgPosition: 'right',
         },
@@ -324,7 +318,7 @@ const LmsFeatures = ({data,bgcolors}) => {
           subtitle: 'Enabling Managers to Optimize Lab Workflow and Maintenance',
           description: 'Atomwalk’s equipment maintenance feature allows admins to schedule preventive maintenance efficiently, ensuring equipment remains in top condition. During maintenance periods, equipment can be blocked from booking, preventing unintended usage and keeping maintenance routines organized. This proactive approach helps minimize unexpected downtime, extend equipment lifespan, and ensure that all resources are ready when needed. With Atomwalk, maintenance planning becomes seamless, supporting continuous, reliable operation.',
           benefits: ['Organize groups and tasks', 'Track maintenance', 'Stay informed with real-time data'],
-          imageSrc: img8, // Replace with your relevant image variable
+          imageSrc: 'https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/Manager.svg', // Replace with your relevant image variable
           imageAlt: 'Lead Management',
           imgPosition: 'left',
         },
@@ -333,7 +327,7 @@ const LmsFeatures = ({data,bgcolors}) => {
           subtitle: 'Empowering Lab Users with Instant Booking and Personalized Access',
           description: 'Atomwalk’s equipment maintenance feature allows admins to schedule preventive maintenance efficiently, ensuring equipment remains in top condition. During maintenance periods, equipment can be blocked from booking, preventing unintended usage and keeping maintenance routines organized. This proactive approach helps minimize unexpected downtime, extend equipment lifespan, and ensure that all resources are ready when needed. With Atomwalk, maintenance planning becomes seamless, supporting continuous, reliable operation.',
           benefits: ['Instant equipment booking', 'Stay updated with real-time availability', 'Personalized logins'],
-          imageSrc: img9, // Replace with your relevant image variable
+          imageSrc: 'https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/userGroup.svg', // Replace with your relevant image variable
           imageAlt: 'Lead Management',
           imgPosition: 'left',
         },
@@ -418,7 +412,7 @@ const LmsFeatures = ({data,bgcolors}) => {
             'Review process for output documents',
             'Sub-activity steps management',
           ],
-          imageSrc: img6, // Replace with your relevant image variable
+          imageSrc: 'https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/stepsoflab.svg', // Replace with your relevant image variable
           imageAlt: 'Process Template Selection',
           imgPosition: 'right',
         },

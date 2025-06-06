@@ -189,107 +189,11 @@ const TextContainer = styled.div`
 `;
 
 
-// Form Container
-const FormContainer = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  @media (min-width: 768px) {
-    flex-direction: row;
-    align-items: center;
-  }
-`;
-
-// Input Field
-const InputField = styled.input`
-  padding: 10px;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  width: 80%;
-  max-width: 300px;
-  
-  @media (min-width: 768px) {
-    margin-bottom: 0;
-    margin-right: 10px;
-    width: 250px;
-  }
-`;
-
-// Submit Button
-const SubmitButton = styled.button`
-  padding: 10px 20px;
-  background-color: #ea5c49;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 1em;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #d04b38;
-  }
-`;
-
-// Disclaimer Text
-const DisclaimerText = styled.p`
-  margin-top: 10px;
-  font-size: 0.8em;
-  color: #ccc;
-  text-align: center;
-
-  @media (min-width: 768px) {
-    text-align: left;
-    margin-top: 0;
-  }
-
-  a {
-    color: #ccc;
-    text-decoration: underline;
-
-    &:hover {
-      color: white;
-    }
-  }
-`;
-
 const DropdownContainer = styled.div`
   position: relative;
   display: inline-block;
 `;
 
-const DropdownBox = styled.div`
-  visibility: hidden;
-  opacity: 0;
-  position: absolute;
-  bottom: 120%;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: black;
-  color: white;
-  padding: 10px 15px;
-  border-radius: 5px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  min-width: 220px;
-  max-width: 250px;
-  text-align: center;
-  z-index: 10;
-  white-space: normal;
-  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-
-  ${DropdownContainer}:hover & {
-    visibility: visible;
-    opacity: 1;
-  }
-
-  /* Prevent going outside the screen */
-  @media (max-width: 768px) {
-    left: auto;
-    right: 0;
-    transform: none;
-  }
-`;
 
 const SupportLink = styled.a`
   cursor: pointer;
@@ -381,10 +285,6 @@ export default function Footer2() {
       Connect with  Atomwalk Technologies 
       </TextContainer>
       
-      {/* <FormContainer>
-        <InputField type="email" placeholder="Email*" required />
-        <SubmitButton type="submit">Submit</SubmitButton>
-      </FormContainer> */}
 
     </NewsletterContainer>
     <ContactInfo>
@@ -401,9 +301,6 @@ export default function Footer2() {
     </a>
   </div>
 </ContactInfo>
-    {/* <DisclaimerText>
-        By providing your information, you hereby consent to the AtomWalk <a href="#">Cookie Policy</a> and <a href="#">Privacy Policy</a>.
-      </DisclaimerText> */}
       </FooterLeft>
 
 
@@ -455,13 +352,9 @@ export default function Footer2() {
                     <SupportLink href="/manual.html">
                       Manual
                     </SupportLink>
-                    {/* <DropdownBox>
-                      Access the manual for step-by-step instructions and guidance.
-                    </DropdownBox> */}
                   </DropdownContainer>
                 </li>
             <li>
-              {/* <a    onClick={()=>{setopenpop(!openpop)}}>Tutorials</a> */}
             </li>
             <li>
               <a  href="/faq.html">FAQs</a>

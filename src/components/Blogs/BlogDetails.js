@@ -15,32 +15,12 @@ const fadeInUp = keyframes`
   }
 `;
 
-const slideInRight = keyframes`
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-`;
-
 const drawLine = keyframes`
   from {
     width: 0;
   }
   to {
     width: 100px;
-  }
-`;
-
-const pulse = keyframes`
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
   }
 `;
 
@@ -53,14 +33,6 @@ const shimmer = keyframes`
   }
 `;
 
-const typewriter = keyframes`
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
-`;
 
 // Main Container
 const PageContainer = styled.div`
@@ -420,15 +392,6 @@ const ContentImage = styled.img`
   }
 `;
 
-const ReadingProgress = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
-  z-index: 1000;
-  transition: width 0.3s ease;
-`;
 
 // Loading States
 const LoadingContainer = styled.div`

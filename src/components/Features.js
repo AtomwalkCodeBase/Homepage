@@ -1,6 +1,4 @@
-import React from "react";
-import { Container, Row, Col, Tab, Nav } from "react-bootstrap";
-import styled from "styled-components";
+import { Container, Row, Col } from "react-bootstrap";
 import projImg1 from "../assets/img/Default_A_bustling_industrial_scene_depicting_modern_manufactu_1.jpg";
 import projImg2 from "../assets/img/Management.jpg";
 import projImg3 from "../assets/img/Hrandpayroll.jpg";
@@ -10,14 +8,7 @@ import projImg6 from "../assets/img/projectmangement.png";
 import projImg7 from "../assets/img/lab management system.png";
 import projImg8 from "../assets/img/Lab Equipment Management System with lab equipment.png";
 import projImg9 from "../assets/img/good laboratory practices.png";
-
-
-import { ProjectCard } from "./ProjectCard";
 import Newcard from "./Newcard";
-const GradientDiv = styled.div`
-  width: 100%;
-  height: 100vh;
-`;
 
 const Features = () => {
   const projects = [

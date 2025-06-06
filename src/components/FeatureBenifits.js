@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 // Icons
@@ -43,7 +42,6 @@ import Icon31 from '../assets/img/H_Step2(3).png';
 import Icon32 from '../assets/img/step2_(4).png';
 import Icon33 from '../assets/img/step2_(5).png';
 import Icon34 from '../assets/img/step2_(6).png';
-import Icon35 from '../assets/img/Mobile_Icon.png';
 
 
 
@@ -140,14 +138,6 @@ const leadBenefits = [
   { title: 'User-Centric Design', text: 'Delivering an outstanding and effortless user experience', bgColor: '#d7faff', icon: easy },
   { title: 'Universal Accessibility', text: 'Access our platform seamlessly on both mobile and web', bgColor: '#d9f5e3', icon: Accessbule },
 ];
-const employeeBenefits = [
-  { title: 'Save', text: 'time & effort', bgColor: '#d9f5e3', icon: Icon1 },
-  { title: 'Administer', text: 'uniform leave policy', bgColor: '#f2e3ff', icon: Icon2 },
-  { title: 'Ensure', text: 'accurate leave accounting', bgColor: '#ffe8cc', icon: Icon3 },
-  { title: 'Reduce', text: 'unnecessary expense', bgColor: '#fff1d0', icon: Icon4 },
-  { title: 'Deliver', text: 'an outstanding employee experience', bgColor: '#d7faff', icon: Icon5 },
-  { title: 'Improve', text: 'employer brand image', bgColor: '#d9f5e3', icon: Icon6 },
-];
 const hrmBenefits = [
   { title: 'Streamline', text: 'eliminate time-consuming paperwork', bgColor: '#d9f5e3', icon: Icon1 },
   { title: 'Optimize', text: 'cut unnecessary operational expenses', bgColor: '#fff1d0', icon: Icon8 },
@@ -224,7 +214,7 @@ const Ai = [
 
 const FeatureBenifits = ({ data }) => {
   // Determine which set of benefits to display based on the response data
-  const benefits = data == 'AI' ? Ai : data == 'Solar' ? Solar : data == 'Hospital' ? Hospital : data == 'Facility' ? Facility : data === 'LMS' ? labManagement : data === 'Claim' ? claimBenefits : data == 'Customer' ? leadBenefits : data == 'HR' ? hrmBenefits : data == 'Equipment' ? labEquipment : data == 'Waste' ? wasteManagement : data == 'Sales and Procurement' ? sales : leaveBenefits;
+  const benefits = data === 'AI' ? Ai : data === 'Solar' ? Solar : data === 'Hospital' ? Hospital : data === 'Facility' ? Facility : data === 'LMS' ? labManagement : data === 'Claim' ? claimBenefits : data === 'Customer' ? leadBenefits : data === 'HR' ? hrmBenefits : data === 'Equipment' ? labEquipment : data === 'Waste' ? wasteManagement : data === 'Sales and Procurement' ? sales : leaveBenefits;
 
   return (
     <Section>

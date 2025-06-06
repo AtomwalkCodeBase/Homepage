@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import Meteonic from "./../assets/img/m-logo.png";
@@ -28,12 +27,6 @@ const Title = styled.h2`
   font-size: 2.5rem;
   color: #2c3e50;
   margin-bottom: 10px;
-`;
-
-const Subtitle = styled.p`
-  font-size: 1.2rem;
-  color: #666;
-  margin-bottom: 30px;
 `;
 
 const LogoScrollContainer = styled.div`
@@ -91,7 +84,6 @@ const CustomerLogos = () => {
   return (
     <Section>
       <Title>Brands we are associated with</Title>
-      {/* <Subtitle>Our Trusted Brand Partners</Subtitle> */}
       <LogoScrollContainer>
         <LogoTrack>
           {logos.concat(logos).map((logo, index) => (

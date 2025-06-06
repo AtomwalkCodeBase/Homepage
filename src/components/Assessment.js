@@ -237,7 +237,7 @@ const Assessment = () => {
       ) : (
         <IframeContainer>
           <iframe
-            src={token=="atomwalk@8458"?"https://docs.google.com/forms/d/e/1FAIpQLScAitRvhFeqZLMfwlQEFzcwdHTaRrFHl78oZYWKGEizYpUAgQ/viewform":token=="atomwalk@9937"?"https://forms.gle/eRYrGeCqY677cmhm9":token=="atomwalk@1693"?"https://forms.gle/grABZrm9vptzTcWb6":"https://www.sumydesigns.com/wp-content/uploads/2018/08/thank-you-page.jpg"}
+            src={token==="atomwalk@8458"?"https://docs.google.com/forms/d/e/1FAIpQLScAitRvhFeqZLMfwlQEFzcwdHTaRrFHl78oZYWKGEizYpUAgQ/viewform":token==="atomwalk@9937"?"https://forms.gle/eRYrGeCqY677cmhm9":token==="atomwalk@1693"?"https://forms.gle/grABZrm9vptzTcWb6":"https://www.sumydesigns.com/wp-content/uploads/2018/08/thank-you-page.jpg"}
             title="Assessment Form"
             width="100%"
             height="600"

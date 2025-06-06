@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-// import  from "styled-components";
+import { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -8,7 +7,6 @@ import {
   Outlet 
 } from "react-router-dom";
 import { GlobalStyles } from "./styles/GlobalStyles";
-import { theme } from "./styles/Theme";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -34,7 +32,6 @@ import PricingRoute from "./components/PricingRoute";
 import FormComponent from "./components/FormComponent";
 import ContactSalesPage from "./components/ContactSalesPage";
 import Blog from "./components/Blogs/Blog"
-// import BlogDetails from "./components/BlogDetails";
 import Career from "./components/Career";
 import ThankYouPage from "./components/ThankYouPage";
 import TermsAndConditions from "./components/TermConditions";
@@ -44,8 +41,6 @@ import Commonfnadq from "./components/Commonfnadq";
 
 //blog imports
 import BlogDetails from "./components/Blogs/BlogDetails";
-// import BlogForm from "./components/Blogs/BlogForm";
-// import BlogList from "./components/Blogs/BlogList";
 
 // Protected Pages
 import Dashboard from "./pages/Dashboard";
@@ -96,7 +91,6 @@ import Invoices from "./pages/Invoices";
 import Tickets from "./pages/Tickets";
 import MyShiftDetail from "./pages/MyShiftDetail";
 function App() {
-  const [openslide, setOpenslide] = useState(false);
   const url = "https://www.atomwalk.com/rest-auth/login/";
   const data = {
     username: "ASHUTOSH@PMA_00001",

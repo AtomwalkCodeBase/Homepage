@@ -40,4 +40,3 @@ export default function FloatingActionButton(props) {
     </FloatingButton>
   );
 }
-// href="https://wa.me/123456789" target="_blank" rel="noopener noreferrer"

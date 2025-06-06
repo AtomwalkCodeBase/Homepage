@@ -1,20 +1,13 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import ClaimImgDemo from '../../assets/img/Claim_Image_demo.png';
 import CheckMark from '../../assets/img/check_mark.png';
 import img1 from '../../assets/img/img1.svg';
-import img2 from '../../assets/img/add_claim_img.svg';
 import img3 from '../../assets/img/emp_advance.svg';
-import img4 from '../../assets/img/approve_claim.svg'
-import img5 from '../../assets/img/sattle_claim.svg';
-import img6 from '../../assets/img/expense_claim.svg';
 import img7 from '../../assets/img/holiday_calender.svg';
 import img8 from '../../assets/img/leave_dashboard.svg';
 import img9 from '../../assets/img/add_leave.svg';
 import img10 from '../../assets/img/approval_leave.svg';
 import img11 from '../../assets/img/leave_report.svg';
-import img12 from '../../assets/img/payroll_setup.svg';
-import img13 from '../../assets/img/appraisal_setup.svg';
 import img21 from '../../assets/img/onboarding.svg';
 import img22 from '../../assets/img/employeeData.svg';
 import img23 from '../../assets/img/exit_process.svg';
@@ -252,7 +245,7 @@ const FeatureDescription = ({ data }) => {
           subtitle: "Submit and track expense claims easily, anytime, anywhere.",
           description: "Employee can submit expense claims by selecting an Expense item, adding project details if needed, and uploading supporting documents like bills and receipts. The mobile app feature allows employee to capture and submit receipts instantly, making the process faster and more efficient for both employee and approval & settlement process for company on real-time basis.",
           benefits: ["Simple Claim Submission", "Upload Supporting Documents", "Mobile-Friendly Convenience, Instant Receipt Capture", "Expense auto linkage to projects and efficient project margin tracking"],
-          imageSrc: img2,
+          imageSrc: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/add_claim_img.svg",
           imageAlt: "Add Claim",
           imgPosition: "left"
       },
@@ -261,7 +254,7 @@ const FeatureDescription = ({ data }) => {
           subtitle: "Automated workflows simplify review and referral based on approval limit setup.",
           description: "Submitted claims are automatically routed to managers for review, with options to approve, reject, or send back for clarification. The system verifies manager approval authority based on grade and approval limits, forwarding claims to a higher-level manager if needed. This process maintains digital records for easy tracking and transparent decision-making. Approval process is enabled through Mobile app for real-time approval and quick settlement process.",
           benefits: ["Flexible Review/Approval Flows", "Approval limits based on Amount", "Anytime, anywhere approval for speedy settlement"],
-          imageSrc: img4,
+          imageSrc: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/approve_claim.svg",
           imageAlt: "Advance Tracking Icon",
           imgPosition: "right"
       },
@@ -270,7 +263,7 @@ const FeatureDescription = ({ data }) => {
           subtitle: "Efficient settlement process with auto flow of data to accounts and linked projects.",
           description: "Once approved, claims move to the settlement phase where user can view all claims and advance records side by side for easy and effective settlement processing. The screen provides direct access to claim details and attached documents, with a bulk settlement feature to handle multiple claims efficiently. This seamless process with Accounts and Project management modules.",
           benefits: ["Clear Claim View", "Direct Document Access", "Bulk Settlement Option", "Reliable Processing with auto Account ledger processing"],
-          imageSrc: img5,
+          imageSrc: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/sattle_claim.svg",
           imageAlt: "Settle Claim",
           imgPosition: "left"
       },
@@ -279,7 +272,7 @@ const FeatureDescription = ({ data }) => {
           subtitle: "Instant insights on claim status and trends.",
           description: "The Expense Claim Dashboard provides graphical charts view for claim status and monthly trends, helping employee/Manager track claims at a glance. Extensive filter criteria based on expense category, expense item, departments, etc., for analysis and managing your expenses in a better way.",
           benefits: ["Graphical Overviews with real-time update", "Extensive Filter criteria for reports", "Download reports in PDF/XLS"],
-          imageSrc: img6,
+          imageSrc: 'https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/expense_claim.svg',
           imageAlt: "Post Accounting",
           imgPosition: "right"
       }

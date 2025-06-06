@@ -38,14 +38,6 @@ const float = keyframes`
   }
 `
 
-const shimmer = keyframes`
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-`
 
 // Styled components
 const PageBackground = styled.div`
@@ -225,58 +217,8 @@ const Answer = styled.div`
   }
 `
 
-const GradientButton = styled.button`
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-top: 2rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-  position: relative;
-  overflow: hidden;
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
-  }
-  
-  &:active {
-    transform: translateY(0);
-  }
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 200%;
-    height: 100%;
-    background: linear-gradient(90deg, 
-      rgba(255, 255, 255, 0) 0%, 
-      rgba(255, 255, 255, 0.2) 25%, 
-      rgba(255, 255, 255, 0.2) 50%, 
-      rgba(255, 255, 255, 0) 100%);
-    animation: ${shimmer} 3s infinite;
-  }
-`
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 2.5rem;
-  animation: ${fadeIn} 1s ease-out;
-  animation-delay: 0.8s;
-  opacity: 0;
-  animation-fill-mode: forwards;
-`
 export default function Commonfnadq({ data }) {
   const [openItems, setOpenItems] = useState([]);
-  const [expandAll, setExpandAll] = useState(false);
 
   const faqData = {
     hrm: [
@@ -739,7 +681,6 @@ export default function Commonfnadq({ data }) {
     
   };
 
-  const selectedData = faqData[data] || [];
 
   const toggleItem = (id) => {
     setOpenItems((prev) =>
@@ -747,14 +688,6 @@ export default function Commonfnadq({ data }) {
     );
   };
 
-  const toggleAll = () => {
-    setExpandAll(!expandAll);
-    if (!expandAll) {
-      setOpenItems(selectedData.map((item) => item.id));
-    } else {
-      setOpenItems([]);
-    }
-  };
 
   return (
     <PageBackground>
@@ -802,11 +735,6 @@ export default function Commonfnadq({ data }) {
           </div>
         ))}
 
-        {/* <ButtonContainer>
-          <GradientButton onClick={toggleAll}>
-            {expandAll ? "Collapse All" : "Expand All"}
-          </GradientButton>
-        </ButtonContainer> */}
       </FAQContainer>
     </PageBackground>
   );

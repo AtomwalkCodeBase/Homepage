@@ -3,7 +3,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import contactImg from "../assets/img/contact-img.svg";
 import 'animate.css';
 import TrackVisibility from 'react-on-screen';
-import { MailchimpForm } from "./MailchimpForm";
 import axios from "axios";
 
 export const Contact = ({setShowsuccess}) => {
@@ -53,7 +52,7 @@ console.log(formDetails,"look at ne")
         },
       });
       const response = await axiosInstance.post(url, data);
-      if (response.status == 200) {
+      if (response.status === 200) {
         setButtonText("Send");
         setFormDetails(formInitialDetails);
         setShowsuccess(true)

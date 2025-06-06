@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import contactus from "../assets/img/contactus.jpg";
 import colorSharp from "../assets/img/color-sharp.png"
@@ -112,39 +111,7 @@ const Button = styled.button`
     background-color: rgb(223, 253, 245);
   }
 `;
-const BackImage = styled.div`
-  position: relative;
-  height: 500px;
-  background-position: center center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url(${contactus});
-    background-position: center center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    opacity: 0.5; /* Apply opacity to the background image only */
-    z-index: 1;
-  }
-`;
 
-const Tesdiv = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 3em;
-  height: 100%;
-  z-index: 2; /* Ensure the text is above the background */
-  font-weight: 500;
-`;
 const Para =styled.p`
 @media (min-width:768px) {
   width: 440px;
@@ -154,7 +121,6 @@ const Para =styled.p`
 const ContactUs = () => {
   return (
     <>
-    {/* <BackImage><Tesdiv>Contact Us</Tesdiv></BackImage> */}
     <LetsConnect title={"Let's connect"} description={"We would love to hear from you. How can we help?"} background={"#ffc24b"}></LetsConnect>
     <ContactCard></ContactCard>
     <ContactCards></ContactCards>

@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import TagImag from './../assets/img/FevIimg.png';
-import CrmApp from './../assets/img/localPageHero.svg';
-import HrAPP from './../assets/img/HrApp.svg';
-import EcommApp from './../assets/img/EcommApp.svg';
 import Crm from './../assets/img/crm.png';
 import Hr from './../assets/img/search-job.png';
 import Ecom from './../assets/img/experiment_16584785.png';
@@ -160,7 +157,7 @@ return (
         <Features>
           <FeatureItem
             background={background}
-            onMouseEnter={() => handleMouseEnter('linear-gradient(180deg, #4382f8, rgb(255 246 247))', CrmApp)}
+            onMouseEnter={() => handleMouseEnter('linear-gradient(180deg, #4382f8, rgb(255 246 247))', "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/localPageHero.svg")}
             onMouseLeave={handleMouseLeave}
             onClick={()=>{window.location.href='/crm.html'}}
           >
@@ -169,7 +166,7 @@ return (
           </FeatureItem>
           <FeatureItem
             background={background}
-            onMouseEnter={() => handleMouseEnter('linear-gradient(180deg, #a970ff, rgb(255 246 247))', HrAPP)}
+            onMouseEnter={() => handleMouseEnter('linear-gradient(180deg, #a970ff, rgb(255 246 247))', "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/HrApp.svg")}
             onMouseLeave={handleMouseLeave}
             onClick={()=>{window.location.href='/hrm.html'}}
           >

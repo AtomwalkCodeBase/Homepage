@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Background from './../assets/img/Backgroundyellow.jpg'
 import axios from "axios";
@@ -153,7 +153,7 @@ const endpoint = 'https://www.atomwalk.com/api';
         },
       });
       const response = await axiosInstance.post(url, data);
-      if (response.status == 200) {
+      if (response.status === 200) {
         setFormDetails(formInitialDetails);
         setShowsuccess(true);
       }

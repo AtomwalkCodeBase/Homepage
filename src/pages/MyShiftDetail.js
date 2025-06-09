@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import styled from "styled-components"
-import { format, addDays, startOfWeek, parseISO, addWeeks, subWeeks } from "date-fns"
+import { format, addDays, startOfWeek, addWeeks, subWeeks } from "date-fns"
 import {
   FaCalendarAlt,
   FaChevronLeft,

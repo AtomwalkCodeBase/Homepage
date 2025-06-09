@@ -98,12 +98,6 @@ const EmployeeName = styled.h3`
   font-size: 1.5rem;
 `
 
-const EmployeeId = styled.p`
-  margin: 0;
-  color: ${({ theme }) => theme.colors.textLight};
-  font-size: 1rem;
-`
-
 const ProfileDetails = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -329,32 +323,10 @@ const TableContainer = styled.div`
   overflow-x: auto;
 `
 
-const HistoryButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 1rem;
-  margin-bottom: 2rem;
-  background: ${({ theme }) => theme.colors.primary};
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    background: ${({ theme }) => theme.colors.primaryDark};
-  }
-`
 
 const AttendanceTracking = () => {
   const [currentTime, setCurrentTime] = useState(new Date())
-  const [currentDate, setCurrentDate] = useState("")
   const [checkedIn, setCheckedIn] = useState(false)
-  const [startTime, setStartTime] = useState(null)
   const [attendance, setAttendance] = useState({})
   const [isRemarkModalOpen, setIsRemarkModalOpen] = useState(false)
   const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false)

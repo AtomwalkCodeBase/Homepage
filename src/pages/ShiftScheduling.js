@@ -13,11 +13,9 @@ import {
   FaBriefcase,
   FaUmbrellaBeach,
   FaHome,
-  FaStarOfDavid,
-  // FaToday,
 } from "react-icons/fa"
 import Layout from "../components/Layout"
-import { empshiftData, empshiftDatas } from "../services/productServices"
+import { empshiftDatas } from "../services/productServices"
 import Button from "../components/Button"
 // Styled Components
 const Card = styled.div`
@@ -75,16 +73,6 @@ const NavButtonGroup = styled.div`
   @media (max-width: 768px) {
     width: 100%;
     justify-content: space-between;
-  }
-`
-
-const TodayButton = styled(NavButton)`
-  background: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.text};
-  border-color: ${({ theme }) => theme.colors.primary};
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.primaryLight};
   }
 `
 
@@ -386,7 +374,6 @@ const MyShiftDetail = () => {
   }
 
   // Days of the week
-  const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
   const weekdaysShort = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
   useEffect(() => {

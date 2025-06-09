@@ -1,6 +1,6 @@
 import axios from "axios";
 // import { endpoint } from "../constants";
-import { addEmpLeave, endpoint, getEmpLeavedata } from "../services/ConstantServies";
+import {endpoint } from "../services/ConstantServies";
 
 // Utility function to get token from localStorage
 const getToken = () => {

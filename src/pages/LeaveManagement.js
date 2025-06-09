@@ -6,9 +6,6 @@ import {
   FaCalendarTimes,
   FaCalendarAlt,
   FaEye,
-  FaEdit,
-  FaTrash,
-  FaFilter,
   
 } from "react-icons/fa"
 import Layout from "../components/Layout"
@@ -17,7 +14,6 @@ import Button from "../components/Button"
 import Badge from "../components/Badge"
 import LeaveModal from "../components/modals/LeaveModal"
 import { getEmpLeave, postEmpLeave } from "../services/productServices"
-import { use } from "react"
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title } from 'chart.js';
 import { Pie, Bar } from 'react-chartjs-2';
 import ConfirmationPopup from "../components/modals/ConfirmationPopup"
@@ -91,11 +87,6 @@ const LeaveBalance = styled.div`
   color: ${({ theme, color }) => theme.colors[color] || theme.colors.text};
 `
 
-const LeaveTotal = styled.div`
-  font-size: 0.875rem;
-  color: ${({ theme }) => theme.colors.textLight};
-`
-
 const TabContainer = styled.div`
   display: flex;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
@@ -119,13 +110,6 @@ const Tab = styled.button`
   }
 `
 
-const FilterContainer = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-  color: ${({ theme }) => theme.colors.textLight};
-`
 
 const FilterSelect = styled.p`
  color: ${({ theme }) => theme.colors.textLight};

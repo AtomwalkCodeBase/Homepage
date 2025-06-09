@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import styled, { keyframes } from "styled-components"
 import {
-  FaUsers,
   FaUserClock,
   FaCalendarAlt,
   FaMoneyBillWave,
@@ -22,17 +21,13 @@ import {
   FaCloudUploadAlt,
 } from "react-icons/fa"
 import {
-  LineChart,
   Line,
-  PieChart,
-  Pie,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
-  Cell,
   BarChart,
   Bar,
 } from "recharts"
@@ -99,20 +94,6 @@ const bounce = keyframes`
   60% {
     transform: translateY(-10px);
   }
-`
-
-const shimmer = keyframes`
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-`
-
-const rotate = keyframes`
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 `
 
 
@@ -404,20 +385,6 @@ const WishFormGroup = styled.div`
   }
 `;
 
-const BirthdayImage = styled.img`
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 16px;
-  border: 3px solid white;
-`;
-
-const EmptyState = styled.div`
-  padding: 20px;
-  text-align: center;
-  color: #666;
-`;
 const Balloon = styled.div`
   width: ${(props) => props.size || 30}px;
   height: ${(props) => props.size * 1.2 || 36}px;

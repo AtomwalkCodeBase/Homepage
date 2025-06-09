@@ -377,36 +377,36 @@ const WishFooter = styled.div`
   padding-top: 15px;
 `
 
-const LikeButton = styled.button`
-  background: transparent;
-  border: none;
-  display: flex;
-  align-items: center;
-  color: ${(props) => (props.liked ? "#FF6584" : "#666")};
-  cursor: pointer;
+// const LikeButton = styled.button`
+//   background: transparent;
+//   border: none;
+//   display: flex;
+//   align-items: center;
+//   color: ${(props) => (props.liked ? "#FF6584" : "#666")};
+//   cursor: pointer;
   
-  svg {
-    margin-right: 5px;
-    animation: ${(props) => (props.liked ? pulse : "none")} 1s infinite;
-  }
-`
+//   svg {
+//     margin-right: 5px;
+//     animation: ${(props) => (props.liked ? pulse : "none")} 1s infinite;
+//   }
+// `
 
-const EventBadge = styled(Badge)`
-  position: absolute;
-  top: 20px;
-  right: 20px;
-`
+// const EventBadge = styled(Badge)`
+//   position: absolute;
+//   top: 20px;
+//   right: 20px;
+// `
 
-const FilterContainer = styled.div`
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
+// const FilterContainer = styled.div`
+//   display: flex;
+//   gap: 10px;
+//   margin-bottom: 20px;
+//   flex-wrap: wrap;
   
-  @media (max-width: 768px) {
-    justify-content: center;
-  }
-`
+//   @media (max-width: 768px) {
+//     justify-content: center;
+//   }
+// `
 
 // Decorative elements
 const Balloon = styled.div`
@@ -434,42 +434,42 @@ const Balloon = styled.div`
   animation-delay: ${(props) => props.delay || 0}s;
 `
 
-const Chocolate = styled.div`
-  width: 24px;
-  height: 14px;
-  background: #5D4037;
-  position: absolute;
-  bottom: ${(props) => props.bottom || 20}%;
-  right: ${(props) => props.right || 15}%;
-  border-radius: 3px;
-  z-index: 1;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+// const Chocolate = styled.div`
+//   width: 24px;
+//   height: 14px;
+//   background: #5D4037;
+//   position: absolute;
+//   bottom: ${(props) => props.bottom || 20}%;
+//   right: ${(props) => props.right || 15}%;
+//   border-radius: 3px;
+//   z-index: 1;
+//   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   
-  &::before {
-    content: '';
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    right: 4px;
-    height: 2px;
-    background: #8D6E63;
-    border-radius: 1px;
-  }
+//   &::before {
+//     content: '';
+//     position: absolute;
+//     top: 4px;
+//     left: 4px;
+//     right: 4px;
+//     height: 2px;
+//     background: #8D6E63;
+//     border-radius: 1px;
+//   }
   
-  &::after {
-    content: '';
-    position: absolute;
-    top: 4px;
-    left: 7px;
-    width: 2px;
-    height: 6px;
-    background: #8D6E63;
-    border-radius: 1px;
-  }
+//   &::after {
+//     content: '';
+//     position: absolute;
+//     top: 4px;
+//     left: 7px;
+//     width: 2px;
+//     height: 6px;
+//     background: #8D6E63;
+//     border-radius: 1px;
+//   }
   
-  animation: ${swing} 3s ease-in-out infinite;
-  animation-delay: ${(props) => props.delay || 0}s;
-`
+//   animation: ${swing} 3s ease-in-out infinite;
+//   animation-delay: ${(props) => props.delay || 0}s;
+// `
 
 const Teddy = styled.div`
   position: absolute;

@@ -3,7 +3,6 @@ import styled, { keyframes } from "styled-components"
 import { FaUser, FaLock, FaBuilding, FaSyncAlt } from "react-icons/fa"
 import { useAuth } from "../context/AuthContext"
 import { toast } from "react-toastify"
-import { use } from "react"
 import { forgetUserPinView, getCompanyName } from "../services/productServices"
 import { useNavigate } from "react-router-dom"
 
@@ -272,7 +271,6 @@ const Login = () => {
     company: "",
     captcha: ""
   })
-  const [company, setCompany] = useState("")
   const [loading, setLoading] = useState(false)
   const [companies, setCompanies] = useState([])
   const [placeholderdatas, setPlaceholderdatas] = useState("Employee ID/Mobile Number");

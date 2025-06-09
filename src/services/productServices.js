@@ -1,5 +1,4 @@
-import { toast } from "react-toastify";
-import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext, getAppointeeList, processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip, processbarthdaywish, getResponseList, forgetPin, getCustomerDetailListURL, userTaskListURL, addCustomerTicketURL, getTaskCategoryURL, getOrderListURL, getEmpShiftData } from "../services/ConstantServies";
+import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext,  processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip, processbarthdaywish, getResponseList, forgetPin, getCustomerDetailListURL, userTaskListURL, addCustomerTicketURL, getTaskCategoryURL, getOrderListURL, getEmpShiftData } from "../services/ConstantServies";
 import { authAxios, authAxiosFilePost, authAxiosget, authAxiosPost } from "./HttpMethod";
 
 export function getEmpLeave(leave_type, emp_id) {
@@ -25,11 +24,6 @@ export function postEmpLeave(leave_type) {
 }
 
 export function postClaim(claim_data) {
-  let data = {};
-  if (claim_data) {
-    data = claim_data;
-  }
-  // console.log('Data to be sent:', claim_data);
   return authAxiosFilePost(addClaim, claim_data)
 }
 export function postvent(claim_data) {
@@ -50,7 +44,6 @@ export function postClaimAction(claim_type) {
 }
 
 export function getClaimApprover() {
-  let data = {};
   return authAxios(getClaimApproverList)
 }
 
@@ -148,11 +141,6 @@ export function imagetotext(Uri) {
   data = Uri
   return authAxiosFilePost(getfiletotext, data);
 }
-
-// export function getAppointee() { 
-//   return authAxios(getAppointeeList)
-// }
-
 export function postAppointee(res) {
   let data = {};
   if (res) {
@@ -225,7 +213,7 @@ export async function setuserpinview(o_pin, n_pin) {
     };
 
     const response = await authAxiosPost(setuserpin, data);
-    if (response.status == 200) {
+    if (response.status === 200) {
       console.log("Pin updated successfully")
     }
     return response;

@@ -9,14 +9,10 @@ import {
   FaEnvelope,
   FaCalendarAlt,
   FaLock,
-  FaCamera,
   FaCheck,
   FaTimes,
   FaUserTie,
-  FaMapMarkerAlt,
   FaBirthdayCake,
-  FaTrophy,
-  FaShieldAlt,
   FaPalette,
   FaMoon,
   FaSun,
@@ -1092,136 +1088,6 @@ const OptionCardLabel = styled.div`
   text-align: center;
   color: ${({ theme }) => theme.colors.text};
   font-weight: 500;
-`
-
-const LayoutPreview = styled.div`
-  display: flex;
-  height: 200px;
-  overflow: hidden;
-  border-radius: 8px;
-
-  .layout-sidebar {
-    height: 100%;
-
-    &.compact {
-      width: 60px;
-      background: ${({ theme }) => theme.colors.primary};
-      padding: 1rem 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-
-      .sidebar-item {
-        width: 30px;
-        height: 30px;
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.2);
-
-        &.active {
-          background: rgba(255, 255, 255, 0.8);
-        }
-      }
-    }
-
-    &.standard {
-      width: 200px;
-      background: ${({ theme }) => theme.colors.primary};
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-
-      .sidebar-item {
-        height: 40px;
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.2);
-
-        &.active {
-          background: rgba(255, 255, 255, 0.8);
-        }
-      }
-    }
-
-    &.floating {
-      width: 200px;
-      background: ${({ theme }) => theme.colors.background};
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-
-      .sidebar-item {
-        height: 40px;
-        border-radius: 8px;
-        background: ${({ theme }) => theme.colors.backgroundAlt};
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-
-        &.active {
-          background: ${({ theme }) => theme.colors.primary};
-        }
-      }
-    }
-  }
-
-  .layout-content {
-    flex: 1;
-    background: ${({ theme }) => theme.colors.background};
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    overflow-y: auto;
-
-    .content-header {
-      height: 40px;
-      border-radius: 8px;
-      background: ${({ theme }) => theme.colors.card};
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-
-    .content-card {
-      height: 100px;
-      border-radius: 8px;
-      background: ${({ theme }) => theme.colors.card};
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-
-    &.narrow {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    &.standard {
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    &.wide {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    &.compact {
-      gap: 0.5rem;
-
-      .content-card {
-        height: 80px;
-      }
-    }
-
-    &.comfortable {
-      gap: 1rem;
-    }
-
-    &.spacious {
-      gap: 1.5rem;
-
-      .content-card {
-        height: 120px;
-      }
-    }
-  }
 `
 
 const Profile = () => {
@@ -2371,9 +2237,6 @@ $
           <StyledCard>
             <ProfileImage>
               <img src={profileData.image || "/placeholder.svg"} alt={profileData.name} />
-              {/* <ProfileImageOverlay>
-                <FaCamera /> Change Photo
-              </ProfileImageOverlay> */}
             </ProfileImage>
 
             <ProfileInfo>

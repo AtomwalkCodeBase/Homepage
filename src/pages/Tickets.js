@@ -558,12 +558,6 @@ const Tickets = () => {
     "03": "low"
   }
 
-  // Reverse priority map for submitting
-  const reversePriorityMap = {
-    "high": "01",
-    "medium": "02",
-    "low": "03"
-  }
 
     useEffect(() => {
       const fetchCategory = async () => {

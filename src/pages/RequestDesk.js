@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { FaTicketAlt, FaSearch, FaPlus, FaFilter, FaEye, FaEdit, FaLaptop, FaFileAlt } from "react-icons/fa"
+import { FaTicketAlt, FaSearch, FaPlus, FaFilter, FaEye, FaLaptop, FaFileAlt } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
@@ -129,28 +129,9 @@ const RequestTypeCard = styled.div`
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
   }
 `
-
-const RequestTypeIcon = styled.div`
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-  background: ${({ theme }) => theme.colors.primaryLight};
-  color: ${({ theme }) => theme.colors.primary};
-`
-
 const RequestTypeTitle = styled.h3`
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
-`
-
-const RequestTypeDescription = styled.p`
-  color: ${({ theme }) => theme.colors.textLight};
-  font-size: 0.9rem;
 `
 const Paragraphdata = styled.p`
   color: ${({ theme }) => theme.colors.textLight};

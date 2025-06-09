@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { 
-  FaDownload, 
   FaFilter, 
   FaChevronLeft, 
   FaChevronRight,
@@ -15,7 +14,6 @@ import {
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
-import Badge from "../components/Badge"
 import { getEmpHoliday, postEmpLeave } from "../services/productServices"
 import { toast } from "react-toastify"
 
@@ -52,13 +50,6 @@ const HeaderTitle = styled.div`
     font-size: 0.9rem;
   }
 `
-
-const CalendarActions = styled.div`
-  display: flex;
-  gap: 1rem;
-  color: ${({ theme }) => theme.colors.textLight};
-`
-
 const TabsContainer = styled.div`
   display: flex;
   margin-bottom: 1.5rem;
@@ -515,11 +506,6 @@ const OptionalHolidayCard = styled(Card)`
     gap: 0.5rem;
   }
 `;
-
-const MonthListView = styled.div`
-  padding: 1rem;
-`;
-
 const NoHolidaysMessage = styled.div`
   text-align: center;
   padding: 2rem;
@@ -672,12 +658,6 @@ const handleSubmit = (formattedDate,type,id) => {
     }
   };
 
-  // Filter holidays for the current month
-  const currentMonthHolidays = (holidayData.h_list || []).filter(holiday => {
-    const holidayDate = new Date(holiday.day.split('-').reverse().join('-'));
-    return holidayDate.getMonth() === currentMonth && holidayDate.getFullYear() === currentYear;
-  });
-
   // Function to generate calendar days for the current month
   const generateCalendarDays = () => {
     if (loading) {
@@ -713,7 +693,6 @@ const handleSubmit = (formattedDate,type,id) => {
 
     // Add cells for each day of the month
     for (let day = 1; day <= daysInMonth; day++) {
-      const dateStr = `${day}-${monthNames[currentMonth].substring(0, 3)}-${currentYear}`;
       const dateKey = `${day.toString().padStart(2, '0')}-${monthNames[currentMonth].substring(0, 3)}-${currentYear}`;
       const fullDate = new Date(currentYear, currentMonth, day);
       const isWeekend = fullDate.getDay() === 0 || fullDate.getDay() === 6;

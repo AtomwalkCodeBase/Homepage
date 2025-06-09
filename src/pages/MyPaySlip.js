@@ -12,7 +12,6 @@ import {
   FaMoneyBillWave,
   FaPlus,
   FaMinus,
-  FaEnvelope,
   FaPrint,
   FaEye,
 } from "react-icons/fa"
@@ -32,7 +31,6 @@ import {
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
-import { theme } from "../styles/Theme"
 import { getemppayslip } from "../services/productServices"
 import { toast } from "react-toastify"
 import { useAuth } from "../context/AuthContext"
@@ -382,60 +380,13 @@ const MyPaySlip = () => {
     { name: "Net", amount: netSalary },
   ]
 
-  const COLORS = ["#6C63FF", "#63FFDA", "#FF6584", "#FFD600"]
 
   const changeMonth = (direction) => {
     const newDate = new Date(currentMonth)
     newDate.setMonth(newDate.getMonth() + direction)
     setCurrentMonth(newDate)
   }
-  const handleDownloadPayslip = () => {
-    // In a real app, this would download from an API
-    // For demo, we'll create a PDF using jsPDF (you'll need to install it)
-    const doc = new jsPDF();
 
-    // Add company logo and header
-    doc.setFontSize(18);
-    doc.text("ACME Corporation", 105, 20, { align: 'center' });
-    doc.setFontSize(14);
-    doc.text(`Pay Slip for ${currentMonth.toLocaleString("default", { month: "long", year: "numeric" })}`, 105, 30, { align: 'center' });
-
-    // Add employee info
-    doc.setFontSize(12);
-    doc.text("Employee Name: John Doe", 20, 45);
-    doc.text(`Employee ID: EMP-001`, 20, 55);
-    doc.text(`Department: Engineering`, 20, 65);
-
-    // Add salary details
-    doc.setFontSize(14);
-    doc.text("Earnings", 20, 80);
-
-    let yPosition = 90;
-    salaryData.filter((item) => item.sg_type !== "D" && item.sg_type !== "G").forEach(item => {
-      doc.text(`${item.name}: ₹${item.sg_amt.toLocaleString()}`, 25, yPosition);
-      yPosition += 10;
-    });
-
-    doc.text(`Total Earnings: ₹${totalEarnings.toLocaleString()}`, 25, yPosition);
-    yPosition += 20;
-
-    doc.text("Deductions", 20, yPosition);
-    yPosition += 10;
-
-    salaryData.filter((item) => item.sg_type === "D").forEach(item => {
-      doc.text(`${item.name}: ₹${item.sg_amt.toLocaleString()}`, 25, yPosition);
-      yPosition += 10;
-    });
-
-    doc.text(`Total Deductions: ₹${totalDeductions.toLocaleString()}`, 25, yPosition);
-    yPosition += 20;
-
-    doc.setFontSize(16);
-    doc.text(`Net Salary: ₹${netSalary.toLocaleString()}`, 20, yPosition, { color: '#6C63FF' });
-
-    // Save the PDF
-    doc.save(`payslip_${currentMonth.getFullYear()}_${currentMonth.getMonth() + 1}.pdf`);
-  };
   const handleViewPayslip = async (monthDate) => {
     try {
       const formattedMonth = `${monthDate.getFullYear()}-${monthDate.getMonth() + 1}`;

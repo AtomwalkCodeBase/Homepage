@@ -77,5 +77,6 @@ export const forgetPin = `${newhrendpoint}/emp_forget_pin/`;
 export const customerslogin = `${hrendpoint}/customer_user_login/`;
 export const addCustomerTicketURL = `${endpoint}/process_customer_ticket/${db_name}/`;
 export const getTaskCategoryURL = `${endpoint}/get_task_category/${db_name}/`;
+export const getAppointeeList = `${endpoint}/get_facility_list/${db_name}/`;
 export const getEmpShiftData = `${newhrendpoint}/get_emp_shift_data/${db_name}/`;
 

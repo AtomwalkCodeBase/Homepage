@@ -20,6 +20,7 @@ import {
   FaFileInvoiceDollar,
   FaLifeRing,
   FaExchangeAlt,
+  FaStethoscope,
 } from "react-icons/fa"
 import { SiGooglecalendar } from "react-icons/si";
 import { useAuth } from "../context/AuthContext"
@@ -399,6 +400,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
     ? [
         { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
         { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
+        { path: "/appointments", name: "My Appointments", icon: <FaStethoscope /> },
       ]
     : [
         { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },

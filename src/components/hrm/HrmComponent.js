@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import HRMHeadBG from '../../assets/img/hr.png';
 import KeyFeatureHrm from './KeyFeatureHrm';
 import FeatureBenifits from '../FeatureBenifits';
-import FAQSection from './FAQSection';
 import LetsConnect from '../LetsConnect';
 import NewFAQSection from './NewFAQSection';
 

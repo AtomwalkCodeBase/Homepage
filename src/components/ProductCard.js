@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Product from './../assets/img/Projectmange.jpg'
 import Inventory from './../assets/img/inventory management.jpg'
 import Process from './../assets/img/Process Templates.jpg'
 import Sales from './../assets/img/Sales and Procurement.jpg'
@@ -20,12 +19,7 @@ const SectionContainer = styled.section`
   text-align: center;
   background-color: #ddf5ff;
 `;
-const Maincontent=styled.div`
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 30px;
-`
+
 // Title of the section
 const SectionTitle = styled.h2`
   font-size: 2.5em;

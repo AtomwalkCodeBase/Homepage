@@ -200,7 +200,7 @@ const InventoryFeatures = ({data}) => {
       </Features>
     );
   
-    const features = isClaim =='inventoryop'
+    const features = isClaim ==='inventoryop'
       ?[
         {
           "title": "Comprehensive Inventory Management with Atomwalk",
@@ -283,7 +283,7 @@ const InventoryFeatures = ({data}) => {
           "imgPosition": "right"
         }
       ]
-      :isClaim =='inventoryreport'?[
+      :isClaim ==='inventoryreport'?[
         {
           title: 'Comprehensive Stock Insights at Your Fingertips',
           subtitle: 'Filter, Analyze, and Track Inventory Movement with Ease',

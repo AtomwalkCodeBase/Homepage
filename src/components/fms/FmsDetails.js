@@ -184,11 +184,6 @@ const ConclusionItem = styled.li`
   }
 `;
 
-const Highlight = styled.span`
-  color: #82e0aa;
-  font-weight: 600;
-`;
-
 const BenefitsSection = styled.div`
   background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
   padding: 2rem 1rem;

@@ -1,6 +1,4 @@
 import React, { useMemo } from 'react';
-import styled from 'styled-components';
-import { useTable } from 'react-table';
 import ClaimHeadBG from '../../assets/img/claim.png'; 
 import LeaveHeadBG from '../../assets/img/leave1.png';
 import HrHeadBG from '../../assets/img/hrm_hero_img.png';
@@ -97,13 +95,7 @@ const HrmFeaturesManagement = () => {
     };
   }, [isClaimPage, isLeavePage,isEmployeePage, isPayrollPage, isAttendancePage, isAppraisalPage, isHelpDeskPage, isEventPage]);
 
-  const demo = () => {
-    window.location.href = '/demo.html';
-  };
   const navigate = useNavigate();
-const navback=()=>{
-  navigate(-1);
-}
   return (
     <>
       <LetsConnect title={content.title} description={content.description} background={"#eae3ff"} lead={true} img={content.image}/>

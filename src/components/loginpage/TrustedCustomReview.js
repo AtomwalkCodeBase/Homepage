@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Dots from "./images/twoDots.svg";
 
@@ -123,19 +123,19 @@ export default function TrustedCustomReview(props) {
                 onClick={() => {
                   props.HandleCoroIndex(1);
                 }}
-                style={{ backgroundColor: props.coroIndex==1 ? "#FF7624" : undefined }}
+                style={{ backgroundColor: props.coroIndex === 1 ? "#FF7624" : undefined }}
                 ></Dot>
               <Dot
                 onClick={() => {
                   props.HandleCoroIndex(2);
                 }}
-                style={{ backgroundColor: props.coroIndex==2 ? "#FF7624" : undefined }}
+                style={{ backgroundColor: props.coroIndex === 2 ? "#FF7624" : undefined }}
               ></Dot>
               <Dot
                 onClick={() => {
                   props.HandleCoroIndex(3);
                 }}
-                style={{ backgroundColor: props.coroIndex==3 ? "#FF7624" : undefined }}
+                style={{ backgroundColor: props.coroIndex === 3 ? "#FF7624" : undefined }}
               ></Dot>
             </CustomDot>
           </CustomDtl>

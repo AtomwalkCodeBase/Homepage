@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import ReactModal from "react-modal"; // Optional, you can also use plain CSS for a custom modal
 import Ecom from './../assets/img/underconstruction.jpg';
 

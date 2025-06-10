@@ -46,15 +46,6 @@ const ProfileImage = styled.img`
   border: 4px solid #ffffff;
 `;
 
-// G2 icon style
-const G2Icon = styled.img`
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  top: 15px;
-  right: 20px;
-`;
-
 // Content inside the card
 const CardContent = styled.div`
   margin-top: 30px;

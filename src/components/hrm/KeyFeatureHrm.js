@@ -1,10 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Compliance from '../../assets/img/consulting.png'
-import Excellence from '../../assets/img/service.png'
-import Grow from '../../assets/img/grow.png'
 import Payroll from '../../assets/img/payroll.png'
-import Arrow from '../../assets/img/arrows.png'
 import AttIcon from '../../assets/img/attendance1.png'
 import OnboardingIcon from '../../assets/img/onboarding.png'
 import EmployeeDataIcon from '../../assets/img/empdata.png'
@@ -35,18 +31,6 @@ const MainTitle = styled.h2`
 
   @media (max-width: 768px) {
     font-size: 2em;
-  }
-`;
-
-// Subtitle styling
-const Subtitle = styled.p`
-  font-size: 1.2em;
-  color: #666;
-  margin-top: 10px;
-  margin-bottom: 60px;
-
-  @media (max-width: 768px) {
-    font-size: 1em;
   }
 `;
 

@@ -4,7 +4,6 @@ import Compliance from '../../assets/img/userManagement.png'
 import Excellence from '../../assets/img/equipmentManagement.png'
 import Grow from '../../assets/img/check-list.png'
 import Payroll from '../../assets/img/dashboard.png'
-import Arrow from '../../assets/img/content-management.png'
 
 // Container for the entire section
 const SectionContainer = styled.div`

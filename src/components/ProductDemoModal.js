@@ -164,7 +164,7 @@ const authAxiosPost = async (url, data) => {
      },
    });
    const response = await axiosInstance.post(url, data);
-   if (response.status == 200) {
+   if (response.status === 200) {
      setShowsuccess(true);
      localStorage.setItem('datacheck',true);
      setFormDetails(formInitialDetails);

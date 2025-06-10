@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import colorSharp from "../assets/img/color-sharp.png"
 import LetsConnect from './LetsConnect';
 import ContactCards from './ContactCards';
 import ContactCard from './ContactCard';
@@ -8,9 +7,6 @@ const ContactSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* background-image: url(${colorSharp});
-  background-position: left center;
-  background-repeat: no-repeat; */
   background-color: #e1fff6;
   padding: 50px 20px;
   color: #333;

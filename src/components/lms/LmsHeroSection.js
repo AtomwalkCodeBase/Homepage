@@ -3,10 +3,8 @@ import styled from 'styled-components';
 import TagImag from '../../assets/img/HeroLabSection.png';
 import Crm from '../../assets/img/science.png';
 import Hr from '../../assets/img/laboratory.png';
-import EcommApp from '../../assets/img/EcommApp.svg';
 import CrmApp from '../../assets/img/labmagement.png';
 import HrAPP from '../../assets/img/equpment.png';
-import Ecom from '../../assets/img/online-shop.png';
 import UnderConstructionPopup from '../UnderConstructionPopup';
 
 // Styled Components

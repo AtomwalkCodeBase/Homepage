@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import ClaimImgDemo from '../../assets/img/Claim_Image_demo.png';
-import ClaimImgDemo2 from '../../assets/img/Claim_Image_Demo2.png';
 import CheckMark from '../../assets/img/check_mark.png';
 import img1 from '../../assets/img/CrmMocups2.svg';
 import Crmrep from '../../assets/img/reprtcrm.svg';
@@ -207,7 +205,7 @@ const CrmFeatures = ({data}) => {
       </Features>
     );
   
-    const features = isClaim =='leadManagement'
+    const features = isClaim ==='leadManagement'
       ?[
         {
           title: 'Streamlined Lead Engagement',
@@ -271,7 +269,7 @@ const CrmFeatures = ({data}) => {
         //     imgPosition: 'right',
         //   },
           
-      ]:isClaim =='campaignManagement'?[
+      ]:isClaim ==='campaignManagement'?[
         {
           title: 'Create and Launch Campaigns Effortlessly',
           subtitle: 'Effortless Campaign Management - Advertise Smarter with a Few Simple Clicks',
@@ -307,7 +305,7 @@ const CrmFeatures = ({data}) => {
           imgPosition: 'left',
         }               
          
-        ]:isClaim =='CustomerManagement'?[
+        ]:isClaim ==='CustomerManagement'?[
           {
             title: 'Comprehensive Customer Management',
             subtitle: 'Easily Access, Track, and Update Customer Information',
@@ -402,7 +400,7 @@ const CrmFeatures = ({data}) => {
             imageAlt: 'Reports and Dashboard View',
             imgPosition: 'right',
           }
-          ]:isClaim =="Channelpartner"?[{
+          ]:isClaim ==="Channelpartner"?[{
             title: 'Effortlessly Manage Your Channel Partners',
             subtitle: 'Streamline Partner Onboarding and Management',
             description:

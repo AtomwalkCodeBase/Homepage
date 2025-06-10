@@ -5,7 +5,6 @@ import Features from './Features'
 import { Contact } from './Contact'
 import Pricing from './Pricing'
 import Customerstories from './Customerstories'
-import TrustedCustomer from './loginpage/TrustedCustomer'
 import Resource from './Resource'
 import UnlockFuture from './UnlockFuture'
 import PricingAvtar from './PricingAvtar'
@@ -50,7 +49,6 @@ useEffect(()=>{
     {/* <UnlockFuture></UnlockFuture> */}
     <Features></Features>
     {/* need to work one that page  */}
-   {/* <TrustedCustomer></TrustedCustomer> */}
    <Testimonial></Testimonial>
    <CustomerLogos/>
     {/* <Pricing></Pricing> */}

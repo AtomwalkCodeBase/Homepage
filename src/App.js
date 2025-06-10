@@ -23,8 +23,6 @@ import Footer2 from "./components/Footer2";
 // Public Pages
 import HomePage from "./components/HomePage";
 import Login from "./pages/Login";
-import ForgetPassword from "./components/loginpage/ForgetPassword";
-import Newcard from "./components/Newcard";
 import Product from "./components/Product";
 import ContactUs from "./components/ContactUs";
 import AbotUs from "./components/AbotUs";
@@ -127,8 +125,6 @@ function App() {
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<HomePage />} />
-              <Route path="/forgotpassword.html" element={<ForgetPassword />} />
-              <Route path="/card.html" element={<Newcard />} />
               <Route path="/Product.html" element={<Product />} />
               <Route path="/contactUs.html" element={<ContactUs />} />
               <Route path="/aboutUs.html" element={<AbotUs />} />

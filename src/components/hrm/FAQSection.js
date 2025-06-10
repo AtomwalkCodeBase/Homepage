@@ -142,7 +142,7 @@ const FAQSection = ({data,res}) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const claimFaqData =data=="crm"? [
+  const claimFaqData =data==="crm"? [
     { question: "What is CRM, and how does it help my business?", answer: "Customer Relationship Management (CRM) solution manages Lead, Customer and Channel Partner data efficiently on a real time basis and can be accessed by all the stakeholders. Hence eliminating the risk of duplication of data . Operations like lead and customer tasks and Campaign Management can be tracked/completed efficiently. By consolidating these functions, CRM enhances customer satisfaction, boosts sales effectiveness, and improves overall business efficiency, leading to better customer retention and increased profitability." },
     { question: "Who can benefit from using the CRM module?", answer: "The CRM module benefits a wide range of users across various roles within an organization, including sales teams, customer service representatives, marketing departments, channel partners, and managers. Sales teams can use it to manage leads, track opportunities, and enhance customer interactions. Customer service representatives benefit from improved case management and better tracking of customer issues. Marketing departments can leverage CRM for targeted campaigns, lead nurturing, and performance tracking. Channel partners gain from streamlined lead distribution and incentive management. Managers benefit from comprehensive insights into sales performance, customer satisfaction, and team productivity, enabling them to make informed decisions and drive business growth." },
     { question: "How can I add or update customer details?", answer: "To add or update customer details, navigate to the CRM section in the left menu and select the ‘Customer List’ tab. A comprehensive list of customers will be displayed. To update an existing customer’s information, click on the desired customer’s name to view their details. You will then find an “Update” button; click this to access and modify any of the fields as needed. After making the required changes, simply click “Save” to update the customer details. To add a new customer, click the “Add Customer” button located in the top-right corner of the screen. Fill out the necessary details in the provided fields and click “Save” to record the new customer. The newly added customer will now appear in the Customer Details screen." },
@@ -155,7 +155,7 @@ const FAQSection = ({data,res}) => {
     { question: "Can I automate customer lifecycle management? ", answer: "Yes, the CRM allows you to automate customer lifecycle management. It enables you to set up automated workflows that manage the entire customer journey from initial lead capture, through the sales process, to customer onboarding, and ongoing relationship management. You can automate follow-up actions, send personalized communications, track customer interactions, and manage renewals or upgrades based on predefined criteria. This automation ensures a consistent and efficient approach to managing customer relationships, enhances customer satisfaction, and drives retention and growth throughout the customer lifecycle."},
     { question: "Can I add custom fields or modules?", answer: "Yes, the CRM allows you to add custom fields or modules to tailor the system to your specific business needs. You can create and modify custom fields for existing modules, such as adding additional contact details, notes, or custom attributes related to leads, customers, or opportunities. Additionally, you can create entirely new modules to track unique data or processes specific to your business, such as custom project tracking or additional support metrics. These customizations enable the CRM to align more closely with your workflows and data management requirements, enhancing its functionality and usability."},
     { question: "How can I track campaign performance?", answer: ""},
-  ]:data=="equipment"?[
+  ]:data==="equipment"?[
     { 
       "question": "Who can use Lab Equipment Management?", 
       "answer": "Research and Development (R &amp; D) Labs in companies/ Universities Biobanking, Food &amp; Beverage Industry, Medical labs, Pharmaceuticals, Clinical Testing and Molecular Diagnostics, Contract Research Laboratories, Environmental Testing Lab, Forensics Labs, Environmental Management, Mining and Exploration, Food and Beverage, Toxicology Lab, Molecular Biology, Public Health, Clinical Sector, Startups"
@@ -290,7 +290,7 @@ const FAQSection = ({data,res}) => {
         <CTAImage src={faqimg} alt="FAQ" />
         <CTAHeading>Still have questions?</CTAHeading>
         <CTAText>
-          Book a call with our team to learn how to integrate ATOMWALK <span>{data=="crm"?"CRM":data=="equipment"?"LEMS":"HRM"}</span> with your business.
+          Book a call with our team to learn how to integrate ATOMWALK <span>{data==="crm"?"CRM":data==="equipment"?"LEMS":"HRM"}</span> with your business.
         </CTAText>
         <CTAButton onClick={demo}>Book a demo</CTAButton>
       </CTASection>

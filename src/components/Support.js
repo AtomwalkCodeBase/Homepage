@@ -87,11 +87,11 @@ const SubmitButton = styled.button`
 `;
 
 const Supports = ({ isOpen, onRequestClose }) => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [ setModalIsOpen] = useState(false);
 
-  // Functions to handle opening and closing the modal
-  const openModal = () => setModalIsOpen(true);
-  const closeModal = () => setModalIsOpen(false);
+  // // Functions to handle opening and closing the modal
+  // const openModal = () => setModalIsOpen(true);
+  // const closeModal = () => setModalIsOpen(false);
 
   return (
     <>

@@ -2,7 +2,6 @@ import React from 'react'
 import LetsConnect from '../LetsConnect'
 import KeyFeatureCrm from './KeyFeatureCrm'
 import FeatureBenifits from '../FeatureBenifits'
-import FAQSection from '../hrm/FAQSection'
 import NewFAQSection from '../hrm/NewFAQSection'
 
 const HerosectionCrm = () => {

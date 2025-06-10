@@ -1,7 +1,5 @@
 import React from "react";
-import styled from "styled-components";
 import FeatureBenifits from "../FeatureBenifits";
-import FAQSection from "../hrm/FAQSection";
 import TagImg from '../../assets/img/inventory-management-img.png';
 import LetsConnect from "../LetsConnect";
 import KeyFeaturesInventory from "./KeyFeaturesInventory";

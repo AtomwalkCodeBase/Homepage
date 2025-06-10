@@ -67,22 +67,6 @@ const BannerText = styled.p`
   }
 `
 
-const FeatureList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
-`
-
-const FeatureItem = styled.li`
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-  
-  svg {
-    margin-right: 0.5rem;
-  }
-`
-
 const LoginFormContainer = styled.div`
   flex: 1;
   display: flex;
@@ -220,7 +204,7 @@ const Logins = () => {
     password: "",
     company: "",
   })
-  const [company, setCompany] = useState("")
+  // const [company, setCompany] = useState("")
   const [loading, setLoading] = useState(false)
   const [companies, setCompanies] = useState([])
   const [placeholderdatas,setPlaceholderdatas] = useState("Employee ID");
@@ -350,7 +334,7 @@ const Logins = () => {
           <LoginButton type="submit" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </LoginButton>
-           { placeholderdatas=="Employee ID" ?
+           { placeholderdatas==="Employee ID" ?
 
           <FormFooter onClick={() => setPlaceholderdatas("Mobile Number")}>
             <Link>Login With Mobile Number</Link>

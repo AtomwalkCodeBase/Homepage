@@ -124,9 +124,27 @@ export const NavBar = () => {
   }, []);
 
   const handleERPLogin = () => {
-    window.location.href = "https://www.atomwalk.com/login/";
-  };
-
+    const queryParams = new URLSearchParams(location.search);
+    const loggedInValue = queryParams.get("called_url");
+    const crmurl=queryParams.get("base_url");
+    const data='https://crm.atomwalk.com/atomwalk';
+    if(crmurl){
+      if(crmurl==data){
+        window.location.href = 'https://crm.atomwalk.com/login/';
+      }
+      else{
+        window.location.href = 'https://atomwalk.com/login/';
+      };
+    }
+      else if (showLogin) {
+      window.location.href = "https://www.atomwalk.com/login/";
+      } else if(loggedInValue){ 
+      window.location.href = loggedInValue;
+    }
+    else {
+      window.location.href = "https://www.atomwalk.com/login/";
+    };
+  }
   const handleHRMSLogin = () => {
     window.location.href = "https://home.atomwalk.com/login/";
   };

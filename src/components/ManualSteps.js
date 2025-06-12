@@ -6,7 +6,6 @@ import { MdOutlineStickyNote2 } from "react-icons/md";
 
 import {
   FaCheckCircle,
-  FaClipboardCheck,
   FaPlusCircle,
   FaCalendar,
   FaRoute,
@@ -15,9 +14,7 @@ import {
   FaRegListAlt,
   FaFile,
   FaPalette,
-  FaStar,
   FaRegFileAlt,
-  FaAddressBook,
   FaChartLine,
   FaTimesCircle,
   FaTools,
@@ -25,16 +22,12 @@ import {
   FaCloudUploadAlt,
   FaCheck,
   FaSort,
-  FaExclamationCircle,
   FaTrash,
   FaTable,
-  FaFileSignature,
-  FaLock,
   FaTimes,
   FaListAlt,
   FaUserShield,
   FaUndo,
-  FaLightbulb,
   FaCogs,
   FaBan,
   FaSearch,
@@ -57,15 +50,12 @@ import {
   FaUnlockAlt,
   FaKey,
   FaListUl,
-  FaTachometerAlt,
   FaSignOutAlt,
   FaFileExport,
   FaList,
   FaFilter,
-  FaHandshake,
   FaTasks,
   FaTag,
-  FaMoneyBillWave,
   FaArrowLeft,
   FaExclamationTriangle,
   FaPlus,
@@ -332,14 +322,6 @@ const ListItemIcon = styled(FaCircle)`
     width: 9px;
     height: 9px;
   }
-`;
-
-const ImportantNoteIcon = styled(FaExclamationTriangle)`
-  flex-shrink: 0;
-  color: #f97316;
-  margin-top: 0.2rem;
-  width: 18px;
-  height: 18px;
 `;
 
 const BackButtonIcon = styled(FaArrowLeft)`

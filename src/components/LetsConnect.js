@@ -76,19 +76,6 @@ const ImageContainer = styled.div`
   }
 `;
 
-const Circle = styled.div`
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  border-radius: 50%;
-  background-color: #a233db;
-  top: 0;
-  right: -10px;
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
 const PeopleImage = styled.img`
   position: relative;
   z-index: 1;

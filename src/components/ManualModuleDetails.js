@@ -12,10 +12,8 @@ import {
   FaRocket,
   FaUserCheck,
   FaBriefcase,
-  FaBuilding,
   FaBox,
   FaChartBar,
-  FaPlug,
   FaHeartbeat,
   FaCog,
   FaFileAlt,
@@ -1052,12 +1050,6 @@ const ManualModuleDetails = () => {
     }));
   };
 
-  const handleSubtopicClick = (subtopic) => {
-    window.location.href = `manualsteps.html?topic=${encodeURIComponent(
-      subtopic
-    )}`;
-  };
-
   // Search across all sub-modules of the current main module
   const getAllTopicsForCurrentModule = () => {
     if (!moduleData) return [];
@@ -1203,7 +1195,7 @@ const ManualModuleDetails = () => {
                 <span>/</span>
                 <a href="/manual.html">Manuals</a>
                 <span>/</span>
-                <a href="#">{moduleData.title}</a>
+                <p>{moduleData.title}</p>
                 {searchQuery && <span>/ Search: "{searchQuery}"</span>}
               </Breadcrumbs>
             </div>

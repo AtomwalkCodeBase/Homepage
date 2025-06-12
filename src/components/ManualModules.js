@@ -7,7 +7,6 @@ import {
   FiTrendingUp, 
   FiShoppingCart,
   FiPackage,
-  FiDownload,
   FiEye,
   FiArrowRight
 } from 'react-icons/fi';
@@ -272,28 +271,6 @@ const PrimaryButton = styled.button.attrs({
       transform: translateY(0);
     }
   `;
-  
-
-const SecondaryButton = styled.button`
-  padding: 10px 18px;
-  background: white;
-  color: #4f46e5;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.2s ease;
-  font-size: 0.95rem;
-
-  &:hover {
-    background: #f9fafb;
-    border-color: #c7d2fe;
-    color: #4338ca;
-  }
-`;
 
 const NoResults = styled.div`
   grid-column: 1 / -1;

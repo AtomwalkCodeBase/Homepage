@@ -18,16 +18,6 @@ const Title = styled.h1`
   color: #2c3e50;
 `;
 
-
-const Subtitle = styled.p`
-  font-size: 1.2em;
-  color: #5a6a7e;
-  text-align: center;
-  margin-bottom: 60px;
-  max-width: 700px;
-  line-height: 1.6;
-`;
-
 const PlansContainer = styled.div`
   display: flex;
   flex-wrap: wrap;

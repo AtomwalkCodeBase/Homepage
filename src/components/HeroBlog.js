@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import BlogImage from './../assets/img/Bloghreos.jpg'; // replace with correct image path
-import Pritam from './../assets/img/Pritam.jpg'
-import Ashutosh from './../assets/img/Ashutosh.png'
+import BlogImage from './../assets/img/Bloghreos.jpg'; 
 
 // Main container for the hero section
 const HeroSection = styled.section`
@@ -123,36 +121,6 @@ const ImageContainer = styled.div`
 const BlogImageStyled = styled.img`
   width: 100%;
   border-radius: 15px;
-`;
-
-const CardContainer = styled.div`
-  position: absolute;
-  bottom: -63px;
-  left: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const Card = styled.div`
-  background-color: white;
-  padding: 10px;
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-`;
-
-const CardImage = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
-`;
-
-const CardText = styled.div`
-  font-size: 14px;
-  color: #333;
 `;
 
 // Main component

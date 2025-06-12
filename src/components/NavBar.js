@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Navbar, Nav, Container, Dropdown } from "react-bootstrap";
+import { Navbar, Nav, Container } from "react-bootstrap";
 import logo from '../assets/img/Atom_walk_logo-removebg-preview.png';
 import styled from 'styled-components';
 import { useLocation, useNavigate } from "react-router-dom";
@@ -52,7 +52,6 @@ const LoginOption = styled.div`
 
 export const NavBar = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState('home');
   const [scrolled, setScrolled] = useState(false);
   const [showLogin, setShowLogin] = useState(true);

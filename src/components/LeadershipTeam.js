@@ -274,7 +274,3 @@ const LeadershipAdvisors = () => {
 };
 
 export default LeadershipAdvisors;
-
-{/* <LinkedInIcon href="https://www.linkedin.com/in/manojksahoo" target="_blank">
-<img src={Linkind}></img>
-</LinkedInIcon> */}

@@ -124,28 +124,6 @@ const PrimaryButton = styled.a`
   }
 `;
 
-const SecondaryButton = styled.a`
-  padding: 0.8rem 1.8rem;
-  background: white;
-  color: #4f46e5;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-  text-decoration: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    background: #f8fafc;
-  }
-`;
-
 // Feature list
 const FeatureList = styled.ul`
   list-style-type: none;

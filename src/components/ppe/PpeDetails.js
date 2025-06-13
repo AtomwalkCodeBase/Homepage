@@ -1,7 +1,5 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
-import Collection from "../../assets/img/H_step_5(1).png";
-import { FaSmileBeam, FaFolderOpen } from "react-icons/fa";
 import {
   FaTachometerAlt,
   FaTools,
@@ -9,12 +7,9 @@ import {
   FaEye,
   FaHardHat,
   FaFileSignature,
-  FaCalendarCheck,
-  FaFileInvoice,
   FaBroadcastTower,
   FaProjectDiagram,
   FaBug,
-  //  FaCalendarCheck,
   FaShieldAlt,
 } from "react-icons/fa";
 
@@ -195,10 +190,10 @@ const ConclusionItem = styled.li`
   }
 `;
 
-const Highlight = styled.span`
-  color: #82e0aa;
-  font-weight: 600;
-`;
+// const Highlight = styled.span`
+//   color: #82e0aa;
+//   font-weight: 600;
+// `;
 
 const BenefitsSection = styled.div`
   background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
@@ -344,20 +339,27 @@ const BenefitsImage = styled.div`
 
   img {
     width: 100%;
-    height: 1200px;
+    height: 970px;
     object-fit: cover;
   }
 
-   @media (max-width: 767px) {
+  @media (max-width: 991px) {
+    height: auto;
+
     img {
-      height: 300px; /* Adjust this as needed for mobile */
+      height: auto;
+      max-height: 300px;
     }
   }
 
   @media (min-width: 992px) {
     order: 2;
-    height: 100%;
+    height: 85%;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+
+    img {
+      height: 970px; /* keeps the original large screen layout */
+    }
   }
 `;
 

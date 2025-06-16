@@ -79,4 +79,5 @@ export const addCustomerTicketURL = `${endpoint}/process_customer_ticket/${db_na
 export const getTaskCategoryURL = `${endpoint}/get_task_category/${db_name}/`;
 export const getAppointeeList = `${endpoint}/get_facility_list/${db_name}/`;
 export const getEmpShiftData = `${newhrendpoint}/get_emp_shift_data/${db_name}/`;
-
+export const getbookedlist = `${endpoint}/get_facility_booking_list/${db_name}/`;
+export const doctorbooking = `${endpoint}/process_booking_data/${db_name}/`;

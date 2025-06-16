@@ -80,7 +80,8 @@ export const NavBar = () => {
     "invoices",
     "tickets",
     "shift-detail",
-    "appointments"
+    "appointments",
+    "appointmentlist"
   ];
   
   useEffect(() => {

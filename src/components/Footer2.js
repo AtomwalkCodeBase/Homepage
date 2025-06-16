@@ -236,7 +236,8 @@ export default function Footer2() {
     "invoices",
     "tickets",
    "shift-detail",
-   "appointments"
+   "appointments",
+   "appointmentlist"
   ];
   
   useEffect(() => {

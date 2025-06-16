@@ -400,7 +400,8 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
     ? [
         { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
         { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
-        { path: "/appointments", name: "My Appointments", icon: <FaStethoscope /> },
+        { path: "/appointments", name: "Book Appointments", icon: <FaStethoscope /> },
+        { path: "/appointmentlist", name: "My Appointments", icon: <FaCalendarAlt /> },
       ]
     : [
         { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },

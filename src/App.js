@@ -89,6 +89,7 @@ import Invoices from "./pages/Invoices";
 import Tickets from "./pages/Tickets";
 import MyShiftDetail from "./pages/MyShiftDetail";
 import MyAppointments from "./pages/MyAppointments";
+import MyBookedAppointments from "./pages/MyAppointmentList";
 function App() {
   const url = "https://www.atomwalk.com/rest-auth/login/";
   const data = {
@@ -229,6 +230,7 @@ function App() {
                 <Route path="/tickets" element={<Tickets />} />
                 <Route path="/appointments" element={<MyAppointments />} />
                 <Route path="/shift-detail" element={<MyShiftDetail />} />
+                <Route path="/appointmentlist" element={<MyBookedAppointments />} />
               </Route>
     
               {/* Catch All */}

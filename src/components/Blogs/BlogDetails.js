@@ -1,7 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import styled, { keyframes } from 'styled-components';
 import { useBlog } from '../hooks/useBlog';
+import { FaShareAlt, FaTwitter, FaFacebookF, FaLinkedinIn, FaLink, FaReddit, FaWhatsapp } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Animations
 const fadeInUp = keyframes`
@@ -455,9 +459,168 @@ const ErrorContainer = styled.div`
   }
 `;
 
+const ShareSection = styled.section`
+  background: #ffffff;
+  padding: 40px 0 80px 0;
+  border-top: 1px solid #f0f0f0;
+`;
+
+const ShareContainer = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    padding: 0 20px;
+  }
+`;
+
+const ShareButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+`;
+
+const ShareTitle = styled.h3`
+  font-size: 1.25rem;
+  color: #2c2c2c;
+  margin: 0;
+  font-weight: 500;
+`;
+
+const ShareOptionsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  gap: 15px;
+  width: 100%;
+  max-width: 500px;
+`;
+
+const ShareOption = styled.button`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 15px 10px;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: ${props => props.$color || '#333'};
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-color: ${props => props.$color || '#ff6b6b'};
+  }
+
+  svg {
+    font-size: 1.5rem;
+  }
+
+  span {
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+`;
+
+const StyledToastContainer = styled(ToastContainer)`
+  .Toastify__toast {
+    font-family: 'Arial', sans-serif;
+    border-radius: 8px;
+    padding: 15px;
+    color: #333;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    min-height: auto;
+  }
+  
+  .Toastify__toast--success {
+    background: #f0fff4;
+    color: #2f855a;
+    border-left: 4px solid #38a169;
+  }
+  
+  .Toastify__toast--error {
+    background: #fff5f5;
+    color: #c53030;
+    border-left: 4px solid #e53e3e;
+  }
+  
+  .Toastify__close-button {
+    color: #666;
+    opacity: 0.8;
+    
+    &:hover {
+      opacity: 1;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .Toastify__toast {
+      margin: 8px;
+      width: calc(100% - 16px);
+    }
+  }
+`;
+
+const Hashtag = styled.span`
+  color:rgb(19, 139, 245);
+  font-weight: 600;
+  margin-right: 5px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: #ff6b6b;
+    text-decoration: underline;
+  }
+`;
+
 const BlogDetail = () => {
   const { id } = useParams();
   const { blog, blogContent, loading, error } = useBlog(id);
+
+  const shareContent = (platform) => {
+  const currentUrl = encodeURIComponent(window.location.href);
+  const title = encodeURIComponent(blogContent?.header?.title || 'Check out this article');
+  const description = encodeURIComponent(blogContent?.header?.tagline || 'Interesting read');
+
+  const shareUrls = {
+    twitter: `https://twitter.com/intent/tweet?url=${currentUrl}&text=${title}%20-%20${description}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`,
+    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${currentUrl}`,
+    reddit: `https://www.reddit.com/submit?url=${currentUrl}&title=${title}`,
+    whatsapp: `https://wa.me/?text=${title}:%20${currentUrl}`,
+  };
+
+  if (platform === 'copy') {
+    navigator.clipboard.writeText(window.location.href)
+      .then(() => toast.success('Link copied to clipboard!'))
+      .catch(() => toast.error('Failed to copy link'));
+    return;
+  }
+
+  if (platform === 'native' && navigator.share) {
+    navigator.share({
+      title: blogContent?.header?.title || 'Check out this article',
+      text: blogContent?.header?.tagline || 'Interesting read',
+      url: window.location.href,
+    }).catch(err => console.error('Error sharing:', err));
+    return;
+  }
+
+  if (platform === 'whatsapp') {
+    window.open(`https://api.whatsapp.com/send?text=${title}%0A%0A${description}%0A%0A${currentUrl}`, '_blank');
+    return;
+  }
+
+  window.open(shareUrls[platform], '_blank', 'noopener,noreferrer');
+};
 
   if (loading) {
     return (
@@ -486,12 +649,23 @@ const BlogDetail = () => {
     );
   }
 
-  const renderContent = (content, isFirst = false) => {
+   const renderContent = (content, isFirst = false) => {
     switch (content.type) {
       case 'paragraph':
+        const paragraphText = content.data;
+        // Split text into parts (regular text and hashtags)
+        const parts = paragraphText.split(/(#\w+)/g);
+        
+        const paragraphContent = parts.map((part, index) => {
+          if (part.startsWith('#')) {
+            return <Hashtag key={index}>{part}</Hashtag>;
+          }
+          return part;
+        });
+
         return isFirst ? 
-          <Paragraph>{content.data}</Paragraph> :
-          <RegularParagraph>{content.data}</RegularParagraph>;
+          <Paragraph>{paragraphContent}</Paragraph> :
+          <RegularParagraph>{paragraphContent}</RegularParagraph>;
       case 'bullets':
         return (
           <StyledList>
@@ -515,8 +689,38 @@ const BlogDetail = () => {
     }
   };
 
+  const currentUrl = window.location.href;
+  const metaTitle = blogContent.header.title;
+  const metaDescription = blogContent.header.tagline;
+  const metaImage = blogContent.header.coverImage;
+
+
   return (
     <PageContainer>
+      <Helmet>
+        <title>{metaTitle}</title>
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:image" content={metaImage} />
+        <meta property="og:url" content={currentUrl} />
+        <meta property="og:type" content="article" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={metaDescription} />
+        <meta name="twitter:image" content={metaImage} />
+      </Helmet>
+      <StyledToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <HeaderSection>
         <HeaderContainer>
           <CategoryLabel>{blog.category}</CategoryLabel>
@@ -524,10 +728,6 @@ const BlogDetail = () => {
           <Subtitle>{blogContent.header.tagline}</Subtitle>
           
           <MetaInfo>
-            {/* <MetaItem>
-              <span className="label">By</span>
-              <span className="value">{blog.author}</span>
-            </MetaItem> */}
             <MetaItem>
               <span className="label">Published on:</span>
               <span className="value">{blog.date}</span>
@@ -562,8 +762,44 @@ const BlogDetail = () => {
               </ContentBlock>
             ))}
           </ArticleContent>
+
+          {/* Updated Share Button Section */}
+          
         </ContentWrapper>
       </ContentSection>
+      {/* Share Section */}
+      <ShareSection>
+        <ShareContainer>
+          <ShareButtonWrapper>
+            <ShareTitle>Share this article</ShareTitle>
+            <ShareOptionsGrid>
+              <ShareOption onClick={() => shareContent('twitter')} $color="#1DA1F2" aria-label="Share on Twitter">
+                <FaTwitter /><span>Twitter</span>
+              </ShareOption>
+              <ShareOption onClick={() => shareContent('facebook')} $color="#4267B2" aria-label="Share on Facebook">
+                <FaFacebookF /><span>Facebook</span>
+              </ShareOption>
+              <ShareOption onClick={() => shareContent('linkedin')} $color="#0077B5" aria-label="Share on LinkedIn">
+                <FaLinkedinIn /><span>LinkedIn</span>
+              </ShareOption>
+              <ShareOption onClick={() => shareContent('reddit')} $color="#FF5700" aria-label="Share on Reddit">
+                <FaReddit /><span>Reddit</span>
+              </ShareOption>
+              <ShareOption onClick={() => shareContent('whatsapp')} $color="#25D366" aria-label="Share on WhatsApp">
+                <FaWhatsapp /><span>WhatsApp</span>
+              </ShareOption>
+              <ShareOption onClick={() => shareContent('copy')} aria-label="Copy link">
+                <FaLink /><span>Copy Link</span>
+              </ShareOption>
+              {navigator.share && (
+                <ShareOption onClick={() => shareContent('native')} aria-label="Share via native share">
+                  <FaShareAlt /><span>More</span>
+                </ShareOption>
+              )}
+            </ShareOptionsGrid>
+          </ShareButtonWrapper>
+        </ShareContainer>
+      </ShareSection>
     </PageContainer>
   );
 };

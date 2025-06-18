@@ -382,7 +382,7 @@ export default function Footer2() {
               <a href="https://www.facebook.com/profile.php?id=61572466203683"><img src={navIcon2} alt="facebook" /></a>
               <a href="https://www.instagram.com/atomwalktechnologies"><img src={navIcon3} alt="instagram" /></a>
               <a href="https://www.youtube.com/@AtomwalkTechnologies"><img src={navIcon4} alt="youtube" /></a>
-              {/* <a href="https://www.instagram.com/atomwalktechnologies/"><img src={navIcon3} alt="Icon" /></a> */}
+              <a href="https://x.com/Atomwalk_Tech?t=JhtnhZPBgFhB3kGmcL58mw&s=08"><img src="https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/new-twitter-logo.png" alt="twiter"  style={{ width: "20px", height: "20px" }}/></a>
             </div>
             </div>
       </FooterBottom>

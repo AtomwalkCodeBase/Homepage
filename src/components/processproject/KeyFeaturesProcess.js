@@ -115,7 +115,7 @@ const KeyFeaturesProcess = () => {
         <IconContainer bgColor="#D8F5E3">
           <img src={Compliance} alt="Process" />
         </IconContainer>
-        <FeatureTitle>Work Order / Process Tamplete:</FeatureTitle>
+        <FeatureTitle>Work Order / Process Template:</FeatureTitle>
         <FeatureDescription>
         Streamline workflows with customizable process templates for consistent and efficient project execution.
         </FeatureDescription>

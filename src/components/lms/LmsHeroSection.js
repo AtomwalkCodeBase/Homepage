@@ -152,7 +152,7 @@ const LmsHeroSection = () => {
       <LeftSection>
         <Heading>Streamline Your Lab Operations with Ease</Heading>
         <SubHeading>
-        Manage lab operations and equipment effortlessly in one platform. From sample tracking to inventory control, LabSync keeps your lab running smoothly and efficiently.
+        Manage lab operations and equipment effortlessly in one platform. From sample tracking to inventory control, We keep your lab running smoothly and efficiently.
         </SubHeading>
         <CTAButton onClick={()=>{window.location.href='https://www.atomwalk.com/login/'}}>Get started</CTAButton>
         <Features>

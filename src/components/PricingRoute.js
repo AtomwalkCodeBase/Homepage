@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import HeadBG from '../assets/img/pricingelusrtion.png';
 import Testimonial from './Testimonial';
@@ -210,97 +210,7 @@ const PricingRoute = () => {
 
   const [selectedRegion, setSelectedRegion] = useState("IN");
 
-  const data = useMemo(
-    () => [
-      {
-        modulePlane: 'Number of Employees',
-        starter: 'Limited',
-        essential: 'Unlimited',
-        growth: 'Unlimited',
-        enterprise: 'Unlimited',
-      },
-      {
-        modulePlane: 'Cost Per Additional Employee',
-        starter: 'Not Applicable',
-        essential: '₹30/ month',
-        growth: '₹60/ month',
-        enterprise: '₹100/ month',
-      },
-      {
-        modulePlane: 'Core HR',
-        starter: 'Limited',
-        essential: '✓',
-        growth: '✓',
-        enterprise: '✓',
-      },
-      // Add more rows as needed
-    ],
-    []
-  );
-  
-const Counnt=styled.div`
-color: #454545;
-font-size: 15px;
-margin-bottom: 5px;
-`
-  const columns = useMemo(
-    () => [
-      {
-        Header: 'Modules and Features',
-        accessor: 'modulePlane',
-      },
-      {
-        Header: (
-          <>
-            <div>Starter</div>
-            <div>₹ 0 / month</div>
-            <Counnt>(Includes 25 Employees)</Counnt>
-            <ButtonOne>Start Free Trial</ButtonOne>
-          </>
-        ),
-        accessor: 'starter',
-      },
-      {
-        Header: (
-          <>
-            <div>Essential</div>
-            <div>₹ 3495 / month</div>
-            <Counnt>(Includes 50 Employees)</Counnt>
-            <ButtonOne>Start Free Trial</ButtonOne>
-          </>
-        ),
-        accessor: 'essential',
-      },
-      {
-        Header: (
-          <>
-            <div>Growth</div>
-            <div>₹ 5495 / month</div>
-            <Counnt>(Includes 50 Employees)</Counnt>
-            <ButtonOne>Start Free Trial</ButtonOne>
-          </>
-        ),
-        accessor: 'growth',
-      },
-      {
-        Header: (
-          <>
-            <div>Enterprise</div>
-            <div>₹ 7495 / month</div>
-            <Counnt>(Includes 50 Employees)</Counnt>
-            <ButtonOne>Start Free Trial</ButtonOne>
-          </>
-        ),
-        accessor: 'enterprise',
-      },
-    ],
-    []
-  );
-  
-  
 
-  // const {
-  // } = useTable({ columns, data });
 
 const demo =()=>{
   window.location.href='/demo.html'

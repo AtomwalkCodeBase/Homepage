@@ -334,7 +334,6 @@ const BenefitsImage = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  // background: #fff;
   max-width: 100%;
 
   img {

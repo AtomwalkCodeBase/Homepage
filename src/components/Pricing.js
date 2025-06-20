@@ -89,7 +89,7 @@ const PlanName = styled.h3`
 const Price = styled.h2`
   font-size: 2.2em;
   margin: 15px 0;
-  font-weight: 700;
+  font-weight: 400;
   color: #2c3e50;
 `;
 
@@ -217,10 +217,10 @@ const pricingPlans = {
   IN: [
     { 
       name: "Free Trial", 
-      price: "₹0", 
-      period: "/month",
+      price: "Valid for 1 Month", 
+      // period: "/month",
       pricePerUser: false,
-      message: "No credit card required", 
+      // message: "Schedule a demo",  
       userAccess: "3 User Access", 
       validity: "30 days Validity", 
       space: "20MB Storage Space", 
@@ -231,10 +231,10 @@ const pricingPlans = {
     },
     { 
       name: "Basic", 
-      price: "₹5,000", 
-      period: "/month",
+      price: "As per the requirement", 
+      // period: "/month",
       pricePerUser: false,
-      message: "Billed at ₹50,000 per year", 
+      // message: "Schedule a demo",  
       userAccess: "5 User Access", 
       validity: "1 Year Validity", 
       space: "200MB Storage Space", 
@@ -245,10 +245,10 @@ const pricingPlans = {
     },
     { 
       name: "Premium", 
-      price: "₹10,000", 
-      period: "/month",
+      price: "As per the requirement", 
+      // period: "/month",
       pricePerUser: false,
-      message: "Billed at ₹100,000 per year", 
+      // message: "Schedule a demo", 
       userAccess: "10 User Access", 
       validity: "1 Year Validity", 
       space: "500MB Storage Space", 
@@ -259,10 +259,10 @@ const pricingPlans = {
     },
     { 
       name: "Ultimate", 
-      price: "₹25,000", 
-      period: "/month",
+      price: "As per the requirement", 
+      // period: "/month",
       pricePerUser: false,
-      message: "Billed at ₹250,000 per year", 
+      // message: "Schedule a demo",  
       userAccess: "25 User Access", 
       validity: "1 Year Validity", 
       space: "1.2GB Storage Space", 
@@ -275,8 +275,8 @@ const pricingPlans = {
   US: [
     { 
       name: "Free Trial", 
-      price: "$0", 
-      period: "/month",
+      price: "Valid for 1 Month",
+      // period: "/month",
       pricePerUser: false,
       // message: "No credit card required", 
       userAccess: "3 User Access", 
@@ -289,8 +289,8 @@ const pricingPlans = {
     },
     { 
       name: "Basic", 
-      price: "$99", 
-      period: "/month",
+      price: "As per the requirement",  
+      // period: "/month",
       pricePerUser: false,
       // message: "Billed at $663 per year", 
       userAccess: "5 User Access", 
@@ -303,8 +303,8 @@ const pricingPlans = {
     },
     { 
       name: "Premium", 
-      price: "$199", 
-      period: "/month",
+      price: "As per the requirement", 
+      // period: "/month",
       pricePerUser: false,
       // message: "Billed at $1,325 per year", 
       userAccess: "10 User Access", 
@@ -317,8 +317,8 @@ const pricingPlans = {
     },
     { 
       name: "Ultimate", 
-      price: "$399", 
-      period: "/month",
+      price: "As per the requirement", 
+      // period: "/month",
       pricePerUser: false,
       // message: "Billed at $3,314 per year", 
       userAccess: "25 User Access", 

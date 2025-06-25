@@ -92,6 +92,7 @@ import MyAppointments from "./pages/MyAppointments";
 import MyBookedAppointments from "./pages/MyAppointmentList";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import Appointments from "./pages/OPDappointments";
+import HRMRoleBasedAccessibility from "./components/hrm/HRMRoleBasedAccessibility";
 function App() {
   const url = "https://www.atomwalk.com/rest-auth/login/";
   const data = {
@@ -192,6 +193,9 @@ function App() {
               <Route path="/hrmanual.html" element={<ManualModuleDetails/>} />
               <Route path="/crmanual.html" element={<ManualModuleDetails/>} />
               <Route path="/manualsteps.html" element={<ManualSteps/>} />
+              <Route path="/employee-accessibility" element={<HRMRoleBasedAccessibility/>} />
+              <Route path="/employee-manager-accessibility" element={<HRMRoleBasedAccessibility/>} />
+              <Route path="/hr-manager-accessibility" element={<HRMRoleBasedAccessibility/>} />
     
               {/* Login Route */}
               <Route path="/login" element={<Login />} />

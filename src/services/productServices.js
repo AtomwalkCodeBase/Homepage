@@ -1,4 +1,4 @@
-import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext,  processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip, processbarthdaywish, getResponseList, forgetPin, getCustomerDetailListURL, userTaskListURL, addCustomerTicketURL, getTaskCategoryURL, getOrderListURL, getEmpShiftData, getAppointeeList, getbookedlist, doctorbooking } from "../services/ConstantServies";
+import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext,  processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip, processbarthdaywish, getResponseList, forgetPin, getCustomerDetailListURL, userTaskListURL, addCustomerTicketURL, getTaskCategoryURL, getOrderListURL, getEmpShiftData, getAppointeeList, getbookedlist, doctorbooking, getactivityList, getProjectLists, addTimesheet, getTimesheetList, profileDtlURL } from "../services/ConstantServies";
 import { authAxios, authAxiosFilePost, authAxiosget, authAxiosPost } from "./HttpMethod";
 
 export function getEmpLeave(leave_type, emp_id) {
@@ -42,11 +42,21 @@ export function postClaimAction(claim_type) {
   return authAxiosPost(processClaim, data)
 
 }
+export function posttimelist(timedata) {
+  let data = {};
+  if (timedata) {
+    data['ts_data'] = timedata;
+  }
+  console.log('Data to be sent:', data);
+  return authAxiosPost(addTimesheet, data)
+}
 
 export function getClaimApprover() {
   return authAxios(getClaimApproverList)
 }
-
+export function getemployeeList() {
+  return authAxios (profileDtlURL)
+}
 export function getEmpClaim(call_type, emp_id) {
   let data = {};
   if (call_type) {
@@ -76,6 +86,15 @@ export function getEmpAttendance(res) {
   };
   console.log('Final response data', data)
   return authAxios(getEmpAttendanceData, data)
+}
+export function getTimesheetData(start_date, end_date,empid) {
+  let data = {
+    'start_date':start_date,
+    'end_date': end_date,
+    'emp_id': empid
+  };
+
+  return authAxios(getTimesheetList, data)
 }
 
 export function getEmpHoliday(res) {
@@ -228,6 +247,12 @@ export async function addCustomerTicket(request_data) {
 
 export async function getTaskCategory() {
   return authAxios(getTaskCategoryURL)
+}
+export async function getActivitylist() {
+  return authAxios(getactivityList)
+}
+export async function getProjectlist() {
+  return authAxios(getProjectLists)
 }
 export function getequipmentlistview() {
   return authAxios(getAppointeeList)

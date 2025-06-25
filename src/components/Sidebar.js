@@ -21,11 +21,13 @@ import {
   FaLifeRing,
   FaExchangeAlt,
   FaStethoscope,
+  FaChartBar,
+  FaUsers,
 } from "react-icons/fa"
 import { SiGooglecalendar } from "react-icons/si";
 import { useAuth } from "../context/AuthContext"
 import { useTheme } from "../context/ThemeContext"
-
+import { RiAlarmSnoozeFill } from "react-icons/ri";
 const SidebarContainer = styled.div`
   width: ${(props) => {
     const { isOpen, uiPreferences } = props
@@ -405,11 +407,13 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
       ]
     : [
         { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },
-        // { path: "/employees", name: "Employees", icon: <FaUsers /> },
-        { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
+                ...(profile?.is_manager
+          ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }]
+          : []),
+        { path: "/attendance-tracking", name: "Attendance", icon: <FaClock/> },
+        { path: "/timesheet", name: "Timesheet", icon: <FaChartBar/> },
         { path: "/leave-management", name: "Leave Management", icon: <FaCalendarAlt /> },
         { path: "/holidays", name: "Holiday Calendar", icon: <FaCalendarCheck /> },
-        // { path: "/timesheet", name: "Timesheet", icon: <FaFileAlt /> },
         ...(profile?.is_manager
           ? [{ path: "/shifts", name: "Shift Scheduling", icon: <SiGooglecalendar /> }]
           : []),

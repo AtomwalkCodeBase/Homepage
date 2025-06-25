@@ -1,12 +1,12 @@
-"use client"
-
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { FaSearch, FaPlus, FaEdit, FaTrash, FaEye, FaFilter, FaFileExport } from "react-icons/fa"
+import { FaSearch, FaPlus, FaEdit, FaTrash, FaEye, FaFilter, FaFileExport, FaCalendarAlt, FaClock, FaChartBar } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
 import Badge from "../components/Badge"
+import { getemployeeList } from "../services/productServices"
+import { useNavigate } from "react-router-dom"
 
 const SearchContainer = styled.div`
   display: flex;
@@ -59,7 +59,7 @@ const TableContainer = styled.div`
   overflow-x: auto;
 `
 
-const EmployeeAvatar = styled.div`
+const EmployeeAvatar = styled.img`
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -132,77 +132,36 @@ const PageButton = styled.button`
     cursor: not-allowed;
   }
 `
-
+const EmployeeDetailsContainer = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 1rem;
+color: ${({ theme }) => theme.colors.text};
+`
 const EmployeeManagement = () => {
   const [searchTerm, setSearchTerm] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
+  const [employees, setEmployees] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const Navigate= useNavigate()
 
-  // Mock data for employees
-  const employees = [
-    {
-      id: 1,
-      name: "Ashutosh Mohapatra",
-      email: "john.doe@example.com",
-      department: "Engineering",
-      position: "Senior Developer",
-      status: "Active",
-      joinDate: "2020-05-15",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      department: "Marketing",
-      position: "Marketing Manager",
-      status: "Active",
-      joinDate: "2019-08-22",
-    },
-    {
-      id: 3,
-      name: "Mike Johnson",
-      email: "mike.johnson@example.com",
-      department: "HR",
-      position: "HR Specialist",
-      status: "On Leave",
-      joinDate: "2021-02-10",
-    },
-    {
-      id: 4,
-      name: "Sarah Williams",
-      email: "sarah.williams@example.com",
-      department: "Finance",
-      position: "Financial Analyst",
-      status: "Active",
-      joinDate: "2018-11-05",
-    },
-    {
-      id: 5,
-      name: "Robert Brown",
-      email: "robert.brown@example.com",
-      department: "Sales",
-      position: "Sales Representative",
-      status: "Inactive",
-      joinDate: "2022-01-20",
-    },
-    {
-      id: 6,
-      name: "Emily Davis",
-      email: "emily.davis@example.com",
-      department: "Engineering",
-      position: "QA Engineer",
-      status: "Active",
-      joinDate: "2020-09-15",
-    },
-    {
-      id: 7,
-      name: "David Wilson",
-      email: "david.wilson@example.com",
-      department: "Product",
-      position: "Product Manager",
-      status: "Active",
-      joinDate: "2019-04-30",
-    },
-  ]
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        // Replace this with your actual API call
+        const response = await getemployeeList()
+        setEmployees(response.data)
+        setLoading(false)
+      } catch (err) {
+        setError(err.message)
+        setLoading(false)
+      }
+    }
+
+    fetchEmployees()
+  }, [])
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value)
@@ -212,9 +171,9 @@ const EmployeeManagement = () => {
   const filteredEmployees = employees.filter(
     (employee) =>
       employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.position.toLowerCase().includes(searchTerm.toLowerCase()),
+      employee.emp_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee.department_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee.grade_name.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
   // Pagination
@@ -223,6 +182,19 @@ const EmployeeManagement = () => {
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = filteredEmployees.slice(indexOfFirstItem, indexOfLastItem)
+
+  const handleViewAttendance = (employeeId) => {
+    // Implement view attendance functionality
+     Navigate(`/attendance?empid=${employeeId}`) 
+  }
+
+  const handleViewTimesheet = (employeeId,names) => {
+    // Implement view timesheet functionality
+    Navigate(`/timesheet?empid=${employeeId}&&name=${names}`) 
+  }
+
+  if (loading) return <Layout title="Employee Management">Loading...</Layout>
+  if (error) return <Layout title="Employee Management">Error: {error}</Layout>
 
   return (
     <Layout title="Employee Management">
@@ -238,7 +210,7 @@ const EmployeeManagement = () => {
       </SearchContainer>
 
       <Card>
-        <TableActions>
+        {/* <TableActions>
           <div>
             <Button variant="outline" size="sm">
               <FaFilter /> Filter
@@ -250,7 +222,7 @@ const EmployeeManagement = () => {
               <FaFileExport /> Export
             </Button>
           </ActionButtons>
-        </TableActions>
+        </TableActions> */}
 
         <TableContainer>
           <table>
@@ -269,35 +241,43 @@ const EmployeeManagement = () => {
                 <tr key={employee.id}>
                   <td>
                     <EmployeeInfo>
-                      <EmployeeAvatar>{employee.name.charAt(0)}</EmployeeAvatar>
+                      {employee.image ? (
+                        <EmployeeAvatar src={employee.image} alt={employee.name} />
+                      ) : (
+                        <EmployeeAvatar>{employee.name.charAt(0)}</EmployeeAvatar>
+                      )}
                       <EmployeeDetails>
                         <EmployeeName>{employee.name}</EmployeeName>
-                        <EmployeeEmail>{employee.email}</EmployeeEmail>
+                        <EmployeeEmail>{employee.email_id}</EmployeeEmail>
+                        <EmployeeEmail>{employee.emp_id}</EmployeeEmail>
                       </EmployeeDetails>
                     </EmployeeInfo>
                   </td>
-                  <td>{employee.department}</td>
-                  <td>{employee.position}</td>
+                  <td>{employee.department_name}</td>
+                  <td>{employee.grade_name}</td>
                   <td>
-                    <Badge
-                      variant={
-                        employee.status === "Active" ? "success" : employee.status === "On Leave" ? "warning" : "error"
-                      }
-                    >
-                      {employee.status}
+                    <Badge variant={employee.is_manager ? "success" : "info"}>
+                      {employee.is_manager ? "Manager" : "Employee"}
                     </Badge>
                   </td>
-                  <td>{employee.joinDate}</td>
+                  <td>{employee.date_of_join}</td>
                   <td>
                     <ActionButtons>
-                      <Button variant="ghost" size="sm" title="View">
-                        <FaEye />
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        title="View Attendance"
+                        onClick={() => handleViewAttendance(employee.emp_id)}
+                      >
+                        <FaClock />
                       </Button>
-                      <Button variant="ghost" size="sm" title="Edit">
-                        <FaEdit />
-                      </Button>
-                      <Button variant="ghost" size="sm" title="Delete">
-                        <FaTrash />
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        title="View Timesheet"
+                        onClick={() => handleViewTimesheet(employee.emp_id,employee.name)}
+                      >
+                        <FaChartBar />
                       </Button>
                     </ActionButtons>
                   </td>
@@ -307,35 +287,41 @@ const EmployeeManagement = () => {
           </table>
         </TableContainer>
 
-        <Pagination>
-          <PaginationInfo>
-            Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredEmployees.length)} of{" "}
-            {filteredEmployees.length} entries
-          </PaginationInfo>
+        {filteredEmployees.length > 0 ? (
+          <Pagination>
+            <PaginationInfo>
+              Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredEmployees.length)} of{" "}
+              {filteredEmployees.length} entries
+            </PaginationInfo>
 
-          <PaginationButtons>
-            <PageButton onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
-              &lt;
-            </PageButton>
-
-            {[...Array(totalPages)].map((_, index) => (
-              <PageButton key={index} active={currentPage === index + 1} onClick={() => setCurrentPage(index + 1)}>
-                {index + 1}
+            <PaginationButtons>
+              <PageButton onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
+                &lt;
               </PageButton>
-            ))}
 
-            <PageButton
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages}
-            >
-              &gt;
-            </PageButton>
-          </PaginationButtons>
-        </Pagination>
+              {[...Array(totalPages)].map((_, index) => (
+                <PageButton key={index} active={currentPage === index + 1} onClick={() => setCurrentPage(index + 1)}>
+                  {index + 1}
+                </PageButton>
+              ))}
+
+              <PageButton
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+              >
+                &gt;
+              </PageButton>
+            </PaginationButtons>
+          </Pagination>
+        ) : (
+          <EmployeeDetailsContainer >No employees found</EmployeeDetailsContainer>
+        )}
       </Card>
     </Layout>
   )
 }
+
+
 
 export default EmployeeManagement
 

@@ -82,7 +82,7 @@ const SubmitButton = styled(Button)`
 `;
 
 // Confirmation Popup Component
-const ConfirmationPopup = ({ isOpen, onClose, onConfirm,approve }) => {
+const ConfirmationPopup = ({ isOpen, onClose, onConfirm,approve,timesheet }) => {
   const [remark, setRemark] = useState('');
 
   if (!isOpen) return null;
@@ -107,7 +107,10 @@ const ConfirmationPopup = ({ isOpen, onClose, onConfirm,approve }) => {
             ❌
           </button>
         </div>
-        <Message>Do you want to {approve?"Approve":"cancel"} your leave?</Message>
+     {timesheet?
+        <Message>Are you sure you want to {approve?"Approve":"Reject"}</Message>
+        :<Message>Do you want to {approve?"Approve":"cancel"} your leave?</Message>}
+      
         <Input
           type="text"
           placeholder="Remark"
@@ -116,7 +119,8 @@ const ConfirmationPopup = ({ isOpen, onClose, onConfirm,approve }) => {
         />
         <ButtonGroup>
           <CancelButton onClick={onClose}>No, keep it</CancelButton>
-          <SubmitButton approve={approve}  onClick={() => onConfirm(remark,approve?"Approved":"cancelled")}>Yes,{approve?"Approve":"cancel"}</SubmitButton>
+         {timesheet?<SubmitButton approve={approve}  onClick={() => onConfirm(remark,approve?"APPROVE":"REJECT")}>Yes,{approve?"Approve":"Reject"}</SubmitButton>:
+         <SubmitButton approve={approve}  onClick={() => onConfirm(remark,approve?"Approved":"cancelled")}>Yes,{approve?"Approve":"cancel"}</SubmitButton>}
         </ButtonGroup>
       </PopupContainer>
     </Overlay>

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
-import { FaCalendarAlt, FaClock, FaUserMd, FaTimesCircle, FaCalendarPlus, FaSyncAlt, FaStethoscope } from "react-icons/fa";
+import { FaCalendarAlt, FaClock, FaUserMd, FaTimesCircle, FaCalendarPlus, FaStethoscope } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import Layout from "../components/Layout";
@@ -640,7 +640,7 @@ export const fetchBookedAppointments = async (customerId) => {
         return;
       }
 
-      const bookingDate = parseFullDate(booking.booking_date);
+      // const bookingDate = parseFullDate(booking.booking_date);
       const status = booking.status_display?.toLowerCase() || 'booked';
 
       const appointment = {

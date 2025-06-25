@@ -203,7 +203,7 @@ const HelpDesk = () => {
     }
   }
 
-  const tickets = allRequests.filter((request) => request?.emp_id == emp_id && request?.request_type === "H")
+  const tickets = allRequests.filter((request) => request?.emp_id === emp_id && request?.request_type === "H")
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value)
@@ -549,7 +549,6 @@ const HelpDesk = () => {
           </p>
             <img
             src={selectedTicket.submitted_file_1 || "/placeholder.svg"}
-            alt="Request Image"
             style={{ width: "100%", height: "auto", borderRadius: "8px", marginTop: "1rem" }}
           />
           <div style={{ marginTop: "1rem" }}>

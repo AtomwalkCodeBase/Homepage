@@ -13,7 +13,7 @@ const RequestModal = ({ call_type, empId, onClose, onSuccess,dropdownValue  }) =
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isHelpRequest = call_type;
-  const headerTitle = isHelpRequest=='H' ? 'Add Help Request' : 'Add General Request';
+  const headerTitle = isHelpRequest==='H' ? 'Add Help Request' : 'Add General Request';
   useEffect(() => {
     fetchRequestCategories();
   }, []);
@@ -355,21 +355,6 @@ const SubmitButton = styled.button`
   }
 `;
 
-const CancelButton = styled.button`
-  background-color: #f5f5f5;
-  color: #666;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: #e0e0e0;
-  }
-`;
 const FileUploadContainer = styled.div`
 border: 2px dashed ${({ theme }) => theme.colors.border};
 border-radius: 4px;

@@ -1,7 +1,6 @@
 import React from 'react'
 import LetsConnect from '../LetsConnect'
 import FeatureBenifits from '../FeatureBenifits'
-import TagImg from '../../assets/img/Step1_image.png'
 import TagImgSms from '../../assets/img/solar-step1 img.png'
 import KeyFeaturesWaste from '../wasteManagement/KeyFeaturesWaste'
 import SmsDetails from './SmsDetails'

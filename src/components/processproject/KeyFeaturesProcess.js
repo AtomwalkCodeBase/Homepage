@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import Compliance from '../../assets/img/Leadmanagement.png'
 import Proj from '../../assets/img/Project_icon.png'
-import UserA from '../../assets/img/User_Activity_icon.png'
 import Report from '../../assets/img/sales_report_icon.png';
 
 // Container for the entire section

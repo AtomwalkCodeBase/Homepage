@@ -27,10 +27,6 @@ export function postClaim(claim_data) {
   return authAxiosFilePost(addClaim, claim_data)
 }
 export function postvent(claim_data) {
-  let data = {};
-  if (claim_data) {
-    data = claim_data;
-  }
   return authAxiosFilePost(processbarthdaywish, claim_data)
 }
 export function postClaimAction(claim_type) {

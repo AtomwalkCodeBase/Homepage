@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import styled from "styled-components"
-import { FaTimes, FaCalendarAlt, FaInfoCircle, FaRegClock } from "react-icons/fa"
+import { FaTimes, FaCalendarAlt } from "react-icons/fa"
 import Button from "../Button"
 import { postEmpLeave } from "../../services/productServices"
 import { toast } from "react-toastify"
@@ -182,58 +182,6 @@ const FormRow = styled.div`
   }
 `
 
-const LeaveBalanceInfo = styled.div`
-  background: linear-gradient(to right, ${({ theme }) => theme.colors.primaryLight || '#f1f7ff'}, ${({ theme }) => theme.colors.primaryLighter || '#f8fbff'});
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  display: flex;
-  align-items: center;
-  border-left: 4px solid ${({ theme }) => theme.colors.primary || '#3a86ff'};
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-`
-
-const BalanceIcon = styled(FaInfoCircle)`
-  font-size: 1.5rem;
-  margin-right: 1rem;
-  color: ${({ theme }) => theme.colors.primary || '#3a86ff'};
-`
-
-const BalanceDetails = styled.div`
-  flex: 1;
-`
-
-const BalanceTitle = styled.div`
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #343a40;
-`
-
-const BalanceGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 0.8rem;
-`
-
-const BalanceItem = styled.div`
-  text-align: center;
-  background: white;
-  padding: 0.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-`
-
-const BalanceValue = styled.div`
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.primary || '#3a86ff'};
-`
-
-const BalanceLabel = styled.div`
-  font-size: 0.8rem;
-  color: #6c757d;
-`
-
 const InputIcon = styled.div`
   position: absolute;
   left: 0.8rem;
@@ -249,44 +197,6 @@ const InputWrapper = styled.div`
   input {
     padding-left: 2.5rem;
   }
-`
-
-const CheckboxWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 0.5rem;
-`
-
-const CustomCheckbox = styled.div`
-  width: 20px;
-  height: 20px;
-  border: 2px solid ${({ checked, theme }) => 
-    checked ? theme.colors.primary || '#3a86ff' : 'rgba(0, 0, 0, 0.2)'};
-  border-radius: 4px;
-  margin-right: 0.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${({ checked, theme }) => 
-    checked ? theme.colors.primary || '#3a86ff' : 'white'};
-  transition: all 0.2s;
-  
-  &:after {
-    content: '';
-    width: 6px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-    display: ${({ checked }) => (checked ? 'block' : 'none')};
-    margin-top: -2px;
-  }
-`
-
-const CheckboxLabel = styled.label`
-  cursor: pointer;
-  user-select: none;
-  font-weight: 500;
 `
 
 const ModalFooter = styled.div`

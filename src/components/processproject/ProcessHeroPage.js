@@ -1,14 +1,9 @@
 import React from "react";
-import styled from "styled-components";
 import FeatureBenifits from "../FeatureBenifits";
-import FAQSection from "../hrm/FAQSection";
 import TagImg from '../../assets/img/ProcessProject.png';
 import LetsConnect from "../LetsConnect";
 import KeyFeaturesProcess from "./KeyFeaturesProcess";
 import NewFAQSection from "../hrm/NewFAQSection";
-
-
-
 
 const ProcessHeroPage = () => {
 
@@ -19,7 +14,6 @@ const ProcessHeroPage = () => {
       <KeyFeaturesProcess/>
       
       <NewFAQSection data={'Project'}/>
-      {/* <FAQSection data={"equipment"} /> */}
     </>
   );
 };

@@ -90,6 +90,8 @@ import Tickets from "./pages/Tickets";
 import MyShiftDetail from "./pages/MyShiftDetail";
 import MyAppointments from "./pages/MyAppointments";
 import MyBookedAppointments from "./pages/MyAppointmentList";
+import DoctorDashboard from "./pages/DoctorDashboard";
+import Appointments from "./pages/OPDappointments";
 function App() {
   const url = "https://www.atomwalk.com/rest-auth/login/";
   const data = {
@@ -231,6 +233,8 @@ function App() {
                 <Route path="/appointments" element={<MyAppointments />} />
                 <Route path="/shift-detail" element={<MyShiftDetail />} />
                 <Route path="/appointmentlist" element={<MyBookedAppointments />} />
+                <Route path="/doctordashboard" element={<DoctorDashboard />} />
+                <Route path="/OPDappointments" element={<Appointments />} />
               </Route>
     
               {/* Catch All */}

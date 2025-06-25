@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import LetsConnect from '../LetsConnect'
 import { useLocation } from 'react-router-dom';
-import Customer  from '../../assets/img/SimplifiedEquipmentManagement.png'
-import Partner  from '../../assets/img/labmentanat.png'
 import Campaign  from '../../assets/img/Dashboardaand.png'
 import { ProcessFlow } from '../hrm/ProcessFlow';
 import SalesFeatures from './SalesFeatures';
@@ -48,7 +46,6 @@ const SalesSytem = () => {
       backgrounds: "#fff9c4",
       img: `${Campaign}`  // Add your image path here
     },
-    
     
     // You can add more management types if needed
   ];

@@ -14,33 +14,6 @@ const InvoicesContainer = styled.div`
   padding: 0;
 `
 
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 1rem;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  h1 {
-    color: ${({ theme }) => theme.colors.text};
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1.8rem;
-
-    @media (max-width: 768px) {
-      font-size: 1.5rem;
-    }
-  }
-`
-
 const FilterSection = styled.div`
   display: flex;
   gap: 1rem;
@@ -380,13 +353,6 @@ const Invoices = () => {
     "P": "pending",
     "D": "overdue"
     // Add other status mappings as needed
-  }
-
-  // Reverse status map for API calls
-  const reverseStatusMap = {
-    "paid": "A",
-    "pending": "P",
-    "overdue": "D"
   }
 
   useEffect(() => {

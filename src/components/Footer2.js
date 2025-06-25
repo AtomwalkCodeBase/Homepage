@@ -237,7 +237,9 @@ export default function Footer2() {
     "tickets",
    "shift-detail",
    "appointments",
-   "appointmentlist"
+   "appointmentlist",
+   "doctordashboard",
+   "OPDappointments"
   ];
   
   useEffect(() => {

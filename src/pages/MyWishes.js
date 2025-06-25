@@ -47,18 +47,6 @@ const swing = keyframes`
   }
 `
 
-const pulse = keyframes`
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
-`
-
 const rotate = keyframes`
   from {
     transform: rotate(0deg);

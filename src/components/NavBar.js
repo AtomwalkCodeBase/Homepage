@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import logo from '../assets/img/Atom_walk_logo-removebg-preview.png';
 import styled from 'styled-components';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import ProductMenu from './ProductMenu';
 
 const Atomicon = styled.img`
@@ -81,7 +81,9 @@ export const NavBar = () => {
     "tickets",
     "shift-detail",
     "appointments",
-    "appointmentlist"
+    "appointmentlist",
+    "doctordashboard",
+    "OPDappointments"
   ];
   
   useEffect(() => {
@@ -130,7 +132,7 @@ export const NavBar = () => {
     const crmurl=queryParams.get("base_url");
     const data='https://crm.atomwalk.com/atomwalk';
     if(crmurl){
-      if(crmurl==data){
+      if(crmurl===data){
         window.location.href = 'https://crm.atomwalk.com/login/';
       }
       else{

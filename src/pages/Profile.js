@@ -114,31 +114,6 @@ const ProfileImage = styled.div`
   }
 `
 
-const ProfileImageOverlay = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.2));
-  color: white;
-  padding: ${({ theme }) => theme.spacing?.md || "1rem"};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 500;
-  
-  &:hover {
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.4));
-  }
-  
-  svg {
-    margin-right: 0.5rem;
-    font-size: 1.2rem;
-  }
-`
-
 const ProfileInfo = styled.div`
   display: flex;
   flex-direction: column;
@@ -1171,7 +1146,7 @@ console.log(profileData,"activeTab")
 
     const response = await setuserpinview(currentPin, newPin)
     console.log("Pin response", response)
-    if (response?.status == 200) {
+    if (response?.status === 200) {
       setPinSuccess("PIN reset successfully")
       setIsEditingPin(false)
     } else {

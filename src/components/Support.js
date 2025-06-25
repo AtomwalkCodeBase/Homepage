@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Modal from "react-modal";
 import styled from "styled-components";
 
@@ -87,11 +87,6 @@ const SubmitButton = styled.button`
 `;
 
 const Supports = ({ isOpen, onRequestClose }) => {
-  const [ setModalIsOpen] = useState(false);
-
-  // // Functions to handle opening and closing the modal
-  // const openModal = () => setModalIsOpen(true);
-  // const closeModal = () => setModalIsOpen(false);
 
   return (
     <>

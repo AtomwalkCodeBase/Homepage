@@ -45,27 +45,6 @@ const WeekNavigation = styled.div`
   }
 `
 
-const NavButton = styled.button`
-  background:${({ theme }) => theme.colors.primary};;
-  border: ${({ theme }) => theme.colors.primary};;
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.875rem;
-
-  &:hover {
-    background: #f1f5f9;
-  }
-
-  @media (max-width: 768px) {
-    justify-content: center;
-  }
-`
-
 const NavButtonGroup = styled.div`
   display: flex;
   gap: 0.5rem;

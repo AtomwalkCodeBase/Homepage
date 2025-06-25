@@ -798,7 +798,7 @@ const handleSubmit = (formattedDate,type,id) => {
 
   // Calculate progress percentage
   const selectionProgress = holidayData.no_optional_holidays > 0 
-    ? (filteredHolidays.filter(h => h.is_opted ==true).length / holidayData.no_optional_holidays) * 100 
+    ? (filteredHolidays.filter(h => h.is_opted ===true).length / holidayData.no_optional_holidays) * 100 
     : 0;
 
   if (loading) {
@@ -871,7 +871,7 @@ const handleSubmit = (formattedDate,type,id) => {
             <FaCheckCircle />
           </StatIcon>
           <StatContent>
-            <h4>{filteredHolidays.filter(h => h.is_opted ==true).length}/{holidayData.no_optional_holidays || 0}</h4>
+            <h4>{filteredHolidays.filter(h => h.is_opted ===true).length}/{holidayData.no_optional_holidays || 0}</h4>
             <p>Selected Optional Holidays</p>
           </StatContent>
         </StatCard>
@@ -883,11 +883,11 @@ const handleSubmit = (formattedDate,type,id) => {
               <div className="filled"></div>
             </div>
             <div className="progress-text">
-              {filteredHolidays.filter(h => h.is_opted ==true).length} of {holidayData.no_optional_holidays} selected
+              {filteredHolidays.filter(h => h.is_opted ===true).length} of {holidayData.no_optional_holidays} selected
             </div>
               </SelectionProgress>
                    <TableContainer>
-                {filteredHolidays.filter(h => h.is_opted ==true).length > 0 ? (
+                {filteredHolidays.filter(h => h.is_opted ===true).length > 0 ? (
                   <table>
                     <thead>
                       <tr>
@@ -899,7 +899,7 @@ const handleSubmit = (formattedDate,type,id) => {
                     </thead>
                     <tbody>
                       {filteredHolidays
-                        .filter(h => h.is_opted ==true)
+                        .filter(h => h.is_opted ===true)
                         .sort((a, b) => {
                           const dateA = new Date(a.day.split('-').reverse().join('-'));
                           const dateB = new Date(b.day.split('-').reverse().join('-'));

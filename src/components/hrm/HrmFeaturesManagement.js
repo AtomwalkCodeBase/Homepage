@@ -4,7 +4,7 @@ import LeaveHeadBG from '../../assets/img/leave1.png';
 import HrHeadBG from '../../assets/img/hrm_hero_img.png';
 import { ProcessFlow } from './ProcessFlow';
 import FeatureDescription from './FeatureDescription';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import LetsConnect from '../LetsConnect';
 
 
@@ -95,7 +95,6 @@ const HrmFeaturesManagement = () => {
     };
   }, [isClaimPage, isLeavePage,isEmployeePage, isPayrollPage, isAttendancePage, isAppraisalPage, isHelpDeskPage, isEventPage]);
 
-  const navigate = useNavigate();
   return (
     <>
       <LetsConnect title={content.title} description={content.description} background={"#eae3ff"} lead={true} img={content.image}/>

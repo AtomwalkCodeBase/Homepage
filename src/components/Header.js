@@ -2,16 +2,12 @@
 
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import styled, { keyframes } from "styled-components"
+import styled from "styled-components"
 import {
-  FaBell,
-  FaEnvelope,
   FaSearch,
   FaUser,
   FaBars,
   FaSignOutAlt,
-  FaSignInAlt,
-  FaSignOutAlt as FaCheckOut,
   FaQuestion,
   FaTicketAlt,
   FaFileAlt,
@@ -21,17 +17,6 @@ import {
 import { useAuth } from "../context/AuthContext"
 import { theme } from "../styles/Theme"
 
-const pulse = keyframes`
-  0% {
-    box-shadow: 0 0 0 0 rgba(108, 99, 255, 0.4);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(108, 99, 255, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(108, 99, 255, 0);
-  }
-`
 
 const HeaderContainer = styled.header`
   background: white;
@@ -151,21 +136,6 @@ const ActionButton = styled.button`
   }
 `
 
-const NotificationBadge = styled.span`
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  background: ${({ theme }) => theme.colors.secondary};
-  color: white;
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  font-size: 0.7rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-
 const UserProfile = styled.div`
   display: flex;
   align-items: center;
@@ -226,39 +196,12 @@ const LogoutButton = styled(ActionButton)`
   }
 `
 
-const AttendanceButton = styled(ActionButton)`
-  background: ${(props) => (props.active ? props.theme.colors.success : props.theme.colors.primary)};
-  color: white;
-  padding: 8px 12px;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  animation: ${(props) => (props.active ? pulse : "none")} 2s infinite;
-  
-  &:hover {
-    color: white;
-    opacity: 0.9;
-  }
-  
-  @media (max-width: 768px) {
-    padding: 6px;
-    
-    span {
-      display: none;
-    }
-  }
-`
-
 const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
-  const { currentUser, logout,profile } = useAuth()
+  const { logout,profile } = useAuth()
   const [searchExpanded, setSearchExpanded] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [searchResults, setSearchResults] = useState([])
   const [showResults, setShowResults] = useState(false)
-  const [checkedIn, setCheckedIn] = useState(false)
-  const [checkInTime, setCheckInTime] = useState(null)
   const navigate = useNavigate()
 
   // Menu items for search
@@ -347,12 +290,6 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
 
   const handleLogout = () => {
     logout()
-  }
-
-  const handleCheckIn = () => {
-    setCheckedIn(true)
-    setCheckInTime(new Date())
-    // In a real app, you would save this to a database
   }
 
   const handleprofile = () => {

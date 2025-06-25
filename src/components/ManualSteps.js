@@ -57,7 +57,6 @@ import {
   FaTasks,
   FaTag,
   FaArrowLeft,
-  FaExclamationTriangle,
   FaPlus,
   FaFileExcel,
   FaCircle,

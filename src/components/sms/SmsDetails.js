@@ -1,16 +1,8 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import { FaRedoAlt, FaTasks, FaUserCheck, FaBell, FaChartBar } from 'react-icons/fa';
+import { FaBell } from 'react-icons/fa';
 import { MdDevices } from 'react-icons/md';
-import facility from '../../assets/img/Step_5.png'
 import Solar from '../../assets/img/step5-removebg-preview.png'
-
-import {
-    FaCalendarAlt,
-    FaEye,
-    FaHistory,
-    FaSmile
-} from 'react-icons/fa';
 import {
     FaSolarPanel,
     FaBolt,

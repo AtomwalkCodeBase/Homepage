@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import Compliance from '../../assets/img/Leadmanagement.png';
 import Source from '../../assets/img/trash.png';
 import Collection from '../../assets/img/garbage-truck.png';
 import Process from '../../assets/img/waste-management.png';
@@ -17,7 +16,6 @@ import Facility1 from '../../assets/img/fms_step_3(1).png';
 import Facility2 from '../../assets/img/fms_step_3(2).png';
 import Facility3 from '../../assets/img/fms_step_3(3).png';
 import Facility4 from '../../assets/img/fms_step_3(4).png';
-import UnderConstructionPopup from '../UnderConstructionPopup';
 
 // Animation keyframes
 const fadeIn = keyframes`
@@ -227,10 +225,6 @@ const FeatureDescription = styled.p`
 `;
 
 const KeyFeaturesWaste = (props) => {
-  const [openpop, setopenpop] = useState(false);
-  const handleNavigation = (data) => {
-    window.location.href = `/${data}`;
-  };
 
   const features = [
     {
@@ -406,16 +400,16 @@ const KeyFeaturesWaste = (props) => {
   ];
   const[data, setdata] = useState(features);
   useEffect(() => {
-    if(window.location.pathname == '/aimanagement.html'){
+    if(window.location.pathname === '/aimanagement.html'){
       setdata(Aifeatures);
     }
-    if(window.location.pathname == '/facilitymanagement.html') {
+    if(window.location.pathname === '/facilitymanagement.html') {
       setdata(fmsfeatures);
     }
-    else if(window.location.pathname == '/hospitalmanagement.html'){
+    else if(window.location.pathname === '/hospitalmanagement.html'){
       setdata(hmsfeatures);
     }
-    else if(window.location.pathname == '/solarmanagement.html'){
+    else if(window.location.pathname === '/solarmanagement.html'){
       setdata(Smsfeatures);
     }
 

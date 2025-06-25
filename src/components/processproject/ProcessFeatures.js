@@ -202,7 +202,7 @@ const ProcessFeatures = ({data}) => {
       </Features>
     );
   
-    const features = isClaim =='process'
+    const features = isClaim ==='process'
       ?[
         {
           title: 'Product Management with Category Setup',
@@ -265,7 +265,7 @@ const ProcessFeatures = ({data}) => {
             imgPosition: 'left',
           },
           
-      ]:isClaim =='project'?[
+      ]:isClaim ==='project'?[
         {
           title: 'Efficient Work Order Management Made Simple',
           subtitle: 'Streamline project creation and link seamlessly with sales orders.',
@@ -306,7 +306,7 @@ const ProcessFeatures = ({data}) => {
           imgPosition: 'right',
         }               
          
-        ]:isClaim =='activityreport'?[
+        ]:isClaim ==='activityreport'?[
           {
 
             title: 'Activity Dashboards for Efficient Manufacturing Projects',

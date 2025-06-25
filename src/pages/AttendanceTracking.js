@@ -344,7 +344,6 @@ const AttendanceTracking = () => {
 
   // In the component, add these state variables after the existing state declarations
   const [statusFilter, setStatusFilter] = useState("All Status")
-  const [timeFilter, setTimeFilter] = useState("This Month")
   const [filteredAttendanceData, setFilteredAttendanceData] = useState([])
 
   const setdatatime = async () => {
@@ -496,7 +495,6 @@ const AttendanceTracking = () => {
       saturdayDates.forEach((saturdayDate) => {
         if (saturdayDate) {
           const [day, monthName] = saturdayDate.split("-")
-          const year = currentYear // Use the current year for Saturday holidays
           const month = monthNameMap[monthName]
 
           if (month !== undefined && month === currentMonth) {
@@ -580,7 +578,7 @@ const AttendanceTracking = () => {
     const currentDate = `${currentTime.getDate().toString().padStart(2, "0")}-${(currentTime.getMonth() + 1).toString().padStart(2, "0")}-${currentTime.getFullYear()}`
     const time = await setdatatime()
     try {
-      const todayAttendance = employeeDatas.find((item) => item.a_date == currentDate)
+      const todayAttendance = employeeDatas.find((item) => item.a_date === currentDate)
       const attendanceId = todayAttendance ? todayAttendance.id : null
 
       const checkPayload = {
@@ -738,7 +736,7 @@ const AttendanceTracking = () => {
                 $isWeekend={isWeekend(day) && !holiday[day]}
               >
                 <DayNumber>{day}</DayNumber>
-                {status && <DayStatus $status={status == "A" ? "P" : status}>{status == "A" ? "P" : status}</DayStatus>}
+                {status && <DayStatus $status={status === "A" ? "P" : status}>{status === "A" ? "P" : status}</DayStatus>}
               </DayCell>
             )
           })}

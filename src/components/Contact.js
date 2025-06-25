@@ -63,60 +63,7 @@ console.log(formDetails,"look at ne")
       setFormDetails(formInitialDetails);
     }
   };
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setButtonText("Sending...");
   
-  //   // Get the token from localStorage
-  //   let token = localStorage.getItem('apiResponse');
-  
-  //   // If the token is not found, throw an error or handle accordingly
-  //   if (!token) {
-  //     console.error('Token not found, please login.');
-  //     setStatus({ succes: false, message: 'Token not found, please login.' });
-  //     setButtonText("Send");
-  //     return;
-  //   }
-  
-  //   try {
-  //     // Parse the token JSON string
-  //     let parsedToken = JSON.parse(token);
-  //     // Make the API request
-  //     let response = await fetch("https://www.atomwalk.com/api/add_lead/DB_PMA_00001", {
-  //       method: "POST",
-  //       headers: {
-  //         'Authorization': `Token ${parsedToken.key}`, // Correctly access the `key` from the parsed token
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(formDetails),
-  //     });
-  
-  //     // Parse the response
-  //     let result = await response.json();
-  
-  //     // Reset form details
-  //     setFormDetails(formInitialDetails);
-  
-  //     // Handle success and error response codes
-  //     if (result.code === 200) {
-  //       setStatus({ succes: true, message: 'Message sent successfully' });
-  //     } else {
-  //       setStatus({ succes: false, message: 'Something went wrong, please try again later.' });
-  //     }
-  
-  //   } catch (error) {
-  //     // Handle any errors during the fetch request or token parsing
-  //     console.error('Error:', error);
-  //     setStatus({ succes: false, message: 'An error occurred, please try again later.' });
-  //   } finally {
-  //     // Reset the button text regardless of the outcome
-  //     setButtonText("Send");
-  //   }
-  
-  //   // console.log(JSON.parse(token.key), "looppp");
-  // };
-  
-
   return (
     <section className="contact" id="connect">
       <Container>

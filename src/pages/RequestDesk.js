@@ -180,7 +180,7 @@ const RequestDesk = () => {
       console.log("Error fetching requests:", err)
     }
   }
-  const myRequests = allRequests.filter((request) => request?.emp_id == emp_id && request?.request_type === "R")
+  const myRequests = allRequests.filter((request) => request?.emp_id === emp_id && request?.request_type === "R")
   const handleSearch = (e) => {
     setSearchTerm(e.target.value)
   }
@@ -548,7 +548,7 @@ const RequestDesk = () => {
           </p>
           <img
             src={selectedTicket.submitted_file_1 || "/placeholder.svg"}
-            alt="Request Image"
+            // alt="Request Image"
             style={{ width: "100%", height: "auto", borderRadius: "8px", marginTop: "1rem" }}
           />
           <div style={{ marginTop: "1rem" }}>

@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
     try {
       // Determine if the input is a mobile number or emp_id
       const isMobileNumber = /^\d{10}$/.test(userData.mobile); // Assuming mobile numbers are 10 digits
-      const isEmpId = !isMobileNumber; // If it's not a mobile number, treat it as emp_id
+      // const isEmpId = !isMobileNumber; // If it's not a mobile number, treat it as emp_id
   
       const payload = isMobileNumber
         ? {

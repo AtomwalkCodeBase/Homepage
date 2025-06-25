@@ -1,6 +1,3 @@
-"use client"
-
-import { useContext } from "react"
 import styled, { css } from "styled-components"
 import { useTheme } from "../context/ThemeContext"
 

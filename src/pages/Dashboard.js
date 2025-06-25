@@ -37,11 +37,9 @@ import Card from "../components/Card"
 import Button from "../components/Button"
 import Badge from "../components/Badge"
 import { getEmpLeave, getEmpClaim, getEmployeeRequest, getEmpAttendance, getEventLists, postvent } from "../services/productServices"
-import Modal from "../components/modals/Modal"
 import { getEmployeesInfo } from "../services/authServices"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-// import { Bar } from "react-chartjs-2"
 
 const float = keyframes`
   0% {
@@ -114,38 +112,6 @@ const ChartContainer = styled.div`
   width: 100%;
   border-radius: 8px;
   overflow: hidden;
-`
-
-const TableContainer = styled.div`
-  overflow-x: auto;
-  width: 100%;
-  
-  table {
-    min-width: 500px;
-    width: 100%;
-    border-collapse: collapse;
-    
-    th, td {
-      padding: 10px;
-      text-align: left;
-      border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-    }
-    
-    th {
-      font-weight: 600;
-      color: ${({ theme }) => theme.colors.textLight};
-    }
-  }
-  
-  @media (max-width: 768px) {
-    margin: 0 -15px;
-    width: calc(100% + 30px);
-    padding: 0 15px;
-    
-    table {
-      font-size: 0.9rem;
-    }
-  }
 `
 
 const ActivityItem = styled.div`
@@ -365,24 +331,6 @@ const WishForm = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-`;
-
-const WishFormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  label {
-    font-weight: 500;
-  }
-
-  textarea {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    resize: vertical;
-    min-height: 100px;
-  }
 `;
 
 const Balloon = styled.div`
@@ -791,294 +739,286 @@ const Dashboard = () => {
         setAttendanceData(res.data)
       })
       .catch((err) => console.error("Error fetching attendance data:", err))
-          // Fetch employees data data
-          getEmployeesInfo()
-    .then((res) => {
-      setEmpInfo(res.data)
-    })
-    .catch((err) => console.error("Error fetching claim data:", err))
+    // Fetch employees data data
+    getEmployeesInfo()
+      .then((res) => {
+        setEmpInfo(res.data)
+      })
+      .catch((err) => console.error("Error fetching claim data:", err))
   }, [emp_id, empId])
-// Process working hours data
-const processWorkingHours = (attendanceData) => {
-  if (!Array.isArray(attendanceData)) return [];
-  
-  return attendanceData.map(att => {
-    try {
-      // Safely parse start time
-      let startHour = 0, startMin = 0;
-      if (att.start_time && typeof att.start_time === 'string') {
-        const startParts = att.start_time.split(':');
-        startHour = parseInt(startParts[0]) || 0;
-        startMin = parseInt(startParts[1]) || 0;
-      }
+  // Process working hours data
+  const processWorkingHours = (attendanceData) => {
+    if (!Array.isArray(attendanceData)) return [];
 
-      // Safely parse end time
-      let endHour = 0, endMin = 0;
-      if (att.end_time && typeof att.end_time === 'string') {
-        const endParts = att.end_time.split(':');
-        endHour = parseInt(endParts[0]) || 0;
-        endMin = parseInt(endParts[1]) || 0;
-      }
+    return attendanceData.map(att => {
+      try {
+        // Safely parse start time
+        let startHour = 0, startMin = 0;
+        if (att.start_time && typeof att.start_time === 'string') {
+          const startParts = att.start_time.split(':');
+          startHour = parseInt(startParts[0]) || 0;
+          startMin = parseInt(startParts[1]) || 0;
+        }
 
-      // Calculate working hours
-      const startInMinutes = startHour * 60 + startMin;
-      const endInMinutes = endHour * 60 + endMin;
-      const workingMinutes = Math.max(0, endInMinutes - startInMinutes);
-      const workingHours = (workingMinutes / 60).toFixed(2);
-      
-      // Format times for display
-      const formatTime = (hours, mins) => {
-        const period = hours >= 12 ? 'PM' : 'AM';
-        const displayHours = hours % 12 || 12;
-        return `${displayHours}:${mins.toString().padStart(2, '0')} ${period}`;
-      };
-      
-      return {
-        date: att.a_date || 'Unknown Date',
-        startTime: startHour + (startMin / 60),
-        endTime: endHour + (endMin / 60),
-        workingHours: parseFloat(workingHours),
-        displayStart: formatTime(startHour, startMin),
-        displayEnd: formatTime(endHour, endMin)
-      };
-    } catch (error) {
-      console.error('Error processing attendance record:', error);
-      return {
-        date: att.a_date || 'Unknown Date',
-        startTime: 0,
-        endTime: 0,
-        workingHours: 0,
-        displayStart: 'N/A',
-        displayEnd: 'N/A'
-      };
+        // Safely parse end time
+        let endHour = 0, endMin = 0;
+        if (att.end_time && typeof att.end_time === 'string') {
+          const endParts = att.end_time.split(':');
+          endHour = parseInt(endParts[0]) || 0;
+          endMin = parseInt(endParts[1]) || 0;
+        }
+
+        // Calculate working hours
+        const startInMinutes = startHour * 60 + startMin;
+        const endInMinutes = endHour * 60 + endMin;
+        const workingMinutes = Math.max(0, endInMinutes - startInMinutes);
+        const workingHours = (workingMinutes / 60).toFixed(2);
+
+        // Format times for display
+        const formatTime = (hours, mins) => {
+          const period = hours >= 12 ? 'PM' : 'AM';
+          const displayHours = hours % 12 || 12;
+          return `${displayHours}:${mins.toString().padStart(2, '0')} ${period}`;
+        };
+
+        return {
+          date: att.a_date || 'Unknown Date',
+          startTime: startHour + (startMin / 60),
+          endTime: endHour + (endMin / 60),
+          workingHours: parseFloat(workingHours),
+          displayStart: formatTime(startHour, startMin),
+          displayEnd: formatTime(endHour, endMin)
+        };
+      } catch (error) {
+        console.error('Error processing attendance record:', error);
+        return {
+          date: att.a_date || 'Unknown Date',
+          startTime: 0,
+          endTime: 0,
+          workingHours: 0,
+          displayStart: 'N/A',
+          displayEnd: 'N/A'
+        };
+      }
+    });
+  };
+
+  // Custom tooltip component
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      const data = payload[0].payload;
+      return (
+        <div className="custom-tooltip" style={{ background: '#fff', padding: '10px', border: '1px solid #ccc', color: '#000' }}>
+          <p>Date: {label}</p>
+          <p>Start: {data.displayStart}</p>
+          <p>End: {data.displayEnd}</p>
+          <p>Working Hours: {data.workingHours} hrs</p>
+        </div>
+      );
     }
-  });
-};
-
-// Custom tooltip component
-const CustomTooltip = ({ active, payload, label }) => {
-  if (active && payload && payload.length) {
-    const data = payload[0].payload;
-    return (
-      <div className="custom-tooltip" style={{ background: '#fff', padding: '10px', border: '1px solid #ccc',color: '#000' }}>
-        <p>Date: {label}</p>
-        <p>Start: {data.displayStart}</p>
-        <p>End: {data.displayEnd}</p>
-        <p>Working Hours: {data.workingHours} hrs</p>
-      </div>
-    );
-  }
-  return null;
-};
+    return null;
+  };
   // Process data for stats and charts
   useEffect(() => {
     // if (leaveData.length > 0 && claimData.length > 0 && ticketData.length > 0 && attendanceData.length > 0) {
-      // Calculate stats
-      const pendingLeaves = leaveData.filter((leave) => leave.status_display === "Submitted").length
-      const pendingClaims = claimData.filter((claim) => claim.expense_status === "S").length
-      const pendingTickets = ticketData.filter((ticket) => ticket.request_status === "S").length
-      const presentToday =
-        attendanceData.filter((att) => {
-          const today = new Date()
-          const attDate = `${today.getDate().toString().padStart(2, "0")}-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getFullYear()}`
-          return att.a_date === attDate && att.attendance_type === "A"
-        }).length > 0
-
-      setStats([
-        {
-          icon: <FaMoneyBillWave />,
-          label: "Pending Help Tickets",
-          value: pendingTickets, // This could be fetched from an API
-          change: pendingTickets > 0 ? "Needs attention" : "All approved",
-          changeType: pendingTickets > 0 ? "decrease" : "increase",
-          color: pendingTickets > 0 ? "warning" : "success",
-        },
-        {
-          icon: <FaUserClock />,
-          label: "Present Today",
-          value: presentToday ? "Yes" : "No",
-          change: presentToday ? "Checked in" : "Not checked in",
-          changeType: presentToday ? "increase" : "decrease",
-          color: presentToday ? "success" : "error",
-        },
-        {
-          icon: <FaCalendarAlt />,
-          label: "Pending Leaves",
-          value: pendingLeaves.toString(),
-          change: pendingLeaves > 0 ? "Needs attention" : "All approved",
-          changeType: pendingLeaves > 0 ? "decrease" : "increase",
-          color: pendingLeaves > 0 ? "warning" : "success",
-        },
-        {
-          icon: <FaFileInvoiceDollar />,
-          label: "Pending Claims",
-          value: pendingClaims.toString(),
-          change: pendingClaims > 0 ? "Awaiting approval" : "All processed",
-          changeType: pendingClaims > 0 ? "decrease" : "increase",
-          color: pendingClaims > 0 ? "warning" : "success",
-        },
-      ])
-
-      // Create recent activities from various data sources
-      const activities = []
-
-      // Add leave activities
-      leaveData.slice(0, 2).forEach((leave) => {
-        activities.push({
-          type: "leave",
-          user: "You",
-          time: leave.submit_date,
-          status: leave.status_display,
-          description: `Applied for ${leave.leave_type_display}`,
-        })
-      })
-
-      // Add claim activities
-      claimData.slice(0, 2).forEach((claim) => {
-        activities.push({
-          type: "claim",
-          user: "You",
-          time: claim.submitted_date,
-          status: claim.expense_status === "A" ? "Approved" : claim.expense_status === "R" ? "Rejected" : "Pending",
-          description: `Submitted claim for ₹${claim.expense_amt}`,
-        })
-      })
-
-      // Add ticket activities
-      ticketData.slice(0, 2).forEach((ticket) => {
-        activities.push({
-          type: "ticket",
-          user: "You",
-          time: ticket.created_date,
-          status:
-            ticket.request_status === "S"
-              ? "Submitted"
-              : ticket.request_status === "A"
-                ? "Assigned"
-                : ticket.request_status === "C"
-                  ? "Completed"
-                  : "Rejected",
-          description: `Created ticket: ${ticket.request_sub_type}`,
-        })
-      })
-
-      // Add attendance activities if available
-      const todayAttendance = attendanceData.find((att) => {
+    // Calculate stats
+    const pendingLeaves = leaveData.filter((leave) => leave.status_display === "Submitted").length
+    const pendingClaims = claimData.filter((claim) => claim.expense_status === "S").length
+    const pendingTickets = ticketData.filter((ticket) => ticket.request_status === "S").length
+    const presentToday =
+      attendanceData.filter((att) => {
         const today = new Date()
         const attDate = `${today.getDate().toString().padStart(2, "0")}-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getFullYear()}`
-        return att.a_date === attDate
+        return att.a_date === attDate && att.attendance_type === "A"
+      }).length > 0
+
+    setStats([
+      {
+        icon: <FaMoneyBillWave />,
+        label: "Pending Help Tickets",
+        value: pendingTickets, // This could be fetched from an API
+        change: pendingTickets > 0 ? "Needs attention" : "All approved",
+        changeType: pendingTickets > 0 ? "decrease" : "increase",
+        color: pendingTickets > 0 ? "warning" : "success",
+      },
+      {
+        icon: <FaUserClock />,
+        label: "Present Today",
+        value: presentToday ? "Yes" : "No",
+        change: presentToday ? "Checked in" : "Not checked in",
+        changeType: presentToday ? "increase" : "decrease",
+        color: presentToday ? "success" : "error",
+      },
+      {
+        icon: <FaCalendarAlt />,
+        label: "Pending Leaves",
+        value: pendingLeaves.toString(),
+        change: pendingLeaves > 0 ? "Needs attention" : "All approved",
+        changeType: pendingLeaves > 0 ? "decrease" : "increase",
+        color: pendingLeaves > 0 ? "warning" : "success",
+      },
+      {
+        icon: <FaFileInvoiceDollar />,
+        label: "Pending Claims",
+        value: pendingClaims.toString(),
+        change: pendingClaims > 0 ? "Awaiting approval" : "All processed",
+        changeType: pendingClaims > 0 ? "decrease" : "increase",
+        color: pendingClaims > 0 ? "warning" : "success",
+      },
+    ])
+
+    // Create recent activities from various data sources
+    const activities = []
+
+    // Add leave activities
+    leaveData.slice(0, 2).forEach((leave) => {
+      activities.push({
+        type: "leave",
+        user: "You",
+        time: leave.submit_date,
+        status: leave.status_display,
+        description: `Applied for ${leave.leave_type_display}`,
       })
+    })
 
-      if (todayAttendance) {
-        if (todayAttendance.start_time) {
-          activities.push({
-            type: "check-in",
-            user: "You",
-            time: todayAttendance.start_time,
-            status: "On Time",
-            description: "Checked in",
-          })
-        }
-        if (todayAttendance.end_time) {
-          activities.push({
-            type: "check-out",
-            user: "You",
-            time: todayAttendance.end_time,
-            status: "Completed",
-            description: "Checked out",
-          })
-        }
+    // Add claim activities
+    claimData.slice(0, 2).forEach((claim) => {
+      activities.push({
+        type: "claim",
+        user: "You",
+        time: claim.submitted_date,
+        status: claim.expense_status === "A" ? "Approved" : claim.expense_status === "R" ? "Rejected" : "Pending",
+        description: `Submitted claim for ₹${claim.expense_amt}`,
+      })
+    })
+
+    // Add ticket activities
+    ticketData.slice(0, 2).forEach((ticket) => {
+      activities.push({
+        type: "ticket",
+        user: "You",
+        time: ticket.created_date,
+        status:
+          ticket.request_status === "S"
+            ? "Submitted"
+            : ticket.request_status === "A"
+              ? "Assigned"
+              : ticket.request_status === "C"
+                ? "Completed"
+                : "Rejected",
+        description: `Created ticket: ${ticket.request_sub_type}`,
+      })
+    })
+
+    // Add attendance activities if available
+    const todayAttendance = attendanceData.find((att) => {
+      const today = new Date()
+      const attDate = `${today.getDate().toString().padStart(2, "0")}-${(today.getMonth() + 1).toString().padStart(2, "0")}-${today.getFullYear()}`
+      return att.a_date === attDate
+    })
+
+    if (todayAttendance) {
+      if (todayAttendance.start_time) {
+        activities.push({
+          type: "check-in",
+          user: "You",
+          time: todayAttendance.start_time,
+          status: "On Time",
+          description: "Checked in",
+        })
       }
-
-      // Sort activities by time (most recent first) and limit to 5
-      activities.sort((a, b) => new Date(b.time) - new Date(a.time))
-      setRecentActivities(activities.length>5?activities.slice(0, 5):activities)
-
-      // Process department data
-      const gradeCounts = empInfo.reduce((acc, emp) => {
-        if (emp.grade_name) {
-          acc[emp.grade_name] = (acc[emp.grade_name] || 0) + 1;
-        }
-        return acc;
-      }, {});
-
-      const departmentData = Object.keys(gradeCounts).map((gradeName) => ({
-        name: gradeName,
-        value: gradeCounts[gradeName],
-      }));
-
-      setDepartmentData(departmentData);
-
-      // Process monthly attendance data
-     const workingHoursData = processWorkingHours(attendanceData||[]);
-     setWorkingHoursData(workingHoursData);
+      if (todayAttendance.end_time) {
+        activities.push({
+          type: "check-out",
+          user: "You",
+          time: todayAttendance.end_time,
+          status: "Completed",
+          description: "Checked out",
+        })
+      }
     }
-  , [leaveData, claimData, ticketData, attendanceData])
+
+    // Sort activities by time (most recent first) and limit to 5
+    activities.sort((a, b) => new Date(b.time) - new Date(a.time))
+    setRecentActivities(activities.length > 5 ? activities.slice(0, 5) : activities)
+
+    // Process department data
+    const gradeCounts = empInfo.reduce((acc, emp) => {
+      if (emp.grade_name) {
+        acc[emp.grade_name] = (acc[emp.grade_name] || 0) + 1;
+      }
+      return acc;
+    }, {});
+
+    const departmentData = Object.keys(gradeCounts).map((gradeName) => ({
+      name: gradeName,
+      value: gradeCounts[gradeName],
+    }));
+
+    setDepartmentData(departmentData);
+
+    // Process monthly attendance data
+    const workingHoursData = processWorkingHours(attendanceData || []);
+    setWorkingHoursData(workingHoursData);
+  }
+    , [leaveData, claimData, ticketData, attendanceData])
   // Check if today is someone's birthday
   const [todayBirthday, setUpcomingBirthdays] = useState([])
-  console.log(todayBirthday,"upcomingBirthdays")
+  console.log(todayBirthday, "upcomingBirthdays")
 
   useEffect(() => {
     if (eventData.length > 0) {
       // Format today's date to match event_date format (DD-MM-YYYY)
       const today = new Date();
       const todayFormatted = `${today.getDate().toString().padStart(2, '0')}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getFullYear()}`;
-      
+
       // Find today's birthdays
       const birthdaysToday = eventData.filter(
         event => event.event_type === 'B' && event.event_date === todayFormatted && (event.event_status == "A" || event.event_status == "P")
       );
-      
+
       // Find upcoming birthdays (excluding today)
       const upcoming = eventData.filter(
         event => event.event_type === 'B' && event.event_date !== todayFormatted
       ).slice(0, 3); // Limit to 3 upcoming birthdays
-      
+
       setUpcomingBirthdays({
         today: birthdaysToday,
         upcoming: upcoming
       });
     }
   }, [eventData]);
-  const handleSendWish = async() => {
+  const handleSendWish = async () => {
     if (wishMessage.trim() && selectedBirthday) {
       // Here you would typically call an API to send the wish
       console.log(`Sending wish to ${selectedBirthday.emp_id}: ${wishMessage}`);
-      
-      const formDatas = new FormData() 
-          formDatas.append("r_file",  selectedFile)
-          formDatas.append("emp_id", selectedBirthday.emp_id)
-          formDatas.append("event_id", selectedBirthday?.id)
-          formDatas.append("call_mode", "ADD");
-          formDatas.append("r_text", wishMessage)
-          try {
-            const res = await postvent(formDatas)
-            if (res.status === 200) {
-              toast.success("Add response successfully")
-              setShowWishPopup(false);
-              setSelectedBirthday(null);
-              setWishMessage("");
-            } else {
-              console.log("Unexpected response:", res)
-              toast.error("response Submission Error")
-            }
-          } catch (error) {
-            toast.error(`${error.response?.data?.detail || error.message}`)
-          } 
+
+      const formDatas = new FormData()
+      formDatas.append("r_file", selectedFile)
+      formDatas.append("emp_id", selectedBirthday.emp_id)
+      formDatas.append("event_id", selectedBirthday?.id)
+      formDatas.append("call_mode", "ADD");
+      formDatas.append("r_text", wishMessage)
+      try {
+        const res = await postvent(formDatas)
+        if (res.status === 200) {
+          toast.success("Add response successfully")
+          setShowWishPopup(false);
+          setSelectedBirthday(null);
+          setWishMessage("");
+        } else {
+          console.log("Unexpected response:", res)
+          toast.error("response Submission Error")
+        }
+      } catch (error) {
+        toast.error(`${error.response?.data?.detail || error.message}`)
+      }
     }
   };
 
-  // Pending approvals data
-  const pendingApprovals = [
-    { type: "Leave", employee: "Jane Smith", from: "2023-12-10", to: "2023-12-15", reason: "Vacation" },
-    { type: "Claim", employee: "Mike Johnson", amount: "$250", date: "2023-12-05", description: "Travel Expenses" },
-    { type: "Overtime", employee: "Sarah Williams", hours: "3", date: "2023-12-03", reason: "Project Deadline" },
-  ]
-
-  const COLORS = ["#6C63FF", "#FF6584", "#63FFDA", "#FFD600", "#2196F3"]
-const navigatetoattendance = () => {
-  navigation ("/attendance-tracking");
-}
+  const navigatetoattendance = () => {
+    navigation("/attendance-tracking");
+  }
   return (
     <Layout title="Dashboard">
       {/* Today's Birthday Special Display */}
@@ -1086,14 +1026,14 @@ const navigatetoattendance = () => {
         <>
           {todayBirthday.today.map((birthday) => (
             <TodayBirthdayContainer key={birthday.event_id}>
-               <Balloon size={40} color="#FF6B6B" top={10} left={10} duration={6} />
-               <Teddy left={15} delay={0.8} />
-                <Balloon size={30} color="#4ECDC4" top={15} left={80} duration={7} delay={0.5} />
-                <Balloon size={35} color="#FFD166" top={20} left={30} duration={5} delay={1} />
-                <Balloon size={25} color="#FF70A6" top={5} left={60} duration={8} delay={1.5} />
-                <Chocolate bottom={15} right={5} delay={0.5} />
-                <Teddy left={75} delay={1.5} />
-                <Chocolate bottom={25} right={35} delay={1.2} />
+              <Balloon size={40} color="#FF6B6B" top={10} left={10} duration={6} />
+              <Teddy left={15} delay={0.8} />
+              <Balloon size={30} color="#4ECDC4" top={15} left={80} duration={7} delay={0.5} />
+              <Balloon size={35} color="#FFD166" top={20} left={30} duration={5} delay={1} />
+              <Balloon size={25} color="#FF70A6" top={5} left={60} duration={8} delay={1.5} />
+              <Chocolate bottom={15} right={5} delay={0.5} />
+              <Teddy left={75} delay={1.5} />
+              <Chocolate bottom={25} right={35} delay={1.2} />
               <BirthdayCakeIcon>
                 <FaGift />
               </BirthdayCakeIcon>
@@ -1119,11 +1059,11 @@ const navigatetoattendance = () => {
       )}
 
       {/* Birthday Card */}
-         {todayBirthday.upcoming && todayBirthday.upcoming.length > 0 && 
-      <BirthdayCard
-        title="Upcoming Birthdays"
-        variant="primary"
-      >
+      {todayBirthday.upcoming && todayBirthday.upcoming.length > 0 &&
+        <BirthdayCard
+          title="Upcoming Birthdays"
+          variant="primary"
+        >
           <BirthdayList>
             {todayBirthday.upcoming.map((birthday) => (
               <BirthdayItem key={birthday.event_id}>
@@ -1142,7 +1082,7 @@ const navigatetoattendance = () => {
               </BirthdayItem>
             ))}
           </BirthdayList>
-      </BirthdayCard>}
+        </BirthdayCard>}
       <DashboardGrid>
         {stats.map((stat, index) => (
           <StatsCard
@@ -1167,53 +1107,53 @@ const navigatetoattendance = () => {
             </Button>
           }
         >
-<ChartContainer>
-  <ResponsiveContainer width="100%" height="100%">
-    <BarChart 
-      data={workingHoursData} 
-      margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-    >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="date" />
-      <YAxis yAxisId="hours" label={{ value: 'Hours', angle: -90, position: 'insideLeft' }}/>
-      <Tooltip 
-        content={<CustomTooltip />}
-      />
-      <Legend />
-      <Bar 
-        yAxisId="hours" 
-        dataKey="workingHours" 
-        name="Working Hours" 
-        fill="#4CAF50" 
-      />
-      <Line 
-        yAxisId="hours" 
-        type="monotone" 
-        dataKey="startTime" 
-        name="Start Time" 
-        stroke="#2196F3" 
-        activeDot={{ r: 8 }}
-      />
-      <Line 
-        yAxisId="hours" 
-        type="monotone" 
-        dataKey="endTime" 
-        name="End Time" 
-        stroke="#FF5722" 
-      />
-    </BarChart>
-  </ResponsiveContainer>
-</ChartContainer>
+          <ChartContainer>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={workingHoursData}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis yAxisId="hours" label={{ value: 'Hours', angle: -90, position: 'insideLeft' }} />
+                <Tooltip
+                  content={<CustomTooltip />}
+                />
+                <Legend />
+                <Bar
+                  yAxisId="hours"
+                  dataKey="workingHours"
+                  name="Working Hours"
+                  fill="#4CAF50"
+                />
+                <Line
+                  yAxisId="hours"
+                  type="monotone"
+                  dataKey="startTime"
+                  name="Start Time"
+                  stroke="#2196F3"
+                  activeDot={{ r: 8 }}
+                />
+                <Line
+                  yAxisId="hours"
+                  type="monotone"
+                  dataKey="endTime"
+                  name="End Time"
+                  stroke="#FF5722"
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </ChartContainer>
         </Card>
 
         <Card
           title="Recent Activities"
           variant="secondary"
-          // headerAction={
-          //   <Button variant="outline" size="sm">
-          //     View All
-          //   </Button>
-          // }
+        // headerAction={
+        //   <Button variant="outline" size="sm">
+        //     View All
+        //   </Button>
+        // }
         >
           {recentActivities.map((activity, index) => (
             <ActivityItem key={index}>
@@ -1249,179 +1189,98 @@ const navigatetoattendance = () => {
           ))}
         </Card>
       </ResponsiveGrid>
-
-      {/* <ResponsiveGrid style={{ marginTop: "1.5rem" }}>
-        <Card title="Department Distribution" variant="accent">
-          <ChartContainer>
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={departmentData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                >
-                  {departmentData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          </ChartContainer>
-        </Card>
-
-        <Card
-          title="Pending Approvals"
-          variant="primary"
-          headerAction={
-            <Button variant="outline" size="sm">
-              View All
-            </Button>
-          }
-        >
-          <TableContainer>
-            <table>
-              <thead>
-                <tr>
-                  <th>Type</th>
-                  <th>Employee</th>
-                  <th>Details</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pendingApprovals.map((approval, index) => (
-                  <tr key={index}>
-                    <td>
-                      <Badge
-                        variant={
-                          approval.type === "Leave" ? "primary" : approval.type === "Claim" ? "secondary" : "info"
-                        }
-                      >
-                        {approval.type}
-                      </Badge>
-                    </td>
-                    <td>{approval.employee}</td>
-                    <td>
-                      {approval.type === "Leave" && `${approval.from} to ${approval.to}`}
-                      {approval.type === "Claim" && `${approval.amount} - ${approval.description}`}
-                      {approval.type === "Overtime" && `${approval.hours} hours - ${approval.date}`}
-                    </td>
-                    <td>
-                      <div className="flex gap-2">
-                        <Button variant="primary" size="sm">
-                          Approve
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          Reject
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </TableContainer>
-        </Card>
-      </ResponsiveGrid> */}
       {showWishPopup && selectedBirthday && (
-  <ModalOverlay>
-    <ModalContainer>
-      <ModalHeader>
-        <BirthdayIcon>
-          <FaGifts />
-        </BirthdayIcon>
-        <h3>Send Birthday Wishes</h3>
-        <CloseButton onClick={() => setShowWishPopup(false)}>
-          <FaTimes color="red" />
-        </CloseButton>
-      </ModalHeader>
-      
-      <ModalBody>
-        <RecipientInfo>
-          <RecipientAvatar src={selectedBirthday.image || "https://via.placeholder.com/80"} alt={selectedBirthday.emp_name} />
-          <RecipientDetails>
-            <RecipientName>To: {selectedBirthday.emp_name}</RecipientName>
-            <RecipientOccasion>Birthday • {selectedBirthday.event_date}</RecipientOccasion>
-          </RecipientDetails>
-        </RecipientInfo>
-        
-        <WishForm>
-          <FormGroup>
-            <Label>Your Message</Label>
-            <MessageTextarea
-              value={wishMessage}
-              onChange={(e) => setWishMessage(e.target.value)}
-              placeholder="Write your heartfelt birthday wish here..."
-              rows="5"
-            />
-          </FormGroup>
-          
-          <FormGroup>
-            <Label>Add a Photo/GIF (Optional)</Label>
-            <UploadContainer>
-              <UploadBox htmlFor="wish-upload">
-                {selectedFile ? (
-                  <PreviewImage src={URL.createObjectURL(selectedFile)} alt="Preview" />
-                ) : (
-                  <UploadContent>
-                    <FaCloudUploadAlt size={32} />
-                    <p>Click to upload or drag and drop</p>
-                    <small>JPG, PNG or GIF (max. 5MB)</small>
-                  </UploadContent>
-                )}
-                <HiddenInput 
-                  id="wish-upload" 
-                  type="file" 
-                  accept="image/*" 
-                  onChange={(e) => setSelectedFile(e.target.files[0])}
-                />
-              </UploadBox>
-              {selectedFile && (
-                <UploadActions>
-                  <Button variant="text" onClick={() => setSelectedFile(null)}>
-                    <FaTrash /> Remove
-                  </Button>
-                </UploadActions>
-              )}
-            </UploadContainer>
-          </FormGroup>
-          
-          <WishOptions>
-            <WishOption onClick={() => setWishMessage(prev => prev + " 🎉")}>
-              <FaBirthdayCake /> Add Celebration
-            </WishOption>
-            <WishOption onClick={() => setWishMessage(prev => prev + " 🎂")}>
-              <FaSmile /> Add Cake
-            </WishOption>
-            <WishOption onClick={() => setWishMessage(prev => prev + " 🥳")}>
-              <FaGrinStars /> Add Party
-            </WishOption>
-          </WishOptions>
-        </WishForm>
-      </ModalBody>
-      
-      <ModalFooter>
-        <ActionButton variant="outline" onClick={() => setShowWishPopup(false)}>
-          Cancel
-        </ActionButton>
-        <ActionButton 
-          variant="primary" 
-          onClick={handleSendWish}
-          disabled={!wishMessage.trim()}
-        >
-          <FaPaperPlane /> Send Wish
-        </ActionButton>
-      </ModalFooter>
-    </ModalContainer>
-  </ModalOverlay>
-)}
+        <ModalOverlay>
+          <ModalContainer>
+            <ModalHeader>
+              <BirthdayIcon>
+                <FaGifts />
+              </BirthdayIcon>
+              <h3>Send Birthday Wishes</h3>
+              <CloseButton onClick={() => setShowWishPopup(false)}>
+                <FaTimes color="red" />
+              </CloseButton>
+            </ModalHeader>
+
+            <ModalBody>
+              <RecipientInfo>
+                <RecipientAvatar src={selectedBirthday.image || "https://via.placeholder.com/80"} alt={selectedBirthday.emp_name} />
+                <RecipientDetails>
+                  <RecipientName>To: {selectedBirthday.emp_name}</RecipientName>
+                  <RecipientOccasion>Birthday • {selectedBirthday.event_date}</RecipientOccasion>
+                </RecipientDetails>
+              </RecipientInfo>
+
+              <WishForm>
+                <FormGroup>
+                  <Label>Your Message</Label>
+                  <MessageTextarea
+                    value={wishMessage}
+                    onChange={(e) => setWishMessage(e.target.value)}
+                    placeholder="Write your heartfelt birthday wish here..."
+                    rows="5"
+                  />
+                </FormGroup>
+
+                <FormGroup>
+                  <Label>Add a Photo/GIF (Optional)</Label>
+                  <UploadContainer>
+                    <UploadBox htmlFor="wish-upload">
+                      {selectedFile ? (
+                        <PreviewImage src={URL.createObjectURL(selectedFile)} alt="Preview" />
+                      ) : (
+                        <UploadContent>
+                          <FaCloudUploadAlt size={32} />
+                          <p>Click to upload or drag and drop</p>
+                          <small>JPG, PNG or GIF (max. 5MB)</small>
+                        </UploadContent>
+                      )}
+                      <HiddenInput
+                        id="wish-upload"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setSelectedFile(e.target.files[0])}
+                      />
+                    </UploadBox>
+                    {selectedFile && (
+                      <UploadActions>
+                        <Button variant="text" onClick={() => setSelectedFile(null)}>
+                          <FaTrash /> Remove
+                        </Button>
+                      </UploadActions>
+                    )}
+                  </UploadContainer>
+                </FormGroup>
+
+                <WishOptions>
+                  <WishOption onClick={() => setWishMessage(prev => prev + " 🎉")}>
+                    <FaBirthdayCake /> Add Celebration
+                  </WishOption>
+                  <WishOption onClick={() => setWishMessage(prev => prev + " 🎂")}>
+                    <FaSmile /> Add Cake
+                  </WishOption>
+                  <WishOption onClick={() => setWishMessage(prev => prev + " 🥳")}>
+                    <FaGrinStars /> Add Party
+                  </WishOption>
+                </WishOptions>
+              </WishForm>
+            </ModalBody>
+
+            <ModalFooter>
+              <ActionButton variant="outline" onClick={() => setShowWishPopup(false)}>
+                Cancel
+              </ActionButton>
+              <ActionButton
+                variant="primary"
+                onClick={handleSendWish}
+                disabled={!wishMessage.trim()}
+              >
+                <FaPaperPlane /> Send Wish
+              </ActionButton>
+            </ModalFooter>
+          </ModalContainer>
+        </ModalOverlay>
+      )}
     </Layout>
   )
 }

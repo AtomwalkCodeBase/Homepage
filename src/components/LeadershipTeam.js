@@ -547,7 +547,7 @@ const LeadershipAdvisors = () => {
       fullDesc: "Ms Jayanthi is a senior executive responsible for overseeing all aspects of an organization's human resource functions, including recruitment, employee relations, talent development, compensation and benefits, and workforce planning, all while aligning HR strategies with the company's overall business goals. Setting up performance evaluation processes Implementing, Key Performance Indicators (KPIs), Identifying training and development needs.",
       linkedin: null,
       isExecutive: false
-    },
+    }
   ];
 
   const executiveMembers = teamMembers.filter(member => member.isExecutive);

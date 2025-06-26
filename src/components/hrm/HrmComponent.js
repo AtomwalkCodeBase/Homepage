@@ -5,6 +5,7 @@ import KeyFeatureHrm from './KeyFeatureHrm';
 import FeatureBenifits from '../FeatureBenifits';
 import LetsConnect from '../LetsConnect';
 import NewFAQSection from './NewFAQSection';
+import HRMAccessMedium from './HRMAccessMedium';
 
 const Page = styled.div`
   background-color: #eae3ff;
@@ -28,6 +29,8 @@ const HrmComponent = () => {
       </Page>
       <FeatureBenifits data={`HR`} />
       <KeyFeatureHrm/>
+      <HRMAccessMedium userRole="Employee" />
+
       <NewFAQSection data={`HR`}/>
       </>
 

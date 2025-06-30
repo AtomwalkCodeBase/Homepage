@@ -15,6 +15,7 @@ import {
   FaCalendarAlt,
   FaMoneyBillWave,
   FaLaptop,
+  FaFileExport,
 } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
@@ -25,6 +26,7 @@ import Modal from "../components/modals/Modal"
 import { toast } from "react-toastify"
 import RequestModal from "../components/modals/RequestModal"
 import { useNavigate } from "react-router-dom"
+import { useExport } from "../context/ExportContext"
 
 const HelpDeskHeader = styled.div`
   display: flex;
@@ -189,6 +191,7 @@ const HelpDesk = () => {
     toast.success("Request submitted successfully!")
     setPageRef(pageref + 1)
   }
+  const { exportHelpdeskdat } = useExport()
   const emp_id = localStorage.getItem("empId")
   useEffect(() => {
     fetchRequest()
@@ -383,6 +386,14 @@ const HelpDesk = () => {
   const handleCategoryClick = (category) => {
       navigatin(category)
   }
+     const handleExport = (data) => {
+          const result = exportHelpdeskdat(data, "Help_data")
+          if (result.success) {
+          toast.success("Exported successfully")
+          } else {
+            toast.error("Export failed: " + result.message)
+          }
+        }
   return (
     <Layout title="Help Desk">
       <HelpDeskHeader>
@@ -496,6 +507,11 @@ const HelpDesk = () => {
                   )}
                 </tbody>
               </table>
+                {filteredTickets.length >0 &&<div style={{ marginTop: "1rem", textAlign: "right" }}>
+                        <Button variant="primary" size="sm" onClick={()=>handleExport(filteredTickets)}>
+                         <FaFileExport /> Export
+                        </Button>
+                        </div>}
             </TableContainer>
           </>
         )}

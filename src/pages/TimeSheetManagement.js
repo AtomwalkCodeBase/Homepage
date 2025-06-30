@@ -13,6 +13,8 @@ import {
   FaTimes,
   FaReceipt,
   FaUserCircle,
+  FaCheckCircle,
+  FaPaperPlane,
 } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
@@ -22,6 +24,8 @@ import TimesheetModal from "../components/modals/TimesheetModal"
 import { getTimesheetData, posttimelist } from "../services/productServices"
 import ConfirmationPopup from "../components/modals/ConfirmationPopup"
 import { toast } from "react-toastify"
+import { Save } from "lucide-react"
+import { useExport } from "../context/ExportContext"
 
 
 const TimeSheetHeader = styled.div`
@@ -158,6 +162,14 @@ const SummaryLabel = styled.div`
 const Tagline= styled.p`
  color: ${({ theme }) => theme.colors.textLight};
 `
+const TableActions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+`
 const TimeSheetManagement = () => {
   const [currentWeek, setCurrentWeek] = useState("");
    const [currentWeekStart, setCurrentWeekStart] = useState(new Date());
@@ -168,6 +180,7 @@ const TimeSheetManagement = () => {
   const [loading, setLoading] = useState(true);
   const [relode , setRelode] = useState(1);
   const [showPopup, setShowPopup] = useState(false);
+  const [handeleEditdata, sethandeleEditdata] = useState(null);
   const urlParams = new URLSearchParams(window.location.search)
   const empidParam = urlParams.get("empid")
   const empName= urlParams.get("name")
@@ -183,6 +196,8 @@ const TimeSheetManagement = () => {
       call_mode: "",
       emp_id: localStorage.getItem("empId") || "",
     })
+    console.log(handeleEditdata,"handeleEditdata")
+  const { exportTimesheetData } = useExport()
   const handlePreviousWeek = () => {
     const newDate = new Date(currentWeekStart);
     newDate.setDate(newDate.getDate() - 7);
@@ -241,6 +256,7 @@ const TimeSheetManagement = () => {
   };
 
   const closeModal = () => {
+    sethandeleEditdata(null);
     setIsOpen(false);
   };
 
@@ -427,6 +443,11 @@ setFormData({
      setApprove(false);
      setShowPopup(true);
   }
+  const handeleEdit = (entryId) => {
+      setIsOpen(true);
+      sethandeleEditdata(entryId);
+
+  }
    const handleClosePopup = () => {
       setShowPopup(false);
     };
@@ -437,7 +458,7 @@ setFormData({
         try {
           const response = await posttimelist({ ...formData, a_remarks: remark });
           if (response.status === 200) {
-            toast("Timesheet entry approved successfully!");
+            toast.success("Timesheet entry approved successfully!");
             setRelode(relode + 1);
           } else {
             toast.error("Failed to approve timesheet entry.");
@@ -449,7 +470,7 @@ setFormData({
         try {
           const response = await posttimelist({ ...formData, a_remarks: remark });
           if (response.status === 200) {
-            toast("Timesheet entry rejected successfully!");
+            toast.success("Timesheet entry rejected successfully!");
             setRelode(relode + 1);
           } else {
             toast.error("Failed to reject timesheet entry.");
@@ -460,6 +481,32 @@ setFormData({
         }
       }                             
     }
+
+    const handeleweeklyapprove = async () => {
+    const { startDate, endDate } = getCurrentWeekDates();
+    const formattedStartDate = formatDate(startDate);
+    const formattedEndDate = formatDate(endDate);
+    const response = await posttimelist({emp_id:empidParam?empidParam:localStorage.getItem("empId"),start_date:formattedStartDate,end_date:formattedEndDate,call_mode: empidParam ? "WEEKLY_APPROVE" : "WEEKLY_SUBMIT" ,a_emp_id:empidParam?empidParam:""});
+      if (response.status === 200) {
+            toast.success("Timesheet entry Submit successfully!");
+            setRelode(relode + 1);
+          } else {
+            toast.error("Failed to Submit timesheet entry.");
+          }
+    }
+      const handleExport = () => {
+        const result = exportTimesheetData(filteredEntries, "timesheet_data")
+        if (result.success) {
+        toast.success("Exported successfully")
+        } else {
+          toast.error("Export failed: " + result.message)
+        }
+      }
+
+      const navigate = (url) => {
+        window.location.href =""
+      }
+
   return (
     <Layout title="Timesheet Management">
       <TimeSheetHeader>
@@ -530,10 +577,6 @@ setFormData({
               <option key={index}>{activity}</option>
             ))}
           </FilterSelect>
-
-          <Button variant="outline" size="sm">
-            <FaFilter /> Filter
-          </Button>
         </FilterContainer>
 
         <TableContainer>
@@ -572,11 +615,11 @@ setFormData({
                           entry.status === 'S' ? "warning" : "error"
                         }
                       >
-                        {entry.status_display}
+                        {entry.status_display=="N"?"Not Submitted":entry.status_display}
                       </Badge>
                     </td>
                     <td>
-       {entry.status === 'S'&&<ActionButtons>
+                     {(entry.status === 'S'||entry.status === 'N')&&<ActionButtons>
                        {empidParam ?
                        <>
                        <Button onClick={()=>handeleapprove(entry)} variant="ghost" size="sm" title="Approve">
@@ -585,9 +628,13 @@ setFormData({
                         <Button onClick={()=>handelreject(entry)} variant="ghost" size="sm" title="Reject">
                           <FaTrash />
                         </Button></>: 
-                        <Button onClick={()=>handelreject(entry)} variant="ghost" size="sm" title="Cancel">
+                        <>
+                        {/* <Button onClick={()=>handelreject(entry)} variant="ghost" size="sm" title="Cancel"> 
                           <FaTrash />
-                        </Button>}
+                          </Button>*/}
+                           <Button onClick={()=>handeleEdit(entry)} variant="ghost" size="sm" title="Edit">
+                          <FaEdit />
+                            </Button></>}
                       </ActionButtons>}
                     </td>
                   </tr>
@@ -641,9 +688,25 @@ setFormData({
               </tr>
             </tbody>
           </table>
+          <TableActions style={{float:"right"}}>    
+        <Button variant="outline" size="sm" handeleweeklyapprove onClick={handeleweeklyapprove}>
+        {empidParam ? (
+          <>
+          <FaCheckCircle style={{ marginRight: 4 }} /> Approve Weekly Timesheet
+          </>
+        ) : (
+          <>
+          <FaPaperPlane style={{ marginRight: 4 }} /> Submit Weekly Timesheet
+          </>
+        )}
+          </Button>
+           <Button variant="primary" size="sm" onClick={handleExport}>
+            <FaFileExport /> Export
+          </Button>
+          </TableActions>
         </TableContainer>
       </Card>
-      <TimesheetModal isOpen={isOpen} onClose={closeModal} setRelode={setRelode}></TimesheetModal>
+      <TimesheetModal isOpen={isOpen} onClose={closeModal} initialData={handeleEditdata} setRelode={setRelode}></TimesheetModal>
       <ConfirmationPopup isOpen={showPopup}
         onClose={handleClosePopup}  onConfirm={handleConfirm} approve={approve} timesheet={true}></ConfirmationPopup>
     </Layout>

@@ -83,7 +83,8 @@ export const NavBar = () => {
     "appointments",
     "appointmentlist",
     "doctordashboard",
-    "OPDappointments"
+    "OPDappointments",
+    "projectmanagement"
   ];
   
   useEffect(() => {

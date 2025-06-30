@@ -25,6 +25,7 @@ import {
   FaUsers,
 } from "react-icons/fa"
 import { SiGooglecalendar } from "react-icons/si";
+import { PiListPlusFill } from "react-icons/pi";
 import { useAuth } from "../context/AuthContext"
 import { useTheme } from "../context/ThemeContext"
 import { RiAlarmSnoozeFill } from "react-icons/ri";
@@ -427,6 +428,9 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
         { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
       ...(profile?.is_shift_applicable
           ? [{ path: "/shift-detail", name: "My Shifts", icon: <FaExchangeAlt /> }]
+          : []),
+           ...(profile?.is_manager
+          ? [{ path: "/projectmanagement", name: "Project List", icon: <PiListPlusFill /> }]
           : []),
         { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
         { path: "/profile", name: "My Profile", icon: <FaUserCircle />, section: "Account" },

@@ -232,6 +232,7 @@ const ClaimModal = ({ isOpen, onClose, dropdownValue, projecttype,setIsLoadings,
   })
 console.log(projecttype," formData")
   const handleSubmit = async (e) => {
+    const { value } = e.nativeEvent.submitter;
     e.preventDefault()
     setIsLoading(true) // Show loader during submission
     const dateObj = new Date(formData.date)
@@ -244,6 +245,9 @@ console.log(projecttype," formData")
     formDatas.append("expense_amt", formData.amount)
     formDatas.append("expense_date", expense_date)
     formDatas.append("emp_id", formData.emp_id)
+    if (value === "save") {
+       formDatas.append("call_mode", "CLAIM_SAVE");
+    }
 
     if (formData.projecttype) {
       formDatas.append("project", formData.projecttype)
@@ -309,7 +313,7 @@ console.log(projecttype," formData")
       <ModalContainer onClick={(e) => e.stopPropagation()}>
         <form onSubmit={handleSubmit}>
           <ModalHeader>
-            <ModalTitle>Submit a New Claim</ModalTitle>
+            <ModalTitle> Add New Claim</ModalTitle>
             <CloseButton onClick={onClose}>
               <FaTimes />
             </CloseButton>
@@ -317,9 +321,9 @@ console.log(projecttype," formData")
 
           <ModalBody>
             <FormGroup>
-              <FormLabel htmlFor="type">Claim Type</FormLabel>
+              <FormLabel htmlFor="type">Expense Item</FormLabel>
               <FormSelect id="type" name="type" value={formData.type} onChange={handleChange} required>
-                <option value="">Select Claim Type</option>
+                <option value="">Select Expense Item</option>
                 {dropdownValue.map((value, index) => (
                   <option key={index} value={value.id}>
                     {value.name}
@@ -427,8 +431,11 @@ console.log(projecttype," formData")
             <Button variant="outline" type="button" onClick={onClose}>
               Cancel
             </Button>
-            <Button  variant="primary" type="submit" disabled={isLoading}>
+            <Button  variant="primary" type="submit" disabled={isLoading} value="submit">
               {isLoading ? "Submitting..." : "Submit Claim"}
+            </Button>
+            <Button  variant="primary" type="submit" disabled={isLoading} value="save">
+              {isLoading ? "Saveing..." : "Save Claim"}
             </Button>
           </ModalFooter>
         </form>

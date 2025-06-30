@@ -7,6 +7,8 @@ import Button from "../components/Button"
 import Badge from "../components/Badge"
 import { getemployeeList } from "../services/productServices"
 import { useNavigate } from "react-router-dom"
+import { useExport } from "../context/ExportContext"
+import { toast } from "react-toastify"
 
 const SearchContainer = styled.div`
   display: flex;
@@ -146,6 +148,7 @@ const EmployeeManagement = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const Navigate= useNavigate()
+  const { exportEmployeeData } = useExport()
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -189,10 +192,23 @@ const EmployeeManagement = () => {
   }
 
   const handleViewTimesheet = (employeeId,names) => {
+    const empid=localStorage.getItem("empId")
+    if(employeeId === empid){
+    Navigate("/timesheet") 
+    }
+    else{
     // Implement view timesheet functionality
     Navigate(`/timesheet?empid=${employeeId}&&name=${names}`) 
   }
-
+}
+  const handleExport = () => {
+    const result = exportEmployeeData(filteredEmployees, "employee_list")
+    if (result.success) {
+    toast.success("Exported successfully")
+    } else {
+      toast.error("Export failed: " + result.message)
+    }
+  }
   if (loading) return <Layout title="Employee Management">Loading...</Layout>
   if (error) return <Layout title="Employee Management">Error: {error}</Layout>
 
@@ -204,8 +220,8 @@ const EmployeeManagement = () => {
           <input type="text" placeholder="Search employees..." value={searchTerm} onChange={handleSearch} />
         </SearchInput>
 
-        <Button variant="primary">
-          <FaPlus /> Add Employee
+        <Button variant="primary" onClick={handleExport}>
+          <FaFileExport /> Export
         </Button>
       </SearchContainer>
 
@@ -217,7 +233,7 @@ const EmployeeManagement = () => {
             </Button>
           </div>
 
-          <ActionButtons>
+          <ActionButtons onClick={handleExport}>
             <Button variant="outline" size="sm">
               <FaFileExport /> Export
             </Button>

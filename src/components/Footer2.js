@@ -239,7 +239,8 @@ export default function Footer2() {
    "appointments",
    "appointmentlist",
    "doctordashboard",
-   "OPDappointments"
+   "OPDappointments",
+    "projectmanagement"
   ];
   
   useEffect(() => {

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { FaTicketAlt, FaSearch, FaPlus, FaFilter, FaEye, FaLaptop, FaFileAlt } from "react-icons/fa"
+import { FaTicketAlt, FaSearch, FaPlus, FaFilter, FaEye, FaLaptop, FaFileAlt, FaFileExport } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
@@ -11,6 +11,7 @@ import { getEmployeeRequest, getRequestCategory } from "../services/productServi
 import { toast } from "react-toastify"
 import RequestModal from "../components/modals/RequestModal"
 import Modal from "../components/modals/Modal"
+import { useExport } from "../context/ExportContext"
 
 const RequestDeskHeader = styled.div`
   display: flex;
@@ -148,6 +149,7 @@ const RequestDesk = () => {
   const [selectedTicket, setSelectedTicket] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [pageref, setPageRef] = useState(1)
+  const { exportHelpdeskdat } = useExport()
   // Add these state variables after the existing state declarations
   const [typeFilter, setTypeFilter] = useState("All Types")
   const [statusFilter, setStatusFilter] = useState("All Status")
@@ -315,7 +317,14 @@ const RequestDesk = () => {
     // Filtering is already handled by the useEffect
     toast.info("Filters applied")
   }
-
+     const handleExport = (data) => {
+          const result = exportHelpdeskdat(data, "Help_data")
+          if (result.success) {
+          toast.success("Exported successfully")
+          } else {
+            toast.error("Export failed: " + result.message)
+          }
+        }
   return (
     <Layout title="Resource Request Desk">
       <RequestDeskHeader>
@@ -423,6 +432,11 @@ const RequestDesk = () => {
                   )}
                 </tbody>
               </table>
+               {filteredRequestsData.length >0 &&<div style={{ marginTop: "1rem", textAlign: "right" }}>
+                                      <Button variant="primary" size="sm" onClick={()=>handleExport(filteredRequestsData)}>
+                                       <FaFileExport /> Export
+                                      </Button>
+                                      </div>}
             </TableContainer>
           </>
         )}

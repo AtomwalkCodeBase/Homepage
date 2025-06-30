@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import styled from "styled-components"
-import { FaChevronLeft, FaChevronRight, FaFilter, FaSignInAlt, FaSignOutAlt, FaPlus } from "react-icons/fa"
+import { FaChevronLeft, FaChevronRight, FaFilter, FaSignInAlt, FaSignOutAlt, FaPlus, FaFileExport } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
@@ -13,6 +13,7 @@ import Modal from "../components/modals/Modal"
 import AttendanceModal from "../components/modals/AttendanceModal"
 import { toast } from "react-toastify"
 import moment from "moment/moment"
+import { useExport } from "../context/ExportContext"
 // import Modal from "../components/Modal"
 // import Input from "../components/Input"
 
@@ -339,6 +340,7 @@ const AttendanceTracking = () => {
   const [holiday, setHoliday] = useState({})
   const [relode, setReLoad] = useState(1)
   const { profile } = useAuth()
+   const { exportAppointmentData } = useExport()
   // Mock employee data
   console.log("currentMonth", attendance)
 
@@ -628,7 +630,14 @@ const AttendanceTracking = () => {
     // This is just for the button click animation
     toast.info("Filters applied")
   }
-
+  const handleExport = (data) => {
+        const result = exportAppointmentData(data, "Attendance_data")
+        if (result.success) {
+        toast.success("Exported successfully")
+        } else {
+          toast.error("Export failed: " + result.message)
+        }
+      }
   return (
     <Layout title="Attendance Tracking">
       <AttendanceHeader>
@@ -845,6 +854,11 @@ const AttendanceTracking = () => {
               )}
             </tbody>
           </table>
+          <div style={{ marginTop: "1rem", textAlign: "right" }}>
+                    <Button variant="primary" size="sm" onClick={()=>handleExport(filteredAttendanceData)}>
+                     <FaFileExport /> Export
+                    </Button>
+                    </div>
         </TableContainer>
       </Card>
       {isRemarkModalOpen && (

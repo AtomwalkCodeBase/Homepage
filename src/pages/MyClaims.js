@@ -15,6 +15,9 @@ import {
   FaTimes,
   FaCheck,
   FaBan,
+  FaFileExport,
+  FaPaperPlane,
+  FaTrash,
 } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
@@ -25,6 +28,7 @@ import ClaimModal from "../components/modals/ClaimModal"
 import ClaimActionModal from "../components/modals/ClaimActionModal"
 import { toast } from "react-toastify"
 import { useAuth } from "../context/AuthContext"
+import { useExport } from "../context/ExportContext"
 
 const ClaimsHeader = styled.div`
   display: flex;
@@ -120,7 +124,14 @@ const SummaryIcon = styled.div`
     color: ${props.theme.colors.warning};
   `}
 `
-
+const TableActions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+`
 const SummaryValue = styled.div`
   font-size: 1.8rem;
   font-weight: 600;
@@ -274,6 +285,7 @@ const MyClaims = () => {
   const [timeFilter, setTimeFilter] = useState("All Time")
   const [filteredClaims, setFilteredClaims] = useState([])
   const { profile } = useAuth()
+  const { exportClaimsData } = useExport()
   // Claim Action Modal States
   const [isActionModalOpen, setIsActionModalOpen] = useState(false)
   const [actionType, setActionType] = useState("")
@@ -320,7 +332,9 @@ const MyClaims = () => {
   const fetchClaimDetailsofemp = () => {
     getEmpClaim("APPROVE", empId)
       .then((res) => {
-        setEmpClaims(res.data)
+        setEmpClaims(res.data.filter((claim) => {
+      return !claim.is_approved && claim.expense_status === "S"
+      }))
       })
       .catch((err) => {
         console.log("Error fetching claim data:", err)
@@ -341,6 +355,7 @@ const MyClaims = () => {
         if (activeTab === "pending") return !claim.is_approved && claim.expense_status === "S"
         if (activeTab === "approved") return claim.expense_status === "A"
         if (activeTab === "rejected") return claim.expense_status === "R"
+        if (activeTab === "Unsubmitted") return claim.expense_status === "N"
         return true
       })
 
@@ -458,6 +473,9 @@ const MyClaims = () => {
     if (claim.expense_status === "R") {
       return { text: "Rejected", variant: "error" }
     }
+    if (claim.expense_status === "N") {
+      return { text: "unsubmitted", variant: "info" }
+    }
     return { text: "Pending", variant: "warning" }
   }
 
@@ -477,7 +495,15 @@ const MyClaims = () => {
     setActionType("APPROVE")
     setIsActionModalOpen(true)
   }
-
+const handeleDetele = (claim) => {
+  const confirmDelete = window.confirm("Are you sure you want to delete this claim?")
+  if (confirmDelete) {
+    // Implement delete logic here
+    toast.success("Claim deleted successfully")
+    // Refresh the claims data after deletion
+    fetchClaimDetailsofemp()
+}
+}
   const handleReject = (claim) => {
     setSelectedClaimForAction(claim)
     setActionType("REJECT")
@@ -496,7 +522,14 @@ const MyClaims = () => {
     setIsLoadings((prev) => prev + 1)
     handleCloseActionModal()
   }
-
+      const handleExport = (data) => {
+        const result = exportClaimsData(data, "Claim_data")
+        if (result.success) {
+        toast.success("Exported successfully")
+        } else {
+          toast.error("Export failed: " + result.message)
+        }
+      }
   return (
     <Layout title="My Claims">
       <ClaimsHeader>
@@ -505,7 +538,7 @@ const MyClaims = () => {
         </div>
 
         <Button onClick={handleConfirm} variant="primary">
-          <FaPlus /> Submit New Claim
+          <FaPlus /> Add New Claim
         </Button>
       </ClaimsHeader>
 
@@ -532,6 +565,9 @@ const MyClaims = () => {
           </Tab>
           <Tab active={activeTab === "rejected"} onClick={() => setActiveTab("rejected")}>
             Rejected
+          </Tab>
+           <Tab active={activeTab === "Unsubmitted"} onClick={() => setActiveTab("Unsubmitted")}>
+            Unsubmitted
           </Tab>
           {profile.is_manager && <Tab active={activeTab === "empdata"} onClick={() => setActiveTab("empdata")}>
             Employee Claims
@@ -674,6 +710,9 @@ const MyClaims = () => {
                             <Button onClick={() => handleViewDetails(claim)} variant="ghost" size="sm" title="View">
                               <FaEye />
                             </Button>
+                             {activeTab === "Unsubmitted" &&<Button onClick={() => handeleDetele(claim)} variant="ghost" size="sm" title="Delete">
+                              <FaTrash />
+                            </Button>}
                           </ActionButtons>
                         </td>
                       </tr>
@@ -689,6 +728,14 @@ const MyClaims = () => {
               </tbody>
             </table>
           )}
+            <TableActions style={{float:"right"}}> 
+              {activeTab === "Unsubmitted"&&<Button variant="outline" size="sm" >
+                        <FaPaperPlane style={{ marginRight: 4 }} /> Submit All Claims
+                        </Button>}
+          <Button variant="primary" size="sm" onClick={()=>handleExport(activeTab === "empdata" ? empClaims : filteredClaims)}>
+           <FaFileExport /> Export
+          </Button>
+          </TableActions>
         </TableContainer>
       </Card>
 

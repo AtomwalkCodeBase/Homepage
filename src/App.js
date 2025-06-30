@@ -15,6 +15,8 @@ import "./App.css";
 // Auth & Protected Routes
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { ThemeProvider } from "./context/ThemeContext"
+import { ExportProvider } from "./context/ExportContext";
 
 // Shared Components
 import { NavBar } from "./components/NavBar";
@@ -76,7 +78,6 @@ import HmsHeroPage from "./components/hms/HmsHeroPage";
 import PpeHeroPage from "./components/ppe/PpeHeroPage";
 import Smsheropage from "./components/sms/Smsheropage";
 import Profile from "./pages/Profile";
-import { ThemeProvider } from "./context/ThemeContext"
 import Manual from "./components/Manual";
 import ManualModuleDetails from "./components/ManualModuleDetails";
 import ManualSteps from "./components/ManualSteps";
@@ -93,6 +94,8 @@ import MyBookedAppointments from "./pages/MyAppointmentList";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import Appointments from "./pages/OPDappointments";
 import HRMRoleBasedAccessibility from "./components/hrm/HRMRoleBasedAccessibility";
+import ProjectManagement from "./pages/ProjectManagement";
+
 function App() {
   const url = "https://www.atomwalk.com/rest-auth/login/";
   const data = {
@@ -124,6 +127,7 @@ function App() {
   return (
       <AuthProvider>
         <ThemeProvider>
+           <ExportProvider>
           <Router>
             <NavBar />
             <Routes>
@@ -239,6 +243,7 @@ function App() {
                 <Route path="/appointmentlist" element={<MyBookedAppointments />} />
                 <Route path="/doctordashboard" element={<DoctorDashboard />} />
                 <Route path="/OPDappointments" element={<Appointments />} />
+                <Route path="/projectmanagement" element={<ProjectManagement />} />
               </Route>
     
               {/* Catch All */}
@@ -247,6 +252,7 @@ function App() {
             <Footer2 />
           </Router>
           <ToastContainer position="top-right" autoClose={3000} />
+          </ExportProvider>
         </ThemeProvider>
       </AuthProvider>
     );

@@ -194,7 +194,7 @@ const RequiredIndicator = styled.span`
   margin-left: 0.25rem;
 `
 
-const TimesheetModal = ({ isOpen, onClose, initialData = null ,setRelode}) => {
+const TimesheetModal = ({ isOpen, onClose, initialData ,setRelode}) => {
   const [formData, setFormData] = useState({
     project_code: "",
     activity_id: "",
@@ -208,7 +208,7 @@ const TimesheetModal = ({ isOpen, onClose, initialData = null ,setRelode}) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [activities, setActivities] = useState([])
   const [projects, setProjects] = useState([])
-  console.log(formData,"formData")
+  console.log(initialData,"formDatads")
   useEffect(() => {
     fetchactivityCategories();
     fetchprojectCategories()
@@ -255,12 +255,24 @@ const TimesheetModal = ({ isOpen, onClose, initialData = null ,setRelode}) => {
   // Initialize form with existing data if editing
   useEffect(() => {
     if (initialData) {
+      // Convert a_date from DD-MMM-YYYY to YYYY-MM-DD if needed
+      let formattedDate = initialData.a_date || "";
+      if (/^\d{2}-[A-Za-z]{3}-\d{4}$/.test(formattedDate)) {
+        const [day, mon, year] = formattedDate.split("-");
+        const months = {
+          Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06",
+          Jul: "07", Aug: "08", Sep: "09", Oct: "10", Nov: "11", Dec: "12"
+        };
+        formattedDate = `${year}-${months[mon]}-${day}`;
+      }
       setFormData({
-        project: initialData.project || "",
-        activity: initialData.activity || "",
+        project: initialData.project_code || "",
+        activity: initialData.activity_id || "",
         remarks: initialData.remarks || "",
-        date: initialData.date || "",
-        workingHours: initialData.workingHours || "",
+        a_date: formattedDate,
+        effort: initialData.effort || "",
+        ts_id: initialData.id || "",
+        emp_id: localStorage.getItem("empId")
       })
     }
   }, [initialData])
@@ -278,6 +290,7 @@ const TimesheetModal = ({ isOpen, onClose, initialData = null ,setRelode}) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
+    const { value } = e.nativeEvent.submitter;
     try {
       // Convert a_date from YYYY-MM-DD to DD-MM-YYYY if needed
       let formattedDate = formData.a_date;
@@ -288,6 +301,7 @@ const TimesheetModal = ({ isOpen, onClose, initialData = null ,setRelode}) => {
       const submissionData = {
         ...formData,
         a_date: formattedDate,
+        call_mode:value || "SUBMIT",
         effort: Number.parseFloat(formData.effort),
       }
       await posttimelist(submissionData)
@@ -349,8 +363,8 @@ const TimesheetModal = ({ isOpen, onClose, initialData = null ,setRelode}) => {
               <Select name="project_code" value={formData.project} onChange={handleInputChange} required>
                 <option value="">Select a project</option>
                 {projects.map((projectArray, index) => (
-                  <option key={index} value={projectArray[0]}>
-                    {projectArray[0]}
+                  <option key={index} value={projectArray.title}>
+                    {projectArray.title} ({projectArray.project_code})
                   </option>
                 ))}
               </Select>
@@ -422,9 +436,14 @@ const TimesheetModal = ({ isOpen, onClose, initialData = null ,setRelode}) => {
             <Button type="button" variant="outline" onClick={handleClose} disabled={isSubmitting}>
               Cancel
             </Button>
-            <Button type="submit" variant="primary" disabled={isSubmitting}>
-              {isSubmitting ? "Submitting..." : initialData ? "Update Entry" : "Add Entry"}
-            </Button>
+             {initialData?<Button type="submit" variant="primary" disabled={isSubmitting} value="UPDATE">
+              {isSubmitting ? "Submitting..." : initialData ? "Update" : "Add Entry"}
+            </Button>:<> <Button type="submit" variant="primary" disabled={isSubmitting} value="ADD_AND_SAVE">
+              {isSubmitting ? "Saving..." : initialData ? "Update Entry" : "Save"}
+              </Button>
+              <Button type="submit" variant="primary" disabled={isSubmitting}  >
+              {isSubmitting ? "Submit" : initialData ? "Update Submit" : "Submit"}
+            </Button></>}
           </ModalFooter>
         </form>
       </ModalContainer>

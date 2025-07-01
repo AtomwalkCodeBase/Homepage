@@ -44,8 +44,8 @@ const SearchBar = styled.div`
   display: flex;
   align-items: center;
   background: ${({ theme }) => theme.colors.backgroundAlt};
-  border-radius: 20px;
-  padding: 8px 15px;
+  border-radius: 15px;
+  padding: 4px 15px;
   width: 300px;
   position: relative;
   @media (max-width: 768px) {
@@ -53,8 +53,8 @@ const SearchBar = styled.div`
     transition: all 0.3s ease;
     
     ${(props) =>
-      props.expanded &&
-      `
+    props.expanded &&
+    `
       position: absolute;
       top: 5px;
       left: 60px;
@@ -233,19 +233,19 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
   const handleSearchChange = (e) => {
     const query = e.target.value.toLowerCase().trim()
     setSearchQuery(query)
-  
+
     if (query === "") {
       setShowResults(false)
       return
     }
-  
+
     // Enhanced search with fuzzy matching and keyword mapping
     const results = menuItems.filter((item) => {
       const itemName = item.name.toLowerCase()
-      
+
       // Exact match
       if (itemName.includes(query)) return true
-      
+
       // Keyword mapping for common terms
       const keywordMap = {
         'time': ['timesheet', 'attendance'],
@@ -263,22 +263,22 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
         'clock in': ['attendance'],
         'clock out': ['attendance']
       }
-      
+
       // Check if query matches any keywords
       for (const [keyword, matches] of Object.entries(keywordMap)) {
         if (query.includes(keyword)) {
           return matches.some(match => itemName.includes(match))
         }
       }
-      
+
       // Fuzzy matching - check if any word in the query partially matches
       const queryWords = query.split(' ')
-      return queryWords.some(word => 
+      return queryWords.some(word =>
         word.length > 2 && // Only check words longer than 2 characters
         itemName.includes(word)
       )
     })
-  
+
     setSearchResults(results)
     setShowResults(results.length > 0)
   }
@@ -316,29 +316,29 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
         <MobileMenuButton onClick={onMobileMenuClick}>
           <FaBars />
         </MobileMenuButton>
-         <img src={companyInfo.image} alt="Company Logo" style={{ width: "80px", borderRadius: "10px", marginRight: "10px" }} />
-          <SearchBar expanded={searchExpanded}>
+        <img src={companyInfo.image} alt="Company Logo" style={{ width: "80px", borderRadius: "10px", marginRight: "10px", border: "0.2px solid #000" }} />
+        <SearchBar expanded={searchExpanded}>
             <FaSearch onClick={handleSearchClick} style={{ cursor: "pointer", color:`${theme.colors.textLight}` }} />
-            <SearchInput
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={handleSearchChange}
-              onClick={(e) => e.stopPropagation()}
-            />
-          </SearchBar>
+          <SearchInput
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            onClick={(e) => e.stopPropagation()}
+          />
+        </SearchBar>
 
-          <SearchResults show={showResults}>
-            {searchResults.length > 0 ? (
-              searchResults.map((item, index) => (
-                <SearchResultItem key={index} onClick={() => handleResultClick(item.path)}>
-                  {item.icon}
-                  {item.name}
-                </SearchResultItem>
-              ))
-            ) : (
-              <SearchResultItem>No results found</SearchResultItem>
-            )}
-          </SearchResults>
+        <SearchResults show={showResults}>
+          {searchResults.length > 0 ? (
+            searchResults.map((item, index) => (
+              <SearchResultItem key={index} onClick={() => handleResultClick(item.path)}>
+                {item.icon}
+                {item.name}
+              </SearchResultItem>
+            ))
+          ) : (
+            <SearchResultItem>No results found</SearchResultItem>
+          )}
+        </SearchResults>
       </div>
 
       <HeaderActions>
@@ -364,8 +364,19 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
           <NotificationBadge>5</NotificationBadge>
         </ActionButton> */}
 
-        <UserProfile onClick={handleprofile}>
+        {/* <UserProfile onClick={handleprofile}>
           <UserAvatar>{profile?.name?.charAt(0) || <FaUser />}</UserAvatar>
+          <UserName>{profile?.name || "User"}</UserName>
+        </UserProfile> */}
+        
+        <UserProfile onClick={handleprofile}>
+          {profile?.image ? (
+            <img src={profile.image} alt="Profile" style={{width: "50px",height:"50px", marginRight: "1rem",borderRadius:"50%", border:"2px solid rgb(245, 247, 214)"}} />
+          ) : (
+            <UserAvatar>
+              {profile?.name?.charAt(0) || <FaUser />}
+            </UserAvatar>
+          )}
           <UserName>{profile?.name || "User"}</UserName>
         </UserProfile>
 

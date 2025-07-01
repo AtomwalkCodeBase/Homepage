@@ -23,6 +23,7 @@ import {
   FaUsers,
   FaChevronDown,
   FaChevronRight,
+  FaUserFriends,
 } from "react-icons/fa"
 import { SiGooglecalendar } from "react-icons/si";
 import { PiListPlusFill } from "react-icons/pi";
@@ -533,7 +534,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
           icon: <FaMoneyBillWave />,
           items: [
             ...(profile?.is_manager
-              ? [{ path: "/claims", name: "Claims Management", icon: <FaMoneyBillWave /> }]
+              ? [{ path: "/claims", name: "My Claims", icon: <FaMoneyBillWave /> }]
               : [{ path: "/claims", name: "My Claims", icon: <FaMoneyBillWave /> }]),
             { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> }
           ]
@@ -590,10 +591,16 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
   };
 
   const toggleGroup = (groupName) => {
-    setExpandedGroups(prev => ({
+    console.log(groupName,"nameee")
+    if(!isOpen){
+     toggleSidebar()
+    }
+    setTimeout(() => {
+       setExpandedGroups(prev => ({
       ...prev,
       [groupName]: !prev[groupName]
-    }));
+    }));   
+    }, 100);
   };
  const menuItems = customerdata
     ? [
@@ -633,102 +640,80 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
       ]
 
   return (
-  sidebarStyle == "standard" ? 
+   
     <SidebarContainer isOpen={isOpen} theme={theme} uiPreferences={uiPreferences}>
       <SidebarHeader isOpen={isOpen} uiPreferences={uiPreferences}>
       {iscoustomerLogin? <Logo isOpen={isOpen} uiPreferences={uiPreferences}>
         <img src={profile.image} alt="Company Logo" style={{ width: "70px",height:"70px", marginRight: "1rem",borderRadius:"50%" }} />
         </Logo>
         : <Logo isOpen={isOpen} uiPreferences={uiPreferences}>
-         <img src={companyInfo.image} alt="Company Logo" style={{ width: "70px", marginRight: "1rem",borderRadius:"10px" }} /> HRMS
+         <img src={"https://atomwalk.com/static/office/image/Atom_walk_logo.jpg"} alt="Company Logo" style={{ width: "80px", marginRight: "1rem",borderRadius:"10px" }} /> HRMS
         </Logo>}
         <ToggleButton onClick={toggleSidebar} uiPreferences={uiPreferences}>
           {isOpen ? <FaTimes /> : <FaBars />}
         </ToggleButton>
       </SidebarHeader>
 
-      <SidebarMenu uiPreferences={uiPreferences}>
-        {menuItems.map((item) => (
-          <SidebarMenuItem key={item.path} uiPreferences={uiPreferences}>
-            <SidebarLink
-              to={item.path}
-              active={location.pathname === item.path ? 1 : 0}
-              isOpen={isOpen}
-              theme={theme}
-              uiPreferences={uiPreferences}
-            >
-              {item.icon}
-              <span>{item.name}</span>
-            </SidebarLink>
-          </SidebarMenuItem>
-        ))}
-      </SidebarMenu>
-      <SidebarFooter isOpen={isOpen} theme={theme} uiPreferences={uiPreferences}>
-        <UserInfo isOpen={isOpen}>
-          <UserAvatar theme={theme} uiPreferences={uiPreferences}>
-            {profile?.name?.charAt(0) || "U"}
-          </UserAvatar>
-          <UserName uiPreferences={uiPreferences}>{profile?.name || "User"}</UserName>
-        </UserInfo>
-        <LogoutButton onClick={logout} title="Logout" theme={theme} uiPreferences={uiPreferences}>
-          <FaSignOutAlt />
-        </LogoutButton>
-      </SidebarFooter>
-    </SidebarContainer>
-    :
-    <SidebarContainer isOpen={isOpen} theme={theme} uiPreferences={uiPreferences}>
-      <SidebarHeader isOpen={isOpen} uiPreferences={uiPreferences}>
-        {iscoustomerLogin ? (
-          <Logo isOpen={isOpen} uiPreferences={uiPreferences}>
-            <img src={profile.image} alt="Company Logo" style={{ width: "70px", height: "70px", marginRight: "1rem", borderRadius: "50%" }} />
-          </Logo>
-        ) : (
-          <Logo isOpen={isOpen} uiPreferences={uiPreferences}>
-            <img src={"https://atomwalk.com/static/office/image/Atom_walk_logo.jpg"} alt="Company Logo" style={{ width: "80px", marginRight: "1rem", borderRadius: "10px" }} /> HRMS
-          </Logo>
-        )}
-        <ToggleButton onClick={toggleSidebar} uiPreferences={uiPreferences}>
-          {isOpen ? <FaTimes /> : <FaBars />}
-        </ToggleButton>
-      </SidebarHeader>
-
-      <SidebarMenu uiPreferences={uiPreferences}>
-        {menuGroups.map((group) => (
-          <MenuGroup key={group.name}>
-            <MenuGroupHeader 
-              onClick={() => toggleGroup(group.name)}
-              isOpen={expandedGroups[group.name]}
-              uiPreferences={uiPreferences}
-            >
-              {group.icon}
+    {sidebarStyle === "standard" ? (
+        <SidebarMenu uiPreferences={uiPreferences}>
+          {menuItems.map((item) => (
+            <SidebarMenuItem key={item.path} uiPreferences={uiPreferences}>
+              <SidebarLink
+                to={item.path}
+                active={location.pathname === item.path ? 1 : 0}
+                isOpen={isOpen}
+                theme={theme}
+                uiPreferences={uiPreferences}
+              >
+                {item.icon}
+                <span>{item.name}</span>
+              </SidebarLink>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      ) : (
+        <SidebarMenu uiPreferences={uiPreferences}>
+          {menuGroups.map((group) => (
+            <MenuGroup key={group.name}>
+              <MenuGroupHeader 
+                onClick={() => toggleGroup(group.name)}
+                isOpen={isOpen}
+                expanded={expandedGroups[group.name]}
+                uiPreferences={uiPreferences}
+              >
+                {group.icon}
               <span>{isOpen ? group.name : ""}</span>
               {/* {isOpen && (
-                <span className="arrow">
-                  {expandedGroups[group.name] ? <FaChevronDown /> : <FaChevronRight />}
-                </span>
+                  <span className="arrow">
+                    {expandedGroups[group.name] ? <FaChevronDown /> : <FaChevronRight />}
+                  </span>
               )} */}
-            </MenuGroupHeader>
-            
-            <SubMenu 
+              </MenuGroupHeader>
+              
+              <SubMenu 
               isOpen={expandedGroups[group.name] && isOpen}
-              itemCount={group.items.length}
-            >
-              {group.items.map((item) => (
-                <SubMenuItem key={item.path}>
-                  <SubMenuLink
-                    to={item.path}
-                    active={location.pathname.startsWith(item.path) ? 1 : 0}
-                    theme={theme}
-                  >
-                    {item.icon}
-                    <span>{item.name}</span>
-                  </SubMenuLink>
-                </SubMenuItem>
-              ))}
-            </SubMenu>
-          </MenuGroup>
-        ))}
-      </SidebarMenu>
+                itemCount={group.items.length}
+              >
+                {group.items.map((item) => (
+                  <SubMenuItem key={item.path}>
+                    <SubMenuLink
+                      to={item.path}
+                      active={location.pathname.startsWith(item.path) ? 1 : 0}
+                      isOpen={isOpen}
+                      theme={theme}
+                      uiPreferences={uiPreferences}
+                    >
+                      {item.icon}
+                      <span>{item.name}</span>
+                    </SubMenuLink>
+                  </SubMenuItem>
+                ))}
+              </SubMenu>
+            </MenuGroup>
+          ))}
+        </SidebarMenu>
+      )}
+
       <SidebarFooter isOpen={isOpen} theme={theme} uiPreferences={uiPreferences}>
         <UserInfo isOpen={isOpen}>
           <UserAvatar theme={theme} uiPreferences={uiPreferences}>

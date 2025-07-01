@@ -1,12 +1,12 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import styled from "styled-components"
 import { Link } from "react-router-dom"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import StatsCard from "../components/StatsCard"
-import { FaUsers, FaUserMd, FaBed, FaClock, FaArrowRight, FaChevronLeft, FaChevronRight, FaProcedures, FaUserFriends } from "react-icons/fa"
+import { FaUsers, FaUserMd, FaBed, FaClock, FaArrowRight, FaCalendarAlt, FaUserFriends, FaProcedures } from "react-icons/fa"
 import { Bar } from "react-chartjs-2"
 import {
   Chart as ChartJS,
@@ -199,7 +199,7 @@ const PatientListsGrid = styled.div`
 const PatientListCard = styled(Card)`
   padding: 20px;
   flex: 1;
-  height: 480px; /* Increased height to display 6 appointments */
+  height: 480px;
   display: flex;
   flex-direction: column;
 `
@@ -223,7 +223,7 @@ const PatientList = styled.div`
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
-  max-height: 400px; 
+  max-height: 400px;
   padding-right: 8px;
   &::-webkit-scrollbar {
     width: 6px;
@@ -270,86 +270,58 @@ const PatientTime = styled.div`
   color: ${({ theme }) => theme.colors.textLight};
 `
 
-const CalendarCard = styled(Card)`
+const DatePickerCard = styled(Card)`
   padding: 20px;
   margin-bottom: 20px;
-`
-
-const CalendarHeader = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  position: relative;
 `
 
-const CalendarTitle = styled.h3`
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.text};
-  margin: 0;
-`
-
-const CalendarNav = styled.div`
+const DateDisplay = styled.div`
+  flex: 1;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 10px;
 `
 
-const CalendarNavButton = styled.button`
-  background: transparent;
+const DateText = styled.div`
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text};
+`
+
+const DateIcon = styled.div`
+  font-size: 1.5rem;
   color: ${({ theme }) => theme.colors.primary};
-  border: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  position: absolute;
+  right: 20px;
   &:hover {
-    background: rgba(108, 99, 255, 0.1);
+    color: ${({ theme }) => theme.colors.primaryDark};
   }
 `
 
-const CalendarGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
-  margin-bottom: 20px;
-`
-
-const CalendarDay = styled.div`
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const DateInput = styled.input`
+  position: absolute;
+  top: 100%;
+  right: 20px;
+  background: #fff;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   font-size: 0.9rem;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  ${({ theme }) => `color: ${theme.colors.text};`}
-  ${({ isHeader, theme }) =>
-    isHeader &&
-    `
-    font-weight: 600;
-    color: ${theme.colors.text};
-    cursor: default;
-    `}
-  ${({ isToday, theme }) =>
-    isToday &&
-    `
-    background: ${theme.colors.primary};
-    color: white;
-    font-weight: 600;
-    `}
-  ${({ isSelected, theme }) =>
-    isSelected &&
-    `
-    background: ${theme.colors.secondary};
-    color: white;
-    `}
-  &:hover {
-    ${({ isHeader }) => !isHeader && `background: rgba(108, 99, 255, 0.1);`}
+  font-family: inherit;
+  padding: 8px;
+  z-index: 10;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  &:focus, &:active {
+    opacity: 1;
+    width: 200px;
+    height: auto;
   }
 `
 
@@ -421,7 +393,6 @@ const AddButton = styled.button`
 const DoctorDashboard = () => {
   const today = new Date()
   const [selectedDate, setSelectedDate] = useState(today)
-  const [currentMonth, setCurrentMonth] = useState(today)
   const [activities, setActivities] = useState([])
   const [newActivityTime, setNewActivityTime] = useState("")
   const [newActivityTitle, setNewActivityTitle] = useState("")
@@ -434,12 +405,13 @@ const DoctorDashboard = () => {
     inPatients: 21,
     surgeries: 8,
   })
+  const dateInputRef = useRef(null)
 
   const chartData = {
     labels: ["In-Patients", "Out-Patients", "Surgeries"],
     datasets: [
       {
-        label: "Patients Need Immediate Action",
+        label: "Patients Need Action",
         data: [19, statsData.outPatients, 9],
         backgroundColor: ["#FFD600", "#1890FF", "#FF3D00"],
       },
@@ -478,7 +450,6 @@ const DoctorDashboard = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        // Get employee profile data first
         const profileResponse = await getEmployeeInfo();
         const employeeName = profileResponse?.data?.[0]?.name;
         
@@ -494,7 +465,6 @@ const DoctorDashboard = () => {
           bookings = response;
         }
 
-        // Get today's date in DD-MM-YYYY format
         const today = new Date();
         const day = String(today.getDate()).padStart(2, '0');
         const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -515,7 +485,6 @@ const DoctorDashboard = () => {
           status: 'secondary',
         }));
 
-        // Convert 24-hour format to 12-hour format
         const convertTo12Hour = (time24) => {
           if (!time24) return '';
           const [hours, minutes] = time24.split(':');
@@ -525,7 +494,6 @@ const DoctorDashboard = () => {
           return `${hour12}:${minutes}${ampm}`;
         };
 
-        // Format appointments
         const formattedAppointments = mapped.map(appt => ({
           ...appt,
           time: appt.time
@@ -534,7 +502,6 @@ const DoctorDashboard = () => {
             .join(' - '),
         }));
 
-        // Sort by start time
         const sortedAppointments = formattedAppointments.sort((a, b) => {
           const timeA = a.time.split(' - ')[0];
           const timeB = b.time.split(' - ')[0];
@@ -565,47 +532,6 @@ const DoctorDashboard = () => {
     fetchAppointments();
   }, []);
 
-  const generateCalendar = () => {
-    const year = currentMonth.getFullYear()
-    const month = currentMonth.getMonth()
-    const firstDay = new Date(year, month, 1)
-    const lastDay = new Date(year, month + 1, 0)
-    const startDate = new Date(firstDay)
-    startDate.setDate(firstDay.getDate() - firstDay.getDay())
-
-    const days = []
-    const dayHeaders = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-    dayHeaders.forEach((day) => {
-      days.push(<CalendarDay key={day} isHeader>{day}</CalendarDay>)
-    })
-
-    for (let i = 0; i < 42; i++) {
-      const date = new Date(startDate)
-      date.setDate(startDate.getDate() + i)
-      const isToday = date.toDateString() === today.toDateString()
-      const isSelected = date.toDateString() === selectedDate.toDateString()
-      const isCurrentMonth = date.getMonth() === month
-      days.push(
-        <CalendarDay
-          key={i}
-          isToday={isToday}
-          isSelected={isSelected}
-          onClick={() => setSelectedDate(date)}
-          style={{ opacity: isCurrentMonth ? 1 : 0.3 }}
-        >
-          {date.getDate()}
-        </CalendarDay>
-      )
-    }
-    return days
-  }
-
-  const navigateMonth = (direction) => {
-    const newMonth = new Date(currentMonth)
-    newMonth.setMonth(currentMonth.getMonth() + direction)
-    setCurrentMonth(newMonth)
-  }
-
   const handleAddActivity = () => {
     if (newActivityTime && newActivityTitle) {
       const newActivity = {
@@ -623,7 +549,22 @@ const DoctorDashboard = () => {
   }
 
   const formatDate = (date) => {
-    return date.toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" })
+    return date.toLocaleDateString("en-US", { 
+      weekday: "long", 
+      day: "numeric", 
+      month: "long",
+      year: "numeric" 
+    }).replace(/(\d+)(?:st|nd|rd|th)/, '$1');
+  }
+
+  const handleDateChange = (e) => {
+    setSelectedDate(new Date(e.target.value))
+  }
+
+  const openDatePicker = () => {
+    if (dateInputRef.current) {
+      dateInputRef.current.showPicker();
+    }
   }
 
   return (
@@ -737,16 +678,21 @@ const DoctorDashboard = () => {
           </LeftContent>
           <RightColumn>
             <Section>
-              <CalendarCard>
-                <CalendarHeader>
-                  <CalendarTitle>{currentMonth.toLocaleDateString("en-US", { month: "long", year: "numeric" })}</CalendarTitle>
-                  <CalendarNav>
-                    <CalendarNavButton onClick={() => navigateMonth(-1)}><FaChevronLeft /></CalendarNavButton>
-                    <CalendarNavButton onClick={() => navigateMonth(1)}><FaChevronRight /></CalendarNavButton>
-                  </CalendarNav>
-                </CalendarHeader>
-                <CalendarGrid>{generateCalendar()}</CalendarGrid>
-              </CalendarCard>
+              <DatePickerCard>
+                <DateDisplay>
+                  <DateText>{formatDate(selectedDate)}</DateText>
+                  <DateIcon onClick={openDatePicker}>
+                    <FaCalendarAlt />
+                  </DateIcon>
+                  <DateInput
+                    type="date"
+                    id="datePicker"
+                    ref={dateInputRef}
+                    value={selectedDate.toISOString().split('T')[0]}
+                    onChange={handleDateChange}
+                  />
+                </DateDisplay>
+              </DatePickerCard>
               <ActivitiesCard>
                 <div style={{ marginBottom: "20px" }}>
                   <h3 style={{ margin: 0, fontSize: "1.2rem" }}>{formatDate(selectedDate)}</h3>

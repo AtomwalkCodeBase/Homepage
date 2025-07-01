@@ -24,8 +24,9 @@ import TimesheetModal from "../components/modals/TimesheetModal"
 import { getTimesheetData, posttimelist } from "../services/productServices"
 import ConfirmationPopup from "../components/modals/ConfirmationPopup"
 import { toast } from "react-toastify"
-import { Save } from "lucide-react"
+import { TbClockCancel } from "react-icons/tb";
 import { useExport } from "../context/ExportContext"
+import { useNavigate } from "react-router-dom"
 
 
 const TimeSheetHeader = styled.div`
@@ -146,6 +147,12 @@ const SummaryIcon = styled.div`
     background: ${props.theme.colors.warning}22;
     color: ${props.theme.colors.warning};
   `}
+  ${(props) =>
+    props.color === "error" &&
+    `
+    background: ${props.theme.colors.error}22;
+    color: ${props.theme.colors.error};
+  `}
 `
 
 const SummaryValue = styled.div`
@@ -169,10 +176,11 @@ const TableActions = styled.div`
   margin-bottom: 1rem;
   flex-wrap: wrap;
   gap: 1rem;
+  color: ${({ theme }) => theme.colors.text};
 `
 const TimeSheetManagement = () => {
   const [currentWeek, setCurrentWeek] = useState("");
-   const [currentWeekStart, setCurrentWeekStart] = useState(new Date());
+  const [currentWeekStart, setCurrentWeekStart] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
   const [timesheetEntries, setTimesheetEntries] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -192,54 +200,53 @@ const TimeSheetManagement = () => {
   const [approve , setApprove] = useState(false);
   const [formData, setFormData] = useState({
       a_emp_id:"",
-      a_remarks: "",
-      call_mode: "",
-      emp_id: localStorage.getItem("empId") || "",
-    })
-    console.log(handeleEditdata,"handeleEditdata")
+    a_remarks: "",
+    call_mode: "",
+    emp_id: localStorage.getItem("empId") || "",
+  })
+  const navigate = useNavigate()
   const { exportTimesheetData } = useExport()
   const handlePreviousWeek = () => {
     const newDate = new Date(currentWeekStart);
     newDate.setDate(newDate.getDate() - 7);
     setCurrentWeekStart(newDate);
-    
+
     const { startDate, endDate } = getWeekDates(newDate);
     const empid = localStorage.getItem('empId') || 'default_emp_id';
     fetchTimeSheetData(startDate, endDate, empid);
   };
-
   const handleNextWeek = () => {
     const newDate = new Date(currentWeekStart);
     newDate.setDate(newDate.getDate() + 7);
     setCurrentWeekStart(newDate);
-    
+
     const { startDate, endDate } = getWeekDates(newDate);
     const empid = localStorage.getItem('empId') || 'default_emp_id';
     fetchTimeSheetData(startDate, endDate, empid);
   };
-    const getWeekDates = (date) => {
+  const getWeekDates = (date) => {
     const dayOfWeek = date.getDay(); // 0 (Sunday) to 6 (Saturday)
     const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-    
+
     const monday = new Date(date);
     monday.setDate(date.getDate() + diffToMonday);
-    
+
     const sunday = new Date(monday);
     sunday.setDate(monday.getDate() + 6);
-    
+
     return { startDate: monday, endDate: sunday };
   };
   const getCurrentWeekDates = () => {
     const now = new Date();
     const dayOfWeek = now.getDay(); // 0 (Sunday) to 6 (Saturday)
     const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-    
+
     const monday = new Date(now);
     monday.setDate(now.getDate() + diffToMonday);
-    
+
     const sunday = new Date(monday);
     sunday.setDate(monday.getDate() + 6);
-    
+
     return { startDate: monday, endDate: sunday };
   };
 
@@ -264,30 +271,30 @@ const TimeSheetManagement = () => {
     setIsOpen(true);
   };
 
-  const fetchTimeSheetData = async (startDate, endDate ) => {
-    const empId = empidParam?empidParam:localStorage.getItem('empId') // Replace with actual emp_id logic
+  const fetchTimeSheetData = async (startDate, endDate) => {
+    const empId = empidParam ? empidParam : localStorage.getItem('empId') // Replace with actual emp_id logic
     try {
       setLoading(true);
       const formattedStartDate = formatDate(startDate);
       const formattedEndDate = formatDate(endDate);
-      
+
       // Fetch timesheet data
-      const response = await getTimesheetData(formattedStartDate,formattedEndDate,empId)
+      const response = await getTimesheetData(formattedStartDate, formattedEndDate, empId)
       const data = await response.data;
-      
+
       setTimesheetEntries(data);
-      
+
       // Extract unique projects and activities
       const uniqueProjects = [...new Set(data.map(entry => entry.project_code))];
       const uniqueActivities = [...new Set(data.map(entry => entry.activity_name))];
-      
+
       setProjects(uniqueProjects);
       setActivities(uniqueActivities);
-      
+
       // Set current week display string
       const weekDisplay = `${formatDisplayDate(startDate)} - ${formatDisplayDate(endDate)}, ${endDate.getFullYear()}`;
       setCurrentWeek(weekDisplay);
-      
+
       setLoading(false);
     } catch (error) {
       console.error('Error fetching timesheet data:', error);
@@ -323,9 +330,12 @@ const TimeSheetManagement = () => {
       .filter(entry => entry.status === 'A')
       .reduce((sum, entry) => sum + entry.effort, 0);
     const pendingHours = filteredEntries
-      .filter(entry => entry.status === 'S')
+      .filter(({ status }) => ['R', 'S'].includes(status))
+      .reduce((sum, { effort }) => sum + effort, 0);
+    const notsubmited = filteredEntries
+      .filter(entry => entry.status === 'N')
       .reduce((sum, entry) => sum + entry.effort, 0);
-    
+
     const uniqueDates = [...new Set(filteredEntries.map(entry => entry.a_date))];
     const daysWorked = uniqueDates.length;
 
@@ -345,8 +355,14 @@ const TimeSheetManagement = () => {
       {
         icon: <FaTimes />,
         value: pendingHours.toFixed(1),
-        label: "Pending Hours",
+        label: "Pending + Reject Hours",
         color: "warning",
+      },
+      {
+        icon: <TbClockCancel />,
+        value: notsubmited.toFixed(1),
+        label: "Not Submitted",
+        color: "error",
       },
       {
         icon: <FaCalendarAlt />,
@@ -413,114 +429,123 @@ const TimeSheetManagement = () => {
   };
   const { projectGroups, dailyTotals, weekDays } = getWeeklySummaryData();
 
-  const handeleapprove =async (entryId) => {
-setFormData({
-  a_emp_id: empidParam,
-  a_date: (() => {
-    const today = new Date();
-    return formatDate(today);
-  })(),
-  ts_id: entryId.id,
-  a_remarks: "",
-  call_mode: "APPROVE",
-  emp_id: localStorage.getItem("empId") || "",
-});
-  setApprove(true);
-  setShowPopup(true);
+  const handeleapprove = async (entryId) => {
+    setFormData({
+      a_emp_id: empidParam,
+      a_date: (() => {
+        const today = new Date();
+        return formatDate(today);
+      })(),
+      ts_id: entryId.id,
+      a_remarks: "",
+      call_mode: "APPROVE",
+      emp_id: localStorage.getItem("empId") || "",
+    });
+    setApprove(true);
+    setShowPopup(true);
   }
   const handelreject = (entryId) => {
-  setFormData({
-  a_emp_id: empidParam,
-  a_date: (() => {
-    const today = new Date();
-    return formatDate(today);
-  })(),
-  ts_id: entryId.id,
-  a_remarks: "",
-  call_mode: "REJECT",
-  emp_id: localStorage.getItem("empId") || "",
-});
-     setApprove(false);
-     setShowPopup(true);
+    setFormData({
+      a_emp_id: empidParam,
+      a_date: (() => {
+        const today = new Date();
+        return formatDate(today);
+      })(),
+      ts_id: entryId.id,
+      a_remarks: "",
+      call_mode: "REJECT",
+      emp_id: localStorage.getItem("empId") || "",
+    });
+    setApprove(false);
+    setShowPopup(true);
   }
   const handeleEdit = (entryId) => {
-      setIsOpen(true);
-      sethandeleEditdata(entryId);
+    setIsOpen(true);
+    sethandeleEditdata(entryId);
 
   }
-   const handleClosePopup = () => {
-      setShowPopup(false);
-    };
-    const handleConfirm = async (remark) => {
-      setShowPopup(false);
-      if (approve) {
-        // Handle approval logic here
-        try {
-          const response = await posttimelist({ ...formData, a_remarks: remark });
-          if (response.status === 200) {
-            toast.success("Timesheet entry approved successfully!");
-            setRelode(relode + 1);
-          } else {
-            toast.error("Failed to approve timesheet entry.");
-          }
-        } catch (error) {
-          alert("An error occurred while approving the timesheet entry.");
-        }   }
-      else {         
-        try {
-          const response = await posttimelist({ ...formData, a_remarks: remark });
-          if (response.status === 200) {
-            toast.success("Timesheet entry rejected successfully!");
-            setRelode(relode + 1);
-          } else {
-            toast.error("Failed to reject timesheet entry.");
-          }
-        } catch (error) {
-          console.error("Error rejecting timesheet entry:", error);
-          alert("An error occurred while rejecting the timesheet entry.");
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+  const handleConfirm = async (remark) => {
+    setShowPopup(false);
+    if (approve) {
+      // Handle approval logic here
+      try {
+        const response = await posttimelist({ ...formData, a_remarks: remark });
+        if (response.status === 200) {
+          toast.success("Timesheet entry approved successfully!");
+          setRelode(relode + 1);
+        } else {
+          toast.error("Failed to approve timesheet entry.");
         }
-      }                             
+      } catch (error) {
+        alert("An error occurred while approving the timesheet entry.");
+      }
     }
+    else {
+      try {
+        const response = await posttimelist({ ...formData, a_remarks: remark });
+        if (response.status === 200) {
+          toast.success("Timesheet entry rejected successfully!");
+          setRelode(relode + 1);
+        } else {
+          toast.error("Failed to reject timesheet entry.");
+        }
+      } catch (error) {
+        console.error("Error rejecting timesheet entry:", error);
+        alert("An error occurred while rejecting the timesheet entry.");
+      }
+    }
+  }
 
-    const handeleweeklyapprove = async () => {
+  const handeleweeklyapprove = async () => {
     const { startDate, endDate } = getCurrentWeekDates();
     const formattedStartDate = formatDate(startDate);
     const formattedEndDate = formatDate(endDate);
-    const response = await posttimelist({emp_id:empidParam?empidParam:localStorage.getItem("empId"),start_date:formattedStartDate,end_date:formattedEndDate,call_mode: empidParam ? "WEEKLY_APPROVE" : "WEEKLY_SUBMIT" ,a_emp_id:empidParam?empidParam:""});
-      if (response.status === 200) {
-            toast.success("Timesheet entry Submit successfully!");
-            setRelode(relode + 1);
-          } else {
-            toast.error("Failed to Submit timesheet entry.");
-          }
+    const response = await posttimelist({ emp_id: empidParam ? empidParam : localStorage.getItem("empId"), start_date: formattedStartDate, end_date: formattedEndDate, call_mode: empidParam ? "WEEKLY_APPROVE" : "WEEKLY_SUBMIT", a_emp_id: empidParam ? empidParam : "" });
+    if (response.status === 200) {
+      toast.success("Timesheet entry Submit successfully!");
+      setRelode(relode + 1);
+    } else {
+      toast.error("Failed to Submit timesheet entry.");
     }
-      const handleExport = () => {
-        const result = exportTimesheetData(filteredEntries, "timesheet_data")
-        if (result.success) {
-        toast.success("Exported successfully")
-        } else {
-          toast.error("Export failed: " + result.message)
-        }
-      }
+  }
+  const handleExport = () => {
+    const result = exportTimesheetData(filteredEntries, "timesheet_data")
+    if (result.success) {
+      toast.success("Exported successfully")
+    } else {
+      toast.error("Export failed: " + result.message)
+    }
+  }
 
-      const navigate = (url) => {
-        window.location.href =""
-      }
+  const navigates = () => {
+    navigate("/employees")
+  }
+  // helper – put it above your component or inside it
+  const getTotalColour = hours => {
+    if (hours < 5) return '#d32f2f';          // red
+    if (hours < 7) return '#ef6c00';          // orange
+    if (hours < 9) return '#388e3c';          // green
+    if (hours <= 15) return '#ef6c00';        // orange
+    return '#d32f2f';                         // red
+  };
 
   return (
     <Layout title="Timesheet Management">
       <TimeSheetHeader>
-        <div> 
+        <div>
           <Tagline>Track and manage your working hours</Tagline>
         </div>
 
         <div>
-         {empName?<Button variant="outline" style={{ marginRight: "0.5rem" }}>
+          {empName ? <Button variant="outline" style={{ marginRight: "0.5rem" }} onClick={navigates}>
             <FaUserCircle /> {empName}
           </Button>
-          :<Button variant="primary" onClick={openModal}>
-            <FaPlus /> Add Time Entry
-          </Button>}
+            : <Button variant="primary" onClick={openModal}>
+              <FaPlus /> Add Time Entry
+            </Button>}
         </div>
       </TimeSheetHeader>
 
@@ -545,7 +570,7 @@ setFormData({
         </WeekNavigation>
 
         <FilterContainer>
-          <FilterSelect 
+          <FilterSelect
             name="project"
             value={filters.project}
             onChange={handleFilterChange}
@@ -611,29 +636,29 @@ setFormData({
                     <td>
                       <Badge
                         variant={
-                          entry.status === 'A' ? "success" : 
-                          entry.status === 'S' ? "warning" : "error"
+                          entry.status === 'A' ? "success" :
+                            entry.status === 'S' ? "warning" : "error"
                         }
                       >
-                        {entry.status_display=="N"?"Not Submitted":entry.status_display}
+                        {entry.status_display == "N" ? "Not Submitted" : entry.status_display}
                       </Badge>
                     </td>
                     <td>
-                     {(entry.status === 'S'||entry.status === 'N')&&<ActionButtons>
-                       {empidParam ?
-                       <>
-                       <Button onClick={()=>handeleapprove(entry)} variant="ghost" size="sm" title="Approve">
-                          <FaCheck />
-                        </Button>
-                        <Button onClick={()=>handelreject(entry)} variant="ghost" size="sm" title="Reject">
-                          <FaTrash />
-                        </Button></>: 
-                        <>
-                        {/* <Button onClick={()=>handelreject(entry)} variant="ghost" size="sm" title="Cancel"> 
+                      {(entry.status === 'S' || entry.status === 'N') && <ActionButtons>
+                        {empidParam ?
+                          <>
+                            <Button onClick={() => handeleapprove(entry)} variant="ghost" size="sm" title="Approve">
+                              <FaCheck />
+                            </Button>
+                            <Button onClick={() => handelreject(entry)} variant="ghost" size="sm" title="Reject">
+                              <FaTrash />
+                            </Button></> :
+                          <>
+                            {/* <Button onClick={()=>handelreject(entry)} variant="ghost" size="sm" title="Cancel"> 
                           <FaTrash />
                           </Button>*/}
-                           <Button onClick={()=>handeleEdit(entry)} variant="ghost" size="sm" title="Edit">
-                          <FaEdit />
+                            <Button onClick={() => handeleEdit(entry)} variant="ghost" size="sm" title="Edit">
+                              <FaEdit />
                             </Button></>}
                       </ActionButtons>}
                     </td>
@@ -642,10 +667,28 @@ setFormData({
               })}
             </tbody>
           </table>
+          {filteredEntries.length > 0 ? <TableActions style={{ float: "right" }}>
+            <Button variant="outline" size="sm" onClick={handleExport}>
+              <FaFileExport /> Export
+            </Button>
+            <Button variant="primary" size="sm" handeleweeklyapprove onClick={handeleweeklyapprove}>
+              {empidParam ? (
+                <>
+                  <FaCheckCircle style={{ marginRight: 4 }} /> Approve Weekly Timesheet
+                </>
+              ) : (
+                <>
+                  <FaPaperPlane style={{ marginRight: 4 }} /> Submit Weekly Timesheet
+                </>
+              )}
+            </Button>
+          </TableActions> :
+            <TableActions style={{ justifyContent: "center" }}> There are no timesheet entries to display. </TableActions>
+          }
         </TableContainer>
       </Card>
 
-      <Card title="Weekly Timesheet Summary" style={{ marginTop: "2rem" }}>
+      <Card title="Weekly Timesheet Summary by Project" style={{ marginTop: "2rem" }}>
         <TableContainer>
           <table>
             <thead>
@@ -671,7 +714,20 @@ setFormData({
                       </td>
                     );
                   })}
-                  <td>{days.total.toFixed(1)}</td>
+                  <td>
+                    <span
+                      style={{
+                        display: 'inline-block',
+                        padding: '2px 8px',
+                        borderRadius: 4,
+                        background: getTotalColour(days.total),
+                        color: '#fff',
+                        fontWeight: 600
+                      }}
+                    >
+                      {days.total.toFixed(1)}
+                    </span>
+                  </td>
                 </tr>
               ))}
               <tr>
@@ -688,27 +744,27 @@ setFormData({
               </tr>
             </tbody>
           </table>
-          <TableActions style={{float:"right"}}>    
-        <Button variant="outline" size="sm" handeleweeklyapprove onClick={handeleweeklyapprove}>
-        {empidParam ? (
-          <>
-          <FaCheckCircle style={{ marginRight: 4 }} /> Approve Weekly Timesheet
-          </>
-        ) : (
-          <>
-          <FaPaperPlane style={{ marginRight: 4 }} /> Submit Weekly Timesheet
-          </>
-        )}
-          </Button>
-           <Button variant="primary" size="sm" onClick={handleExport}>
-            <FaFileExport /> Export
-          </Button>
-          </TableActions>
+          {filteredEntries.length > 0 && <TableActions style={{ float: "right" }}>
+            <Button variant="outline" size="sm" onClick={handleExport}>
+              <FaFileExport /> Export
+            </Button>
+            <Button variant="primary" size="sm" handeleweeklyapprove onClick={handeleweeklyapprove}>
+              {empidParam ? (
+                <>
+                  <FaCheckCircle style={{ marginRight: 4 }} /> Approve Weekly Timesheet
+                </>
+              ) : (
+                <>
+                  <FaPaperPlane style={{ marginRight: 4 }} /> Submit Weekly Timesheet
+                </>
+              )}
+            </Button>
+          </TableActions>}
         </TableContainer>
       </Card>
       <TimesheetModal isOpen={isOpen} onClose={closeModal} initialData={handeleEditdata} setRelode={setRelode}></TimesheetModal>
       <ConfirmationPopup isOpen={showPopup}
-        onClose={handleClosePopup}  onConfirm={handleConfirm} approve={approve} timesheet={true}></ConfirmationPopup>
+        onClose={handleClosePopup} onConfirm={handleConfirm} approve={approve} timesheet={true}></ConfirmationPopup>
     </Layout>
   );
 };

@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect, useContext } from "react"
 import { Link, useLocation } from "react-router-dom"
 import styled from "styled-components"
@@ -23,16 +21,18 @@ import {
   FaStethoscope,
   FaChartBar,
   FaUsers,
+  FaChevronDown,
+  FaChevronRight,
 } from "react-icons/fa"
 import { SiGooglecalendar } from "react-icons/si";
 import { PiListPlusFill } from "react-icons/pi";
 import { useAuth } from "../context/AuthContext"
 import { useTheme } from "../context/ThemeContext"
-import { RiAlarmSnoozeFill } from "react-icons/ri";
+import logo from '../assets/img/Atom_walk_logo-removebg-preview.png';
 const SidebarContainer = styled.div`
   width: ${(props) => {
     const { isOpen, uiPreferences } = props
-    const sidebarStyle = uiPreferences?.layout?.sidebarStyle || "standard"
+    let sidebarStyle = uiPreferences?.layout?.sidebarStyle || "standard"
 
     if (!isOpen) {
       return "70px"
@@ -380,26 +380,222 @@ const LogoutButton = styled.button`
     }};
   }
 `
+// Add new styled components for grouped menu items
+const MenuGroup = styled.div`
+  margin-bottom: 5px;
+`;
 
+const MenuGroupHeader = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: ${(props) => {
+    const { uiPreferences } = props;
+    const fontFamily = uiPreferences?.typography?.fontFamily || "Poppins";
+    return `${fontFamily}, sans-serif`;
+  }};
+  font-size: ${(props) => {
+    const { uiPreferences } = props;
+    const fontSize = uiPreferences?.typography?.fontSize || "medium";
+    if (fontSize === "small") return "0.9rem";
+    if (fontSize === "large") return "1.1rem";
+    return "1rem"; // medium
+  }};
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  svg {
+    margin-right: 10px;
+    font-size: ${(props) => {
+      const { uiPreferences } = props;
+      const iconSize = uiPreferences?.components?.iconSize || "medium";
+      if (iconSize === "small") return "1rem";
+      if (iconSize === "large") return "1.4rem";
+      return "1.2rem"; // medium
+    }};
+  }
+  
+  span {
+    flex-grow: 1;
+    white-space: nowrap;
+  }
+  
+  .arrow {
+    transition: transform 0.3s ease;
+    transform: ${({ isOpen }) => (isOpen ? "rotate(0deg)" : "rotate(-90deg)")};
+  }
+`;
+
+const SubMenu = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  max-height: ${({ isOpen, itemCount }) => 
+    isOpen ? `${itemCount * 44}px` : "0"};
+  transition: max-height 0.3s ease;
+`;
+
+const SubMenuItem = styled.li`
+  margin-bottom: 2px;
+`;
+
+const SubMenuLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  padding: 10px 20px 10px 50px;
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-family: ${(props) => {
+    const { uiPreferences } = props;
+    const fontFamily = uiPreferences?.typography?.fontFamily || "Poppins";
+    return `${fontFamily}, sans-serif`;
+  }};
+  font-size: 0.9rem;
+  
+  ${(props) =>
+    props.active &&
+    `
+    background: rgba(255, 255, 255, 0.1);
+    border-left: 3px solid ${props.theme.colors.secondary};
+    padding-left: 47px;
+  `}
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  svg {
+    margin-right: 10px;
+    font-size: 1rem;
+  }
+`;
 const Sidebar = ({ onToggle, initialOpen = true }) => {
-  const [isOpen, setIsOpen] = useState(initialOpen)
-  const location = useLocation()
-  const { currentUser, logout, profile,companyInfo,iscoustomerLogin  } = useAuth()
+  const [isOpen, setIsOpen] = useState(initialOpen);
+  const [expandedGroups, setExpandedGroups] = useState({});
+  const location = useLocation();
+  const { currentUser, logout, profile, companyInfo, iscoustomerLogin } = useAuth();
   const { theme, uiPreferences } = useTheme();
-  const customerdata=localStorage.getItem("customerUser");
+  const customerdata = localStorage.getItem("customerUser");
+  const sidebarStyle = uiPreferences?.layout?.sidebarStyle || "standard"
+  // Grouped menu items structure
+  const menuGroups = customerdata
+    ? [
+        {
+          name: "Customer Portal",
+          icon: <FaUserCircle />,
+          items: [
+            { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
+            { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
+            { path: "/appointments", name: "Book Appointments", icon: <FaStethoscope /> },
+            { path: "/appointmentlist", name: "My Appointments", icon: <FaCalendarAlt /> },
+          ]
+        }
+      ]
+    : [
+        {
+          name: "Dashboard",
+          icon: <FaHome />,
+          items: [
+            { path: "/dashboard", name: "Overview", icon: <FaHome /> }
+          ]
+        },
+        {
+          name: "Time Management",
+          icon: <FaClock />,
+          items: [
+            { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
+            { path: "/timesheet", name: "Timesheet", icon: <FaChartBar /> },
+            ...(profile?.is_shift_applicable
+              ? [{ path: "/shift-detail", name: "My Shifts", icon: <FaExchangeAlt /> }]
+              : []),
+            ...(profile?.is_manager
+              ? [{ path: "/shifts", name: "Shift Scheduling", icon: <SiGooglecalendar /> }]
+              : [])
+          ]
+        },
+        {
+          name: "Leave & Holidays",
+          icon: <FaCalendarAlt />,
+          items: [
+            { path: "/leave-management", name: "Leave Management", icon: <FaCalendarAlt /> },
+            { path: "/holidays", name: "Holiday Calendar", icon: <FaCalendarCheck /> }
+          ]
+        },
+        {
+          name: "Finance",
+          icon: <FaMoneyBillWave />,
+          items: [
+            ...(profile?.is_manager
+              ? [{ path: "/claims", name: "Claims Management", icon: <FaMoneyBillWave /> }]
+              : [{ path: "/claims", name: "My Claims", icon: <FaMoneyBillWave /> }]),
+            { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> }
+          ]
+        },
+        {
+          name: "Projects",
+          icon: <PiListPlusFill />,
+          items: profile?.is_manager
+            ? [{ path: "/projectmanagement", name: "Project List", icon: <PiListPlusFill /> }]
+            : []
+        },
+        {
+          name: "Employee Management",
+          icon: <FaUsers />,
+          items: profile?.is_manager
+            ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }]
+            : []
+        },
+        {
+          name: "Support",
+          icon: <FaComments />,
+          items: [
+            { path: "/helpdesk", name: "Help Desk", icon: <FaComments /> },
+            { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> }
+          ]
+        },
+        {
+          name: "Personal",
+          icon: <FaUserCircle />,
+          items: [
+            { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
+            { path: "/profile", name: "My Profile", icon: <FaUserCircle /> }
+          ]
+        }
+      ];
+
   useEffect(() => {
-    setIsOpen(initialOpen)
-  }, [initialOpen])
+    setIsOpen(initialOpen);
+    // Initialize expanded groups based on current path
+    const initialExpanded = {};
+    menuGroups.forEach(group => {
+      const hasActiveItem = group.items.some(item => 
+        location.pathname.startsWith(item.path)
+      );
+      initialExpanded[group.name] = hasActiveItem;
+    });
+    setExpandedGroups(initialExpanded);
+  }, [initialOpen, location.pathname]);
 
   const toggleSidebar = () => {
-    const newState = !isOpen
-    setIsOpen(newState)
-    if (onToggle) {
-      onToggle(newState)
-    }
-  }
+    const newState = !isOpen;
+    setIsOpen(newState);
+    if (onToggle) onToggle(newState);
+  };
 
-  const menuItems = customerdata
+  const toggleGroup = (groupName) => {
+    setExpandedGroups(prev => ({
+      ...prev,
+      [groupName]: !prev[groupName]
+    }));
+  };
+ const menuItems = customerdata
     ? [
         { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
         { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
@@ -437,6 +633,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
       ]
 
   return (
+  sidebarStyle == "standard" ? 
     <SidebarContainer isOpen={isOpen} theme={theme} uiPreferences={uiPreferences}>
       <SidebarHeader isOpen={isOpen} uiPreferences={uiPreferences}>
       {iscoustomerLogin? <Logo isOpen={isOpen} uiPreferences={uiPreferences}>
@@ -466,7 +663,6 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
           </SidebarMenuItem>
         ))}
       </SidebarMenu>
-
       <SidebarFooter isOpen={isOpen} theme={theme} uiPreferences={uiPreferences}>
         <UserInfo isOpen={isOpen}>
           <UserAvatar theme={theme} uiPreferences={uiPreferences}>
@@ -479,7 +675,73 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
         </LogoutButton>
       </SidebarFooter>
     </SidebarContainer>
-  )
-}
+    :
+    <SidebarContainer isOpen={isOpen} theme={theme} uiPreferences={uiPreferences}>
+      <SidebarHeader isOpen={isOpen} uiPreferences={uiPreferences}>
+        {iscoustomerLogin ? (
+          <Logo isOpen={isOpen} uiPreferences={uiPreferences}>
+            <img src={profile.image} alt="Company Logo" style={{ width: "70px", height: "70px", marginRight: "1rem", borderRadius: "50%" }} />
+          </Logo>
+        ) : (
+          <Logo isOpen={isOpen} uiPreferences={uiPreferences}>
+            <img src={"https://atomwalk.com/static/office/image/Atom_walk_logo.jpg"} alt="Company Logo" style={{ width: "80px", marginRight: "1rem", borderRadius: "10px" }} /> HRMS
+          </Logo>
+        )}
+        <ToggleButton onClick={toggleSidebar} uiPreferences={uiPreferences}>
+          {isOpen ? <FaTimes /> : <FaBars />}
+        </ToggleButton>
+      </SidebarHeader>
 
-export default Sidebar
+      <SidebarMenu uiPreferences={uiPreferences}>
+        {menuGroups.map((group) => (
+          <MenuGroup key={group.name}>
+            <MenuGroupHeader 
+              onClick={() => toggleGroup(group.name)}
+              isOpen={expandedGroups[group.name]}
+              uiPreferences={uiPreferences}
+            >
+              {group.icon}
+              <span>{isOpen ? group.name : ""}</span>
+              {/* {isOpen && (
+                <span className="arrow">
+                  {expandedGroups[group.name] ? <FaChevronDown /> : <FaChevronRight />}
+                </span>
+              )} */}
+            </MenuGroupHeader>
+            
+            <SubMenu 
+              isOpen={expandedGroups[group.name] && isOpen}
+              itemCount={group.items.length}
+            >
+              {group.items.map((item) => (
+                <SubMenuItem key={item.path}>
+                  <SubMenuLink
+                    to={item.path}
+                    active={location.pathname.startsWith(item.path) ? 1 : 0}
+                    theme={theme}
+                  >
+                    {item.icon}
+                    <span>{item.name}</span>
+                  </SubMenuLink>
+                </SubMenuItem>
+              ))}
+            </SubMenu>
+          </MenuGroup>
+        ))}
+      </SidebarMenu>
+      <SidebarFooter isOpen={isOpen} theme={theme} uiPreferences={uiPreferences}>
+        <UserInfo isOpen={isOpen}>
+          <UserAvatar theme={theme} uiPreferences={uiPreferences}>
+            {profile?.name?.charAt(0) || "U"}
+          </UserAvatar>
+          <UserName uiPreferences={uiPreferences}>{profile?.name || "User"}</UserName>
+        </UserInfo>
+        <LogoutButton onClick={logout} title="Logout" theme={theme} uiPreferences={uiPreferences}>
+          <FaSignOutAlt />
+        </LogoutButton>
+      </SidebarFooter>
+    </SidebarContainer>
+  );
+};
+
+export default Sidebar;

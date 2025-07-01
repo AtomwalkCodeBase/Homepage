@@ -195,9 +195,11 @@ const LogoutButton = styled(ActionButton)`
     opacity: 0.8;
   }
 `
+// const Imagelogo = styled.img`
+//   width: 80px;
 
 const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
-  const { logout,profile } = useAuth()
+  const { logout,profile,companyInfo } = useAuth()
   const [searchExpanded, setSearchExpanded] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [searchResults, setSearchResults] = useState([])
@@ -314,6 +316,7 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
         <MobileMenuButton onClick={onMobileMenuClick}>
           <FaBars />
         </MobileMenuButton>
+         <img src={companyInfo.image} alt="Company Logo" style={{ width: "80px", borderRadius: "10px", marginRight: "10px" }} />
           <SearchBar expanded={searchExpanded}>
             <FaSearch onClick={handleSearchClick} style={{ cursor: "pointer", color:`${theme.colors.textLight}` }} />
             <SearchInput

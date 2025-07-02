@@ -566,7 +566,9 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
           icon: <FaUserCircle />,
           items: [
             { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
-            { path: "/profile", name: "My Profile", icon: <FaUserCircle /> }
+            { path: "/profile", name: "My Profile", icon: <FaUserCircle /> },
+            // { path: "/DoctorDashboard", name: "Dashboard", icon: <FaHome /> },
+            // { path: "/OPDappointments", name: "Out patients", icon: <FaUserFriends /> },
           ]
         }
       ];

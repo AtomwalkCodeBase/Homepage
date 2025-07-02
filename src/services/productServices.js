@@ -256,8 +256,8 @@ export async function getTaskCategory() {
 export async function getActivitylist() {
   return authAxios(getactivityList)
 }
-export async function getProjectlist() {
-  return authAxios(getProjectLists)
+export async function getProjectlist(data) {
+  return authAxios(getProjectLists,data)
 }
 export function getequipmentlistview() {
   return authAxios(getAppointeeList)

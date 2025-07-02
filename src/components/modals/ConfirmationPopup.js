@@ -73,7 +73,7 @@ const CancelButton = styled(Button)`
 `;
 
 const SubmitButton = styled(Button)`
-  background-color: ${props => props.approve ? '#28a745' : '#dc3545'};
+  background-color: ${props => props.approve ? ' #28a745' : '#dc3545'};
   color: white;
   
   &:hover {
@@ -82,14 +82,29 @@ const SubmitButton = styled(Button)`
 `;
 
 // Confirmation Popup Component
-const ConfirmationPopup = ({ isOpen, onClose, onConfirm,approve,timesheet }) => {
+const ConfirmationPopup = ({ isOpen, onClose, onConfirm, approve, timesheet }) => {
   const [remark, setRemark] = useState('');
 
   if (!isOpen) return null;
 
+  // Derive the action label once to avoid repetition
+  const actionLabel = timesheet
+    ? approve === 'APPROVE'
+      ? 'Approve'
+      : approve === 'REJECT'
+      ? 'Reject'
+      : 'Delete'
+    : approve
+    ? 'Approve'
+    : 'cancel';
+
+  // Disable the submit button if remark is empty or just whitespace
+  const isSubmitDisabled = remark.trim().length === 0;
+
   return (
     <Overlay>
       <PopupContainer>
+        {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Title style={{ margin: 0 }}>Confirmation</Title>
           <button
@@ -97,7 +112,13 @@ const ConfirmationPopup = ({ isOpen, onClose, onConfirm,approve,timesheet }) => 
             style={{
               fontSize: '25px',
               cursor: 'pointer',
-              color:approve?'rgb(24, 228, 44)': 'rgb(228, 24, 24)',
+              color: timesheet
+                ? approve === 'APPROVE'
+                  ? 'rgb(24, 228, 44)'
+                  : 'rgb(228, 24, 24)'
+                : approve
+                ? 'rgb(24, 228, 44)'
+                : 'rgb(228, 24, 24)',
               padding: 0,
               marginLeft: '16px',
               lineHeight: 1,
@@ -107,23 +128,48 @@ const ConfirmationPopup = ({ isOpen, onClose, onConfirm,approve,timesheet }) => 
             ❌
           </button>
         </div>
-     {timesheet?
-        <Message>Are you sure you want to {approve?"Approve":"Reject"}</Message>
-        :<Message>Do you want to {approve?"Approve":"cancel"} your leave?</Message>}
-      
+
+        {/* Message */}
+        {timesheet ? (
+          <Message>Are you sure you want to {actionLabel}?</Message>
+        ) : (
+          <Message>Do you want to {actionLabel} your leave?</Message>
+        )}
+
+        {/* Remark input (required) */}
         <Input
           type="text"
-          placeholder="Remark"
-          // value={remark}
+          placeholder="Remark (required)"
+          value={remark}
+          required
           onChange={e => setRemark(e.target.value)}
         />
+
+        {/* Buttons */}
         <ButtonGroup>
           <CancelButton onClick={onClose}>No, keep it</CancelButton>
-         {timesheet?<SubmitButton approve={approve}  onClick={() => onConfirm(remark,approve?"APPROVE":"REJECT")}>Yes,{approve?"Approve":"Reject"}</SubmitButton>:
-         <SubmitButton approve={approve}  onClick={() => onConfirm(remark,approve?"Approved":"cancelled")}>Yes,{approve?"Approve":"cancel"}</SubmitButton>}
+
+          {timesheet ? (
+            <SubmitButton
+              approve={approve === 'APPROVE' ? true : approve === 'REJECT' ? false : approve === 'DELETE' ? false : approve}
+              onClick={() => onConfirm(remark, actionLabel)}
+              disabled={isSubmitDisabled}
+            >
+              Yes, {actionLabel}
+            </SubmitButton>
+          ) : (
+            <SubmitButton
+              approve={approve}
+              onClick={() => onConfirm(remark, approve ? 'Approved' : 'cancelled')}
+              disabled={isSubmitDisabled}
+            >
+              Yes, {actionLabel}
+            </SubmitButton>
+          )}
         </ButtonGroup>
       </PopupContainer>
     </Overlay>
   );
 };
+
 export default ConfirmationPopup;

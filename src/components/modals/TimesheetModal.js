@@ -267,7 +267,8 @@ const TimesheetModal = ({ isOpen, onClose, initialData, setRelode }) => {
 
   const fetchprojectCategories = async () => {
     try {
-      const res = await getProjectlist();
+      const data={emp_id: localStorage.getItem("empId")}
+      const res = await getProjectlist(data);
       setProjects(res.data);
     } catch (err) {
       console.error("Error fetching categories:", err);
@@ -382,11 +383,6 @@ const TimesheetModal = ({ isOpen, onClose, initialData, setRelode }) => {
     const { value } = e.nativeEvent.submitter;
 
     try {
-      // Calculate effort if not provided but times are
-      let finalEffort = formData.effort;
-      if (!finalEffort && formData.start_time && formData.end_time) {
-        finalEffort = calculateEffortFromTimes();
-      }
 
       // Convert a_date from YYYY-MM-DD to DD-MM-YYYY if needed
       let formattedDate = formData.a_date;
@@ -394,13 +390,34 @@ const TimesheetModal = ({ isOpen, onClose, initialData, setRelode }) => {
         const [year, month, day] = formData.a_date.split("-");
         formattedDate = `${day}-${month}-${year}`;
       }
-
+      // Function to convert time to HH:MM A format
+    const formatTime = (timeString) => {
+      if (!timeString) return '';
+      
+      // If already in HH:MM A format, return as is
+      if (/^\d{1,2}:\d{2}\s[AP]M$/i.test(timeString)) {
+        return timeString.toUpperCase();
+      }
+      
+      // If in 24-hour format (HH:MM or HH:MM:SS)
+      if (/^\d{1,2}:\d{2}(:\d{2})?$/.test(timeString)) {
+        const [hours, minutes] = timeString.split(':');
+        const hourNum = parseInt(hours, 10);
+        const period = hourNum >= 12 ? 'PM' : 'AM';
+        const displayHour = hourNum % 12 || 12;
+        return `${displayHour.toString().padStart(2, '0')}:${minutes.padStart(2, '0')} ${period}`;
+      }
+      
+      return timeString; // fallback  
+    };
       const submissionData = {
         ...formData,
-        a_date: formattedDate,
-        call_mode: value || "SUBMIT",
-        effort: Number.parseFloat(finalEffort),
+      a_date: formattedDate,
+      start_time: formatTime(formData.start_time),
+      end_time: formatTime(formData.end_time),
+      call_mode: value || "SUBMIT",
       };
+ 
 
       await posttimelist(submissionData);
       setFormData({
@@ -454,154 +471,161 @@ const TimesheetModal = ({ isOpen, onClose, initialData, setRelode }) => {
     <ModalOverlay onClick={handleClose}>
       <ModalContainer onClick={(e) => e.stopPropagation()}>
       <ModalHeader>
-        <ModalTitle>
-        {initialData ? "Edit Timesheet Entry" : "Add Timesheet Entry"}
-        </ModalTitle>
-        <CloseButton onClick={handleClose}>
-        <FaTimes />
-        </CloseButton>
+      <ModalTitle>
+      {initialData ? "Edit Timesheet Entry" : "Add Timesheet Entry"}
+      </ModalTitle>
+      <CloseButton onClick={handleClose}>
+      <FaTimes />
+      </CloseButton>
       </ModalHeader>
 
       <form onSubmit={handleSubmit}>
-        <ModalBody>
-        <FormGroup>
-          <Label>
-          <FaProjectDiagram />
-          Choose Project<RequiredIndicator>*</RequiredIndicator>
-          </Label>
-          <Select 
-          name="project_code" 
-          value={formData.project_code} 
-          onChange={handleInputChange} 
-          required
-          >
-          <option value="">Select a project</option>
-          {projects.map((project) => (
-            <option key={project.id} value={project.project_code}>
-            {project.title} ({project.project_code})
-            </option>
-          ))}
-          </Select>
-          {errors.project_code && <ErrorMessage>{errors.project_code}</ErrorMessage>}
-        </FormGroup>
+      <ModalBody>
+      <FormGroup>
+      <Label>
+      <FaProjectDiagram />
+      Choose Project<RequiredIndicator>*</RequiredIndicator>
+      </Label>
+      <Select 
+      name="project_code" 
+      value={formData.project_code} 
+      onChange={handleInputChange} 
+      required
+      >
+      <option value="">Select a project</option>
+      {projects.map((project) => (
+      <option key={project.id} value={project.project_code}>
+      {project.title} ({project.project_code})
+      </option>
+      ))}
+      </Select>
+      {errors.project_code && <ErrorMessage>{errors.project_code}</ErrorMessage>}
+      </FormGroup>
 
-        <FormGroup>
-          <Label>
-          <FaTasks />
-          Activity<RequiredIndicator>*</RequiredIndicator>
-          </Label>
-          <Select 
-          name="activity_id" 
-          value={formData.activity_id} 
-          onChange={handleInputChange} 
-          required
-          >
-          <option value="">Select an activity</option>
-          {activities.map((activity) => (
-            <option key={activity.id} value={activity.activity_id}>
-            {activity.name}
-            </option>
-          ))}
-          </Select>
-          {errors.activity_id && <ErrorMessage>{errors.activity_id}</ErrorMessage>}
-        </FormGroup>
-        <TimeRangeContainer>
-        <FormGroup>
-          <Label>
-          <FaCalendarAlt />
-          Date<RequiredIndicator>*</RequiredIndicator>
-          </Label>
-          <Input 
-          type="date" 
-          name="a_date" 
-          value={formData.a_date} 
-          onChange={handleInputChange} 
-          required 
-          min={minDate}
-          max={maxDate}
-          />
-          {errors.a_date && <ErrorMessage>{errors.a_date}</ErrorMessage>}
-        </FormGroup>
+      <FormGroup>
+      <Label>
+      <FaTasks />
+      Activity<RequiredIndicator>*</RequiredIndicator>
+      </Label>
+      <Select 
+      name="activity_id" 
+      value={formData.activity_id} 
+      onChange={handleInputChange} 
+      required
+      >
+      <option value="">Select an activity</option>
+      {activities.map((activity) => (
+      <option key={activity.id} value={activity.activity_id}>
+      {activity.name}
+      </option>
+      ))}
+      </Select>
+      {errors.activity_id && <ErrorMessage>{errors.activity_id}</ErrorMessage>}
+      </FormGroup>
+      <TimeRangeContainer>
+      <FormGroup>
+      <Label>
+      <FaCalendarAlt />
+      Date<RequiredIndicator>*</RequiredIndicator>
+      </Label>
+      <Input 
+      type="date" 
+      name="a_date" 
+      value={formData.a_date} 
+      onChange={handleInputChange} 
+      required 
+      min={minDate}
+      max={maxDate}
+      />
+      {errors.a_date && <ErrorMessage>{errors.a_date}</ErrorMessage>}
+      </FormGroup>
 
-        <FormGroup>
-          <Label>
-          <FaClock />
-          Working Hours
-          </Label>
-          <Input
-          type="number"
-          name="effort"
-          value={formData.effort}
-          onChange={handleInputChange}
-          placeholder="Enter hours (e.g., 8 or 9)"
-          min="1"
-          max="24"
-          step="1"
-          />
-          {errors.effort && <ErrorMessage>{errors.effort}</ErrorMessage>}
-        </FormGroup>
-        </TimeRangeContainer>
-        <FormGroup>
-          <Label>
-          <FaClock />
-          Start Time - End Time {!formData.effort && <RequiredIndicator>*</RequiredIndicator>}
-          </Label>
-          <TimeRangeContainer>
-          <TimeInput
-            type="time"
-            name="start_time"
-            value={formData.start_time}
-            onChange={handleInputChange}
-            required={!formData.effort}
-          />
-          <TimeInput
-            type="time"
-            name="end_time"
-            value={formData.end_time}
-            onChange={handleInputChange}
-            required={!formData.effort}
-          />
-          </TimeRangeContainer>
-          {errors.start_time && <ErrorMessage>{errors.start_time}</ErrorMessage>}
-          {errors.end_time && <ErrorMessage>{errors.end_time}</ErrorMessage>}
-        </FormGroup>
+      <FormGroup>
+      <Label>
+      <FaClock />
+      Working Hours
+      </Label>
+      <Input
+      type="number"
+      name="effort"
+      value={formData.effort}
+      onChange={handleInputChange}
+      placeholder="Enter hours (e.g., 8 or 9)"
+      min="1"
+      max="24"
+      step="1"
+      />
+      {errors.effort && <ErrorMessage>{errors.effort}</ErrorMessage>}
+      </FormGroup>
+      </TimeRangeContainer>
+      <FormGroup>
+      <Label>
+      <FaClock />
+      Start Time - End Time {!formData.effort && <RequiredIndicator>*</RequiredIndicator>}
+      </Label>
+      <TimeRangeContainer>
+      <TimeInput
+      type="time"
+      name="start_time"
+      value={formData.start_time}
+      onChange={handleInputChange}
+      required={!formData.effort}
+      placeholder="Start Time"
+      />
+      <TimeInput
+      type="time"
+      name="end_time"
+      value={formData.end_time}
+      onChange={handleInputChange}
+      required={!formData.effort}
+      placeholder="End Time"
+      />
+      </TimeRangeContainer>
+      {errors.start_time && <ErrorMessage>{errors.start_time}</ErrorMessage>}
+      {errors.end_time && <ErrorMessage>{errors.end_time}</ErrorMessage>}
+      </FormGroup>
 
-        <FormGroup>
-          <Label>
-          <FaStickyNote />
-          Remarks
-          </Label>
-          <TextArea
-          name="remarks"
-          value={formData.remarks}
-          onChange={handleInputChange}
-          placeholder="Add any additional notes or comments about your work..."
-          rows="4"
-          />
-        </FormGroup>
+      <FormGroup>
+      <Label>
+      <FaStickyNote />
+      Remarks
+      </Label>
+      <TextArea
+      name="remarks"
+      value={formData.remarks}
+      onChange={handleInputChange}
+      placeholder="Add any additional notes or comments about your work..."
+      rows="4"
+      />
+      </FormGroup>
 
-        {errors.submit && <ErrorMessage>{errors.submit}</ErrorMessage>}
-        </ModalBody>
+      {errors.submit && <ErrorMessage>{errors.submit}</ErrorMessage>}
+      </ModalBody>
 
-        <ModalFooter>
-        <Button type="button" variant="outline" onClick={handleClose} disabled={isSubmitting}>
-          Cancel
-        </Button>
-        {initialData ? (
-          <Button type="submit" variant="primary" disabled={isSubmitting} value="UPDATE">
-          {isSubmitting ? "Updating..." : "Update"}
-          </Button>
-        ) : (
-          <>
-          <Button type="submit" variant="primary" disabled={isSubmitting} value="ADD_AND_SAVE">
-            {isSubmitting ? "Saving..." : "Save"}
-          </Button>
-          <Button type="submit" variant="primary" disabled={isSubmitting}>
-            {isSubmitting ? "Submitting..." : "Submit"}
-          </Button>
-          </>
-        )}
-        </ModalFooter>
+      <ModalFooter>
+      <Button type="button" variant="outline" onClick={handleClose} disabled={isSubmitting}>
+      Cancel
+      </Button>
+      {initialData ? (
+        <>
+      <Button type="submit" variant="primary" disabled={isSubmitting} value="UPDATE">
+      {isSubmitting ? "Updating..." : "Update"}
+      </Button>
+        <Button type="submit" variant="primary" disabled={isSubmitting} value="SUBMIT">
+      {isSubmitting ? "Updating..." : "Update And Submit"}
+      </Button>
+      </>
+      ) : (
+      <>
+      <Button type="submit" variant="primary" disabled={isSubmitting} value="ADD_AND_SAVE">
+      {isSubmitting ? "Saving..." : "Save"}
+      </Button>
+      {/* <Button type="submit" variant="primary" disabled={isSubmitting}>
+      {isSubmitting ? "Submitting..." : "Submit"}
+      </Button> */}
+      </>
+      )}
+      </ModalFooter>
       </form>
       </ModalContainer>
     </ModalOverlay>

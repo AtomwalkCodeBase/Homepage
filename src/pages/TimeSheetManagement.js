@@ -1,5 +1,5 @@
 
-import { useState,useEffect } from "react"
+import { useState, useEffect } from "react"
 import styled from "styled-components"
 import {
   FaPlus,
@@ -15,6 +15,7 @@ import {
   FaUserCircle,
   FaCheckCircle,
   FaPaperPlane,
+  FaEye,
 } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
@@ -27,6 +28,7 @@ import { toast } from "react-toastify"
 import { TbClockCancel } from "react-icons/tb";
 import { useExport } from "../context/ExportContext"
 import { useNavigate } from "react-router-dom"
+import Modal from "../components/modals/Modal"
 
 
 const TimeSheetHeader = styled.div`
@@ -166,7 +168,7 @@ const SummaryLabel = styled.div`
   color: ${({ theme }) => theme.colors.textLight};
   font-size: 0.9rem;
 `
-const Tagline= styled.p`
+const Tagline = styled.p`
  color: ${({ theme }) => theme.colors.textLight};
 `
 const TableActions = styled.div`
@@ -180,30 +182,33 @@ const TableActions = styled.div`
 `
 const TimeSheetManagement = () => {
   const [currentWeek, setCurrentWeek] = useState("");
+  const [showImageModal, setShowImageModal] = useState(false);
   const [currentWeekStart, setCurrentWeekStart] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
   const [timesheetEntries, setTimesheetEntries] = useState([]);
   const [projects, setProjects] = useState([]);
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [relode , setRelode] = useState(1);
+  const [relode, setRelode] = useState(1);
   const [showPopup, setShowPopup] = useState(false);
   const [handeleEditdata, sethandeleEditdata] = useState(null);
   const urlParams = new URLSearchParams(window.location.search)
   const empidParam = urlParams.get("empid")
-  const empName= urlParams.get("name")
+  const empName = urlParams.get("name")
   const [filters, setFilters] = useState({
     project: 'All Projects',
     status: 'All Status',
-    activity: 'All Activities'
+    activity: 'All Activities',
+    month: ''
   });
-  const [approve , setApprove] = useState(false);
+  const [approve, setApprove] = useState(false);
   const [formData, setFormData] = useState({
-      a_emp_id:"",
+    a_emp_id: "",
     a_remarks: "",
     call_mode: "",
     emp_id: localStorage.getItem("empId") || "",
   })
+  const [reject, setReject]=useState({});
   const navigate = useNavigate()
   const { exportTimesheetData } = useExport()
   const handlePreviousWeek = () => {
@@ -330,10 +335,10 @@ const TimeSheetManagement = () => {
       .filter(entry => entry.status === 'A')
       .reduce((sum, entry) => sum + entry.effort, 0);
     const pendingHours = filteredEntries
-      .filter(({ status }) => ['R', 'S'].includes(status))
+      .filter(({ status }) => ['N', 'S'].includes(status))
       .reduce((sum, { effort }) => sum + effort, 0);
     const notsubmited = filteredEntries
-      .filter(entry => entry.status === 'N')
+      .filter(entry => entry.status === 'R')
       .reduce((sum, entry) => sum + entry.effort, 0);
 
     const uniqueDates = [...new Set(filteredEntries.map(entry => entry.a_date))];
@@ -355,13 +360,13 @@ const TimeSheetManagement = () => {
       {
         icon: <FaTimes />,
         value: pendingHours.toFixed(1),
-        label: "Pending + Reject Hours",
+        label: "Pending + Not Submitted",
         color: "warning",
       },
       {
         icon: <TbClockCancel />,
         value: notsubmited.toFixed(1),
-        label: "Not Submitted",
+        label: "Reject Hours",
         color: "error",
       },
       {
@@ -441,7 +446,7 @@ const TimeSheetManagement = () => {
       call_mode: "APPROVE",
       emp_id: localStorage.getItem("empId") || "",
     });
-    setApprove(true);
+    setApprove("APPROVE");
     setShowPopup(true);
   }
   const handelreject = (entryId) => {
@@ -456,7 +461,22 @@ const TimeSheetManagement = () => {
       call_mode: "REJECT",
       emp_id: localStorage.getItem("empId") || "",
     });
-    setApprove(false);
+    setApprove("REJECT");
+    setShowPopup(true);
+  }
+  const handelDelete = (entryId) => {
+    setFormData({
+      a_emp_id: empidParam,
+      a_date: (() => {
+        const today = new Date();
+        return formatDate(today);
+      })(),
+      ts_id: entryId.id,
+      a_remarks: "",
+      call_mode: "DELETE",
+      emp_id: localStorage.getItem("empId") || "",
+    });
+    setApprove("DELETE");
     setShowPopup(true);
   }
   const handeleEdit = (entryId) => {
@@ -469,7 +489,7 @@ const TimeSheetManagement = () => {
   };
   const handleConfirm = async (remark) => {
     setShowPopup(false);
-    if (approve) {
+    if (approve == "APPROVE") {
       // Handle approval logic here
       try {
         const response = await posttimelist({ ...formData, a_remarks: remark });
@@ -498,7 +518,6 @@ const TimeSheetManagement = () => {
       }
     }
   }
-
   const handeleweeklyapprove = async () => {
     const { startDate, endDate } = getCurrentWeekDates();
     const formattedStartDate = formatDate(startDate);
@@ -526,12 +545,45 @@ const TimeSheetManagement = () => {
   // helper – put it above your component or inside it
   const getTotalColour = hours => {
     if (hours < 5) return '#d32f2f';          // red
-    if (hours < 7) return '#ef6c00';          // orange
-    if (hours < 9) return '#388e3c';          // green
+    if (hours < 8) return '#ef6c00';          // orange
+    if (hours <= 10) return '#388e3c';          // green
     if (hours <= 15) return '#ef6c00';        // orange
     return '#d32f2f';                         // red
   };
 
+  const handleMonthChange = e => {
+    const empid = empidParam ? empidParam : localStorage.getItem('empId')
+    const monthStr = e.target.value;
+    if (monthStr === "") {
+      setRelode(relode + 1);
+    }; // user cleared the picker
+    setFilters(f => ({ ...f, month: monthStr }));
+
+    if (!monthStr) return;                     // user cleared the picker
+
+    const [year, month] = monthStr.split('-').map(Number);
+
+    // JS months are 0‑based
+    const firstDay = new Date(year, month - 1, 1);
+    const lastDay = new Date(year, month, 0); // day 0 of next month = last day
+
+    console.log(firstDay, "yyyyy")
+    fetchTimeSheetData(
+      firstDay,
+      lastDay,
+      empid
+    );
+  }; 
+
+  const handleViewDetails=(data)=>{
+    console.log("data",data)
+    setReject(data)
+   setShowImageModal(true);
+  }
+const hasNotSubmitted = filteredEntries.some(entry => entry.status === 'N');
+const hasSubmitted = filteredEntries.some(entry => entry.status === 'S');
+const hasApproved = filteredEntries.some(entry => entry.status === 'A');
+console.log("filteredEntries",!filteredEntries.length>0,hasNotSubmitted)
   return (
     <Layout title="Timesheet Management">
       <TimeSheetHeader>
@@ -543,7 +595,7 @@ const TimeSheetManagement = () => {
           {empName ? <Button variant="outline" style={{ marginRight: "0.5rem" }} onClick={navigates}>
             <FaUserCircle /> {empName}
           </Button>
-            : <Button variant="primary" onClick={openModal}>
+            :((hasNotSubmitted && !hasSubmitted && !hasApproved)||!filteredEntries.length>0)&&<Button variant="primary" onClick={openModal}>
               <FaPlus /> Add Time Entry
             </Button>}
         </div>
@@ -602,6 +654,13 @@ const TimeSheetManagement = () => {
               <option key={index}>{activity}</option>
             ))}
           </FilterSelect>
+          <input
+            type="month"
+            name="month"
+            value={filters.month}
+            onChange={handleMonthChange}
+            style={{ minWidth: 140, padding: '0.4rem' }}
+          />
         </FilterContainer>
 
         <TableContainer>
@@ -629,7 +688,7 @@ const TimeSheetManagement = () => {
                 return (
                   <tr key={entry.id}>
                     <td>{formattedDate}</td>
-                    <td>{entry.project_code}</td>
+                    <td>{entry.project_name}</td>
                     <td>{entry.activity_name}</td>
                     <td>{entry.effort}</td>
                     <td>{entry.remarks}</td>
@@ -644,9 +703,9 @@ const TimeSheetManagement = () => {
                       </Badge>
                     </td>
                     <td>
-                      {(entry.status === 'S' || entry.status === 'N') && <ActionButtons>
+                      {(entry.status === 'S' || entry.status === 'N') ? <ActionButtons>
                         {empidParam ?
-                          <>
+                         entry.status === 'S'&& <>
                             <Button onClick={() => handeleapprove(entry)} variant="ghost" size="sm" title="Approve">
                               <FaCheck />
                             </Button>
@@ -654,13 +713,16 @@ const TimeSheetManagement = () => {
                               <FaTrash />
                             </Button></> :
                           <>
-                            {/* <Button onClick={()=>handelreject(entry)} variant="ghost" size="sm" title="Cancel"> 
-                          <FaTrash />
-                          </Button>*/}
+                            <Button onClick={() => handelDelete(entry)} variant="ghost" size="sm" title="Delete">
+                              <FaTrash />
+                            </Button>
                             <Button onClick={() => handeleEdit(entry)} variant="ghost" size="sm" title="Edit">
                               <FaEdit />
                             </Button></>}
-                      </ActionButtons>}
+                      </ActionButtons>:
+                      <Button onClick={() => handleViewDetails(entry)} variant="ghost" size="sm" title="View">
+                        <FaEye />
+                      </Button>}
                     </td>
                   </tr>
                 );
@@ -671,17 +733,30 @@ const TimeSheetManagement = () => {
             <Button variant="outline" size="sm" onClick={handleExport}>
               <FaFileExport /> Export
             </Button>
-            <Button variant="primary" size="sm" handeleweeklyapprove onClick={handeleweeklyapprove}>
-              {empidParam ? (
-                <>
-                  <FaCheckCircle style={{ marginRight: 4 }} /> Approve Weekly Timesheet
-                </>
-              ) : (
-                <>
-                  <FaPaperPlane style={{ marginRight: 4 }} /> Submit Weekly Timesheet
-                </>
-              )}
-            </Button>
+            {(() => {
+              if (empidParam) {
+                // Approver view - show approve button if there are any submitted entries
+                // and no not-submitted entries
+                if (hasSubmitted && !hasNotSubmitted) {
+                  return (
+                    <Button variant="primary" size="sm" onClick={handeleweeklyapprove}>
+                      <FaCheckCircle style={{ marginRight: 4 }} /> Approve Weekly Timesheet
+                    </Button>
+                  );
+                }
+              } else {
+                // Employee view - show submit button if there are any not-submitted entries
+                // and no already-submitted entries
+                if (hasNotSubmitted && !hasSubmitted && !hasApproved) {
+                  return (
+                    <Button variant="primary" size="sm" onClick={handeleweeklyapprove}>
+                      <FaPaperPlane style={{ marginRight: 4 }} /> Submit Weekly Timesheet
+                    </Button>
+                  );
+                }
+              }
+              return null;
+            })()}
           </TableActions> :
             <TableActions style={{ justifyContent: "center" }}> There are no timesheet entries to display. </TableActions>
           }
@@ -715,7 +790,7 @@ const TimeSheetManagement = () => {
                     );
                   })}
                   <td>
-                    <span
+                    {/* <span
                       style={{
                         display: 'inline-block',
                         padding: '2px 8px',
@@ -724,9 +799,9 @@ const TimeSheetManagement = () => {
                         color: '#fff',
                         fontWeight: 600
                       }}
-                    >
-                      {days.total.toFixed(1)}
-                    </span>
+                    > */}
+                    {days.total.toFixed(1)}
+                    {/* </span> */}
                   </td>
                 </tr>
               ))}
@@ -736,7 +811,18 @@ const TimeSheetManagement = () => {
                   const dayStr = formatDate(day);
                   return (
                     <td key={index}>
-                      <strong>{dailyTotals[dayStr].toFixed(1)}</strong>
+                      <span
+                        style={{
+                          display: 'inline-block',
+                          padding: '2px 8px',
+                          borderRadius: 4,
+                          background: getTotalColour(dailyTotals[dayStr].toFixed(1)),
+                          color: '#fff',
+                          fontWeight: 600
+                        }}
+                      >
+                        <strong>{dailyTotals[dayStr].toFixed(1)}</strong>
+                      </span>
                     </td>
                   );
                 })}
@@ -748,23 +834,46 @@ const TimeSheetManagement = () => {
             <Button variant="outline" size="sm" onClick={handleExport}>
               <FaFileExport /> Export
             </Button>
-            <Button variant="primary" size="sm" handeleweeklyapprove onClick={handeleweeklyapprove}>
-              {empidParam ? (
-                <>
-                  <FaCheckCircle style={{ marginRight: 4 }} /> Approve Weekly Timesheet
-                </>
-              ) : (
-                <>
-                  <FaPaperPlane style={{ marginRight: 4 }} /> Submit Weekly Timesheet
-                </>
-              )}
-            </Button>
+             {(() => {
+              if (empidParam) {
+                // Approver view - show approve button if there are any submitted entries
+                // and no not-submitted entries
+                if (hasSubmitted && !hasNotSubmitted) {
+                  return (
+                    <Button variant="primary" size="sm" onClick={handeleweeklyapprove}>
+                      <FaCheckCircle style={{ marginRight: 4 }} /> Approve Weekly Timesheet
+                    </Button>
+                  );
+                }
+              } else {
+                // Employee view - show submit button if there are any not-submitted entries
+                // and no already-submitted entries
+                if (hasNotSubmitted && !hasSubmitted && !hasApproved) {
+                  return (
+                    <Button variant="primary" size="sm" onClick={handeleweeklyapprove}>
+                      <FaPaperPlane style={{ marginRight: 4 }} /> Submit Weekly Timesheet
+                    </Button>
+                  );
+                }
+              }
+              return null;
+            })()}
           </TableActions>}
         </TableContainer>
       </Card>
       <TimesheetModal isOpen={isOpen} onClose={closeModal} initialData={handeleEditdata} setRelode={setRelode}></TimesheetModal>
       <ConfirmationPopup isOpen={showPopup}
         onClose={handleClosePopup} onConfirm={handleConfirm} approve={approve} timesheet={true}></ConfirmationPopup>
+                {showImageModal && (
+                <Modal onClose={() => setShowImageModal(false)}>
+                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                    {reject.a_remarks}
+                  </div>
+                  <Button variant="primary" onClick={() => setShowImageModal(false)}>
+                    Close
+                  </Button>
+                </Modal>
+              )}
     </Layout>
   );
 };

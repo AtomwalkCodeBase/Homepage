@@ -611,9 +611,9 @@ const TimesheetModal = ({ isOpen, onClose, initialData, setRelode }) => {
       <Button type="submit" variant="primary" disabled={isSubmitting} value="UPDATE">
       {isSubmitting ? "Updating..." : "Update"}
       </Button>
-        <Button type="submit" variant="primary" disabled={isSubmitting} value="SUBMIT">
+        {/* <Button type="submit" variant="primary" disabled={isSubmitting} value="SUBMIT">
       {isSubmitting ? "Updating..." : "Update And Submit"}
-      </Button>
+      </Button> */}
       </>
       ) : (
       <>

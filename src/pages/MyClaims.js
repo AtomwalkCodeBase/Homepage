@@ -16,8 +16,8 @@ import {
   FaCheck,
   FaBan,
   FaFileExport,
-  FaPaperPlane,
-  FaTrash,
+  FaChevronDown,
+  FaChevronRight,
 } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
@@ -124,6 +124,7 @@ const SummaryIcon = styled.div`
     color: ${props.theme.colors.warning};
   `}
 `
+
 const TableActions = styled.div`
   display: flex;
   justify-content: space-between;
@@ -132,6 +133,7 @@ const TableActions = styled.div`
   flex-wrap: wrap;
   gap: 1rem;
 `
+
 const SummaryValue = styled.div`
   font-size: 1.8rem;
   font-weight: 600;
@@ -190,7 +192,7 @@ const ModalContent = styled.div`
   background: white;
   border-radius: 8px;
   width: 90%;
-  max-width: 800px;
+  max-width: 1000px;
   max-height: 90vh;
   overflow-y: auto;
   padding: 2rem;
@@ -270,6 +272,34 @@ const ReceiptImage = styled.img`
   border: 1px solid ${({ theme }) => theme.colors.border};
 `
 
+const ExpandableRow = styled.tr`
+  cursor: pointer;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.background};
+  }
+`
+
+const ClaimItemsTable = styled.table`
+  width: 100%;
+  margin-top: 1rem;
+  border-collapse: collapse;
+  
+  th, td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  }
+  
+  th {
+    background-color: ${({ theme }) => theme.colors.background};
+    font-weight: 600;
+  }
+`
+
+const ClaimItemRow = styled.tr`
+  background-color: ${({ theme }) => theme.colors.background}22;
+`
+
 const MyClaims = () => {
   const [activeTab, setActiveTab] = useState("all")
   const [isOpen, setIsOpen] = useState(false)
@@ -284,12 +314,15 @@ const MyClaims = () => {
   const [typeFilter, setTypeFilter] = useState("All Types")
   const [timeFilter, setTimeFilter] = useState("All Time")
   const [filteredClaims, setFilteredClaims] = useState([])
+  const [expandedClaims, setExpandedClaims] = useState(new Set())
   const { profile } = useAuth()
   const { exportClaimsData } = useExport()
+
   // Claim Action Modal States
   const [isActionModalOpen, setIsActionModalOpen] = useState(false)
   const [actionType, setActionType] = useState("")
   const [selectedClaimForAction, setSelectedClaimForAction] = useState(null)
+  const [selectedClaimForEdit, setSelectedClaimForEdit] = useState(null)
 
   const fetchProjectList = async () => {
     try {
@@ -313,6 +346,7 @@ const MyClaims = () => {
 
   const handleClosePopup = () => {
     setIsOpen(false)
+    setSelectedClaimForEdit(null)
   }
 
   const handleConfirm = () => {
@@ -322,7 +356,9 @@ const MyClaims = () => {
   const fetchClaimDetails = () => {
     getEmpClaim("GET", empId)
       .then((res) => {
-        setClaims(res.data)
+        // Filter out claims with empty claim_items
+        const validClaims = res.data.filter((claim) => claim.claim_items && claim.claim_items.length > 0)
+        setClaims(validClaims)
       })
       .catch((err) => {
         console.log("Error fetching claim data:", err)
@@ -332,9 +368,12 @@ const MyClaims = () => {
   const fetchClaimDetailsofemp = () => {
     getEmpClaim("APPROVE", empId)
       .then((res) => {
-        setEmpClaims(res.data.filter((claim) => {
-      return !claim.is_approved && claim.expense_status === "S"
-      }))
+        // Filter out claims with empty claim_items and only pending claims
+        const validClaims = res.data.filter(
+          (claim) =>
+            claim.claim_items && claim.claim_items.length > 0 && !claim.is_approved && claim.expense_status === "S",
+        )
+        setEmpClaims(validClaims)
       })
       .catch((err) => {
         console.log("Error fetching claim data:", err)
@@ -355,13 +394,9 @@ const MyClaims = () => {
         if (activeTab === "pending") return !claim.is_approved && claim.expense_status === "S"
         if (activeTab === "approved") return claim.expense_status === "A"
         if (activeTab === "rejected") return claim.expense_status === "R"
-        if (activeTab === "Unsubmitted") return claim.expense_status === "N"
+        if (activeTab === "unsubmitted") return claim.expense_status === "N"
         return true
       })
-
-      if (typeFilter !== "All Types") {
-        filtered = filtered.filter((claim) => claim.item_name === typeFilter)
-      }
 
       if (timeFilter !== "All Time") {
         const today = new Date()
@@ -374,29 +409,9 @@ const MyClaims = () => {
 
         if (timeFilter === "This Month") {
           filtered = filtered.filter((claim) => {
-            const claimDate = getDateFromString(claim.submitted_date)
+            const claimDate = getDateFromString(claim.claim_date)
             if (!claimDate) return false
             return claimDate.getMonth() === today.getMonth() && claimDate.getFullYear() === today.getFullYear()
-          })
-        } else if (timeFilter === "Last Month") {
-          const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1)
-          filtered = filtered.filter((claim) => {
-            const claimDate = getDateFromString(claim.submitted_date)
-            if (!claimDate) return false
-            return claimDate.getMonth() === lastMonth.getMonth() && claimDate.getFullYear() === lastMonth.getFullYear()
-          })
-        } else if (timeFilter === "Last 3 Months") {
-          const threeMonthsAgo = new Date(today.getFullYear(), today.getMonth() - 3, today.getDate())
-          filtered = filtered.filter((claim) => {
-            const claimDate = getDateFromString(claim.submitted_date)
-            if (!claimDate) return false
-            return claimDate >= threeMonthsAgo
-          })
-        } else if (timeFilter === "This Year") {
-          filtered = filtered.filter((claim) => {
-            const claimDate = getDateFromString(claim.submitted_date)
-            if (!claimDate) return false
-            return claimDate.getFullYear() === today.getFullYear()
           })
         }
       }
@@ -409,22 +424,17 @@ const MyClaims = () => {
     toast.info("Filters applied")
   }
 
-  const getUniqueItemTypes = () => {
-    const uniqueTypes = new Set(claims.map((claim) => claim.item_name))
-    return ["All Types", ...Array.from(uniqueTypes)]
-  }
-
   // Calculate summary data based on actual claims
-  const totalAmount = claims.reduce((sum, claim) => sum + Number.parseFloat(claim.expense_amt), 0)
+  const totalAmount = claims.reduce((sum, claim) => sum + Number.parseFloat(claim.expense_amt || 0), 0)
   const approvedAmount = claims
     .filter((claim) => claim.expense_status === "A")
-    .reduce((sum, claim) => sum + Number.parseFloat(claim.expense_amt), 0)
+    .reduce((sum, claim) => sum + Number.parseFloat(claim.expense_amt || 0), 0)
   const pendingAmount = claims
     .filter((claim) => !claim.is_approved && claim.expense_status === "S")
-    .reduce((sum, claim) => sum + Number.parseFloat(claim.expense_amt), 0)
+    .reduce((sum, claim) => sum + Number.parseFloat(claim.expense_amt || 0), 0)
   const rejectedAmount = claims
     .filter((claim) => claim.expense_status === "R")
-    .reduce((sum, claim) => sum + Number.parseFloat(claim.expense_amt), 0)
+    .reduce((sum, claim) => sum + Number.parseFloat(claim.expense_amt || 0), 0)
 
   const summaryData = [
     {
@@ -455,7 +465,8 @@ const MyClaims = () => {
 
   const getItemIcon = (itemName) => {
     switch (itemName) {
-      case "Travel Expense":
+      case "Outstation Travel Exp.":
+      case "City Travel Expense":
         return <FaCarAlt />
       case "Meal Expense":
         return <FaUtensils />
@@ -474,9 +485,9 @@ const MyClaims = () => {
       return { text: "Rejected", variant: "error" }
     }
     if (claim.expense_status === "N") {
-      return { text: "unsubmitted", variant: "info" }
+      return { text: "Not Submitted", variant: "info" }
     }
-    return { text: "Pending", variant: "warning" }
+    return { text: "Submitted", variant: "warning" }
   }
 
   const handleViewDetails = (claim) => {
@@ -489,21 +500,23 @@ const MyClaims = () => {
     setSelectedClaim(null)
   }
 
+  const toggleClaimExpansion = (claimId) => {
+    const newExpanded = new Set(expandedClaims)
+    if (newExpanded.has(claimId)) {
+      newExpanded.delete(claimId)
+    } else {
+      newExpanded.add(claimId)
+    }
+    setExpandedClaims(newExpanded)
+  }
+
   // Claim Action Handlers
   const handleApprove = (claim) => {
     setSelectedClaimForAction(claim)
     setActionType("APPROVE")
     setIsActionModalOpen(true)
   }
-const handeleDetele = (claim) => {
-  const confirmDelete = window.confirm("Are you sure you want to delete this claim?")
-  if (confirmDelete) {
-    // Implement delete logic here
-    toast.success("Claim deleted successfully")
-    // Refresh the claims data after deletion
-    fetchClaimDetailsofemp()
-}
-}
+
   const handleReject = (claim) => {
     setSelectedClaimForAction(claim)
     setActionType("REJECT")
@@ -517,19 +530,20 @@ const handeleDetele = (claim) => {
   }
 
   const handleActionSuccess = () => {
-    // Refresh the claims data after successful action
     fetchClaimDetailsofemp()
     setIsLoadings((prev) => prev + 1)
     handleCloseActionModal()
   }
-      const handleExport = (data) => {
-        const result = exportClaimsData(data, "Claim_data")
-        if (result.success) {
-        toast.success("Exported successfully")
-        } else {
-          toast.error("Export failed: " + result.message)
-        }
-      }
+
+  const handleExport = (data) => {
+    const result = exportClaimsData(data, "Claim_data")
+    if (result.success) {
+      toast.success("Exported successfully")
+    } else {
+      toast.error("Export failed: " + result.message)
+    }
+  }
+
   return (
     <Layout title="My Claims">
       <ClaimsHeader>
@@ -555,7 +569,7 @@ const handeleDetele = (claim) => {
       <Card>
         <TabContainer>
           <Tab active={activeTab === "all"} onClick={() => setActiveTab("all")}>
-            MY Claims
+            All Claims
           </Tab>
           <Tab active={activeTab === "pending"} onClick={() => setActiveTab("pending")}>
             Pending
@@ -566,28 +580,24 @@ const handeleDetele = (claim) => {
           <Tab active={activeTab === "rejected"} onClick={() => setActiveTab("rejected")}>
             Rejected
           </Tab>
-           <Tab active={activeTab === "Unsubmitted"} onClick={() => setActiveTab("Unsubmitted")}>
-            Unsubmitted
+          <Tab active={activeTab === "unsubmitted"} onClick={() => setActiveTab("unsubmitted")}>
+            Not Submitted
           </Tab>
-          {profile.is_manager && <Tab active={activeTab === "empdata"} onClick={() => setActiveTab("empdata")}>
-            Employee Claims
-          </Tab>}
+          {profile?.is_manager && (
+            <Tab active={activeTab === "empdata"} onClick={() => setActiveTab("empdata")}>
+              Employee Claims
+            </Tab>
+          )}
         </TabContainer>
 
         <FilterContainer>
-          <FilterSelect value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
-            {getUniqueItemTypes().map((type, index) => (
-              <option key={index}>{type}</option>
-            ))}
-          </FilterSelect>
-
-          {/* <FilterSelect value={timeFilter} onChange={(e) => setTimeFilter(e.target.value)}>
+          <FilterSelect value={timeFilter} onChange={(e) => setTimeFilter(e.target.value)}>
             <option>All Time</option>
             <option>This Month</option>
             <option>Last Month</option>
             <option>Last 3 Months</option>
             <option>This Year</option>
-          </FilterSelect> */}
+          </FilterSelect>
 
           <Button variant="outline" size="sm" onClick={handleFilter}>
             <FaFilter /> Filter
@@ -599,12 +609,12 @@ const handeleDetele = (claim) => {
             <table>
               <thead>
                 <tr>
-                  <th>Claim ID</th>
-                  <th>Expense Type</th>
-                  <th>Amount</th>
-                  <th>Expense Date</th>
-                  <th>Submitted Date</th>
+                  <th></th>
+                  <th>Master Claim ID</th>
                   <th>Employee Name</th>
+                  <th>Total Amount</th>
+                  <th>Claim Date</th>
+                  <th>Items Count</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
@@ -613,45 +623,93 @@ const handeleDetele = (claim) => {
                 {empClaims.length > 0 ? (
                   empClaims.map((claim) => {
                     const statusInfo = getStatusInfo(claim)
+                    const isExpanded = expandedClaims.has(claim.id)
                     return (
-                      <tr key={claim.id}>
-                        <td>{claim.claim_id}</td>
-                        <td>
-                          <div style={{ display: "flex", alignItems: "center" }}>
-                            <span style={{ marginRight: "0.5rem" }}>{getItemIcon(claim.item_name)}</span>
-                            {claim.item_name}
-                          </div>
-                        </td>
-                        <td>₹{claim.expense_amt}</td>
-                        <td>{claim.expense_date}</td>
-                        <td>{claim.submitted_date}</td>
-                        <td>{claim.employee_name}</td>
-                        <td>
-                          <Badge variant={statusInfo.variant}>{statusInfo.text}</Badge>
-                        </td>
-                        <td>
-                          <ActionButtons>
-                            <Button onClick={() => handleViewDetails(claim)} variant="ghost" size="sm" title="View">
-                              <FaEye />
+                      <>
+                        <ExpandableRow key={claim.id}>
+                          <td>
+                            <Button variant="ghost" size="sm" onClick={() => toggleClaimExpansion(claim.id)}>
+                              {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
                             </Button>
-                            {statusInfo.text !== "Approved" && statusInfo.text !== "Rejected" && (
-                              <>
-                                <Button
-                                  onClick={() => handleApprove(claim)}
-                                  variant="primary"
-                                  size="sm"
-                                  title="Approve"
-                                >
-                                  <FaCheck />
-                                </Button>
-                                <Button onClick={() => handleReject(claim)} variant="outline" size="sm" title="Reject">
-                                  <FaBan />
-                                </Button>
-                              </>
-                            )}
-                          </ActionButtons>
-                        </td>
-                      </tr>
+                          </td>
+                          <td>{claim.master_claim_id}</td>
+                          <td>{claim.employee_name}</td>
+                          <td>₹{claim.expense_amt}</td>
+                          <td>{claim.claim_date}</td>
+                          <td>{claim.claim_items?.length || 0}</td>
+                          <td>
+                            <Badge variant={statusInfo.variant}>{statusInfo.text}</Badge>
+                          </td>
+                          <td>
+                            <ActionButtons>
+                              <Button onClick={() => handleViewDetails(claim)} variant="ghost" size="sm" title="View">
+                                <FaEye />
+                              </Button>
+                              {statusInfo.text !== "Approved" && statusInfo.text !== "Rejected" && (
+                                <>
+                                  <Button
+                                    onClick={() => handleApprove(claim)}
+                                    variant="primary"
+                                    size="sm"
+                                    title="Approve"
+                                  >
+                                    <FaCheck />
+                                  </Button>
+                                  <Button
+                                    onClick={() => handleReject(claim)}
+                                    variant="outline"
+                                    size="sm"
+                                    title="Reject"
+                                  >
+                                    <FaBan />
+                                  </Button>
+                                </>
+                              )}
+                            </ActionButtons>
+                          </td>
+                        </ExpandableRow>
+                        {isExpanded && (
+                          <tr>
+                            <td colSpan={8}>
+                              <ClaimItemsTable>
+                                <thead>
+                                  <tr>
+                                    <th>Item Name</th>
+                                    <th>Project</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Remarks</th>
+                                    <th>Receipt</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {claim.claim_items?.map((item) => (
+                                    <ClaimItemRow key={item.id}>
+                                      <td>
+                                        <div style={{ display: "flex", alignItems: "center" }}>
+                                          <span style={{ marginRight: "0.5rem" }}>{getItemIcon(item.item_name)}</span>
+                                          {item.item_name}
+                                        </div>
+                                      </td>
+                                      <td>{item.project_name || "N/A"}</td>
+                                      <td>₹{item.expense_amt}</td>
+                                      <td>{item.expense_date}</td>
+                                      <td>{item.remarks}</td>
+                                      <td>
+                                        {item.submitted_file_1 ? (
+                                          <Badge variant="success">Yes</Badge>
+                                        ) : (
+                                          <Badge variant="error">No</Badge>
+                                        )}
+                                      </td>
+                                    </ClaimItemRow>
+                                  ))}
+                                </tbody>
+                              </ClaimItemsTable>
+                            </td>
+                          </tr>
+                        )}
+                      </>
                     )
                   })
                 ) : (
@@ -667,13 +725,11 @@ const handeleDetele = (claim) => {
             <table>
               <thead>
                 <tr>
-                  <th>Claim ID</th>
-                  <th>Expense Type</th>
-                  <th>Description</th>
-                  <th>Amount</th>
-                  <th>Expense Date</th>
-                  <th>Submitted Date</th>
-                  <th>Receipt</th>
+                  <th></th>
+                  <th>Master Claim ID</th>
+                  <th>Total Amount</th>
+                  <th>Claim Date</th>
+                  <th>Items Count</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
@@ -682,45 +738,77 @@ const handeleDetele = (claim) => {
                 {filteredClaims.length > 0 ? (
                   filteredClaims.map((claim) => {
                     const statusInfo = getStatusInfo(claim)
+                    const isExpanded = expandedClaims.has(claim.id)
                     return (
-                      <tr key={claim.id}>
-                        <td>{claim.claim_id}</td>
-                        <td>
-                          <div style={{ display: "flex", alignItems: "center" }}>
-                            <span style={{ marginRight: "0.5rem" }}>{getItemIcon(claim.item_name)}</span>
-                            {claim.item_name}
-                          </div>
-                        </td>
-                        <td>{claim.remarks}</td>
-                        <td>₹{claim.expense_amt}</td>
-                        <td>{claim.expense_date}</td>
-                        <td>{claim.submitted_date}</td>
-                        <td>
-                          {claim.submitted_file_1 ? (
-                            <Badge variant="success">Yes</Badge>
-                          ) : (
-                            <Badge variant="error">No</Badge>
-                          )}
-                        </td>
-                        <td>
-                          <Badge variant={statusInfo.variant}>{statusInfo.text}</Badge>
-                        </td>
-                        <td>
-                          <ActionButtons>
-                            <Button onClick={() => handleViewDetails(claim)} variant="ghost" size="sm" title="View">
-                              <FaEye />
+                      <>
+                        <ExpandableRow key={claim.id}>
+                          <td>
+                            <Button variant="ghost" size="sm" onClick={() => toggleClaimExpansion(claim.id)}>
+                              {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
                             </Button>
-                             {activeTab === "Unsubmitted" &&<Button onClick={() => handeleDetele(claim)} variant="ghost" size="sm" title="Delete">
-                              <FaTrash />
-                            </Button>}
-                          </ActionButtons>
-                        </td>
-                      </tr>
+                          </td>
+                          <td>{claim.master_claim_id}</td>
+                          <td>₹{claim.expense_amt}</td>
+                          <td>{claim.claim_date}</td>
+                          <td>{claim.claim_items?.length || 0}</td>
+                          <td>
+                            <Badge variant={statusInfo.variant}>{statusInfo.text}</Badge>
+                          </td>
+                          <td>
+                            <ActionButtons>
+                              <Button onClick={() => handleViewDetails(claim)} variant="ghost" size="sm" title="View">
+                                <FaEye />
+                              </Button>
+                            </ActionButtons>
+                          </td>
+                        </ExpandableRow>
+                        {isExpanded && (
+                          <tr>
+                            <td colSpan={7}>
+                              <ClaimItemsTable>
+                                <thead>
+                                  <tr>
+                                    <th>Item Name</th>
+                                    <th>Project</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Remarks</th>
+                                    <th>Receipt</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {claim.claim_items?.map((item) => (
+                                    <ClaimItemRow key={item.id}>
+                                      <td>
+                                        <div style={{ display: "flex", alignItems: "center" }}>
+                                          <span style={{ marginRight: "0.5rem" }}>{getItemIcon(item.item_name)}</span>
+                                          {item.item_name}
+                                        </div>
+                                      </td>
+                                      <td>{item.project_name || "N/A"}</td>
+                                      <td>₹{item.expense_amt}</td>
+                                      <td>{item.expense_date}</td>
+                                      <td>{item.remarks}</td>
+                                      <td>
+                                        {item.submitted_file_1 ? (
+                                          <Badge variant="success">Yes</Badge>
+                                        ) : (
+                                          <Badge variant="error">No</Badge>
+                                        )}
+                                      </td>
+                                    </ClaimItemRow>
+                                  ))}
+                                </tbody>
+                              </ClaimItemsTable>
+                            </td>
+                          </tr>
+                        )}
+                      </>
                     )
                   })
                 ) : (
                   <tr>
-                    <td colSpan={9} style={{ textAlign: "center", padding: "1rem" }}>
+                    <td colSpan={7} style={{ textAlign: "center", padding: "1rem" }}>
                       No claims found for the selected filters
                     </td>
                   </tr>
@@ -728,13 +816,15 @@ const handeleDetele = (claim) => {
               </tbody>
             </table>
           )}
-            <TableActions style={{float:"right"}}> 
-              {activeTab === "Unsubmitted"&&<Button variant="outline" size="sm" >
-                        <FaPaperPlane style={{ marginRight: 4 }} /> Submit All Claims
-                        </Button>}
-          <Button variant="primary" size="sm" onClick={()=>handleExport(activeTab === "empdata" ? empClaims : filteredClaims)}>
-           <FaFileExport /> Export
-          </Button>
+
+          <TableActions style={{ float: "right", marginTop: "1rem" }}>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => handleExport(activeTab === "empdata" ? empClaims : filteredClaims)}
+            >
+              <FaFileExport /> Export
+            </Button>
           </TableActions>
         </TableContainer>
       </Card>
@@ -748,6 +838,7 @@ const handeleDetele = (claim) => {
         projecttype={projecttype}
         setIsLoadings={setIsLoadings}
         isLoadings={isLoadings}
+        editData={selectedClaimForEdit}
       />
 
       {/* Claim Action Modal */}
@@ -767,35 +858,22 @@ const handeleDetele = (claim) => {
               <FaTimes />
             </CloseButton>
 
-            <ModalTitle>Claim Details</ModalTitle>
+            <ModalTitle>Master Claim Details</ModalTitle>
 
             <ModalGrid>
               <div>
                 <ModalSection>
-                  <ModalLabel>Claim ID</ModalLabel>
-                  <ModalValue>{selectedClaim.claim_id}</ModalValue>
+                  <ModalLabel>Master Claim ID</ModalLabel>
+                  <ModalValue>{selectedClaim.master_claim_id}</ModalValue>
 
-                  <ModalLabel>Expense Type</ModalLabel>
-                  <ModalValue>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <span style={{ marginRight: "0.5rem" }}>{getItemIcon(selectedClaim.item_name)}</span>
-                      {selectedClaim.item_name}
-                    </div>
-                  </ModalValue>
+                  <ModalLabel>Employee Name</ModalLabel>
+                  <ModalValue>{selectedClaim.employee_name}</ModalValue>
 
-                  <ModalLabel>Description</ModalLabel>
-                  <ModalValue>{selectedClaim.remarks}</ModalValue>
-                </ModalSection>
-
-                <ModalSection>
-                  <ModalLabel>Amount</ModalLabel>
+                  <ModalLabel>Total Amount</ModalLabel>
                   <ModalValue>₹{selectedClaim.expense_amt}</ModalValue>
 
-                  <ModalLabel>Expense Date</ModalLabel>
-                  <ModalValue>{selectedClaim.expense_date}</ModalValue>
-
-                  <ModalLabel>Submitted Date</ModalLabel>
-                  <ModalValue>{selectedClaim.submitted_date}</ModalValue>
+                  <ModalLabel>Claim Date</ModalLabel>
+                  <ModalValue>{selectedClaim.claim_date}</ModalValue>
                 </ModalSection>
               </div>
 
@@ -806,23 +884,58 @@ const handeleDetele = (claim) => {
                     <Badge variant={getStatusInfo(selectedClaim).variant}>{getStatusInfo(selectedClaim).text}</Badge>
                   </ModalValue>
 
-                  <ModalLabel>Project</ModalLabel>
-                  <ModalValue>{selectedClaim.project_name || "N/A"}</ModalValue>
+                  <ModalLabel>Items Count</ModalLabel>
+                  <ModalValue>{selectedClaim.claim_items?.length || 0}</ModalValue>
 
-                  <ModalLabel>Approver Notes</ModalLabel>
-                  <ModalValue>{selectedClaim.approver_notes || "N/A"}</ModalValue>
-                </ModalSection>
+                  <ModalLabel>Approved By</ModalLabel>
+                  <ModalValue>{selectedClaim.approved_by || "N/A"}</ModalValue>
 
-                <ModalSection>
-                  <ModalLabel>Receipt</ModalLabel>
-                  {selectedClaim.submitted_file_1 ? (
-                    <ReceiptImage src={selectedClaim.submitted_file_1} alt="Receipt" width={400} height={300} />
-                  ) : (
-                    <ModalValue>No receipt attached</ModalValue>
-                  )}
+                  <ModalLabel>Approval Remarks</ModalLabel>
+                  <ModalValue>{selectedClaim.approval_remarks || "N/A"}</ModalValue>
                 </ModalSection>
               </div>
             </ModalGrid>
+
+            <ModalSection>
+              <ModalLabel>Claim Items</ModalLabel>
+              <ClaimItemsTable>
+                <thead>
+                  <tr>
+                    <th>Item Name</th>
+                    <th>Project</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Remarks</th>
+                    <th>Receipt</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {selectedClaim.claim_items?.map((item) => (
+                    <ClaimItemRow key={item.id}>
+                      <td>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <span style={{ marginRight: "0.5rem" }}>{getItemIcon(item.item_name)}</span>
+                          {item.item_name}
+                        </div>
+                      </td>
+                      <td>{item.project_name || "N/A"}</td>
+                      <td>₹{item.expense_amt}</td>
+                      <td>{item.expense_date}</td>
+                      <td>{item.remarks}</td>
+                      <td>
+                        {item.submitted_file_1 ? (
+                          <a href={item.submitted_file_1} target="_blank" rel="noopener noreferrer">
+                            <Badge variant="success">View</Badge>
+                          </a>
+                        ) : (
+                          <Badge variant="error">No</Badge>
+                        )}
+                      </td>
+                    </ClaimItemRow>
+                  ))}
+                </tbody>
+              </ClaimItemsTable>
+            </ModalSection>
           </ModalContent>
         </DetailModal>
       )}

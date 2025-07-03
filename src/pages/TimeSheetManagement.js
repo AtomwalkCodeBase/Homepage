@@ -195,6 +195,10 @@ const TimeSheetManagement = () => {
   const urlParams = new URLSearchParams(window.location.search)
   const empidParam = urlParams.get("empid")
   const empName = urlParams.get("name")
+  const [startdate,setStartdate] =useState({
+    startTime:"",
+    endTime:""
+  })
   const [filters, setFilters] = useState({
     project: 'All Projects',
     status: 'All Status',
@@ -208,6 +212,7 @@ const TimeSheetManagement = () => {
     call_mode: "",
     emp_id: localStorage.getItem("empId") || "",
   })
+
   const [reject, setReject]=useState({});
   const navigate = useNavigate()
   const { exportTimesheetData } = useExport()
@@ -217,6 +222,7 @@ const TimeSheetManagement = () => {
     setCurrentWeekStart(newDate);
 
     const { startDate, endDate } = getWeekDates(newDate);
+    setStartdate({startTime:startDate, endTime:endDate})
     const empid = localStorage.getItem('empId') || 'default_emp_id';
     fetchTimeSheetData(startDate, endDate, empid);
   };
@@ -226,6 +232,7 @@ const TimeSheetManagement = () => {
     setCurrentWeekStart(newDate);
 
     const { startDate, endDate } = getWeekDates(newDate);
+    setStartdate({startTime:startDate, endTime:endDate})
     const empid = localStorage.getItem('empId') || 'default_emp_id';
     fetchTimeSheetData(startDate, endDate, empid);
   };
@@ -309,7 +316,7 @@ const TimeSheetManagement = () => {
 
   useEffect(() => {
     const { startDate, endDate } = getCurrentWeekDates();
-    fetchTimeSheetData(startDate, endDate);
+    fetchTimeSheetData(startdate.startTime?startdate.startTime:startDate,startdate.endTime?startdate.endTime:endDate);
   }, [relode]);
 
   const handleFilterChange = (e) => {
@@ -433,6 +440,7 @@ const TimeSheetManagement = () => {
     return { projectGroups, dailyTotals, weekDays };
   };
   const { projectGroups, dailyTotals, weekDays } = getWeeklySummaryData();
+ 
 
   const handeleapprove = async (entryId) => {
     setFormData({
@@ -520,8 +528,8 @@ const TimeSheetManagement = () => {
   }
   const handeleweeklyapprove = async () => {
     const { startDate, endDate } = getCurrentWeekDates();
-    const formattedStartDate = formatDate(startDate);
-    const formattedEndDate = formatDate(endDate);
+    const formattedStartDate = formatDate(startdate.startTime?startdate.startTime:startDate);
+    const formattedEndDate = formatDate(startdate.endTime?startdate.endTime:endDate);
     const response = await posttimelist({ emp_id: empidParam ? empidParam : localStorage.getItem("empId"), start_date: formattedStartDate, end_date: formattedEndDate, call_mode: empidParam ? "WEEKLY_APPROVE" : "WEEKLY_SUBMIT", a_emp_id: empidParam ? empidParam : "" });
     if (response.status === 200) {
       toast.success("Timesheet entry Submit successfully!");
@@ -688,7 +696,7 @@ console.log("filteredEntries",!filteredEntries.length>0,hasNotSubmitted)
                 return (
                   <tr key={entry.id}>
                     <td>{formattedDate}</td>
-                    <td>{entry.project_name}</td>
+                    <td>{entry.project_name}({entry.project_code})</td>
                     <td>{entry.activity_name}</td>
                     <td>{entry.effort}</td>
                     <td>{entry.remarks}</td>

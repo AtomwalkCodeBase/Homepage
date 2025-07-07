@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { FaTimes, FaUpload, FaMoneyBillWave, FaCalendarAlt } from "react-icons/fa"
 import Button from "../Button"
@@ -217,8 +217,8 @@ const ErrorMessage = styled.div`
   display: ${props => props.show ? 'block' : 'none'};
   margin-bottom: 1rem;`
 
-const ClaimModal = ({ isOpen, onClose, dropdownValue, projecttype,setIsLoadings,isLoadings,masterClaimId }) => {
-  console.log(dropdownValue,"dropdownValue")
+const ClaimModal = ({ isOpen, onClose, dropdownValue, projecttype,setIsLoadings,isLoadings,masterClaimId,claimupdate }) => {
+  console.log(claimupdate,"dropdownValue")
   const [isLoading, setIsLoading] = useState(false)
   const [isFileError, setIsFileError] = useState(false)
   const [formData, setFormData] = useState({
@@ -230,7 +230,49 @@ const ClaimModal = ({ isOpen, onClose, dropdownValue, projecttype,setIsLoadings,
     files:null,
     emp_id:localStorage.getItem("empId"),
   })
-console.log(projecttype," formData")
+  console.log(formData," formData")
+
+useEffect(() => {
+  const fileFromUrl = (url) => {
+    if (!url) return null;
+    const name = url.split("/").pop().split("?")[0];
+    return { uri: url, name };
+  };
+
+  if (claimupdate?.item_id) {
+    setFormData({
+      type: claimupdate.item_id ?? "",
+      projecttype: claimupdate.project_id ?? "",
+      amount: claimupdate.expense_amt ?? "",
+      date: claimupdate.expense_date
+        ? (() => {
+            // Convert "03-Jul-2025" to "yyyy-mm-dd"
+            const [day, monStr, year] = claimupdate.expense_date.split("-");
+            const months = {
+              Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06",
+              Jul: "07", Aug: "08", Sep: "09", Oct: "10", Nov: "11", Dec: "12",
+            };
+            const month = months[monStr] || "01";
+            return `${year}-${month}-${day}`;
+          })()
+        : "",
+      description: claimupdate.remarks ?? "",
+      files: fileFromUrl(claimupdate.submitted_file_1),
+      emp_id: localStorage.getItem("empId"),
+    });
+  } else {
+    setFormData({
+      type: "",
+      projecttype: "",
+      amount: "",
+      date: "",
+      description: "",
+      files: null,
+      emp_id: localStorage.getItem("empId"),
+    });
+  }
+}, [claimupdate]);
+console.log(formData," formData")
   const handleSubmit = async (e) => {
     const { value } = e.nativeEvent.submitter;
     e.preventDefault()
@@ -247,7 +289,7 @@ console.log(projecttype," formData")
     formDatas.append("emp_id", formData.emp_id)
     formDatas.append("quantity", 1)
     if (value === "save") {
-       formDatas.append("call_mode", "CLAIM_SAVE");
+       formDatas.append("call_mode",claimupdate?.item_id?"CLAIM_UPDATE": "CLAIM_SAVE");
     }
 
     if (formData.projecttype) {
@@ -255,6 +297,9 @@ console.log(projecttype," formData")
     }
     if(masterClaimId) {
         formDatas.append('m_claim_id', masterClaimId);
+    }
+    if( claimupdate?.item_id) {
+      formDatas.append("claim_id", claimupdate.id)
     }
 
     try {
@@ -439,7 +484,7 @@ console.log(projecttype," formData")
               {isLoading ? "Submitting..." : "Submit Claim"}
             </Button> */}
             <Button  variant="primary" type="submit" disabled={isLoading} value="save">
-              {isLoading ? "Saveing..." : "Save Claim"}
+              {claimupdate.item_id?isLoading ? "Update..." : "Update Claim":isLoading ? "Saveing..." : "Save Claim"}
             </Button>
           </ModalFooter>
         </form>

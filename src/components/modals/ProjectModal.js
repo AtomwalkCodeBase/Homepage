@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { FaTimes, FaProjectDiagram, FaUser, FaCalendarAlt, FaFileAlt, FaTags } from "react-icons/fa"
 import Button from "../Button"
 import { toast } from "react-toastify"
+import { getemployeeList, postProject } from "../../services/productServices"
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -178,74 +179,72 @@ const ModalFooter = styled.div`
   border-top: 1px solid ${({ theme }) => theme.colors.border};
 `
 
-const ProjectModal = ({ isOpen, onClose, onSubmit, isLoading, setIsLoading }) => {
+const ProjectModal = ({ isOpen, onClose,setRefresh,refresh }) => {
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
-    name: "",
-    type: "",
-    description: "",
-    employeeId: "",
-    assignedEmployee: "",
-    status: "Active",
-    endDate: "",
+    name:"",
+    project_code: "",
+    start_date: "",
+    end_date: "",
+    call_mode:"ADD_PROJECT",
+    employee_list:"",
+    emp_id:""
   })
+  const [employees, setEmployees] = useState([])
+  console.log(employees,"data")
+  const formatDate = (date) => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        // Replace this with your actual API call
+        const response = await getemployeeList()
+        setEmployees(response.data)
+        setLoading(false)
+      } catch (err) {
+        toast.error(`Failed to fetch employees: ${err.message}`)
+        setLoading(false)
+      }
+    }
 
-  // Mock employee data
-  const employees = [
-    { id: 1, name: "John Doe", department: "Development" },
-    { id: 2, name: "Jane Smith", department: "Design" },
-    { id: 3, name: "Mike Johnson", department: "Development" },
-    { id: 4, name: "Sarah Wilson", department: "Analytics" },
-    { id: 5, name: "David Brown", department: "Testing" },
-    { id: 6, name: "Lisa Davis", department: "Project Management" },
-    { id: 7, name: "Tom Wilson", department: "Development" },
-    { id: 8, name: "Emma Taylor", department: "Design" },
-  ]
-
-  const projectTypes = [
-    "Web Development",
-    "Mobile Development",
-    "Desktop Application",
-    "Data Analytics",
-    "Machine Learning",
-    "DevOps",
-    "Testing & QA",
-    "UI/UX Design",
-    "Database Design",
-    "API Development",
-    "E-commerce",
-    "CRM System",
-    "ERP System",
-    "Other",
-  ]
-
+    fetchEmployees()
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
 
-    // Validation
-    if (!formData.name || !formData.type || !formData.description || !formData.employeeId) {
-      toast.error("Please fill in all required fields")
-      setLoading(false)
-      return
-    }
-
+    // // Validation
+    // if (!formData.name || !formData.type || !formData.description || !formData.employeeId) {
+    //   toast.error("Please fill in all required fields")
+    //   setLoading(false)
+    //   return
+    // }
+   const submissionData = {
+        ...formData,
+        start_date: formData.start_date ? formatDate(new Date(formData.start_date)) : "",
+        end_date: formData.end_date ? formatDate(new Date(formData.end_date)) : "",
+      }
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      onSubmit(formData)
-
+     const response= await postProject(submissionData)
+     if (response.status === 200) {
+        toast.success("Project created successfully")
+        setRefresh((prev) => prev + 1) // Trigger refresh 
       // Reset form
-      setFormData({
-        name: "",
-        type: "",
-        description: "",
-        employeeId: "",
-        assignedEmployee: "",
-        status: "Active",
-        endDate: "",
+    setFormData({
+    name:"",
+    project_code: "",
+    start_date: "",
+    end_date: "",
+    call_mode:"ADD_PROJECT",
+    employee_list:"",
+    emp_id:""
       })
+    onClose() // Close modal after submission
+    }
     } catch (error) {
       toast.error(`${error.response?.data?.detail || error.message}`)
     } finally {
@@ -260,15 +259,11 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, isLoading, setIsLoading }) =>
       [name]: value,
     }))
   }
-
   const handleEmployeeChange = (e) => {
     const employeeId = e.target.value
-    const selectedEmployee = employees.find((emp) => emp.id.toString() === employeeId)
-
     setFormData((prev) => ({
       ...prev,
-      employeeId: employeeId,
-      assignedEmployee: selectedEmployee ? selectedEmployee.name : "",
+      emp_id: employeeId,
     }))
   }
 
@@ -308,11 +303,11 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, isLoading, setIsLoading }) =>
                 <FormLabel htmlFor="type">Project Code *</FormLabel>
                 <div style={{ position: "relative" }}>
                   <FormInput
-                  id="type"
-                  name="type"
+                  id="project_code"
+                  name="project_code"
                   type="text"
                   placeholder="Enter project code"
-                  value={formData.type}
+                  value={formData.project_code}
                   onChange={handleChange}
                   required
                   style={{ paddingLeft: "2rem" }}
@@ -322,20 +317,20 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, isLoading, setIsLoading }) =>
               </FormGroup>
 
               <FormGroup>
-                <FormLabel htmlFor="employeeId">Assign Employee *</FormLabel>
+                <FormLabel htmlFor="emp_id">Project Lead</FormLabel>
                 <div style={{ position: "relative" }}>
                   <FormSelect
-                    id="employeeId"
-                    name="employeeId"
-                    value={formData.employeeId}
+                    id="emp_id"
+                    name="emp_id"
+                    // value={formData.emp_id}
                     onChange={handleEmployeeChange}
                     required
                     style={{ paddingLeft: "2rem" }}
                   >
                     <option value="">Select employee</option>
                     {employees.map((employee) => (
-                      <option key={employee.id} value={employee.id}>
-                        {employee.name} - {employee.department}
+                      <option key={employee.emp_id} value={employee.emp_id}>
+                        {employee.name}
                       </option>
                     ))}
                   </FormSelect>
@@ -344,24 +339,8 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, isLoading, setIsLoading }) =>
               </FormGroup>
             </FormRow>
 
-            <FormGroup>
-              <FormLabel htmlFor="description">Project Description *</FormLabel>
-              <div style={{ position: "relative" }}>
-                <FormTextarea
-                  id="description"
-                  name="description"
-                  placeholder="Enter detailed project description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  required
-                  style={{ paddingLeft: "2rem", paddingTop: "0.75rem" }}
-                />
-                <FaFileAlt style={{ position: "absolute", left: "0.75rem", top: "0.75rem", color: "#666" }} />
-              </div>
-            </FormGroup>
-
-            <FormRow>
-              <FormGroup>
+           
+                <FormGroup>
                 <FormLabel htmlFor="status">Status</FormLabel>
                 <FormSelect id="status" name="status" value={formData.status} onChange={handleChange}>
                   <option value="Active">Active</option>
@@ -369,15 +348,31 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, isLoading, setIsLoading }) =>
                   <option value="Completed">Completed</option>
                 </FormSelect>
               </FormGroup>
+            
 
+            <FormRow>
               <FormGroup>
-                <FormLabel htmlFor="endDate">Expected Start Date</FormLabel>
+                <FormLabel htmlFor="start_date">Start Date</FormLabel>
                 <div style={{ position: "relative" }}>
                   <FormInput
-                    id="endDate"
-                    name="endDate"
+                    id="start_date"
+                    name="start_date"
                     type="date"
-                    value={formData.endDate}
+                    value={formData.start_date}
+                    onChange={handleChange}
+                    style={{ paddingLeft: "2rem" }}
+                  />
+                  <FaCalendarAlt style={{ position: "absolute", left: "0.75rem", top: "0.75rem", color: "#666" }} />
+                </div>
+              </FormGroup>
+                 <FormGroup>
+                <FormLabel htmlFor="end_date">End Date</FormLabel>
+                <div style={{ position: "relative" }}>
+                  <FormInput
+                    id="end_date"
+                    name="end_date"
+                    type="date"
+                    value={formData.end_date}
                     onChange={handleChange}
                     style={{ paddingLeft: "2rem" }}
                   />

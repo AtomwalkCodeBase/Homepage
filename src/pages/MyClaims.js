@@ -32,6 +32,7 @@ import ClaimActionModal from "../components/modals/ClaimActionModal"
 import { toast } from "react-toastify"
 import { useAuth } from "../context/AuthContext"
 import { useExport } from "../context/ExportContext"
+import ConfirmationPopup from "../components/modals/ConfirmationPopup"
 
 const ClaimsHeader = styled.div`
   display: flex;
@@ -320,8 +321,13 @@ const MyClaims = () => {
   const [expandedClaims, setExpandedClaims] = useState(new Set())
   const { profile } = useAuth()
   const { exportClaimsData } = useExport()
+  const [deleteopen , setDeleteopen] = useState(false)
+  const [masterClaimIds, setMasterClaimIds] = useState({masterClaimId: null,
+    id: null,
+  })
+  const [claimupdate, setClaimupdate] = useState(null)
 
-  // Claim Action Modal States
+  // Claim Action Modal State
   const [isActionModalOpen, setIsActionModalOpen] = useState(false)
   const [actionType, setActionType] = useState("")
   const [selectedClaimForAction, setSelectedClaimForAction] = useState(null)
@@ -348,6 +354,7 @@ const MyClaims = () => {
   }
 
   const handleClosePopup = () => {
+    setClaimupdate(null)
     setIsOpen(false)
     setSelectedClaimForEdit(null)
   }
@@ -355,6 +362,21 @@ const MyClaims = () => {
   const handleConfirm = (claim) => {
     setIsOpen(true)
     setMasterClaimId(claim.master_claim_id? claim.master_claim_id : null)
+    setClaimupdate(claim)
+  }
+  const handeleDelete = (claim,id) => {
+    setDeleteopen(true)
+    setMasterClaimIds({
+      masterClaimIds: claim.master_claim_id, // Use the selected master claim ID
+      id: id, // Use the selected claim ID
+    })
+  }
+    const handeleDeleteclose = () => {
+    setDeleteopen(false)
+  }
+  const handeleconform=()=>{
+    handlesubmitall(masterClaimIds.masterClaimId,masterClaimIds.id)
+    setDeleteopen(false)
   }
  const handlesubmitall = (claim,id) => {
   if(id){
@@ -846,7 +868,7 @@ const MyClaims = () => {
                               {substatus.text === "Not Submitted" && (
                                 <>
                                   <Button
-                                    onClick={() => handlesubmitall(claim,item.id)}
+                                    onClick={() => handeleDelete(claim,item.id)}
                                     variant="primary"
                                     size="sm"
                                     title="Delete claim"
@@ -854,7 +876,7 @@ const MyClaims = () => {
                                     <FaTrash />
                                   </Button>
                                   <Button
-                                    onClick={() => handleReject(claim)}
+                                    onClick={()=>handleConfirm(item)}
                                     variant="primary"
                                     size="sm"
                                     title="Update claim"
@@ -917,6 +939,7 @@ const MyClaims = () => {
         isLoadings={isLoadings}
         editData={selectedClaimForEdit}
         masterClaimId={masterClaimId}
+        claimupdate={claimupdate}
       />
 
       {/* Claim Action Modal */}
@@ -1017,6 +1040,7 @@ const MyClaims = () => {
           </ModalContent>
         </DetailModal>
       )}
+      <ConfirmationPopup isOpen={deleteopen} onClose={handeleDeleteclose} onConfirm={handeleconform} timesheet={true}></ConfirmationPopup>
     </Layout>
   )
 }

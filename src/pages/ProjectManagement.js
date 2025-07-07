@@ -1,8 +1,6 @@
-"use client"
-
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { FaPlus, FaEye, FaEdit, FaTrash, FaFilter, FaProjectDiagram, FaUser, FaSpinner } from "react-icons/fa"
+import { FaPlus, FaEye, FaEdit, FaTrash, FaFilter, FaProjectDiagram, FaUser, FaSpinner, FaUserEdit } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
@@ -11,6 +9,8 @@ import ProjectModal from "../components/modals/ProjectModal"
 import { useExport } from "../context/ExportContext"
 import { toast } from "react-toastify"
 import { getProjectlist, postProject } from "../services/productServices"
+import { MdOutlineAssignmentInd } from "react-icons/md";
+
 
 const ProjectHeader = styled.div`
   display: flex;
@@ -169,6 +169,7 @@ const ProjectManagement = () => {
   const [statusFilter, setStatusFilter] = useState("All Status")
   const [typeFilter, setTypeFilter] = useState("All Types")
   const [isLoading, setIsLoading] = useState(true)
+  const [refresh, setRefresh] = useState(1)
   const { exportToExcel } = useExport()
 
   // Fetch projects from API
@@ -187,7 +188,7 @@ const ProjectManagement = () => {
 
   useEffect(() => {
     fetchProjects()
-  }, [])
+  }, [refresh])
 
   useEffect(() => {
     let filtered = projects
@@ -227,31 +228,6 @@ const ProjectManagement = () => {
 
     setFilteredProjects(filtered)
   }, [projects, activeTab, searchTerm, statusFilter, typeFilter])
-
-  const handleAddProject = async (newProject) => {
-    try {
-      // Here you would call your API to add the project
-      // await addProjectAPI(newProject)
-      // For now, we'll simulate it
-      const project = {
-        ...newProject,
-        project_code:"",
-        call_mode:"ADD_PROJECT",
-        id: projects.length + 1,
-        project_status: "02", // Active
-        start_date: new Date().toLocaleDateString("en-GB"),
-      }
-       postProject(project) // Call the postProject function to save the project
-      const response = setProjects([...projects, project])
-      if(response.status===200) {
-      toast.success("Project added successfully")
-      setIsOpen(false)
-      }
-    } catch (error) {
-      console.error("Error adding project:", error)
-      toast.error("Failed to add project")
-    }
-  }
 
   const handleExport = () => {
     const exportData = filteredProjects.map((project) => ({
@@ -415,10 +391,8 @@ const ProjectManagement = () => {
             <table>
               <thead>
                 <tr>
-                  <th>Project ID</th>
-                  <th>Project Name</th>
                   <th>Project Code</th>
-                  <th>Type</th>
+                  <th>Project Name</th>
                   <th>Status</th>
                   <th>Start Date</th>
                   <th>End Date</th>
@@ -433,7 +407,7 @@ const ProjectManagement = () => {
                     const statusInfo = getStatusInfo(project.project_status)
                     return (
                       <tr key={project.id}>
-                        <td>{project.id}</td>
+                        <td>{project.project_code}</td>
                         <td>
                           <div style={{ display: "flex", alignItems: "center" }}>
                             <span style={{ marginRight: "0.5rem" }}>
@@ -442,8 +416,6 @@ const ProjectManagement = () => {
                             {project.title}
                           </div>
                         </td>
-                        <td>{project.project_code}</td>
-                        <td>{getTypeLabel(project.project_type)}</td>
                         <td>
                           <Badge variant={statusInfo.variant}>{statusInfo.label}</Badge>
                         </td>
@@ -468,14 +440,14 @@ const ProjectManagement = () => {
                         </td>
                         <td>
                           <ActionButtons>
+                            <Button variant="primary" size="sm" title="Assign user">
+                              <FaUserEdit />
+                            </Button>
                             <Button variant="ghost" size="sm" title="View">
                               <FaEye />
                             </Button>
                             <Button variant="outline" size="sm" title="Edit">
                               <FaEdit />
-                            </Button>
-                            <Button variant="outline" size="sm" title="Delete">
-                              <FaTrash />
                             </Button>
                           </ActionButtons>
                         </td>
@@ -498,7 +470,8 @@ const ProjectManagement = () => {
       <ProjectModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        onSubmit={handleAddProject}
+        setRefresh={setRefresh}
+        refresh={refresh}
       />
     </Layout>
   )

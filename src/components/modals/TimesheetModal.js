@@ -534,7 +534,7 @@ const TimesheetModal = ({ isOpen, onClose, initialData, setRelode }) => {
       value={formData.a_date} 
       onChange={handleInputChange} 
       required 
-      min={minDate}
+      // min={minDate}
       max={maxDate}
       />
       {errors.a_date && <ErrorMessage>{errors.a_date}</ErrorMessage>}

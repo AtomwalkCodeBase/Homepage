@@ -217,7 +217,7 @@ const ErrorMessage = styled.div`
   display: ${props => props.show ? 'block' : 'none'};
   margin-bottom: 1rem;`
 
-const ClaimModal = ({ isOpen, onClose, dropdownValue, projecttype,setIsLoadings,isLoadings }) => {
+const ClaimModal = ({ isOpen, onClose, dropdownValue, projecttype,setIsLoadings,isLoadings,masterClaimId }) => {
   console.log(dropdownValue,"dropdownValue")
   const [isLoading, setIsLoading] = useState(false)
   const [isFileError, setIsFileError] = useState(false)
@@ -245,12 +245,16 @@ console.log(projecttype," formData")
     formDatas.append("expense_amt", formData.amount)
     formDatas.append("expense_date", expense_date)
     formDatas.append("emp_id", formData.emp_id)
+    formDatas.append("quantity", 1)
     if (value === "save") {
        formDatas.append("call_mode", "CLAIM_SAVE");
     }
 
     if (formData.projecttype) {
-      formDatas.append("project", formData.projecttype)
+      formDatas.append("project_id", formData.projecttype)
+    }
+    if(masterClaimId) {
+        formDatas.append('m_claim_id', masterClaimId);
     }
 
     try {
@@ -274,7 +278,7 @@ console.log(projecttype," formData")
         toast.error("Claim Submission Error", "Failed to claim. Unexpected response.")
       }
     } catch (error) {
-      // toast.error(`${error.response?.data?.detail || error.message}`)
+      toast.error(`${error.response?.data?.message || error.message}`)
       setIsFileError("Please upload a file")
       return
     } finally {
@@ -431,9 +435,9 @@ console.log(projecttype," formData")
             <Button variant="outline" type="button" onClick={onClose}>
               Cancel
             </Button>
-            <Button  variant="primary" type="submit" disabled={isLoading} value="submit">
+            {/* <Button  variant="primary" type="submit" disabled={isLoading} value="submit">
               {isLoading ? "Submitting..." : "Submit Claim"}
-            </Button>
+            </Button> */}
             <Button  variant="primary" type="submit" disabled={isLoading} value="save">
               {isLoading ? "Saveing..." : "Save Claim"}
             </Button>

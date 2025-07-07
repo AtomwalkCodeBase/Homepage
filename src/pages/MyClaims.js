@@ -18,12 +18,15 @@ import {
   FaFileExport,
   FaChevronDown,
   FaChevronRight,
+  FaPaperPlane,
+  FaTrash,
+  FaEdit,
 } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
 import Badge from "../components/Badge"
-import { getEmpClaim, getExpenseItem, getExpenseProjectList } from "../services/productServices"
+import { getEmpClaim, getExpenseItem, getExpenseProjectList, postClaimAction } from "../services/productServices"
 import ClaimModal from "../components/modals/ClaimModal"
 import ClaimActionModal from "../components/modals/ClaimActionModal"
 import { toast } from "react-toastify"
@@ -127,7 +130,7 @@ const SummaryIcon = styled.div`
 
 const TableActions = styled.div`
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   margin-bottom: 1rem;
   flex-wrap: wrap;
@@ -323,7 +326,7 @@ const MyClaims = () => {
   const [actionType, setActionType] = useState("")
   const [selectedClaimForAction, setSelectedClaimForAction] = useState(null)
   const [selectedClaimForEdit, setSelectedClaimForEdit] = useState(null)
-
+  const [masterClaimId, setMasterClaimId] = useState(null)
   const fetchProjectList = async () => {
     try {
       const response = await getExpenseProjectList()
@@ -349,10 +352,34 @@ const MyClaims = () => {
     setSelectedClaimForEdit(null)
   }
 
-  const handleConfirm = () => {
+  const handleConfirm = (claim) => {
     setIsOpen(true)
+    setMasterClaimId(claim.master_claim_id? claim.master_claim_id : null)
   }
-
+ const handlesubmitall = (claim,id) => {
+  if(id){
+      const claimPayload = {
+    claim_id: id, // item claim ID
+    call_mode: "DELETE",
+  };
+   postClaimAction(claimPayload).then((res) => {
+    toast.success("claims Delete successfully")
+    setIsLoadings(isLoadings+1)
+      })
+      .catch((err) =>  toast.error("Failed to Delete  claim"))
+  }
+  else{ const claimPayload = {
+    m_claim_id: claim.master_claim_id, // Use the selected master claim ID
+    call_mode: "SUBMIT_ALL",
+  };
+   postClaimAction(claimPayload).then((res) => {
+    toast.success("All claims submitted successfully")
+    setIsLoadings(isLoadings+1)
+      })
+      .catch((err) =>  toast.error("Failed to submit all claims"))
+  }
+  }
+ 
   const fetchClaimDetails = () => {
     getEmpClaim("GET", empId)
       .then((res) => {
@@ -726,7 +753,7 @@ const MyClaims = () => {
               <thead>
                 <tr>
                   <th></th>
-                  <th>Master Claim ID</th>
+                  <th>Claim ID</th>
                   <th>Total Amount</th>
                   <th>Claim Date</th>
                   <th>Items Count</th>
@@ -756,9 +783,18 @@ const MyClaims = () => {
                           </td>
                           <td>
                             <ActionButtons>
-                              <Button onClick={() => handleViewDetails(claim)} variant="ghost" size="sm" title="View">
+                               <Button onClick={() => handleViewDetails(claim)} variant="ghost" size="sm" title="View">
                                 <FaEye />
                               </Button>
+                                  <Button
+                                    onClick={()=>toggleClaimExpansion(claim.id)}
+                                    variant="primary"
+                                    size="sm"
+                                    title="See Details"
+                                  >
+                                    <FaEdit/>
+                                  </Button>
+                            
                             </ActionButtons>
                           </td>
                         </ExpandableRow>
@@ -773,32 +809,73 @@ const MyClaims = () => {
                                     <th>Amount</th>
                                     <th>Date</th>
                                     <th>Remarks</th>
+                                    <th>Status</th>
                                     <th>Receipt</th>
+                                    <th>Actions</th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {claim.claim_items?.map((item) => (
-                                    <ClaimItemRow key={item.id}>
-                                      <td>
-                                        <div style={{ display: "flex", alignItems: "center" }}>
-                                          <span style={{ marginRight: "0.5rem" }}>{getItemIcon(item.item_name)}</span>
-                                          {item.item_name}
-                                        </div>
-                                      </td>
-                                      <td>{item.project_name || "N/A"}</td>
-                                      <td>₹{item.expense_amt}</td>
-                                      <td>{item.expense_date}</td>
-                                      <td>{item.remarks}</td>
-                                      <td>
-                                        {item.submitted_file_1 ? (
-                                          <Badge variant="success">Yes</Badge>
-                                        ) : (
-                                          <Badge variant="error">No</Badge>
-                                        )}
-                                      </td>
-                                    </ClaimItemRow>
-                                  ))}
+                                  {claim.claim_items?.map((item) => {
+                                    const substatus = getStatusInfo(item)
+                                    return (
+                                      <ClaimItemRow key={item.id}>
+                                        <td>
+                                          <div style={{ display: "flex", alignItems: "center" }}>
+                                            <span style={{ marginRight: "0.5rem" }}>{getItemIcon(item.item_name)}</span>
+                                            {item.item_name}
+                                          </div>
+                                        </td>
+                                        <td>{item.project_name || "N/A"}</td>
+                                        <td>₹{item.expense_amt}</td>
+                                        <td>{item.expense_date}</td>
+                                        <td>{item.remarks}</td>
+                                        <td>
+                                          <Badge variant={substatus.variant}>{substatus.text}</Badge>
+                                        </td>
+                                        <td>
+                                          {item.submitted_file_1 ? (
+                                             <a href={item.submitted_file_1} target="_blank" rel="noopener noreferrer">
+                                            <Badge variant="success">Yes</Badge>
+                                            </a>
+                                          ) : (
+                                            <Badge variant="error">No</Badge>
+                                          )}
+                                        </td>
+                                        <td>
+                                <ActionButtons>
+                              {substatus.text === "Not Submitted" && (
+                                <>
+                                  <Button
+                                    onClick={() => handlesubmitall(claim,item.id)}
+                                    variant="primary"
+                                    size="sm"
+                                    title="Delete claim"
+                                  >
+                                    <FaTrash />
+                                  </Button>
+                                  <Button
+                                    onClick={() => handleReject(claim)}
+                                    variant="primary"
+                                    size="sm"
+                                    title="Update claim"
+                                  >
+                                    <FaEdit />
+                                  </Button>
+                                </>
+                              )}
+                            </ActionButtons>
+                                        </td>
+                                      </ClaimItemRow>
+                                    )
+                                  })}
                                 </tbody>
+                                  {statusInfo.text === "Not Submitted" &&<TableActions style={{margin:"1rem"}}><Button onClick={()=>handleConfirm(claim)} variant="primary" size="sm">
+                                        <FaPlus /> Add New Claim
+                                      </Button>
+                                       <Button variant="primary" size="sm" onClick={()=>handlesubmitall(claim)}>
+                                                            <FaPaperPlane/> Submit All Claims
+                                                          </Button>
+                                      </TableActions>}
                               </ClaimItemsTable>
                             </td>
                           </tr>
@@ -839,6 +916,7 @@ const MyClaims = () => {
         setIsLoadings={setIsLoadings}
         isLoadings={isLoadings}
         editData={selectedClaimForEdit}
+        masterClaimId={masterClaimId}
       />
 
       {/* Claim Action Modal */}

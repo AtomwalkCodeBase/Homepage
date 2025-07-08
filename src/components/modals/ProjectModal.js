@@ -386,7 +386,7 @@ const ProjectModal = ({ isOpen, onClose, setRefresh, refresh, editData = null })
                 onChange={handleChange}
               >
                 <option value="02">Active</option>
-                <option value="04">On Hold</option>
+                {/* <option value="04">On Hold</option> */}
                 <option value="03">Completed</option>
               </FormSelect>
             </FormGroup>

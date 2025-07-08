@@ -707,7 +707,7 @@ console.log("filteredEntries",!filteredEntries.length>0,hasNotSubmitted)
                             entry.status === 'S' ? "warning" : "error"
                         }
                       >
-                        {entry.status_display == "N" ? "Not Submitted" : entry.status_display}
+                        {entry.status == "N" ? "Draft" : entry.status_display}
                       </Badge>
                     </td>
                     <td>
@@ -720,7 +720,7 @@ console.log("filteredEntries",!filteredEntries.length>0,hasNotSubmitted)
                             <Button onClick={() => handelreject(entry)} variant="ghost" size="sm" title="Reject">
                               <FaTrash />
                             </Button></> :
-                          <>
+                              entry.status !== 'S'&& <>
                             <Button onClick={() => handelDelete(entry)} variant="ghost" size="sm" title="Delete">
                               <FaTrash />
                             </Button>

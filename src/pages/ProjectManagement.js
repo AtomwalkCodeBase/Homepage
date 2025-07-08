@@ -9,6 +9,7 @@ import Button from "../components/Button"
 import Badge from "../components/Badge"
 import ProjectModal from "../components/modals/ProjectModal"
 import AssignUserModal from "../components/modals/AssignUserModal"
+import ViewProjectModal from "../components/modals/ViewProjectModal"
 import { useExport } from "../context/ExportContext"
 import { toast } from "react-toastify"
 import { getProjectlist, postProject } from "../services/productServices"
@@ -165,6 +166,7 @@ const ProjectManagement = () => {
   const [activeTab, setActiveTab] = useState("all")
   const [isOpen, setIsOpen] = useState(false)
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false)
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false)
   const [selectedProject, setSelectedProject] = useState(null)
   const [projects, setProjects] = useState([])
   const [filteredProjects, setFilteredProjects] = useState([])
@@ -255,6 +257,11 @@ const ProjectManagement = () => {
     setIsOpen(true)
   }
 
+  const handleViewProject = (project) => {
+    setSelectedProject(project)
+    setIsViewModalOpen(true)
+  }
+
   const handleAssignSubmit = async (selectedEmployees) => {
     if (!selectedProject) return
 
@@ -341,12 +348,12 @@ const ProjectManagement = () => {
       label: "Completed Projects",
       color: "secondary",
     },
-    {
-      icon: <FaProjectDiagram />,
-      value: onHoldProjects,
-      label: "On Hold Projects",
-      color: "warning",
-    },
+    // {
+    //   icon: <FaProjectDiagram />,
+    //   value: onHoldProjects,
+    //   label: "On Hold Projects",
+    //   color: "warning",
+    // },
   ]
 
   const getStatusInfo = (statusCode) => {
@@ -400,9 +407,9 @@ const ProjectManagement = () => {
           <Tab active={activeTab === "completed"} onClick={() => setActiveTab("completed")}>
             Completed
           </Tab>
-          <Tab active={activeTab === "onhold"} onClick={() => setActiveTab("onhold")}>
+          {/* <Tab active={activeTab === "onhold"} onClick={() => setActiveTab("onhold")}>
             On Hold
-          </Tab>
+          </Tab> */}
         </TabContainer>
 
         <FilterContainer>
@@ -417,14 +424,14 @@ const ProjectManagement = () => {
             <option>All Status</option>
             <option>Active</option>
             <option>Completed</option>
-            <option>On Hold</option>
+            {/* <option>On Hold</option> */}
           </FilterSelect>
 
-          <FilterSelect value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
+          {/* <FilterSelect value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
             {getUniqueTypes().map((type, index) => (
               <option key={index}>{type}</option>
             ))}
-          </FilterSelect>
+          </FilterSelect> */}
 
           <Button variant="outline" size="sm">
             <FaFilter /> Filter
@@ -447,7 +454,7 @@ const ProjectManagement = () => {
                   <th>Start Date</th>
                   <th>End Date</th>
                   <th>Project Manager</th>
-                  <th>Team Members</th>
+                  {/* <th>Team Members</th> */}
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -479,7 +486,7 @@ const ProjectManagement = () => {
                             {project.project_manager}
                           </div>
                         </td>
-                        <td>
+                        {/* <td>
                           {project.additional_fld_list
                             ? project.additional_fld_list.split("|").map((emp, i) => (
                                 <Badge key={i} variant="outline" style={{ margin: "0.2rem" }}>
@@ -487,7 +494,7 @@ const ProjectManagement = () => {
                                 </Badge>
                               ))
                             : "N/A"}
-                        </td>
+                        </td> */}
                         <td>
                           <ActionButtons>
                             <Button
@@ -498,9 +505,9 @@ const ProjectManagement = () => {
                             >
                               <FaUserEdit />
                             </Button>
-                            {/* <Button variant="ghost" size="sm" title="View">
+                            <Button variant="ghost" size="sm" title="View" onClick={() => handleViewProject(project)}>
                               <FaEye />
-                            </Button> */}
+                            </Button>
                             <Button variant="outline" size="sm" title="Edit" onClick={() => handleEditProject(project)}>
                               <FaEdit />
                             </Button>
@@ -540,6 +547,15 @@ const ProjectManagement = () => {
           setSelectedProject(null)
         }}
         onSubmit={handleAssignSubmit}
+        project={selectedProject}
+      />
+
+      <ViewProjectModal
+        isOpen={isViewModalOpen}
+        onClose={() => {
+          setIsViewModalOpen(false)
+          setSelectedProject(null)
+        }}
         project={selectedProject}
       />
     </Layout>

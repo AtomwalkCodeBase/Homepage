@@ -1,4 +1,6 @@
-import { useState, useEffect, useContext } from "react"
+"use client"
+
+import { useState, useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
 import styled from "styled-components"
 import {
@@ -21,19 +23,16 @@ import {
   FaStethoscope,
   FaChartBar,
   FaUsers,
-  FaChevronDown,
-  FaChevronRight,
-  FaUserFriends,
+  FaFileInvoice,
 } from "react-icons/fa"
-import { SiGooglecalendar } from "react-icons/si";
-import { PiListPlusFill } from "react-icons/pi";
+import { SiGooglecalendar } from "react-icons/si"
+import { PiListPlusFill } from "react-icons/pi"
 import { useAuth } from "../context/AuthContext"
 import { useTheme } from "../context/ThemeContext"
-import logo from '../assets/img/Atom_walk_logo-removebg-preview.png';
 const SidebarContainer = styled.div`
   width: ${(props) => {
     const { isOpen, uiPreferences } = props
-    let sidebarStyle = uiPreferences?.layout?.sidebarStyle || "standard"
+    const sidebarStyle = uiPreferences?.layout?.sidebarStyle || "standard"
 
     if (!isOpen) {
       return "70px"
@@ -384,7 +383,7 @@ const LogoutButton = styled.button`
 // Add new styled components for grouped menu items
 const MenuGroup = styled.div`
   margin-bottom: 5px;
-`;
+`
 
 const MenuGroupHeader = styled.div`
   display: flex;
@@ -394,16 +393,16 @@ const MenuGroupHeader = styled.div`
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: ${(props) => {
-    const { uiPreferences } = props;
-    const fontFamily = uiPreferences?.typography?.fontFamily || "Poppins";
-    return `${fontFamily}, sans-serif`;
+    const { uiPreferences } = props
+    const fontFamily = uiPreferences?.typography?.fontFamily || "Poppins"
+    return `${fontFamily}, sans-serif`
   }};
   font-size: ${(props) => {
-    const { uiPreferences } = props;
-    const fontSize = uiPreferences?.typography?.fontSize || "medium";
-    if (fontSize === "small") return "0.9rem";
-    if (fontSize === "large") return "1.1rem";
-    return "1rem"; // medium
+    const { uiPreferences } = props
+    const fontSize = uiPreferences?.typography?.fontSize || "medium"
+    if (fontSize === "small") return "0.9rem"
+    if (fontSize === "large") return "1.1rem"
+    return "1rem" // medium
   }};
   
   &:hover {
@@ -413,11 +412,11 @@ const MenuGroupHeader = styled.div`
   svg {
     margin-right: 10px;
     font-size: ${(props) => {
-      const { uiPreferences } = props;
-      const iconSize = uiPreferences?.components?.iconSize || "medium";
-      if (iconSize === "small") return "1rem";
-      if (iconSize === "large") return "1.4rem";
-      return "1.2rem"; // medium
+      const { uiPreferences } = props
+      const iconSize = uiPreferences?.components?.iconSize || "medium"
+      if (iconSize === "small") return "1rem"
+      if (iconSize === "large") return "1.4rem"
+      return "1.2rem" // medium
     }};
   }
   
@@ -430,21 +429,20 @@ const MenuGroupHeader = styled.div`
     transition: transform 0.3s ease;
     transform: ${({ isOpen }) => (isOpen ? "rotate(0deg)" : "rotate(-90deg)")};
   }
-`;
+`
 
 const SubMenu = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
   overflow: hidden;
-  max-height: ${({ isOpen, itemCount }) => 
-    isOpen ? `${itemCount * 44}px` : "0"};
+  max-height: ${({ isOpen, itemCount }) => (isOpen ? `${itemCount * 44}px` : "0")};
   transition: max-height 0.3s ease;
-`;
+`
 
 const SubMenuItem = styled.li`
   margin-bottom: 2px;
-`;
+`
 
 const SubMenuLink = styled(Link)`
   display: flex;
@@ -454,9 +452,9 @@ const SubMenuLink = styled(Link)`
   text-decoration: none;
   transition: all 0.3s ease;
   font-family: ${(props) => {
-    const { uiPreferences } = props;
-    const fontFamily = uiPreferences?.typography?.fontFamily || "Poppins";
-    return `${fontFamily}, sans-serif`;
+    const { uiPreferences } = props
+    const fontFamily = uiPreferences?.typography?.fontFamily || "Poppins"
+    return `${fontFamily}, sans-serif`
   }};
   font-size: 0.9rem;
   
@@ -476,14 +474,14 @@ const SubMenuLink = styled(Link)`
     margin-right: 10px;
     font-size: 1rem;
   }
-`;
+`
 const Sidebar = ({ onToggle, initialOpen = true }) => {
-  const [isOpen, setIsOpen] = useState(initialOpen);
-  const [expandedGroups, setExpandedGroups] = useState({});
-  const location = useLocation();
-  const { currentUser, logout, profile, companyInfo, iscoustomerLogin } = useAuth();
-  const { theme, uiPreferences } = useTheme();
-  const customerdata = localStorage.getItem("customerUser");
+  const [isOpen, setIsOpen] = useState(initialOpen)
+  const [expandedGroups, setExpandedGroups] = useState({})
+  const location = useLocation()
+  const { currentUser, logout, profile, companyInfo, iscoustomerLogin } = useAuth()
+  const { theme, uiPreferences } = useTheme()
+  const customerdata = localStorage.getItem("customerUser")
   const sidebarStyle = uiPreferences?.layout?.sidebarStyle || "standard"
   // Grouped menu items structure
   const menuGroups = customerdata
@@ -496,16 +494,14 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
             { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
             { path: "/appointments", name: "Book Appointments", icon: <FaStethoscope /> },
             { path: "/appointmentlist", name: "My Appointments", icon: <FaCalendarAlt /> },
-          ]
-        }
+          ],
+        },
       ]
     : [
         {
           name: "Dashboard",
           icon: <FaHome />,
-          items: [
-            { path: "/dashboard", name: "Overview", icon: <FaHome /> }
-          ]
+          items: [{ path: "/dashboard", name: "Overview", icon: <FaHome /> }],
         },
         {
           name: "Time Management",
@@ -516,18 +512,16 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
             ...(profile?.is_shift_applicable
               ? [{ path: "/shift-detail", name: "My Shifts", icon: <FaExchangeAlt /> }]
               : []),
-            ...(profile?.is_manager
-              ? [{ path: "/shifts", name: "Shift Scheduling", icon: <SiGooglecalendar /> }]
-              : [])
-          ]
+            ...(profile?.is_manager ? [{ path: "/shifts", name: "Shift Scheduling", icon: <SiGooglecalendar /> }] : []),
+          ],
         },
         {
           name: "Leave & Holidays",
           icon: <FaCalendarAlt />,
           items: [
             { path: "/leave-management", name: "Leave Management", icon: <FaCalendarAlt /> },
-            { path: "/holidays", name: "Holiday Calendar", icon: <FaCalendarCheck /> }
-          ]
+            { path: "/holidays", name: "Holiday Calendar", icon: <FaCalendarCheck /> },
+          ],
         },
         {
           name: "Finance",
@@ -536,30 +530,31 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
             ...(profile?.is_manager
               ? [{ path: "/claims", name: "My Claims", icon: <FaMoneyBillWave /> }]
               : [{ path: "/claims", name: "My Claims", icon: <FaMoneyBillWave /> }]),
-            { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> }
-          ]
+            { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
+          ],
         },
         {
           name: "Projects",
           icon: <PiListPlusFill />,
           items: profile?.is_manager
-            ? [{ path: "/projectmanagement", name: "Project List", icon: <PiListPlusFill /> }]
-            : []
+            ? [
+                { path: "/projectmanagement", name: "Project List", icon: <PiListPlusFill /> },
+                { path: "/project-report", name: "Project Report", icon: <FaFileInvoice  /> },
+              ]
+            : [],
         },
         {
           name: "Employee Management",
           icon: <FaUsers />,
-          items: profile?.is_manager
-            ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }]
-            : []
+          items: profile?.is_manager ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : [],
         },
         {
           name: "Support",
           icon: <FaComments />,
           items: [
             { path: "/helpdesk", name: "Help Desk", icon: <FaComments /> },
-            { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> }
-          ]
+            { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
+          ],
         },
         {
           name: "Personal",
@@ -569,42 +564,40 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
             { path: "/profile", name: "My Profile", icon: <FaUserCircle /> },
             // { path: "/DoctorDashboard", name: "Dashboard", icon: <FaHome /> },
             // { path: "/OPDappointments", name: "Out patients", icon: <FaUserFriends /> },
-          ]
-        }
-      ];
+          ],
+        },
+      ]
 
   useEffect(() => {
-    setIsOpen(initialOpen);
+    setIsOpen(initialOpen)
     // Initialize expanded groups based on current path
-    const initialExpanded = {};
-    menuGroups.forEach(group => {
-      const hasActiveItem = group.items.some(item => 
-        location.pathname.startsWith(item.path)
-      );
-      initialExpanded[group.name] = hasActiveItem;
-    });
-    setExpandedGroups(initialExpanded);
-  }, [initialOpen, location.pathname]);
+    const initialExpanded = {}
+    menuGroups.forEach((group) => {
+      const hasActiveItem = group.items.some((item) => location.pathname.startsWith(item.path))
+      initialExpanded[group.name] = hasActiveItem
+    })
+    setExpandedGroups(initialExpanded)
+  }, [initialOpen, location.pathname])
 
   const toggleSidebar = () => {
-    const newState = !isOpen;
-    setIsOpen(newState);
-    if (onToggle) onToggle(newState);
-  };
+    const newState = !isOpen
+    setIsOpen(newState)
+    if (onToggle) onToggle(newState)
+  }
 
   const toggleGroup = (groupName) => {
-    console.log(groupName,"nameee")
-    if(!isOpen){
-     toggleSidebar()
+    console.log(groupName, "nameee")
+    if (!isOpen) {
+      toggleSidebar()
     }
     setTimeout(() => {
-       setExpandedGroups(prev => ({
-      ...prev,
-      [groupName]: !prev[groupName]
-    }));   
-    }, 100);
-  };
- const menuItems = customerdata
+      setExpandedGroups((prev) => ({
+        ...prev,
+        [groupName]: !prev[groupName],
+      }))
+    }, 100)
+  }
+  const menuItems = customerdata
     ? [
         { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
         { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
@@ -613,50 +606,60 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
       ]
     : [
         { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },
-                ...(profile?.is_manager
-          ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }]
-          : []),
-        { path: "/attendance-tracking", name: "Attendance", icon: <FaClock/> },
-        { path: "/timesheet", name: "Timesheet", icon: <FaChartBar/> },
+        ...(profile?.is_manager ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : []),
+        { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
+        { path: "/timesheet", name: "Timesheet", icon: <FaChartBar /> },
         { path: "/leave-management", name: "Leave Management", icon: <FaCalendarAlt /> },
         { path: "/holidays", name: "Holiday Calendar", icon: <FaCalendarCheck /> },
+        ...(profile?.is_manager ? [{ path: "/shifts", name: "Shift Scheduling", icon: <SiGooglecalendar /> }] : []),
         ...(profile?.is_manager
-          ? [{ path: "/shifts", name: "Shift Scheduling", icon: <SiGooglecalendar /> }]
-          : []),
-           ...(profile?.is_manager
-          ? [ { path: "/claims", name: "Claims Management", icon: <FaMoneyBillWave /> }]
-          : [ { path: "/claims", name: "My Claims", icon: <FaMoneyBillWave /> }]),
+          ? [{ path: "/claims", name: "Claims Management", icon: <FaMoneyBillWave /> }]
+          : [{ path: "/claims", name: "My Claims", icon: <FaMoneyBillWave /> }]),
         // { path: "/appointees", name: "Appointees", icon: <FaUserPlus /> },
         // { path: "/analytics", name: "Analytics", icon: <FaChartBar /> },
         { path: "/helpdesk", name: "Help Desk", icon: <FaComments /> },
         { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
         { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
-      ...(profile?.is_shift_applicable
+        ...(profile?.is_shift_applicable
           ? [{ path: "/shift-detail", name: "My Shifts", icon: <FaExchangeAlt /> }]
           : []),
-           ...(profile?.is_manager
-          ? [{ path: "/projectmanagement", name: "Project List", icon: <PiListPlusFill /> }]
+        ...(profile?.is_manager
+          ? [
+              { path: "/projectmanagement", name: "Project List", icon: <PiListPlusFill /> },
+              { path: "/project-report", name: "Project Report", icon: <FaFileInvoice /> },
+            ]
           : []),
         { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
         { path: "/profile", name: "My Profile", icon: <FaUserCircle />, section: "Account" },
       ]
 
   return (
-   
     <SidebarContainer isOpen={isOpen} theme={theme} uiPreferences={uiPreferences}>
       <SidebarHeader isOpen={isOpen} uiPreferences={uiPreferences}>
-      {iscoustomerLogin? <Logo isOpen={isOpen} uiPreferences={uiPreferences}>
-        <img src={profile.image} alt="Company Logo" style={{ width: "70px",height:"70px", marginRight: "1rem",borderRadius:"50%" }} />
-        </Logo>
-        : <Logo isOpen={isOpen} uiPreferences={uiPreferences}>
-         <img src={"https://atomwalk.com/static/office/image/Atom_walk_logo.jpg"} alt="Company Logo" style={{ width: "80px", marginRight: "1rem",borderRadius:"10px" }} /> HRMS
-        </Logo>}
+        {iscoustomerLogin ? (
+          <Logo isOpen={isOpen} uiPreferences={uiPreferences}>
+            <img
+              src={profile.image || "/placeholder.svg"}
+              alt="Company Logo"
+              style={{ width: "70px", height: "70px", marginRight: "1rem", borderRadius: "50%" }}
+            />
+          </Logo>
+        ) : (
+          <Logo isOpen={isOpen} uiPreferences={uiPreferences}>
+            <img
+              src={"https://atomwalk.com/static/office/image/Atom_walk_logo.jpg"}
+              alt="Company Logo"
+              style={{ width: "80px", marginRight: "1rem", borderRadius: "10px" }}
+            />{" "}
+            HRMS
+          </Logo>
+        )}
         <ToggleButton onClick={toggleSidebar} uiPreferences={uiPreferences}>
           {isOpen ? <FaTimes /> : <FaBars />}
         </ToggleButton>
       </SidebarHeader>
 
-    {sidebarStyle === "standard" ? (
+      {sidebarStyle === "standard" ? (
         <SidebarMenu uiPreferences={uiPreferences}>
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.path} uiPreferences={uiPreferences}>
@@ -677,25 +680,22 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
         <SidebarMenu uiPreferences={uiPreferences}>
           {menuGroups.map((group) => (
             <MenuGroup key={group.name}>
-              <MenuGroupHeader 
+              <MenuGroupHeader
                 onClick={() => toggleGroup(group.name)}
                 isOpen={isOpen}
                 expanded={expandedGroups[group.name]}
                 uiPreferences={uiPreferences}
               >
                 {group.icon}
-              <span>{isOpen ? group.name : ""}</span>
-              {/* {isOpen && (
+                <span>{isOpen ? group.name : ""}</span>
+                {/* {isOpen && (
                   <span className="arrow">
                     {expandedGroups[group.name] ? <FaChevronDown /> : <FaChevronRight />}
                   </span>
               )} */}
               </MenuGroupHeader>
-              
-              <SubMenu 
-              isOpen={expandedGroups[group.name] && isOpen}
-                itemCount={group.items.length}
-              >
+
+              <SubMenu isOpen={expandedGroups[group.name] && isOpen} itemCount={group.items.length}>
                 {group.items.map((item) => (
                   <SubMenuItem key={item.path}>
                     <SubMenuLink
@@ -728,7 +728,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
         </LogoutButton>
       </SidebarFooter>
     </SidebarContainer>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

@@ -78,6 +78,7 @@ export const getProjectLists = `${newhrendpoint}/get_project_list/${db_name}/`;
 export const processProjectLists = `${newhrendpoint}/process_project_data/${db_name}/`;
 export const addTimesheet = `${newhrendpoint}/process_time_sheet/${db_name}/`;
 export const getTimesheetList = `${newhrendpoint}/get_time_sheet_list/${db_name}/`;
+export const getprojectTimesheetList = `${newhrendpoint}/get_time_sheet_report/${db_name}/`;
 export const forgetPin = `${newhrendpoint}/emp_forget_pin/`;
 export const customerslogin = `${hrendpoint}/customer_user_login/`;
 export const addCustomerTicketURL = `${endpoint}/process_customer_ticket/${db_name}/`;

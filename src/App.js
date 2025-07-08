@@ -95,6 +95,7 @@ import DoctorDashboard from "./pages/DoctorDashboard";
 import Appointments from "./pages/OPDappointments";
 import HRMRoleBasedAccessibility from "./components/hrm/HRMRoleBasedAccessibility";
 import ProjectManagement from "./pages/ProjectManagement";
+import ProjectReport from "./pages/ProjectReport";
 
 function App() {
   const url = "https://www.atomwalk.com/rest-auth/login/";
@@ -244,6 +245,7 @@ function App() {
                 <Route path="/doctordashboard" element={<DoctorDashboard />} />
                 <Route path="/OPDappointments" element={<Appointments />} />
                 <Route path="/projectmanagement" element={<ProjectManagement />} />
+                <Route path="/project-report" element={<ProjectReport />} />
               </Route>
     
               {/* Catch All */}

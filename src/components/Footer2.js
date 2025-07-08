@@ -240,7 +240,8 @@ export default function Footer2() {
    "appointmentlist",
    "doctordashboard",
    "OPDappointments",
-    "projectmanagement"
+    "projectmanagement",
+    "project-report"
   ];
   
   useEffect(() => {

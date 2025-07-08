@@ -1,3 +1,4 @@
+"use client"
 
 import { useState, useEffect } from "react"
 import styled from "styled-components"
@@ -7,29 +8,28 @@ import {
   FaTrash,
   FaCalendarAlt,
   FaFileExport,
-  FaFilter,
   FaClock,
   FaCheck,
   FaTimes,
-  FaReceipt,
   FaUserCircle,
   FaCheckCircle,
   FaPaperPlane,
   FaEye,
+  FaBalanceScale,
 } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
 import Badge from "../components/Badge"
 import TimesheetModal from "../components/modals/TimesheetModal"
-import { getTimesheetData, posttimelist } from "../services/productServices"
+import AttendanceComparisonModal from "../components/modals/AttendanceComparisonModal"
+import { getTimesheetData, posttimelist, getEmpAttendance } from "../services/productServices"
 import ConfirmationPopup from "../components/modals/ConfirmationPopup"
 import { toast } from "react-toastify"
-import { TbClockCancel } from "react-icons/tb";
+import { TbClockCancel } from "react-icons/tb"
 import { useExport } from "../context/ExportContext"
 import { useNavigate } from "react-router-dom"
 import Modal from "../components/modals/Modal"
-
 
 const TimeSheetHeader = styled.div`
   display: flex;
@@ -180,32 +180,42 @@ const TableActions = styled.div`
   gap: 1rem;
   color: ${({ theme }) => theme.colors.text};
 `
+
+const HeaderActions = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+`
+
 const TimeSheetManagement = () => {
-  const [currentWeek, setCurrentWeek] = useState("");
-  const [showImageModal, setShowImageModal] = useState(false);
-  const [currentWeekStart, setCurrentWeekStart] = useState(new Date());
-  const [isOpen, setIsOpen] = useState(false);
-  const [timesheetEntries, setTimesheetEntries] = useState([]);
-  const [projects, setProjects] = useState([]);
-  const [activities, setActivities] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [relode, setRelode] = useState(1);
-  const [showPopup, setShowPopup] = useState(false);
-  const [handeleEditdata, sethandeleEditdata] = useState(null);
+  const [currentWeek, setCurrentWeek] = useState("")
+  const [showImageModal, setShowImageModal] = useState(false)
+  const [currentWeekStart, setCurrentWeekStart] = useState(new Date())
+  const [isOpen, setIsOpen] = useState(false)
+  const [isComparisonModalOpen, setIsComparisonModalOpen] = useState(false)
+  const [timesheetEntries, setTimesheetEntries] = useState([])
+  const [attendanceData, setAttendanceData] = useState([])
+  const [projects, setProjects] = useState([])
+  const [activities, setActivities] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [relode, setRelode] = useState(1)
+  const [showPopup, setShowPopup] = useState(false)
+  const [handeleEditdata, sethandeleEditdata] = useState(null)
   const urlParams = new URLSearchParams(window.location.search)
   const empidParam = urlParams.get("empid")
   const empName = urlParams.get("name")
-  const [startdate,setStartdate] =useState({
-    startTime:"",
-    endTime:""
+  const [startdate, setStartdate] = useState({
+    startTime: "",
+    endTime: "",
   })
   const [filters, setFilters] = useState({
-    project: 'All Projects',
-    status: 'All Status',
-    activity: 'All Activities',
-    month: ''
-  });
-  const [approve, setApprove] = useState(false);
+    project: "All Projects",
+    status: "All Status",
+    activity: "All Activities",
+    month: "",
+  })
+  const [approve, setApprove] = useState(false)
   const [formData, setFormData] = useState({
     a_emp_id: "",
     a_remarks: "",
@@ -213,143 +223,169 @@ const TimeSheetManagement = () => {
     emp_id: localStorage.getItem("empId") || "",
   })
 
-  const [reject, setReject]=useState({});
+  const [reject, setReject] = useState({})
   const navigate = useNavigate()
   const { exportTimesheetData } = useExport()
   const handlePreviousWeek = () => {
-    const newDate = new Date(currentWeekStart);
-    newDate.setDate(newDate.getDate() - 7);
-    setCurrentWeekStart(newDate);
+    const newDate = new Date(currentWeekStart)
+    newDate.setDate(newDate.getDate() - 7)
+    setCurrentWeekStart(newDate)
 
-    const { startDate, endDate } = getWeekDates(newDate);
-    setStartdate({startTime:startDate, endTime:endDate})
-    const empid = localStorage.getItem('empId') || 'default_emp_id';
-    fetchTimeSheetData(startDate, endDate, empid);
-  };
+    const { startDate, endDate } = getWeekDates(newDate)
+    setStartdate({ startTime: startDate, endTime: endDate })
+    const empid = localStorage.getItem("empId") || "default_emp_id"
+    fetchTimeSheetData(startDate, endDate, empid)
+  }
   const handleNextWeek = () => {
-    const newDate = new Date(currentWeekStart);
-    newDate.setDate(newDate.getDate() + 7);
-    setCurrentWeekStart(newDate);
+    const newDate = new Date(currentWeekStart)
+    newDate.setDate(newDate.getDate() + 7)
+    setCurrentWeekStart(newDate)
 
-    const { startDate, endDate } = getWeekDates(newDate);
-    setStartdate({startTime:startDate, endTime:endDate})
-    const empid = localStorage.getItem('empId') || 'default_emp_id';
-    fetchTimeSheetData(startDate, endDate, empid);
-  };
+    const { startDate, endDate } = getWeekDates(newDate)
+    setStartdate({ startTime: startDate, endTime: endDate })
+    const empid = localStorage.getItem("empId") || "default_emp_id"
+    fetchTimeSheetData(startDate, endDate, empid)
+  }
   const getWeekDates = (date) => {
-    const dayOfWeek = date.getDay(); // 0 (Sunday) to 6 (Saturday)
-    const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    const dayOfWeek = date.getDay() // 0 (Sunday) to 6 (Saturday)
+    const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek
 
-    const monday = new Date(date);
-    monday.setDate(date.getDate() + diffToMonday);
+    const monday = new Date(date)
+    monday.setDate(date.getDate() + diffToMonday)
 
-    const sunday = new Date(monday);
-    sunday.setDate(monday.getDate() + 6);
+    const sunday = new Date(monday)
+    sunday.setDate(monday.getDate() + 6)
 
-    return { startDate: monday, endDate: sunday };
-  };
+    return { startDate: monday, endDate: sunday }
+  }
   const getCurrentWeekDates = () => {
-    const now = new Date();
-    const dayOfWeek = now.getDay(); // 0 (Sunday) to 6 (Saturday)
-    const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    const now = new Date()
+    const dayOfWeek = now.getDay() // 0 (Sunday) to 6 (Saturday)
+    const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek
 
-    const monday = new Date(now);
-    monday.setDate(now.getDate() + diffToMonday);
+    const monday = new Date(now)
+    monday.setDate(now.getDate() + diffToMonday)
 
-    const sunday = new Date(monday);
-    sunday.setDate(monday.getDate() + 6);
+    const sunday = new Date(monday)
+    sunday.setDate(monday.getDate() + 6)
 
-    return { startDate: monday, endDate: sunday };
-  };
+    return { startDate: monday, endDate: sunday }
+  }
 
   const formatDate = (date) => {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
-  };
+    const day = String(date.getDate()).padStart(2, "0")
+    const month = String(date.getMonth() + 1).padStart(2, "0")
+    const year = date.getFullYear()
+    return `${day}-${month}-${year}`
+  }
 
   const formatDisplayDate = (date) => {
-    const options = { month: 'short', day: '2-digit' };
-    return date.toLocaleDateString('en-US', options);
-  };
+    const options = { month: "short", day: "2-digit" }
+    return date.toLocaleDateString("en-US", options)
+  }
 
   const closeModal = () => {
-    sethandeleEditdata(null);
-    setIsOpen(false);
-  };
+    sethandeleEditdata(null)
+    setIsOpen(false)
+  }
 
   const openModal = () => {
-    setIsOpen(true);
-  };
+    setIsOpen(true)
+  }
 
   const fetchTimeSheetData = async (startDate, endDate) => {
-    const empId = empidParam ? empidParam : localStorage.getItem('empId') // Replace with actual emp_id logic
+    const empId = empidParam ? empidParam : localStorage.getItem("empId") // Replace with actual emp_id logic
     try {
-      setLoading(true);
-      const formattedStartDate = formatDate(startDate);
-      const formattedEndDate = formatDate(endDate);
+      setLoading(true)
+      const formattedStartDate = formatDate(startDate)
+      const formattedEndDate = formatDate(endDate)
 
       // Fetch timesheet data
       const response = await getTimesheetData(formattedStartDate, formattedEndDate, empId)
-      const data = await response.data;
+      const data = await response.data
 
-      setTimesheetEntries(data);
+      setTimesheetEntries(data)
 
       // Extract unique projects and activities
-      const uniqueProjects = [...new Set(data.map(entry => entry.project_code))];
-      const uniqueActivities = [...new Set(data.map(entry => entry.activity_name))];
+      const uniqueProjects = [...new Set(data.map((entry) => entry.project_code))]
+      const uniqueActivities = [...new Set(data.map((entry) => entry.activity_name))]
 
-      setProjects(uniqueProjects);
-      setActivities(uniqueActivities);
+      setProjects(uniqueProjects)
+      setActivities(uniqueActivities)
 
       // Set current week display string
-      const weekDisplay = `${formatDisplayDate(startDate)} - ${formatDisplayDate(endDate)}, ${endDate.getFullYear()}`;
-      setCurrentWeek(weekDisplay);
+      const weekDisplay = `${formatDisplayDate(startDate)} - ${formatDisplayDate(endDate)}, ${endDate.getFullYear()}`
+      setCurrentWeek(weekDisplay)
 
-      setLoading(false);
+      setLoading(false)
     } catch (error) {
-      console.error('Error fetching timesheet data:', error);
-      setLoading(false);
+      console.error("Error fetching timesheet data:", error)
+      setLoading(false)
     }
-  };
+  }
+
+  const fetchAttendanceData = async (startDate, endDate) => {
+    const empId = empidParam ? empidParam : localStorage.getItem("empId")
+    try {
+      // Get the month and year from the start date for attendance API
+      const month = ""
+      const year = startDate.getFullYear()
+
+      const response = await getEmpAttendance({ month, year })
+      const data = response.data
+
+      // // Filter attendance data for the current week
+      // const weekAttendance = data.filter((entry) => {
+      //   const entryDate = new Date(entry.a_date.split("-").reverse().join("-"))
+      //   return entryDate >= startDate && entryDate <= endDate
+      // })
+
+      setAttendanceData(data)
+    } catch (error) {
+      console.error("Error fetching attendance data:", error)
+      setAttendanceData([])
+    }
+  }
 
   useEffect(() => {
-    const { startDate, endDate } = getCurrentWeekDates();
-    fetchTimeSheetData(startdate.startTime?startdate.startTime:startDate,startdate.endTime?startdate.endTime:endDate);
-  }, [relode]);
+    const { startDate, endDate } = getCurrentWeekDates()
+    fetchTimeSheetData(
+      startdate.startTime ? startdate.startTime : startDate,
+      startdate.endTime ? startdate.endTime : endDate,
+    )
+  }, [relode])
 
   const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters(prev => ({
+    const { name, value } = e.target
+    setFilters((prev) => ({
       ...prev,
-      [name]: value
-    }));
-  };
+      [name]: value,
+    }))
+  }
 
-  const filteredEntries = timesheetEntries.filter(entry => {
+  const filteredEntries = timesheetEntries.filter((entry) => {
     return (
-      (filters.project === 'All Projects' || entry.project_code === filters.project) &&
-      (filters.status === 'All Status' || entry.status_display === filters.status) &&
-      (filters.activity === 'All Activities' || entry.activity_name === filters.activity)
-    );
-  });
+      (filters.project === "All Projects" || entry.project_code === filters.project) &&
+      (filters.status === "All Status" || entry.status_display === filters.status) &&
+      (filters.activity === "All Activities" || entry.activity_name === filters.activity)
+    )
+  })
 
   // Calculate summary data
   const calculateSummary = () => {
-    const hoursThisWeek = filteredEntries.reduce((sum, entry) => sum + entry.effort, 0);
+    const hoursThisWeek = filteredEntries.reduce((sum, entry) => sum + entry.effort, 0)
     const approvedHours = filteredEntries
-      .filter(entry => entry.status === 'A')
-      .reduce((sum, entry) => sum + entry.effort, 0);
+      .filter((entry) => entry.status === "A")
+      .reduce((sum, entry) => sum + entry.effort, 0)
     const pendingHours = filteredEntries
-      .filter(({ status }) => ['N', 'S'].includes(status))
-      .reduce((sum, { effort }) => sum + effort, 0);
+      .filter(({ status }) => ["N", "S"].includes(status))
+      .reduce((sum, { effort }) => sum + effort, 0)
     const notsubmited = filteredEntries
-      .filter(entry => entry.status === 'R')
-      .reduce((sum, entry) => sum + entry.effort, 0);
+      .filter((entry) => entry.status === "R")
+      .reduce((sum, entry) => sum + entry.effort, 0)
 
-    const uniqueDates = [...new Set(filteredEntries.map(entry => entry.a_date))];
-    const daysWorked = uniqueDates.length;
+    const uniqueDates = [...new Set(filteredEntries.map((entry) => entry.a_date))]
+    const daysWorked = uniqueDates.length
 
     return [
       {
@@ -382,160 +418,164 @@ const TimeSheetManagement = () => {
         label: "Days Worked",
         color: "secondary",
       },
-    ];
-  };
+    ]
+  }
 
-  const summaryData = calculateSummary();
+  const summaryData = calculateSummary()
 
   // Group data for weekly summary table
   const getWeeklySummaryData = () => {
     // Use currentWeekStart for accurate week navigation
-    const { startDate } = getWeekDates(currentWeekStart);
-    const weekDays = [];
+    const { startDate } = getWeekDates(currentWeekStart)
+    const weekDays = []
 
     // Generate all days of the current week (Monday to Saturday)
-    for (let i = 0; i < 6; i++) { // Monday (0) to Saturday (5)
-      const day = new Date(startDate);
-      day.setDate(startDate.getDate() + i);
-      weekDays.push(day);
+    for (let i = 0; i < 6; i++) {
+      // Monday (0) to Saturday (5)
+      const day = new Date(startDate)
+      day.setDate(startDate.getDate() + i)
+      weekDays.push(day)
     }
 
     // Group by project
-    const projectGroups = {};
-    filteredEntries.forEach(entry => {
+    const projectGroups = {}
+    filteredEntries.forEach((entry) => {
       if (!projectGroups[entry.project_code]) {
-        projectGroups[entry.project_code] = {};
-        weekDays.forEach(day => {
-          const dayStr = formatDate(day);
-          projectGroups[entry.project_code][dayStr] = 0;
-        });
-        projectGroups[entry.project_code].total = 0;
+        projectGroups[entry.project_code] = {}
+        weekDays.forEach((day) => {
+          const dayStr = formatDate(day)
+          projectGroups[entry.project_code][dayStr] = 0
+        })
+        projectGroups[entry.project_code].total = 0
       }
 
-      const entryDate = new Date(entry.a_date);
-      const entryDayStr = formatDate(entryDate);
+      const entryDate = new Date(entry.a_date)
+      const entryDayStr = formatDate(entryDate)
 
       if (projectGroups[entry.project_code][entryDayStr] !== undefined) {
-        projectGroups[entry.project_code][entryDayStr] += entry.effort;
-        projectGroups[entry.project_code].total += entry.effort;
+        projectGroups[entry.project_code][entryDayStr] += entry.effort
+        projectGroups[entry.project_code].total += entry.effort
       }
-    });
+    })
 
     // Calculate daily totals
-    const dailyTotals = {};
-    weekDays.forEach(day => {
-      const dayStr = formatDate(day);
-      dailyTotals[dayStr] = 0;
-    });
-    dailyTotals.total = 0;
+    const dailyTotals = {}
+    weekDays.forEach((day) => {
+      const dayStr = formatDate(day)
+      dailyTotals[dayStr] = 0
+    })
+    dailyTotals.total = 0
 
-    Object.values(projectGroups).forEach(project => {
-      weekDays.forEach(day => {
-        const dayStr = formatDate(day);
-        dailyTotals[dayStr] += project[dayStr];
-      });
-      dailyTotals.total += project.total;
-    });
+    Object.values(projectGroups).forEach((project) => {
+      weekDays.forEach((day) => {
+        const dayStr = formatDate(day)
+        dailyTotals[dayStr] += project[dayStr]
+      })
+      dailyTotals.total += project.total
+    })
 
-    return { projectGroups, dailyTotals, weekDays };
-  };
-  const { projectGroups, dailyTotals, weekDays } = getWeeklySummaryData();
- 
+    return { projectGroups, dailyTotals, weekDays }
+  }
+  const { projectGroups, dailyTotals, weekDays } = getWeeklySummaryData()
 
   const handeleapprove = async (entryId) => {
     setFormData({
       a_emp_id: empidParam,
       a_date: (() => {
-        const today = new Date();
-        return formatDate(today);
+        const today = new Date()
+        return formatDate(today)
       })(),
       ts_id: entryId.id,
       a_remarks: "",
       call_mode: "APPROVE",
       emp_id: localStorage.getItem("empId") || "",
-    });
-    setApprove("APPROVE");
-    setShowPopup(true);
+    })
+    setApprove("APPROVE")
+    setShowPopup(true)
   }
   const handelreject = (entryId) => {
     setFormData({
       a_emp_id: empidParam,
       a_date: (() => {
-        const today = new Date();
-        return formatDate(today);
+        const today = new Date()
+        return formatDate(today)
       })(),
       ts_id: entryId.id,
       a_remarks: "",
       call_mode: "REJECT",
       emp_id: localStorage.getItem("empId") || "",
-    });
-    setApprove("REJECT");
-    setShowPopup(true);
+    })
+    setApprove("REJECT")
+    setShowPopup(true)
   }
   const handelDelete = (entryId) => {
     setFormData({
       a_emp_id: empidParam,
       a_date: (() => {
-        const today = new Date();
-        return formatDate(today);
+        const today = new Date()
+        return formatDate(today)
       })(),
       ts_id: entryId.id,
       a_remarks: "",
       call_mode: "DELETE",
       emp_id: localStorage.getItem("empId") || "",
-    });
-    setApprove("DELETE");
-    setShowPopup(true);
+    })
+    setApprove("DELETE")
+    setShowPopup(true)
   }
   const handeleEdit = (entryId) => {
-    setIsOpen(true);
-    sethandeleEditdata(entryId);
-
+    setIsOpen(true)
+    sethandeleEditdata(entryId)
   }
   const handleClosePopup = () => {
-    setShowPopup(false);
-  };
+    setShowPopup(false)
+  }
   const handleConfirm = async (remark) => {
-    setShowPopup(false);
+    setShowPopup(false)
     if (approve == "APPROVE") {
       // Handle approval logic here
       try {
-        const response = await posttimelist({ ...formData, a_remarks: remark });
+        const response = await posttimelist({ ...formData, a_remarks: remark })
         if (response.status === 200) {
-          toast.success("Timesheet entry approved successfully!");
-          setRelode(relode + 1);
+          toast.success("Timesheet entry approved successfully!")
+          setRelode(relode + 1)
         } else {
-          toast.error("Failed to approve timesheet entry.");
+          toast.error("Failed to approve timesheet entry.")
         }
       } catch (error) {
-        alert("An error occurred while approving the timesheet entry.");
+        alert("An error occurred while approving the timesheet entry.")
       }
-    }
-    else {
+    } else {
       try {
-        const response = await posttimelist({ ...formData, a_remarks: remark });
+        const response = await posttimelist({ ...formData, a_remarks: remark })
         if (response.status === 200) {
-          toast.success("Timesheet entry rejected successfully!");
-          setRelode(relode + 1);
+          toast.success("Timesheet entry rejected successfully!")
+          setRelode(relode + 1)
         } else {
-          toast.error("Failed to reject timesheet entry.");
+          toast.error("Failed to reject timesheet entry.")
         }
       } catch (error) {
-        console.error("Error rejecting timesheet entry:", error);
-        alert("An error occurred while rejecting the timesheet entry.");
+        console.error("Error rejecting timesheet entry:", error)
+        alert("An error occurred while rejecting the timesheet entry.")
       }
     }
   }
   const handeleweeklyapprove = async () => {
-    const { startDate, endDate } = getCurrentWeekDates();
-    const formattedStartDate = formatDate(startdate.startTime?startdate.startTime:startDate);
-    const formattedEndDate = formatDate(startdate.endTime?startdate.endTime:endDate);
-    const response = await posttimelist({ emp_id: empidParam ? empidParam : localStorage.getItem("empId"), start_date: formattedStartDate, end_date: formattedEndDate, call_mode: empidParam ? "WEEKLY_APPROVE" : "WEEKLY_SUBMIT", a_emp_id: empidParam ? empidParam : "" });
+    const { startDate, endDate } = getCurrentWeekDates()
+    const formattedStartDate = formatDate(startdate.startTime ? startdate.startTime : startDate)
+    const formattedEndDate = formatDate(startdate.endTime ? startdate.endTime : endDate)
+    const response = await posttimelist({
+      emp_id: empidParam ? empidParam : localStorage.getItem("empId"),
+      start_date: formattedStartDate,
+      end_date: formattedEndDate,
+      call_mode: empidParam ? "WEEKLY_APPROVE" : "WEEKLY_SUBMIT",
+      a_emp_id: empidParam ? empidParam : "",
+    })
     if (response.status === 200) {
-      toast.success("Timesheet entry Submit successfully!");
-      setRelode(relode + 1);
+      toast.success("Timesheet entry Submit successfully!")
+      setRelode(relode + 1)
     } else {
-      toast.error("Failed to Submit timesheet entry.");
+      toast.error("Failed to Submit timesheet entry.")
     }
   }
   const handleExport = () => {
@@ -551,47 +591,50 @@ const TimeSheetManagement = () => {
     navigate("/employees")
   }
   // helper – put it above your component or inside it
-  const getTotalColour = hours => {
-    if (hours < 5) return '#d32f2f';          // red
-    if (hours < 8) return '#ef6c00';          // orange
-    if (hours <= 10) return '#388e3c';          // green
-    if (hours <= 15) return '#ef6c00';        // orange
-    return '#d32f2f';                         // red
-  };
+  const getTotalColour = (hours) => {
+    if (hours < 5) return "#d32f2f" // red
+    if (hours < 8) return "#ef6c00" // orange
+    if (hours <= 10) return "#388e3c" // green
+    if (hours <= 15) return "#ef6c00" // orange
+    return "#d32f2f" // red
+  }
 
-  const handleMonthChange = e => {
-    const empid = empidParam ? empidParam : localStorage.getItem('empId')
-    const monthStr = e.target.value;
+  const handleMonthChange = (e) => {
+    const empid = empidParam ? empidParam : localStorage.getItem("empId")
+    const monthStr = e.target.value
     if (monthStr === "") {
-      setRelode(relode + 1);
-    }; // user cleared the picker
-    setFilters(f => ({ ...f, month: monthStr }));
+      setRelode(relode + 1)
+    } // user cleared the picker
+    setFilters((f) => ({ ...f, month: monthStr }))
 
-    if (!monthStr) return;                     // user cleared the picker
+    if (!monthStr) return // user cleared the picker
 
-    const [year, month] = monthStr.split('-').map(Number);
+    const [year, month] = monthStr.split("-").map(Number)
 
     // JS months are 0‑based
-    const firstDay = new Date(year, month - 1, 1);
-    const lastDay = new Date(year, month, 0); // day 0 of next month = last day
+    const firstDay = new Date(year, month - 1, 1)
+    const lastDay = new Date(year, month, 0) // day 0 of next month = last day
 
     console.log(firstDay, "yyyyy")
-    fetchTimeSheetData(
-      firstDay,
-      lastDay,
-      empid
-    );
-  }; 
-
-  const handleViewDetails=(data)=>{
-    console.log("data",data)
-    setReject(data)
-   setShowImageModal(true);
+    fetchTimeSheetData(firstDay, lastDay, empid)
   }
-const hasNotSubmitted = filteredEntries.some(entry => entry.status === 'N');
-const hasSubmitted = filteredEntries.some(entry => entry.status === 'S');
-const hasApproved = filteredEntries.some(entry => entry.status === 'A');
-console.log("filteredEntries",!filteredEntries.length>0,hasNotSubmitted)
+
+  const handleViewDetails = (data) => {
+    console.log("data", data)
+    setReject(data)
+    setShowImageModal(true)
+  }
+
+  const handleCompareWithAttendance = async () => {
+    const { startDate, endDate } = getWeekDates(currentWeekStart)
+    await fetchAttendanceData(startDate, endDate)
+    setIsComparisonModalOpen(true)
+  }
+
+  const hasNotSubmitted = filteredEntries.some((entry) => entry.status === "N")
+  const hasSubmitted = filteredEntries.some((entry) => entry.status === "S")
+  const hasApproved = filteredEntries.some((entry) => entry.status === "A")
+  console.log("filteredEntries", !filteredEntries.length > 0, hasNotSubmitted)
   return (
     <Layout title="Timesheet Management">
       <TimeSheetHeader>
@@ -599,14 +642,26 @@ console.log("filteredEntries",!filteredEntries.length>0,hasNotSubmitted)
           <Tagline>Track and manage your working hours</Tagline>
         </div>
 
-        <div>
-          {empName ? <Button variant="outline" style={{ marginRight: "0.5rem" }} onClick={navigates}>
-            <FaUserCircle /> {empName}
-          </Button>
-            :((hasNotSubmitted && !hasSubmitted && !hasApproved)||!filteredEntries.length>0)&&<Button variant="primary" onClick={openModal}>
-              <FaPlus /> Add Time Entry
-            </Button>}
-        </div>
+        <HeaderActions>
+          {empName ? (
+            <Button variant="outline" style={{ marginRight: "0.5rem" }} onClick={navigates}>
+              <FaUserCircle /> {empName}
+            </Button>
+          ) : (
+            ((hasNotSubmitted && !hasSubmitted && !hasApproved) || !filteredEntries.length > 0) && (
+              <Button variant="primary" onClick={openModal}>
+                <FaPlus /> Add Time Entry
+              </Button>
+            )
+          )}
+
+          {!empidParam && filteredEntries.length > 0 && (
+            <Button variant="secondary" onClick={handleCompareWithAttendance}>
+              <FaBalanceScale style={{ marginRight: "0.5rem" }} />
+              Compare with Attendance
+            </Button>
+          )}
+        </HeaderActions>
       </TimeSheetHeader>
 
       <SummaryGrid>
@@ -630,33 +685,21 @@ console.log("filteredEntries",!filteredEntries.length>0,hasNotSubmitted)
         </WeekNavigation>
 
         <FilterContainer>
-          <FilterSelect
-            name="project"
-            value={filters.project}
-            onChange={handleFilterChange}
-          >
+          <FilterSelect name="project" value={filters.project} onChange={handleFilterChange}>
             <option>All Projects</option>
             {projects.map((project, index) => (
               <option key={index}>{project}</option>
             ))}
           </FilterSelect>
 
-          <FilterSelect
-            name="status"
-            value={filters.status}
-            onChange={handleFilterChange}
-          >
+          <FilterSelect name="status" value={filters.status} onChange={handleFilterChange}>
             <option>All Status</option>
             <option>APPROVED</option>
             <option>SUBMITTED</option>
             <option>REJECTED</option>
           </FilterSelect>
 
-          <FilterSelect
-            name="activity"
-            value={filters.activity}
-            onChange={handleFilterChange}
-          >
+          <FilterSelect name="activity" value={filters.activity} onChange={handleFilterChange}>
             <option>All Activities</option>
             {activities.map((activity, index) => (
               <option key={index}>{activity}</option>
@@ -667,7 +710,7 @@ console.log("filteredEntries",!filteredEntries.length>0,hasNotSubmitted)
             name="month"
             value={filters.month}
             onChange={handleMonthChange}
-            style={{ minWidth: 140, padding: '0.4rem' }}
+            style={{ minWidth: 140, padding: "0.4rem" }}
           />
         </FilterContainer>
 
@@ -686,88 +729,104 @@ console.log("filteredEntries",!filteredEntries.length>0,hasNotSubmitted)
             </thead>
             <tbody>
               {filteredEntries.map((entry) => {
-                const entryDate = new Date(entry.a_date);
+                const entryDate = new Date(entry.a_date)
                 const formattedDate = entryDate.toLocaleDateString("en-US", {
                   weekday: "short",
                   month: "short",
                   day: "numeric",
-                });
+                })
 
                 return (
                   <tr key={entry.id}>
                     <td>{formattedDate}</td>
-                    <td>{entry.project_name}({entry.project_code})</td>
+                    <td>
+                      {entry.project_name}({entry.project_code})
+                    </td>
                     <td>{entry.activity_name}</td>
                     <td>{entry.effort}</td>
                     <td>{entry.remarks}</td>
                     <td>
-                      <Badge
-                        variant={
-                          entry.status === 'A' ? "success" :
-                            entry.status === 'S' ? "warning" : "error"
-                        }
-                      >
+                      <Badge variant={entry.status === "A" ? "success" : entry.status === "S" ? "warning" : "error"}>
                         {entry.status == "N" ? "Draft" : entry.status_display}
                       </Badge>
                     </td>
                     <td>
-                      {(entry.status === 'S' || entry.status === 'N') ? <ActionButtons>
-                        {empidParam ?
-                         entry.status === 'S'&& <>
-                            <Button onClick={() => handeleapprove(entry)} variant="ghost" size="sm" title="Approve">
-                              <FaCheck />
-                            </Button>
-                            <Button onClick={() => handelreject(entry)} variant="ghost" size="sm" title="Reject">
-                              <FaTrash />
-                            </Button></> :
-                              entry.status !== 'S'&& <>
-                            <Button onClick={() => handelDelete(entry)} variant="ghost" size="sm" title="Delete">
-                              <FaTrash />
-                            </Button>
-                            <Button onClick={() => handeleEdit(entry)} variant="ghost" size="sm" title="Edit">
-                              <FaEdit />
-                            </Button></>}
-                      </ActionButtons>:
-                      <Button onClick={() => handleViewDetails(entry)} variant="ghost" size="sm" title="View">
-                        <FaEye />
-                      </Button>}
+                      {entry.status === "S" || entry.status === "N" ? (
+                        <ActionButtons>
+                          {empidParam
+                            ? entry.status === "S" && (
+                                <>
+                                  <Button
+                                    onClick={() => handeleapprove(entry)}
+                                    variant="ghost"
+                                    size="sm"
+                                    title="Approve"
+                                  >
+                                    <FaCheck />
+                                  </Button>
+                                  <Button onClick={() => handelreject(entry)} variant="ghost" size="sm" title="Reject">
+                                    <FaTrash />
+                                  </Button>
+                                </>
+                              )
+                            : entry.status !== "S" && (
+                                <>
+                                  <Button onClick={() => handelDelete(entry)} variant="ghost" size="sm" title="Delete">
+                                    <FaTrash />
+                                  </Button>
+                                  <Button onClick={() => handeleEdit(entry)} variant="ghost" size="sm" title="Edit">
+                                    <FaEdit />
+                                  </Button>
+                                </>
+                              )}
+                        </ActionButtons>
+                      ) : (
+                        <Button onClick={() => handleViewDetails(entry)} variant="ghost" size="sm" title="View">
+                          <FaEye />
+                        </Button>
+                      )}
                     </td>
                   </tr>
-                );
+                )
               })}
             </tbody>
           </table>
-          {filteredEntries.length > 0 ? <TableActions style={{ float: "right" }}>
-            <Button variant="outline" size="sm" onClick={handleExport}>
-              <FaFileExport /> Export
-            </Button>
-            {(() => {
-              if (empidParam) {
-                // Approver view - show approve button if there are any submitted entries
-                // and no not-submitted entries
-                if (hasSubmitted && !hasNotSubmitted) {
-                  return (
-                    <Button variant="primary" size="sm" onClick={handeleweeklyapprove}>
-                      <FaCheckCircle style={{ marginRight: 4 }} /> Approve Weekly Timesheet
-                    </Button>
-                  );
+          {filteredEntries.length > 0 ? (
+            <TableActions style={{ float: "right" }}>
+              <Button variant="outline" size="sm" onClick={handleExport}>
+                <FaFileExport /> Export
+              </Button>
+              {(() => {
+                if (empidParam) {
+                  // Approver view - show approve button if there are any submitted entries
+                  // and no not-submitted entries
+                  if (hasSubmitted && !hasNotSubmitted) {
+                    return (
+                      <Button variant="primary" size="sm" onClick={handeleweeklyapprove}>
+                        <FaCheckCircle style={{ marginRight: 4 }} /> Approve Weekly Timesheet
+                      </Button>
+                    )
+                  }
+                } else {
+                  // Employee view - show submit button if there are any not-submitted entries
+                  // and no already-submitted entries
+                  if (hasNotSubmitted && !hasSubmitted && !hasApproved) {
+                    return (
+                      <Button variant="primary" size="sm" onClick={handeleweeklyapprove}>
+                        <FaPaperPlane style={{ marginRight: 4 }} /> Submit Weekly Timesheet
+                      </Button>
+                    )
+                  }
                 }
-              } else {
-                // Employee view - show submit button if there are any not-submitted entries
-                // and no already-submitted entries
-                if (hasNotSubmitted && !hasSubmitted && !hasApproved) {
-                  return (
-                    <Button variant="primary" size="sm" onClick={handeleweeklyapprove}>
-                      <FaPaperPlane style={{ marginRight: 4 }} /> Submit Weekly Timesheet
-                    </Button>
-                  );
-                }
-              }
-              return null;
-            })()}
-          </TableActions> :
-            <TableActions style={{ justifyContent: "center" }}> There are no timesheet entries to display. </TableActions>
-          }
+                return null
+              })()}
+            </TableActions>
+          ) : (
+            <TableActions style={{ justifyContent: "center" }}>
+              {" "}
+              There are no timesheet entries to display.{" "}
+            </TableActions>
+          )}
         </TableContainer>
       </Card>
 
@@ -778,9 +837,7 @@ console.log("filteredEntries",!filteredEntries.length>0,hasNotSubmitted)
               <tr>
                 <th>Project</th>
                 {weekDays.map((day, index) => (
-                  <th key={index}>
-                    {day.toLocaleDateString('en-US', { weekday: 'short' })}
-                  </th>
+                  <th key={index}>{day.toLocaleDateString("en-US", { weekday: "short" })}</th>
                 ))}
                 <th>Total</th>
               </tr>
@@ -790,12 +847,8 @@ console.log("filteredEntries",!filteredEntries.length>0,hasNotSubmitted)
                 <tr key={project}>
                   <td>{project}</td>
                   {weekDays.map((day, index) => {
-                    const dayStr = formatDate(day);
-                    return (
-                      <td key={index}>
-                        {days[dayStr] || 0}
-                      </td>
-                    );
+                    const dayStr = formatDate(day)
+                    return <td key={index}>{days[dayStr] || 0}</td>
                   })}
                   <td>
                     {/* <span
@@ -814,77 +867,100 @@ console.log("filteredEntries",!filteredEntries.length>0,hasNotSubmitted)
                 </tr>
               ))}
               <tr>
-                <td><strong>Daily Total</strong></td>
+                <td>
+                  <strong>Daily Total</strong>
+                </td>
                 {weekDays.map((day, index) => {
-                  const dayStr = formatDate(day);
+                  const dayStr = formatDate(day)
                   return (
                     <td key={index}>
                       <span
                         style={{
-                          display: 'inline-block',
-                          padding: '2px 8px',
+                          display: "inline-block",
+                          padding: "2px 8px",
                           borderRadius: 4,
                           background: getTotalColour(dailyTotals[dayStr].toFixed(1)),
-                          color: '#fff',
-                          fontWeight: 600
+                          color: "#fff",
+                          fontWeight: 600,
                         }}
                       >
                         <strong>{dailyTotals[dayStr].toFixed(1)}</strong>
                       </span>
                     </td>
-                  );
+                  )
                 })}
-                <td><strong>{dailyTotals.total.toFixed(1)}</strong></td>
+                <td>
+                  <strong>{dailyTotals.total.toFixed(1)}</strong>
+                </td>
               </tr>
             </tbody>
           </table>
-          {filteredEntries.length > 0 && <TableActions style={{ float: "right" }}>
-            <Button variant="outline" size="sm" onClick={handleExport}>
-              <FaFileExport /> Export
-            </Button>
-             {(() => {
-              if (empidParam) {
-                // Approver view - show approve button if there are any submitted entries
-                // and no not-submitted entries
-                if (hasSubmitted && !hasNotSubmitted) {
-                  return (
-                    <Button variant="primary" size="sm" onClick={handeleweeklyapprove}>
-                      <FaCheckCircle style={{ marginRight: 4 }} /> Approve Weekly Timesheet
-                    </Button>
-                  );
+          {filteredEntries.length > 0 && (
+            <TableActions style={{ float: "right" }}>
+              <Button variant="outline" size="sm" onClick={handleExport}>
+                <FaFileExport /> Export
+              </Button>
+              {(() => {
+                if (empidParam) {
+                  // Approver view - show approve button if there are any submitted entries
+                  // and no not-submitted entries
+                  if (hasSubmitted && !hasNotSubmitted) {
+                    return (
+                      <Button variant="primary" size="sm" onClick={handeleweeklyapprove}>
+                        <FaCheckCircle style={{ marginRight: 4 }} /> Approve Weekly Timesheet
+                      </Button>
+                    )
+                  }
+                } else {
+                  // Employee view - show submit button if there are any not-submitted entries
+                  // and no already-submitted entries
+                  if (hasNotSubmitted && !hasSubmitted && !hasApproved) {
+                    return (
+                      <Button variant="primary" size="sm" onClick={handeleweeklyapprove}>
+                        <FaPaperPlane style={{ marginRight: 4 }} /> Submit Weekly Timesheet
+                      </Button>
+                    )
+                  }
                 }
-              } else {
-                // Employee view - show submit button if there are any not-submitted entries
-                // and no already-submitted entries
-                if (hasNotSubmitted && !hasSubmitted && !hasApproved) {
-                  return (
-                    <Button variant="primary" size="sm" onClick={handeleweeklyapprove}>
-                      <FaPaperPlane style={{ marginRight: 4 }} /> Submit Weekly Timesheet
-                    </Button>
-                  );
-                }
-              }
-              return null;
-            })()}
-          </TableActions>}
+                return null
+              })()}
+            </TableActions>
+          )}
         </TableContainer>
       </Card>
-      <TimesheetModal isOpen={isOpen} onClose={closeModal} initialData={handeleEditdata} setRelode={setRelode}></TimesheetModal>
-      <ConfirmationPopup isOpen={showPopup}
-        onClose={handleClosePopup} onConfirm={handleConfirm} approve={approve} timesheet={true}></ConfirmationPopup>
-                {showImageModal && (
-                <Modal onClose={() => setShowImageModal(false)}>
-                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                    {reject.a_remarks}
-                  </div>
-                  <Button variant="primary" onClick={() => setShowImageModal(false)}>
-                    Close
-                  </Button>
-                </Modal>
-              )}
+      <TimesheetModal
+        isOpen={isOpen}
+        onClose={closeModal}
+        initialData={handeleEditdata}
+        setRelode={setRelode}
+      ></TimesheetModal>
+      <ConfirmationPopup
+        isOpen={showPopup}
+        onClose={handleClosePopup}
+        onConfirm={handleConfirm}
+        approve={approve}
+        timesheet={true}
+      ></ConfirmationPopup>
+      {showImageModal && (
+        <Modal onClose={() => setShowImageModal(false)}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
+            {reject.a_remarks}
+          </div>
+          <Button variant="primary" onClick={() => setShowImageModal(false)}>
+            Close
+          </Button>
+        </Modal>
+      )}
+
+      <AttendanceComparisonModal
+        isOpen={isComparisonModalOpen}
+        onClose={() => setIsComparisonModalOpen(false)}
+        timesheetData={filteredEntries}
+        attendanceData={attendanceData}
+        weekDates={getWeekDates(currentWeekStart)}
+      />
     </Layout>
-  );
-};
+  )
+}
 
 export default TimeSheetManagement
-

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { FaTimes, FaProjectDiagram, FaUser, FaCalendarAlt, FaFileAlt, FaTags } from "react-icons/fa"
+import { FaTimes, FaProjectDiagram, FaUser, FaCalendarAlt, FaTags } from "react-icons/fa"
 import Button from "../Button"
 import { toast } from "react-toastify"
 import { getemployeeList, postProject } from "../../services/productServices"
@@ -179,72 +179,109 @@ const ModalFooter = styled.div`
   border-top: 1px solid ${({ theme }) => theme.colors.border};
 `
 
-const ProjectModal = ({ isOpen, onClose,setRefresh,refresh }) => {
+const ProjectModal = ({ isOpen, onClose, setRefresh, refresh, editData = null }) => {
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
-    name:"",
+    name: "",
     project_code: "",
     start_date: "",
     end_date: "",
-    call_mode:"ADD_PROJECT",
-    employee_list:"",
-    emp_id:""
+    call_mode: "ADD_PROJECT",
+    employee_list: "",
+    emp_id: "",
+    project_status: "02", // Default to Active
   })
   const [employees, setEmployees] = useState([])
-  console.log(employees,"data")
+
   const formatDate = (date) => {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
-  };
+    const day = String(date.getDate()).padStart(2, "0")
+    const month = String(date.getMonth() + 1).padStart(2, "0")
+    const year = date.getFullYear()
+    return `${day}-${month}-${year}`
+  }
+
+  const formatDateForInput = (dateString) => {
+            // Convert "03-Jul-2025" to "yyyy-mm-dd"
+            const [day, monStr, year] = dateString.split("-");
+            const months = {
+              Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06",
+              Jul: "07", Aug: "08", Sep: "09", Oct: "10", Nov: "11", Dec: "12",
+            };
+            const month = months[monStr] || "01";
+            return `${year}-${month}-${day}`;
+  }
+
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        // Replace this with your actual API call
         const response = await getemployeeList()
         setEmployees(response.data)
-        setLoading(false)
       } catch (err) {
         toast.error(`Failed to fetch employees: ${err.message}`)
-        setLoading(false)
       }
     }
 
-    fetchEmployees()
-  }, []);
+    if (isOpen) {
+      fetchEmployees()
+
+      // If editing, populate form with existing data
+      if (editData) {
+        setFormData({
+          name: editData.title || "",
+          project_code: editData.project_code || "",
+          start_date: editData.start_date?formatDateForInput(editData.start_date) : "",
+          end_date:editData.end_date? formatDateForInput(editData.end_date) : "",
+          call_mode: "UPDATE_PROJECT",
+          employee_list: editData.additional_fld_list || "",
+          emp_id: editData.project_manager ? editData.project_manager: "",
+          project_status: editData.project_status || "02",
+        })
+      } else {
+        // Reset form for new project
+        setFormData({
+          name: "",
+          project_code: "",
+          start_date: "",
+          end_date: "",
+          call_mode: "ADD_PROJECT",
+          employee_list: "",
+          emp_id: "",
+          project_status: "02",
+        })
+      }
+    }
+  }, [isOpen, editData])
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
 
-    // // Validation
-    // if (!formData.name || !formData.type || !formData.description || !formData.employeeId) {
-    //   toast.error("Please fill in all required fields")
-    //   setLoading(false)
-    //   return
-    // }
-   const submissionData = {
-        ...formData,
-        start_date: formData.start_date ? formatDate(new Date(formData.start_date)) : "",
-        end_date: formData.end_date ? formatDate(new Date(formData.end_date)) : "",
-      }
-    try {
-     const response= await postProject(submissionData)
-     if (response.status === 200) {
-        toast.success("Project created successfully")
-        setRefresh((prev) => prev + 1) // Trigger refresh 
-      // Reset form
-    setFormData({
-    name:"",
-    project_code: "",
-    start_date: "",
-    end_date: "",
-    call_mode:"ADD_PROJECT",
-    employee_list:"",
-    emp_id:""
-      })
-    onClose() // Close modal after submission
+    const submissionData = {
+      ...formData,
+      start_date: formData.start_date ? formatDate(new Date(formData.start_date)) : "",
+      end_date: formData.end_date ? formatDate(new Date(formData.end_date)) : "",
+      call_mode: formData.project_status==="03" ? "CLOSE_PROJECT":formData.call_mode,
     }
+
+    try {
+      const response = await postProject(submissionData)
+      if (response.status === 200) {
+        toast.success(editData ? "Project updated successfully" : "Project created successfully")
+        setRefresh((prev) => prev + 1)
+
+        // Reset form
+        setFormData({
+          name: "",
+          project_code: "",
+          start_date: "",
+          end_date: "",
+          call_mode: "ADD_PROJECT",
+          employee_list: "",
+          emp_id: "",
+          project_status: "02",
+        })
+        onClose()
+      }
     } catch (error) {
       toast.error(`${error.response?.data?.detail || error.message}`)
     } finally {
@@ -259,6 +296,7 @@ const ProjectModal = ({ isOpen, onClose,setRefresh,refresh }) => {
       [name]: value,
     }))
   }
+
   const handleEmployeeChange = (e) => {
     const employeeId = e.target.value
     setFormData((prev) => ({
@@ -274,7 +312,7 @@ const ProjectModal = ({ isOpen, onClose,setRefresh,refresh }) => {
       <ModalContainer onClick={(e) => e.stopPropagation()}>
         <form onSubmit={handleSubmit}>
           <ModalHeader>
-            <ModalTitle>Add New Project</ModalTitle>
+            <ModalTitle>{editData ? "Update Project" : "Add New Project"}</ModalTitle>
             <CloseButton onClick={onClose}>
               <FaTimes />
             </CloseButton>
@@ -300,18 +338,19 @@ const ProjectModal = ({ isOpen, onClose,setRefresh,refresh }) => {
 
             <FormRow>
               <FormGroup>
-                <FormLabel htmlFor="type">Project Code *</FormLabel>
+                <FormLabel htmlFor="project_code">Project Code *</FormLabel>
                 <div style={{ position: "relative" }}>
                   <FormInput
-                  id="project_code"
-                  name="project_code"
-                  type="text"
-                  placeholder="Enter project code"
-                  value={formData.project_code}
-                  onChange={handleChange}
-                  required
-                  style={{ paddingLeft: "2rem" }}
-                />
+                    id="project_code"
+                    name="project_code"
+                    type="text"
+                    placeholder="Enter project code"
+                    value={formData.project_code}
+                    onChange={handleChange}
+                    required
+                    style={{ paddingLeft: "2rem" }}
+                    disabled={editData} // Disable editing project code for existing projects
+                  />
                   <FaTags style={{ position: "absolute", left: "0.75rem", top: "0.75rem", color: "#666" }} />
                 </div>
               </FormGroup>
@@ -322,9 +361,8 @@ const ProjectModal = ({ isOpen, onClose,setRefresh,refresh }) => {
                   <FormSelect
                     id="emp_id"
                     name="emp_id"
-                    // value={formData.emp_id}
+                    value={formData.emp_id}
                     onChange={handleEmployeeChange}
-                    required
                     style={{ paddingLeft: "2rem" }}
                   >
                     <option value="">Select employee</option>
@@ -339,16 +377,19 @@ const ProjectModal = ({ isOpen, onClose,setRefresh,refresh }) => {
               </FormGroup>
             </FormRow>
 
-           
-                <FormGroup>
-                <FormLabel htmlFor="status">Status</FormLabel>
-                <FormSelect id="status" name="status" value={formData.status} onChange={handleChange}>
-                  <option value="Active">Active</option>
-                  <option value="On Hold">On Hold</option>
-                  <option value="Completed">Completed</option>
-                </FormSelect>
-              </FormGroup>
-            
+            <FormGroup>
+              <FormLabel htmlFor="project_status">Status</FormLabel>
+              <FormSelect
+                id="project_status"
+                name="project_status"
+                value={formData.project_status}
+                onChange={handleChange}
+              >
+                <option value="02">Active</option>
+                <option value="04">On Hold</option>
+                <option value="03">Completed</option>
+              </FormSelect>
+            </FormGroup>
 
             <FormRow>
               <FormGroup>
@@ -365,7 +406,7 @@ const ProjectModal = ({ isOpen, onClose,setRefresh,refresh }) => {
                   <FaCalendarAlt style={{ position: "absolute", left: "0.75rem", top: "0.75rem", color: "#666" }} />
                 </div>
               </FormGroup>
-                 <FormGroup>
+              <FormGroup>
                 <FormLabel htmlFor="end_date">End Date</FormLabel>
                 <div style={{ position: "relative" }}>
                   <FormInput
@@ -387,7 +428,7 @@ const ProjectModal = ({ isOpen, onClose,setRefresh,refresh }) => {
               Cancel
             </Button>
             <Button variant="primary" type="submit" disabled={loading}>
-              {loading ? "Creating..." : "Create Project"}
+              {loading ? (editData ? "Updating..." : "Creating...") : editData ? "Update Project" : "Create Project"}
             </Button>
           </ModalFooter>
         </form>

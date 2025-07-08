@@ -1,16 +1,17 @@
+"use client"
+
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { FaPlus, FaEye, FaEdit, FaTrash, FaFilter, FaProjectDiagram, FaUser, FaSpinner, FaUserEdit } from "react-icons/fa"
+import { FaPlus, FaEye, FaEdit, FaFilter, FaProjectDiagram, FaUser, FaSpinner, FaUserEdit } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
 import Badge from "../components/Badge"
 import ProjectModal from "../components/modals/ProjectModal"
+import AssignUserModal from "../components/modals/AssignUserModal"
 import { useExport } from "../context/ExportContext"
 import { toast } from "react-toastify"
 import { getProjectlist, postProject } from "../services/productServices"
-import { MdOutlineAssignmentInd } from "react-icons/md";
-
 
 const ProjectHeader = styled.div`
   display: flex;
@@ -163,6 +164,8 @@ const Paragraphdata = styled.p`
 const ProjectManagement = () => {
   const [activeTab, setActiveTab] = useState("all")
   const [isOpen, setIsOpen] = useState(false)
+  const [isAssignModalOpen, setIsAssignModalOpen] = useState(false)
+  const [selectedProject, setSelectedProject] = useState(null)
   const [projects, setProjects] = useState([])
   const [filteredProjects, setFilteredProjects] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
@@ -206,24 +209,20 @@ const ProjectManagement = () => {
     if (searchTerm) {
       filtered = filtered.filter(
         (project) =>
-          project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          project.project_code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          project.project_manager.toLowerCase().includes(searchTerm.toLowerCase()),
+          project?.title?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+          project?.project_code?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+          project?.project_manager?.toLowerCase().includes(searchTerm?.toLowerCase()),
       )
     }
 
     // Filter by status
     if (statusFilter !== "All Status") {
-      filtered = filtered.filter((project) => 
-        getStatusLabel(project.project_status) === statusFilter
-      )
+      filtered = filtered.filter((project) => getStatusLabel(project.project_status) === statusFilter)
     }
 
     // Filter by type
     if (typeFilter !== "All Types") {
-      filtered = filtered.filter((project) => 
-        getTypeLabel(project.project_type) === typeFilter
-      )
+      filtered = filtered.filter((project) => getTypeLabel(project.project_type) === typeFilter)
     }
 
     setFilteredProjects(filtered)
@@ -235,7 +234,7 @@ const ProjectManagement = () => {
       "Project Name": project.title,
       "Project Code": project.project_code,
       "Project Type": getTypeLabel(project.project_type),
-      "Status": getStatusLabel(project.project_status),
+      Status: getStatusLabel(project.project_status),
       "Start Date": project.start_date,
       "End Date": project.end_date || "N/A",
       "Project Manager": project.project_manager,
@@ -246,22 +245,69 @@ const ProjectManagement = () => {
     toast.success("Project list exported successfully")
   }
 
+  const handleAssignUser = (project) => {
+    setSelectedProject(project)
+    setIsAssignModalOpen(true)
+  }
+
+  const handleEditProject = (project) => {
+    setSelectedProject(project)
+    setIsOpen(true)
+  }
+
+  const handleAssignSubmit = async (selectedEmployees) => {
+    if (!selectedProject) return
+
+    const employeeList = selectedEmployees.join("|")
+    const empId = selectedEmployees.length > 0 ? selectedEmployees[0] : ""
+
+    const updateData = {
+      project_code: selectedProject.project_code,
+      call_mode: "UPDATE_EMP_LIST",
+      start_date: selectedProject.start_date,
+      end_date: selectedProject.end_date || "",
+      name: selectedProject.title,
+      emp_id: empId,
+      employee_list: employeeList,
+    }
+
+    try {
+      const response = await postProject(updateData)
+      if (response.status === 200) {
+        toast.success("Employees assigned successfully")
+        setRefresh((prev) => prev + 1)
+        setIsAssignModalOpen(false)
+        setSelectedProject(null)
+      }
+    } catch (error) {
+      toast.error(`Failed to assign employees: ${error.response?.data?.detail || error.message}`)
+    }
+  }
+
   // Helper functions to map codes to labels
   const getStatusLabel = (statusCode) => {
     switch (statusCode) {
-      case "02": return "Active"
-      case "03": return "Completed"
-      case "04": return "On Hold"
-      default: return "Unknown"
+      case "02":
+        return "Active"
+      case "03":
+        return "Completed"
+      case "04":
+        return "On Hold"
+      default:
+        return "Unknown"
     }
   }
 
   const getTypeLabel = (typeCode) => {
     switch (typeCode) {
-      case "N": return "Normal"
-      case "P": return "Premium"
-      case "E": return "Express"
-      default: return "Other"
+      case "N":
+        return "Normal"
+      case "P":
+        return "Premium"
+      case "E":
+        return "Express"
+      default:
+        return "Other"
     }
   }
 
@@ -305,10 +351,14 @@ const ProjectManagement = () => {
 
   const getStatusInfo = (statusCode) => {
     switch (statusCode) {
-      case "02": return { variant: "success", label: "Active" }
-      case "03": return { variant: "primary", label: "Completed" }
-      case "04": return { variant: "warning", label: "On Hold" }
-      default: return { variant: "secondary", label: "Unknown" }
+      case "02":
+        return { variant: "success", label: "Active" }
+      case "03":
+        return { variant: "primary", label: "Completed" }
+      case "04":
+        return { variant: "warning", label: "On Hold" }
+      default:
+        return { variant: "secondary", label: "Unknown" }
     }
   }
 
@@ -430,7 +480,7 @@ const ProjectManagement = () => {
                           </div>
                         </td>
                         <td>
-                          {project.additional_fld_list 
+                          {project.additional_fld_list
                             ? project.additional_fld_list.split("|").map((emp, i) => (
                                 <Badge key={i} variant="outline" style={{ margin: "0.2rem" }}>
                                   {emp}
@@ -440,13 +490,18 @@ const ProjectManagement = () => {
                         </td>
                         <td>
                           <ActionButtons>
-                            <Button variant="primary" size="sm" title="Assign user">
+                            <Button
+                              variant="primary"
+                              size="sm"
+                              title="Assign user"
+                              onClick={() => handleAssignUser(project)}
+                            >
                               <FaUserEdit />
                             </Button>
-                            <Button variant="ghost" size="sm" title="View">
+                            {/* <Button variant="ghost" size="sm" title="View">
                               <FaEye />
-                            </Button>
-                            <Button variant="outline" size="sm" title="Edit">
+                            </Button> */}
+                            <Button variant="outline" size="sm" title="Edit" onClick={() => handleEditProject(project)}>
                               <FaEdit />
                             </Button>
                           </ActionButtons>
@@ -469,9 +524,23 @@ const ProjectManagement = () => {
 
       <ProjectModal
         isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={() => {
+          setIsOpen(false)
+          setSelectedProject(null)
+        }}
         setRefresh={setRefresh}
         refresh={refresh}
+        editData={selectedProject}
+      />
+
+      <AssignUserModal
+        isOpen={isAssignModalOpen}
+        onClose={() => {
+          setIsAssignModalOpen(false)
+          setSelectedProject(null)
+        }}
+        onSubmit={handleAssignSubmit}
+        project={selectedProject}
       />
     </Layout>
   )

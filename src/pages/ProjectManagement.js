@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { FaPlus, FaEye, FaEdit, FaFilter, FaProjectDiagram, FaUser, FaSpinner, FaUserEdit } from "react-icons/fa"
+import { FaPlus, FaEye, FaEdit, FaFilter, FaProjectDiagram, FaUser, FaSpinner, FaUserEdit, FaFileExport } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
@@ -378,7 +378,7 @@ const ProjectManagement = () => {
 
         <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
           <Button variant="outline" onClick={handleExport}>
-            <FaProjectDiagram /> Export
+            <FaFileExport /> Export
           </Button>
           <Button variant="primary" onClick={() => setIsOpen(true)}>
             <FaPlus /> Add Project

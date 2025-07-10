@@ -191,14 +191,14 @@ const EmployeeManagement = () => {
      Navigate(`/attendance?empid=${employeeId}`) 
   }
 
-  const handleViewTimesheet = (employeeId,names) => {
+  const handleViewTimesheet = (employeeId,names,id) => {
     const empid=localStorage.getItem("empId")
     if(employeeId === empid){
     Navigate("/timesheet") 
     }
     else{
     // Implement view timesheet functionality
-    Navigate(`/timesheet?empid=${employeeId}&&name=${names}`) 
+    Navigate(`/timesheet?empid=${employeeId}&&name=${names}&&empnoid=${id}`) 
   }
 }
   const handleExport = () => {
@@ -291,7 +291,7 @@ const EmployeeManagement = () => {
                         variant="ghost"
                         size="sm"
                         title="View Timesheet"
-                        onClick={() => handleViewTimesheet(employee.emp_id,employee.name)}
+                        onClick={() => handleViewTimesheet(employee.emp_id,employee.name, employee.id)}
                       >
                         <FaChartBar />
                       </Button>

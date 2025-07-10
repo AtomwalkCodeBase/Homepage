@@ -45,7 +45,7 @@ const ModalContainer = styled.div`
 `
 
 const ModalHeader = styled.div`
- display: flex;
+  display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.75rem 2rem;
@@ -551,9 +551,9 @@ const TimesheetModal = ({ isOpen, onClose, initialData, setRelode }) => {
       value={formData.effort}
       onChange={handleInputChange}
       placeholder="Enter hours (e.g., 8 or 9)"
-      min="1"
+      min="0.1"
       max="24"
-      step="1"
+      step="0.1"
       />
       {errors.effort && <ErrorMessage>{errors.effort}</ErrorMessage>}
       </FormGroup>

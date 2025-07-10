@@ -276,17 +276,18 @@ const formatDate = (date) => {
 
 // Styled Components
 const ModalOverlay = styled.div`
-  position: fixed;
+   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #495057;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 1rem;
+  backdrop-filter: blur(4px);
 `
 
 const ModalContent = styled.div`
@@ -297,41 +298,67 @@ const ModalContent = styled.div`
   max-width: 1200px;
   max-height: 90vh;
   overflow-y: auto;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.4s ease-out;
+  
+  @keyframes fadeIn {
+    from {
+      transform: translateY(-30px) scale(0.97);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
 `
 
 const ModalHeader = styled.div`
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 1.5rem;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border || "#e2e8f0"};
-  background: ${({ theme }) => theme.colors.primary || "#3b82f6"};
-  color: white;
-  border-radius: 12px 12px 0 0;
+  align-items: center;
+  padding: 1.75rem 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  background: ${({ theme }) => theme.colors.primaryLight || '#f1f7ff'};
+  border-radius: 16px 16px 0 0;
 `
 
 const ModalTitle = styled.h2`
-  margin: 0;
-  font-size: 1.25rem;
+ margin: 0;
+  color: ${({ theme }) => theme.colors.primary || '#3a86ff'};
+  font-size: 1.6rem;
   font-weight: 600;
   display: flex;
   align-items: center;
+  
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 24px;
+    background: ${({ theme }) => theme.colors.primary || '#3a86ff'};
+    border-radius: 4px;
+    margin-right: 12px;
+  }
 `
-
 const CloseButton = styled.button`
-  background: none;
+    background: white;
   border: none;
-  color: white;
-  cursor: pointer;
-  padding: 0.5rem;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.textLight || '#8e98a4'};
+  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s;
-
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
+    color: ${({ theme }) => theme.colors.error || '#ff5252'};
+    transform: rotate(90deg);
   }
 `
 

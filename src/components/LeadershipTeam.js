@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import Team from './../assets/img/TemIcon.jpg';
 import Linkind from './../assets/img/linkedin.png';
-import Lipika from './../assets/img/lipika.jpg';
+import Lipika from './../assets/img/lipika.png';
 import Sk from './../assets/img/Sk.svg';
 import Jaganath from './../assets/img/sk2.svg';
 import Satish from './../assets/img/Satish (1).jpg';
 import Jayanthi from './../assets/img/freepik__enhance__57693.png';
 
-// Keyframe Animations
+// Enhanced Keyframe Animations
 const float = keyframes`
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
@@ -19,62 +19,145 @@ const pulse = keyframes`
   50% { opacity: 0.5; }
 `;
 
-const ping = keyframes`
-  75%, 100% {
-    transform: scale(2);
-    opacity: 0;
+const shimmer = keyframes`
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+`;
+
+const morphing = keyframes`
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+`;
+
+const sparkle = keyframes`
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1); }
+`;
+
+const slideInFromLeft = keyframes`
+  0% { 
+    opacity: 0; 
+    transform: translateX(-100px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateX(0); 
   }
 `;
 
-const bounce = keyframes`
-  0%, 20%, 53%, 80%, 100% {
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-    transform: translate3d(0, 0, 0);
+const slideInFromRight = keyframes`
+  0% { 
+    opacity: 0; 
+    transform: translateX(100px); 
   }
-  40%, 43% {
-    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
-    transform: translate3d(0, -30px, 0);
+  100% { 
+    opacity: 1; 
+    transform: translateX(0); 
+  }
+`;
+
+const scaleIn = keyframes`
+  0% { 
+    opacity: 0; 
+    transform: scale(0.8); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+`;
+
+const rotateIn = keyframes`
+  0% { 
+    opacity: 0; 
+    transform: rotate(-180deg) scale(0.5); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: rotate(0deg) scale(1); 
+  }
+`;
+
+const textGlow = keyframes`
+  0%, 100% { text-shadow: 0 0 5px rgba(251, 146, 60, 0.5); }
+  50% { text-shadow: 0 0 20px rgba(251, 146, 60, 0.8), 0 0 30px rgba(251, 146, 60, 0.6); }
+`;
+
+const bounceIn = keyframes`
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
   }
   70% {
-    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
-    transform: translate3d(0, -15px, 0);
+    transform: scale(0.9);
   }
-  90% {
-    transform: translate3d(0, -4px, 0);
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
 `;
 
-// Main Container
+// Enhanced Container with Parallax Effect
 const Container = styled.div`
   min-height: 100vh;
-  background-color: #fff8f0;
+  background: linear-gradient(135deg, #fff8f0 0%, #fef3e2 50%, #fff8f0 100%);
   position: relative;
   overflow: hidden;
 `;
 
-// Animated Background Elements
+// Enhanced Background Elements with Morphing
 const BackgroundElement = styled.div`
   position: absolute;
-  border-radius: 50%;
-  filter: blur(60px);
-  animation: ${pulse} 4s ease-in-out infinite;
+  animation: ${morphing} 8s ease-in-out infinite, ${pulse} 4s ease-in-out infinite;
+  filter: blur(40px);
   
   &:first-child {
-    top: 25%;
-    left: 25%;
-    width: 256px;
-    height: 256px;
-    background-color: rgba(251, 146, 60, 0.1);
+    top: 10%;
+    left: 10%;
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(45deg, rgba(251, 146, 60, 0.1), rgba(249, 115, 22, 0.15));
+    animation-delay: 0s;
   }
   
-  &:last-child {
-    bottom: 25%;
-    right: 25%;
-    width: 384px;
-    height: 384px;
-    background-color: rgba(251, 146, 60, 0.15);
+  &:nth-child(2) {
+    top: 60%;
+    right: 10%;
+    width: 400px;
+    height: 400px;
+    background: linear-gradient(45deg, rgba(251, 146, 60, 0.08), rgba(249, 115, 22, 0.12));
     animation-delay: 2s;
   }
+  
+  &:nth-child(3) {
+    bottom: 10%;
+    left: 30%;
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(45deg, rgba(251, 146, 60, 0.12), rgba(249, 115, 22, 0.18));
+    animation-delay: 4s;
+  }
+`;
+
+// Floating Particles
+const Particle = styled.div`
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(251, 146, 60, 0.6);
+  border-radius: 50%;
+  animation: ${float} 3s ease-in-out infinite;
+  
+  ${props => css`
+    top: ${props.top}%;
+    left: ${props.left}%;
+    animation-delay: ${props.delay}s;
+    animation-duration: ${props.duration}s;
+  `}
 `;
 
 const BackgroundContainer = styled.div`
@@ -83,7 +166,7 @@ const BackgroundContainer = styled.div`
   overflow: hidden;
 `;
 
-// Content Wrapper
+// Enhanced Content Wrapper
 const ContentWrapper = styled.div`
   position: relative;
   z-index: 10;
@@ -92,19 +175,28 @@ const ContentWrapper = styled.div`
   padding: 64px 16px;
 `;
 
-// Section Wrapper
-const SectionWrapper = styled.div`
-  margin-bottom: ${props => props.isLast ? '0' : '80px'};
-`;
-
-// Section Header
+// Enhanced Section Header with Glowing Effect
 const SectionHeader = styled.div`
   text-align: center;
-  margin-bottom: 64px;
+  margin-bottom: 80px;
+  animation: ${scaleIn} 1s ease-out;
 `;
 
 const HeaderContainer = styled.div`
   display: inline-block;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    //background: linear-gradient(45deg, transparent, rgba(251, 146, 60, 0.1), transparent);
+    border-radius: 20px;
+    animation: ${shimmer} 3s ease-in-out infinite;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -122,359 +214,297 @@ const SectionTitle = styled.h2`
 `;
 
 const HeaderLine = styled.div`
-  height: 4px;
-  background: linear-gradient(to right, transparent, #fb923d, transparent);
+  height: 6px;
+  background: linear-gradient(90deg, transparent, #fb923d, #ea580c, #fb923d, transparent);
   border-radius: 9999px;
+  position: relative;
+  overflow: hidden;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    animation: ${shimmer} 2s ease-in-out infinite;
+  }
 `;
 
 const SectionDescription = styled.p`
   color: #4b5563;
-  margin-top: 24px;
-  font-size: 1.125rem;
-  max-width: 512px;
+  margin-top: 32px;
+  font-size: 1.25rem;
+  max-width: 600px;
   margin-left: auto;
   margin-right: auto;
-  line-height: 1.6;
+  line-height: 1.7;
+  font-weight: 400;
 `;
 
-// Grid Layout
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 32px;
-  max-width: ${props => props.isExecutive ? '1024px' : '1536px'};
-  margin: 0 auto;
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-`;
-
-// Card Container
-const CardContainer = styled.div`
-  position: relative;
-  cursor: pointer;
-  transition: all 0.7s ease;
-  transform: ${props => props.isVisible ? 'translateY(0) scale(1)' : 'translateY(48px) scale(0.95)'};
-  opacity: ${props => props.isVisible ? '1' : '0'};
-  transition-delay: ${props => props.index * 150}ms;
-  perspective: 1000px;
-  
-  &:hover {
-    transform: translateY(-8px) scale(1.02);
-  }
-`;
-
-// Card Inner (3D Container)
-const CardInner = styled.div`
-  position: relative;
-  width: 100%;
-  height: 384px;
-  transition: transform 0.7s ease;
-  transform-style: preserve-3d;
-  transform: ${props => props.isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'};
-`;
-
-// Card Side Base
-const CardSideBase = styled.div`
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
+// Enhanced Member Container with Magnetic Effect
+const MemberContainer = styled.div`
+  display: flex;
+  gap: 40px;
+  margin-bottom: 40px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
   border-radius: 24px;
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
   overflow: hidden;
-  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-`;
-
-// Front Side
-const CardFront = styled(CardSideBase)`
-  background: white;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  
+  ${props => css`
+    animation: ${props.index % 2 === 0 ? slideInFromLeft : slideInFromRight} 0.8s ease-out;
+    animation-delay: ${props.index * 0.2}s;
+    animation-fill-mode: both;
+  `}
   
   &::before {
     content: '';
     position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, transparent, transparent, rgba(251, 146, 60, 0.1));
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(251, 146, 60, 0.05), transparent);
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.3s ease;
   }
   
-  ${CardContainer}:hover &::before {
-    opacity: 1;
+  &:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 
+      0 32px 64px -12px rgba(0, 0, 0, 0.15),
+      0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 0 0 1px rgba(251, 146, 60, 0.1);
+    
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0;
   }
 `;
 
-// Back Side
-const CardBack = styled(CardSideBase)`
-  background: linear-gradient(135deg, #fff8f0, white);
-  transform: rotateY(180deg);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-`;
-
-// Content Container
-const ContentContainer = styled.div`
-  position: relative;
+// Enhanced Image Container with Hover Effects
+const ImageContainer = styled.div`
+  flex: 0 0 320px;
   padding: 32px;
-  height: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-`;
-
-// Profile Image Container
-const ProfileImageContainer = styled.div`
+  background: linear-gradient(135deg, rgba(251, 146, 60, 0.05), rgba(251, 146, 60, 0.1));
   position: relative;
-  margin-bottom: 24px;
-`;
-
-const ProfileImageWrapper = styled.div`
-  width: 112px;
-  height: 112px;
-  border-radius: 50%;
-  border: 4px solid #fed7aa;
-  overflow: hidden;
-  transition: all 0.5s ease;
   
-  ${CardContainer}:hover & {
-    transform: scale(1.1);
-    border-color: #fdba74;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 280px;
+    height: 280px;
+    background: linear-gradient(45deg, rgba(251, 146, 60, 0.1), transparent, rgba(251, 146, 60, 0.1));
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: ${morphing} 6s ease-in-out infinite;
+    z-index: 1;
+  }
+  
+  @media (max-width: 768px) {
+    flex: 0 0 auto;
+    padding: 24px;
   }
 `;
 
-const ProfileImage = styled.img`
+const SquareImage = styled.img`
   width: 100%;
-  height: 100%;
+  height: auto;
+  max-width: 260px;
+  border-radius: 16px;
   object-fit: cover;
-  transition: transform 0.7s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 2;
   
-  ${CardContainer}:hover & {
-    transform: scale(1.1);
+  &:hover {
+    transform: scale(1.05) rotate(2deg);
+    box-shadow: 0 16px 64px rgba(0, 0, 0, 0.2);
   }
 `;
 
-// Floating Dots
-const FloatingDotsContainer = styled.div`
-  position: absolute;
-  inset: -16px;
-  opacity: 0;
-  transition: opacity 0.5s ease;
+// Enhanced Details Container
+const DetailsContainer = styled.div`
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
   
-  ${CardContainer}:hover & {
-    opacity: 1;
+  @media (max-width: 768px) {
+    padding: 32px;
   }
 `;
 
-const FloatingDot = styled.div`
-  position: absolute;
-  border-radius: 50%;
-  animation: ${ping} 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+// Enhanced Member Name with Gradient
+const MemberName = styled.h3`
+  font-size: 1.75rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, #1f2937, #ea580c);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  margin-bottom: 12px;
+  position: relative;
   
-  &:first-child {
-    top: 0;
-    right: 0;
-    width: 8px;
-    height: 8px;
-    background-color: #fdba74;
-  }
-  
-  &:last-child {
-    bottom: 0;
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
     left: 0;
-    width: 6px;
-    height: 6px;
-    background-color: #fb923d;
-    animation-delay: 0.5s;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(45deg, #fb923d, #ea580c);
+    transition: width 0.3s ease;
   }
-`;
-
-// Name
-const PersonName = styled.h3`
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #1f2937;
-  margin-bottom: 8px;
-  transition: color 0.3s ease;
   
-  ${CardContainer}:hover & {
-    color: #ea580c;
+  ${MemberContainer}:hover &::after {
+    width: 100%;
   }
 `;
 
-// Role Badge
-const RoleBadge = styled.div`
+// Enhanced Role Badge
+const MemberRole = styled.div`
   display: inline-block;
   padding: 8px 16px;
-  background: linear-gradient(to right, #fed7aa, #fff8f0);
-  border-radius: 9999px;
-  margin-bottom: 16px;
+  background: linear-gradient(45deg, #fed7aa, #fff8f0);
+  border-radius: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s ease;
+  }
+  
+  ${MemberContainer}:hover &::before {
+    left: 100%;
+  }
 `;
 
 const RoleText = styled.p`
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   color: #c2410c;
   margin: 0;
+  position: relative;
+  z-index: 1;
 `;
 
-// Description
-const Description = styled.p`
-  font-size: 0.875rem;
+// Enhanced Descriptions
+const ShortDescription = styled.p`
+  font-size: 1.1rem;
   color: #4b5563;
   line-height: 1.6;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
-`;
-
-// Hover Indicator
-const HoverIndicator = styled.div`
-  position: absolute;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: all 0.3s ease;
-  
-  ${CardContainer}:hover & {
-    opacity: 1;
-  }
-`;
-
-const IndicatorContent = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #f97316;
-`;
-
-const IndicatorText = styled.span`
-  font-size: 0.75rem;
+  margin-bottom: 20px;
   font-weight: 500;
 `;
 
-const IndicatorIcon = styled.svg`
-  width: 16px;
-  height: 16px;
-  animation: ${bounce} 2s infinite;
-`;
-
-// Back Card Content
-const BackContent = styled.div`
-  padding: 32px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const BackHeader = styled.div`
-  text-align: center;
-  margin-bottom: 16px;
-`;
-
-const BackName = styled.h3`
-  font-size: 1.125rem;
-  font-weight: bold;
-  color: #1f2937;
-  margin-bottom: 4px;
-`;
-
-const BackRole = styled.p`
-  font-size: 0.875rem;
-  color: #ea580c;
-  font-weight: 500;
-  margin: 0;
-`;
-
-const BackDescription = styled.div`
-  flex: 1;
-  overflow-y: auto;
-  margin: 16px 0;
-`;
-
-const BackDescriptionText = styled.p`
-  font-size: 0.875rem;
+const FullDescription = styled.p`
+  font-size: 1rem;
   color: #374151;
-  line-height: 1.6;
+  line-height: 1.8;
+  margin-bottom: 32px;
   text-align: justify;
-  margin: 0;
 `;
 
-const BackFooter = styled.div`
-  display: flex;
-  justify-content: space-between;
+// Enhanced LinkedIn Button
+const LinkedInButton = styled.a`
+  display: inline-flex;
   align-items: center;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid #fed7aa;
-`;
-
-const LinkedInLink = styled.a`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #2563eb;
-  transition: color 0.2s ease;
+  gap: 10px;
+  padding: 12px 24px;
+  background: linear-gradient(45deg, #2563eb, #1d4ed8);
+  color: white;
+  border-radius: 12px;
   text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: auto;
+  align-self: flex-start;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
   
   &:hover {
-    color: #1d4ed8;
+    background: linear-gradient(45deg, #1d4ed8, #1e40af);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+    
+    &::before {
+      left: 100%;
+    }
   }
 `;
 
 const LinkedInIcon = styled.svg`
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   fill: currentColor;
-`;
-
-const LinkedInText = styled.span`
-  font-size: 0.75rem;
-`;
-
-const BackButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: #ea580c;
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: color 0.2s ease;
+  transition: transform 0.3s ease;
   
-  &:hover {
-    color: #c2410c;
+  ${LinkedInButton}:hover & {
+    transform: scale(1.2);
   }
 `;
 
-const BackIcon = styled.svg`
-  width: 16px;
-  height: 16px;
+// Section Wrapper with Stagger Animation
+const SectionWrapper = styled.div`
+  margin-bottom: ${props => props.isLast ? '0' : '100px'};
+  animation: ${bounceIn} 0.8s ease-out;
+  animation-fill-mode: both;
 `;
 
-const BackText = styled.span`
-  font-size: 0.75rem;
-`;
-
-// Floating Background
-const FloatingBackground = styled.div`
+// Sparkle Effect Component
+const SparkleEffect = styled.div`
   position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: 24px;
-  background: linear-gradient(to right, rgba(251, 146, 60, 0.05), rgba(251, 146, 60, 0.1));
-  filter: blur(20px);
-  transform: scale(1.05);
-  opacity: 0;
-  transition: all 0.5s ease;
+  width: 4px;
+  height: 4px;
+  background: #fb923d;
+  border-radius: 50%;
+  animation: ${sparkle} 2s ease-in-out infinite;
   
-  ${CardContainer}:hover & {
-    opacity: 1;
-  }
+  ${props => css`
+    top: ${props.top}%;
+    left: ${props.left}%;
+    animation-delay: ${props.delay}s;
+  `}
 `;
 
 const LeadershipAdvisors = () => {
@@ -486,6 +516,23 @@ const LeadershipAdvisors = () => {
     }, 500);
     return () => clearTimeout(timer);
   }, []);
+
+  // Generate random particles
+  const particles = Array.from({ length: 15 }, (_, i) => ({
+    id: i,
+    top: Math.random() * 100,
+    left: Math.random() * 100,
+    delay: Math.random() * 3,
+    duration: 3 + Math.random() * 2,
+  }));
+
+  // Generate sparkle effects
+  const sparkles = Array.from({ length: 8 }, (_, i) => ({
+    id: i,
+    top: Math.random() * 100,
+    left: Math.random() * 100,
+    delay: Math.random() * 2,
+  }));
 
   const teamMembers = [
     {
@@ -500,8 +547,18 @@ const LeadershipAdvisors = () => {
     },
     {
       id: 2,
+      name: "Dr. M R Jaganath",
+      role: "Director Strategy",
+      image: `${Jaganath}`,
+      shortDesc: "Dr. M R Jaganath has an illustrious career as a Scientist managing deep Technology, Translational Medicine, Drug development, Drug discovery",
+      fullDesc: "Dr. M.R. Jaganath, Technical Specialist on Atomwalk's Board, is an expert in lab management, GLP, and GMP. As former CSO of Connexios Life Sciences, he contributed to translational network biology and led a team developing drug candidates for type 2 diabetes. He holds a PhD from IISc Bangalore and degrees in Agriculture and Agricultural Microbiology from UAS Bangalore. His career spans banking at RBI, startup support in distillery effluent treatment and plant tissue culture, and extensive work in drug discovery and development. A prolific scientist, he has numerous publications in esteemed journals.",
+      linkedin: null,
+      isExecutive: true
+    },
+    {
+      id: 3,
       name: "Dr. Lipika Sahoo",
-      role: "Co-Founder and Director",
+      role: "Co-Founder , Director Innovation",
       image: `${Lipika}`,
       shortDesc: "Dr. Lipika Sahoo, with 24 years of academia and industry experience in technology, innovation, and intellectual property, holds a PhD from IISc",
       fullDesc: "Dr. Lipika Sahoo, Co-Founder and Director of Atomwalk, brings 24 years of experience in academia and industry, specializing in technology, innovation, and intellectual property. She holds a PhD from the Indian Institute of Science (IISc) and has earned multiple advanced degrees, including an MSc, PGDIPR, PGCBM, and certifications from WIPO and IIM Bangalore. Dr. Sahoo serves as a reviewer for various innovation programs. Her extensive expertise supports Atomwalk's mission of driving impactful, socially relevant technological innovations.",
@@ -509,155 +566,73 @@ const LeadershipAdvisors = () => {
       isExecutive: true
     },
     {
-      id: 3,
+      id: 4,
       name: "SK Patnaik",
       role: "Business, Product and Sales Strategy",
       image: `${Sk}`,
       shortDesc: "SK has led Business Management roles in the IT Services industry and lived in the US, UK, South-East Asia, India. He has successfully set-up new business divisions",
       fullDesc: "SK Patnaik, who joined Atomwalk's Board in 2021, brings expertise in business strategy, product innovation, and revenue growth. He led key roles in client relations, sales, and P&L management in IT Services across global markets in a career of 25 years. At Infosys, he established the APAC and India operations for Manufacturing Vertical and led the adoptions of Digital & Cloud, IoT, Smart Manufacturing, Automation & AI at several Fortune 500 Customers. He has long involvement in the ERP space with SAP, Oracle; platforms like Salesforce, and other SaaS solutions. SK also co-founded a deep-tech telecom start-up. He holds an MBA in Marketing and Systems from the Xavier Institute of Management, Bhubaneswar, India.",
       linkedin: null,
-      isExecutive: false
+      isExecutive: true
     },
     {
-      id: 4,
-      name: "Dr. M R Jaganath",
-      role: "Technical Specialist",
-      image: `${Jaganath}`,
-      shortDesc: "He has an illustrious career as a Scientist managing deep Technology, Translational Medicine, Drug development, Drug discovery",
-      fullDesc: "Dr. M.R. Jaganath, Technical Specialist on Atomwalk's Board, is an expert in lab management, GLP, and GMP. As former CSO of Connexios Life Sciences, he contributed to translational network biology and led a team developing drug candidates for type 2 diabetes. He holds a PhD from IISc Bangalore and degrees in Agriculture and Agricultural Microbiology from UAS Bangalore. His career spans banking at RBI, startup support in distillery effluent treatment and plant tissue culture, and extensive work in drug discovery and development. A prolific scientist, he has numerous publications in esteemed journals.",
-      linkedin: null,
-      isExecutive: false
-    },
-    {
-      id: 6,
+      id: 5,
       name: "Mr. Satish Murthy V.",
       role: "Quality Specialist",
       image: `${Satish}`,
-      shortDesc: "He was instrumental in establishing ISO 17025:2005 system at the test facility and accreditation by NABL",
+      shortDesc: "Mr. Satish Murthy V was instrumental in establishing ISO 17025:2005 system at the test facility and accreditation by NABL",
       fullDesc: "Mr. Satish Murthy V., M.Sc., RQAP-GLP, joined Atomwalk's Board as Quality Specialist, brings 28 years of expertise in Quality Management. Satish Murthy V started his career in the year 1995 in the Quality Assurance Unit of Rallis Research, Eurofins Advinus Limited and Adgyl Lifesciences Private Limited. He has expertise in Quality Assurance functions like Safety Assessment, Analytical RD, DMPK and Clinical Pharmacology and is well versed with the OECD Principles of GLP, US FDA 21 CFR part 58, US EPA 40 CFR part 160 and 40 CFR Part 792 GLP standards. He serves as a faculty at the various GLP training programs conducted by the National GLP Compliance Monitoring Authority, India.",
       linkedin: null,
-      isExecutive: false
+      isExecutive: true
     },
-     {
-      id: 5,
+    {
+      id: 6,
       name: "Jayanthi S Vel",
       role: "Human Resources Officer (HRO)",
       image: `${Jayanthi}`,
       shortDesc: "Ms Jayanthi is a senior executive responsible for overseeing all aspects of an organization's human resource functions",
       fullDesc: "Ms Jayanthi is a senior executive responsible for overseeing all aspects of an organization's human resource functions, including recruitment, employee relations, talent development, compensation and benefits, and workforce planning, all while aligning HR strategies with the company's overall business goals. Setting up performance evaluation processes Implementing, Key Performance Indicators (KPIs), Identifying training and development needs.",
       linkedin: null,
-      isExecutive: false
+      isExecutive: true
     }
   ];
 
   const executiveMembers = teamMembers.filter(member => member.isExecutive);
-  const advisors = teamMembers.filter(member => !member.isExecutive);
-
-  const PersonCard = ({ member, index, isExecutive }) => {
-    const [isFlipped, setIsFlipped] = useState(false);
-    const [isHovered, setIsHovered] = useState(false);
-
-    return (
-      <CardContainer
-        isVisible={visibleCards.includes(index)}
-        index={index}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onClick={() => setIsFlipped(!isFlipped)}
-      >
-        <CardInner isFlipped={isFlipped}>
-          {/* Front Side */}
-          <CardFront>
-            <ContentContainer>
-              <ProfileImageContainer>
-                <ProfileImageWrapper isHovered={isHovered}>
-                  <ProfileImage src={member.image} alt={member.name} />
-                </ProfileImageWrapper>
-                <FloatingDotsContainer>
-                  <FloatingDot />
-                  <FloatingDot />
-                </FloatingDotsContainer>
-              </ProfileImageContainer>
-
-              <PersonName>{member.name}</PersonName>
-
-              <RoleBadge>
-                <RoleText>{member.role}</RoleText>
-              </RoleBadge>
-
-              <Description>{member.shortDesc}</Description>
-
-              <HoverIndicator>
-                <IndicatorContent>
-                  <IndicatorText>Click to read more</IndicatorText>
-                  <IndicatorIcon fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </IndicatorIcon>
-                </IndicatorContent>
-              </HoverIndicator>
-            </ContentContainer>
-          </CardFront>
-
-          {/* Back Side */}
-          <CardBack>
-            <BackContent>
-              <BackHeader>
-                <BackName>{member.name}</BackName>
-                <BackRole>{member.role}</BackRole>
-              </BackHeader>
-
-              <BackDescription>
-                <BackDescriptionText>{member.fullDesc}</BackDescriptionText>
-              </BackDescription>
-
-              <BackFooter>
-                {member.linkedin && (
-                  <LinkedInLink 
-                    href={member.linkedin} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <LinkedInIcon viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z"/>
-                    </LinkedInIcon>
-                    <LinkedInText>LinkedIn</LinkedInText>
-                  </LinkedInLink>
-                )}
-                <BackButton 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsFlipped(false);
-                  }}
-                >
-                  <BackIcon fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                  </BackIcon>
-                  <BackText>Back</BackText>
-                </BackButton>
-              </BackFooter>
-            </BackContent>
-          </CardBack>
-        </CardInner>
-
-        <FloatingBackground />
-      </CardContainer>
-    );
-  };
 
   return (
     <Container>
       <BackgroundContainer>
         <BackgroundElement />
         <BackgroundElement />
+        <BackgroundElement />
+        
+        {/* Floating Particles */}
+        {particles.map((particle) => (
+          <Particle
+            key={particle.id}
+            top={particle.top}
+            left={particle.left}
+            delay={particle.delay}
+            duration={particle.duration}
+          />
+        ))}
+        
+        {/* Sparkle Effects */}
+        {sparkles.map((sparkle) => (
+          <SparkleEffect
+            key={sparkle.id}
+            top={sparkle.top}
+            left={sparkle.left}
+            delay={sparkle.delay}
+          />
+        ))}
       </BackgroundContainer>
 
       <ContentWrapper>
-        {/* Executive Board Section */}
         <SectionWrapper>
           <SectionHeader>
             <HeaderContainer>
-              <SectionTitle>Executive Board</SectionTitle>
+              <SectionTitle>Our Teams</SectionTitle>
               <HeaderLine />
             </HeaderContainer>
             <SectionDescription>
@@ -665,40 +640,35 @@ const LeadershipAdvisors = () => {
             </SectionDescription>
           </SectionHeader>
 
-          <Grid isExecutive={true}>
+          <div>
             {executiveMembers.map((member, index) => (
-              <PersonCard 
-                key={member.id} 
-                member={member} 
-                index={index}
-                isExecutive={true}
-              />
+              <MemberContainer key={member.id} index={index}>
+                <ImageContainer>
+                  <SquareImage src={member.image} alt={member.name} />
+                </ImageContainer>
+                <DetailsContainer>
+                  <MemberName>{member.name}</MemberName>
+                  <MemberRole>
+                    <RoleText>{member.role}</RoleText>
+                  </MemberRole>
+                  <ShortDescription>{member.shortDesc}</ShortDescription>
+                  <FullDescription>{member.fullDesc}</FullDescription>
+                  {member.linkedin && (
+                    <LinkedInButton 
+                      href={member.linkedin} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      <LinkedInIcon viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z"/>
+                      </LinkedInIcon>
+                      View LinkedIn Profile
+                    </LinkedInButton>
+                  )}
+                </DetailsContainer>
+              </MemberContainer>
             ))}
-          </Grid>
-        </SectionWrapper>
-
-        {/* Board of Advisors Section */}
-        <SectionWrapper isLast={true}>
-          <SectionHeader>
-            <HeaderContainer>
-              <SectionTitle>Board of Advisors</SectionTitle>
-              <HeaderLine />
-            </HeaderContainer>
-            <SectionDescription>
-              Expert advisors providing strategic guidance and specialized knowledge
-            </SectionDescription>
-          </SectionHeader>
-
-          <Grid isExecutive={false}>
-            {advisors.map((member, index) => (
-              <PersonCard 
-                key={member.id} 
-                member={member} 
-                index={index + 2}
-                isExecutive={false}
-              />
-            ))}
-          </Grid>
+          </div>
         </SectionWrapper>
       </ContentWrapper>
     </Container>

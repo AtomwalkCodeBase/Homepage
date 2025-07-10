@@ -76,9 +76,11 @@ export function getExpenseProjectList() {
 
 export function getEmpAttendance(res) {
   let data = {
-    'emp_id': localStorage.getItem('empNoId'),
+    'emp_id':res.empId?res.empId: localStorage.getItem('empNoId'),
     'month': res.month,
-    'year': res.year
+    'year': res.year,
+    'start_date': res.startdate,
+    'end_date': res.enddate,
   };
   console.log('Final response data', data)
   return authAxios(getEmpAttendanceData, data)

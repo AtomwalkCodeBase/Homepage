@@ -204,6 +204,7 @@ const TimeSheetManagement = () => {
   const [handeleEditdata, sethandeleEditdata] = useState(null)
   const urlParams = new URLSearchParams(window.location.search)
   const empidParam = urlParams.get("empid")
+  const empnoidParam = urlParams.get("empnoid")
   const empName = urlParams.get("name")
   const [startdate, setStartdate] = useState({
     startTime: "",
@@ -325,13 +326,15 @@ const TimeSheetManagement = () => {
   }
 
   const fetchAttendanceData = async (startDate, endDate) => {
-    const empId = empidParam ? empidParam : localStorage.getItem("empId")
+    const empId = empnoidParam ? empnoidParam : localStorage.getItem("empId")
+      const startdate = formatDate(startDate)
+      const enddate = formatDate(endDate)
     try {
       // Get the month and year from the start date for attendance API
       const month = ""
       const year = startDate.getFullYear()
 
-      const response = await getEmpAttendance({ month, year })
+      const response = await getEmpAttendance({ month, year,empId, startdate, enddate })
       const data = response.data
 
       // // Filter attendance data for the current week
@@ -655,7 +658,7 @@ const TimeSheetManagement = () => {
             )
           )}
 
-          {!empidParam && filteredEntries.length > 0 && (
+          {empidParam && filteredEntries.length > 0 && (
             <Button variant="secondary" onClick={handleCompareWithAttendance}>
               <FaBalanceScale style={{ marginRight: "0.5rem" }} />
               Compare with Attendance

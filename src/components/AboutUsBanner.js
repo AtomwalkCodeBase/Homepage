@@ -19,7 +19,7 @@ const AboutWrap = styled.div`
 `
 const AboutTxt = styled.div`
     position: absolute;
-    top: 6%;
+    top: 4%;
     left: 50%;
     text-align: justify;
     transform: translate(-50%, -50%);

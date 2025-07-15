@@ -12,8 +12,6 @@ import Ramaiah from './../assets/img/Ramaiah_Square.png';
 import UniversePower from './../assets/img/UniversePower_Sqare.png';
 import Advika from './../assets/img/Advika_Sqare.png';
 import Olety from './../assets/img/Olety.jpg';
-
-
 // Testimonial Data
 const testimonialData = [
   {

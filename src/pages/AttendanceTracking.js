@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import styled from "styled-components"
-import { FaChevronLeft, FaChevronRight, FaFilter, FaSignInAlt, FaSignOutAlt, FaPlus, FaFileExport } from "react-icons/fa"
+import { FaChevronLeft, FaChevronRight, FaFilter, FaSignInAlt, FaSignOutAlt, FaPlus, FaFileExport, FaUserCircle } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
@@ -14,6 +14,7 @@ import AttendanceModal from "../components/modals/AttendanceModal"
 import { toast } from "react-toastify"
 import moment from "moment/moment"
 import { useExport } from "../context/ExportContext"
+import { useNavigate } from "react-router-dom"
 // import Modal from "../components/Modal"
 // import Input from "../components/Input"
 
@@ -340,14 +341,20 @@ const AttendanceTracking = () => {
   const [holiday, setHoliday] = useState({})
   const [relode, setReLoad] = useState(1)
   const { profile } = useAuth()
-   const { exportAppointmentData } = useExport()
-  // Mock employee data
-  console.log("currentMonth", attendance)
+  const { exportAppointmentData } = useExport()
+  const navigate = useNavigate()
 
   // In the component, add these state variables after the existing state declarations
   const [statusFilter, setStatusFilter] = useState("All Status")
   const [filteredAttendanceData, setFilteredAttendanceData] = useState([])
-
+  const urlParams = new URLSearchParams(window.location.search)
+  const empidParam = urlParams.get("empid")
+  const empnoidParam = urlParams.get("empnoid")
+  const empName = urlParams.get("name")
+  const grade = urlParams.get("employeegrade")
+  const profileimage = decodeURIComponent(urlParams.get("image"));
+  const department = urlParams.get("department")
+  console.log(profileimage,"profileimage")
   const setdatatime = async () => {
     let time = moment().format("hh:mm A")
     if (
@@ -362,12 +369,12 @@ const AttendanceTracking = () => {
   }
 
   const employeeData = {
-    id: profile?.emp_id,
-    name: profile?.name,
-    emp_id: profile?.emp_id,
-    grade_name: profile?.grade_name,
-    department: profile?.department_name,
-    image: profile?.image || "https://via.placeholder.com/100",
+    id: empidParam||profile?.emp_id,
+    name:empName|| profile?.name,
+    emp_id: empidParam||profile?.emp_id,
+    grade_name:grade|| profile?.grade_name,
+    department:department|| profile?.department_name,
+    image:department?profileimage: profile?.image ,
   }
 
   const monthNameMap = {
@@ -429,6 +436,7 @@ const AttendanceTracking = () => {
     fetchAttendanceDetails({
       month: currentMonth + 1,
       year: currentYear,
+      empId:empnoidParam || localStorage.getItem("empNoId"),
     })
   }, [currentMonth, currentYear, relode])
 
@@ -638,15 +646,22 @@ const AttendanceTracking = () => {
           toast.error("Export failed: " + result.message)
         }
       }
+        const navigates = () => {
+    navigate("/employees")
+  }
   return (
     <Layout title="Attendance Tracking">
       <AttendanceHeader>
         <p>Track your daily attendance and view your history</p>
         <HeaderActions>
+         {empName ? 
+           <Button variant="outline" style={{ marginRight: "0.5rem" }} onClick={navigates}>
+             <FaUserCircle /> {empName}
+           </Button>:
           <Button variant="primary" onClick={() => setIsAttendanceModalOpen(true)}>
             <FaPlus style={{ marginRight: "0.5rem" }} />
             Add Attendance
-          </Button>
+          </Button>}
         </HeaderActions>
       </AttendanceHeader>
 
@@ -686,7 +701,7 @@ const AttendanceTracking = () => {
           </DetailItem>
         </ProfileDetails>
       </ProfileCard>
-      <AttendanceActions>
+    {!empName&& <AttendanceActions>
         <ActionButton onClick={() => handleCheck("ADD")} disabled={isCheckInDisabled}>
           <ActionIcon>
             <FaSignInAlt style={{ color: isCheckInDisabled ? "#ccc" : "#4CAF50" }} />
@@ -707,7 +722,7 @@ const AttendanceTracking = () => {
           </ActionText>
         </ActionButton>
       </AttendanceActions>
-
+        }
       {/* Calendar View */}
       <Card title="Monthly Attendance">
         <CalendarContainer>

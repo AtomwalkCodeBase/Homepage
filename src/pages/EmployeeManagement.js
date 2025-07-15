@@ -186,9 +186,16 @@ const EmployeeManagement = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = filteredEmployees.slice(indexOfFirstItem, indexOfLastItem)
 
-  const handleViewAttendance = (employeeId) => {
+  const handleViewAttendance = (employeeId,names,id,grade_name,image,department_name) => {
+    const empid=localStorage.getItem("empId")
+    const imageUrl = encodeURIComponent(image);
+    if(employeeId === empid){
+    Navigate("/attendance-tracking") 
+    }
+    else{
     // Implement view attendance functionality
-     Navigate(`/attendance?empid=${employeeId}`) 
+     Navigate(`/attendance-tracking?empid=${employeeId}&&name=${names}&&empnoid=${id}&&employeegrade=${grade_name}&&image=${imageUrl}&&department=${department_name}`) 
+  }
   }
 
   const handleViewTimesheet = (employeeId,names,id) => {
@@ -283,7 +290,7 @@ const EmployeeManagement = () => {
                         variant="ghost"
                         size="sm"
                         title="View Attendance"
-                        onClick={() => handleViewAttendance(employee.emp_id)}
+                        onClick={() => handleViewAttendance(employee.emp_id,employee.name, employee.id,employee.grade_name,employee.image,employee.department_name)}
                       >
                         <FaClock />
                       </Button>

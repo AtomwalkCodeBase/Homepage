@@ -534,7 +534,7 @@ const ProjectManagement = () => {
               </tbody>
             </table>
             <TableActions style={{float:"right"}}>
-          <Button variant="outline" onClick={handleExport} size="sm">
+          <Button variant="primary" onClick={handleExport} size="sm">
             <FaFileExport /> Export
           </Button>
           </TableActions>

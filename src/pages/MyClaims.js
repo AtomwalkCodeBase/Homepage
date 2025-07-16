@@ -420,7 +420,7 @@ const MyClaims = () => {
         // Filter out claims with empty claim_items and only pending claims
         const validClaims = res.data.filter(
           (claim) =>
-            claim.claim_items && claim.claim_items.length > 0 && !claim.is_approved && claim.expense_status === "S",
+            claim.claim_items && claim.claim_items.length > 0 && !claim.is_approved && claim.expense_status !== "N",
         )
         setEmpClaims(validClaims)
       })
@@ -672,7 +672,9 @@ const MyClaims = () => {
                 {empClaims.length > 0 ? (
                   empClaims.map((claim) => {
                     const statusInfo = getStatusInfo(claim)
+                    const statusInfos = getStatusInfo(claim?.claim_items)
                     const isExpanded = expandedClaims.has(claim.id)
+
                     return (
                       <>
                         <ExpandableRow key={claim.id}>
@@ -694,7 +696,7 @@ const MyClaims = () => {
                               <Button onClick={() => handleViewDetails(claim)} variant="ghost" size="sm" title="View">
                                 <FaEye />
                               </Button>
-                              {statusInfo.text !== "Approved" && statusInfo.text !== "Rejected" && (
+                              {/* {statusInfo.text !== "Approved" && statusInfo.text !== "Rejected" && (
                                 <>
                                   <Button
                                     onClick={() => handleApprove(claim)}
@@ -713,7 +715,7 @@ const MyClaims = () => {
                                     <FaBan />
                                   </Button>
                                 </>
-                              )}
+                              )} */}
                             </ActionButtons>
                           </td>
                         </ExpandableRow>
@@ -729,6 +731,7 @@ const MyClaims = () => {
                                     <th>Date</th>
                                     <th>Remarks</th>
                                     <th>Receipt</th>
+                                    <th>Actions</th>  
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -750,6 +753,30 @@ const MyClaims = () => {
                                         ) : (
                                           <Badge variant="error">No</Badge>
                                         )}
+                                      </td>
+                                      <td>
+                               <ActionButtons>
+                              {statusInfos.text !== "Approved" && statusInfos.text !== "Rejected" && (
+                                <>
+                                  <Button
+                                    onClick={() => handleApprove(claim)}
+                                    variant="primary"
+                                    size="sm"
+                                    title="Approve"
+                                  >
+                                    <FaCheck />
+                                  </Button>
+                                  <Button
+                                    onClick={() => handleReject(claim)}
+                                    variant="outline"
+                                    size="sm"
+                                    title="Reject"
+                                  >
+                                    <FaBan />
+                                  </Button>
+                                </>
+                              )}
+                            </ActionButtons>
                                       </td>
                                     </ClaimItemRow>
                                   ))}

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import Team from './../assets/img/TemIcon.jpg';
-import Linkind from './../assets/img/linkedin.png';
 import Lipika from './../assets/img/lipika.png';
 import Sk from './../assets/img/Sk.svg';
 import Jaganath from './../assets/img/sk2.svg';
 import Satish from './../assets/img/Satish (1).jpg';
 import Jayanthi from './../assets/img/freepik__enhance__57693.png';
+import Pramila from './../assets/img/PramilaManohar.jpg';
 
 // Enhanced Keyframe Animations
 const float = keyframes`
@@ -426,12 +426,53 @@ const ShortDescription = styled.p`
   font-weight: 500;
 `;
 
-const FullDescription = styled.p`
+const ReadMoreButton = styled.button`
+  position: absolute;
+  right: 0;
+  bottom: -24px;
+  background: transparent;
+  border: none;
+  color: #ea580c;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    color: #c2410c;
+    text-decoration: underline;
+  }
+  
+  svg {
+    margin-left: 6px;
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover svg {
+    transform: translateX(3px);
+  }
+`;
+
+const DescriptionContainer = styled.div`
+  position: relative;
+  margin-bottom: 16px;
+`;
+
+const FullDescription = styled.div`
   font-size: 1rem;
   color: #374151;
   line-height: 1.8;
-  margin-bottom: 32px;
   text-align: justify;
+  
+  p {
+    margin-bottom: 0.8em;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 `;
 
 // Enhanced LinkedIn Button
@@ -509,13 +550,21 @@ const SparkleEffect = styled.div`
 
 const LeadershipAdvisors = () => {
   const [visibleCards, setVisibleCards] = useState([]);
+  const [expandedDescriptions, setExpandedDescriptions] = useState({});
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setVisibleCards([0, 1, 2, 3, 4, 5]);
+      setVisibleCards([0, 1, 2, 3, 4, 5, 6]);
     }, 500);
     return () => clearTimeout(timer);
   }, []);
+
+  const toggleDescription = (id) => {
+    setExpandedDescriptions(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
 
   // Generate random particles
   const particles = Array.from({ length: 15 }, (_, i) => ({
@@ -537,11 +586,14 @@ const LeadershipAdvisors = () => {
   const teamMembers = [
     {
       id: 1,
-      name: "Manoj Kumar Sahoo",
+      name: "Mr. Manoj Kumar Sahoo",
       role: "Founder and Director",
       image: `${Team}`,
-      shortDesc: "Manoj has 25+ years of experience in Product solution, Engineering and Development in two of the India's leading Products, Finacle (INFOSYS) and Tally",
-      fullDesc: "Manoj K. Sahoo, Founder and Director of Atomwalk, drives product development and innovation with over 25 years of experience in engineering and software solutions. He was instrumental in building two of India's iconic software products: Finacle, Infosys's global banking solution, and Tally, a leading business tool for SMBs. Manoj's expertise spans payments, supply chain management, and delivery excellence, with multiple patents in product innovation. Holding a B-Tech from NIT Rourkela and an MS from BITS Pilani, he leads Atomwalk's mission to deliver ERP solutions that enhance business efficiency and digital transformation.",
+      shortDesc: "Manoj K. Sahoo brings over 25 years of experience in product engineering, software solution development, and technology innovations.",
+      fullDesc: [
+        "He has played a key role in the creation of two of India's most iconic software products—Finacle (Infosys's global banking solution) and Tally (a widely adopted business platform for SMBs). Mr Sahoo holds a B.Tech from NIT Rourkela and an MS from BITS Pilani, with deep domain expertise in payments, supply chain management, and delivery excellence. Manoj also holds multiple patents in product innovation, reflecting his commitment to scalable, practical solutions.",
+        "As the Founder and Director of Atomwalk, Manoj K. Sahoo is the driving force behind the company’s ERP vision leading product strategy and development to help businesses achieve operational efficiency and digital transformation."
+      ],
       linkedin: "https://www.linkedin.com/in/manojksahoo",
       isExecutive: true
     },
@@ -550,8 +602,11 @@ const LeadershipAdvisors = () => {
       name: "Dr. M R Jaganath",
       role: "Director Strategy",
       image: `${Jaganath}`,
-      shortDesc: "Dr. M R Jaganath has an illustrious career as a Scientist managing deep Technology, Translational Medicine, Drug development, Drug discovery",
-      fullDesc: "Dr. M.R. Jaganath, Technical Specialist on Atomwalk's Board, is an expert in lab management, GLP, and GMP. As former CSO of Connexios Life Sciences, he contributed to translational network biology and led a team developing drug candidates for type 2 diabetes. He holds a PhD from IISc Bangalore and degrees in Agriculture and Agricultural Microbiology from UAS Bangalore. His career spans banking at RBI, startup support in distillery effluent treatment and plant tissue culture, and extensive work in drug discovery and development. A prolific scientist, he has numerous publications in esteemed journals.",
+      shortDesc: "Dr. M. R. Jaganath has had an illustrious career as a scientist specializing in deep technology, translational medicine, drug discovery, and drug development.",
+      fullDesc: [
+        "He currently serves as Director of Strategy on the Board of Atomwalk, where he leverages his expertise to drive innovation in GLP software solutions. Dr. Jaganath holds a PhD from the Indian Institute of Science (IISc) Bangalore, along with degrees in Agriculture and Agricultural Microbiology from the University of Agricultural Sciences (UAS) Bangalore. His diverse career spans banking at the Reserve Bank of India (RBI), supporting startups in distillery effluent treatment and plant tissue culture, and significant contributions to drug discovery and development.",
+        "Previously, as Chief Scientific Officer at Connexios Life Sciences, Dr. Jaganath led translational network biology efforts and drug candidate development for type 2 diabetes. He has authored numerous publications as a prolific scientist. His broad expertise and leadership have been instrumental in advancing GLP software solutions, enhancing operational efficiency and regulatory compliance in life sciences and related industries."
+      ],
       linkedin: null,
       isExecutive: true
     },
@@ -560,38 +615,66 @@ const LeadershipAdvisors = () => {
       name: "Dr. Lipika Sahoo",
       role: "Co-Founder , Director Innovation",
       image: `${Lipika}`,
-      shortDesc: "Dr. Lipika Sahoo, with 24 years of academia and industry experience in technology, innovation, and intellectual property, holds a PhD from IISc",
-      fullDesc: "Dr. Lipika Sahoo, Co-Founder and Director of Atomwalk, brings 24 years of experience in academia and industry, specializing in technology, innovation, and intellectual property. She holds a PhD from the Indian Institute of Science (IISc) and has earned multiple advanced degrees, including an MSc, PGDIPR, PGCBM, and certifications from WIPO and IIM Bangalore. Dr. Sahoo serves as a reviewer for various innovation programs. Her extensive expertise supports Atomwalk's mission of driving impactful, socially relevant technological innovations.",
+      shortDesc: "Dr. Lipika Sahoo, Co-Founder and Director of Atomwalk, brings 24 years of experience in academia and industry, specializing in technology, innovation, and intellectual property.",
+      fullDesc: [
+        "She holds a PhD from the Indian Institute of Science (IISc) Bangalore, along with postgraduate qualifications from NLSIU, XIMB, and IIM Bangalore, and advanced certifications from WIPO. A recognized expert in intellectual property strategy, technology transfer, and innovation management, Dr. Sahoo is passionate about empowering technologists, scientists, and deep-tech entrepreneurs to protect and commercialize their ideas. She actively contributes to startup ecosystems as a mentor, reviewer, and advisor, offering deep insight into IP valuation, licensing, R&D strategy, and business process optimization.",
+        "Dr. Sahoo’s strategic vision and expertise have been instrumental in shaping Atomwalk’s growth, enabling the company to effectively support deep-tech innovators in protecting and commercializing their intellectual property."
+      ],
       linkedin: null,
       isExecutive: true
     },
     {
       id: 4,
-      name: "SK Patnaik",
+      name: "Mr. SK Patnaik",
       role: "Business, Product and Sales Strategy",
       image: `${Sk}`,
-      shortDesc: "SK has led Business Management roles in the IT Services industry and lived in the US, UK, South-East Asia, India. He has successfully set-up new business divisions",
-      fullDesc: "SK Patnaik, who joined Atomwalk's Board in 2021, brings expertise in business strategy, product innovation, and revenue growth. He led key roles in client relations, sales, and P&L management in IT Services across global markets in a career of 25 years. At Infosys, he established the APAC and India operations for Manufacturing Vertical and led the adoptions of Digital & Cloud, IoT, Smart Manufacturing, Automation & AI at several Fortune 500 Customers. He has long involvement in the ERP space with SAP, Oracle; platforms like Salesforce, and other SaaS solutions. SK also co-founded a deep-tech telecom start-up. He holds an MBA in Marketing and Systems from the Xavier Institute of Management, Bhubaneswar, India.",
+      shortDesc: "SK Patnaik is a seasoned business strategist with over 25 years of experience in product innovation, revenue growth, and business management.",
+      fullDesc: [
+        "SK holds an MBA in Marketing and Systems from the Xavier Institute of Management, Bhubaneswar, India. His diverse career has spanned across global markets, including the US, UK, South-East Asia, and India, where he has held key leadership roles within the IT Services industry, successfully setting up and scaling new business divisions.",
+        "At Infosys, he played a pivotal role in establishing operations for the Manufacturing Vertical across Asia-Pacific and India, driving the adoption of Digital & Cloud technologies, IoT, Smart Manufacturing, Automation, and AI among several Fortune 500 clients. His extensive experience in ERP systems, including SAP and Oracle, as well as platforms like Salesforce and other SaaS solutions, has enabled him to lead transformative initiatives across industries. Patnaik is also the co-founder of a deep-tech telecom start-up.",
+        "SK’s strategic vision is integral to shaping Atomwalk’s business, product, and sales strategy, driving sustainable growth."
+      ],
       linkedin: null,
       isExecutive: true
     },
     {
       id: 5,
-      name: "Mr. Satish Murthy V.",
-      role: "Quality Specialist",
-      image: `${Satish}`,
-      shortDesc: "Mr. Satish Murthy V was instrumental in establishing ISO 17025:2005 system at the test facility and accreditation by NABL",
-      fullDesc: "Mr. Satish Murthy V., M.Sc., RQAP-GLP, joined Atomwalk's Board as Quality Specialist, brings 28 years of expertise in Quality Management. Satish Murthy V started his career in the year 1995 in the Quality Assurance Unit of Rallis Research, Eurofins Advinus Limited and Adgyl Lifesciences Private Limited. He has expertise in Quality Assurance functions like Safety Assessment, Analytical RD, DMPK and Clinical Pharmacology and is well versed with the OECD Principles of GLP, US FDA 21 CFR part 58, US EPA 40 CFR part 160 and 40 CFR Part 792 GLP standards. He serves as a faculty at the various GLP training programs conducted by the National GLP Compliance Monitoring Authority, India.",
+      name: "Dr. Premila Manohar",
+      role: "Strategy — Power & Energy",
+      image: `${Pramila}`,
+      shortDesc: "Dr. Premila Manohar is a research-driven engineering professional with extensive academic and industry experience, specializing in innovation, intellectual property, and technology translation.",
+      fullDesc: [
+        "With a Ph.D. in High Voltage DC (HVDC) Transmission from the Indian Institute of Science, her technical expertise spans Power Systems, Power Electronics, Control Engineering, MEMS, Machine Learning, and Renewable Energy.",
+        "As Head of Department at M. S. Ramaiah Institute of Technology, she played a crucial role in inculcating a strong research and innovation culture among the young faculty. She actively promoted patent filing among faculty and students, led the development of industry-oriented labs, and mentored six successful PhD candidates. Her work has resulted in multiple national and international publications. Her strengths lie in technical education, research mentorship, strategic academic leadership, and building strong industry-academia partnerships.",
+        "Dr. Manohar’s leadership in advancing innovations and technological assessment positions her to effectively lead product and technology strategy in the power and renewable energy sector."
+      ],
       linkedin: null,
       isExecutive: true
     },
     {
       id: 6,
+      name: "Mr. Satish Murthy V.",
+      role: "Quality Specialist",
+      image: `${Satish}`,
+      shortDesc: "Mr. Satish Murthy V., M.Sc., RQAP-GLP, is a highly experienced Quality Specialist who joined Atomwalk’s Board, bringing over 28 years of expertise in Quality Management.",
+      fullDesc: [
+        "His professional journey began in 1995 with roles in Quality Assurance at Rallis Research, Eurofins Advinus Limited, and Adgyl Lifesciences Private Limited. Throughout his career, he has developed expertise in Safety Assessment, Analytical R&D, DMPK, and Clinical Pharmacology, with a deep understanding of global standards including OECD GLP principles, US FDA 21 CFR part 58, US EPA 40 CFR part 160, and 40 CFR Part 792 GLP standards.",
+        "Mr. Murthy was instrumental in establishing the ISO 17025:2005 system at the test facility and securing its accreditation by NABL. In addition to his leadership in quality management, Mr. Murthy serves as a faculty member for various GLP training programs organized by the National GLP Compliance Monitoring Authority of India, sharing his knowledge with the next generation of quality professionals.",
+        "Mr. Murthy’s contributions have been crucial in elevating Atomwalk’s quality standards, ensuring compliance with regulatory frameworks, and enhancing the company’s overall reputation for excellence in quality assurance."
+      ],
+      linkedin: null,
+      isExecutive: true
+    },
+    {
+      id: 7,
       name: "Jayanthi S Vel",
       role: "Human Resources Officer (HRO)",
       image: `${Jayanthi}`,
-      shortDesc: "Ms Jayanthi is a senior executive responsible for overseeing all aspects of an organization's human resource functions",
-      fullDesc: "Ms Jayanthi is a senior executive responsible for overseeing all aspects of an organization's human resource functions, including recruitment, employee relations, talent development, compensation and benefits, and workforce planning, all while aligning HR strategies with the company's overall business goals. Setting up performance evaluation processes Implementing, Key Performance Indicators (KPIs), Identifying training and development needs.",
+      shortDesc: "Ms. Jayanthi is an accomplished human resource professional responsible for leading and shaping the organization’s strategy.",
+      fullDesc: [
+        "She oversees a broad range of HR functions, including talent sourcing, employee relations, learning and development, compensation planning, and organizational design. Her efforts ensure that HR initiatives are aligned with business objectives. Additionally, Ms. Jayanthi plays a key role in designing performance management frameworks, defining Key Performance Indicators (KPIs), and developing capability-building programs to enhance workforce effectiveness.",
+        "Through her strategic HR leadership, Ms. Jayanthi plays a crucial role in fostering a high-performance culture, ensuring that organizational goals are supported by a strong, well-developed workforce."
+      ],
       linkedin: null,
       isExecutive: true
     }
@@ -641,33 +724,62 @@ const LeadershipAdvisors = () => {
           </SectionHeader>
 
           <div>
-            {executiveMembers.map((member, index) => (
-              <MemberContainer key={member.id} index={index}>
-                <ImageContainer>
-                  <SquareImage src={member.image} alt={member.name} />
-                </ImageContainer>
-                <DetailsContainer>
-                  <MemberName>{member.name}</MemberName>
-                  <MemberRole>
-                    <RoleText>{member.role}</RoleText>
-                  </MemberRole>
-                  <ShortDescription>{member.shortDesc}</ShortDescription>
-                  <FullDescription>{member.fullDesc}</FullDescription>
-                  {member.linkedin && (
-                    <LinkedInButton 
-                      href={member.linkedin} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                    >
-                      <LinkedInIcon viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z"/>
-                      </LinkedInIcon>
-                      View LinkedIn Profile
-                    </LinkedInButton>
-                  )}
-                </DetailsContainer>
-              </MemberContainer>
-            ))}
+            {executiveMembers.map((member, index) => {
+              const isExpanded = expandedDescriptions[member.id];
+              const hasMultipleParagraphs = member.fullDesc.length > 1;
+              
+              return (
+                <MemberContainer key={member.id} index={index}>
+                  <ImageContainer>
+                    <SquareImage src={member.image} alt={member.name} />
+                  </ImageContainer>
+                  <DetailsContainer>
+                    <MemberName>{member.name}</MemberName>
+                    <MemberRole>
+                      <RoleText>{member.role}</RoleText>
+                    </MemberRole>
+                    <ShortDescription>{member.shortDesc}</ShortDescription>
+                    <DescriptionContainer>
+                    <FullDescription isExpanded={isExpanded}>
+                      {isExpanded ? (
+                        member.fullDesc.map((paragraph, i) => (
+                          <p key={i}>{paragraph}</p>
+                        ))
+                      ) : (
+                        <p>{member.fullDesc[0]}</p>
+                      )}
+                    </FullDescription>
+                    
+                    {hasMultipleParagraphs && (
+                      <ReadMoreButton onClick={() => toggleDescription(member.id)}>
+                        {isExpanded ? 'Read Less' : 'Read More'}
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                          {isExpanded ? (
+                            <path d="M18 15l-6-6-6 6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          ) : (
+                            <path d="M6 9l6 6 6-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          )}
+                        </svg>
+                      </ReadMoreButton>
+                    )}
+                  </DescriptionContainer>
+                    
+                    {member.linkedin && (
+                      <LinkedInButton 
+                        href={member.linkedin} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                      >
+                        <LinkedInIcon viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z"/>
+                        </LinkedInIcon>
+                        View LinkedIn Profile
+                      </LinkedInButton>
+                    )}
+                  </DetailsContainer>
+                </MemberContainer>
+              );
+            })}
           </div>
         </SectionWrapper>
       </ContentWrapper>

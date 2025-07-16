@@ -131,7 +131,7 @@ const RequestModal = ({ call_type, empId, onClose, onSuccess,dropdownValue  }) =
                  maxLength={100}
               />
               <div style={{ fontSize: "0.8rem", color: "#888", textAlign: "right" }}>
-                {requestText.length}/100
+                {remark.length}/100
               </div>
               {errors.remarks && <ErrorText>{errors.remarks}</ErrorText>}
             </FormGroup>

@@ -699,12 +699,13 @@ const Dashboard = () => {
   const empId = localStorage.getItem("empId")
   const navigation= useNavigate()
   // Fetch data from various services
-  console.log("eventData", attendanceData);
+  console.log("eventData", ticketData);
   useEffect(() => {
     // Fetch leave data
     getEmpLeave("EL", emp_id)
       .then((res) => {
-        setLeaveData(res.data)
+         const reversedData = [...res.data].reverse();
+        setLeaveData(reversedData)
       })
       .catch((err) => console.error("Error fetching leave data:", err))
     // Fetch event data
@@ -717,7 +718,7 @@ const Dashboard = () => {
     // Fetch claim data
     getEmpClaim("GET", emp_id)
       .then((res) => {
-        setClaimData(res.data)
+        setClaimData(res.data?.reverse())
       })
       .catch((err) => console.error("Error fetching claim data:", err))
 
@@ -725,7 +726,7 @@ const Dashboard = () => {
     getEmployeeRequest()
       .then((res) => {
         const helpDeskTickets = res.data.filter((request) => request?.emp_id == empId && request?.request_type === "H")
-        setTicketData(helpDeskTickets)
+        setTicketData(helpDeskTickets?.reverse())
       })
       .catch((err) => console.error("Error fetching ticket data:", err))
 

@@ -13,7 +13,15 @@ import ViewProjectModal from "../components/modals/ViewProjectModal"
 import { useExport } from "../context/ExportContext"
 import { toast } from "react-toastify"
 import { getProjectlist, postProject } from "../services/productServices"
-
+const TableActions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  color: ${({ theme }) => theme.colors.text};
+`
 const ProjectHeader = styled.div`
   display: flex;
   justify-content: space-between;
@@ -377,9 +385,9 @@ const ProjectManagement = () => {
         </div>
 
         <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-          <Button variant="outline" onClick={handleExport}>
+          {/* <Button variant="outline" onClick={handleExport}>
             <FaFileExport /> Export
-          </Button>
+          </Button> */}
           <Button variant="primary" onClick={() => setIsOpen(true)}>
             <FaPlus /> Add Project
           </Button>
@@ -525,10 +533,14 @@ const ProjectManagement = () => {
                 )}
               </tbody>
             </table>
+            <TableActions style={{float:"right"}}>
+          <Button variant="outline" onClick={handleExport} size="sm">
+            <FaFileExport /> Export
+          </Button>
+          </TableActions>
           </TableContainer>
         )}
       </Card>
-
       <ProjectModal
         isOpen={isOpen}
         onClose={() => {

@@ -2346,37 +2346,36 @@ export const HrmManualStep = [
                     "Only users with <strong>view access</strong> can see policy documents.",
                 ],
             },
-            // {
-            //     title: "Viewing Policy Documents",
-            //     description: "Access and view available HR policies:",
-            //     sections: [
-            //         {
-            //             title: "View Options",
-            //             icon: <FaEye />,
-            //             items: [
-            //                 "A list of policy documents will be displayed with details like <strong>Title</strong>, <strong>Category</strong>",
-            //                 "Click on the <strong>'View'</strong> or <strong>'Download'</strong> icon beside any policy to open or save it.",
-            //             ],
-            //         },
-            //     ],
-            //     notes: [
-            //         "Documents are available in PDF or DOC format.",
-            //         "Ensure your browser supports file preview or downloads.",
-            //     ],
-            // },
-            // {
-            //     title: "Download Functionality",
-            //     description: "Export HR policy document records if needed:",
-            //     sections: [
-            //         {
-            //             title: "Download Options",
-            //             icon: <FaDownload />,
-            //             items: [
-            //                 "Click on the <strong>'Download PDF/Excel '</strong> button to export the policy document list for reference.",
-            //             ],
-            //         },
-            //     ],
-            // },
+            {
+                title: "Viewing Policy Documents",
+                description: "Access and view available HR policies:",
+                sections: [
+                    {
+                        title: "View Options",
+                        icon: <FaEye />,
+                        items: [
+                            "A list of policy documents will be displayed with details like <strong>Title</strong>, <strong>Category</strong>",
+                        ],
+                    },
+                ],
+                notes: [
+                    "Documents are available in PDF or DOC format.",
+                    "Ensure your browser supports file preview or downloads.",
+                ],
+            },
+            {
+                title: "Download Functionality",
+                description: "Export HR policy document records if needed:",
+                sections: [
+                    {
+                        title: "Download Options",
+                        icon: <FaDownload />,
+                        items: [
+                            "Click on the <strong>'Download PDF/Excel '</strong> button to export the policy document list for reference.",
+                        ],
+                    },
+                ],
+            },
         ]
     },
     {
@@ -5949,8 +5948,8 @@ export const HrmManualStep = [
                 accesspath: "Login --> General --> Claim System --> Claim Expenses",
             },
             {
-                title: "Navigate to Claim Dashboard",
-                description: "Follow this path to access the claim dashboard:",
+                title: "Navigate to Claim expenses",
+                description: "Follow this path to access the claim expenses:",
                 sections: [
                     {
                         title: "Navigation Path",
@@ -6100,6 +6099,23 @@ export const HrmManualStep = [
                 ],
             },
             {
+                title: "Submit Your Claim",
+                description: "Final steps to submit your claim:",
+                sections: [
+                    {
+                        title: "Submission Process",
+                        icon: <FaPaperPlane />,
+                        items: [
+                            "<strong>Complete</strong> all required fields and click <strong>'Save claim'</strong>",
+                            "The system will validate and save the new claim details",
+                        ],
+                    },
+                ],
+                notes: [
+                    "Once submitted, the system will save the claim details and provide a confirmation.",
+                ],
+            },
+            {
                 title: "Add Claim item",
                 description: "Once claim is created user can add the multiple claim items.",
                 sections: [
@@ -6116,24 +6132,6 @@ export const HrmManualStep = [
                     "After submission, the system will save the claim item details and display a confirmation message.",
                 ],
             },
-            {
-                title: "Submit Your Claim",
-                description: "Final steps to submit your claim:",
-                sections: [
-                    {
-                        title: "Submission Process",
-                        icon: <FaPaperPlane />,
-                        items: [
-                            "<strong>Complete</strong> all required fields and click <strong>'Submit'</strong>",
-                            "The system will validate and save the new claim details",
-                        ],
-                    },
-                ],
-                notes: [
-                    "Once submitted, the system will save the claim details and provide a confirmation.",
-                ],
-            },
-
             {
                 title: "Cancel Setup",
                 description: "To cancel the claim setup without saving:",
@@ -7994,7 +7992,7 @@ export const HrmManualStep = [
                         title: "Actions",
                         icon: <FaDownload />,
                         items: [
-                            // "Click <strong>'Download Template'</strong> to get the Excel format for uploading.",
+                            "Click <strong>'Submit'</strong> to add the location code info.",
                             "Click <strong>'Back/Location Code List'</strong> to return to the <strong>Location Code List</strong> page.",
                         ],
                     },

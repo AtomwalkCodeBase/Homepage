@@ -353,7 +353,7 @@ const systemModules = [
     title: "Project Management",
     subtitle: "Task and Project Tracking",
     icon: <FiTrendingUp />,
-    link: '',
+    link: '/projectmanual.html',
     color: "#10b981",
     hoverColor: "#0d9488",
     description: "Guide to managing projects, tasks, timelines, and team collaboration features with screenshots and examples.",
@@ -372,7 +372,7 @@ const systemModules = [
     title: "Sales Operations",
     subtitle: "Sales and Order Management",
     icon: <FiShoppingCart />,
-    link: '',
+    link: '/salesmanual.html',
     color: "#f59e0b",
     hoverColor: "#d97706",
     description: "Documentation for sales processes, order management, and invoicing systems with workflow diagrams.",
@@ -423,7 +423,27 @@ const systemModules = [
     version: "v0.0.0",
     lastUpdated: "Updated on 07-05-2025",
     tags: ["Stock", "Warehouse", "Products"]
-  }
+  },
+  
+  {
+    id: 7,
+    title: "Employee HRMS",
+    subtitle: "Human Resource Management System",
+    icon: <FiUsers />,
+    link: '/employeehrmsmanual.html',
+    color: "#4f46e5",
+    hoverColor: "#4338ca",
+    description: "Comprehensive system to manage employee lifecycle, leave, payroll, attendance, and performance with automation and efficiency.",
+    features: [
+      "Employee onboarding & offboarding",
+      "Leave & attendance tracking",
+      "Payroll processing & compliance",
+      "Performance appraisal workflows",
+    ],
+    version: "v0.0.1",
+    lastUpdated: "Updated on 07-05-2025",
+    tags: ["HR", "Employees", "Payroll"]
+  },
 ];
 
 const ManualModules = () => {

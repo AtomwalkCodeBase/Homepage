@@ -49,7 +49,7 @@ const Features = () => {
     {
       title: "Project Management",
       description:
-        "Make informed decisions based on real-time information and analytics provided by Project Management Syatem.",
+        "Make informed decisions based on real-time information and analytics provided by Project Management System.",
       imgUrl: projImg6,
       background:"#fff8e6"
     },

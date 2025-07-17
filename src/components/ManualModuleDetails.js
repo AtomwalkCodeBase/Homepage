@@ -5,15 +5,22 @@ import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import {
   FaChevronDown,
   FaChevronRight,
+  FaUsersCog,
   FaBook,
   FaCogs,
   FaUsers,
+  FaBookOpen,
   FaBoxOpen,
   FaRocket,
   FaUserCheck,
+  FaClock,
+  FaFileInvoiceDollar,
+  FaTasks,
   FaBriefcase,
   FaBox,
+  FaShoppingCart,
   FaChartBar,
+  FaChartLine,
   FaHeartbeat,
   FaCog,
   FaFileAlt,
@@ -21,6 +28,14 @@ import {
   FaSearch,
   FaHome,
   FaQuestionCircle,
+  FaBuilding,     
+  FaTachometerAlt, 
+  FaWarehouse,    
+  FaProjectDiagram, 
+  FaCalendarCheck,
+  FaMoneyBillWave,
+  FaHeadset,
+  FaUserCircle,
 } from "react-icons/fa";
 
 // Modern Theme
@@ -647,7 +662,7 @@ const getModuleData = () => ({
           },
           {
             name: "Claims Expense",
-            subtopics: ["Claims Dashboard","Add New Claim"],
+            subtopics: ["Claim Expense","Add New Claim"],
           },
           {
             name: "Employee Advances",
@@ -934,6 +949,214 @@ const getModuleData = () => ({
       // },
     },
   },
+
+  projectmanual: {
+    title: "Project Manual",
+    icon: <FaBoxOpen size={20} />,
+    description: "Complete documentation for project management system",
+    subModules: {
+
+      // officeSetup: {
+      //   icon: <FaBuilding size={16} />,
+      //   topics: [
+          
+      //     {
+      //       name: "Equipments SetUp",
+      //       subtopics: ["Add Equipments","Book Equipment"],
+      //     },
+          
+          
+          
+      //   ],
+      // },
+     
+      Product: {
+        icon: <FaBoxOpen size={16} />,
+        topics: [
+          { name: "Product Category",
+            subtopics: ["Add Product Category"],
+          },
+          {
+            name: "Coupon Code",
+            subtopics: ["Add Coupon Code"],
+          },
+          {
+            name: "Tax Rate Code",
+            subtopics: ["Add Tax Rate Code"],
+          },
+          {
+            name: "Variation Name",
+            subtopics: ["Add Variation Name"],
+          },
+          {
+            name: "Product",
+            subtopics: ["Add Product"],
+          },
+          {
+            name: "Document Setup",
+            subtopics: ["Add Document Type"],
+          },
+          //  {
+          //   name: "Activity Creation",
+          //   subtopics: ["Add Activity"],
+          // },
+          // {
+          //   name: "Cretion of Process",
+          //   subtopics: ["Add Process Template"],
+          // },
+          
+          
+        ],
+      },
+      Inventory: {
+        icon: <FaWarehouse size={16} />,
+        topics: [
+          {
+            name: "Inventory Setup",
+            subtopics: ["Add Item Category","Add Location Code"],
+          },
+          {
+            name: "Equipments SetUp",
+            subtopics: ["Add Equipments","Book Equipment"],
+          },
+        ],
+      },
+      Project: {
+        icon: <FaTasks  size={16} />,
+        topics: [
+          {
+            name: "Project/work Under creation",
+            subtopics: ["Add Project"],
+          },
+          
+          {
+            name: "Project Docket",
+            subtopics: ["Add Docket"],
+          },
+          {
+            name: "Project Alerts",
+            subtopics: ["Add Project Alerts"],
+          },
+          {
+            name: "Document Management",
+            subtopics: ["New Folder"],
+          },
+           {
+            name: "Activity Creation",
+            subtopics: ["Add Activity"],
+          },
+          {
+            name: "Cretion of Process",
+            subtopics: ["Add Process Template"],
+          },
+        ],
+      },
+       Dashboard: {
+        icon: <FaTachometerAlt size={16} />,
+        topics: [
+          {
+            name: "Activity Dashboard",
+            subtopics: ["My Activity Dashboard"],
+          },
+          {
+            name: "Project Dashboard",
+            subtopics: ["Project Margin Dashboard"],
+          },
+          {
+            name: "Resource Utilisation",
+            subtopics: ["Resource Utilisation Dashboard"],
+          },
+          {
+            name: "item biling Dashboard",
+            subtopics: ["Contract Items (Billing) Dashboard"],
+          },
+          {
+            name: "User Activity management",
+            subtopics: ["My Project Activity","My Docket Activity","My Review"],
+          },
+          
+        ],
+      },
+      Dashboard: {
+        icon: <FaBook size={16} />,
+        topics: [
+          {
+            name: "Activity Dashboard",
+            subtopics: ["My Activity Dashboard"],
+          },
+          {
+            name: "Project Dashboard",
+            subtopics: ["Project Margin Dashboard"],
+          },
+          {
+            name: "Resource Utilisation",
+            subtopics: ["Resource Utilisation Dashboard"],
+          },
+          {
+            name: "item biling Dashboard",
+            subtopics: ["Contract Items (Billing) Dashboard"],
+          },
+          {
+            name: "User Activity management",
+            subtopics: ["My Project Activity","My Docket Activity","My Review"],
+          },
+          
+        ],
+      },
+    },
+  },
+
+  salesmanual: {
+    title: "Sales Order and Purchases Manual",
+    icon: <FaFileInvoiceDollar size={20} />,
+    description: "Complete documentation for project management system",
+    subModules: {
+
+      Sales: {
+        icon: <FaChartLine size={16} />,
+        topics: [
+          {
+            name: "Sales Order",
+            subtopics: ["Add Sales Order (Order Detail)","Add Sales Order (Order Item Detail)"],
+          },
+          //  {
+          //   name: "Purchase Order",
+          //   subtopics: ["Add Purchase Order (PO Detail)"],
+          // },
+          // {
+          //   name: "Purchase Service",
+          //   subtopics: ["Add Service Order"],
+          // },
+          // {
+          //   name: "Delivery challan",
+          //   subtopics: ["Add Delivery Challan"],
+          // },
+        ],
+      },
+
+      Purchase: {
+        icon: <FaShoppingCart size={16} />,
+        topics: [
+          
+           {
+            name: "Purchase Order",
+            subtopics: ["Add Purchase Order (PO Detail)"],
+          },
+          {
+            name: "Purchase Service",
+            subtopics: ["Add Service Order"],
+          },
+          {
+            name: "Delivery challan",
+            subtopics: ["Add Delivery Challan"],
+          },
+        ],
+      },
+     
+      
+    },
+  },
+
   inventorymanual: {
     title: "Inventory Manual",
     icon: <FaBoxOpen size={20} />,
@@ -1013,6 +1236,85 @@ const getModuleData = () => ({
       },
     },
   },
+
+  employeehrmsmanual: {
+    title: "Employee Manual",
+    icon: <FaBookOpen size={20} />,
+    description: "Comprehensive guide for managing employee information, roles, attendance, and HR operations.",
+    subModules: {
+      "Getting started": {
+        icon: <FaBook size={16} />,
+        topics: [
+          {
+            name: "Dashboard",
+            subtopics: ["Dashboard Overview HRMS"],
+          },
+          {
+            name: "Login",
+            subtopics: ["Login Module HRMS", "Forget PIN Module HRMS"],
+          },
+          
+        ],
+      },
+
+      "Time Management": {
+        icon: <FaClock  size={16} />,
+        topics: [
+          {
+            name: "Attendance",
+            subtopics: ["Attendance View For Employee HRMS", "Add Attendance For Employee HRMS"],
+          },
+          {
+            name: "TimeSheet",
+            subtopics: ["TimeSheet View", "Add Time Entry"],
+          },
+        ],
+      },
+
+      "Leave ": {
+        icon: <FaCalendarCheck  size={16} />,
+        topics: [
+          {
+            name: "Leave & Holidays",
+            subtopics: ["Leave Management View","Apply for Leave","Holiday Calendar (Calendar View)","Holiday Calendar (List View)"],
+          },
+        ],
+      },
+
+      "Finance": {
+        icon: <FaMoneyBillWave size={16} />,
+        topics: [
+          {
+            name: "Finance",
+            subtopics: ["My Claims View","Add New Claims", "Pay Slip View"],
+          },
+        ],
+      },
+
+      "Support": {
+        icon: <FaHeadset  size={16} />,
+        topics: [
+          {
+            name: "Support",
+            subtopics: ["Help Desk", "Create New Ticket","Request Desk","New Request"],
+          },
+        ],
+      },
+
+      "Personal": {
+        icon: <FaUserCircle  size={16} />,
+        topics: [
+          {
+            name: "Profile & Wishes",
+            subtopics: ["My Wishes","My Profile"],
+          },
+        ],
+      },
+
+    },
+  },
+
+
 });
 
 const ManualModuleDetails = () => {
@@ -1036,6 +1338,18 @@ const ManualModuleDetails = () => {
       setModuleData(modules.crmanual);
       setActiveSubModule(Object.keys(modules.crmanual.subModules)[0]);
       setActiveMainModule("crmanual");
+    } else if (path.includes("projectmanual")) {
+      setModuleData(modules.projectmanual);
+      setActiveSubModule(Object.keys(modules.projectmanual.subModules)[0]);
+      setActiveMainModule("projectmanual");
+    } else if (path.includes("salesmanual")) {
+      setModuleData(modules.salesmanual);
+      setActiveSubModule(Object.keys(modules.salesmanual.subModules)[0]);
+      setActiveMainModule("salesmanual");
+    } else if (path.includes("employeehrmsmanual")) {
+      setModuleData(modules.employeehrmsmanual);
+      setActiveSubModule(Object.keys(modules.employeehrmsmanual.subModules)[0]);
+      setActiveMainModule("employeehrmsmanual");
     } else if (path.includes("inventorymanual")) {
       setModuleData(modules.inventorymanual);
       setActiveSubModule(Object.keys(modules.inventorymanual.subModules)[0]);
@@ -1143,6 +1457,7 @@ const ManualModuleDetails = () => {
             >
               <FaHeartbeat /> Client Relations
             </NavItem>
+            
             <NavItem
               active={activeMainModule === "inventorymanual"}
               onClick={() => {
@@ -1157,6 +1472,52 @@ const ManualModuleDetails = () => {
             >
               <FaBoxOpen /> Inventory
             </NavItem>
+
+            <NavItem
+              active={activeMainModule === "projectmanual"}
+              onClick={() => {
+                setModuleData(modules.projectmanual);
+                setActiveSubModule(
+                  Object.keys(modules.projectmanual.subModules)[0]
+                );
+                setActiveMainModule("projectmanual");
+                setSidebarOpen(false);
+                setSearchQuery("");
+              }}
+            >
+              <FaProjectDiagram  /> Project Management
+            </NavItem>
+
+            <NavItem
+              active={activeMainModule === "salesmanual"}
+              onClick={() => {
+                setModuleData(modules.salesmanual);
+                setActiveSubModule(
+                  Object.keys(modules.salesmanual.subModules)[0]
+                );
+                setActiveMainModule("salesmanual");
+                setSidebarOpen(false);
+                setSearchQuery("");
+              }}
+            >
+              <FaFileInvoiceDollar  /> Sales Order and Purchases 
+            </NavItem>
+
+            <NavItem
+              active={activeMainModule === "employeehrmsmanual"}
+              onClick={() => {
+                setModuleData(modules.employeehrmsmanual);
+                setActiveSubModule(
+                  Object.keys(modules.employeehrmsmanual.subModules)[0]
+                );
+                setActiveMainModule("employeehrmsmanual");
+                setSidebarOpen(false);
+                setSearchQuery("");
+              }}
+            >
+              <FaUsersCog   /> Employee HRMS 
+            </NavItem>
+
           </NavSection>
 
           {!searchQuery && (

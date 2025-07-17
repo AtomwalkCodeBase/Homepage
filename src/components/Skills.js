@@ -319,7 +319,7 @@ export const Skills = () => {
     {
       title: "Lab Management / Equipment Management",
       description:
-        "Atomwalk Lab Management / Equipment Management helps the Labs in innovation by enabling them smoothly managing all Lab process like - Grant management, Inventory Management, Lab equipment management, Supplier and Purchase order management, Lab report/ documentation and Lab equipment management.",
+        "Atomwalk Lab Management / Equipment Management helps the Labs in innovation by enabling them smoothly managing all Lab process like - Grant management, Inventory Management, Lab equipment management, Supplier , Purchase order management, and Lab report/ documentation",
       image: Lab,
       path: "/lms.html",
       bgColor: "#E1FFF6",
@@ -351,7 +351,7 @@ export const Skills = () => {
     {
       title: "Solar Management System",
       description:
-        "Atomwalk Smart Solar Management System simplifies your solar business with a unified, AIoT-powered platform. It offers real-time monitoring, inventory tracking, and customer management. Get instant insights on voltage, current, and humidity, with early alerts for issues. Smart sensors and AI turn raw data into actionable insights. Stay connected, efficient, and ready for the future with Atomwalk. ",
+        "Atomwalk Smart Solar Management System simplifies your solar business with a unified, AIoT-powered platform. It offers real-time monitoring, inventory tracking, and customer management. Get instant insights on voltage, current, and humidity, with early alerts for issues. Smart sensors and AI turn raw data into actionable insights.",
       image: Sms,
       path: "/solarmanagement.html",
       bgColor: "rgb(217 254 229)",

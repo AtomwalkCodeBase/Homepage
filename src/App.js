@@ -193,6 +193,9 @@ function App() {
               <Route path="/facilitymanagement.html" element={<Fmsheropage />} />
               <Route path="/hospitalmanagement.html" element={<HmsHeroPage />} />
               <Route path="/solarmanagement.html" element={<Smsheropage />} />
+               <Route path="/projectmanual.html" element={<ManualModuleDetails/>} />
+              <Route path="/salesmanual.html" element={<ManualModuleDetails/>} />
+              <Route path="/employeehrmsmanual.html" element={<ManualModuleDetails/>} />
               <Route path="/aimanagement.html" element={<PpeHeroPage/>} />
               <Route path="/manual.html" element={<Manual/>} />
               <Route path="/hrmanual.html" element={<ManualModuleDetails/>} />

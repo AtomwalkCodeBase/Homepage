@@ -191,7 +191,12 @@ const BlogPosts = () => {
             >
               <PostImage src={blog.coverImage} alt={blog.title || 'Blog post'} />
               <PostContent>
-                <PostCategory>{blog.category}</PostCategory>
+                {/* Category display: show as comma-separated if array, else normal */}
+                {Array.isArray(blog.category) ? (
+                  <PostCategory>{blog.category.join(', ')}</PostCategory>
+                ) : blog.category ? (
+                  <PostCategory>{blog.category}</PostCategory>
+                ) : null}
                 <PostTitle>{blog.title}</PostTitle>
                 <PostFooter>
                   <Author>By {blog.author}</Author>

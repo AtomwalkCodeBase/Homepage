@@ -23,19 +23,38 @@ const BlogForm = () => {
     coverImagePath: '',
     date: getToday(),
     sections: [],
-    category:''
+    categories: []
   });
+  const [categoriesInput, setCategoriesInput] = useState('');
 
   useEffect(() => {
     if (id && blog && blogContent) {
+      const strippedSections = blogContent.sections.map(section => ({
+        ...section,
+        contents: section.contents.map(content => {
+          if (content.type === 'image' && content.data.startsWith('https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/')) {
+            return {
+              ...content,
+              data: content.data.replace('https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/', '')
+            };
+          }
+          return content;
+        })
+      }));
+
+      const categoriesArr = Array.isArray(blog.category)
+        ? blog.category
+        : (blog.category ? blog.category.split(',').map(c => c.trim()) : []);
+
       setFormData({
         title: blog.title,
         tagline: blog.tagline,
         coverImagePath: blog.coverImage.replace('https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/', ''),
         date: blog.date || getToday(),
-        sections: blogContent.sections,
-        category: blog.category || ''
+        sections: strippedSections,
+        categories: categoriesArr
       });
+      setCategoriesInput(categoriesArr.join(', '));
     }
   }, [id, blog, blogContent]);
 
@@ -160,6 +179,9 @@ const BlogForm = () => {
     e.preventDefault();
     setLoading(true);
 
+    // Ensure categories are up to date before submit
+    const categoriesArr = categoriesInput.split(',').map(c => c.trim()).filter(Boolean);
+
     try {
       const blogId = id || doc(collection(db, 'blogs')).id;
       const coverImageUrl = constructImageUrl(formData.coverImagePath);
@@ -169,7 +191,7 @@ const BlogForm = () => {
         title: formData.title,
         tagline: formData.tagline,
         coverImage: coverImageUrl,
-        category: formData.category,
+        category: categoriesArr,
         date: formData.date 
       });
 
@@ -212,7 +234,7 @@ const BlogForm = () => {
             onChange={(e) => updateContent(sectionIndex, contentIndex, e.target.value)}
             placeholder="Enter paragraph text..."
             rows={8}
-            style={{width: 650}}
+            style={{width: '100%'}}
           />
         );
       case 'image':
@@ -222,6 +244,7 @@ const BlogForm = () => {
             value={content.data}
             onChange={(e) => updateContent(sectionIndex, contentIndex, e.target.value)}
             placeholder="folder/image.jpg"
+             style={{width: '100%', height: '50px'}}
           />
         );
       case 'bullets':
@@ -296,12 +319,13 @@ const BlogForm = () => {
         </div>
 
         <div className="form-group">
-          <label>Category</label>
+          <label>Categories</label>
           <input
             type="text"
-            value={formData.category}
-            onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-            placeholder="Enter category e.g. Web Development"
+            value={categoriesInput}
+            onChange={e => setCategoriesInput(e.target.value)}
+            onBlur={() => setFormData(prev => ({ ...prev, categories: categoriesInput.split(',').map(c => c.trim()).filter(Boolean) }))}
+            placeholder="Enter categories separated by commas (e.g. CRM, AI, FITNESS)"
             required
           />
         </div>

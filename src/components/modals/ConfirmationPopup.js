@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 // Styled components for the popup
@@ -85,7 +85,12 @@ const SubmitButton = styled(Button)`
 const ConfirmationPopup = ({ isOpen, onClose, onConfirm, approve, timesheet }) => {
   const [remark, setRemark] = useState('');
 
+  useEffect(()=> {
+    if(isOpen) setRemark('')
+  },[isOpen])
+
   if (!isOpen) return null;
+
 
   // Derive the action label once to avoid repetition
   const actionLabel = timesheet

@@ -21,12 +21,14 @@ import {
   FaPaperPlane,
   FaTrash,
   FaEdit,
-} from "react-icons/fa"
+  FaCheckCircle,
+} from "react-icons/fa";
+import { RiShareForward2Line } from "react-icons/ri";
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
 import Badge from "../components/Badge"
-import { getEmpClaim, getExpenseItem, getExpenseProjectList, postClaimAction } from "../services/productServices"
+import { getEmpClaim, getExpenseItem, getExpenseProjectList, postClaimAction, validateClaimItem } from "../services/productServices"
 import ClaimModal from "../components/modals/ClaimModal"
 import ClaimActionModal from "../components/modals/ClaimActionModal"
 import { toast } from "react-toastify"
@@ -310,6 +312,7 @@ const MyClaims = () => {
   const [claims, setClaims] = useState([])
   const [empClaims, setEmpClaims] = useState([])
   const empId = localStorage.getItem("empNoId")
+  const EmpId = localStorage.getItem("empId")
   const [dropdownValue, setDropdownValue] = useState("All Types")
   const [projecttype, setProjecttype] = useState("All Types")
   const [isLoadings, setIsLoadings] = useState(1)
@@ -333,6 +336,10 @@ const MyClaims = () => {
   const [selectedClaimForAction, setSelectedClaimForAction] = useState(null)
   const [selectedClaimForEdit, setSelectedClaimForEdit] = useState(null)
   const [masterClaimId, setMasterClaimId] = useState(null)
+  const [validationResponse, setValidationResponse] = useState([]);
+  const [isApproveAllPopupOpen, setIsApproveAllPopupOpen] = useState(false);
+  const [approveAllClaim, setApproveAllClaim] = useState(null);
+
   const fetchProjectList = async () => {
     try {
       const response = await getExpenseProjectList()
@@ -429,11 +436,29 @@ const MyClaims = () => {
       })
   }
 
+  const validApproveClaim = async (masterClaimId) => {
+    const validationData = {
+      emp_id: EmpId,
+      m_claim_id: masterClaimId
+    };
+    console.log("validationData", validationData)
+    try {
+      const validationResponse = await validateClaimItem(validationData);
+      setValidationResponse(validationResponse.data)
+       console.log("validationResponse",validationResponse.data);
+    } catch (error) {
+      console.log("Error validating claim data:", error);
+    }
+  };
+
+
+
   useEffect(() => {
     fetchClaimItemList()
     fetchClaimDetails()
     fetchProjectList()
     fetchClaimDetailsofemp()
+    validApproveClaim()
   }, [isLoadings])
 
   useEffect(() => {
@@ -536,8 +561,26 @@ const MyClaims = () => {
     if (claim.expense_status === "N") {
       return { text: "Not Submitted", variant: "info" }
     }
+    if (claim.expense_status === "F") {
+      return { text: "Forwarded", variant: "error" }
+    }
+
     return { text: "Submitted", variant: "warning" }
   }
+
+  // Find the validation entry for this claimId
+  const isFinalApproval = (claimId) => {
+    const entry = validationResponse.find(v => v.claim_id === claimId);
+    return entry && entry.approval_type === "F";
+  };
+
+  const allItemsFinalApproval = (claim) => {
+    // If every claim item has approve_type "F" in validationResponse, return true
+    return claim.claim_items.every(item => {
+      const validation = validationResponse.find(v => v.claim_id === item.claim_id);
+      return validation && validation.approval_type === "F";
+    });
+  };
 
   const handleViewDetails = (claim) => {
     setSelectedClaim(claim)
@@ -549,27 +592,71 @@ const MyClaims = () => {
     setSelectedClaim(null)
   }
 
-  const toggleClaimExpansion = (claimId) => {
-    const newExpanded = new Set(expandedClaims)
+  const toggleClaimExpansion = (claimId, claim) => {
+    const newExpanded = new Set(expandedClaims);
+    const isExpanding = !newExpanded.has(claimId);
     if (newExpanded.has(claimId)) {
-      newExpanded.delete(claimId)
+      newExpanded.delete(claimId);
     } else {
-      newExpanded.add(claimId)
+      newExpanded.add(claimId);
+      if (activeTab === "empdata" && isExpanding && claim?.master_claim_id) {
+        validApproveClaim(claim.master_claim_id);
+        console.log("claim master id", claim.master_claim_id)
+      }
     }
-    setExpandedClaims(newExpanded)
-  }
+    setExpandedClaims(newExpanded);
+  };
 
   // Claim Action Handlers
-  const handleApprove = (claim) => {
+  const handleApprove = (claim, masterId) => {
+    setMasterClaimId(masterId?.master_claim_id)
     setSelectedClaimForAction(claim)
     setActionType("APPROVE")
     setIsActionModalOpen(true)
   }
 
-  const handleReject = (claim) => {
+  const handleReject = (claim, masterId) => {
+    setMasterClaimId(masterId?.master_claim_id)
     setSelectedClaimForAction(claim)
     setActionType("REJECT")
     setIsActionModalOpen(true)
+  }
+
+  const handleForward = (claim, masterId) => {
+    setMasterClaimId(masterId?.master_claim_id)
+    setSelectedClaimForAction(claim)
+    setActionType("FORWARD")
+    setIsActionModalOpen(true)
+  }
+  
+  const handleApproveAll = (remark) => {
+    if (!approveAllClaim) return;
+    const claimPayload = {
+      m_claim_id: approveAllClaim.master_claim_id,
+      remarks: remark,
+      call_mode: 'APPROVE_CLAIM',
+      claim_list: approveAllClaim.claim_items
+        .map(item => {
+          const validation = validationResponse.find(v => v.claim_id === item.claim_id);
+          return {
+            claim_id: item.claim_id,
+            approve_type: validation ? validation.approval_type : 'A',
+            approved_amt: item.expense_amt,
+            remarks: item.remarks || ''
+          };
+        })
+        // .filter(item => item.approve_type === 'A')
+    };
+    console.log("Approve all claims:", claimPayload)
+      
+   postClaimAction(claimPayload)
+    .then((res) => {
+      toast.success("Claims approved successfully");
+      setIsLoadings(isLoadings + 1);
+    })
+    .catch((err) => toast.error("Failed to approve claims"));
+  setIsApproveAllPopupOpen(false);
+  setApproveAllClaim(null);
   }
 
   const handleCloseActionModal = () => {
@@ -672,14 +759,13 @@ const MyClaims = () => {
                 {empClaims.length > 0 ? (
                   empClaims.map((claim) => {
                     const statusInfo = getStatusInfo(claim)
-                    const statusInfos = getStatusInfo(claim?.claim_items)
                     const isExpanded = expandedClaims.has(claim.id)
 
                     return (
                       <>
                         <ExpandableRow key={claim.id}>
                           <td>
-                            <Button variant="ghost" size="sm" onClick={() => toggleClaimExpansion(claim.id)}>
+                            <Button variant="ghost" size="sm" onClick={() => toggleClaimExpansion(claim.id, claim)}>
                               {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
                             </Button>
                           </td>
@@ -731,15 +817,19 @@ const MyClaims = () => {
                                     <th>Date</th>
                                     <th>Remarks</th>
                                     <th>Receipt</th>
+                                    <th>Status</th>
                                     <th>Actions</th>  
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {claim.claim_items?.map((item) => (
-                                    <ClaimItemRow key={item.id}>
-                                      <td>
-                                        <div style={{ display: "flex", alignItems: "center" }}>
-                                          <span style={{ marginRight: "0.5rem" }}>{getItemIcon(item.item_name)}</span>
+                                  {claim.claim_items?.map((item) => {
+                                    const subStatus = getStatusInfo(item)
+
+                                    return (
+                                      <ClaimItemRow key={item.id}>
+                                        <td>
+                                          <div style={{ display: "flex", alignItems: "center" }}>
+                                            <span style={{ marginRight: "0.5rem" }}>{getItemIcon(item.item_name)}</span>
                                           {item.item_name}
                                         </div>
                                       </td>
@@ -755,11 +845,14 @@ const MyClaims = () => {
                                         )}
                                       </td>
                                       <td>
+                                        <Badge variant={subStatus.variant}>{subStatus.text}</Badge>
+                                      </td>
+                                      <td>
                                <ActionButtons>
-                              {statusInfos.text !== "Approved" && statusInfos.text !== "Rejected" && (
+                              {!isFinalApproval(item.claim_id) && subStatus.text !== "Approved" && subStatus.text !== "Rejected" ?
                                 <>
                                   <Button
-                                    onClick={() => handleApprove(claim)}
+                                    onClick={() => handleApprove(item, claim)}
                                     variant="primary"
                                     size="sm"
                                     title="Approve"
@@ -767,20 +860,44 @@ const MyClaims = () => {
                                     <FaCheck />
                                   </Button>
                                   <Button
-                                    onClick={() => handleReject(claim)}
+                                    onClick={() => handleReject(item, claim)}
                                     variant="outline"
                                     size="sm"
                                     title="Reject"
                                   >
                                     <FaBan />
                                   </Button>
+                                  <Button
+                                    onClick={() => handleForward(item, claim)}
+                                    variant="outline"
+                                    size="sm"
+                                    title="Forward"
+                                  >
+                                    <RiShareForward2Line />
+                                  </Button>
                                 </>
-                              )}
+                            :isFinalApproval(item.claim_id)&&     <Button
+                                    onClick={() => handleForward(item, claim)}
+                                    variant="primary"
+                                    size="sm"
+                                    title="Forward"
+                                  >
+                                    <RiShareForward2Line />
+                                  </Button> }
                             </ActionButtons>
                                       </td>
                                     </ClaimItemRow>
-                                  ))}
+                              )})}
                                 </tbody>
+                                  {!allItemsFinalApproval(claim) && statusInfo.text === "Submitted" && (
+                                  <TableActions style={{margin:"1rem"}}>
+                                    <Button onClick={() => { 
+                                      setApproveAllClaim(claim); 
+                                      setIsApproveAllPopupOpen(true)}} 
+                                      variant="primary" size="sm">
+                                      <FaCheckCircle style={{ marginRight: 4 }} /> Approve All Claims
+                                    </Button>
+                                  </TableActions>)}
                               </ClaimItemsTable>
                             </td>
                           </tr>
@@ -974,6 +1091,8 @@ const MyClaims = () => {
         isOpen={isActionModalOpen}
         onClose={handleCloseActionModal}
         claim={selectedClaimForAction}
+        masterClaimId={masterClaimId}
+        validationResponse={validationResponse}
         actionType={actionType}
         onSuccess={handleActionSuccess}
       />
@@ -1068,6 +1187,8 @@ const MyClaims = () => {
         </DetailModal>
       )}
       <ConfirmationPopup isOpen={deleteopen} onClose={handeleDeleteclose} onConfirm={handeleconform} timesheet={true}></ConfirmationPopup>
+
+      <ConfirmationPopup isOpen={isApproveAllPopupOpen} onClose={() => {setIsApproveAllPopupOpen(false); setApproveAllClaim(null);}} onConfirm={handleApproveAll} approve="APPROVE" timesheet={true}/>
     </Layout>
   )
 }

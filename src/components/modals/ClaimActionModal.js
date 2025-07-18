@@ -353,7 +353,7 @@ const SuccessMessage = styled.p`
   margin-bottom: 1.5rem;
 `
 
-const ClaimActionModal = ({ isOpen, onClose, claim, actionType, onSuccess }) => {
+const ClaimActionModal = ({ isOpen, onClose, claim, masterClaimId, validationResponse,  actionType, onSuccess }) => {
   const [approveAmount, setApproveAmount] = useState("")
   const [remarks, setRemarks] = useState("")
   const [selectedManager, setSelectedManager] = useState("")
@@ -365,6 +365,8 @@ const ClaimActionModal = ({ isOpen, onClose, claim, actionType, onSuccess }) => 
   const [eligible, setEligible] = useState(false)
   const [claimGradeLevel, setClaimGradeLevel] = useState(0)
   const [profile, setProfile] = useState({})
+
+  // console.log("claim data", masterClaimId)
 
   // Reset form when modal opens with new claim
   useEffect(() => {
@@ -378,6 +380,8 @@ const ClaimActionModal = ({ isOpen, onClose, claim, actionType, onSuccess }) => 
       fetchManagers()
     }
   }, [claim, actionType])
+
+  const validationEntry = validationResponse ? validationResponse.find(v => v.claim_id === claim?.claim_id) : null;
 
   const fetchManagers = async () => {
     try {
@@ -393,6 +397,36 @@ const ClaimActionModal = ({ isOpen, onClose, claim, actionType, onSuccess }) => 
       setIsLoading(false)
     }
   }
+
+  const isForwarded = actionType === "FORWARD" && validationEntry?.approval_type === "F";
+  const approvedManager = managers.find(
+    (manager) => manager.emp_id === validationEntry?.approved_emp_id
+  );
+
+  // Derive value
+  const managerValue = isForwarded
+    ? validationEntry?.approved_emp_id
+    : selectedManager;
+
+  // Derive change handler
+  const handleManagerChange = isForwarded
+    ? undefined
+    : (e) => setSelectedManager(e.target.value);
+
+  // Derive manager options
+  const managerOptions = isForwarded ? (
+    <option value={validationEntry?.approved_emp_id}>
+      {approvedManager
+        ? `${approvedManager.name} [${approvedManager.emp_id}]`
+        : validationEntry?.approved_emp_id}
+    </option>
+  ) : (
+    managers.map((manager) => (
+      <option key={manager.id} value={manager.emp_id}>
+        {manager.name} [{manager.emp_id}]
+      </option>
+    ))
+  );
 
   // Check if the claim needs manager approval
   useEffect(() => {
@@ -442,14 +476,21 @@ const ClaimActionModal = ({ isOpen, onClose, claim, actionType, onSuccess }) => 
 
     setIsLoading(true)
 
+
     const claimPayload = {
-      approve_by_id: selectedManager,
-      approve_amt: approveAmount,
-      claim_id: claim.id,
-      remarks: remarks,
-      call_mode: actionType === "APPROVE" ? "APPROVE" : "REJECT",
+      m_claim_id: masterClaimId,
+      remarks: remarks || '',
+      call_mode: 'APPROVE_CLAIM',
+      claim_list: [{
+        claim_id: claim.claim_id,
+        a_emp_id: isForwarded? validationEntry?.approved_emp_id : selectedManager,
+        approve_type: actionType === "APPROVE" ? "A" : actionType === "REJECT" ? "R" : actionType === "FORWARD" ? "F" : "",
+        approved_amt: actionType === 'REJECT' ? '0' : claim.expense_amt,
+        remarks: remarks || ''
+      }],
     }
 
+    // console.log("data to be send", claimPayload)
     try {
       await postClaimAction(claimPayload)
       setShowSuccessModal(true)
@@ -491,7 +532,8 @@ const ClaimActionModal = ({ isOpen, onClose, claim, actionType, onSuccess }) => 
           </CloseButton>
 
           <ModalTitle>
-            {actionType === "APPROVE" ? "Approve Claim" : "Reject Claim"} ({claim.claim_id})
+            {actionType === "APPROVE" ? "Approve Claim" : actionType === "REJECT" ? "Reject Claim" : actionType === "FORWARD" ? "Forward Claim" : ""} ({claim.claim_id})
+
           </ModalTitle>
 
           <ClaimDetailContainer>
@@ -544,34 +586,31 @@ const ClaimActionModal = ({ isOpen, onClose, claim, actionType, onSuccess }) => 
 
           <FormGroup>
             <FormLabel htmlFor="remarks">
-              {actionType === "APPROVE" ? "Approval Remarks:" : "Rejection Reason:"}
+              {actionType === "APPROVE" ? "Approval Remarks:" : actionType === "REJECT" ? "Reject Remarks" : actionType === "FORWARD" ? "Forward  Remarks" : ""}
             </FormLabel>
             <FormTextarea
               id="remarks"
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}
               error={errors.remarks}
-              placeholder={actionType === "APPROVE" ? "Enter approval remarks" : "Enter rejection reason"}
+              placeholder={actionType === "APPROVE" ? "Enter approval remarks" : actionType === "REJECT" ? "Enter reject remarks" : actionType === "FORWARD" ? "Enter forward remark" : "" }
             />
             {errors.remarks && <ErrorText>{errors.remarks}</ErrorText>}
           </FormGroup>
 
-          {eligible && (
+          {actionType === "FORWARD"  && (
             <FormGroup>
               <FormLabel htmlFor="manager">Select Manager:</FormLabel>
-              <FormSelect
-                id="manager"
-                value={selectedManager}
-                onChange={(e) => setSelectedManager(e.target.value)}
-                error={errors.selectedManager}
-              >
-                <option value="">Select a manager</option>
-                {managers.map((manager) => (
-                  <option key={manager.id} value={manager.id}>
-                    {manager.name} [{manager.emp_id}]
-                  </option>
-                ))}
-              </FormSelect>
+                <FormSelect
+                  id="manager"
+                  value={managerValue}
+                  onChange={handleManagerChange}
+                  error={errors.selectedManager}
+                  disabled={isForwarded}
+                >
+                  <option value="">Select a manager</option>
+                  {managerOptions}
+                </FormSelect>
               {errors.selectedManager && <ErrorText>{errors.selectedManager}</ErrorText>}
 
               <AlertBox type="info">
@@ -598,7 +637,8 @@ const ClaimActionModal = ({ isOpen, onClose, claim, actionType, onSuccess }) => 
               disabled={isLoading}
             >
               {isLoading && <LoadingSpinner />}
-              {actionType === "APPROVE" ? "Approve Claim" : "Reject Claim"}
+
+              {actionType === "APPROVE" ? "Approve Claim" : actionType === "REJECT" ? "Reject Claim" : actionType === "FORWARD" ? "Forward Claim" : ""}
             </Button>
           </ButtonContainer>
         </ModalContent>
@@ -621,9 +661,14 @@ const ClaimActionModal = ({ isOpen, onClose, claim, actionType, onSuccess }) => 
             </SuccessIcon>
             <SuccessTitle>Success!</SuccessTitle>
             <SuccessMessage>
-              {actionType === "APPROVE"
-                ? "Claim has been successfully approved."
-                : "Claim has been successfully rejected."}
+              {actionType === "APPROVE" ?
+                 "Claim has been successfully approved." :
+                actionType === "REJECT" ?
+                 "Claim has been successfully rejected." :
+                actionType === "FORWARD" ?
+                 "Claim has been successfully forwarded." :
+                 ""
+                }
             </SuccessMessage>
             <Button variant="primary" onClick={handleCloseSuccess}>
               Close

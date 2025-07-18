@@ -723,7 +723,15 @@ const BlogDetail = () => {
       />
       <HeaderSection>
         <HeaderContainer>
-          <CategoryLabel>{blog.category}</CategoryLabel>
+          <div style={{display: "flex",justifyContent: "center",gap: "0.5rem"}}>
+          {Array.isArray(blog.category) ? (
+            blog.category.map((cat, idx) => (
+              <CategoryLabel key={idx}>{cat}</CategoryLabel>
+            ))
+          ) : blog.category ? (
+            <CategoryLabel>{blog.category}</CategoryLabel>
+          ) : null}
+          </div>
           <MainTitle>{blogContent.header.title}</MainTitle>
           <Subtitle>{blogContent.header.tagline}</Subtitle>
           

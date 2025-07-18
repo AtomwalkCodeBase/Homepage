@@ -87,3 +87,4 @@ export const getAppointeeList = `${endpoint}/get_facility_list/${db_name}/`;
 export const getEmpShiftData = `${newhrendpoint}/get_emp_shift_data/${db_name}/`;
 export const getbookedlist = `${endpoint}/get_facility_booking_list/${db_name}/`;
 export const doctorbooking = `${endpoint}/process_booking_data/${db_name}/`;
+export const validateApproveLimit =  `${newhrendpoint}/get_claim_approve_limit_data/${db_name}/`;

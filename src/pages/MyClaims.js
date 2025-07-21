@@ -424,17 +424,27 @@ const MyClaims = () => {
   const fetchClaimDetailsofemp = () => {
     getEmpClaim("APPROVE", empId)
       .then((res) => {
-        // Filter out claims with empty claim_items and only pending claims
-        const validClaims = res.data.filter(
-          (claim) =>
-            claim.claim_items && claim.claim_items.length > 0 && !claim.is_approved && claim.expense_status !== "N",
-        )
-        setEmpClaims(validClaims)
+        if (!res.data) return;
+
+        // Filter claims based on the active tab
+        if (activeTab === "empdata") {
+          const validClaims = res.data.filter(
+            (claim) =>
+              claim.claim_items && claim.claim_items.length > 0 && !claim.is_approved && (claim.expense_status === "S" || claim.expense_status === "F")
+          );
+          setEmpClaims(validClaims);
+        } else if (activeTab === "empApprovedData") {
+          const validClaims = res.data.filter(
+            (claim) =>
+              claim.claim_items && claim.claim_items.length > 0 &&claim.expense_status === "A"
+          );
+          setEmpClaims(validClaims);
+        }
       })
       .catch((err) => {
-        console.log("Error fetching claim data:", err)
-      })
-  }
+        console.log("Error fetching claim data:", err);
+      });
+  };
 
   const validApproveClaim = async (masterClaimId) => {
     const validationData = {
@@ -451,13 +461,15 @@ const MyClaims = () => {
     }
   };
 
-
+  useEffect(() => {
+      fetchClaimDetailsofemp();
+  }, [activeTab]);
 
   useEffect(() => {
     fetchClaimItemList()
     fetchClaimDetails()
     fetchProjectList()
-    fetchClaimDetailsofemp()
+    // fetchClaimDetailsofemp()
     validApproveClaim()
   }, [isLoadings])
 
@@ -645,7 +657,7 @@ const MyClaims = () => {
             remarks: item.remarks || ''
           };
         })
-        // .filter(item => item.approve_type === 'A')
+        .filter(item => item.approve_type === 'A')
     };
     console.log("Approve all claims:", claimPayload)
       
@@ -707,11 +719,11 @@ const MyClaims = () => {
           <Tab active={activeTab === "all"} onClick={() => setActiveTab("all")}>
             All Claims
           </Tab>
-          <Tab active={activeTab === "pending"} onClick={() => setActiveTab("pending")}>
-            Pending
-          </Tab>
           <Tab active={activeTab === "approved"} onClick={() => setActiveTab("approved")}>
             Approved
+          </Tab>
+          <Tab active={activeTab === "pending"} onClick={() => setActiveTab("pending")}>
+            Pending
           </Tab>
           <Tab active={activeTab === "rejected"} onClick={() => setActiveTab("rejected")}>
             Rejected
@@ -722,6 +734,11 @@ const MyClaims = () => {
           {profile?.is_manager && (
             <Tab active={activeTab === "empdata"} onClick={() => setActiveTab("empdata")}>
               Employee Claims
+            </Tab>
+          )}
+          {profile?.is_manager && (
+            <Tab active={activeTab === "empApprovedData"} onClick={() => setActiveTab("empApprovedData")}>
+              Employee Approved Claims
             </Tab>
           )}
         </TabContainer>
@@ -741,7 +758,7 @@ const MyClaims = () => {
         </FilterContainer>
 
         <TableContainer>
-          {activeTab === "empdata" ? (
+          {(activeTab === "empdata" || activeTab === "empApprovedData") ? (
             <table>
               <thead>
                 <tr>
@@ -756,7 +773,7 @@ const MyClaims = () => {
                 </tr>
               </thead>
               <tbody>
-                {empClaims.length > 0 ? (
+              {empClaims.length > 0 ? (
                   empClaims.map((claim) => {
                     const statusInfo = getStatusInfo(claim)
                     const isExpanded = expandedClaims.has(claim.id)
@@ -952,14 +969,14 @@ const MyClaims = () => {
                                <Button onClick={() => handleViewDetails(claim)} variant="ghost" size="sm" title="View">
                                 <FaEye />
                               </Button>
-                                  <Button
+                                  {/* <Button
                                     onClick={()=>toggleClaimExpansion(claim.id)}
                                     variant="primary"
                                     size="sm"
                                     title="See Details"
                                   >
                                     <FaEdit/>
-                                  </Button>
+                                  </Button> */}
                             
                             </ActionButtons>
                           </td>
@@ -1134,9 +1151,18 @@ const MyClaims = () => {
                   <ModalLabel>Items Count</ModalLabel>
                   <ModalValue>{selectedClaim.claim_items?.length || 0}</ModalValue>
 
-                  <ModalLabel>Approved By</ModalLabel>
-                  <ModalValue>{selectedClaim.approved_by || "N/A"}</ModalValue>
-
+          {(() => {
+              const statusText = getStatusInfo(selectedClaim).text;
+              if (statusText === "Approved"||statusText === "Rejected"||statusText === "Forwarded" || statusText === "Submitted") {
+                return (
+              <>
+                <ModalLabel>{statusText} {statusText === "Forwarded"? "To" : "By"}</ModalLabel>
+                <ModalValue>{statusText === "Submitted" ? EmpId : selectedClaim.approved_by || "N/A"}</ModalValue>
+              </>
+                );
+              }
+              
+            })()}
                   <ModalLabel>Approval Remarks</ModalLabel>
                   <ModalValue>{selectedClaim.approval_remarks || "N/A"}</ModalValue>
                 </ModalSection>
@@ -1153,11 +1179,14 @@ const MyClaims = () => {
                     <th>Amount</th>
                     <th>Date</th>
                     <th>Remarks</th>
+                    <th>Status</th>
                     <th>Receipt</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {selectedClaim.claim_items?.map((item) => (
+                  {selectedClaim.claim_items?.map((item) => {
+                    const substatus = getStatusInfo(item)
+                    return(
                     <ClaimItemRow key={item.id}>
                       <td>
                         <div style={{ display: "flex", alignItems: "center" }}>
@@ -1170,6 +1199,9 @@ const MyClaims = () => {
                       <td>{item.expense_date}</td>
                       <td>{item.remarks}</td>
                       <td>
+                        <Badge variant={substatus.variant}>{substatus.text}</Badge>
+                      </td>
+                      <td>
                         {item.submitted_file_1 ? (
                           <a href={item.submitted_file_1} target="_blank" rel="noopener noreferrer">
                             <Badge variant="success">View</Badge>
@@ -1179,7 +1211,7 @@ const MyClaims = () => {
                         )}
                       </td>
                     </ClaimItemRow>
-                  ))}
+                  )})}
                 </tbody>
               </ClaimItemsTable>
             </ModalSection>

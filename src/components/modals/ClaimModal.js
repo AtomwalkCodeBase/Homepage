@@ -230,7 +230,10 @@ const ClaimModal = ({ isOpen, onClose, dropdownValue, projecttype,setIsLoadings,
     files:null,
     emp_id:localStorage.getItem("empId"),
   })
-  console.log(formData," formData")
+
+  const selectedItem = Array.isArray(dropdownValue)? dropdownValue.find(item => item.id == formData.type) : null;
+  const isReceiptRequired = selectedItem ? selectedItem.is_exp_bill_required : false;
+
 
 useEffect(() => {
   const fileFromUrl = (url) => {
@@ -277,6 +280,16 @@ console.log(formData," formData")
     const { value } = e.nativeEvent.submitter;
     e.preventDefault()
     setIsLoading(true) // Show loader during submission
+
+    // Validate file only if required
+    if (isReceiptRequired && !formData.files) {
+      setIsFileError(true);
+      setIsLoading(false);
+      return;
+    } else {
+      setIsFileError(false);
+    }
+
     const dateObj = new Date(formData.date)
     const expense_date = `${dateObj.getDate().toString().padStart(2, '0')}-${(dateObj.getMonth() + 1).toString().padStart(2, '0')}-${dateObj.getFullYear()}`
     const formDatas = new FormData() 
@@ -383,7 +396,7 @@ console.log(formData," formData")
             {projecttype.length > 0 && (
               <FormGroup>
                 <FormLabel htmlFor="projecttype">Project Type</FormLabel>
-                <FormSelect id="projecttype" name="projecttype" value={formData.projecttype} onChange={handleChange} required>
+                <FormSelect id="projecttype" name="projecttype" value={formData.projecttype} onChange={handleChange}>
                   <option value="">Select Project Type</option>
                   {projecttype.map((value, index) => (
                     <option key={index} value={value.id}>
@@ -450,14 +463,14 @@ console.log(formData," formData")
             <FormGroup>
               <FormLabel>Receipts/Attachments</FormLabel>
               <FileUploadContainer onClick={() => document.getElementById("file-upload").click()}>
-                <FileInput id="file-upload" type="file"  onChange={handleFileChange} />
+                <FileInput id="file-upload" name="file-upload" type="file"  onChange={handleFileChange}/>
                 <FileUploadIcon>
                   <FaUpload />
                 </FileUploadIcon>
                 <FileUploadText>Click to upload or drag and drop files here</FileUploadText>
                 <div style={{ fontSize: "0.8rem", color: "#666" }}>Supported formats: JPG, PNG, PDF (Max 5MB)</div>
               </FileUploadContainer>
-              <ErrorMessage show={isFileError}>please upload or drag and drop files here</ErrorMessage>
+              <ErrorMessage show={isFileError && isReceiptRequired}>please upload or drag and drop files here</ErrorMessage>
 
               {formData.files && (
                 <div style={{ marginTop: "1rem" }}>

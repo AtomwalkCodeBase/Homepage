@@ -104,7 +104,8 @@ const formatDate = (date) => {
     const diffHours = diffMs / (1000 * 60 * 60)
 
     // Subtract lunch break (assuming 1 hour lunch break for 8+ hour days)
-    return diffHours > 8 ? diffHours - 1 : diffHours
+    // return diffHours > 8 ? diffHours - 1 : diffHours
+    return diffHours 
   }
 
   const getTotalSummary = () => {

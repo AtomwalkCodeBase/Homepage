@@ -1326,7 +1326,7 @@ console.log(profileData,"activeTab")
                     </DetailLabel>
                     <PinInput
                       type="password"
-                      maxLength={4}
+                      maxLength={6}
                       value={currentPin}
                       onChange={(e) => setCurrentPin(e.target.value)}
                       placeholder="Enter current PIN"
@@ -1339,7 +1339,7 @@ console.log(profileData,"activeTab")
                         </DetailLabel>
                         <PinInput
                           type="password"
-                          maxLength={4}
+                          maxLength={6}
                           value={newPin}
                           onChange={(e) => setNewPin(e.target.value)}
                           placeholder="Enter new PIN"
@@ -1352,7 +1352,7 @@ console.log(profileData,"activeTab")
                         </DetailLabel>
                         <PinInput
                           type="password"
-                          maxLength={4}
+                          maxLength={6}
                           value={confirmPin}
                           onChange={(e) => setConfirmPin(e.target.value)}
                           placeholder="Confirm new PIN"

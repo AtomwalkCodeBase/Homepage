@@ -29,7 +29,7 @@ export const authAxiosPost = async (url, data) => {
   return axios.create({
     baseURL: endpoint,
     headers: {
-      Authorization: `Token ${token}`
+      Authorization:token? `Token ${token}`:""
     }
   }).post(url, data);
 };

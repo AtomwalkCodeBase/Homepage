@@ -24,11 +24,13 @@ import {
   FaChartBar,
   FaUsers,
   FaFileInvoice,
+  FaGraduationCap,
 } from "react-icons/fa"
 import { SiGooglecalendar } from "react-icons/si"
 import { PiListPlusFill } from "react-icons/pi"
 import { useAuth } from "../context/AuthContext"
 import { useTheme } from "../context/ThemeContext"
+
 const SidebarContainer = styled.div`
   width: ${(props) => {
     const { isOpen, uiPreferences } = props
@@ -524,6 +526,11 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
           ],
         },
         {
+          name: "Learning & Development",
+          icon: <FaGraduationCap />,
+          items: [{ path: "/my-training", name: "My Training", icon: <FaGraduationCap /> }],
+        },
+        {
           name: "Finance",
           icon: <FaMoneyBillWave />,
           items: [
@@ -539,7 +546,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
           items: profile?.is_manager
             ? [
                 { path: "/projectmanagement", name: "Project List", icon: <PiListPlusFill /> },
-                { path: "/project-report", name: "Project Report", icon: <FaFileInvoice  /> },
+                { path: "/project-report", name: "Project Report", icon: <FaFileInvoice /> },
               ]
             : [],
         },
@@ -611,6 +618,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
         { path: "/timesheet", name: "Timesheet", icon: <FaChartBar /> },
         { path: "/leave-management", name: "Leave Management", icon: <FaCalendarAlt /> },
         { path: "/holidays", name: "Holiday Calendar", icon: <FaCalendarCheck /> },
+        { path: "/my-training", name: "My Training", icon: <FaGraduationCap /> },
         ...(profile?.is_manager ? [{ path: "/shifts", name: "Shift Scheduling", icon: <SiGooglecalendar /> }] : []),
         ...(profile?.is_manager
           ? [{ path: "/claims", name: "Claims Management", icon: <FaMoneyBillWave /> }]

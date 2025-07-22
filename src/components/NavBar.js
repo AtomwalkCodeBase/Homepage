@@ -85,7 +85,8 @@ export const NavBar = () => {
     "doctordashboard",
     "OPDappointments",
     "projectmanagement",
-     "project-report"
+     "project-report",
+     "my-training"
   ];
   
   useEffect(() => {

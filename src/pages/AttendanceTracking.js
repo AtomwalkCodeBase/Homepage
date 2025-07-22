@@ -354,7 +354,7 @@ const AttendanceTracking = () => {
   const grade = urlParams.get("employeegrade")
   const profileimage = decodeURIComponent(urlParams.get("image"));
   const department = urlParams.get("department")
-  console.log(profileimage,"profileimage")
+  // console.log(profileimage,"profileimage")
   const setdatatime = async () => {
     let time = moment().format("hh:mm A")
     if (
@@ -630,7 +630,7 @@ const AttendanceTracking = () => {
   // Button states
   const isCheckInDisabled = checkedIn || attendance.geo_status === "O" || !!attendance.start_time
   const isCheckOutDisabled = !checkedIn || attendance.geo_status !== "I" || !!attendance.end_time
-  console.log(isCheckOutDisabled, "data")
+  // console.log(isCheckOutDisabled, "data")
 
   // Update the handleFilter function
   const handleFilter = () => {

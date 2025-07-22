@@ -161,6 +161,15 @@ const ChartGrid = styled.div`
     grid-template-columns: 1fr;
   }
 `
+const TableActions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  color: ${({ theme }) => theme.colors.text};
+`
 
 const ProjectReport = () => {
   const [activeTab, setActiveTab] = useState("table")
@@ -351,9 +360,6 @@ const ProjectReport = () => {
         <div>
           <FilterSelect>View and analyze project effort data</FilterSelect>
         </div>
-        <Button variant="primary" onClick={handleExport}>
-          <FaFileExport /> Export Report
-        </Button>
       </ReportHeader>
 
       <SummaryGrid>
@@ -444,6 +450,11 @@ const ProjectReport = () => {
                 )}
               </tbody>
             </table>
+            <TableActions style={{float:"right"}}>
+          <Button variant="primary" onClick={handleExport} size="sm">
+          <FaFileExport /> Export
+        </Button>
+        </TableActions>
           </TableContainer>
         )}
 
@@ -513,6 +524,11 @@ const ProjectReport = () => {
                 )}
               </tbody>
             </table>
+          <TableActions style={{float:"right"}}>
+          <Button variant="primary" onClick={handleExport} size="sm">
+          <FaFileExport /> Export
+        </Button>
+          </TableActions>
           </TableContainer>
         )}
       </Card>

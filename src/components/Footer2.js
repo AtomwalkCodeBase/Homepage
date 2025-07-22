@@ -241,7 +241,8 @@ export default function Footer2() {
    "doctordashboard",
    "OPDappointments",
     "projectmanagement",
-    "project-report"
+    "project-report",
+    "my-training"
   ];
   
   useEffect(() => {

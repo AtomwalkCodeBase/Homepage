@@ -191,6 +191,7 @@ const TrainingImage = styled.div`
 
 const TrainingContent = styled.div`
   padding: 20px;
+  color:${({ theme }) => theme.colors.text}; 
 `
 
 const TrainingTitle = styled.h3`

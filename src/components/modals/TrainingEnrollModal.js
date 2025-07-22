@@ -109,6 +109,7 @@ const TrainingGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 20px;
+  color:${({ theme }) => theme.colors.text}; 
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;

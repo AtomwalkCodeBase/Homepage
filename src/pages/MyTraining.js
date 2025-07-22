@@ -21,9 +21,9 @@ import { getmyenrollmentList, getmyenrollmentLists } from "../services/productSe
 import TrainingEnrollModal from "../components/modals/TrainingEnrollModal"
 
 const PageContainer = styled.div`
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+  padding: 10px;
+  /* max-width: 1200px;
+  margin: 0 auto; */
 `
 
 const Header = styled.div`
@@ -82,6 +82,7 @@ const StatCard = styled.div`
   align-items: center;
   gap: 15px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color:${({ theme }) => theme.colors.text}; 
 
   &:hover {
     transform: translateY(-2px);

@@ -832,7 +832,7 @@ const MyClaims = () => {
                                     <th>Project</th>
                                     <th>Amount</th>
                                     <th>Date</th>
-                                    <th>Remarks</th>
+                                    {/* <th>Remarks</th> */}
                                     <th>Receipt</th>
                                     <th>Status</th>
                                     <th>Actions</th>  
@@ -853,7 +853,7 @@ const MyClaims = () => {
                                       <td>{item.project_name || "N/A"}</td>
                                       <td>₹{item.expense_amt}</td>
                                       <td>{item.expense_date}</td>
-                                      <td>{item.remarks}</td>
+                                      {/* <td>{item.remarks}</td> */}
                                       <td>
                                         {item.submitted_file_1 ? (
                                           <Badge variant="success">Yes</Badge>
@@ -991,7 +991,7 @@ const MyClaims = () => {
                                     <th>Project</th>
                                     <th>Amount</th>
                                     <th>Date</th>
-                                    <th>Remarks</th>
+                                    {/* <th>Remarks</th> */}
                                     <th>Status</th>
                                     <th>Receipt</th>
                                     <th>Actions</th>
@@ -1011,7 +1011,7 @@ const MyClaims = () => {
                                         <td>{item.project_name || "N/A"}</td>
                                         <td>₹{item.expense_amt}</td>
                                         <td>{item.expense_date}</td>
-                                        <td>{item.remarks}</td>
+                                        {/* <td>{item.remarks}</td> */}
                                         <td>
                                           <Badge variant={substatus.variant}>{substatus.text}</Badge>
                                         </td>

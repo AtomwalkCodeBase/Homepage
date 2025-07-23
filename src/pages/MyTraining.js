@@ -28,7 +28,7 @@ const PageContainer = styled.div`
 
 const Header = styled.div`
   display: flex;
-  justify-content: between;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
   flex-wrap: wrap;
@@ -38,6 +38,9 @@ const Header = styled.div`
     flex-direction: column;
     align-items: stretch;
   }
+`
+const Paragraphdata = styled.p`
+  color: ${({ theme }) => theme.colors.textLight};
 `
 
 const Title = styled.h1`
@@ -233,6 +236,12 @@ const TrainingDetail = styled.div`
     font-size: 0.9rem;
   }
 `
+const TrainingLabel = styled.span`
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+`
 
 const StatusBadge = styled.span`
   padding: 4px 12px;
@@ -375,15 +384,14 @@ const MyTraining = () => {
   })
 
   return (
-    <Layout>
+    <Layout title="My Training">
       <PageContainer>
         <Header>
-          <Title>
-            <FaGraduationCap />
-            My Training
-          </Title>
-          <HeaderActions>
-            <Button
+          <div>
+          <Paragraphdata>Track your learning and unlock your potential</Paragraphdata>
+        </div>
+
+        <Button
               variant="primary"
               onClick={() => setShowEnrollModal(true)}
               style={{ display: "flex", alignItems: "center", gap: "8px" }}
@@ -391,7 +399,7 @@ const MyTraining = () => {
               <FaPlus />
               Enroll Training
             </Button>
-          </HeaderActions>
+
         </Header>
 
         <StatsContainer>
@@ -474,27 +482,27 @@ const MyTraining = () => {
 
                     <TrainingDetails>
                       <TrainingDetail theme={theme}>
-                        <FaUser />
-                        <span>{enrollment.t_session_data.trainer_name}</span>
+                        <FaUser /><TrainingLabel>Trainer: -</TrainingLabel>
+                        <p>{enrollment.t_session_data.trainer_name}</p>
                       </TrainingDetail>
 
                       <TrainingDetail theme={theme}>
-                        <FaMapMarkerAlt />
+                        <FaMapMarkerAlt /><TrainingLabel>Location: -</TrainingLabel>
                         <span>{enrollment.t_session_data.location}</span>
                       </TrainingDetail>
 
                       <TrainingDetail theme={theme}>
-                        <FaCalendarAlt />
+                        <FaCalendarAlt /><TrainingLabel>Session Date: -</TrainingLabel>
                         <span>{enrollment.t_session_data.session_date}</span>
                       </TrainingDetail>
 
                       <TrainingDetail theme={theme}>
-                        <FaClock />
+                        <FaClock /><TrainingLabel>No of days: -</TrainingLabel>
                         <span>{enrollment.t_session_data.t_module_data.no_of_days} days</span>
                       </TrainingDetail>
 
                       <TrainingDetail theme={theme}>
-                        <FaAward />
+                        <FaAward /><TrainingLabel>Credit: -</TrainingLabel>
                         <span>{enrollment.t_session_data.t_module_data.no_of_credit} credits</span>
                       </TrainingDetail>
                     </TrainingDetails>

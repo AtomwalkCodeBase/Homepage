@@ -97,6 +97,9 @@ import HRMRoleBasedAccessibility from "./components/hrm/HRMRoleBasedAccessibilit
 import ProjectManagement from "./pages/ProjectManagement";
 import ProjectReport from "./pages/ProjectReport";
 import MyTraining from "./pages/MyTraining";
+import NewsEventsList from "./components/NewsEvents/NewsEventsList";
+import NewsEventDetail from "./components/NewsEvents/NewsEventDetail";
+import NewsEventForm from "./components/NewsEvents/NewsEventForm";
 
 function App() {
   const url = "https://www.atomwalk.com/rest-auth/login/";
@@ -214,6 +217,11 @@ function App() {
               <Route path="/Blog.html/:id" element={<BlogDetails />} />
               <Route path="/Blog.html/addblog" element={<BlogForm/>} />
               <Route path="/Blog.html/edit/:id?" element={<BlogForm />} />
+
+              <Route path="/news-events.html" element={<NewsEventsList />} />
+              <Route path="/news-events.html/:id" element={<NewsEventDetail />} />
+              <Route path="/news-events.html/addEvents" element={<NewsEventForm/>} />
+              <Route path="/news-events.html/edit/:id?" element={<NewsEventForm />} />
     
               {/* Protected Routes with GlobalStyles */}
               <Route

@@ -319,7 +319,7 @@ console.log(formData," formData")
       const res = await postClaim(formDatas)
       if (res.status === 200) {
         setIsLoadings(isLoadings + 1)
-        toast.success("Add claim successfully")
+        toast.success(claimupdate ? "Update claim successfully" :"Add claim successfully")
         onClose() // Show success modal on successful submission
         setIsFileError(false)
         setFormData({
@@ -375,7 +375,7 @@ console.log(formData," formData")
       <ModalContainer onClick={(e) => e.stopPropagation()}>
         <form onSubmit={handleSubmit}>
           <ModalHeader>
-            <ModalTitle> Add New Claim</ModalTitle>
+            <ModalTitle>{claimupdate ? "Update claim" : "Add New Claim"}</ModalTitle>
             <CloseButton onClick={onClose}>
               <FaTimes />
             </CloseButton>

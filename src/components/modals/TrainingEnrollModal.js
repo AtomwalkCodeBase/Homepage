@@ -17,6 +17,7 @@ import Button from "../Button"
 import { useTheme } from "../../context/ThemeContext"
 import { useAuth } from "../../context/AuthContext"
 import { getenrollmentList, processenrollment } from "../../services/productServices"
+import { toast } from "react-toastify"
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -321,6 +322,11 @@ const TrainingEnrollModal = ({ isOpen, onClose, onEnrollSuccess }) => {
       }
     } catch (error) {
       console.error("Error enrolling in training:", error)
+      if (error?.response?.data?.message.includes('Invalid request - ')) {
+          const msg = error?.response?.data?.message;
+          const afterText = msg.split('Invalid request -')[1]?.trim() || '';
+        toast.error(afterText)
+      }
     } finally {
       setEnrollingIds((prev) => {
         const newSet = new Set(prev)

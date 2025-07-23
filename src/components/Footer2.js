@@ -369,6 +369,9 @@ export default function Footer2() {
             <li>
               <a href="/Careers.html">Career</a>
             </li>
+             <li>
+              <a href="/news-events.html">News and Event</a>
+            </li>
           </ul>
         </FooterLinks>
       </FooterLinksContainer>

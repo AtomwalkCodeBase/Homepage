@@ -74,12 +74,21 @@ const ProfileContainer = styled.div`
   @media (max-width: 992px) {
     grid-template-columns: 1fr;
   }
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 0;
+  }
 `
 
 const ProfileSidebar = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing?.lg || "2rem"};
+  @media (max-width: 600px) {
+    gap: 0.5rem;
+    width: 100%;
+  }
 `
 
 const StyledCard = styled(Card)`
@@ -87,6 +96,12 @@ const StyledCard = styled(Card)`
   box-shadow: ${({ theme }) => theme.shadows?.lg || "0 8px 24px rgba(0, 0, 0, 0.08)"};
   overflow: hidden;
   transition: ${({ theme }) => theme.transitions?.normal || "transform 0.3s ease, box-shadow 0.3s ease"};
+  padding: ${({ theme }) => theme.spacing?.md || "1rem"};
+  @media (max-width: 600px) {
+    padding: 0.5rem !important;
+    min-width: 0;
+    box-sizing: border-box;
+  }
   
   &:hover {
     transform: ${({ theme }) => (theme.cardStyle?.animation ? "translateY(-5px)" : "none")};
@@ -103,6 +118,9 @@ const ProfileImage = styled.div`
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   margin-bottom: 1.5rem;
+  @media (max-width: 600px) {
+    margin-bottom: 1rem;
+  }
   
   img {
     position: absolute;
@@ -190,6 +208,9 @@ const ProfileContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing?.lg || "2rem"};
+  @media (max-width: 600px) {
+    width: 100%;
+  }
 `
 
 const SectionTitle = styled.h3`
@@ -215,6 +236,10 @@ const DetailGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: ${({ theme }) => theme.spacing?.lg || "1.5rem"};
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 `
 
 const DetailCard = styled.div`
@@ -383,6 +408,10 @@ const TabGroup = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   margin-bottom: ${({ theme }) => theme.spacing?.lg || "2rem"};
   overflow-x: auto;
+  @media (max-width: 600px) {
+    margin-bottom: 1rem;
+    flex-wrap: nowrap;
+  }
   
   &::-webkit-scrollbar {
     height: 0;
@@ -400,6 +429,12 @@ const TabButton = styled.button`
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
+  min-width: 120px;
+  @media (max-width: 600px) {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    min-width: 90px;
+  }
   
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
@@ -450,6 +485,10 @@ const ThemeGrid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: ${({ theme }) => theme.spacing?.lg || "1.5rem"};
   margin-bottom: ${({ theme }) => theme.spacing?.lg || "1.5rem"};
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
 `
 
 const ThemeCard = styled.div`

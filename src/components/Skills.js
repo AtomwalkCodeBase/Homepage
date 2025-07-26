@@ -319,7 +319,7 @@ export const Skills = () => {
     {
       title: "Lab Management / Equipment Management",
       description:
-        "Atomwalk Lab Management / Equipment Management helps the Labs in innovation by enabling them smoothly managing all Lab process like - Grant management, Inventory Management, Lab equipment management, Supplier , Purchase order management, and Lab report/ documentation",
+        "Atomwalk Lab Management / Equipment Management helps the Labs in innovation by enabling them smoothly managing all Lab process like - Grant management, Inventory Management, Lab equipment management, Supplier , Purchase order management, and Lab report/ documentation.",
       image: Lab,
       path: "/lms.html",
       bgColor: "#E1FFF6",

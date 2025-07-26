@@ -83,7 +83,7 @@ console.log(formDetails,"look at ne")
                <form onSubmit={addLead}> 
                   <Row>
                     <Col size={12} sm={6} className="px-1">
-                      <input type="text" value={formDetails.name} placeholder="First Name" onChange={(e) => onFormUpdate('name', e.target.value)} />
+                      <input type="text" value={formDetails.name} placeholder="Your Name" onChange={(e) => onFormUpdate('name', e.target.value)} />
                     </Col>
                     <Col size={12} sm={6} className="px-1">
                       <input type="text" value={formDetails.company_name} placeholder="Company Name" onChange={(e) => onFormUpdate('company_name', e.target.value)}/>

@@ -715,7 +715,7 @@ const LeadershipAdvisors = () => {
         <SectionWrapper>
           <SectionHeader>
             <HeaderContainer>
-              <SectionTitle>Our Teams</SectionTitle>
+              <SectionTitle>Our Team</SectionTitle>
               <HeaderLine />
             </HeaderContainer>
             <SectionDescription>

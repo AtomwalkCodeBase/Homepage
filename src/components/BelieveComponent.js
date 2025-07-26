@@ -70,7 +70,7 @@ const BelieveComponent = () => {
       <IconWrapper color="#8ed1b0">
         <img src={People} alt="People Icon" />
       </IconWrapper>
-      <Text>Business is ultimately about valuing people above all else.</Text>
+      <Text>Business is ultimately valuing People. We believe in equality and inclusiveness.</Text>
     </Card>
     <Card>
       <IconWrapper color="#db70d1">

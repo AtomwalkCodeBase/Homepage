@@ -42,7 +42,7 @@ const testimonialData = [
   {
     id: 5,
     name: "V.K.Shanmuga Vel, CEO Veekay Coolers",
-    text:`“Atomwalk gave a lucid, easy to understand presentation of their software, guiding us through every process. Since then, we have been using the software and now it is an indispensable part of Veekay Cooolers. All records, client, company data are now streamlined and available at the click of a button. We are now able to manage the whole team’s work in one place, which has vastly increased efficiency, productivity and accountability. All our customer, accounting, purchase, sales, data are also compiled in one place, which enables us to plan future sales projections and targets. The software itself is very user friendly and intuitive.”`,
+    text:`“Atomwalk gave a lucid, easy to understand presentation of their software, guiding us through every process. Since then, we have been using the software and now it is an indispensable part of Veekay Coolers. All records, client, company data are now streamlined and available at the click of a button. We are now able to manage the whole team’s work in one place, which has vastly increased efficiency, productivity and accountability. All our customer, accounting, purchase, sales, data are also compiled in one place, which enables us to plan future sales projections and targets. The software itself is very user friendly and intuitive.”`,
     img: `${Veekay}`,
   },
   {

@@ -415,8 +415,8 @@ const NewsEventForm = () => {
       const fetchItem = async () => {
         try {
           const [metadataDoc, contentDoc] = await Promise.all([
-            getDoc(doc(db, 'articles_metadata', id)),
-            getDoc(doc(db, 'articles_content', id))
+            getDoc(doc(db, 'atomwalk_articles_metadata', id)),
+            getDoc(doc(db, 'atomwalk_articles_content', id))
           ]);
 
           if (metadataDoc.exists() && contentDoc.exists()) {
@@ -533,12 +533,12 @@ const NewsEventForm = () => {
     setLoading(true);
 
     try {
-      const articleId = id || doc(collection(db, 'articles_metadata')).id;
+      const articleId = id || doc(collection(db, 'atomwalk_articles_metadata')).id;
       const coverImageUrl = `https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/${formData.coverImagePath}`;
 
       const fixedContent = fixListStructure(formData.content);
 
-      await setDoc(doc(db, 'articles_metadata', articleId), {
+      await setDoc(doc(db, 'atomwalk_articles_metadata', articleId), {
         title: formData.title,
         tagline: formData.tagline,
         coverImage: coverImageUrl,
@@ -548,7 +548,7 @@ const NewsEventForm = () => {
 
       const contentChunks = splitContentIntoChunks(fixedContent);
 
-      await setDoc(doc(db, 'articles_content', articleId), {
+      await setDoc(doc(db, 'atomwalk_articles_content', articleId), {
         articleId,
         type: 'richText',
         updatedAt: serverTimestamp(),

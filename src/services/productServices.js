@@ -9,7 +9,7 @@ export function getEmpLeave(leave_type, emp_id) {
   if (emp_id) {
     data['emp_id'] = emp_id;
   }
-  console.log('Epm leave payload service', data)
+  // console.log('Epm leave payload service', data)
   return authAxios(getEmpLeavedata, data)
 }
 
@@ -18,7 +18,7 @@ export function postEmpLeave(leave_type) {
   if (leave_type) {
     data['leave_data'] = leave_type;
   }
-  console.log('Data to be sent for leave:', data);
+  // console.log('Data to be sent for leave:', data);
   return authAxiosPost(addEmpLeave, data)
 
 }
@@ -34,7 +34,7 @@ export function postClaimAction(claim_type) {
   if (claim_type) {
     data['claim_data'] = claim_type;
   }
-  console.log('Data to be sent:', data);
+  // console.log('Data to be sent:', data);
   return authAxiosPost(processClaim, data)
 
 }
@@ -43,7 +43,7 @@ export function posttimelist(timedata) {
   if (timedata) {
     data['ts_data'] = timedata;
   }
-  console.log('Data to be sent:', data);
+  // console.log('Data to be sent:', data);
   return authAxiosPost(addTimesheet, data)
 }
 
@@ -61,7 +61,6 @@ export function getEmpClaim(call_type, emp_id) {
   if (emp_id) {
     data['emp_id'] = emp_id;
   }
-  console.log('Claim===', data)
   return authAxios(getEmpClaimdata, data)
 }
 
@@ -82,7 +81,7 @@ export function getEmpAttendance(res) {
     'start_date': res.startdate,
     'end_date': res.enddate,
   };
-  console.log('Final response data', data)
+  // console.log('Final response data', data)
   return authAxios(getEmpAttendanceData, data)
 }
 export function getTimesheetData(start_date, end_date,empid) {
@@ -107,7 +106,7 @@ export function getEmpHoliday(res) {
     'year': res.year,
     'emp_id': localStorage.getItem('empNoId'),
   };
-  console.log('Final response data', data)
+  // console.log('Final response data', data)
   return authAxios(getEmpHolidayData, data)
 }
 export function getEventLists(datas) {
@@ -184,9 +183,9 @@ export function postProject(res) {
 
 }
 
-export function getEmployeeRequest() {
+export function getEmployeeRequest(empId) {
   let data = {
-    'emp_id': localStorage.getItem('empId'),
+    'emp_id':empId,
     // 'request_sub_type':"Technical Support",
     // 'request_type': "R"
   };
@@ -204,7 +203,7 @@ export function postEmpRequest(request_data) {
   // if (claim_data) {
   //   data = claim_data;
   // }
-  console.log('Data to be sent:', request_data);
+  // console.log('Data to be sent:', request_data);
   return authAxiosFilePost(processEmployeeRequest, request_data)
 }
 export function forgetUserPinView(data, dbName) {
@@ -247,7 +246,7 @@ export async function setuserpinview(o_pin, n_pin) {
 
     const response = await authAxiosPost(setuserpin, data);
     if (response.status === 200) {
-      console.log("Pin updated successfully")
+      // console.log("Pin updated successfully")
     }
     return response;
   } catch (error) {

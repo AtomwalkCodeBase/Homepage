@@ -33,7 +33,6 @@ export const useBlogs = () => {
           return dateB - dateA;
         });
         setBlogs(sortedBlogs);
-        console.log('Fetched blogs:', sortedBlogs);
         setLoading(false);
       },
       (err) => {

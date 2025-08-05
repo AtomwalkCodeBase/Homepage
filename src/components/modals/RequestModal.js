@@ -4,8 +4,9 @@ import { getRequestCategory, postEmpRequest } from '../../services/productServic
 import { FaTimes, FaUpload } from 'react-icons/fa';
 import Button from '../Button';
 
-const RequestModal = ({ call_type, empId, onClose, onSuccess,dropdownValue  }) => {
+const RequestModal = ({ call_type, empId, onClose, onSuccess, dropdownValue, isUpdate, updateTicket=null, isResolveMode=false }) => {
   const [requestText, setRequestText] = useState('');
+  const [remarks, setRemarks] = useState('');
   const [remark, setRemark] = useState('');
   const [file, setFile] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -13,10 +14,48 @@ const RequestModal = ({ call_type, empId, onClose, onSuccess,dropdownValue  }) =
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isHelpRequest = call_type;
-  const headerTitle = isHelpRequest==='H' ? 'Add Help Request' : 'Add General Request';
+  
+  // Dynamic header title based on mode and update status
+  const getHeaderTitle = () => {
+    if (isResolveMode) {
+      return isHelpRequest === 'H' ? 'Resolve Help Request' : 'Resolve General Request';
+    }
+    return isUpdate 
+      ? (isHelpRequest === 'H' ? 'Update Help Request' : 'Update General Request')
+      : (isHelpRequest === 'H' ? 'Add Help Request' : 'Add General Request');
+  };
+
+  const headerTitle = getHeaderTitle();
+
   useEffect(() => {
     fetchRequestCategories();
   }, []);
+
+  useEffect(() => {
+    const fileFromUrl = (url) => {
+      if (!url) return null;
+      const name = url.split("/").pop().split("?")[0];
+      return { uri: url, name };
+    };
+    if (updateTicket) {
+      const matchingCategory = categories.find(c => c.name === updateTicket.request_sub_type);
+      if (matchingCategory) {
+        setSelectedCategory(matchingCategory.id);
+      } else {
+        setSelectedCategory('');
+      }
+      setRequestText(updateTicket.request_text || "");
+      setRemarks(updateTicket.remarks || "");
+      setRemark(updateTicket.remarks || "");
+      setFile(fileFromUrl(updateTicket.submitted_file_1));
+    } else {
+      setRequestText('');
+      setRemark('');
+      setRemarks('');
+      setSelectedCategory(dropdownValue || '');
+      setFile(null);
+    }
+  }, [categories, dropdownValue, updateTicket]);
 
   const fetchRequestCategories = async () => {
     try {
@@ -32,8 +71,13 @@ const RequestModal = ({ call_type, empId, onClose, onSuccess,dropdownValue  }) =
     const newErrors = {};
     if (!selectedCategory) newErrors.category = 'Please select a category';
     if (!requestText.trim()) newErrors.requestText = 'Please describe your request';
-    if (!remark.trim()) newErrors.remarks = 'Please add remarks';
-    if (!file) newErrors.file = 'Please attach a file';
+    
+    // Different validation for resolve mode
+    if (isResolveMode) {
+      if (file) newErrors.file = 'Please attach a file';
+    } else {
+      if (!file) newErrors.file = 'Please attach a file';
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -46,14 +90,25 @@ const RequestModal = ({ call_type, empId, onClose, onSuccess,dropdownValue  }) =
     setIsSubmitting(true);
 
     const formData = new FormData();
-    formData.append('emp_id', empId);
-    formData.append('request_category_id', selectedCategory);
-    formData.append('call_mode', 'ADD');
-    formData.append('request_type', call_type);
-    formData.append('request_id', '0');
-    formData.append('request_text', requestText);
-    formData.append('remarks', remark);
-    if (file) formData.append('uploaded_file', file);
+    
+    if (isResolveMode) {
+      // Resolve mode form data
+      formData.append('emp_id', updateTicket.resolved_by);
+      formData.append('call_mode', isUpdate ? 'RESOLVED': '');
+      formData.append('request_type', call_type);
+      formData.append('remarks', remark);
+      if (file) formData.append('uploaded_file', file);
+    } else {
+      // Regular request mode form data
+      formData.append('emp_id', empId);
+      formData.append('request_category_id', selectedCategory);
+      formData.append('call_mode', isUpdate ? 'UPDATE':'ADD');
+      formData.append('request_type', call_type);
+      formData.append('request_id', isUpdate ? `${updateTicket.id}`: '0');
+      formData.append('request_text', requestText);
+      formData.append('remarks', remark);
+      if (file) formData.append('uploaded_file', file);
+    }
 
     try {
       const res = await postEmpRequest(formData);
@@ -73,6 +128,7 @@ const RequestModal = ({ call_type, empId, onClose, onSuccess,dropdownValue  }) =
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
+  
   const removeFile = (index) => {
     setFile(null)
   }
@@ -93,6 +149,7 @@ const RequestModal = ({ call_type, empId, onClose, onSuccess,dropdownValue  }) =
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 error={errors.category}
+                disabled={isUpdate || isResolveMode}
               >
                 <option value="">Select a category</option>
                 {categories.map(category => (
@@ -104,22 +161,42 @@ const RequestModal = ({ call_type, empId, onClose, onSuccess,dropdownValue  }) =
               {errors.category && <ErrorText>{errors.category}</ErrorText>}
             </FormGroup>
 
-            <FormGroup>
-              <Label>{isHelpRequest ? "Help Request Details" : "Request Details"}</Label>
-              <TextArea
-                value={requestText}
-                onChange={(e) => setRequestText(e.target.value)}
-                placeholder={isHelpRequest 
-                  ? "Describe your help request in detail..." 
-                  : "Describe your request in detail..."}
-                error={errors.requestText}
-                maxLength={100}
-              />
-              <div style={{ fontSize: "0.8rem", color: "#888", textAlign: "right" }}>
-                {requestText.length}/100
-              </div>
-              {errors.requestText && <ErrorText>{errors.requestText}</ErrorText>}
-            </FormGroup>
+            {isResolveMode ? (
+              // Resolve mode: Show existing request details as read-only
+              <>
+                <FormGroup>
+                  <Label>{isHelpRequest ? "Help Request Details" : "Request Details"}</Label>
+                  <ShowTextArea style={{ minHeight: '100px' }}>
+                    {requestText}
+                  </ShowTextArea>
+                </FormGroup>
+
+                <FormGroup>
+                  <Label>Additional Remarks by employee</Label>
+                  <ShowTextArea style={{ minHeight: '100px' }}>
+                    {remarks}
+                  </ShowTextArea>
+                </FormGroup>
+              </>
+            ) : (
+              // Regular mode: Editable request details
+              <FormGroup>
+                <Label>{isHelpRequest ? "Help Request Details" : "Request Details"}</Label>
+                <TextArea
+                  value={requestText}
+                  onChange={(e) => setRequestText(e.target.value)}
+                  placeholder={isHelpRequest 
+                    ? "Describe your help request in detail..." 
+                    : "Describe your request in detail..."}
+                  error={errors.requestText}
+                  maxLength={100}
+                />
+                <div style={{ fontSize: "0.8rem", color: "#888", textAlign: "right" }}>
+                  {requestText.length}/100
+                </div>
+                {errors.requestText && <ErrorText>{errors.requestText}</ErrorText>}
+              </FormGroup>
+            )}
 
             <FormGroup>
               <Label>Remarks</Label>
@@ -128,7 +205,7 @@ const RequestModal = ({ call_type, empId, onClose, onSuccess,dropdownValue  }) =
                 onChange={(e) => setRemark(e.target.value)}
                 placeholder="Additional remarks or comments..."
                 error={errors.remarks}
-                 maxLength={100}
+                maxLength={100}
               />
               <div style={{ fontSize: "0.8rem", color: "#888", textAlign: "right" }}>
                 {remark.length}/100
@@ -139,38 +216,45 @@ const RequestModal = ({ call_type, empId, onClose, onSuccess,dropdownValue  }) =
             <FormGroup>
               <Label>Attach Supporting Document</Label>
               
-
-               <FileUploadContainer onClick={() => document.getElementById("file-upload").click()}>
-               <FileInput id="file-upload" type="file" onChange={handleFileChange} />
-                              <FileUploadIcon>
-                                <FaUpload />
-                              </FileUploadIcon>
-                              <FileUploadText>Click to upload or drag and drop files here</FileUploadText>
-                              <div style={{ fontSize: "0.8rem", color: "#666" }}>Supported formats: JPG, PNG, PDF (Max 5MB)</div>
-                            </FileUploadContainer>
+              <FileUploadContainer onClick={() => document.getElementById("file-upload").click()}>
+                <FileInput id="file-upload" type="file" onChange={handleFileChange} />
+                <FileUploadIcon>
+                  <FaUpload />
+                </FileUploadIcon>
+                <FileUploadText>Click to upload or drag and drop files here</FileUploadText>
+                <div style={{ fontSize: "0.8rem", color: "#666" }}>Supported formats: JPG, PNG, PDF (Max 5MB)</div>
+              </FileUploadContainer>
               {errors.file && <ErrorText>{errors.file}</ErrorText>}
             </FormGroup>
-            {file&& (
-                <div style={{ marginTop: "1rem" }}>
-                  <div style={{ fontWeight: "500", marginBottom: "0.5rem" }}>
-                    Uploaded Files (1)
-                  </div>
-                    <UploadedFile>
-                      <FaUpload />
-                      <span>{file.name}</span>
-                      <button type="button" onClick={() => removeFile(0)}>
-                        <FaTimes />
-                      </button>
-                    </UploadedFile>
+            
+            {file && (
+              <div style={{ marginTop: "1rem" }}>
+                <div style={{ fontWeight: "500", marginBottom: "0.5rem" }}>
+                  Uploaded Files (1)
                 </div>
-              )}
+                <UploadedFile>
+                  <FaUpload />
+                  <span>{file.name}</span>
+                  <button type="button" onClick={() => removeFile(0)}>
+                    <FaTimes />
+                  </button>
+                </UploadedFile>
+              </div>
+            )}
+            
             <ButtonGroup>
-            <Button variant="outline" type="button" onClick={onClose}>
-              Cancel
-            </Button>
+              <Button variant="outline" type="button" onClick={onClose}>
+                Cancel
+              </Button>
               <SubmitButton type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Submitting...' : 
-                isHelpRequest ? 'Submit Help Request' : 'Submit Request'}
+                {isSubmitting 
+                  ? 'Submitting...' 
+                  : isResolveMode
+                    ? (isHelpRequest === 'H' ? 'Resolve Help Request' : 'Resolve Request')
+                    : isUpdate 
+                      ? (isHelpRequest === 'H' ? 'Update Help Request' : 'Update Request')
+                      : (isHelpRequest === 'H' ? 'Submit Help Request' : 'Submit Request')
+                }
               </SubmitButton>
             </ButtonGroup>
           </FormContainer>
@@ -296,7 +380,11 @@ const Select = styled.select`
   border-radius: 6px;
   font-size: 16px;
   transition: border-color 0.3s;
-  width: 100%;
+  width: 100%; background-color: ${props => props.disabled ? '#f5f5f5' : 'white'};
+
+    &:disabled {
+    opacity: 0.7;
+  }
 
   &:focus {
     border-color:${({ theme }) => theme.colors.primary};
@@ -314,6 +402,32 @@ const TextArea = styled.textarea`
   resize: vertical;
   transition: border-color 0.3s;
   width: 100%;
+
+  &:focus {
+    border-color: ${({ theme }) => theme.colors.primary};
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.2);
+  }
+`;
+
+const ShowTextArea = styled.textarea`
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  min-height: 100px;
+  resize: vertical;
+  transition: border-color 0.3s;
+  width: 100%;
+  background-color: #f9f9f9;
+  color: #333;
+  font-family: 'Arial', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  letter-spacing: 0.2px;
+  word-break: break-word;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 
   &:focus {
     border-color: ${({ theme }) => theme.colors.primary};

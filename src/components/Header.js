@@ -13,6 +13,7 @@ import {
   FaFileAlt,
   FaGift,
   FaUserCircle,
+  FaKey,
 } from "react-icons/fa"
 import { useAuth } from "../context/AuthContext"
 import { theme } from "../styles/Theme"
@@ -220,6 +221,7 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
     { path: "/analytics", name: "Analytics", icon: <FaUser /> },
     { path: "/helpdesk", name: "Help Desk", icon: <FaQuestion /> },
     { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
+    { path: "/resolvedesk", name: "Resolve Desk", icon: <FaKey /> },
     { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
     { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
     { path: "/attendance-tracking", name: "check in", icon: <FaUser /> },
@@ -255,6 +257,7 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
         'pay': ['payslip'],
         'help': ['helpdesk'],
         'request': ['requestdesk'],
+        'resolve': ['resolvedesk'],
         'wish': ['wishes'],
         'employee': ['employees'],
         'analytics': ['analytics'],

@@ -350,7 +350,6 @@ const MyAppointments = () => {
     setLoading(true)
     getequipmentlistview()
       .then((res) => {
-        console.log("API Response:", res.data)
         setDoctorList(res.data || [])
         setLoading(false)
       })

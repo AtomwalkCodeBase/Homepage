@@ -535,7 +535,6 @@ const Tickets = () => {
     ref_file: null,
   });
   const [showViewImageModal, setShowViewImageModal] = useState(false);
-// console.log(categories,"setCategories")
   // Map API status to simplified status for UI
   const statusMap = {
     "Planned": "open",
@@ -589,7 +588,6 @@ const Tickets = () => {
       try {
         setLoading(true)
         const response = await getTasksList("ALL", cid)
-        // console.log(response.data,"response")
         // Process API response to match our UI format
         const processedTickets = response?.data?.map(ticket => ({
           id: ticket.task_ref_id || `TKT-${ticket.id}`,
@@ -604,7 +602,6 @@ const Tickets = () => {
           apiData: ticket // Keep original API data for reference
         }))
 
-        // console.log("ticket", processedTickets)
         
         setTickets(processedTickets)
         setFilteredTickets(processedTickets)
@@ -679,7 +676,6 @@ const Tickets = () => {
 
   const handleEditTicket = (ticket) => {
     setSelectedTicket(ticket)
-    console.log("jhsdkhc",ticket);
     setEditForm({
     remarks: ticket.description || "",
     ref_file: null,
@@ -707,7 +703,6 @@ const handleEditFileChange = (e) => {
  const handleViewTicket = (ticket) => {
     setSelectedTicket(ticket);
     setShowViewImageModal(true);
-    console.log(`Viewing ticket ${ticket.id} image:`, ticket.apiData.ref_file);
   };
 
   
@@ -788,12 +783,6 @@ const handleEditFileChange = (e) => {
       formData.append('uploaded_file', editForm.ref_file);
     }
 
-    // Log FormData contents
-    const formDataEntries = {};
-    for (const [key, value] of formData.entries()) {
-      formDataEntries[key] = value instanceof File ? value.name : value;
-    }
-    console.log("update data", formData);
 
     try {
 

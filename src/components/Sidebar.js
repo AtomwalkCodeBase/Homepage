@@ -25,6 +25,7 @@ import {
   FaUsers,
   FaFileInvoice,
   FaGraduationCap,
+  FaKey,
 } from "react-icons/fa"
 import { SiGooglecalendar } from "react-icons/si"
 import { PiListPlusFill } from "react-icons/pi"
@@ -561,6 +562,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
           items: [
             { path: "/helpdesk", name: "Help Desk", icon: <FaComments /> },
             { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
+            { path: "/resolvedesk", name: "Resolve Desk", icon: <FaKey /> },
           ],
         },
         {
@@ -593,7 +595,6 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
   }
 
   const toggleGroup = (groupName) => {
-    console.log(groupName, "nameee")
     if (!isOpen) {
       toggleSidebar()
     }
@@ -627,6 +628,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
         // { path: "/analytics", name: "Analytics", icon: <FaChartBar /> },
         { path: "/helpdesk", name: "Help Desk", icon: <FaComments /> },
         { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
+        { path: "/resolvedesk", name: "Resolve Desk", icon: <FaKey /> },
         { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
         ...(profile?.is_shift_applicable
           ? [{ path: "/shift-detail", name: "My Shifts", icon: <FaExchangeAlt /> }]

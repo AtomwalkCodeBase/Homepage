@@ -103,17 +103,29 @@ export const ExportProvider = ({ children }) => {
 
   // Specialized function for claims data export
   const exportClaimsData = (claims, filename = "claims_data") => {
-    const customHeaders = [
-      { key: "claim_id", label: "Claim ID" },
-      { key: "employee_name", label: "Employee Name" },
-      { key: "item_name", label: "Claim Type" },
-      { key: "expense_amt", label: "Amount" },
-      { key: "expense_status", label: "Status" },
-      { key: "submitted_date", label: "Submission Date" },
-      { key: "expense_date", label: "Expense Date" },
-    ]
+    const flattenedData = claims.flatMap((claim) =>
+      claim.claim_items.map((item) => ({
+        "Master Claim ID": claim.master_claim_id || "N/A",
+        "Claim Date": claim.claim_date || "N/A",
+        "Employee Name": claim.employee_name || "N/A",
+        "Expense Amount (Total)": claim.expense_amt ?? "N/A",
+        "Settlement Amount": claim.settlement_amt ?? "N/A",
+        "Settlement Date": claim.settlement_date || "N/A",
+        "Approved By": claim.approved_by || "N/A",
+        "Approval Date": claim.approved_date || "N/A",
+        "Status": claim.status_display || "N/A",
+        "Claim Item ID": item.claim_id || "N/A",
+        "Project Name": item.project_name || "N/A",
+        "Claim Item Type": item.item_name || "N/A",
+        "Item Expense Amount": item.expense_amt ?? "N/A",
+        "Item Approval By": item.approved_by || "N/A",
+        "Item Approval Date": item.approved_date || "N/A",
+        "Item Expense Date": item.expense_date || "N/A",
+        "Submission Date": item.submitted_date || "N/A",
+      }))
+    )
 
-    return exportToExcel(claims, filename, "Claims", customHeaders)
+    return exportToExcel(flattenedData, filename, "Claims")
   }
 
   // Specialized function for timesheet data export

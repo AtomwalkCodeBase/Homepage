@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { FaTicketAlt, FaSearch, FaPlus, FaFilter, FaEye, FaLaptop, FaFileAlt, FaFileExport } from "react-icons/fa"
+import { FaTicketAlt, FaSearch, FaPlus, FaFilter, FaEye, FaLaptop, FaFileAlt, FaFileExport, FaEdit } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
@@ -154,6 +154,8 @@ const RequestDesk = () => {
   const [typeFilter, setTypeFilter] = useState("All Types")
   const [statusFilter, setStatusFilter] = useState("All Status")
   const [filteredRequestsData, setFilteredRequestsData] = useState([])
+    const [updateTicket, setUpdateTicket] = useState(null);
+    const [isUpdate, setIsUpadte] = useState(false);
 
   const handleSuccess = () => {
     setIsModalOpens(false)
@@ -224,6 +226,12 @@ const RequestDesk = () => {
   const openModal = (ticket) => {
     setSelectedTicket(ticket)
     setIsModalOpen(true)
+  }
+
+    const handleUpdate = (ticket) => {
+    setIsUpadte(true)
+    setIsModalOpens(true)
+    setUpdateTicket(ticket)
   }
 
   const closeModal = () => {
@@ -418,6 +426,10 @@ const RequestDesk = () => {
                               <Button variant="ghost" size="sm" title="View">
                                 <FaEye />
                               </Button>
+                              {request.request_status === "S" &&
+                                                            <Button variant="primary" size="sm" title="Update" onClick={() => handleUpdate(request)}>
+                                                              <FaEdit />
+                                                            </Button>}
                             </ActionButtons>
                           </td>
                         </tr>
@@ -573,7 +585,7 @@ const RequestDesk = () => {
         </Modal>
       )}
       {isModalOpens && (
-        <RequestModal call_type="R" empId={emp_id} onClose={() => setIsModalOpens(false)} onSuccess={handleSuccess} dropdownValue={dropdownValue} />
+        <RequestModal call_type="R" empId={emp_id} onClose={() =>{ setIsModalOpens(false); setUpdateTicket(null)}} onSuccess={handleSuccess} dropdownValue={dropdownValue} isUpdate={isUpdate} updateTicket={updateTicket}  />
       )}
     </Layout>
   )

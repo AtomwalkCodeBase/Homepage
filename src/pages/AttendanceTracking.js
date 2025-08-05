@@ -15,6 +15,7 @@ import { toast } from "react-toastify"
 import moment from "moment/moment"
 import { useExport } from "../context/ExportContext"
 import { useNavigate } from "react-router-dom"
+import RequestModal from "../components/modals/RequestModal"
 // import Modal from "../components/Modal"
 // import Input from "../components/Input"
 
@@ -324,6 +325,11 @@ const FilterSelect = styled.select`
 const TableContainer = styled.div`
   overflow-x: auto;
 `
+const ErrorText = styled.div`
+  color: ${({ theme }) => theme.colors.error};
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+`
 
 
 const AttendanceTracking = () => {
@@ -331,7 +337,8 @@ const AttendanceTracking = () => {
   const [checkedIn, setCheckedIn] = useState(false)
   const [attendance, setAttendance] = useState({})
   const [isRemarkModalOpen, setIsRemarkModalOpen] = useState(false)
-  const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false)
+  // const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false)
+  const [isModalOpens, setIsModalOpens] = useState(false)
   const [remark, setRemark] = useState("")
   const [date, setDate] = useState(new Date())
   const currentMonth = date.getMonth()
@@ -343,6 +350,7 @@ const AttendanceTracking = () => {
   const { profile } = useAuth()
   const { exportAppointmentData } = useExport()
   const navigate = useNavigate()
+  const emp_id = localStorage.getItem("empId")
 
   // In the component, add these state variables after the existing state declarations
   const [statusFilter, setStatusFilter] = useState("All Status")
@@ -354,7 +362,7 @@ const AttendanceTracking = () => {
   const grade = urlParams.get("employeegrade")
   const profileimage = decodeURIComponent(urlParams.get("image"));
   const department = urlParams.get("department")
-  // console.log(profileimage,"profileimage")
+  const [error, setError] = useState('')
   const setdatatime = async () => {
     let time = moment().format("hh:mm A")
     if (
@@ -408,7 +416,6 @@ const AttendanceTracking = () => {
       processAttendanceData(res.data)
     })
     getEmpHoliday(data).then((res) => {
-      // console.log('Holiday Data---',res.data)
       processHolidayData(res.data)
     })
   }
@@ -470,7 +477,6 @@ const AttendanceTracking = () => {
           return false
         })
       }
-
       setFilteredAttendanceData(filtered)
     } else {
       setFilteredAttendanceData([])
@@ -535,6 +541,11 @@ const AttendanceTracking = () => {
   }
 
   const confirmCheckOut = () => {
+    if (!remark.trim()) {
+      setError("Remarks are required");
+      return;
+    }
+    setError("");
     setCheckedIn(false)
     handleCheck("UPDATE")
     setIsRemarkModalOpen(false)
@@ -613,31 +624,26 @@ const AttendanceTracking = () => {
     setReLoad(relode + 1)
   }
 
-  const handleAttendanceSubmit = async (attendanceData) => {
-    try {
-      const response = await postCheckIn(attendanceData)
-      if (response.status === 200) {
-        toast.success("Attendance added successfully")
-        setReLoad(relode + 1) // Refresh the data
-      }
-    } catch (error) {
-      console.error("Error adding attendance:", error)
-      toast.error("Failed to add attendance")
-      throw error // Re-throw to let modal handle the error state
-    }
-  }
+  // const handleAttendanceSubmit = async (attendanceData) => {
+  //   try {
+  //     const response = await postCheckIn(attendanceData)
+  //     if (response.status === 200) {
+  //       toast.success("Attendance added successfully")
+  //       setReLoad(relode + 1) // Refresh the data
+  //     }
+  //   } catch (error) {
+  //     console.error("Error adding attendance:", error)
+  //     toast.error("Failed to add attendance")
+  //     throw error // Re-throw to let modal handle the error state
+  //   }
+  // }
 
   // Button states
   const isCheckInDisabled = checkedIn || attendance.geo_status === "O" || !!attendance.start_time
   const isCheckOutDisabled = !checkedIn || attendance.geo_status !== "I" || !!attendance.end_time
-  // console.log(isCheckOutDisabled, "data")
 
   // Update the handleFilter function
-  const handleFilter = () => {
-    // The filtering is now handled by the useEffect
-    // This is just for the button click animation
-    toast.info("Filters applied")
-  }
+ 
   const handleExport = (data) => {
         const result = exportAppointmentData(data, "Attendance_data")
         if (result.success) {
@@ -649,6 +655,11 @@ const AttendanceTracking = () => {
         const navigates = () => {
     navigate("/employees")
   }
+
+    const handleSuccess = () => {
+      toast.success("Request submitted successfully!")
+      setIsModalOpens(false)
+    }
   return (
     <Layout title="Attendance Tracking">
       <AttendanceHeader>
@@ -658,9 +669,9 @@ const AttendanceTracking = () => {
            <Button variant="outline" style={{ marginRight: "0.5rem" }} onClick={navigates}>
              <FaUserCircle /> {empName}
            </Button>:
-          <Button variant="primary" onClick={() => setIsAttendanceModalOpen(true)}>
+          <Button variant="primary" onClick={() => setIsModalOpens(true)}>
             <FaPlus style={{ marginRight: "0.5rem" }} />
-            Add Attendance
+            Request Shift Change
           </Button>}
         </HeaderActions>
       </AttendanceHeader>
@@ -796,9 +807,6 @@ const AttendanceTracking = () => {
             <option>Holiday</option>
             <option>Absent</option>
           </FilterSelect>
-          <Button variant="outline" onClick={handleFilter}>
-            <FaFilter /> Filter
-          </Button>
         </FilterContainer>
 
         <TableContainer>
@@ -885,6 +893,7 @@ const AttendanceTracking = () => {
             placeholder="Enter check-out remark"
             textarea
           />
+          {error && <ErrorText>{error}</ErrorText>}
           <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
             <Button variant="outline" onClick={() => setIsRemarkModalOpen(false)}>
               Cancel
@@ -895,11 +904,14 @@ const AttendanceTracking = () => {
       )}
 
       {/* New Add Attendance Modal */}
-      <AttendanceModal
+      {/* <AttendanceModal
         isOpen={isAttendanceModalOpen}
         onClose={() => setIsAttendanceModalOpen(false)}
         onSubmit={handleAttendanceSubmit}
-      />
+      /> */}
+       {isModalOpens && (
+                    <RequestModal call_type="R" empId={emp_id} onClose={() => setIsModalOpens(false)} onSuccess={handleSuccess} />
+                  )}
     </Layout>
   )
 }

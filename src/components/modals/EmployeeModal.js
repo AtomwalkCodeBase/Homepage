@@ -187,7 +187,6 @@ const EmployeeModal = ({ isOpen, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault()
     // Process form submission
-    console.log("Adding employee:", formData)
     // In a real app, you would send this data to your API
     onClose()
   }

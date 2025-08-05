@@ -16,7 +16,9 @@ import {
   FaMoneyBillWave,
   FaLaptop,
   FaFileExport,
+  FaEdit,
 } from "react-icons/fa"
+import { FiCheckSquare } from "react-icons/fi";
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
@@ -173,6 +175,7 @@ const CategoryDescription = styled.p`
   font-size: 0.9rem;
 `
 const HelpDesk = () => {
+  // const location = useLocation();
   const [activeTab, setActiveTab] = useState("tickets")
   const [searchTerm, setSearchTerm] = useState("")
   const [allRequests, setAllRequests] = useState([])
@@ -185,6 +188,12 @@ const HelpDesk = () => {
   const [statusFilter, setStatusFilter] = useState("All Status")
   const [priorityFilter, setPriorityFilter] = useState("All Priorities")
   const [filteredTickets, setFilteredTickets] = useState([])
+  const [updateTicket, setUpdateTicket] = useState(null);
+  const [isUpdate, setIsUpadte] = useState(false);
+  const [tickets, setTicket] = useState([]);
+  const currentUrl = window.location.pathname;
+  const isResolveDesk = currentUrl === "/resolvedesk";
+
   const navigatin = useNavigate()
   const handleSuccess = () => {
     setIsModalOpens(false)
@@ -195,18 +204,29 @@ const HelpDesk = () => {
   const emp_id = localStorage.getItem("empId")
   useEffect(() => {
     fetchRequest()
-  }, [pageref])
+  }, [pageref, currentUrl])
 
   const fetchRequest = async () => {
     try {
-      const res = await getEmployeeRequest()
-      setAllRequests(res.data)
+      const res = await getEmployeeRequest(isResolveDesk?"":emp_id)
+      setTicket(getFilteredTickets(res.data, isResolveDesk));
     } catch (err) {
       console.log("Error fetching requests:", err)
     }
   }
 
-  const tickets = allRequests.filter((request) => request?.emp_id === emp_id && request?.request_type === "H")
+  // First define the ticket filtering logic
+  const getFilteredTickets = (requests, isResolveDesk) => {
+    if (isResolveDesk) {
+      return requests.filter(
+        (request) => request.resolved_by === emp_id
+      );
+    } else {
+      return requests.filter(
+        (request) => request?.request_type === "H"
+      );
+    }
+  };
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value)
@@ -321,6 +341,12 @@ const HelpDesk = () => {
       default:
         return <FaTicketAlt />
     }
+  }
+
+  const handleUpdate = (ticket) => {
+    setIsUpadte(true)
+    setIsModalOpens(true)
+    setUpdateTicket(ticket)
   }
 
   const openModal = (ticket) => {
@@ -493,6 +519,14 @@ const HelpDesk = () => {
                               <Button variant="ghost" size="sm" title="View" onClick={() => openModal(request)}>
                                 <FaEye />
                               </Button>
+                              {isResolveDesk ? (!request.request_status === "C" &&
+                                <Button variant="primary" size="sm" title="Resolve" onClick={() => handleUpdate(request)}>
+                                  <FiCheckSquare />
+                                </Button>) :
+                                (request.request_status === "S" &&
+                                  <Button variant="primary" size="sm" title="Update" onClick={() => handleUpdate(request)}>
+                                    <FaEdit />
+                                  </Button>)}
                             </ActionButtons>
                           </td>
                         </tr>
@@ -574,8 +608,16 @@ const HelpDesk = () => {
           </div>
         </Modal>
       )}
-      {isModalOpens && (
-        <RequestModal call_type="H" empId={emp_id} onClose={() => setIsModalOpens(false)} onSuccess={handleSuccess} />
+      {isModalOpens && ( 
+        <RequestModal 
+          call_type={isResolveDesk ? "R" : "H"} 
+          empId={emp_id} 
+          onClose={() =>{ setIsModalOpens(false); setUpdateTicket(null)}} 
+          onSuccess={handleSuccess} 
+          isUpdate={isUpdate} 
+          updateTicket={updateTicket} 
+          isResolveMode={isResolveDesk}
+        />
       )}
     </Layout>
   )

@@ -75,13 +75,10 @@ export const AuthProvider = ({ children }) => {
             pin: userData.password,
           };
   
-      console.log('Sending payload:', payload);
-  
       const response = await publicAxiosRequest.post(empLoginURL+`${userData.company}/`, payload, {
         headers: { 'Content-Type': 'application/json' },
       });
   
-      console.log('API Response:', response);
   
       if (response.status === 200) {
         setError("");
@@ -136,7 +133,6 @@ const customerlogin = async(userData) => {
             mobile_number: userData.mobile,
             pin: userData.password,
           }
-      console.log('Sending payload:', payload);
   
       const response = await publicAxiosRequest.post(customerslogin +`${userData.company}/`, payload, {
         headers: { 'Content-Type': 'application/json' },

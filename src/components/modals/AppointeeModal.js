@@ -246,7 +246,6 @@ const AppointeeModal = ({ isOpen, onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault()
     // Process form submission
-    console.log("Adding appointee/nominee:", formData)
     // In a real app, you would send this data to your API
     onClose()
   }

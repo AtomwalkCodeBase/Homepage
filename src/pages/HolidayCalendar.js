@@ -548,7 +548,6 @@ const HolidayCalendar = () => {
     call_mode: "ADD",
     emp_id: localStorage.getItem("empNoId")
   });
-      console.log("Date String:", holidayData);
     // Accepts date in "YYYY-MMM-DD" (e.g., "2025-Apr-18") and returns "18-03-2025"
     const formatDate = (dateString) => {
 

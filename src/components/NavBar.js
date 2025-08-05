@@ -74,6 +74,7 @@ export const NavBar = () => {
     'analytics',
     'helpdesk',
     "requestdesk",
+    "resolvedesk",
     "profile",
     "claims",
     "payslip",

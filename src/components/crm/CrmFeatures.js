@@ -153,7 +153,6 @@ const TextSection = styled.div`
 
 
 const CrmFeatures = ({data}) => {
-  console.log(data,"  dcjcnd");
   const isClaim = data;
     const getFeatureContent = (feature) => (
       <Features>
@@ -484,8 +483,6 @@ const CrmFeatures = ({data}) => {
     // Extract the step manually if no key exists
     const stepMatch = queryString.match(/\?(\d+)/);
     const step = stepMatch ? parseInt(stepMatch[1], 10) : NaN;
-
-    console.log(step, "Step value parsed from URL");
 
     // Calculate scroll offset
     const scrollOffset = !isNaN(step) ? 700 + (step - 1) * 700 : 0;

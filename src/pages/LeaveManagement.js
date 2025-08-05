@@ -141,7 +141,6 @@ const LeaveManagement = () => {
     const [year, month, day] = dateString.split("-");
     return `${day}-${month}-${year}`;
   };
-  console.log(workleaveRequests,"leaveRequests")
   // Calculate total leave days per leave type (summing no_leave_count)
   const count = leaveRequests.reduce((acc, request) => {
     const leaveType = request.leave_type_display;

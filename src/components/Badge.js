@@ -50,6 +50,20 @@ const BadgeContainer = styled.span`
     background: ${props.theme.colors.info}22;
     color: ${props.theme.colors.info};
   `}
+
+  ${(props) =>
+  props.variant === "forward" &&
+  `
+  background: #f3e8fd;
+  color: #8e44ad;
+`}
+
+${(props) =>
+  props.variant === "back" &&
+  `
+  background: #fef5e7 ; 
+  color: #f39c12;
+`}
 `
 
 const Badge = ({ children, variant = "primary", ...props }) => {

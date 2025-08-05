@@ -283,7 +283,7 @@ const ProjectModal = ({ isOpen, onClose, setRefresh, refresh, editData = null })
         onClose()
       }
     } catch (error) {
-      toast.error(`${error.response?.data?.detail || error.message}`)
+      toast.error(`${error.response?.data?.message || error.message || error.response?.data?.detail}`)
     } finally {
       setLoading(false)
     }

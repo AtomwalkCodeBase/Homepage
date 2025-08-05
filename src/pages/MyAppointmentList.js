@@ -611,7 +611,6 @@ export const fetchBookedAppointments = async (customerId) => {
     }
 
     const response = await getbookedlistview(parseInt(customerId));
-    console.log("getbookedlistview Response:", JSON.stringify(response, null, 2));
 
     const apiData = response.data || response;
 
@@ -907,17 +906,6 @@ const MyBookedAppointments = () => {
       if (!appointment.booking_id.match(/^B_\d{8}_\d+$/)) {
         throw new Error(`Invalid Booking ID format: ${appointment.booking_id}. Expected format like B_YYYYMMDD_NNNN.`);
       }
-
-      console.log("Cancelling Appointment:", {
-        customer_id: parseInt(storedCustomerId),
-        doctor_id: parseInt(appointment.doctor_id),
-        booking_date: appointment.date,
-        start_time: appointment.start_time,
-        end_time: appointment.end_time,
-        duration: appointment.duration,
-        call_mode: "CANCEL",
-        booking_id: appointment.booking_id
-      });
 
       const response = await doctorBookingView(
         parseInt(storedCustomerId),

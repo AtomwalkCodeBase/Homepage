@@ -1126,7 +1126,6 @@ const Profile = () => {
     isCustomTheme,
     resetCustomizations,
   } = useTheme()
-console.log(profileData,"activeTab")
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -1184,7 +1183,6 @@ console.log(profileData,"activeTab")
     }
 
     const response = await setuserpinview(currentPin, newPin)
-    console.log("Pin response", response)
     if (response?.status === 200) {
       setPinSuccess("PIN reset successfully")
       setIsEditingPin(false)

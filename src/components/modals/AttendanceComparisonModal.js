@@ -10,7 +10,6 @@ import { useTheme } from "../../context/ThemeContext"
 const AttendanceComparisonModal = ({ isOpen, onClose, timesheetData, attendanceData, weekDates }) => {
   const { theme } = useTheme()
   const [comparisonData, setComparisonData] = useState([])
-console.log(attendanceData,"timesheetData")
   useEffect(() => {
     if (isOpen && timesheetData && attendanceData && weekDates) {
       calculateComparison()

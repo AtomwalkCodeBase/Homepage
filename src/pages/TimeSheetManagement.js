@@ -16,6 +16,7 @@ import {
   FaPaperPlane,
   FaEye,
   FaBalanceScale,
+  FaBan,
 } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
@@ -30,6 +31,7 @@ import { TbClockCancel } from "react-icons/tb"
 import { useExport } from "../context/ExportContext"
 import { useNavigate } from "react-router-dom"
 import Modal from "../components/modals/Modal"
+import ConfirmPopup from "../components/modals/ConfirmPopup"
 
 const TimeSheetHeader = styled.div`
   display: flex;
@@ -223,6 +225,9 @@ const TimeSheetManagement = () => {
     call_mode: "",
     emp_id: localStorage.getItem("empId") || "",
   })
+
+  const [showConfirmPopup, setShowConfirmPopup] = useState(false);
+  const [popupAction, setPopupAction] = useState("");
 
   const [reject, setReject] = useState({})
   const navigate = useNavigate()
@@ -563,24 +568,37 @@ const TimeSheetManagement = () => {
       }
     }
   }
-  const handeleweeklyapprove = async () => {
-    const { startDate, endDate } = getCurrentWeekDates()
-    const formattedStartDate = formatDate(startdate.startTime ? startdate.startTime : startDate)
-    const formattedEndDate = formatDate(startdate.endTime ? startdate.endTime : endDate)
-    const response = await posttimelist({
-      emp_id: empidParam ? empidParam : localStorage.getItem("empId"),
-      start_date: formattedStartDate,
-      end_date: formattedEndDate,
-      call_mode: empidParam ? "WEEKLY_APPROVE" : "WEEKLY_SUBMIT",
-      a_emp_id: empidParam ? empidParam : "",
-    })
-    if (response.status === 200) {
-      toast.success("Timesheet entry Submit successfully!")
-      setRelode(relode + 1)
-    } else {
-      toast.error("Failed to Submit timesheet entry.")
+  const handleWeeklyAction = async (action) => {
+    const { startDate, endDate } = getCurrentWeekDates();
+    const formattedStartDate = formatDate(startdate.startTime ? startdate.startTime : startDate);
+    const formattedEndDate = formatDate(startdate.endTime ? startdate.endTime : endDate);
+    setLoading(true)
+    try {
+      const response = await posttimelist({
+        emp_id: empidParam ? empidParam : localStorage.getItem("empId"),
+        start_date: formattedStartDate,
+        end_date: formattedEndDate,
+        call_mode: action === "APPROVE" ? "WEEKLY_APPROVE" : "WEEKLY_SUBMIT",
+        a_emp_id: empidParam ? empidParam : "",
+      });
+
+      if (response.status === 200) {
+        toast.success(
+          `Weekly timesheet ${action === "APPROVE" ? "approved" : "submitted"} successfully!`
+        );
+        setRelode(relode + 1);
+      } else {
+        throw new Error("Failed to process timesheet");
+      }
+    } catch (error) {
+      toast.error(
+        `Failed to ${action === "APPROVE" ? "approve" : "submit"} weekly timesheet. Please try again.`
+      );
+    } finally {
+      setLoading(false)
+      setShowConfirmPopup(false);
     }
-  }
+  };
   const handleExport = () => {
     const result = exportTimesheetData(filteredEntries, "timesheet_data")
     if (result.success) {
@@ -618,12 +636,11 @@ const TimeSheetManagement = () => {
     const firstDay = new Date(year, month - 1, 1)
     const lastDay = new Date(year, month, 0) // day 0 of next month = last day
 
-    console.log(firstDay, "yyyyy")
+    // console.log(firstDay, "yyyyy")
     fetchTimeSheetData(firstDay, lastDay, empid)
   }
 
   const handleViewDetails = (data) => {
-    console.log("data", data)
     setReject(data)
     setShowImageModal(true)
   }
@@ -637,7 +654,7 @@ const TimeSheetManagement = () => {
   const hasNotSubmitted = filteredEntries.some((entry) => entry.status === "N")
   const hasSubmitted = filteredEntries.some((entry) => entry.status === "S")
   const hasApproved = filteredEntries.some((entry) => entry.status === "A")
-  console.log("filteredEntries", !filteredEntries.length > 0, hasNotSubmitted)
+
   return (
     <Layout title="Timesheet Management">
       <TimeSheetHeader>
@@ -768,7 +785,7 @@ const TimeSheetManagement = () => {
                                     <FaCheck />
                                   </Button>
                                   <Button onClick={() => handelreject(entry)} variant="ghost" size="sm" title="Reject">
-                                    <FaTrash />
+                                   <FaBan />
                                   </Button>
                                 </>
                               )
@@ -805,7 +822,7 @@ const TimeSheetManagement = () => {
                   // and no not-submitted entries
                   if (hasSubmitted && !hasNotSubmitted) {
                     return (
-                      <Button variant="primary" size="sm" onClick={handeleweeklyapprove}>
+                      <Button variant="primary" size="sm" onClick={() => {setPopupAction("APPROVE");setShowConfirmPopup(true);}}>
                         <FaCheckCircle style={{ marginRight: 4 }} /> Approve Weekly Timesheet
                       </Button>
                     )
@@ -815,7 +832,7 @@ const TimeSheetManagement = () => {
                   // and no already-submitted entries
                   if (hasNotSubmitted && !hasSubmitted && !hasApproved) {
                     return (
-                      <Button variant="primary" size="sm" onClick={handeleweeklyapprove}>
+                      <Button variant="primary" size="sm" onClick={() => {setPopupAction("SUBMIT"); setShowConfirmPopup(true);}}>
                         <FaPaperPlane style={{ marginRight: 4 }} /> Submit Weekly Timesheet
                       </Button>
                     )
@@ -909,7 +926,7 @@ const TimeSheetManagement = () => {
                   // and no not-submitted entries
                   if (hasSubmitted && !hasNotSubmitted) {
                     return (
-                      <Button variant="primary" size="sm" onClick={handeleweeklyapprove}>
+                      <Button variant="primary" size="sm" onClick={() => {setPopupAction("APPROVE");setShowConfirmPopup(true);}}>
                         <FaCheckCircle style={{ marginRight: 4 }} /> Approve Weekly Timesheet
                       </Button>
                     )
@@ -919,7 +936,7 @@ const TimeSheetManagement = () => {
                   // and no already-submitted entries
                   if (hasNotSubmitted && !hasSubmitted && !hasApproved) {
                     return (
-                      <Button variant="primary" size="sm" onClick={handeleweeklyapprove}>
+                      <Button variant="primary" size="sm" onClick={() => {setPopupAction("SUBMIT");setShowConfirmPopup(true);}}>
                         <FaPaperPlane style={{ marginRight: 4 }} /> Submit Weekly Timesheet
                       </Button>
                     )
@@ -961,6 +978,15 @@ const TimeSheetManagement = () => {
         timesheetData={filteredEntries}
         attendanceData={attendanceData}
         weekDates={getWeekDates(currentWeekStart)}
+      />
+      
+      <ConfirmPopup
+        isOpen={showConfirmPopup}
+        onClose={() => !loading && setShowConfirmPopup(false)}
+        onConfirm={() => handleWeeklyAction(popupAction)}
+        approve={popupAction}
+        timesheet={true}
+        isLoading={loading}
       />
     </Layout>
   )

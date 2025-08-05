@@ -333,7 +333,6 @@ const MyPaySlip = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [salaryData, setSalaryData] = useState([])
   const { profile, companyInfo } = useAuth()
-  console.log(currentMonth, "profile")
 
   useEffect(() => {
     const fetchSalaryData = async () => {

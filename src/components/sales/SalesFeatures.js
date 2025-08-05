@@ -164,7 +164,6 @@ const SalesFeatures = ({data,bgcolors}) => {
       const stepMatch = queryString.match(/\?(\d+)/);
       const step = stepMatch ? parseInt(stepMatch[1], 10) : NaN;
     
-      console.log(step, "Step value parsed from URL");
     
       // Define base scroll offset values for each claim type
       const scrollOffsetMap = {

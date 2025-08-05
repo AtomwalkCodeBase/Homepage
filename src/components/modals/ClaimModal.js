@@ -218,7 +218,6 @@ const ErrorMessage = styled.div`
   margin-bottom: 1rem;`
 
 const ClaimModal = ({ isOpen, onClose, dropdownValue, projecttype,setIsLoadings,isLoadings,masterClaimId,claimupdate }) => {
-  console.log(claimupdate,"dropdownValue")
   const [isLoading, setIsLoading] = useState(false)
   const [isFileError, setIsFileError] = useState(false)
   const [formData, setFormData] = useState({
@@ -275,7 +274,6 @@ useEffect(() => {
     });
   }
 }, [claimupdate]);
-console.log(formData," formData")
   const handleSubmit = async (e) => {
     const { value } = e.nativeEvent.submitter;
     e.preventDefault()
@@ -302,7 +300,11 @@ console.log(formData," formData")
     formDatas.append("emp_id", formData.emp_id)
     formDatas.append("quantity", 1)
     if (value === "save") {
-       formDatas.append("call_mode",claimupdate?.item_id?"CLAIM_UPDATE": "CLAIM_SAVE");
+      if (claimupdate?.substatusText === "Back To Claimant") {
+        formDatas.append("call_mode", "CLAIM_RESUBMIT");
+      } else {
+        formDatas.append("call_mode", claimupdate?.item_id ? "CLAIM_UPDATE" : "CLAIM_SAVE");
+      }
     }
 
     if (formData.projecttype) {

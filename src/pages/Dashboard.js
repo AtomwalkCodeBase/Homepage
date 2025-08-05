@@ -699,7 +699,6 @@ const Dashboard = () => {
   const empId = localStorage.getItem("empId")
   const navigation= useNavigate()
   // Fetch data from various services
-  console.log("eventData", ticketData);
   useEffect(() => {
     // Fetch leave data
     getEmpLeave("EL", emp_id)
@@ -965,7 +964,6 @@ const Dashboard = () => {
     , [leaveData, claimData, ticketData, attendanceData])
   // Check if today is someone's birthday
   const [todayBirthday, setUpcomingBirthdays] = useState([])
-  console.log(todayBirthday, "upcomingBirthdays")
 
   useEffect(() => {
     if (eventData.length > 0) {
@@ -992,7 +990,6 @@ const Dashboard = () => {
   const handleSendWish = async () => {
     if (wishMessage.trim() && selectedBirthday) {
       // Here you would typically call an API to send the wish
-      console.log(`Sending wish to ${selectedBirthday.emp_id}: ${wishMessage}`);
 
       const formDatas = new FormData()
       formDatas.append("r_file", selectedFile)

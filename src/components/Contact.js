@@ -25,7 +25,6 @@ let formattedDate = `${day}-${month}-${year}`;
   const [formDetails, setFormDetails] = useState(formInitialDetails);
   const [buttonText, setButtonText] = useState('Send');
   const [status, setStatus] = useState({});
-console.log(formDetails,"look at ne")
   const onFormUpdate = (category, value) => {
       setFormDetails({
         ...formDetails,

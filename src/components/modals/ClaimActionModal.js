@@ -366,7 +366,6 @@ const ClaimActionModal = ({ isOpen, onClose, claim, masterClaimId, validationRes
   const [claimGradeLevel, setClaimGradeLevel] = useState(0)
   const [profile, setProfile] = useState({})
 
-  // console.log("claim data", masterClaimId)
 
   // Reset form when modal opens with new claim
   useEffect(() => {
@@ -448,6 +447,16 @@ const ClaimActionModal = ({ isOpen, onClose, claim, masterClaimId, validationRes
     }
   }, [claim, profile, claimGradeLevel])
 
+  useEffect(() => {
+  if (showSuccessModal) {
+    const timer = setTimeout(() => {
+      handleCloseSuccess();
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }
+}, [showSuccessModal]);
+
   const validateForm = () => {
     const newErrors = {}
 
@@ -484,13 +493,11 @@ const ClaimActionModal = ({ isOpen, onClose, claim, masterClaimId, validationRes
       claim_list: [{
         claim_id: claim.claim_id,
         a_emp_id: isForwarded? validationEntry?.approved_emp_id : selectedManager,
-        approve_type: actionType === "APPROVE" ? "A" : actionType === "REJECT" ? "R" : actionType === "FORWARD" ? "F" : "",
+        approve_type: actionType === "APPROVE" ? "A" : actionType === "REJECT" ? "R" : actionType === "FORWARD" ? "F" : actionType === "BackToClaimant" ? "B" : "",
         approved_amt: actionType === 'REJECT' ? '0' : claim.expense_amt,
         remarks: remarks || ''
       }],
     }
-
-    // console.log("data to be send", claimPayload)
     try {
       await postClaimAction(claimPayload)
       setShowSuccessModal(true)
@@ -532,7 +539,7 @@ const ClaimActionModal = ({ isOpen, onClose, claim, masterClaimId, validationRes
           </CloseButton>
 
           <ModalTitle>
-            {actionType === "APPROVE" ? "Approve Claim" : actionType === "REJECT" ? "Reject Claim" : actionType === "FORWARD" ? "Forward Claim" : ""} ({claim.claim_id})
+            {actionType === "APPROVE" ? "Approve Claim" : actionType === "REJECT" ? "Reject Claim" : actionType === "FORWARD" ? "Forward Claim" : actionType === "BackToClaimant" ? "Back To Claimant" : ""} ({claim.claim_id})
 
           </ModalTitle>
 
@@ -586,14 +593,14 @@ const ClaimActionModal = ({ isOpen, onClose, claim, masterClaimId, validationRes
 
           <FormGroup>
             <FormLabel htmlFor="remarks">
-              {actionType === "APPROVE" ? "Approval Remarks:" : actionType === "REJECT" ? "Reject Remarks" : actionType === "FORWARD" ? "Forward  Remarks" : ""}
+              {actionType === "APPROVE" ? "Approval Remarks:" : actionType === "REJECT" ? "Reject Remarks" : actionType === "FORWARD" ? "Forward  Remarks" : actionType === "BackToClaimant" ? "Back To Claimant Remarks" : ""}
             </FormLabel>
             <FormTextarea
               id="remarks"
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}
               error={errors.remarks}
-              placeholder={actionType === "APPROVE" ? "Enter approval remarks" : actionType === "REJECT" ? "Enter reject remarks" : actionType === "FORWARD" ? "Enter forward remark" : "" }
+              placeholder={actionType === "APPROVE" ? "Enter approval remarks" : actionType === "REJECT" ? "Enter reject remarks" : actionType === "FORWARD" ? "Enter forward remark" : actionType === "BackToClaimant" ? "Enter Back To Claimant remark" : "" }
             />
             {errors.remarks && <ErrorText>{errors.remarks}</ErrorText>}
           </FormGroup>
@@ -613,17 +620,19 @@ const ClaimActionModal = ({ isOpen, onClose, claim, masterClaimId, validationRes
                 </FormSelect>
               {errors.selectedManager && <ErrorText>{errors.selectedManager}</ErrorText>}
 
-              <AlertBox type="info">
-                <AlertIcon>
-                  <FaExclamationTriangle />
-                </AlertIcon>
-                <AlertContent>
-                  <AlertTitle>Manager Approval Required</AlertTitle>
-                  <AlertMessage>
-                    This claim requires additional approval due to amount or grade level restrictions.
-                  </AlertMessage>
-                </AlertContent>
-              </AlertBox>
+              {isForwarded && 
+                <AlertBox type="info">
+                  <AlertIcon>
+                    <FaExclamationTriangle />
+                  </AlertIcon>
+                  <AlertContent>
+                    <AlertTitle>Manager Approval Required</AlertTitle>
+                    <AlertMessage>
+                      This claim requires additional approval due to amount or grade level restrictions.
+                    </AlertMessage>
+                  </AlertContent>
+                </AlertBox>
+              }
             </FormGroup>
           )}
 
@@ -638,7 +647,7 @@ const ClaimActionModal = ({ isOpen, onClose, claim, masterClaimId, validationRes
             >
               {isLoading && <LoadingSpinner />}
 
-              {actionType === "APPROVE" ? "Approve Claim" : actionType === "REJECT" ? "Reject Claim" : actionType === "FORWARD" ? "Forward Claim" : ""}
+              {actionType === "APPROVE" ? "Approve Claim" : actionType === "REJECT" ? "Reject Claim" : actionType === "FORWARD" ? "Forward Claim" : actionType === "BackToClaimant" ? "Back To Claimant Claim" : ""}
             </Button>
           </ButtonContainer>
         </ModalContent>
@@ -667,6 +676,8 @@ const ClaimActionModal = ({ isOpen, onClose, claim, masterClaimId, validationRes
                  "Claim has been successfully rejected." :
                 actionType === "FORWARD" ?
                  "Claim has been successfully forwarded." :
+                actionType === "BackToClaimant" ?
+                 "Claim has been successfully Back To Claimant." :
                  ""
                 }
             </SuccessMessage>

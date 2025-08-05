@@ -226,7 +226,10 @@ const ProjectReport = () => {
 
       const response = await getprojectreport(startDate, endDate)
 
-      if (response && response.data) {
+      if( response && Array.isArray(response.data) && response.data.every(item => item === null)){
+        setProjectData([])
+      }
+      else if (response && response.data) {
         setProjectData(response.data)
       } else {
         setError("Failed to fetch project report data")

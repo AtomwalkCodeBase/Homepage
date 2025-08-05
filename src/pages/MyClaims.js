@@ -23,7 +23,7 @@ import {
   FaEdit,
   FaCheckCircle,
 } from "react-icons/fa";
-import { RiShareForward2Line } from "react-icons/ri";
+import { RiArrowGoBackLine, RiShareForward2Line } from "react-icons/ri";
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
@@ -336,7 +336,7 @@ const MyClaims = () => {
   const [selectedClaimForAction, setSelectedClaimForAction] = useState(null)
   const [selectedClaimForEdit, setSelectedClaimForEdit] = useState(null)
   const [masterClaimId, setMasterClaimId] = useState(null)
-  const [validationResponse, setValidationResponse] = useState([]);
+  const [validationResponse, setValidationResponse] = useState({});
   const [isApproveAllPopupOpen, setIsApproveAllPopupOpen] = useState(false);
   const [approveAllClaim, setApproveAllClaim] = useState(null);
 
@@ -366,10 +366,10 @@ const MyClaims = () => {
     setSelectedClaimForEdit(null)
   }
 
-  const handleConfirm = (claim) => {
+  const handleConfirm = (claim, status) => {
     setIsOpen(true)
     setMasterClaimId(claim.master_claim_id? claim.master_claim_id : null)
-    setClaimupdate(claim)
+    setClaimupdate({...claim,  substatusText: status})
   }
   const handeleDelete = (claim,id) => {
     setDeleteopen(true)
@@ -451,11 +451,11 @@ const MyClaims = () => {
       emp_id: EmpId,
       m_claim_id: masterClaimId
     };
-    console.log("validationData", validationData)
+    // console.log("validationData", validationData)
     try {
       const validationResponse = await validateClaimItem(validationData);
-      setValidationResponse(validationResponse.data)
-       console.log("validationResponse",validationResponse.data);
+      setValidationResponse(prev => ({ ...prev, [masterClaimId]: validationResponse.data }));
+      //  console.log("validationResponse",validationResponse.data);
     } catch (error) {
       console.log("Error validating claim data:", error);
     }
@@ -510,6 +510,30 @@ const MyClaims = () => {
     toast.info("Filters applied")
   }
 
+  const formatIndianCurrency = (num) => {
+    if (!num && num !== 0) return null;
+    
+    const numberValue = Number(num);
+    if (isNaN(numberValue)) return null;
+
+    const isInteger = Number.isInteger(numberValue);
+    const numStr = isInteger ? numberValue.toString() : numberValue.toString();
+    const parts = numStr.split('.');
+    let integerPart = parts[0];
+    const decimalPart = !isInteger && parts.length > 1 ? `.${parts[1]}` : '';
+
+    const lastThree = integerPart.substring(integerPart.length - 3);
+    const otherNumbers = integerPart.substring(0, integerPart.length - 3);
+    
+    if (otherNumbers !== '') {
+      integerPart = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + ',' + lastThree;
+    } else {
+      integerPart = lastThree;
+    }
+
+    return `${integerPart}${decimalPart}`;
+  };
+
   // Calculate summary data based on actual claims
   const totalAmount = claims.reduce((sum, claim) => sum + Number.parseFloat(claim.expense_amt || 0), 0)
   const approvedAmount = claims
@@ -525,25 +549,25 @@ const MyClaims = () => {
   const summaryData = [
     {
       icon: <FaMoneyBillWave />,
-      value: `₹${totalAmount.toFixed(2)}`,
+      value: `₹${formatIndianCurrency(totalAmount.toFixed(2))}`,
       label: "Total Claims",
       color: "primary",
     },
     {
       icon: <FaReceipt />,
-      value: `₹${approvedAmount.toFixed(2)}`,
+      value: `₹${formatIndianCurrency(approvedAmount.toFixed(2))}`,
       label: "Approved Claims",
       color: "success",
     },
     {
       icon: <FaFileUpload />,
-      value: `₹${pendingAmount.toFixed(2)}`,
+      value: `₹${formatIndianCurrency(pendingAmount.toFixed(2))}`,
       label: "Pending Claims",
       color: "warning",
     },
     {
       icon: <FaMoneyBillWave />,
-      value: `₹${rejectedAmount.toFixed(2)}`,
+      value: `₹${formatIndianCurrency(rejectedAmount.toFixed(2))}`,
       label: "Rejected Claims",
       color: "secondary",
     },
@@ -574,7 +598,10 @@ const MyClaims = () => {
       return { text: "Not Submitted", variant: "info" }
     }
     if (claim.expense_status === "F") {
-      return { text: "Forwarded", variant: "error" }
+      return { text: "Forwarded", variant: "forward" }
+    }
+    if (claim.expense_status === "B") {
+      return { text: "Back To Claimant", variant: "back" }
     }
 
     return { text: "Submitted", variant: "warning" }
@@ -582,14 +609,22 @@ const MyClaims = () => {
 
   // Find the validation entry for this claimId
   const isFinalApproval = (claimId) => {
-    const entry = validationResponse.find(v => v.claim_id === claimId);
-    return entry && entry.approval_type === "F";
+    // Find the master claim that contains this claimId
+    for (const masterClaimId in validationResponse) {
+      const masterValidation = validationResponse[masterClaimId];
+      const entry = masterValidation.find(v => v.claim_id === claimId);
+      if (entry) {
+        return entry.approval_type === "F";
+      }
+    }
+    return false;
   };
 
   const allItemsFinalApproval = (claim) => {
     // If every claim item has approve_type "F" in validationResponse, return true
+    const masterValidation = validationResponse[claim.master_claim_id] || [];
     return claim.claim_items.every(item => {
-      const validation = validationResponse.find(v => v.claim_id === item.claim_id);
+      const validation = masterValidation.find(v => v.claim_id === item.claim_id);
       return validation && validation.approval_type === "F";
     });
   };
@@ -609,11 +644,19 @@ const MyClaims = () => {
     const isExpanding = !newExpanded.has(claimId);
     if (newExpanded.has(claimId)) {
       newExpanded.delete(claimId);
+      // Clean up validation data when collapsing
+      if (claim?.master_claim_id) {
+        setValidationResponse(prev => {
+          const newValidation = { ...prev };
+          delete newValidation[claim.master_claim_id];
+          return newValidation;
+        });
+      }
     } else {
       newExpanded.add(claimId);
       if (activeTab === "empdata" && isExpanding && claim?.master_claim_id) {
         validApproveClaim(claim.master_claim_id);
-        console.log("claim master id", claim.master_claim_id)
+        // console.log("claim master id", claim.master_claim_id)
       }
     }
     setExpandedClaims(newExpanded);
@@ -640,6 +683,13 @@ const MyClaims = () => {
     setActionType("FORWARD")
     setIsActionModalOpen(true)
   }
+
+  const handleBackToClaimant = (claim, masterId) => {
+    setMasterClaimId(masterId?.master_claim_id)
+    setSelectedClaimForAction(claim)
+    setActionType("BackToClaimant")
+    setIsActionModalOpen(true)
+  }
   
   const handleApproveAll = (remark) => {
     if (!approveAllClaim) return;
@@ -649,7 +699,8 @@ const MyClaims = () => {
       call_mode: 'APPROVE_CLAIM',
       claim_list: approveAllClaim.claim_items
         .map(item => {
-          const validation = validationResponse.find(v => v.claim_id === item.claim_id);
+          const masterValidation = validationResponse[approveAllClaim.master_claim_id] || [];
+          const validation = masterValidation.find(v => v.claim_id === item.claim_id);
           return {
             claim_id: item.claim_id,
             approve_type: validation ? validation.approval_type : 'A',
@@ -659,7 +710,6 @@ const MyClaims = () => {
         })
         .filter(item => item.approve_type === 'A')
     };
-    console.log("Approve all claims:", claimPayload)
       
    postClaimAction(claimPayload)
     .then((res) => {
@@ -788,7 +838,7 @@ const MyClaims = () => {
                           </td>
                           <td>{claim.master_claim_id}</td>
                           <td>{claim.employee_name}</td>
-                          <td>₹{claim.expense_amt}</td>
+                          <td>₹{formatIndianCurrency(claim.expense_amt)}</td>
                           <td>{claim.claim_date}</td>
                           <td>{claim.claim_items?.length || 0}</td>
                           <td>
@@ -851,7 +901,7 @@ const MyClaims = () => {
                                         </div>
                                       </td>
                                       <td>{item.project_name || "N/A"}</td>
-                                      <td>₹{item.expense_amt}</td>
+                                      <td>₹{formatIndianCurrency(item.expense_amt)}</td>
                                       <td>{item.expense_date}</td>
                                       {/* <td>{item.remarks}</td> */}
                                       <td>
@@ -866,7 +916,7 @@ const MyClaims = () => {
                                       </td>
                                       <td>
                                <ActionButtons>
-                              {!isFinalApproval(item.claim_id) && subStatus.text !== "Approved" && subStatus.text !== "Rejected" ?
+                              {!isFinalApproval(item.claim_id) && subStatus.text !== "Approved" && subStatus.text !== "Rejected" && subStatus.text !== "Back To Claimant" ?
                                 <>
                                   <Button
                                     onClick={() => handleApprove(item, claim)}
@@ -883,6 +933,14 @@ const MyClaims = () => {
                                     title="Reject"
                                   >
                                     <FaBan />
+                                  </Button>
+                                  <Button
+                                    onClick={() => handleBackToClaimant(item, claim)}
+                                    variant="outline"
+                                    size="sm"
+                                    title="Back To Claimant"
+                                  >
+                                    <RiArrowGoBackLine />
                                   </Button>
                                   <Button
                                     onClick={() => handleForward(item, claim)}
@@ -958,7 +1016,7 @@ const MyClaims = () => {
                             </Button>
                           </td>
                           <td>{claim.master_claim_id}</td>
-                          <td>₹{claim.expense_amt}</td>
+                          <td>₹{formatIndianCurrency(claim.expense_amt)}</td>
                           <td>{claim.claim_date}</td>
                           <td>{claim.claim_items?.length || 0}</td>
                           <td>
@@ -1009,7 +1067,7 @@ const MyClaims = () => {
                                           </div>
                                         </td>
                                         <td>{item.project_name || "N/A"}</td>
-                                        <td>₹{item.expense_amt}</td>
+                                        <td>₹{formatIndianCurrency(item.expense_amt)}</td>
                                         <td>{item.expense_date}</td>
                                         {/* <td>{item.remarks}</td> */}
                                         <td>
@@ -1026,25 +1084,26 @@ const MyClaims = () => {
                                         </td>
                                         <td>
                                 <ActionButtons>
+                              {(substatus.text === "Not Submitted" || substatus.text === "Back To Claimant") && (
+                                <Button
+                                  onClick={() => handleConfirm(item, substatus.text)}
+                                  variant="primary"
+                                  size="sm"
+                                  title="Update claim"
+                                >
+                                  <FaEdit />
+                                </Button>
+                              )}
+
                               {substatus.text === "Not Submitted" && (
-                                <>
-                                  <Button
-                                    onClick={() => handeleDelete(claim,item.id)}
-                                    variant="primary"
-                                    size="sm"
-                                    title="Delete claim"
-                                  >
-                                    <FaTrash />
-                                  </Button>
-                                  <Button
-                                    onClick={()=>handleConfirm(item)}
-                                    variant="primary"
-                                    size="sm"
-                                    title="Update claim"
-                                  >
-                                    <FaEdit />
-                                  </Button>
-                                </>
+                                <Button
+                                  onClick={() => handeleDelete(claim, item.id)}
+                                  variant="primary"
+                                  size="sm"
+                                  title="Delete claim"
+                                >
+                                  <FaTrash />
+                                </Button>
                               )}
                             </ActionButtons>
                                         </td>
@@ -1081,7 +1140,7 @@ const MyClaims = () => {
             <Button
               variant="primary"
               size="sm"
-              onClick={() => handleExport(activeTab === "empdata" ? empClaims : filteredClaims)}
+              onClick={() => handleExport(activeTab === "empdata" || "empApprovedData" ? empClaims : filteredClaims)}
             >
               <FaFileExport /> Export
             </Button>
@@ -1109,7 +1168,7 @@ const MyClaims = () => {
         onClose={handleCloseActionModal}
         claim={selectedClaimForAction}
         masterClaimId={masterClaimId}
-        validationResponse={validationResponse}
+        validationResponse={masterClaimId ? validationResponse[masterClaimId] || [] : []}
         actionType={actionType}
         onSuccess={handleActionSuccess}
       />

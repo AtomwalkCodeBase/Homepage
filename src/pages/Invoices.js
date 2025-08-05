@@ -425,16 +425,16 @@ const Invoices = () => {
 
   const handleDownload = (invoiceId) => {
     // Implement download functionality
-    console.log(`Downloading invoice ${invoiceId}`)
+    // console.log(`Downloading invoice ${invoiceId}`)
     // You can add actual download logic here
   }
 
   const handleView = (invoice) => {
     // Implement view functionality
-    console.log(`Viewing invoice ${invoice.id}`)
+    // console.log(`Viewing invoice ${invoice.id}`)
     // You can add modal or navigation logic here
     // For now, just show a detailed view in console
-    console.log("Invoice details:", invoice)
+    // console.log("Invoice details:", invoice)
   }
 
   const formatCurrency = (amount, currencySymbol = "₹") => {

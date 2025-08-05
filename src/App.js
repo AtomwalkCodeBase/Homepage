@@ -246,6 +246,7 @@ function App() {
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="/helpdesk" element={<HelpDesk />} />
                 <Route path="/requestdesk" element={<RequestDesk />} />
+                <Route path="/resolvedesk" element={<HelpDesk />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/payslip" element={<MyPaySlip />} />
                 <Route path="/wishes" element={<MyWishes />} />

@@ -640,8 +640,6 @@ const FeatureDescription = ({ data }) => {
     const stepMatch = queryString.match(/\?(\d+)/);
     const step = stepMatch ? parseInt(stepMatch[1], 10) : NaN;
 
-    console.log(step, "Step value parsed from URL");
-
     // Calculate scroll offset
     const scrollOffset = !isNaN(step) ? 700 + (step - 1) * 700 : 0;
 

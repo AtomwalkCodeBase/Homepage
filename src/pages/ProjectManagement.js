@@ -505,14 +505,16 @@ const ProjectManagement = () => {
                         </td> */}
                         <td>
                           <ActionButtons>
-                            <Button
-                              variant="primary"
-                              size="sm"
-                              title="Assign user"
-                              onClick={() => handleAssignUser(project)}
-                            >
-                              <FaUserEdit />
-                            </Button>
+                            <div style={{ visibility: project.project_status === "03" ? "hidden" : "visible" }}>
+                              <Button
+                                variant="primary"
+                                size="sm"
+                                title="Assign user"
+                                onClick={() => handleAssignUser(project)}
+                              >
+                                <FaUserEdit />
+                              </Button>
+                            </div>
                             <Button variant="ghost" size="sm" title="View" onClick={() => handleViewProject(project)}>
                               <FaEye />
                             </Button>
@@ -534,10 +536,10 @@ const ProjectManagement = () => {
               </tbody>
             </table>
             <TableActions style={{float:"right"}}>
-          <Button variant="primary" onClick={handleExport} size="sm">
-            <FaFileExport /> Export
-          </Button>
-          </TableActions>
+              <Button variant="primary" onClick={handleExport} size="sm">
+                <FaFileExport /> Export
+              </Button>
+            </TableActions>
           </TableContainer>
         )}
       </Card>

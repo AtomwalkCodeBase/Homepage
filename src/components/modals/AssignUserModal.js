@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useContext } from "react"
 import styled from "styled-components"
-import { FaTimes, FaUsers, FaSearch } from "react-icons/fa"
+import { FaTimes, FaUsers, FaSearch, FaUserMinus } from "react-icons/fa"
 import { useTheme } from "../../context/ThemeContext"
 import Button from "../Button"
 import { toast } from "react-toastify"
@@ -226,6 +226,58 @@ const ModalFooter = styled.div`
   border-top: 1px solid ${({ theme }) => theme.colors.border};
 `
 
+const AssignedUsersSection = styled.div`
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: ${({ theme }) => theme.colors.background};
+  border-radius: 8px;
+  border-left: 4px solid ${({ theme }) => theme.colors.success};
+`
+
+const SectionTitle = styled.h4`
+  margin: 0 0 0.75rem 0;
+  color: ${({ theme }) => theme.colors.text};
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  
+  svg {
+    margin-right: 0.5rem;
+    color: ${({ theme }) => theme.colors.success};
+  }
+`
+
+const AssignedUserList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+`
+
+const AssignedUserPill = styled.div`
+  display: flex;
+  align-items: center;
+  background: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 20px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  font-size: 0.85rem;
+`
+
+const RemoveButton = styled.button`
+  background: none;
+  border: none;
+  color: ${({ theme }) => theme.colors.error};
+  cursor: pointer;
+  margin-left: 0.5rem;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  
+  &:hover {
+    color: ${({ theme }) => theme.colors.errorDark};
+  }
+`
+
 const AssignUserModal = ({ isOpen, onClose, onSubmit, project }) => {
   const { theme } = useTheme()
   const [employees, setEmployees] = useState([])
@@ -233,6 +285,7 @@ const AssignUserModal = ({ isOpen, onClose, onSubmit, project }) => {
   const [selectedEmployees, setSelectedEmployees] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
   const [loading, setLoading] = useState(false)
+  const [assignedEmployees, setAssignedEmployees] = useState([])
 
   useEffect(() => {
     if (isOpen) {
@@ -241,8 +294,20 @@ const AssignUserModal = ({ isOpen, onClose, onSubmit, project }) => {
       if (project && project.additional_fld_list) {
         const existingEmployees = project.additional_fld_list.split("|").filter((emp) => emp.trim())
         setSelectedEmployees(existingEmployees)
+        // Find the employee details for the assigned users
+        const fetchAssignedEmployees = async () => {
+          try {
+            const response = await getemployeeList()
+            const assigned = response.data.filter(emp => existingEmployees.includes(emp.emp_id))
+            setAssignedEmployees(assigned)
+          } catch (error) {
+            console.error("Error fetching assigned employees:", error)
+          }
+        }
+        fetchAssignedEmployees()
       } else {
         setSelectedEmployees([])
+        setAssignedEmployees([])
       }
     }
   }, [isOpen, project])
@@ -284,6 +349,11 @@ const AssignUserModal = ({ isOpen, onClose, onSubmit, project }) => {
     })
   }
 
+  const handleUnassign = (empId) => {
+    setSelectedEmployees(prev => prev.filter(id => id !== empId))
+    setAssignedEmployees(prev => prev.filter(emp => emp.emp_id !== empId))
+  }
+
   const handleSubmit = () => {
     if (selectedEmployees.length === 0) {
       toast.warning("Please select at least one employee")
@@ -318,6 +388,34 @@ const AssignUserModal = ({ isOpen, onClose, onSubmit, project }) => {
               <ProjectName>{project.title}</ProjectName>
               <ProjectCode>Project Code: {project.project_code}</ProjectCode>
             </ProjectInfo>
+          )}
+
+          {/* New section for assigned users */}
+          {(assignedEmployees.length > 0 || selectedEmployees.length > 0) && (
+            <AssignedUsersSection>
+              <SectionTitle>
+                <FaUsers />
+                Currently Assigned Team Members
+              </SectionTitle>
+              <AssignedUserList>
+                {[...assignedEmployees, ...employees.filter(emp => 
+                  selectedEmployees.includes(emp.emp_id) && !assignedEmployees.some(a => a.emp_id === emp.emp_id)
+                )].map((employee) => (
+                  <AssignedUserPill key={employee.emp_id}>
+                    {employee.name} ({employee.emp_id})
+                    <RemoveButton 
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleUnassign(employee.emp_id)
+                      }}
+                      title="Unassign"
+                    >
+                      <FaUserMinus size={12} />
+                    </RemoveButton>
+                  </AssignedUserPill>
+                ))}
+              </AssignedUserList>
+            </AssignedUsersSection>
           )}
 
           <SearchContainer>
@@ -357,6 +455,7 @@ const AssignUserModal = ({ isOpen, onClose, onSubmit, project }) => {
                     type="checkbox"
                     checked={selectedEmployees.includes(employee.emp_id)}
                     onChange={() => handleEmployeeToggle(employee.emp_id)}
+                    onClick={(e) => e.stopPropagation()}
                   />
                   <EmployeeInfo>
                     <EmployeeName>{employee.name}</EmployeeName>
@@ -382,7 +481,7 @@ const AssignUserModal = ({ isOpen, onClose, onSubmit, project }) => {
             Cancel
           </Button>
           <Button variant="primary" onClick={handleSubmit} disabled={selectedEmployees.length === 0}>
-            Assign Selected ({selectedEmployees.length})
+            {project?.additional_fld_list ? "Update Assignments" : "Assign Selected"} ({selectedEmployees.length})
           </Button>
         </ModalFooter>
       </ModalContainer>

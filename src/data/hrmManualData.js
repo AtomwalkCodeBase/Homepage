@@ -216,7 +216,7 @@ export const HrmManualStep = [
     // Employee Guide
     {
         "Add User Profile": [
-            { accesspath: "AddProfile" },
+            { accesspath: "Add User Profile" },
             {
                 title: "Navigate to Add User Profile",
                 description: "Access for to create a new user profile:",
@@ -266,7 +266,7 @@ export const HrmManualStep = [
     },
     {
         "Edit User Profile": [
-            { accesspath: "Profile" },
+            { accesspath: "Edit User Profile" },
             {
                 title: "Navigate to Update User Profile",
                 description: "Access for Update user profile:",
@@ -277,7 +277,7 @@ export const HrmManualStep = [
                         items: [
                             "<strong>'After Login'</strong>",
                             "Click on <strong>'Office Users'</strong>",
-                            "Click on <strong>'Update </strong>button to update User Profile",
+                            "Click on <strong>'Update' </strong>button to update User Profile",
                         ],
                     },
                 ],

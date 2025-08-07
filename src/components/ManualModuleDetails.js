@@ -542,7 +542,7 @@ const getModuleData = () => ({
           },
           {
             name: "User Profile Management",
-            subtopics: ["Add user Profile","Edit user Profile", "Change Password"],
+            subtopics: ["Add User Profile","Edit User Profile", "Change Password"],
           },
         ],
       },

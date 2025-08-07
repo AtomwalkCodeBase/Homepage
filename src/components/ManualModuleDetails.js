@@ -536,20 +536,19 @@ const getModuleData = () => ({
       "Getting Started": {
         icon: <FaRocket size={16} />,
         topics: [
-          { name: "Overview", subtopics: ["Dashboard Overview & Navigation"] },
           {
             name: "Accessing the Application",
             subtopics: ["Accessing the Application"],
+          },
+          {
+            name: "User Profile Management",
+            subtopics: ["Add user Profile","Edit user Profile", "Change Password"],
           },
         ],
       },
       "Employee Guide": {
         icon: <FaUserCheck size={16} />,
         topics: [
-          {
-            name: "User Profile Management",
-            subtopics: ["Edit Profile", "Change Password"],
-          },
           {
             name: "Attendance",
             subtopics: [
@@ -589,7 +588,7 @@ const getModuleData = () => ({
         topics: [
           {
             name: "Setup Department",
-            subtopics: ["Department Setup", "Add Department", "Update Department"],
+            subtopics: ["Department List", "Add Department", "Update Department"],
           },
           {
             name: "Setup Grade",

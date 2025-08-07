@@ -129,109 +129,10 @@ const DynamicTable = ({ columns = [], rows = [] }) => (
 export const HrmManualStep = [
 
     {
-        "Dashboard Overview & Navigation": [
-            { accesspath: "Main Menu / Back Buttons / Browser Back" },
-            {
-                title: "Accessing the HRMS Dashboard",
-                description:
-                    "This section explains how to navigate the Atomwalk HRMS dashboard and view the general overview upon login:",
-                sections: [
-                    {
-                        title: "Navigation Path",
-                        icon: <FaRoute />,
-                        items: [
-                            "Login to the <strong>Atomwalk HRMS</strong> Application",
-                            "Use the <strong>Left Sidebar Menu</strong> to access different modules",
-                            "Click on <strong>'Employee (HRMS)'</strong> > <strong>'Overview / Dashboard'</strong>",
-                            "Use the <strong>Search Bar</strong> to find specific modules or features",
-                            "Click the <strong>'GO'</strong> button to navigate directly",
-                        ],
-                    },
-                ],
-                notes: [
-                    "The Overview page provides a high-level system introduction and essential metrics.",
-                    "Modules displayed depend on the logged-in user's access level.",
-                ],
-            },
-            {
-                title: "Overview Dashboard Elements",
-                description:
-                    "These are the main informational widgets and blocks shown on the Overview page:",
-                sections: [
-                    {
-                        title: "Overview Components Table",
-                        icon: <FaInfoCircle />,
-                        content: (
-                            <DynamicTable
-                                columns={["Component", "Type", "Description"]}
-                                rows={[
-                                    ["Dashboard Summary", "Info Block", "Shows key HR metrics like total employees and attendance"],
-                                    ["Quick Links", "Shortcut Buttons", "Provides quick access to profile, leave, documents"],
-                                    ["Notifications", "Alert Panel", "Shows system messages and HR announcements"],
-                                    ["User Info", "Top Header", "Displays user's name, role, and login info"],
-                                ]}
-                            />
-                        ),
-                    },
-                ],
-                notes: [
-                    "This section is for <strong>view-only</strong> purposes.",
-                    "No data input or approval actions are required on the overview screen.",
-                ],
-            },
-            {
-                title: "Dashboard Navigation Elements",
-                description:
-                    "Interact with navigation controls to move between modules and pages:",
-                sections: [
-                    {
-                        title: "Navigation Elements Table",
-                        icon: <FaEdit />,
-                        content: (
-                            <DynamicTable
-                                columns={["Element", "Type", "Validation / Function"]}
-                                rows={[
-                                    ["Left Sidebar Menu", "Clickable Links", ["Lists accessible modules like Employee, Payroll, Leave, etc.", "Expands to show related sub-modules"]],
-                                    ["Search Bar", "Text Input", ["Requires text to activate 'GO' button", "Supports partial matches and is case-insensitive"]],
-                                    ["'GO' Button", "Action Button", ["Executes search and redirects to matched module/page", "Disabled if search input is empty"]]
-                                ]}
-                            />
-                        ),
-                    },
-                ],
-                notes: [
-                    "Search results will auto-navigate to the selected module or section.",
-                    "Ensure your keywords are specific to avoid generic results.",
-                ],
-            },
-            {
-                title: "Module Switching & Exit Navigation",
-                description:
-                    "Use available back buttons or menu to switch between pages or exit modules:",
-                sections: [
-                    {
-                        title: "Return & Exit Options",
-                        icon: <FaArrowLeft />,
-                        items: [
-                            "Click <strong>'Main Menu'</strong> to return to dashboard",
-                            "Use <strong>'Back'</strong> buttons in modules for in-app return",
-                            "Use <strong>Browser Back</strong> for quick navigation (avoid browser refresh)",
-                        ],
-                    },
-                ],
-                notes: [
-                    "Most modules have built-in back buttons to maintain navigation flow.",
-                    "Using browser refresh inside a module may cause unsaved changes to be lost.",
-                ],
-            },
-        ]
-    },
-
-    {
         "Accessing the Application": [
             { accesspath: "N/A (Before Login), Browser back (After Login)" },
             {
-                title: "Login to Atomwalk HRMS",
+                title: "Login to Atomwalk ERP",
                 description:
                     "This section guides users through the login process for the Atomwalk HRMS system:",
                 sections: [
@@ -240,15 +141,16 @@ export const HrmManualStep = [
                         icon: <FaRoute />,
                         items: [
                             "Open your <strong>web browser</strong>",
-                            "Go to <strong>https://myoffice.atomwalk.com/login/</strong>",
-                            "Enter your <strong>Username or Employee ID</strong>",
+                            "Go to <strong>https://atomwalk.com/login/</strong>",
+                            "Enter your <strong>Username</strong>",
                             "Enter your <strong>Password</strong>",
+                            "Select <strong>User Name or User Nick Name</strong> (select User Nick Name if you provide in profile)",
                             "Click on the <strong>'Login'</strong> button",
                         ],
                     },
                 ],
                 notes: [
-                    "<strong>Accessing the Application</strong> requires a valid employee ID and password",
+                    "<strong>Accessing the Application</strong> requires a valid Username and password",
                     "Ensure your credentials are provided by the HR or system administrator",
                 ],
             },
@@ -264,54 +166,48 @@ export const HrmManualStep = [
                             <DynamicTable
                                 columns={["Field", "Type", "Validation"]}
                                 rows={[
-                                    ["Username / Employee ID", "Text", ["Required field", "Must match a valid employee record"]],
-                                    ["Password", "Password", ["Required field", "Minimum 6 characters"]],
-                                    ["Login Button", "Button", ["Active only after both fields are filled", "Validates entered credentials"]]
+                                    ["Username", "Text", ["Required field", "Must match a valid Username or User Nickname"]],
+                                    ["Password", "Password", ["Required field"]],
+                                    ["Login Button", "Button", ["After validates entered credentials then Employee can login"]]
                                 ]}
                             />
                         ),
                     },
                 ],
-                notes: [
-                    "If credentials are incorrect, an error message will appear",
-                    "Contact support for password resets or access issues",
-                ],
+                notes: ["If credentials are incorrect, an error message will appear"],
             },
             {
                 title: "Forgot or Reset Password",
                 description:
-                    "If you have forgotten your password or wish to reset it, use the provided links below the login form.",
+                    "If you have forgotten your password or wish to reset it, click on Reset Password in the login form:",
                 sections: [
                     {
                         title: "Password Assistance Options",
                         icon: <FaEdit />,
-                        items: [
-                            "<strong>Forgot Password?</strong> – Click to initiate the password recovery process via email or OTP verification.",
-                            "<strong>Reset Password</strong> – Redirects to a form where a new password can be set after identity verification."
-                        ]
+                        items: ["<strong>Reset Password</strong> – Click to initiate the password recovery process via email, Then entered your registered email in field"]
                     }
                 ],
                 notes: [
-                    "Ensure your registered email or mobile number is active to receive reset links or OTPs.",
+                    "Ensure your registered email is active to receive reset links or OTPs.",
                     "Contact system administrator if reset links do not work or if credentials are locked."
                 ]
             },
             {
                 title: "Post-login Navigation",
                 description:
-                    "After successful login, users are redirected to the dashboard or landing page:",
+                    "After successful login, users are redirected to the dashboard :",
                 sections: [
                     {
                         title: "Post-login Path",
                         icon: <FaArrowRight />,
                         items: [
                             "Redirected to <strong>Dashboard</strong> upon successful login",
-                            "Use <strong>Left Sidebar Menu</strong> to access various HRMS modules",
+                            "Use <strong>Left Sidebar Menu</strong> to access various HRMS",
                         ],
                     },
                 ],
                 notes: [
-                    "Once logged in, all Application features are available as per user role and permissions",
+                    "Once logged in, all features are available as per user role and permissions",
                 ],
             },
         ]
@@ -319,23 +215,74 @@ export const HrmManualStep = [
 
     // Employee Guide
     {
-        "Edit Profile": [
-            { accesspath: "Profile" },
+        "Add User Profile": [
+            { accesspath: "AddProfile" },
             {
-                title: "Navigate to Profile",
-                description: "Access the profile management section to Edit profile:",
+                title: "Navigate to Add User Profile",
+                description: "Access for to create a new user profile:",
                 sections: [
                     {
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to <strong>'Login'</strong>",
-                            "Click on <strong>'Profile'</strong>",
+                            "<strong>'After Login'</strong>",
+                            "Click on <strong>'Office Users'</strong>",
+                            "Click on <strong>'Add User Profile'</strong>",
                         ],
                     },
                 ],
                 notes: [
-                    "<strong>Login</strong> to the system is required to add or manage user profiles.",
+                    "only <strong>Admin/HR manager create user Profile </strong>based on company required",
+                ],
+            },
+            {
+                title: "User Profile Input Fields",
+                description:
+                    "Fill in the necessary user information for profile creation:",
+                sections: [
+                    {
+                        title: "User Profile Form Fields",
+                        icon: <FaEdit />,
+                        content: (
+                            <DynamicTable
+                                columns={["Field", "Type", "Helper Text", "Validation"]}
+                                rows={[
+                                    ["Email Address", "Text (email)", "Must contain @ and .com", "Required"],
+                                    ["User group", "Dropdown", "First create User group in office setup -> User Group", "Required"],
+                                    ["User Name", "Text", "Letters, digits, and @/./+/-/_ only", "Required (Max 100 characters)"],
+                                    ["User Nick Name", "Text", "Alternate login option", "Optional (Min 10 characters)"],
+                                    ["Mobile Number", "Number", "Enter valid mobile number", "Optional"],
+                                    ["Profile Image", "File Upload", "Upload user image", "Optional"]
+                                ]}
+                            />
+                        ),
+                    },
+                ],
+                notes: [
+                    "<strong>Email address</strong> and <strong>User name</strong> are <strong>mandatory fields</strong>.",
+                ],
+            },
+        ]
+    },
+    {
+        "Edit User Profile": [
+            { accesspath: "Profile" },
+            {
+                title: "Navigate to Update User Profile",
+                description: "Access for Update user profile:",
+                sections: [
+                    {
+                        title: "Navigation Path",
+                        icon: <FaRoute />,
+                        items: [
+                            "<strong>'After Login'</strong>",
+                            "Click on <strong>'Office Users'</strong>",
+                            "Click on <strong>'Update </strong>button to update User Profile",
+                        ],
+                    },
+                ],
+                notes: [
+                    "only <strong>Admin/HR manager update user Profile </strong>based on company required",
                 ],
             },
             {
@@ -354,18 +301,68 @@ export const HrmManualStep = [
                                     ["User Name", "Text", "Letters, digits, and @/./+/-/_ only", "Required (Max 100 characters)"],
                                     ["User Nick Name", "Text", "Alternate login option", "Optional (Min 10 characters)"],
                                     ["Mobile Number", "Number", "Enter valid mobile number", "Optional"],
-                                    ["Profile Image", "File Upload", "Upload user image", "Optional"]
+                                    ["Profile Image", "File Upload", "Upload user image", "Optional"],
+                                    ["Emp id", "Dropdown", "Select from dropdown", "Optional"],
+                                    ["User Join Date", "Date picker", "Select Date when user join the company", "Optional"],
                                 ]}
                             />
                         ),
                     },
                 ],
-                notes: [
-                    "<strong>Email address</strong> and <strong>User name</strong> are <strong>mandatory fields</strong>.",
-                ],
+                // notes: [
+                //     "<strong>Email address</strong> and <strong>User name</strong> are <strong>mandatory fields</strong>.",
+                // ],
             },
         ]
     },
+    // {
+    //     "Edit user Profile": [
+    //         { accesspath: "Profile" },
+    //         {
+    //             title: "Navigate to Profile",
+    //             description: "Access the profile management section to Edit profile:",
+    //             sections: [
+    //                 {
+    //                     title: "Navigation Path",
+    //                     icon: <FaRoute />,
+    //                     items: [
+    //                         "Go to <strong>'Login'</strong>",
+    //                         "Click on <strong>'Profile'</strong>",
+    //                     ],
+    //                 },
+    //             ],
+    //             notes: [
+    //                 "<strong>Login</strong> to the system is required to add or manage user profiles.",
+    //             ],
+    //         },
+    //         {
+    //             title: "User Profile Input Fields",
+    //             description:
+    //                 "Fill in the necessary user information for profile creation:",
+    //             sections: [
+    //                 {
+    //                     title: "User Profile Form Fields",
+    //                     icon: <FaEdit />,
+    //                     content: (
+    //                         <DynamicTable
+    //                             columns={["Field", "Type", "Helper Text", "Validation"]}
+    //                             rows={[
+    //                                 ["Email Address", "Text (email)", "Must contain @ and .com", "Required"],
+    //                                 ["User Name", "Text", "Letters, digits, and @/./+/-/_ only", "Required (Max 100 characters)"],
+    //                                 ["User Nick Name", "Text", "Alternate login option", "Optional (Min 10 characters)"],
+    //                                 ["Mobile Number", "Number", "Enter valid mobile number", "Optional"],
+    //                                 ["Profile Image", "File Upload", "Upload user image", "Optional"]
+    //                             ]}
+    //                         />
+    //                     ),
+    //                 },
+    //             ],
+    //             notes: [
+    //                 "<strong>Email address</strong> and <strong>User name</strong> are <strong>mandatory fields</strong>.",
+    //             ],
+    //         },
+    //     ]
+    // },
     {
         "Change Password": [
             { accesspath: "Change Password" },
@@ -1338,12 +1335,12 @@ export const HrmManualStep = [
 
     // MANAGER GUIDE = Setup(Department)
     {
-        "Department Setup": [
-            { accesspath: "Setup(Department)" },
+        "Department List": [
+            { accesspath: "departmentList" },
             {
-                title: "Navigate to Department Setup",
+                title: "View All Department list",
                 description:
-                    "Follow this path to manage and view department configuration:",
+                    "Follow this path to view department list in already setup:",
                 sections: [
                     {
                         title: "Navigation Path",
@@ -1351,35 +1348,16 @@ export const HrmManualStep = [
                         items: [
                             "Go to the <strong>'Left menu'</strong>",
                             "Select <strong>'Manager (HRMS)'</strong>",
-                            "Open <strong>'Setup'</strong>",
-                            "Click on <strong>'Department'</strong>",
+                            "Click on <strong>'Setup'</strong>",
+                            "Then You will see <strong>'All Department List'</strong>",
                         ],
                     },
                 ],
-                notes: [
-                    "Only users with setup access can <strong>view or manage departments</strong>.",
-                    "This screen is <strong>view-only</strong>",
-                ],
+                notes: ["Only users with setup access can <strong>view or manage departments</strong>."],
             },
-            {
-                title: "Return to Navigation",
-                description: "To return to the setup menu or main dashboard:",
-                sections: [
-                    {
-                        title: "Back Navigation",
-                        icon: <FaArrowLeft />,
-                        items: [
-                            "Click on <strong>'Back'</strong> or navigate to <strong>'Setup'</strong> again from the side menu.",
-                        ],
-                    },
-                ],
-                notes: [
-                    "Department changes will reflect across modules using department data.",
-                ],
-            },
-            {
+             {
                 title: "Download Department List",
-                description: "Export department records for reporting or offline use:",
+                description: "Export department list records as per your requirement:",
                 sections: [
                     {
                         title: "Download Options",
@@ -1398,6 +1376,67 @@ export const HrmManualStep = [
             },
         ]
     },
+    // {
+    //     "Department Setup": [
+    //         { accesspath: "Setup(Department)" },
+    //         {
+    //             title: "Navigate to Department Setup",
+    //             description:
+    //                 "Follow this path to manage and view department configuration:",
+    //             sections: [
+    //                 {
+    //                     title: "Navigation Path",
+    //                     icon: <FaRoute />,
+    //                     items: [
+    //                         "Go to the <strong>'Left menu'</strong>",
+    //                         "Select <strong>'Manager (HRMS)'</strong>",
+    //                         "Open <strong>'Setup'</strong>",
+    //                         "Click on <strong>'Department'</strong>",
+    //                     ],
+    //                 },
+    //             ],
+    //             notes: [
+    //                 "Only users with setup access can <strong>view or manage departments</strong>.",
+    //                 "This screen is <strong>view-only</strong>",
+    //             ],
+    //         },
+    //         {
+    //             title: "Return to Navigation",
+    //             description: "To return to the setup menu or main dashboard:",
+    //             sections: [
+    //                 {
+    //                     title: "Back Navigation",
+    //                     icon: <FaArrowLeft />,
+    //                     items: [
+    //                         "Click on <strong>'Back'</strong> or navigate to <strong>'Setup'</strong> again from the side menu.",
+    //                     ],
+    //                 },
+    //             ],
+    //             notes: [
+    //                 "Department changes will reflect across modules using department data.",
+    //             ],
+    //         },
+    //         {
+    //             title: "Download Department List",
+    //             description: "Export department records for reporting or offline use:",
+    //             sections: [
+    //                 {
+    //                     title: "Download Options",
+    //                     icon: <FaDownload />,
+    //                     items: [
+    //                         "Click on the <strong>'Download'</strong> button in the Department Setup screen",
+    //                         "Choose from <strong>Excel</strong> or <strong>PDF</strong> format",
+    //                         "Any active filters (e.g., department name or status) will be applied to the downloaded data",
+    //                     ],
+    //                 },
+    //             ],
+    //             notes: [
+    //                 "Downloaded files are useful for sharing or auditing.",
+    //                 "Ensure appropriate filters are applied before exporting.",
+    //             ],
+    //         },
+    //     ]
+    // },
 
     {
         "Add Department": [

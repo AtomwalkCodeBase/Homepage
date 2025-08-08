@@ -227,7 +227,7 @@ export const HrmManualStep = [
                         items: [
                             "<strong>'After Login'</strong>",
                             "Click on <strong>'Office Users'</strong>",
-                            "Click on <strong>'Add User Profile'</strong>",
+                            "Click on <strong>'Add User Profile'</strong> in right top",
                         ],
                     },
                 ],
@@ -1340,14 +1340,13 @@ export const HrmManualStep = [
             {
                 title: "View All Department list",
                 description:
-                    "Follow this path to view department list in already setup:",
+                    "Follow this path to view department list if already setup:",
                 sections: [
                     {
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
                             "Click on <strong>'Setup'</strong>",
                             "Then You will see <strong>'All Department List'</strong>",
                         ],
@@ -1363,15 +1362,13 @@ export const HrmManualStep = [
                         title: "Download Options",
                         icon: <FaDownload />,
                         items: [
-                            "Click on the <strong>'Download'</strong> button in the Department Setup screen",
-                            "Choose from <strong>Excel</strong> or <strong>PDF</strong> format",
-                            "Any active filters (e.g., department name or status) will be applied to the downloaded data",
+                            "Below Click on <strong>'XLS File'</strong> button",
+                            "Now department list will download in Excel Format"
                         ],
                     },
                 ],
                 notes: [
                     "Downloaded files are useful for sharing or auditing.",
-                    "Ensure appropriate filters are applied before exporting.",
                 ],
             },
         ]
@@ -1444,23 +1441,22 @@ export const HrmManualStep = [
             {
                 title: "Navigate to Add Department Form",
                 description:
-                    "Follow the path to create and add a new department in the HRMS system:",
+                    "Follow the path to create or add a new department in ERP:",
                 sections: [
                     {
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
                             "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'Department'</strong>",
-                            "Click on <strong>'Add Department'</strong>",
+                            "Then You will see <strong>'Department List'</strong>",
+                            "Click on <strong>'Add Department'</strong> in right top of the screen",
                         ],
                     },
                 ],
                 notes: [
-                    "Only <strong>authorized users</strong> can access the add department form.",
-                    "Ensure you have branch setup done before creating a new department.",
+                    "only <strong>Admin/HR manager can access the Manager (HRMS) </strong>based on company required",
+                    // "Ensure you have branch setup done before creating a new department.",
                 ],
             },
             {
@@ -1478,6 +1474,7 @@ export const HrmManualStep = [
                                     ["Department ID", "Text Input", "Required"],
                                     ["Name", "Text Input", "Required"],
                                     ["Branch ID", "Dropdown", "Required"],
+                                    ["Department Color Code", "Text Input", "Optional"],
                                     ["Image", "File Upload", "Optional"]
                                 ]}
                             />
@@ -1497,21 +1494,22 @@ export const HrmManualStep = [
                         title: "Submission Process",
                         icon: <FaPaperPlane />,
                         items: [
-                            "Verify all <strong>required fields</strong> are filled correctly.",
-                            "Click on <strong>'Submit'</strong> to save the department.",
-                            "You will be redirected back to the <strong>'Department List'</strong> view.",
-                            "You can use the <strong> upload option </strong> to submit the department details as well.",
+                            "Make sure all <strong>required fields</strong> are filled in correctly.",
+                            "Click <strong>'Submit'</strong> to save the department.",
+                            "You will be redirected to the <strong>'Department List'</strong> page.",
+                            "You can also use the <strong>Upload</strong> button to submit both department and employee details.",
                         ],
                     },
                 ],
                 notes: [
-                    "Once submitted, the department will be available in the list for view/edit.",
-                    "Use edit access for any future updates to the department info.",
+                    "Once submitted, the department will be available in the list for viewing or editing.",
+                    "Use edit access to make any future updates to the department information.",
+                    "If you use the <strong>Upload</strong> button, make sure to upload in <strong>.csv</strong> format.",
                 ],
             },
             {
                 title: "Back Navigation",
-                description: "To return to the Department list or previous screen:",
+                description: "To return to the Department list:",
                 sections: [
                     {
                         title: "Back Option",
@@ -1519,9 +1517,9 @@ export const HrmManualStep = [
                         items: ["Click on <strong>'Back'</strong> to exit form view"],
                     },
                 ],
-                notes: [
-                    "This navigation is only for returning to the <strong>view mode</strong> of department list.",
-                ],
+                // notes: [
+                //     "This navigation is only for returning to the <strong>view mode</strong> of department list.",
+                // ],
             },
         ]
     },
@@ -1532,28 +1530,27 @@ export const HrmManualStep = [
             {
                 title: "Navigate to Update Department Form",
                 description:
-                    "Follow the path to locate and update an existing department record in the HRMS system:",
+                    "Follow the path to update an existing department record in the ERP:",
                 sections: [
                     {
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
                             "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'Department'</strong>",
-                            "Click on <strong>'Update'</strong> next to the department you want to edit",
+                            "Click on <strong>'Department'</strong>",
+                            "Click on <strong>'Update'</strong> button next to the department you want to edit",
                         ],
                     },
                 ],
                 notes: [
                     "Ensure the department you want to edit already exists in the system.",
-                    "Only authorized users with edit access can perform updates.",
+                    "only <strong>Admin/HR manager update department </strong>based on company required"
                 ],
             },
             {
                 title: "Department Update Fields",
-                description: "Modify the required fields to update a department record:",
+                description: "Edit the required fields to update a department record:",
                 sections: [
                     {
                         title: "Field Information",
@@ -1565,6 +1562,7 @@ export const HrmManualStep = [
                                     ["Department ID", "Text Input", "Required"],
                                     ["Name", "Text Input", "Required"],
                                     ["Branch ID", "Dropdown", "Required"],
+                                    ["Department Color Code", "Text Input", "Optional"],
                                     ["Image", "File Upload", "Optional"]
                                 ]}
                             />
@@ -1572,8 +1570,7 @@ export const HrmManualStep = [
                     },
                 ],
                 notes: [
-                    "<strong>Department ID</strong>, <strong>Name</strong>, and <strong>Branch ID</strong> are mandatory for update.",
-                    "Use the file upload field only if you want to replace the current department image.",
+                    "<strong>Department ID</strong>, <strong>Name</strong>, and <strong>Branch ID</strong> are mandatory fields when updating a department.",
                 ],
             },
             {
@@ -1584,95 +1581,92 @@ export const HrmManualStep = [
                         title: "Submission Process",
                         icon: <FaPaperPlane />,
                         items: [
-                            "Review all updated values carefully.",
-                            "Click on <strong>'Update'</strong> to save changes.",
-                            "A confirmation message will appear once saved successfully.",
-                            "You'll be redirected to the <strong>'Department List'</strong> view.",
+                            "Carefully review all updated values.",
+                            "Click <strong>'Update'</strong> to save the changes.",
+                            "A confirmation message will appear once the update is successful.",
+                            "You will be redirected to the <strong>'Department List'</strong> view.",
                         ],
                     },
                 ],
                 notes: [
-                    "Updated details will reflect immediately in the department list.",
+                    "Updated details will appear immediately in the department list.",
                 ],
             },
-            {
+           {
                 title: "Back Navigation",
-                description: "To return to the Department SetUp without saving changes:",
+                description: "Return to the Department Setup without saving changes:",
                 sections: [
                     {
                         title: "Back Option",
                         icon: <FaArrowLeft />,
-                        items: ["Click on <strong>'Back'</strong> to discard edits."],
+                        items: ["Click <strong>'Back'</strong> to discard your edits."],
                     },
                 ],
                 notes: [
-                    "Unsaved changes will be lost if you navigate back without submitting.",
+                    "Any unsaved changes will be lost if you go back without submitting.",
                 ],
-            },
+            }
         ]
     },
 
     // MANAGER GUIDE = Setup(Grade)
     {
-        "Grade Setup": [
-            { accesspath: "Grade Setup" },
+        "Grade List": [
+            { accesspath: "Grade List" },
             {
-                title: "Navigate to Grade Setup",
+                title: "View all Grade List",
                 description:
-                    "Follow the steps below to access and view the list of grades configured in the HRMS system:",
+                    "Follow this path to view grade list if already setup:",
                 sections: [
                     {
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
                             "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'Grade'</strong>",
+                            "Click on <strong>'Grade'</strong>",
+                            "Then You will see <strong>'All Grade List'</strong>",
                         ],
                     },
                 ],
-                notes: [
-                    "This is a <strong>view-only</strong> section with no data entry fields.",
-                    "Ensure that you have grade setup permissions to access this page.",
-                ],
+                notes: ["Only users with setup access can <strong>view or manage grade</strong>."],
             },
+            // {
+            //     title: "Grade Setup View",
+            //     description:
+            //         "Here you can view existing grade entries for the organization:",
+            //     sections: [
+            //         {
+            //             title: "Features Available",
+            //             icon: <FaEye />,
+            //             items: [
+            //                 "View existing grade names and codes.",
+            //                 "No add/edit/delete actions are available on this screen.",
+            //                 "Use this list for reference during employee or department configuration.",
+            //             ],
+            //         },
+            //     ],
+            //     notes: [
+            //         "To make changes to grade values, contact system administrator or access from the master setup section (if permissions allow).",
+            //     ],
+            // },
             {
-                title: "Grade Setup View",
-                description:
-                    "Here you can view existing grade entries for the organization:",
-                sections: [
-                    {
-                        title: "Features Available",
-                        icon: <FaEye />,
-                        items: [
-                            "View existing grade names and codes.",
-                            "No add/edit/delete actions are available on this screen.",
-                            "Use this list for reference during employee or department configuration.",
-                        ],
-                    },
-                ],
-                notes: [
-                    "To make changes to grade values, contact system administrator or access from the master setup section (if permissions allow).",
-                ],
-            },
-            {
-                title: "Download Functionality",
-                description: "Export grade setup data if needed:",
+                title: "Download Grade List",
+                description: "Export the grade list if needed:",
                 sections: [
                     {
                         title: "Download Options",
                         icon: <FaDownload />,
                         items: [
-                            "Download grade setup details in <strong>PDF</strong> format using the <strong>'Download PDF'</strong> button provided at the bottom of this page.",
+                            "Below the grade list, click the <strong>'XLS File'</strong> button to download the list.",
                         ],
                     },
                 ],
                 notes: [
-                    "Ensure you are viewing the correct setup page before downloading.",
-                    "PDF includes navigation path, view-only info, and feature highlights for Grade Setup.",
+                    "The file will be downloaded in .xls format and can be opened in Excel."
                 ],
-            },
+            }
+
         ]
     },
 
@@ -1681,22 +1675,21 @@ export const HrmManualStep = [
             { accesspath: "Add Grade" },
             {
                 title: "Navigate to Add Grade Form",
-                description: "Follow the steps to add a new grade into the HRMS system:",
+                description: "Follow the steps to add a new grade into the Atomwalk ERP:",
                 sections: [
                     {
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
                             "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'Grade'</strong>",
-                            "Click on <strong>'Add Grade'</strong>",
+                            "Then You will see <strong>'Grade List'</strong>",
+                            "Click on <strong>'Add Grade'</strong> in right top of the screen",
                         ],
                     },
                 ],
                 notes: [
-                    "Only users with <strong>appropriate permissions</strong> can access and use the add grade form.",
+                    "only <strong>Admin/HR manager can access the Manager (HRMS) </strong>based on company required",
                 ],
             },
             {
@@ -1723,7 +1716,7 @@ export const HrmManualStep = [
                 ],
                 notes: [
                     "<strong>Grade ID</strong>, <strong>Name</strong>, <strong>Grade Level</strong>, and <strong>Salary Type</strong> are mandatory fields.",
-                    "Use the checkbox if this grade is managerial.",
+                    "Use the checkbox if this grade is manager.",
                     "Image is optional and can be used to upload a related icon or logo.",
                 ],
             },
@@ -1735,30 +1728,32 @@ export const HrmManualStep = [
                         title: "Submission Process",
                         icon: <FaPaperPlane />,
                         items: [
-                            "Ensure all <strong>required fields</strong> are completed.",
-                            "Click <strong>'Submit'</strong> to save the new grade.",
-                            "Confirmation message will appear after successful submission.",
+                            "Make sure all <strong>required fields</strong> are filled in correctly.",
+                            "Click <strong>'Submit'</strong> to save the grade.",
+                            "You will be redirected to the <strong>'Grade List'</strong> page.",
+                            "You can also use the <strong>Upload</strong> button to submit both grade and employee grade.",
                         ],
                     },
                 ],
                 notes: [
-                    "You will be redirected to the grade list view upon submission.",
-                    "You can upload grade-related data using the file upload feature in this form.",
+                   "Once submitted, the grade will be available in the list for viewing or editing.",
+                    "Use edit access to make any future updates to the grade information.",
+                    "If you use the <strong>Upload</strong> button, make sure to upload in <strong>.csv</strong> format.",
                 ],
             },
             {
                 title: "Back Navigation",
-                description: "Return to the previous screen:",
+                description: "To return to the Grade list:",
                 sections: [
                     {
                         title: "Back Option",
                         icon: <FaArrowLeft />,
                         items: [
-                            "Click <strong>'Back'</strong> to return to the Grade setup without submitting.",
+                            "Click on <strong>'Back'</strong> to exit form view",
                         ],
                     },
                 ],
-                notes: ["No changes will be saved if you exit without submission."],
+                // notes: ["No changes will be saved if you exit without submission."],
             },
         ]
     },
@@ -1774,16 +1769,16 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
                             "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'Grade'</strong>",
-                            "Click on <strong>'Update Grade'</strong> beside the grade to be modified",
+                            "Click on <strong>'Grade'</strong>",
+                            "Click on <strong>'Update'</strong> button next to the grade you want to edit",
                         ],
                     },
                 ],
                 notes: [
-                    "Only users with <strong>edit permissions</strong> can update grade records.",
+                    "Ensure the department you want to edit already exists in the system.",
+                    "only <strong>Admin/HR manager update department </strong>based on company required"
                 ],
             },
             {
@@ -1809,64 +1804,64 @@ export const HrmManualStep = [
                     },
                 ],
                 notes: [
-                    "<strong>Grade ID</strong>, <strong>Name</strong>, <strong>Grade Level</strong>, and <strong>Salary Type</strong> are mandatory fields.",
+                    "<strong>Grade ID</strong>, <strong>Name</strong>, <strong>Grade Level</strong>, and <strong>Salary Type</strong> are mandatory fields when updating a grade.",
                 ],
             },
             {
                 title: "Submit the Grade Update",
-                description: "Complete and submit the updated grade form:",
+                description: "Save the changes made to the grade:",
                 sections: [
                     {
                         title: "Submission Process",
                         icon: <FaPaperPlane />,
                         items: [
-                            "Make necessary edits to the fields.",
-                            "Click <strong>'Submit'</strong> to save changes.",
+                            "Carefully review all updated values.",
+                            "Click <strong>'Update'</strong> to save the changes.",
+                            "A confirmation message will appear once the update is successful.",
+                            "You will be redirected to the <strong>'Grade List'</strong> view."
                         ],
                     },
                 ],
-                notes: ["You will return to the grade Setup after submission."],
+                notes: ["Updated details will appear immediately in the grade list."],
             },
             {
                 title: "Back Navigation",
-                description: "Return without saving changes:",
+                description: "Return to the Grade Setup without saving changes:",
                 sections: [
                     {
                         title: "Back Option",
                         icon: <FaArrowLeft />,
                         items: [
-                            "Click <strong>'Back'</strong> to return to the grade SetUp/list.",
+                            "Click <strong>'Back'</strong> to discard your edits..",
                         ],
                     },
                 ],
-                notes: ["Unsaved changes will be lost."],
+                notes: ["Any unsaved changes will be lost if you go back without submitting."],
             },
         ]
     },
 
     // Setup(Holiday Calendar)
     {
-        "Holiday Calendar Setup": [
-            { accesspath: "Holiday Calendar Setup" },
+        "Holiday Calendar List": [
+            { accesspath: "Holiday Calendar List" },
             {
-                title: "Navigate to Holiday Calendar Setup",
+                title: "Navigate to Holiday Calendar List",
                 description:
-                    "Follow the steps below to access and view the configured holiday calendar in the HRMS system:",
+                    "Follow the steps below to view the holiday calendar list in the ERP:",
                 sections: [
                     {
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                           "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
                             "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'Holiday Calendar'</strong>",
+                            "Click on <strong>'Holiday Calendar'</strong>",
                         ],
                     },
                 ],
                 notes: [
-                    "This is a <strong>view-only</strong> section",
-                    "Ensure you have necessary permissions to view holiday setup information.",
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can set the holiday calendar based on company requirements."
                 ],
             },
             {
@@ -1877,23 +1872,22 @@ export const HrmManualStep = [
                     {
                         title: "Features Available",
                         icon: <FaEye />,
-                        items: ["View public and organizational holidays for the year."],
+                        items: ["View holidays for the year, including optional holidays, mandatory holidays, and Saturday/Sunday holidays."],
                     },
                 ],
                 notes: [
-                    "Holiday entries are typically managed by system administrators.",
-                    "Use this calendar to align leave planning and scheduling.",
+                    "Holiday entries are typically managed only by the <strong>Admin</strong> or <strong>HR Manager</strong> as per company requirements.",
                 ],
             },
             {
                 title: "Download Functionality",
-                description: "Export the holiday calendar guide if needed:",
+                description: "Export the holiday calendar if needed:",
                 sections: [
                     {
                         title: "Download Options",
                         icon: <FaDownload />,
                         items: [
-                            "Click on the <strong>'Download PDF/XLS File'</strong> button to export this guide.",
+                            "The file will be downloaded in .xls format and can be opened in Excel.",
                         ],
                     },
                 ],
@@ -1907,22 +1901,21 @@ export const HrmManualStep = [
             {
                 title: "Navigate to Add Holiday Calendar Form",
                 description:
-                    "Follow the steps to add a new holiday calendar for a specific year in the HRMS system:",
+                    "Follow the steps to add a new holiday calendar for a specific year in the ERP:",
                 sections: [
                     {
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
                             "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'Holiday Calendar'</strong>",
+                            "Click on <strong>'Holiday Calendar'</strong>",
                             "Click on <strong>'Add Holiday Calendar'</strong>",
                         ],
                     },
                 ],
                 notes: [
-                    "Only users with the appropriate permissions can access and submit this form.",
+                    "Holiday entries are only add by the <strong>Admin</strong> or <strong>HR Manager</strong> as per company requirements.",
                 ],
             },
             {
@@ -1963,10 +1956,12 @@ export const HrmManualStep = [
                         icon: <FaPaperPlane />,
                         items: [
                             "Review and complete all <strong>required fields</strong>.",
-                            "Click <strong>'Submit'</strong> to save the new calendar entry.",
+                            "Click <strong>'Submit'</strong> to save the new holiday calendar.",
+                            "A confirmation message will appear once the calendar is successfully saved."
                         ],
                     },
                 ],
+                 notes: ["Once submitted, the holiday calendar will be available for viewing and editing by authorized users."],
             },
             {
                 title: "Back Navigation",
@@ -1994,16 +1989,15 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
                             "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'Holiday Calendar'</strong>",
-                            "Click on <strong>'Update'</strong> for the selected calendar",
+                            "Click on <strong>'Holiday Calendar'</strong>",
+                            "Click on <strong>'Update'</strong> button next to the year you want to edit",
                         ],
                     },
                 ],
                 notes: [
-                    "Ensure you have the necessary permissions to access and update the calendar.",
+                    "Holiday entries are only update by the <strong>Admin</strong> or <strong>HR Manager</strong> as per company requirements.",
                 ],
             },
             {
@@ -3072,27 +3066,26 @@ export const HrmManualStep = [
             {
                 title: "Navigate to Exit Process Setup",
                 description:
-                    "This module allows authorized users to view and configure exit process setup.",
+                    "This Module only allow for Admin or HR Manager as per company requirements.",
                 sections: [
                     {
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left Menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
                             "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'Exit Process'</strong>",
+                            "Click on <strong>'Exit Process'</strong>",
                         ],
                     },
                 ],
                 notes: [
-                    "Only users with setup access can view or update exit process configurations.",
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can setup exit process based on company requirements.",
                 ],
             },
             {
                 title: "Exit Process Overview",
                 description:
-                    "The Exit Process setup typically includes steps like final approvals, document clearance, handover checklists, and feedback forms.",
+                    "The Exit Process setup typically includes steps such as employee notification, exit interviews, return of company assets, knowledge transfer, and transition planning.",
                 sections: [
                     {
                         title: "Common Configuration Elements",
@@ -3108,37 +3101,40 @@ export const HrmManualStep = [
                     "Ensure all relevant departments are involved in the defined workflow.",
                 ],
             },
-            {
-                title: "Access and Visibility",
-                description:
-                    "Understand who can view or interact with the Exit Process setup:",
-                sections: [
-                    {
-                        title: "User Access",
-                        icon: <FaUserShield />,
-                        items: [
-                            "Only HR managers or admins can make changes to the exit process setup.",
-                            "Other roles may have view-only access depending on permissions.",
-                        ],
-                    },
-                ],
-                notes: [
-                    "It is recommended to restrict edit access to senior HR personnel to avoid accidental changes.",
-                ],
-            },
+            // {
+            //     title: "Access and Visibility",
+            //     description:
+            //         "Understand who can view or interact with the Exit Process setup:",
+            //     sections: [
+            //         {
+            //             title: "User Access",
+            //             icon: <FaUserShield />,
+            //             items: [
+            //                 "Only HR managers or admins can make changes to the exit process setup.",
+            //                 "Other roles may have view-only access depending on permissions.",
+            //             ],
+            //         },
+            //     ],
+            //     notes: [
+            //         "It is recommended to restrict edit access to senior HR personnel to avoid accidental changes.",
+            //     ],
+            // },
 
             {
-                title: "Download Help Guide",
-                description: "Export this help document if required:",
+                title: "Download Exit Process",
+                description: "Export document list if required:",
                 sections: [
                     {
                         title: "Download Options",
                         icon: <FaDownload />,
                         items: [
-                            "Click <strong>'Download PDF/EXCEL'</strong> to export this guide for reference or training purposes.",
+                            "Click <strong>'XLS File'</strong> button to download the exit process list.",
                         ],
                     },
                 ],
+                notes: [
+                "The downloaded file will be in .xls format and can be opened in Excel."
+            ],
             },
         ]
     },
@@ -3155,15 +3151,14 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left Menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
                             "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'Exit Process'</strong>",
+                            "Click on <strong>'Exit Process'</strong>",
                             "Click on <strong>'Add Exit Process'</strong>",
                         ],
                     },
                 ],
-                notes: ["Only authorized Users can add or configure exit process steps."],
+                notes: ["Only the <strong>Admin</strong> or <strong>HR Manager</strong> can setup exit process based on company requirements."],
             },
             {
                 title: "Exit Process Form Fields",

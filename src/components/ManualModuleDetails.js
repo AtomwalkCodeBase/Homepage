@@ -592,11 +592,11 @@ const getModuleData = () => ({
           },
           {
             name: "Setup Grade",
-            subtopics: ["Grade Setup", "Add Grade", "Update Grade"],
+            subtopics: ["Grade List", "Add Grade", "Update Grade"],
           },
           {
             name: "Setup Holiday Calendar",
-            subtopics: ["Holiday Calendar Setup", "Add Holiday Calendar", "Update Holiday Calendar", "Add New Holiday", "Edit Holiday", "Add Shift", "Edit Shift"],
+            subtopics: ["Holiday Calendar List", "Add Holiday Calendar", "Update Holiday Calendar", "Add New Holiday", "Edit Holiday", "Add Shift", "Edit Shift"],
           },
           {
             name: "Setup HR Policy Documents",

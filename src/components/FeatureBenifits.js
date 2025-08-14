@@ -1,244 +1,414 @@
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 
-// Icons
-import Icon1 from '../assets/img/clock.png'; // You can replace this with your icons
-import Primium from '../assets/img/premium.gif';
-import optimizing from '../assets/img/optimization.png';
-import Access from '../assets/img/access.png';
-import exprieance from '../assets/img/best-customer-experience.png';
-import Accessbule from '../assets/img/accessible.png';
-import easy from '../assets/img/easy-to-use.png';
-import Icon2 from '../assets/img/administer.png';
-import Icon3 from '../assets/img/reconciliation.png';
-import Icon4 from '../assets/img/reduce-time.png';
-import Icon5 from '../assets/img/better_experience.png';
-import Icon6 from '../assets/img/transparency.png';
-import Icon7 from '../assets/img/brand_reputaion.png';
-import Icon8 from '../assets/img/money_saving.png';
-import Icon9 from '../assets/img/customize.png';
-import Icon10 from '../assets/img/encrypted.png';
-import Icon11 from '../assets/img/quality.png';
-import Icon12 from '../assets/img/scalability1.png';
-import Icon13 from '../assets/img/waste-tracking.png';
-import Icon14 from '../assets/img/bin.png';
-import Icon15 from '../assets/img/smart-trash.png';
-import Icon16 from '../assets/img/dashboard.png';
-import Icon17 from '../assets/img/safety.png';
-import Icon18 from '../assets/img/fm_step_1.png';
-import Icon19 from '../assets/img/fm_step_2.png';
-import Icon20 from '../assets/img/fm_step_3.png';
-import Icon21 from '../assets/img/fm_step_4.png';
-import Icon22 from '../assets/img/fm_step_5.png';
-import Icon50 from '../assets/img/Step2(1).png';
-import Icon23 from '../assets/img/solar-step2(1).png';
-import Icon24 from '../assets/img/solar-step2(2).png';
-import Icon25 from '../assets/img/solar-step2(3).png';
-import Icon26 from '../assets/img/step2_4_solarpng.png';
-import Icon27 from '../assets/img/solar-step2(5).png';
-import Icon28 from '../assets/img/step2_6_solarpng.png';
-import Icon29 from '../assets/img/H_Step2(1).png';
-import Icon30 from '../assets/img/H_Step2(2).png';
-import Icon31 from '../assets/img/H_Step2(3).png';
-import Icon32 from '../assets/img/step2_(4).png';
-import Icon33 from '../assets/img/step2_(5).png';
-import Icon34 from '../assets/img/step2_(6).png';
-
-
+// Icons (same as before)
+import { 
+  FaClock, FaCrown, FaChartLine, FaMobileAlt, FaUserTie, 
+  FaFileInvoiceDollar, FaShieldAlt, FaCogs, FaExpandArrowsAlt,
+  FaTrashAlt, FaTrashRestoreAlt, FaChartPie, FaHardHat,
+  FaBuilding, FaHospital, FaSolarPanel, FaRobot, FaEye,
+  FaFileAlt, FaExclamationTriangle, FaTachometerAlt 
+} from 'react-icons/fa';
+import { GiReceiveMoney, GiSandsOfTime } from 'react-icons/gi';
+import { MdOutlinePrecisionManufacturing, MdHealthAndSafety } from 'react-icons/md';
+import { BsFillGearFill, BsGraphUpArrow } from 'react-icons/bs';
 
 const Section = styled.section`
-  text-align: center;
-  padding: 50px 20px;
-  background-color: #fff;
+  padding: 100px 20px;
+  background: linear-gradient(135deg, #f9f9ff 0%, #f0f2ff 100%);
+  position: relative;
+  overflow: hidden;
   
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236a1b9a' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    z-index: 0;
+  }
 `;
 
-const Title = styled.h1`
-  font-size: 2rem;
-  color: #000;
-  margin-bottom: 10px;
-  font-weight: 600;
+const ContentWrapper = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+`;
 
+const Title = styled(motion.h2)`
+  font-size: 2.8rem;
+  color: #2a2a72;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  
   span {
-    color: #6a1b9a; /* Purple highlight */
+    color: #6a1b9a;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: rgba(106, 27, 154, 0.2);
+      z-index: -1;
+      border-radius: 4px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    font-size: 2.2rem;
   }
 `;
 
-const BenefitGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  padding-left: 40px;
-  padding-right: 40px;
-  margin-top: 30px;
+const Subtitle = styled(motion.p)`
+  color: #666;
+  font-size: 1.2rem;
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 3rem;
+  line-height: 1.6;
 
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(3, 1fr);
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    margin-bottom: 2rem;
   }
 `;
 
-const BenefitCard = styled.div`
+const BenefitsContainer = styled(motion.div)`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  perspective: 1000px;
+`;
+
+const BenefitItem = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  text-align: center;
+  position: relative;
+  padding: 0 20px;
+  max-width: 300px;
 `;
 
-const BenefitIcon = styled.div`
-  width: 80px;
-  height: 80px;
+const IconCircle = styled(motion.div)`
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: ${props => props.bgcolor};
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 16px;
-  background-color: ${props => props.bgColor || '#6a1b9a'};
-  margin-bottom: 15px;
-
-  img {
-    width: 40px;
-    height: 40px;
+  color: white;
+  font-size: 40px;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 20px ${props => `${props.bgcolor}80`};
+  position: relative;
+  z-index: 1;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    border-radius: 50%;
+    border: 2px dashed ${props => props.bgcolor};
+    opacity: 0.3;
+    z-index: -1;
+    transition: all 0.5s ease;
   }
 `;
 
-const BenefitTitle = styled.h3`
-  font-size: 1.2rem;
-  color: #000;
-  margin-bottom: 10px;
+const BenefitTitle = styled(motion.h3)`
+  font-size: 1.4rem;
+  color: #2a2a72;
+  margin-bottom: 15px;
   font-weight: 600;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background: ${props => props.bgcolor};
+    border-radius: 3px;
+    transition: all 0.3s ease;
+  }
 `;
 
-const BenefitText = styled.p`
-  color: #6e6e6e;
-  font-size: 0.9rem;
-  line-height: 1.4;
+const BenefitText = styled(motion.p)`
+  color: #666;
+  font-size: 1rem;
+  line-height: 1.6;
 `;
+
+const ConnectorLine = styled(motion.div)`
+  position: absolute;
+  top: 50px;
+  left: -20px;
+  width: 40px;
+  height: 2px;
+  background: #6a1b9a;
+  opacity: 0.3;
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.3
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.6, -0.05, 0.01, 0.99]
+    }
+  }
+};
+
+const iconVariants = {
+  hover: {
+    scale: 1.1,
+    rotate: 10,
+    transition: {
+      type: 'spring',
+      stiffness: 400,
+      damping: 10
+    }
+  }
+};
+
+const titleVariants = {
+  hover: {
+    scale: 1.05,
+    x: 5,
+    '&::after': {
+      width: '100%'
+    }
+  }
+};
 
 // Data sets for different responses
 const claimBenefits = [
-  { title: 'Optimize', text: 'maximize time & effort efficiency', bgColor: '#d9f5e3', icon: Icon1 },
-  { title: 'Streamline', text: 'simplify claim management', bgColor: '#f2e3ff', icon: Icon2 },
-  { title: 'Verify', text: 'ensure precise claim reconciliation', bgColor: '#ffe8cc', icon: Icon3 },
-  { title: 'Accelerate', text: 'minimize claim processing delays', bgColor: '#fff1d0', icon: Icon4 },
-  { title: 'Enhance', text: 'deliver a seamless claim experience', bgColor: '#d7faff', icon: Icon5 },
-  { title: 'Elevate', text: 'increase claim transparency', bgColor: '#d9f5e3', icon: Icon6 }
+  { title: 'Optimize', text: 'maximize time & effort efficiency', bgColor: '#4caf50', icon: <FaChartLine /> },
+  { title: 'Streamline', text: 'simplify claim management', bgColor: '#9c27b0', icon: <BsFillGearFill /> },
+  { title: 'Verify', text: 'ensure precise claim reconciliation', bgColor: '#ff9800', icon: <FaShieldAlt /> },
+  { title: 'Accelerate', text: 'minimize claim processing delays', bgColor: '#ffc107', icon: <GiSandsOfTime /> },
+  { title: 'Enhance', text: 'deliver a seamless claim experience', bgColor: '#00bcd4', icon: <FaUserTie /> },
+  { title: 'Elevate', text: 'increase claim transparency', bgColor: '#4caf50', icon: <FaFileInvoiceDollar /> }
 ];
 
 const leaveBenefits = [
-  { title: 'Save', text: 'time & effort', bgColor: '#d9f5e3', icon: Icon1 },
-  { title: 'Administer', text: 'uniform leave policy', bgColor: '#f2e3ff', icon: Icon2 },
-  { title: 'Ensure', text: 'accurate leave accounting', bgColor: '#ffe8cc', icon: Icon3 },
-  { title: 'Reduce', text: 'unnecessary expense', bgColor: '#fff1d0', icon: Icon4 },
-  { title: 'Deliver', text: 'an outstanding employee experience', bgColor: '#d7faff', icon: Icon5 },
-  { title: 'Improve', text: 'employer brand image', bgColor: '#d9f5e3', icon: Icon6 },
+  { title: 'Save', text: 'time & effort', bgColor: '#4caf50', icon: <GiSandsOfTime /> },
+  { title: 'Administer', text: 'uniform leave policy', bgColor: '#9c27b0', icon: <BsFillGearFill /> },
+  { title: 'Ensure', text: 'accurate leave accounting', bgColor: '#ff9800', icon: <FaFileInvoiceDollar /> },
+  { title: 'Reduce', text: 'unnecessary expense', bgColor: '#ffc107', icon: <GiReceiveMoney /> },
+  { title: 'Deliver', text: 'an outstanding employee experience', bgColor: '#00bcd4', icon: <FaUserTie /> },
+  { title: 'Improve', text: 'employer brand image', bgColor: '#4caf50', icon: <FaChartLine /> },
 ];
+
 const leadBenefits = [
-  { title: 'Maximize Efficiency', text: 'Save valuable time and effort with seamless processes', bgColor: '#d9f5e3', icon: optimizing },
-  { title: 'Unmatched Quality', text: 'We consistently deliver top-notch results for every user', bgColor: '#f2e3ff', icon: Primium },
-  { title: 'Lightning-Fast Access', text: 'Enjoy quick and easy access to our application anywhere, anytime', bgColor: '#ffe8cc', icon: Access },
-  { title: 'Seamless Experience', text: 'Experience flawless and intuitive user interactions', bgColor: '#fff1d0', icon: exprieance },
-  { title: 'User-Centric Design', text: 'Delivering an outstanding and effortless user experience', bgColor: '#d7faff', icon: easy },
-  { title: 'Universal Accessibility', text: 'Access our platform seamlessly on both mobile and web', bgColor: '#d9f5e3', icon: Accessbule },
+  { title: 'Maximize Efficiency', text: 'Save valuable time and effort with seamless processes', bgColor: '#4caf50', icon: <GiSandsOfTime /> },
+  { title: 'Unmatched Quality', text: 'We consistently deliver top-notch results for every user', bgColor: '#9c27b0', icon: <FaCrown /> },
+  { title: 'Lightning-Fast Access', text: 'Enjoy quick and easy access to our application anywhere, anytime', bgColor: '#ff9800', icon: <FaMobileAlt /> },
+  { title: 'Seamless Experience', text: 'Experience flawless and intuitive user interactions', bgColor: '#ffc107', icon: <FaUserTie /> },
+  { title: 'User-Centric Design', text: 'Delivering an outstanding and effortless user experience', bgColor: '#00bcd4', icon: <BsFillGearFill /> },
+  { title: 'Universal Accessibility', text: 'Access our platform seamlessly on both mobile and web', bgColor: '#4caf50', icon: <FaMobileAlt /> },
 ];
+
 const hrmBenefits = [
-  { title: 'Streamline', text: 'eliminate time-consuming paperwork', bgColor: '#d9f5e3', icon: Icon1 },
-  { title: 'Optimize', text: 'cut unnecessary operational expenses', bgColor: '#fff1d0', icon: Icon8 },
-  { title: 'Boost', text: 'elevate employer brand reputation', bgColor: '#d9f5e3', icon: Icon7 },
-  { title: 'Standardize', text: 'enforce a consistent company policy', bgColor: '#f2e3ff', icon: Icon2 },
-  { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ffe8cc', icon: Icon3 },
-  { title: 'Reliabilty', text: '24/7 availability with 100% uptime on mobile and web ', bgColor: '#d7faff', icon: Icon5 },
+  { title: 'Streamline', text: 'eliminate time-consuming paperwork', bgColor: '#4caf50', icon: <GiSandsOfTime /> },
+  { title: 'Optimize', text: 'cut unnecessary operational expenses', bgColor: '#ffc107', icon: <GiReceiveMoney /> },
+  { title: 'Boost', text: 'elevate employer brand reputation', bgColor: '#4caf50', icon: <FaChartLine /> },
+  { title: 'Standardize', text: 'enforce a consistent company policy', bgColor: '#9c27b0', icon: <BsFillGearFill /> },
+  { title: 'Performance', text: 'bulk processing with high TPS.', bgColor: '#ff9800', icon: <BsGraphUpArrow /> },
+  { title: 'Reliabilty', text: '24/7 availability with 100% uptime on mobile and web', bgColor: '#00bcd4', icon: <FaMobileAlt /> },
 ];
+
 const labEquipment = [
-  { title: '24/7 Access with less man power', text: 'Schedule Equipment Anytime, Seamlessly', bgColor: '#d7faff', icon: Icon1 },
-  { title: 'Real-Time Availability!', text: 'Stay Updated, Avoid Surprises', bgColor: '#d9f5e3', icon: Icon7 },
-  { title: 'Hassle-Free User Management!', text: 'Group, Control, Assign Roles', bgColor: '#fff1d0', icon: Icon2 },
-  { title: 'Zero Booking Conflicts!', text: 'Smart Scheduling, Uninterrupted Operations', bgColor: '#f2e3ff', icon: Icon8 },
-  { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ffe8cc', icon: Icon3 },
-  { title: 'Stay Audit-Ready', text: 'Automated Logs, Effortless Records ', bgColor: '#d9f5e3', icon: Icon5 },
+  { title: '24/7 Access with less man power', text: 'Schedule Equipment Anytime, Seamlessly', bgColor: '#00bcd4', icon: <GiSandsOfTime /> },
+  { title: 'Real-Time Availability!', text: 'Stay Updated, Avoid Surprises', bgColor: '#4caf50', icon: <FaChartLine /> },
+  { title: 'Hassle-Free User Management!', text: 'Group, Control, Assign Roles', bgColor: '#ffc107', icon: <FaUserTie /> },
+  { title: 'Zero Booking Conflicts!', text: 'Smart Scheduling, Uninterrupted Operations', bgColor: '#9c27b0', icon: <BsFillGearFill /> },
+  { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ff9800', icon: <BsGraphUpArrow /> },
+  { title: 'Stay Audit-Ready', text: 'Automated Logs, Effortless Records', bgColor: '#4caf50', icon: <FaFileInvoiceDollar /> },
 ];
+
 const labManagement = [
-  { title: 'Quality', text: 'Schedule Equipment Anytime, Seamlessly', bgColor: '#d7faff', icon: Icon11 },
-  { title: 'Data Security', text: 'Stay Updated, Avoid Surprises', bgColor: '#d9f5e3', icon: Icon10 },
-  { title: 'Scalability ', text: 'Group, Control, Assign Roles', bgColor: '#fff1d0', icon: Icon12 },
-  { title: 'Customization', text: 'Smart Scheduling, Uninterrupted Operations', bgColor: '#f2e3ff', icon: Icon9 },
-  { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ffe8cc', icon: Icon3 },
-  { title: 'Stay Audit-Ready', text: 'Automated Logs, Effortless Records ', bgColor: '#d9f5e3', icon: Icon5 },
+  { title: 'Quality', text: 'Schedule Equipment Anytime, Seamlessly', bgColor: '#00bcd4', icon: <FaChartLine /> },
+  { title: 'Data Security', text: 'Stay Updated, Avoid Surprises', bgColor: '#4caf50', icon: <FaShieldAlt /> },
+  { title: 'Scalability', text: 'Group, Control, Assign Roles', bgColor: '#ffc107', icon: <FaExpandArrowsAlt /> },
+  { title: 'Customization', text: 'Smart Scheduling, Uninterrupted Operations', bgColor: '#9c27b0', icon: <FaCogs /> },
+  { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ff9800', icon: <BsGraphUpArrow /> },
+  { title: 'Stay Audit-Ready', text: 'Automated Logs, Effortless Records', bgColor: '#4caf50', icon: <FaFileInvoiceDollar /> },
 ];
+
 const wasteManagement = [
-  { title: "Waste Tracking", text: "Monitor collection, segregation, and disposal in real-time.", bgColor: "#d7faff", "icon": Icon13 },
-  { title: "Optimized Collection Routes", text: "AI-driven route planning for fuel efficiency and reduced costs.", bgColor: "#d9f5e3", icon: Icon14 },
-  { title: "Smart Bin Alerts", text: "IoT-enabled bins notify when full, ensuring timely collection.", bgColor: "#fff1d0", icon: Icon15 },
-  { title: "Seamless Compliance Reporting", text: "Automated documentation for regulatory authorities.", bgColor: "#f2e3ff", icon: Icon5 },
-  { title: "Real-Time Dashboards", text: "Gain insights into waste management performance instantly.", bgColor: "#ffe8cc", icon: Icon16 },
-  { title: "Worker Safety Monitoring", text: "Track health check-ups and hazardous exposure for workers.", bgColor: "#d9f5e3", icon: Icon17 }
+  { title: "Waste Tracking", text: "Monitor collection, segregation, and disposal in real-time.", bgColor: "#00bcd4", icon: <FaTrashAlt /> },
+  { title: "Optimized Collection Routes", text: "AI-driven route planning for fuel efficiency and reduced costs.", bgColor: "#4caf50", icon: <FaChartLine /> },
+  { title: "Smart Bin Alerts", text: "IoT-enabled bins notify when full, ensuring timely collection.", bgColor: "#ffc107", icon: <FaTrashRestoreAlt /> },
+  { title: "Seamless Compliance Reporting", text: "Automated documentation for regulatory authorities.", bgColor: "#9c27b0", icon: <FaFileInvoiceDollar /> },
+  { title: "Real-Time Dashboards", text: "Gain insights into waste management performance instantly.", bgColor: "#ff9800", icon: <FaChartPie /> },
+  { title: "Worker Safety Monitoring", text: "Track health check-ups and hazardous exposure for workers.", bgColor: "#4caf50", icon: <FaHardHat /> }
 ];
+
 const sales = [
-  { title: '24/7 Access with less man power', text: 'Schedule Equipment Anytime, Seamlessly', bgColor: '#d7faff', icon: Icon1 },
-  { title: 'Real-Time Availability!', text: 'Stay Updated, Avoid Surprises', bgColor: '#d9f5e3', icon: Icon3 },
-  { title: 'Efficiency', text: 'Automate tasks like orders creation or generating invoices', bgColor: '#fff1d0', icon: Icon2 },
-  { title: 'Business Growth', text: 'Payment reminders and tax invoice creation simplify cash flow management.', bgColor: '#f2e3ff', icon: Icon8 },
-  { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ffe8cc', icon: Icon7 },
-  { title: 'Stay Audit-Ready', text: 'Tracking all the detailed changes', bgColor: '#d9f5e3', icon: Icon5 },
+  { title: '24/7 Access with less man power', text: 'Schedule Equipment Anytime, Seamlessly', bgColor: '#00bcd4', icon: <GiSandsOfTime /> },
+  { title: 'Real-Time Availability!', text: 'Stay Updated, Avoid Surprises', bgColor: '#4caf50', icon: <FaChartLine /> },
+  { title: 'Efficiency', text: 'Automate tasks like orders creation or generating invoices', bgColor: '#ffc107', icon: <BsFillGearFill /> },
+  { title: 'Business Growth', text: 'Payment reminders and tax invoice creation simplify cash flow management.', bgColor: '#9c27b0', icon: <GiReceiveMoney /> },
+  { title: 'Performance', text: 'Bulk processing with high TPS.', bgColor: '#ff9800', icon: <BsGraphUpArrow /> },
+  { title: 'Stay Audit-Ready', text: 'Tracking all the detailed changes', bgColor: '#4caf50', icon: <FaFileInvoiceDollar /> },
 ];
+
 const Facility = [
-  { title: 'Asset Lifecycle Tracking', text: 'Monitor and manage asset performance, maintenance history, and status in real time.', bgColor: '#d7faff', icon: Icon18 },
-  { title: 'Work Order Automation', text: 'Automate task creation and assignment for scheduled and emergency maintenance.', bgColor: '#d9f5e3', icon: Icon19 },
-  { title: 'Predictive Maintenance', text: 'Prevent equipment failure with smart scheduling based on usage patterns and alerts.', bgColor: '#fff1d0', icon: Icon20 },
-  { title: 'Space Planning & Utilization', text: 'Optimize floor plans and space usage with interactive layouts and occupancy insights.', bgColor: '#f2e3ff', icon: Icon21 },
-  { title: 'Vendor Management', text: 'Track service partner performance, contract terms, and SLA compliance digitally.', bgColor: '#ffe8cc', icon: Icon22 },
-  { title: 'Real-Time Dashboards', text: 'View operations performance, task status, and cost analytics at a glance.', bgColor: '#d9f5e3', icon: Icon50 },
+  { title: 'Asset Lifecycle Tracking', text: 'Monitor and manage asset performance, maintenance history, and status in real time.', bgColor: '#00bcd4', icon: <FaChartLine /> },
+  { title: 'Work Order Automation', text: 'Automate task creation and assignment for scheduled and emergency maintenance.', bgColor: '#4caf50', icon: <BsFillGearFill /> },
+  { title: 'Predictive Maintenance', text: 'Prevent equipment failure with smart scheduling based on usage patterns and alerts.', bgColor: '#ffc107', icon: <FaTachometerAlt /> },
+  { title: 'Space Planning & Utilization', text: 'Optimize floor plans and space usage with interactive layouts and occupancy insights.', bgColor: '#9c27b0', icon: <FaBuilding /> },
+  { title: 'Vendor Management', text: 'Track service partner performance, contract terms, and SLA compliance digitally.', bgColor: '#ff9800', icon: <FaUserTie /> },
+  { title: 'Real-Time Dashboards', text: 'View operations performance, task status, and cost analytics at a glance.', bgColor: '#4caf50', icon: <FaChartPie /> },
 ];
+
 const Hospital = [
-  { title: 'Real-Time Patient Dashboard', text: 'Monitor patient records, vitals, test results, and treatment plans in real time for informed care decisions.', bgColor: '#d7faff', icon: Icon29 },
-  { title: 'Automated Scheduling System', text: 'Coordinate appointments, lab tests, surgeries, and staff shifts seamlessly to optimize hospital operations.', bgColor: '#d9f5e3', icon: Icon30 },
-  { title: 'Instant Notification Alerts', text: 'Receive timely updates on critical patient conditions, test results, or staff schedule changes.', bgColor: '#fff1d0', icon: Icon31 },
-  { title: 'Accurate Tracking', text: 'Track medications and samples with QR code scanning for accurate verification and error-free workflows.', bgColor: '#f2e3ff', icon: Icon32 },
-  { title: 'Data-Driven Analytics', text: 'Analyze bed occupancy, patient outcomes, and staff performance in real time to drive operational excellence.', bgColor: '#ffe8cc', icon: Icon33 },
-  { title: 'Integrated Billing Operations', text: 'Streamline financial workflows with itemized invoices and insurance claim tracking for efficiency.', bgColor: '#d9f5e3', icon: Icon34 },
+  { title: 'Real-Time Patient Dashboard', text: 'Monitor patient records, vitals, test results, and treatment plans in real time for informed care decisions.', bgColor: '#00bcd4', icon: <FaTachometerAlt /> },
+  { title: 'Automated Scheduling System', text: 'Coordinate appointments, lab tests, surgeries, and staff shifts seamlessly to optimize hospital operations.', bgColor: '#4caf50', icon: <BsFillGearFill /> },
+  { title: 'Instant Notification Alerts', text: 'Receive timely updates on critical patient conditions, test results, or staff schedule changes.', bgColor: '#ffc107', icon: <FaExclamationTriangle /> },
+  { title: 'Accurate Tracking', text: 'Track medications and samples with QR code scanning for accurate verification and error-free workflows.', bgColor: '#9c27b0', icon: <MdOutlinePrecisionManufacturing /> },
+  { title: 'Data-Driven Analytics', text: 'Analyze bed occupancy, patient outcomes, and staff performance in real time to drive operational excellence.', bgColor: '#ff9800', icon: <FaChartPie /> },
+  { title: 'Integrated Billing Operations', text: 'Streamline financial workflows with itemized invoices and insurance claim tracking for efficiency.', bgColor: '#4caf50', icon: <FaFileInvoiceDollar /> },
 ];
+
 const Solar = [
-  { title: 'Real-Time Monitoring', text: 'Live tracking of voltage, current,temperature, and solar irradiance.', bgColor: '#d7faff', icon: Icon23 },
-  { title: 'Fault Detection & Alerts', text: 'Instant alerts for issues like shading, dirt, or overheating.', bgColor: '#d9f5e3', icon: Icon24 },
-  { title: 'Analysis & Dashboard', text: 'Analysis of the solar system vendor, showing total products sold and total income earned .', bgColor: '#fff1d0', icon: Icon25 },
-  { title: 'Seamless Connectivity', text: 'Seamless connectivity in a solar management system ensures smooth communication between components .', bgColor: '#f2e3ff', icon: Icon26 },
-  { title: 'Predictive Maintenance', text: 'Uses data and analytics to anticipate equipment issues before they occur.', bgColor: '#ffe8cc', icon: Icon27 },
-  { title: 'Real-Time Task Management', text: 'In solar operations, it ensures tasks are efficiently assigned to the right team members for smooth workflow', bgColor: '#d9f5e3', icon: Icon28 },
+  { title: 'Real-Time Monitoring', text: 'Live tracking of voltage, current,temperature, and solar irradiance.', bgColor: '#00bcd4', icon: <FaTachometerAlt /> },
+  { title: 'Fault Detection & Alerts', text: 'Instant alerts for issues like shading, dirt, or overheating.', bgColor: '#4caf50', icon: <FaExclamationTriangle /> },
+  { title: 'Analysis & Dashboard', text: 'Analysis of the solar system vendor, showing total products sold and total income earned.', bgColor: '#ffc107', icon: <FaChartPie /> },
+  { title: 'Seamless Connectivity', text: 'Seamless connectivity in a solar management system ensures smooth communication between components.', bgColor: '#9c27b0', icon: <FaMobileAlt /> },
+  { title: 'Predictive Maintenance', text: 'Uses data and analytics to anticipate equipment issues before they occur.', bgColor: '#ff9800', icon: <FaTachometerAlt /> },
+  { title: 'Real-Time Task Management', text: 'In solar operations, it ensures tasks are efficiently assigned to the right team members for smooth workflow', bgColor: '#4caf50', icon: <BsFillGearFill /> },
 ];
+
 const Ai = [
-  { title: 'PPE Detection', text: ' Real-time verification of safety gear—helmets, gloves, vests—ensures worker compliance before entering critical zones', bgColor: '#d7faff', icon: 'https://github.com/AtomwalkCodeBase/Blogs/blob/main/Website-images/pde.png?raw=true'},
-  { title: 'Surveillance & Activity Monitoring', text: '24/7 AI-powered monitoring for motion detection, zone violations, crowd density, and action recognition like running or fighting.', bgColor: '#d9f5e3', icon: 'https://github.com/AtomwalkCodeBase/Blogs/blob/main/Website-images/Surveillance.png?raw=true' },
-  { title: 'Text Extraction', text: 'Extract machine labels, maintenance logs, and operator notes using OCR for digital record-keeping and compliance tracking.', bgColor: '#fff1d0', icon: 'https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/text.png' },
-  { title: 'Anomaly Detection', text: 'Identify irregularities in machine behavior, product flow, or process parameters using unsupervised learning models.', bgColor: '#f2e3ff', icon: 'https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Anomaly.png' },
-  { title: 'Bottleneck Alerts', text: 'Track production delays at different stages. Get instant alerts on where the workflow slows down to optimize throughput.', bgColor: '#ffe8cc', icon: 'https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Bottleneck.png' },
-  { title: 'Predictive Maintenance', text: 'Forecast machine failures or end-of-life using historical usage, vibration, and temperature data—preventing unplanned downtime.', bgColor: '#d9f5e3', icon: 'https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Predictive.png' },
+  { title: 'PPE Detection', text: 'Real-time verification of safety gear—helmets, gloves, vests—ensures worker compliance before entering critical zones', bgColor: '#00bcd4', icon: <MdHealthAndSafety /> },
+  { title: 'Surveillance & Activity Monitoring', text: '24/7 AI-powered monitoring for motion detection, zone violations, crowd density, and action recognition like running or fighting.', bgColor: '#4caf50', icon: <FaEye /> },
+  { title: 'Text Extraction', text: 'Extract machine labels, maintenance logs, and operator notes using OCR for digital record-keeping and compliance tracking.', bgColor: '#ffc107', icon: <FaFileAlt /> },
+  { title: 'Anomaly Detection', text: 'Identify irregularities in machine behavior, product flow, or process parameters using unsupervised learning models.', bgColor: '#9c27b0', icon: <FaExclamationTriangle /> },
+  { title: 'Bottleneck Alerts', text: 'Track production delays at different stages. Get instant alerts on where the workflow slows down to optimize throughput.', bgColor: '#ff9800', icon: <FaChartLine /> },
+  { title: 'Predictive Maintenance', text: 'Forecast machine failures or end-of-life using historical usage, vibration, and temperature data—preventing unplanned downtime.', bgColor: '#4caf50', icon: <FaTachometerAlt /> },
 ];
 
+const FeatureBenefits = ({ data }) => {
+  const benefits = data === 'AI' ? Ai : 
+                   data === 'Solar' ? Solar : 
+                   data === 'Hospital' ? Hospital : 
+                   data === 'Facility' ? Facility : 
+                   data === 'LMS' ? labManagement : 
+                   data === 'Claim' ? claimBenefits : 
+                   data === 'Customer' ? leadBenefits : 
+                   data === 'HR' ? hrmBenefits : 
+                   data === 'Equipment' ? labEquipment : 
+                   data === 'Waste' ? wasteManagement : 
+                   data === 'Sales and Procurement' ? sales : 
+                   leaveBenefits;
 
-const FeatureBenifits = ({ data }) => {
-  // Determine which set of benefits to display based on the response data
-  const benefits = data === 'AI' ? Ai : data === 'Solar' ? Solar : data === 'Hospital' ? Hospital : data === 'Facility' ? Facility : data === 'LMS' ? labManagement : data === 'Claim' ? claimBenefits : data === 'Customer' ? leadBenefits : data === 'HR' ? hrmBenefits : data === 'Equipment' ? labEquipment : data === 'Waste' ? wasteManagement : data === 'Sales and Procurement' ? sales : leaveBenefits;
+  const getTitle = () => {
+    switch(data) {
+      case 'Solar': return 'Solar Intelligence Optimize, Control, and Grow.';
+      case 'Facility': return 'All-in-One Facility Management, Streamlined and Smarter.';
+      case 'AI': return 'AI-Powered Insights for Smarter Operations';
+      default: return `All-in-One ${data} Management, Faster and Easier.`;
+    }
+  };
+
+  const getSubtitle = () => {
+    switch(data) {
+      case 'Solar': return 'Harness the power of intelligent solar management for maximum efficiency and growth.';
+      case 'Facility': return 'Comprehensive facility solutions that simplify operations and enhance productivity.';
+      case 'AI': return 'Transform your operations with cutting-edge artificial intelligence solutions.';
+      default: return `Discover how our ${data} management solution can streamline your operations and boost productivity.`;
+    }
+  };
 
   return (
     <Section>
-      {data === 'Solar' ? (<Title>Solar Intelligence <span>Optimize, Control, and Grow.</span></Title>
-      ) : data === 'Facility' ? (
-        <Title>All-in-One Facility Management, <span>Streamlined and Smarter.</span></Title>
-      ) : data === 'Ai' ? (
-        <Title>All-in-One Ai Management, <span>Streamlined and Smarter.</span></Title>
-      ) : (
-        <Title>All-in-One {data} Management, <span>Faster and Easier.</span></Title>
-      )}
-      <BenefitGrid>
-        {benefits.map((benefit, index) => (
-          <BenefitCard key={index}>
-            <BenefitIcon bgColor={benefit.bgColor}>
-              <img src={benefit.icon} alt={`${benefit.title} Icon`} />
-            </BenefitIcon>
-            <BenefitTitle>{benefit.title}</BenefitTitle>
-            <BenefitText>{benefit.text}</BenefitText>
-          </BenefitCard>
-        ))}
-      </BenefitGrid>
+      <ContentWrapper>
+        <Title
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          {getTitle().split(',')[0]}, <span>{getTitle().split(',')[1]}</span>
+        </Title>
+        
+        <Subtitle
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          {getSubtitle()}
+        </Subtitle>
+        
+        <BenefitsContainer
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {benefits.map((benefit, index) => (
+            <BenefitItem
+              key={index}
+              variants={itemVariants}
+              whileHover="hover"
+            >
+              
+              <IconCircle 
+                bgcolor={benefit.bgColor}
+                variants={iconVariants}
+              >
+                {benefit.icon}
+              </IconCircle>
+              
+              <BenefitTitle 
+                bgcolor={benefit.bgColor}
+                variants={titleVariants}
+              >
+                {benefit.title}
+              </BenefitTitle>
+              
+              <BenefitText>
+                {benefit.text}
+              </BenefitText>
+            </BenefitItem>
+          ))}
+        </BenefitsContainer>
+      </ContentWrapper>
     </Section>
   );
 };
 
-export default FeatureBenifits;
+export default FeatureBenefits;

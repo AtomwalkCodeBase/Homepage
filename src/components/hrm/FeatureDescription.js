@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import CheckMark from '../../assets/img/check_mark.png';
 import img1 from '../../assets/img/img1.svg';
-import img3 from '../../assets/img/emp_advance.svg';
 import img7 from '../../assets/img/holiday_calender.svg';
 import img8 from '../../assets/img/leave_dashboard.svg';
 import img9 from '../../assets/img/add_leave.svg';
@@ -230,7 +229,7 @@ const FeatureDescription = ({ data }) => {
         subtitle: "Employee Advance upload, tracking, and history of offset against Expense Claims.",
         description: "Manage Employee expense advance and efficiently track advance offset against each claim, offering a clear view of balances and outstanding advance amount. Enables decision-making process for effective advance amount.",
         benefits: ["Advance Tracking", "Clear offset records with claim details"],
-        imageSrc: img3,
+        imageSrc: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/emp_advance.svg",
         imageAlt: "Advance",
         imgPosition: "right"
       },
@@ -244,7 +243,7 @@ const FeatureDescription = ({ data }) => {
           "Mobile-Friendly Convenience, Instant Receipt Capture",
           "Expense Auto-Linkage to Projects and Efficient Project Margin Tracking"
         ],
-        imageSrc: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/add_claim_img.svg",
+        imageSrc: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/add_claim_img1.svg",
         imageAlt: "Add Claim",
         imgPosition: "left"
 
@@ -259,7 +258,7 @@ const FeatureDescription = ({ data }) => {
           "Flexible Approval Limits Based on Grade & Amount",
           "Mobile-Enabled Real-Time Claim Processing"
         ],
-        imageSrc: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/approve_claim.svg",
+        imageSrc: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/approve_claim1.svg",
         imageAlt: "Advance Tracking Icon",
         imgPosition: "right"
       },
@@ -268,7 +267,7 @@ const FeatureDescription = ({ data }) => {
         subtitle: "Efficient settlement process with auto flow of data to accounts and linked projects.",
         description: "Once approved, claims move to the settlement phase where user can view all claims and advance records side by side for easy and effective settlement processing. The screen provides direct access to claim details and attached documents, with a bulk settlement feature to handle multiple claims efficiently. This seamless process with Accounts and Project management modules.",
         benefits: ["Clear Claim View", "Direct Document Access", "Bulk Settlement Option", "Reliable Processing with auto Account ledger processing"],
-        imageSrc: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/sattle_claim.svg",
+        imageSrc: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/sattle_claim1.svg",
         imageAlt: "Settle Claim",
         imgPosition: "left"
       },
@@ -277,7 +276,7 @@ const FeatureDescription = ({ data }) => {
         subtitle: "Instant insights on claim status and trends.",
         description: "The Expense Claim Dashboard provides graphical charts view for claim status and monthly trends, helping employee/Manager track claims at a glance. Extensive filter criteria based on expense category, expense item, departments, etc., for analysis and managing your expenses in a better way.",
         benefits: ["Graphical Overviews with real-time update", "Extensive Filter criteria for reports", "Download reports in PDF/XLS"],
-        imageSrc: 'https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/expense_claim.svg',
+        imageSrc: 'https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/expense_claim1.svg',
         imageAlt: "Post Accounting",
         imgPosition: "right"
       }
@@ -334,10 +333,34 @@ const FeatureDescription = ({ data }) => {
             title: "Flexible and Compliant Payroll Management",
             subtitle: "Configurable Salary structure with predefined integrated TDS/PT/PF/Gratuity calculation for seamless employee compensation.",
             description: "Our HR management offers a comprehensive system for managing employee salary structures, and compliance setup in accordance with government regulations. Companies can create tailored salary structures for different employee grades. The platform also facilitates setting up Provident Fund, Gratuity, Employee State Insurance (ESI), and TDS, PT tax parameters, ensuring full compliance and transparency in payroll management. In addition to this, any other salary components like Variable Pay and custom deductions can be configured in the system, making it highly flexible for any complex scenario.",
-            benefits: ["Configurable pay scale grades", "Configurable salary structures with formula builder", "Customizable payslip design", "Dynamic Salary Structures to include compliance like PF, Gratuity, ESI, PT, and TDS", "Audit trails for Setup control", "Contract Rate setup for contract employee"],
+            benefits: [
+              "Configurable pay scale grades",
+              "Configurable salary structures with Custom Script-Based Salary Calculation",
+              "Customizable payslip design",
+              "Dynamic Salary Structures to include compliance like PF, Gratuity, ESI, PT, and TDS",
+              "Audit trails for Setup control",
+              "Contract Rate setup for contract employee"
+            ],
             imageSrc: img31,
             imageAlt: "Payroll & Compliance",
             imgPosition: "left"
+          },
+          {
+            title: "Employee-Specific Salary Parameters",
+            subtitle: "Capture and manage employee-specific payroll configurations for accurate and personalized salary computation.",
+            description: "Our payroll system supports detailed employee-specific salary parameters to ensure precise salary calculation and compliance with tax and statutory rules. HR teams can configure and maintain these parameters for each employee, enabling accurate deductions, exemptions, and allowances in line with government regulations. This ensures that every payroll cycle is tailored to the individual’s financial and statutory profile.",
+            benefits: [
+              "Financial Year & Tax Regime configuration (Old/New)",
+              "PF & ESI applicability with PF Limit controls",
+              "VPF settings with effective dates, fixed amount, and % of Basic Salary",
+              "Allowance tracking for HRA & LTA (claimed and verified amounts)",
+              "Deduction tracking for Home Loan Interest, 80C, 80D, and 80E (claimed and verified amounts)",
+              "Income from previous employer and other sources",
+              "Metro city flag & Employee city tracking"
+            ],
+            imageSrc: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/emp_sal_parameter.png",
+            imageAlt: "Employee Salary Parameters",
+            imgPosition: "right"
           },
           {
             title: "Streamlined Monthly Salary Generation with Real-Time Error Validation",
@@ -346,16 +369,23 @@ const FeatureDescription = ({ data }) => {
             benefits: ["Accurate Payroll Generation", "Reduced Manual Errors", "Integrated with Attendance and Leave", "Direct Salary Disbursement"],
             imageSrc: img32,
             imageAlt: "Salary Process",
-            imgPosition: "right"
+            imgPosition: "left"
           },
           {
             title: "Accurate Accounting Entries for Financial Clarity",
             subtitle: "Ensuring error-free records with detailed reporting.",
             description: "After generating salaries, the HR manager creates accounting entries to maintain precise financial records. The system displays all payable heads, showing amounts already posted and pending. Managers can download detailed reports in PDF or Excel formats and include specific posting remarks for transparency, ensuring a well-documented and accurate accounting process.",
-            benefits: ["Precise Accounting Entries", "Payable Overview", "Detailed Reporting", ' Transparent Documentation', 'Error-Free Financial Management'],
+            benefits: [
+              "Precise Accounting Entries",
+              "Payable Overview",
+              "Detailed Reporting",
+              "Transparent Documentation",
+              "Error-Free Financial Management",
+              "API-based Salary Accounting Entries"
+            ],
             imageSrc: img33,
-            imageAlt: "Post Salary ",
-            imgPosition: "left"
+            imageAlt: "Post Salary",
+            imgPosition: "right"
           },
 
         ] : isEmployeeData ?
@@ -381,8 +411,14 @@ const FeatureDescription = ({ data }) => {
             {
               title: "Comprehensive Asset Management with Atomwalk HRM",
               subtitle: "Efficient Asset Tracking & Transparent Employee Exit Process.",
-              description: "Atomwalk HRM supports comprehensive asset management, allowing companies to efficiently manage their assets category-wise. The system also facilitates seamless asset allocation to employees, ensuring transparency. During the employee exit approval process, the system automatically tracks allocated assets, ensuring all assets are returned before approval, enhancing operational clarity and control.",
-              benefits: ["Category & type wise asset management", "Employee-wise asset allocation", "Automatic asset tracking during exit process & Ensures asset return before exit approval", "Enhances transparency and accountability"],
+              description: "Atomwalk HRM supports comprehensive asset management, allowing companies to efficiently manage their assets category-wise. The system facilitates seamless asset allocation to employees and tracks the current location of each asset, ensuring operational visibility. During the employee exit approval process, the system automatically tracks allocated assets, ensuring all assets are returned before approval, enhancing operational clarity and control.",
+              benefits: [
+                "Category & type wise asset management",
+                "Employee-wise asset allocation",
+                "Asset current location data management",
+                "Automatic asset tracking during exit process & ensures asset return before exit approval",
+                "Enhances transparency and accountability"
+              ],
               imageSrc: img24,
               imageAlt: "Asset Management",
               imgPosition: "left"
@@ -614,7 +650,13 @@ const FeatureDescription = ({ data }) => {
                       title: "Comprehensive Asset Management with Atomwalk HRM",
                       subtitle: "Efficient Asset Tracking & Transparent Employee Exit Process.",
                       description: "Atomwalk HRM supports comprehensive asset management, allowing companies to efficiently manage their assets category-wise. The system also facilitates seamless asset allocation to employees, ensuring transparency. During the employee exit approval process, the system automatically tracks allocated assets, ensuring all assets are returned before approval, enhancing operational clarity and control.",
-                      benefits: ["Category & type wise asset management", "Employee-wise asset allocation", "Automatic asset tracking during exit process & Ensures asset return before exit approval", "Enhances transparency and accountability"],
+                      benefits: [
+                        "Category & type wise asset management",
+                        "Employee-wise asset allocation",
+                        "Asset current location data management",
+                        "Automatic asset tracking during exit process & ensures asset return before exit approval",
+                        "Enhances transparency and accountability"
+                      ],
                       imageSrc: img24,
                       imageAlt: "Asset Management",
                       imgPosition: "left"

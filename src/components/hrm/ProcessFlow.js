@@ -141,6 +141,7 @@ export const ProcessFlow = ({ data, bgcolors }) => {
     ],
     Payroll: [
       { step: 'Payroll Setup & Controls'},
+      { step: 'Employee Salary Parameter'},
       { step: 'Generate Monthly Salary'},
       { step: 'Post Salary'},
     ],

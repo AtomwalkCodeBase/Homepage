@@ -225,15 +225,7 @@ const KeyFeatureHrm = () => {
           Mobile-first HR solution with all essential features in a lightweight interface. Employee self-service portal with secure authentication and offline capabilities.
           </FeatureDescription>
         </FeatureBox>
-        {/* <FeatureBox onClick={()=>{handleCardPress('employeehr')}}>
-          <IconContainer bgColor="#F7DADB">
-            <img src={ExitProcessIcon} alt="Reliability" />
-          </IconContainer>
-          <FeatureTitle>Exit Process:</FeatureTitle>
-          <FeatureDescription>
-          Simplify the employee exit process, from resignation submission to final clearance. Atomwalk HRM allows companies to set up exit process documentation, ensuring all required documents and company assets are managed efficiently and securely stored for future reference.
-          </FeatureDescription>
-        </FeatureBox> */}
+      
         
       </FeaturesContainer>
       

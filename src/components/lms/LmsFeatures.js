@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import CheckMark from '../../assets/img/check_mark.png';
 import img1 from '../../assets/img/Labprojectcreation.svg';
 import img2 from '../../assets/img/Activitydetails.svg';
-import img3 from '../../assets/img/emp_advance.svg';
 import img4 from '../../assets/img/Labdocset.svg'
 import img5 from '../../assets/img/Labobjective.svg'
 import labProcessemplate1 from '../../assets/img/processtemplate1.svg'
@@ -227,7 +226,7 @@ const LmsFeatures = ({data,bgcolors}) => {
           subtitle: 'Empowering Admins to Manage Every Aspect of Lab Operations',
           description: 'Atomwalk’s LEM provides LAB Admins (Owners) with powerful tools to manage user profiles based on the department setup in institution, which inturn helps to oversee equipment usage, and generate insightful reports. This allows Lab Admins to ensure smooth lab operations and maintain compliance effortlessly.',
           benefits: ['Create and manage profiles (Based on Department setup)', 'Configurable access control for each User group'],
-          imageSrc: img3, // Replace with relevant image variable for campaign management
+          imageSrc: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/emp_advance.svg", // Replace with relevant image variable for campaign management
           imageAlt: 'Campaign Management Dashboard',
           imgPosition: 'left',
         },
@@ -236,7 +235,7 @@ const LmsFeatures = ({data,bgcolors}) => {
           subtitle: 'Empowering Lab Admins/ Users with Instant Activation and Anytime Access',
           description: 'With Atomwalk’s LEM, LAB Admins can efficiently organize Lab users across users groups. User can manage their Profile and manage passwords on DIY basis. LAB Users can maintain their user name/ nick name to access the system anytime anywhere for equipment booking/cancellations.',
           benefits: ['LAB Users Creation with right User Group', ' LAB Users Profile/password management'],
-          imageSrc: img3, // Replace with relevant image variable for campaign execution
+          imageSrc: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/emp_advance.svg", // Replace with relevant image variable for campaign execution
           imageAlt: 'Campaign Performance Tracking',
           imgPosition: 'right',
         },
@@ -245,7 +244,7 @@ const LmsFeatures = ({data,bgcolors}) => {
           subtitle: 'Empowering Lab Admins with Instant Deactivation and remove Access',
           description: 'Atomwalk’s LEM allows Lab Admin users to deactivate Lab Users and remove access in case of disciplinary action or completion of course. Lab Admins also can control temproray access to external Lab users.',
           benefits: ['LAB Users deactivation', 'LAB Users removal of Access'],
-          imageSrc: img3, // Replace with relevant image variable for campaign execution
+          imageSrc: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/emp_advance.svg", // Replace with relevant image variable for campaign execution
           imageAlt: 'Campaign Performance Tracking',
           imgPosition: 'left',
         },
@@ -362,7 +361,7 @@ const LmsFeatures = ({data,bgcolors}) => {
           subtitle: 'Ensuring Excellence Through Structured Quality Control',
           description: 'The quality management feature for each step of an experiment in Atomwalk ensures adherence to high standards by enabling systematic monitoring and control. Labs can set up quality checks, track compliance, and address discrepancies effectively. This ensures consistent performance, mitigates risks, and upholds the lab’s reputation for reliability and excellence.',
           benefits: ['Structured quality control', 'Compliance tracking and management', 'Risk mitigation and performance consistency', 'Review process for QC data'],
-          imageSrc: img3, // Replace with your relevant image variable
+          imageSrc: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/emp_advance.svg", // Replace with your relevant image variable
           imageAlt: 'Quality Assurance',
           imgPosition: 'left',
         },

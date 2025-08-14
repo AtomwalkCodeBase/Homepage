@@ -82,7 +82,7 @@ const NewFeatures = () => {
         {
             title: "Claim Management",
             description: "Employees can effortlessly raise claims for reimbursements related to travel, meals, and more. The claim form allows attachments, category selection, and notes. Managers can approve or reject claims with comments, ensuring clarity and accountability. A streamlined audit trail supports finance departments in processing and verifying disbursements.",
-            image: 'https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/mobile-claim.png',
+            image: 'https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/mobile-claim1.png',
             icon: '💰',
             color: '#DC2626',
             keyPoints: [

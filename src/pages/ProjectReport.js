@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { FaFileExport, FaFilter, FaChartBar, FaProjectDiagram } from "react-icons/fa"
+import { FaFileExport, FaFilter, FaChartBar, FaProjectDiagram, FaChevronDown, FaChevronRight, FaEye } from "react-icons/fa"
 import { Bar, Pie } from "react-chartjs-2"
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from "chart.js"
 import Layout from "../components/Layout"
@@ -12,6 +12,7 @@ import Badge from "../components/Badge"
 import { getprojectreport } from "../services/productServices"
 import { useExport } from "../context/ExportContext"
 import { theme } from "../styles/Theme"
+import Modal from "../components/modals/Modal"
 
 // Register ChartJS components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement)
@@ -171,6 +172,29 @@ const TableActions = styled.div`
   color: ${({ theme }) => theme.colors.text};
 `
 
+// Extra styles for expandable tables (similar to MyClaims)
+const ExpandableRow = styled.tr`
+  cursor: pointer;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.background};
+  }
+`
+
+const InnerTable = styled.table`
+  width: 100%;
+  margin-top: 1rem;
+  border-collapse: collapse;
+  th, td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  }
+  th {
+    background-color: ${({ theme }) => theme.colors.background};
+    font-weight: 600;
+  }
+`
+
 const ProjectReport = () => {
   const [activeTab, setActiveTab] = useState("table")
   const [projectData, setProjectData] = useState([])
@@ -202,6 +226,13 @@ const ProjectReport = () => {
   }
 
   const [dateRange, setDateRange] = useState(getCurrentMonthRange())
+ 
+   // Expand state for details view
+   const [expandedProjects, setExpandedProjects] = useState(new Set())
+   // Modal state for viewing employee records
+   const [isModalOpen, setIsModalOpen] = useState(false)
+   const [modalEmployee, setModalEmployee] = useState(null)
+   const [modalProject, setModalProject] = useState(null)
 
   useEffect(() => {
     fetchProjectReport()
@@ -268,6 +299,31 @@ const ProjectReport = () => {
     })
 
     exportToExcel(exportData, "project_report", "Project Report")
+  }
+
+  const getEmployeesForProject = (project) => project.emp_list || []
+  const getEmployeeTotalHours = (emp) => emp.total_effort || 0
+  const getEmployeeRecords = (emp) => emp.record_list || []
+
+  const toggleProjectExpansion = (projectCode) => {
+    setExpandedProjects(prev => {
+      const next = new Set(prev)
+      if (next.has(projectCode)) next.delete(projectCode)
+      else next.add(projectCode)
+      return next
+    })
+  }
+
+  const openEmployeeModal = (project, emp) => {
+    setModalProject(project)
+    setModalEmployee(emp)
+    setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+    setModalEmployee(null)
+    setModalProject(null)
   }
 
   // Calculate summary data
@@ -486,44 +542,84 @@ const ProjectReport = () => {
             <table>
               <thead>
                 <tr>
+                  <th></th>
                   <th>Project Code</th>
-                  <th>Employee ID</th>
-                  <th>Date</th>
-                  <th>Effort (Hours)</th>
+                  <th>Title</th>
+                  <th>Project Manager</th>
+                  <th>Team Size</th>
+                  <th>Total Effort</th>
                 </tr>
               </thead>
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan={4} style={{ textAlign: "center" }}>
+                    <td colSpan={6} style={{ textAlign: "center" }}>
                       Loading detailed data...
                     </td>
                   </tr>
                 ) : error ? (
                   <tr>
-                    <td colSpan={4} style={{ textAlign: "center", color: "red" }}>
+                    <td colSpan={6} style={{ textAlign: "center", color: "red" }}>
                       {error}
                     </td>
                   </tr>
                 ) : projectData.length === 0 ? (
                   <tr>
-                    <td colSpan={4} style={{ textAlign: "center" }}>
+                    <td colSpan={6} style={{ textAlign: "center" }}>
                       No detailed data found for the selected date range
                     </td>
                   </tr>
                 ) : (
-                  projectData.flatMap((project) =>
-                    project.emp_list.flatMap((emp) =>
-                      emp.record_list.map((record, recordIndex) => (
-                        <tr key={`${project.project_code}-${emp.emp_id}-${recordIndex}`}>
-                          <td>{project.project_code}</td>
-                          <td>{emp.emp_id}</td>
-                          <td>{record.a_date}</td>
-                          <td>{record.effort}</td>
-                        </tr>
-                      )),
-                    ),
-                  )
+                  projectData.map((project) => {
+                    const isExpanded = expandedProjects.has(project.project_code)
+                    const employees = getEmployeesForProject(project)
+                    return (
+                      <>
+                        <ExpandableRow key={project.project_code}>
+                          <td>
+                            <Button variant="ghost" size="sm" onClick={() => toggleProjectExpansion(project.project_code)}>
+                              {isExpanded ? <FaChevronDown /> : <FaChevronRight />}
+                            </Button>
+                          </td>
+                          <td><strong>{project.project_code}</strong></td>
+                          <td>{project.title}</td>
+                          <td>{project.project_manager}</td>
+                          <td>{employees.length}</td>
+                          <td><Badge variant="primary">{project.total_effort} hours</Badge></td>
+                        </ExpandableRow>
+                        {isExpanded && (
+                          <tr>
+                            <td colSpan={6}>
+                              <InnerTable>
+                                <thead>
+                                  <tr>
+                                    <th>Employee ID</th>
+                                    <th>Total Hours</th>
+                                    <th>Actions</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {employees.map((emp) => (
+                                    <tr key={`${project.project_code}-${emp.emp_id}`}>
+                                      <td>{emp.emp_id}</td>
+                                      <td>
+                                        <Badge variant="secondary">{getEmployeeTotalHours(emp)} hours</Badge>
+                                      </td>
+                                      <td>
+                                        <Button variant="ghost" size="sm" onClick={() => openEmployeeModal(project, emp)}>
+                                          <FaEye/> View
+                                        </Button>
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </InnerTable>
+                            </td>
+                          </tr>
+                        )}
+                      </>
+                    )
+                  })
                 )}
               </tbody>
             </table>
@@ -535,6 +631,38 @@ const ProjectReport = () => {
           </TableContainer>
         )}
       </Card>
+      {isModalOpen && modalEmployee && (
+        <Modal onClose={closeModal}>
+          <h2>Employee Effort Details</h2>
+          <p style={{ margin: 12 }}>
+            <strong>Project:</strong> {modalProject?.project_code} - {modalProject?.title}
+          </p>
+          <p style={{ margin: 12 }}>
+            <strong>Employee ID:</strong> {modalEmployee?.emp_id}
+          </p>
+          <div style={{ marginTop: 16 }}>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr>
+                  <th style={{ textAlign: "left", borderBottom: "1px solid #eee", padding: "8px" }}>Date</th>
+                  <th style={{ textAlign: "left", borderBottom: "1px solid #eee", padding: "8px" }}>Effort (Hours)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {getEmployeeRecords(modalEmployee).map((e_data, idx) => (
+                  <tr key={idx}>
+                    <td style={{ padding: "8px", borderBottom: "1px solid #f3f3f3" }}>{e_data.a_date}</td>
+                    <td style={{ padding: "8px", borderBottom: "1px solid #f3f3f3" }}>{e_data.effort}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div style={{ marginTop: "1rem", textAlign: "right" }}>
+            <Button variant="primary" onClick={closeModal}>Close</Button>
+          </div>
+        </Modal>
+      )}
     </Layout>
   )
 }

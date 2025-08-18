@@ -193,6 +193,36 @@ const RequiredIndicator = styled.span`
   color: ${({ theme }) => theme.colors.error};
   margin-left: 0.25rem;
 `
+
+const TabContainer = styled.div`
+  display: flex;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  margin-bottom: 1rem;
+`
+
+const Tab = styled.button`
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: ${({ $active, theme }) => $active ? theme.colors.primary : 'transparent'};
+  color: ${({ $active, theme }) => $active ? 'white' : theme.colors.text};
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 6px 6px 0 0;
+  
+  &:hover {
+    background: ${({ $active, theme }) => $active ? theme.colors.primary : theme.colors.background};
+  }
+  
+  &:first-child {
+    margin-right: 0.25rem;
+  }
+  
+  &:last-child {
+    margin-left: 0.25rem;
+  }
+`
 const TimeRangeContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -250,6 +280,9 @@ const TimesheetModal = ({ isOpen, onClose, initialData, setRelode }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activities, setActivities] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [assignedProjects, setAssignedProjects] = useState([]);
+  const [otherProjects, setOtherProjects] = useState([]);
+  const [activeTab, setActiveTab] = useState('assigned'); // 'assigned' or 'other'
 
   useEffect(() => {
     fetchactivityCategories();
@@ -267,11 +300,36 @@ const TimesheetModal = ({ isOpen, onClose, initialData, setRelode }) => {
 
   const fetchprojectCategories = async () => {
     try {
-      const data={emp_id: localStorage.getItem("empId")}
-      const res = await getProjectlist(data);
-      setProjects(res.data);
+      const empId = localStorage.getItem("empId");
+      
+      // First, try to fetch assigned projects
+      const assignedData = { emp_id: empId };
+      const assignedRes = await getProjectlist(assignedData);
+      
+      if (assignedRes.data && assignedRes.data.length > 0) {
+        // If assigned projects exist, set them and make assigned tab active
+        setAssignedProjects(assignedRes.data);
+        setProjects(assignedRes.data);
+        setActiveTab('assigned');
+        
+        // Fetch other projects without emp_id
+        try {
+          const otherRes = await getProjectlist({});
+          setOtherProjects(otherRes.data || []);
+        } catch (otherErr) {
+          console.error("Error fetching other projects:", otherErr);
+          setOtherProjects([]);
+        }
+      } else {
+        // If no assigned projects, fetch all projects without emp_id and make other tab active
+        const otherRes = await getProjectlist({});
+        setOtherProjects(otherRes.data || []);
+        setProjects(otherRes.data || []);
+        setActiveTab('other');
+        setAssignedProjects([]);
+      }
     } catch (err) {
-      console.error("Error fetching categories:", err);
+      console.error("Error fetching project categories:", err);
     }
   };
 
@@ -310,8 +368,22 @@ const TimesheetModal = ({ isOpen, onClose, initialData, setRelode }) => {
         ts_id: initialData.id || "",
         emp_id: localStorage.getItem("empId") || "",
       });
+      
+      // Determine which tab the project belongs to for editing
+      if (initialData.project_code) {
+        const isAssignedProject = assignedProjects.some(p => p.project_code === initialData.project_code);
+        const isOtherProject = otherProjects.some(p => p.project_code === initialData.project_code);
+        
+        if (isAssignedProject) {
+          setActiveTab('assigned');
+          setProjects(assignedProjects);
+        } else if (isOtherProject) {
+          setActiveTab('other');
+          setProjects(otherProjects);
+        }
+      }
     }
-  }, [initialData]);
+  }, [initialData, assignedProjects, otherProjects]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -321,6 +393,18 @@ const TimesheetModal = ({ isOpen, onClose, initialData, setRelode }) => {
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
+  };
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    // Update projects based on selected tab
+    if (tab === 'assigned') {
+      setProjects(assignedProjects);
+    } else {
+      setProjects(otherProjects);
+    }
+    // Clear selected project when switching tabs
+    setFormData((prev) => ({ ...prev, project_code: "" }));
   };
 
   const calculateEffortFromTimes = () => {
@@ -456,6 +540,7 @@ const TimesheetModal = ({ isOpen, onClose, initialData, setRelode }) => {
       emp_id: localStorage.getItem("empId") || "",
     });
     setErrors({});
+    setActiveTab('assigned'); // Reset to default tab
     onClose();
   };
 
@@ -486,6 +571,22 @@ const TimesheetModal = ({ isOpen, onClose, initialData, setRelode }) => {
       <FaProjectDiagram />
       Choose Project<RequiredIndicator>*</RequiredIndicator>
       </Label>
+      <TabContainer>
+        <Tab 
+          $active={activeTab === 'assigned'} 
+          onClick={() => handleTabChange('assigned')}
+          type="button"
+        >
+          Assigned Projects ({assignedProjects.length})
+        </Tab>
+        <Tab 
+          $active={activeTab === 'other'} 
+          onClick={() => handleTabChange('other')}
+          type="button"
+        >
+          Other Projects ({otherProjects.length})
+        </Tab>
+      </TabContainer>
       <Select 
       name="project_code" 
       value={formData.project_code} 

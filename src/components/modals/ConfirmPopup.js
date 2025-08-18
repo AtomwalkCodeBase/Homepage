@@ -80,18 +80,24 @@ const LoadingSpinner = styled.div`
 `
 
 // Component
-const ConfirmPopup = ({ isOpen, onClose, onConfirm, approve, timesheet, isLoading  }) => {
+const ConfirmPopup = ({ isOpen, onClose, onConfirm, approve, timesheet, isLoading, title, message, confirmLabel  }) => {
   if (!isOpen) return null;
 
   const isApproveAction = approve === "APPROVE";
-  const actionLabel = isApproveAction ? 'Approve' : 'Submit';
-  const actionVerb = isApproveAction ? 'approving' : 'submitting';
+  const fallbackActionLabel = isApproveAction ? 'Approve' : 'Submit';
+  const fallbackActionVerb = isApproveAction ? 'approving' : 'submitting';
+
+  const resolvedTitle = title || `${fallbackActionLabel} Weekly Timesheet`;
+  const resolvedMessage = message || (isApproveAction 
+    ? 'Are you sure you want to approve this weekly timesheet? This action cannot be undone.'
+    : 'Are you sure you want to submit your weekly timesheet for approval? You won\'t be able to make changes after submission.');
+  const resolvedConfirmLabel = confirmLabel || `${fallbackActionLabel} Weekly Timesheet`;
 
   return (
     <Overlay>
       <PopupContainer>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Title>{actionLabel} Weekly Timesheet</Title>
+          <Title>{resolvedTitle}</Title>
           <button
             onClick={onClose}
             style={{
@@ -109,9 +115,7 @@ const ConfirmPopup = ({ isOpen, onClose, onConfirm, approve, timesheet, isLoadin
         </div>
 
         <Message>
-          {isApproveAction 
-            ? 'Are you sure you want to approve this weekly timesheet? This action cannot be undone.'
-            : 'Are you sure you want to submit your weekly timesheet for approval? You won\'t be able to make changes after submission.'}
+          {resolvedMessage}
         </Message>
 
         <ButtonGroup>
@@ -123,10 +127,10 @@ const ConfirmPopup = ({ isOpen, onClose, onConfirm, approve, timesheet, isLoadin
           >
             {isLoading ? (
               <>
-                <LoadingSpinner /> {actionVerb}...
+                <LoadingSpinner /> {fallbackActionVerb}...
               </>
             ) : (
-              `${actionLabel} Weekly Timesheet`
+              resolvedConfirmLabel
             )}
           </SubmitButton>
         </ButtonGroup>

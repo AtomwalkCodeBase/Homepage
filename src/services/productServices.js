@@ -1,4 +1,4 @@
-import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext,  processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip, processbarthdaywish, getResponseList, forgetPin, getCustomerDetailListURL, userTaskListURL, addCustomerTicketURL, getTaskCategoryURL, getOrderListURL, getEmpShiftData, getAppointeeList, getbookedlist, doctorbooking, getactivityList, getProjectLists, addTimesheet, getTimesheetList, profileDtlURL, processProjectLists, getprojectTimesheetList, validateApproveLimit, getMyenrollmentlist, getenrollmentlist, processenrollments } from "../services/ConstantServies";
+import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext,  processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip, processbarthdaywish, getResponseList, forgetPin, getCustomerDetailListURL, userTaskListURL, addCustomerTicketURL, getTaskCategoryURL, getOrderListURL, getEmpShiftData, getAppointeeList, getbookedlist, doctorbooking, getactivityList, getProjectLists, addTimesheet, getTimesheetList, profileDtlURL, processProjectLists, getprojectTimesheetList, validateApproveLimit, getMyenrollmentlist, getenrollmentlist, processenrollments, getTravelRequest, getTravelModeList, postTravelRequest } from "../services/ConstantServies";
 import { authAxios, authAxiosFilePost, authAxiosget, authAxiosPost } from "./HttpMethod";
 
 export function getEmpLeave(leave_type, emp_id) {
@@ -296,4 +296,25 @@ export async function validateClaimItem(res) {
       'm_claim_id': res.m_claim_id,
     };
     return authAxios(validateApproveLimit, data);
+}
+
+export function getTravelRequestList() {
+    const emp_id= localStorage.getItem('empId');
+  const data = {
+    'emp_id': emp_id, 
+  }
+  return authAxios(getTravelRequest,data)
+}
+
+export function getTravelMode() {
+  return authAxios(getTravelModeList)
+}
+
+export function postTravelRequests(res) {
+  let data = {};
+  if (res) {
+    data['travel_data'] = res;
+  }
+  // console.log('Data to be sent:', data);
+  return authAxiosPost(postTravelRequest, data)
 }

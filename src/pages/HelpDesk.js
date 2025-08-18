@@ -421,15 +421,16 @@ const HelpDesk = () => {
           }
         }
   return (
-    <Layout title="Help Desk">
+    <Layout title={isResolveDesk ? "Resolve Desk" : "Help Desk"}>
       <HelpDeskHeader>
         <div>
-          <p>Get support and find answers to your questions</p>
+          <p>{isResolveDesk ? "View and manage requests assigned to you" : "Get support and find answers to your questions"}</p>
         </div>
 
+       {!isResolveDesk &&
         <Button onClick={() => setIsModalOpens(true)} variant="primary">
           <FaPlus /> Create New Ticket
-        </Button>
+        </Button>}
       </HelpDeskHeader>
 
       <SearchContainer>
@@ -597,10 +598,12 @@ const HelpDesk = () => {
           <p>
             <strong>Status:</strong> {getStatusInfo(selectedTicket).text}
           </p>
-            <img
-            src={selectedTicket.submitted_file_1 || "/placeholder.svg"}
-            style={{ width: "100%", height: "auto", borderRadius: "8px", marginTop: "1rem" }}
-          />
+          {selectedTicket.submitted_file_1 && 
+              <img
+              src={selectedTicket.submitted_file_1 || "/placeholder.svg"}
+              style={{ width: "100%", height: "auto", borderRadius: "8px", marginTop: "1rem" }}
+            />
+          }
           <div style={{ marginTop: "1rem" }}>
             <Button variant="primary" onClick={closeModal}>
               Close

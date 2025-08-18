@@ -91,3 +91,6 @@ export const getEmpShiftData = `${newhrendpoint}/get_emp_shift_data/${db_name}/`
 export const getbookedlist = `${endpoint}/get_facility_booking_list/${db_name}/`;
 export const doctorbooking = `${endpoint}/process_booking_data/${db_name}/`;
 export const validateApproveLimit =  `${newhrendpoint}/get_claim_approve_limit_data/${db_name}/`;
+export const getTravelRequest =  `${newhrendpoint}/get_travel_request_list/${db_name}/`;
+export const getTravelModeList =  `${newhrendpoint}/travel_mode_list/${db_name}/`;
+export const postTravelRequest =  `${newhrendpoint}/process_travel_request/${db_name}/`;

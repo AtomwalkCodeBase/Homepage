@@ -32,6 +32,7 @@ import { useExport } from "../context/ExportContext"
 import { useNavigate } from "react-router-dom"
 import Modal from "../components/modals/Modal"
 import ConfirmPopup from "../components/modals/ConfirmPopup"
+import { useAuth } from "../context/AuthContext"
 
 const TimeSheetHeader = styled.div`
   display: flex;
@@ -228,6 +229,7 @@ const TimeSheetManagement = () => {
 
   const [showConfirmPopup, setShowConfirmPopup] = useState(false);
   const [popupAction, setPopupAction] = useState("");
+  const { companyInfo } = useAuth();
 
   const [reject, setReject] = useState({})
   const navigate = useNavigate()
@@ -374,7 +376,9 @@ const TimeSheetManagement = () => {
   const filteredEntries = timesheetEntries.filter((entry) => {
     return (
       (filters.project === "All Projects" || entry.project_code === filters.project) &&
-      (filters.status === "All Status" || entry.status_display === filters.status) &&
+      (filters.status === "All Status" || 
+       (filters.status === "Draft" && entry.status_display === "NOT SUBMITTED") ||
+       entry.status_display === filters.status) &&
       (filters.activity === "All Activities" || entry.activity_name === filters.activity)
     )
   })
@@ -399,7 +403,7 @@ const TimeSheetManagement = () => {
       {
         icon: <FaClock />,
         value: hoursThisWeek.toFixed(1),
-        label: "Hours This Week",
+        label: "Total Hours",
         color: "primary",
       },
       {
@@ -465,7 +469,6 @@ const TimeSheetManagement = () => {
         projectGroups[entry.project_code].total += entry.effort
       }
     })
-
     // Calculate daily totals
     const dailyTotals = {}
     weekDays.forEach((day) => {
@@ -557,7 +560,7 @@ const TimeSheetManagement = () => {
       try {
         const response = await posttimelist({ ...formData, a_remarks: remark })
         if (response.status === 200) {
-          toast.success("Timesheet entry rejected successfully!")
+          toast.success(`Timesheet entry ${approve === "DELETE" ? "delete" : "rejected"} successfully!`)
           setRelode(relode + 1)
         } else {
           toast.error("Failed to reject timesheet entry.")
@@ -572,15 +575,17 @@ const TimeSheetManagement = () => {
     const { startDate, endDate } = getCurrentWeekDates();
     const formattedStartDate = formatDate(startdate.startTime ? startdate.startTime : startDate);
     const formattedEndDate = formatDate(startdate.endTime ? startdate.endTime : endDate);
+    const payload = {
+      emp_id: action === "APPROVE" ? (empidParam || localStorage.getItem("empId")) : localStorage.getItem("empId"),
+      start_date: formattedStartDate,
+      end_date: formattedEndDate,
+      call_mode: action === "APPROVE" ? "WEEKLY_APPROVE" : "WEEKLY_SUBMIT",
+      a_emp_id: localStorage.getItem("empId"),
+    };
+// console.log("payload", payload)
     setLoading(true)
     try {
-      const response = await posttimelist({
-        emp_id: empidParam ? empidParam : localStorage.getItem("empId"),
-        start_date: formattedStartDate,
-        end_date: formattedEndDate,
-        call_mode: action === "APPROVE" ? "WEEKLY_APPROVE" : "WEEKLY_SUBMIT",
-        a_emp_id: empidParam ? empidParam : "",
-      });
+      const response = await posttimelist(payload);
 
       if (response.status === 200) {
         toast.success(
@@ -659,7 +664,7 @@ const TimeSheetManagement = () => {
     <Layout title="Timesheet Management">
       <TimeSheetHeader>
         <div>
-          <Tagline>Track and manage your working hours</Tagline>
+          <Tagline>Track and manage the working hours</Tagline>
         </div>
 
         <HeaderActions>
@@ -717,6 +722,7 @@ const TimeSheetManagement = () => {
             <option>APPROVED</option>
             <option>SUBMITTED</option>
             <option>REJECTED</option>
+            <option>Draft</option>
           </FilterSelect>
 
           <FilterSelect name="activity" value={filters.activity} onChange={handleFilterChange}>
@@ -764,7 +770,7 @@ const TimeSheetManagement = () => {
                     </td>
                     <td>{entry.activity_name}</td>
                     <td>{entry.effort}</td>
-                    <td>{entry.remarks}</td>
+                    <td style={{textWrap: "nowrap", overflow: "hidden",textOverflow: "ellipsis", maxWidth: "200px"}}>{entry.remarks || "--"}</td>
                     <td>
                       <Badge variant={entry.status === "A" ? "success" : entry.status === "S" ? "warning" : "error"}>
                         {entry.status == "N" ? "Draft" : entry.status_display}
@@ -789,7 +795,7 @@ const TimeSheetManagement = () => {
                                   </Button>
                                 </>
                               )
-                            : entry.status !== "S" && (
+                            : entry.status !== "S" && companyInfo.is_geo_location_enabled !== "T" && (
                                 <>
                                   <Button onClick={() => handelDelete(entry)} variant="ghost" size="sm" title="Delete">
                                     <FaTrash />
@@ -961,16 +967,35 @@ const TimeSheetManagement = () => {
         approve={approve}
         timesheet={true}
       ></ConfirmationPopup>
-      {showImageModal && (
-        <Modal onClose={() => setShowImageModal(false)}>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
-            {reject.a_remarks}
-          </div>
-          <Button variant="primary" onClick={() => setShowImageModal(false)}>
-            Close
-          </Button>
-        </Modal>
-      )}
+      {showImageModal && reject && (
+  <Modal onClose={() => setShowImageModal(false)}>
+    <div style={{ padding: "1rem" }}>
+      <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>Activity Details</h2>
+      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <tbody>
+          <tr><td><strong>Employee Name:</strong></td><td>{reject.employee_name}</td></tr>
+          <tr><td><strong>Employee ID:</strong></td><td>{reject.emp_id}</td></tr>
+          <tr><td><strong>Project Name:</strong></td><td>{reject.project_name}</td></tr>
+          <tr><td><strong>Project Code:</strong></td><td>{reject.project_code}</td></tr>
+          <tr><td><strong>Activity:</strong></td><td>{reject.activity_name}</td></tr>
+          <tr><td><strong>Date:</strong></td><td>{reject.a_date}</td></tr>
+          <tr><td><strong>Effort:</strong></td><td>{reject.effort} {reject.effort_unit}</td></tr>
+          <tr><td><strong>Status:</strong></td><td>{reject.status_display}</td></tr>
+          <tr><td><strong>Remarks:</strong></td><td>{reject.remarks || "—"}</td></tr>
+          <tr><td><strong>Approval by:</strong></td><td>{reject.approve_by || "—"}</td></tr>
+          <tr><td><strong>Approval Remarks:</strong></td><td>{reject.a_remarks || "—"}</td></tr>
+        </tbody>
+      </table>
+
+      <div style={{ marginTop: "1.5rem", textAlign: "center" }}>
+        <Button variant="primary" onClick={() => setShowImageModal(false)}>
+          Close
+        </Button>
+      </div>
+    </div>
+  </Modal>
+)}
+
 
       <AttendanceComparisonModal
         isOpen={isComparisonModalOpen}

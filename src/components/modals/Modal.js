@@ -37,7 +37,7 @@ const ModalContent = styled.div`
   animation: ${scaleUp} 0.3s ease;
   position: relative;
   overflow-y: scroll;
-
+  max-height: 80%
 `;
 
 const CloseButton = styled.button`

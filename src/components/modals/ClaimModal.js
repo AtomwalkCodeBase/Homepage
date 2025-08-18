@@ -321,8 +321,8 @@ useEffect(() => {
       const res = await postClaim(formDatas)
       if (res.status === 200) {
         setIsLoadings(isLoadings + 1)
-        toast.success(claimupdate ? "Update claim successfully" :"Add claim successfully")
         onClose() // Show success modal on successful submission
+        toast.success(claimupdate?.item_id ? "Update claim successfully" : "Add claim successfully")
         setIsFileError(false)
         setFormData({
           type: "",

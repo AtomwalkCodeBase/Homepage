@@ -337,9 +337,11 @@ const AttendanceTracking = () => {
   const [checkedIn, setCheckedIn] = useState(false)
   const [attendance, setAttendance] = useState({})
   const [isRemarkModalOpen, setIsRemarkModalOpen] = useState(false)
+  const [isYesterdayModalOpen, setIsYesterdayModalOpen] = useState(false)
   // const [isAttendanceModalOpen, setIsAttendanceModalOpen] = useState(false)
   const [isModalOpens, setIsModalOpens] = useState(false)
   const [remark, setRemark] = useState("")
+  const [yesterdayRemark, setYesterdayRemark] = useState("")
   const [date, setDate] = useState(new Date())
   const currentMonth = date.getMonth()
   const currentYear = date.getFullYear()
@@ -347,10 +349,11 @@ const AttendanceTracking = () => {
   const [employeeDatas, setEmployeeDatas] = useState([])
   const [holiday, setHoliday] = useState({})
   const [relode, setReLoad] = useState(1)
-  const { profile } = useAuth()
+  const { profile, companyInfo } = useAuth()
   const { exportAppointmentData } = useExport()
   const navigate = useNavigate()
   const emp_id = localStorage.getItem("empId")
+  const [previousDayUnchecked, setPreviousDayUnchecked] = useState(false);
 
   // In the component, add these state variables after the existing state declarations
   const [statusFilter, setStatusFilter] = useState("All Status")
@@ -363,6 +366,7 @@ const AttendanceTracking = () => {
   const profileimage = decodeURIComponent(urlParams.get("image"));
   const department = urlParams.get("department")
   const [error, setError] = useState('')
+  const [yesterdayError, setYesterdayError] = useState('')
   const setdatatime = async () => {
     let time = moment().format("hh:mm A")
     if (
@@ -410,10 +414,29 @@ const AttendanceTracking = () => {
     }
   }, [date])
 
+      const checkPreviousDayAttendance = (attendanceData) => {
+        if (profile) {
+            if (!profile?.is_shift_applicable) {
+                setPreviousDayUnchecked(false);
+                return;
+            }
+        }
+
+        const yesterday = moment().subtract(1, 'day').format('DD-MM-YYYY');
+        const yesterdayAttendance = attendanceData.find(item =>
+            item.a_date === yesterday &&
+            item.attendance_type !== "L" &&
+            item.end_time === null
+        );
+
+        setPreviousDayUnchecked(!!yesterdayAttendance);
+    };
+
   const fetchAttendanceDetails = (data) => {
     getEmpAttendance(data).then((res) => {
       setEmployeeDatas(res.data)
       processAttendanceData(res.data)
+      checkPreviousDayAttendance(res.data)
     })
     getEmpHoliday(data).then((res) => {
       processHolidayData(res.data)
@@ -540,16 +563,26 @@ const AttendanceTracking = () => {
     // console.log('Processed Holiday Map:', holidayMap);
   }
 
-  const confirmCheckOut = () => {
-    if (!remark.trim()) {
-      setError("Remarks are required");
+  const confirmCheckOut = (isYesterday = false) => {
+    const currentRemark = isYesterday ? yesterdayRemark : remark;
+    const currentError = isYesterday ? setYesterdayError : setError;
+    const currentModal = isYesterday ? setIsYesterdayModalOpen : setIsRemarkModalOpen;
+    const currentRemarkState = isYesterday ? setYesterdayRemark : setRemark;
+    
+    if (!currentRemark.trim()) {
+      currentError("Remarks are required");
       return;
     }
-    setError("");
-    setCheckedIn(false)
-    handleCheck("UPDATE")
-    setIsRemarkModalOpen(false)
-    setRemark("")
+    currentError("");
+    
+    if (!isYesterday) {
+      setCheckedIn(false);
+    }
+    
+    handleCheck("UPDATE", isYesterday);
+    
+    currentModal(false);
+    currentRemarkState("");
   }
 
   const changeMonth = (direction) => {
@@ -580,14 +613,14 @@ const AttendanceTracking = () => {
   }
 
   const getStatusForDay = (day) => {
-    // Check if it's a holiday first
-    if (holiday[day]) {
-      return holiday[day]
-    }
-
-    // Then check attendance data
+    // Check attendance data first - this should override holiday status
     if (attData[day]) {
       return attData[day]
+    }
+
+    // Then check if it's a holiday
+    if (holiday[day]) {
+      return holiday[day]
     }
 
     // Default to not submitted if it's a past day
@@ -595,31 +628,31 @@ const AttendanceTracking = () => {
     const dateObj = new Date(date.getFullYear(), date.getMonth(), day)
     return dateObj < today ? "N" : ""
   }
-  const handleCheck = async (mode) => {
+  const handleCheck = async (mode, isYesterday = false) => {
     const currentDate = `${currentTime.getDate().toString().padStart(2, "0")}-${(currentTime.getMonth() + 1).toString().padStart(2, "0")}-${currentTime.getFullYear()}`
     const time = await setdatatime()
     try {
-      const todayAttendance = employeeDatas.find((item) => item.a_date === currentDate)
-      const attendanceId = todayAttendance ? todayAttendance.id : null
+      const attendance = employeeDatas.find((item) => item.a_date === date)
+      const attendanceId = attendance ? attendance.id : null
 
       const checkPayload = {
         emp_id: localStorage.getItem("empNoId"),
         call_mode: mode,
         time: time,
         geo_type: mode === "ADD" ? "I" : "O",
-        a_date: currentDate,
+        [isYesterday ? 'e_date' : 'a_date']: currentDate, 
         latitude_id: ``,
         longitude_id: ``,
-        remarks: mode === "ADD" ? "Check-in from Web" : remark,
+        remarks: mode === "ADD" ? "Check-in from Web" : (isYesterday ? yesterdayRemark : remark),
         id: attendanceId,
       }
       const Attdatarec = await postCheckIn(checkPayload)
       if (Attdatarec.status === 200) {
-        toast.success("Attendance processed successfully")
+        toast.success(isYesterday ? "Yesterday's attendance processed successfully" : "Attendance processed successfully")
       }
     } catch (error) {
-      console.log("Error during check in/out:", error)
-      toast.error("Failed to process attendance")
+      console.log(`Error during ${isYesterday ? 'yesterday' : ''} check in/out:`, error)
+      toast.error(`Failed to process ${isYesterday ? "yesterday's" : ""} attendance`)
     }
     setReLoad(relode + 1)
   }
@@ -639,8 +672,8 @@ const AttendanceTracking = () => {
   // }
 
   // Button states
-  const isCheckInDisabled = checkedIn || attendance.geo_status === "O" || !!attendance.start_time
-  const isCheckOutDisabled = !checkedIn || attendance.geo_status !== "I" || !!attendance.end_time
+  const isCheckInDisabled = checkedIn || attendance.geo_status === "O" || !!attendance.start_time || previousDayUnchecked
+  const isCheckOutDisabled = !checkedIn || attendance.geo_status !== "I" || !!attendance.end_time 
 
   // Update the handleFilter function
  
@@ -671,7 +704,7 @@ const AttendanceTracking = () => {
            </Button>:
           <Button variant="primary" onClick={() => setIsModalOpens(true)}>
             <FaPlus style={{ marginRight: "0.5rem" }} />
-            Request Shift Change
+            Add Attendance Request
           </Button>}
         </HeaderActions>
       </AttendanceHeader>
@@ -689,7 +722,9 @@ const AttendanceTracking = () => {
         <ProfileImage src={employeeData.image} alt={employeeData.name} />
         <ProfileInfo>
           <EmployeeName>{employeeData.name}</EmployeeName>
-          {attendance.start_time ? (
+          {previousDayUnchecked ? 
+          <StatusBadge $status="absent">You did not Check out For Yesterday</StatusBadge> : 
+          attendance.start_time ? (
             <StatusBadge $status="present">Checked In at {attendance.start_time}</StatusBadge>
           ) : attendance.end_time ? (
             <StatusBadge $status="leave">Checked Out at {attendance.end_time}</StatusBadge>
@@ -712,29 +747,43 @@ const AttendanceTracking = () => {
           </DetailItem>
         </ProfileDetails>
       </ProfileCard>
-    {!empName&& <AttendanceActions>
+     {(companyInfo.is_geo_location_enabled !== "T" && companyInfo.is_geo_location_enabled !== "A") &&
+      (!empName &&  
+     <AttendanceActions>
         <ActionButton onClick={() => handleCheck("ADD")} disabled={isCheckInDisabled}>
           <ActionIcon>
             <FaSignInAlt style={{ color: isCheckInDisabled ? "#ccc" : "#4CAF50" }} />
           </ActionIcon>
-          <ActionText>{isCheckInDisabled ? `Checked In • ${attendance.start_time}` : "Check In"}</ActionText>
+          <ActionText>
+            {previousDayUnchecked 
+              ? "Check In" 
+              : isCheckInDisabled 
+                ? `Checked In • ${attendance.start_time}` 
+                : "Check In"
+            }
+          </ActionText>
         </ActionButton>
 
-        <ActionButton onClick={() => setIsRemarkModalOpen(true)} disabled={isCheckOutDisabled}>
+        <ActionButton 
+          onClick={() => previousDayUnchecked ? setIsYesterdayModalOpen(true) : setIsRemarkModalOpen(true)} 
+          disabled={previousDayUnchecked ? false : isCheckOutDisabled}
+        >
           <ActionIcon>
-            <FaSignOutAlt style={{ color: isCheckOutDisabled ? "#ccc" : "#F44336" }} />
+            <FaSignOutAlt style={{ color: (previousDayUnchecked ? false : isCheckOutDisabled) ? "#ccc" : "#F44336" }} />
           </ActionIcon>
           <ActionText>
-            {isCheckOutDisabled
-              ? attendance.end_time
-                ? `Checked Out • ${attendance.end_time}`
-                : "Check Out"
-              : "Check Out"}
+           {previousDayUnchecked
+              ? "Check Out for Yesterday"
+              : isCheckOutDisabled
+                ? attendance.end_time
+                  ? `Checked Out • ${attendance.end_time}`
+                  : "Check Out"
+                : "Check Out"}
           </ActionText>
         </ActionButton>
       </AttendanceActions>
-        }
-      {/* Calendar View */}
+    )}
+      
       <Card title="Monthly Attendance">
         <CalendarContainer>
           <Button variant="ghost" onClick={() => changeMonth(-1)}>
@@ -886,19 +935,44 @@ const AttendanceTracking = () => {
       </Card>
       {isRemarkModalOpen && (
         <Modal isOpen={isRemarkModalOpen} onClose={() => setIsRemarkModalOpen(false)} title="Check Out Remarks">
-          <Input
-            label="Remarks"
-            value={remark}
-            onChange={(e) => setRemark(e.target.value)}
-            placeholder="Enter check-out remark"
-            textarea
-          />
+          <div>
+            <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "500" }}>Remarks</label>
+            <Input
+              value={remark}
+              onChange={(e) => setRemark(e.target.value)}
+              placeholder="Enter check-out remark"
+              as="textarea"
+              rows={4}
+            />
+          </div>
           {error && <ErrorText>{error}</ErrorText>}
           <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
             <Button variant="outline" onClick={() => setIsRemarkModalOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={confirmCheckOut}>Confirm Check Out</Button>
+            <Button onClick={() => confirmCheckOut(false)}>Confirm Check Out</Button>
+          </div>
+        </Modal>
+      )}
+
+      {isYesterdayModalOpen && (
+        <Modal isOpen={isYesterdayModalOpen} onClose={() => setIsYesterdayModalOpen(false)} title="Check Out Yesterday Remarks">
+          <div>
+            <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "500" }}>Remarks</label>
+            <Input
+              value={yesterdayRemark}
+              onChange={(e) => setYesterdayRemark(e.target.value)}
+              placeholder="Enter yesterday's check-out remark"
+              as="textarea"
+              rows={4}
+            />
+          </div>
+          {yesterdayError && <ErrorText>{yesterdayError}</ErrorText>}
+          <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
+            <Button variant="outline" onClick={() => setIsYesterdayModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={() => confirmCheckOut(true)}>Confirm Yesterday Check Out</Button>
           </div>
         </Modal>
       )}

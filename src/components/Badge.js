@@ -64,6 +64,13 @@ ${(props) =>
   background: #fef5e7 ; 
   color: #f39c12;
 `}
+
+${(props) =>
+  props.variant === "settle" &&
+  `
+  background: #eaf2f8;
+  color: #2980b9;
+`}
 `
 
 const Badge = ({ children, variant = "primary", ...props }) => {

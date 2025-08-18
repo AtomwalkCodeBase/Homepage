@@ -87,6 +87,9 @@ export const NavBar = () => {
     "OPDappointments",
     "projectmanagement",
      "project-report",
+     "DoctorDashboard",
+   "IPDappointments",
+   "patient-admission",
      "my-training"
   ];
   

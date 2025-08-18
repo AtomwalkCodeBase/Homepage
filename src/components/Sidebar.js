@@ -24,6 +24,7 @@ import {
   FaChartBar,
   FaUsers,
   FaFileInvoice,
+  FaUserFriends,
   FaGraduationCap,
   FaKey,
 } from "react-icons/fa"
@@ -31,7 +32,6 @@ import { SiGooglecalendar } from "react-icons/si"
 import { PiListPlusFill } from "react-icons/pi"
 import { useAuth } from "../context/AuthContext"
 import { useTheme } from "../context/ThemeContext"
-
 const SidebarContainer = styled.div`
   width: ${(props) => {
     const { isOpen, uiPreferences } = props
@@ -563,6 +563,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
             { path: "/helpdesk", name: "Help Desk", icon: <FaComments /> },
             { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
             { path: "/resolvedesk", name: "Resolve Desk", icon: <FaKey /> },
+            // { path: "/patient-admission", name: "Patient Admission", icon: <FaHome /> },
           ],
         },
         {
@@ -572,7 +573,8 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
             { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
             { path: "/profile", name: "My Profile", icon: <FaUserCircle /> },
             // { path: "/DoctorDashboard", name: "Dashboard", icon: <FaHome /> },
-            // { path: "/OPDappointments", name: "Out patients", icon: <FaUserFriends /> },
+            // { path: "/OPDappointments", name: "Out-patients", icon: <FaUserFriends /> },
+            // { path: "/IPDappointments", name: "In-patients", icon: <FaUserFriends /> },
           ],
         },
       ]

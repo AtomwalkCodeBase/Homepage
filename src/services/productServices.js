@@ -1,4 +1,4 @@
-import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext,  processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip, processbarthdaywish, getResponseList, forgetPin, getCustomerDetailListURL, userTaskListURL, addCustomerTicketURL, getTaskCategoryURL, getOrderListURL, getEmpShiftData, getAppointeeList, getbookedlist, doctorbooking, getactivityList, getProjectLists, addTimesheet, getTimesheetList, profileDtlURL, processProjectLists, getprojectTimesheetList, validateApproveLimit, getMyenrollmentlist, getenrollmentlist, processenrollments, getTravelRequest, getTravelModeList, postTravelRequest } from "../services/ConstantServies";
+import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext,  processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip, processbarthdaywish, getResponseList, forgetPin, getCustomerDetailListURL, userTaskListURL, addCustomerTicketURL, getTaskCategoryURL, getOrderListURL, getEmpShiftData, getAppointeeList, getbookedlist, doctorbooking, getactivityList, getProjectLists, addTimesheet, getTimesheetList, profileDtlURL, processProjectLists, getprojectTimesheetList, getCustomerListURL, getProcessListURL, processProjectList, createaddressURL, equipentTypeListURL, getAvailableRoomslistURL, getActivitylistURL, validateApproveLimit, getMyenrollmentlist, getenrollmentlist, processenrollments, getTravelRequest, getTravelModeList, postTravelRequest } from "../services/ConstantServies";
 import { authAxios, authAxiosFilePost, authAxiosget, authAxiosPost } from "./HttpMethod";
 
 export function getEmpLeave(leave_type, emp_id) {
@@ -182,6 +182,15 @@ export function postProject(res) {
   return authAxiosPost(processProjectLists, data)
 
 }
+export function postProject2(res) {
+  let data = {};
+  if (res) {
+    data['project_data'] = res;
+  }
+  // console.log('Data to be sent:', data);
+  return authAxiosPost(processProjectList, data)
+
+}
 
 export function getEmployeeRequest(empId) {
   let data = {
@@ -246,7 +255,7 @@ export async function setuserpinview(o_pin, n_pin) {
 
     const response = await authAxiosPost(setuserpin, data);
     if (response.status === 200) {
-      // console.log("Pin updated successfully")
+    // console.log("Pin updated successfully")
     }
     return response;
   } catch (error) {
@@ -268,11 +277,43 @@ export async function getProjectlist(data) {
   return authAxios(getProjectLists,data)
 }
 export function getequipmentlistview() {
-  return authAxios(getAppointeeList)
+  return authAxios(equipentTypeListURL)
 }
 export function getbookedlistview() {
   return authAxios(getbookedlist)
 }
+
+export function getCustomerListView() {
+  return authAxios(getCustomerListURL)
+}
+
+export function getProcessListView() {
+  return authAxios(getProcessListURL)
+}
+
+export function getEquipmentListView() {
+  return authAxios(getAppointeeList)
+}
+
+export function getEquipentTypeListView() {
+  return authAxios(equipentTypeListURL)
+}
+
+export function getActivityListView(projectCode) {
+  const data = {};
+  if (projectCode) {
+    data['project_code'] = projectCode;
+  }
+  return authAxios(getActivitylistURL, data)
+}
+
+export function getAvailableRoomslistView(equipment_type, no_of_days) {
+  const data = {};
+  if (equipment_type) data['equipment_type'] = equipment_type;
+  if (no_of_days) data['no_of_days'] = no_of_days;
+  return authAxios(getAvailableRoomslistURL, data)
+}
+
 export function getmyenrollmentLists() {
   const emp_id= localStorage.getItem('empId');
   const data = {
@@ -286,8 +327,14 @@ export function getenrollmentList() {
 export function processenrollment(data) {
   return authAxiosFilePost(processenrollments, data)
 }
-export function doctorBookingView() {
-  return authAxios(doctorbooking)
+export function doctorBookingView(booking_data) {
+  let data = {};
+  if (booking_data) {
+    data['booking_data'] = booking_data;
+  }
+  console.log('Data to be sent for bed booking:', data);
+  return authAxiosPost(doctorbooking, data)
+
 }
 
 export async function validateClaimItem(res) {
@@ -296,7 +343,7 @@ export async function validateClaimItem(res) {
       'm_claim_id': res.m_claim_id,
     };
     return authAxios(validateApproveLimit, data);
-}
+  }
 
 export function getTravelRequestList() {
     const emp_id= localStorage.getItem('empId');
@@ -318,3 +365,13 @@ export function postTravelRequests(res) {
   // console.log('Data to be sent:', data);
   return authAxiosPost(postTravelRequest, data)
 }
+
+export function createAddressPost(res) {
+  let data = {};
+  if (res) {
+    data['address_data'] = res;
+  }
+  // console.log('Data to be sent:', data);
+  return authAxiosPost(createaddressURL, data)
+}
+

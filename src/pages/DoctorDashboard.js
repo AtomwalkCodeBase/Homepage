@@ -17,7 +17,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js"
-import { getbookedlistview } from "../services/productServices"
+import { getbookedlistview, getProjectlist } from "../services/productServices"
 import { getEmployeeInfo } from "../services/authServices"
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
@@ -398,12 +398,13 @@ const DoctorDashboard = () => {
   const [newActivityTitle, setNewActivityTitle] = useState("")
   const [newActivityDescription, setNewActivityDescription] = useState("")
   const [appointments, setAppointments] = useState([])
+  const [inPatients, setInPatients] = useState([])
   const [loading, setLoading] = useState(true)
   const [statsData, setStatsData] = useState({
-    totalPatients: 33,
+    totalPatients: 0,
     outPatients: 0,
-    inPatients: 21,
-    surgeries: 8,
+    inPatients: 0,
+    surgeries: 3,
   })
   const dateInputRef = useRef(null)
 
@@ -412,7 +413,7 @@ const DoctorDashboard = () => {
     datasets: [
       {
         label: "Patients Need Action",
-        data: [19, statsData.outPatients, 9],
+        data: [statsData.inPatients, statsData.outPatients, 9],
         backgroundColor: ["#FFD600", "#1890FF", "#FF3D00"],
       },
     ],
@@ -430,39 +431,31 @@ const DoctorDashboard = () => {
     },
   }
 
-  const inPatients = [
-    { id: 1, name: "2 Patients with Critical Vitals", icon: "vitals", status: "error" },
-    { id: 2, name: "3 Unreviewed Critical Labs", icon: "labs", status: "error" },
-    { id: 3, name: "1 Discharge Summary Ready", icon: "discharge", status: "success" },
-    { id: 4, name: "402 ICU Transfer for Bed", icon: "icu", status: "warning" },
-    { id: 5, name: "217 Rapid Deterioration Flag in Bed", icon: "flag", status: "error" },
-    { id: 6, name: "1864 - New Admission Initial Review", icon: "admission", status: "info" },
-  ]
-
   const surgeryList = [
     { id: 1, name: "2 Surgeries Scheduled Today", icon: "scheduled", status: "primary" },
     { id: 2, name: "1 Surgery Completed", icon: "completed", status: "success" },
     { id: 3, name: "2 Surgical Clearance Pending", icon: "pending", status: "warning" },
-    { id: 4, name: "Consent Not Yet Signed - Scheduled Surgery at 3 PM", icon: "consent", status: "error" },
-    { id: 5, name: "Post-Op Note Pending", icon: "postop", status: "info" },
   ]
 
   useEffect(() => {
-    const fetchAppointments = async () => {
+    const fetchData = async () => {
       try {
+        // Get employee profile data
         const profileResponse = await getEmployeeInfo();
         const employeeName = profileResponse?.data?.[0]?.name;
-        
-        if (!employeeName) {
-          console.error('Could not fetch employee name');
+        const employeeId = profileResponse?.data?.[0]?.emp_id;
+
+        if (!employeeName || !employeeId) {
+          console.error('Could not fetch employee data');
           setLoading(false);
           return;
         }
 
-        const response = await getbookedlistview(false);
-        let bookings = response.data || response || [];
-        if (!Array.isArray(bookings) && Array.isArray(response)) {
-          bookings = response;
+        // Fetch out-patients (appointments) using name matching
+        const appointmentResponse = await getbookedlistview(false);
+        let bookings = appointmentResponse.data || appointmentResponse || [];
+        if (!Array.isArray(bookings) && Array.isArray(appointmentResponse)) {
+          bookings = appointmentResponse;
         }
 
         const today = new Date();
@@ -471,14 +464,14 @@ const DoctorDashboard = () => {
         const year = today.getFullYear();
         const todayString = `${day}-${month}-${year}`;
 
-        const filtered = bookings.filter(item => {
+        const filteredAppointments = bookings.filter(item => {
           if (!item.equipment_data || !item.customer_data || !item.booking_date) {
             return false;
           }
           return item.equipment_data.name === employeeName && item.booking_date === todayString;
         });
 
-        const mapped = filtered.map(item => ({
+        const mappedAppointments = filteredAppointments.map(item => ({
           id: item.id || Math.random().toString(36).substr(2, 9),
           name: item.customer_data?.name || 'Unknown',
           time: `${item.start_time || ''} - ${item.end_time || ''}`,
@@ -494,7 +487,7 @@ const DoctorDashboard = () => {
           return `${hour12}:${minutes}${ampm}`;
         };
 
-        const formattedAppointments = mapped.map(appt => ({
+        const formattedAppointments = mappedAppointments.map(appt => ({
           ...appt,
           time: appt.time
             .split(' - ')
@@ -518,19 +511,49 @@ const DoctorDashboard = () => {
           return convertToMinutes(timeA) - convertToMinutes(timeB);
         });
 
+        // Fetch in-patients (projects) using emp_id matching
+        const projectResponse = await getProjectlist();
+        let projectList = projectResponse.data || projectResponse || [];
+        if (!Array.isArray(projectList) && Array.isArray(projectResponse)) {
+          projectList = projectResponse;
+        }
+
+        // Convert selected date to DD-MMM-YYYY for comparison
+        const selectedDay = String(selectedDate.getDate()).padStart(2, '0');
+        const selectedMonth = selectedDate.toLocaleString('en-US', { month: 'short' });
+        const selectedYear = selectedDate.getFullYear();
+        const formattedSelectedDate = `${selectedDay}-${selectedMonth}-${selectedYear}`;
+
+        const filteredProjects = projectList.filter(item => {
+          if (!item.additional_fld_list || !item.start_date) {
+            return false;
+          }
+          const employeeIds = item.additional_fld_list.split("|").flatMap(group => group.split(","));
+          return employeeIds.includes(employeeId);
+        });
+
+        const mappedProjects = filteredProjects.map(item => ({
+          id: item.id || Math.random().toString(36).substr(2, 9),
+          name: item.title || 'Unknown',
+          status: item.project_status === "03" ? "success" : "error",
+        }));
+
         setAppointments(sortedAppointments);
+        setInPatients(mappedProjects);
         setStatsData(prev => ({
           ...prev,
           outPatients: sortedAppointments.length,
+          inPatients: mappedProjects.length,
+          totalPatients: sortedAppointments.length + mappedProjects.length,
         }));
       } catch (error) {
-        console.error('Failed to fetch appointments:', error);
+        console.error('Failed to fetch data:', error);
       } finally {
         setLoading(false);
       }
     };
-    fetchAppointments();
-  }, []);
+    fetchData();
+  }, [selectedDate]);
 
   const handleAddActivity = () => {
     if (newActivityTime && newActivityTitle) {
@@ -600,7 +623,7 @@ const DoctorDashboard = () => {
                       <ClinicalArrow><FaArrowRight /></ClinicalArrow>
                     </ClinicalInnerCard>
                   </Link>
-                  <Link to="/in-patients" style={{ textDecoration: 'none' }}>
+                  <Link to="/IPDappointments" style={{ textDecoration: 'none' }}>
                     <ClinicalInnerCard color="red">
                       <ClinicalIcon color="#FF4D4F"><FaProcedures /></ClinicalIcon>
                       <ClinicalText>
@@ -620,16 +643,22 @@ const DoctorDashboard = () => {
                     <PatientListTitle>In-Patients</PatientListTitle>
                   </PatientListHeader>
                   <PatientList>
-                    {inPatients.map((patient) => (
-                      <PatientItem key={patient.id}>
-                        <PatientIcon color={patient.status}>
-                          <FaBed color="white" />
-                        </PatientIcon>
-                        <PatientInfo>
-                          <PatientName>{patient.name}</PatientName>
-                        </PatientInfo>
-                      </PatientItem>
-                    ))}
+                    {loading ? (
+                      <PatientItem>Loading...</PatientItem>
+                    ) : inPatients.length === 0 ? (
+                      <PatientItem>No in-patients for selected date</PatientItem>
+                    ) : (
+                      inPatients.map((patient) => (
+                        <PatientItem key={patient.id}>
+                          <PatientIcon color={patient.status}>
+                            <FaBed color="white" />
+                          </PatientIcon>
+                          <PatientInfo>
+                            <PatientName>{patient.name}</PatientName>
+                          </PatientInfo>
+                        </PatientItem>
+                      ))
+                    )}
                   </PatientList>
                 </PatientListCard>
                 <PatientListCard>

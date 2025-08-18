@@ -243,6 +243,9 @@ export default function Footer2() {
    "OPDappointments",
     "projectmanagement",
     "project-report",
+    "DoctorDashboard",
+   "IPDappointments",
+   "patient-admission",
     "my-training"
   ];
   

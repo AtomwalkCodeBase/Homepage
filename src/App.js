@@ -100,6 +100,8 @@ import MyTraining from "./pages/MyTraining";
 import NewsEventsList from "./components/NewsEvents/NewsEventsList";
 import NewsEventDetail from "./components/NewsEvents/NewsEventDetail";
 import NewsEventForm from "./components/NewsEvents/NewsEventForm";
+import InPatients from "./pages/IPDappointments";
+import PatientAdmission from "./pages/PatientAdmission";
 
 function App() {
   const url = "https://www.atomwalk.com/rest-auth/login/";
@@ -260,6 +262,8 @@ function App() {
                 <Route path="/projectmanagement" element={<ProjectManagement />} />
                 <Route path="/project-report" element={<ProjectReport />} />
                 <Route path="/my-training" element={<MyTraining />} />
+                <Route path="/IPDappointments" element={<InPatients />} />
+                <Route path="/patient-admission" element={<PatientAdmission />} />
               </Route>
     
               {/* Catch All */}

@@ -48,6 +48,7 @@ const SubHeading = styled.p`
   margin-bottom: 30px;
   line-height: 1.5;
  text-align: justify;
+ width: 97%;
 
   @media (max-width: 768px) {
     font-size: 1rem;
@@ -123,7 +124,8 @@ const ProfileImage = styled.img`
   width: 600px;
   height: auto;
   border-radius: 10%;
-  object-fit: cover;
+  object-fit: contain;
+  aspect-ratio: 3/2;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
   @media (max-width: 768px) {

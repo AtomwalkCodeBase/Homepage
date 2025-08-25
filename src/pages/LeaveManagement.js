@@ -466,8 +466,8 @@ const formatDateDisplay = (dateString) => {
                       <ActionButtons onClick={()=>handleOpenPopup(request)}>
                         {request.status_display === "Submitted" && (
                           <>
-                        <Button variant="outlines" size="sm">
-                        ❌ Cancel
+                        <Button variant="outlines" size="sm" title="Cancel">
+                        ❌
                         </Button>
                           </>
                         )}

@@ -33,6 +33,10 @@ import {
     FaArrowLeft,
     FaPlus,
     FaFileExcel,
+    FaKey,
+    FaPlusCircle,
+    FaCommentDots,
+    FaClipboardCheck,
 } from "react-icons/fa";
 import styled from "styled-components";
 
@@ -2014,8 +2018,8 @@ export const HrmManualStep = [
                                     ["Year", "Dropdown", "Required"],
                                     ["Default Holiday", "Dropdown", "Required"],
                                     ["Select Saturday Holiday Options", "Checkbox", "Optional"],
-                                    ["No of Optional Holidays", "Number Input", "Required"],
-                                    ["Max no of Work from Home (WFH)", "Number Input", "Required"],
+                                    ["No. of Optional Holidays", "Number Input", "Required"],
+                                    ["Max no. of Work from Home (WFH)", "Number Input", "Required"],
                                     ["No of Shifts", "Number Input", "Required"],
                                     ["Image", "File Upload", "Optional"]
                                 ]}
@@ -2024,22 +2028,22 @@ export const HrmManualStep = [
                     },
                 ],
                 notes: [
-                    "<strong>Year</strong>, <strong>Default Holiday</strong>, <strong>No of Optional Holidays</strong>, <strong>Max no of WFH</strong>, and <strong>No of Shifts</strong> are required fields.",
+                    "<strong>Year</strong>, <strong>Default Holiday</strong>, <strong>No. of Optional Holidays</strong>, <strong>Max no. of WFH</strong>, and <strong>No of Shifts</strong> are required fields.",
                 ],
             },
             {
                 title: "Manage Holidays and Shifts",
                 description:
-                    "Add or view holidays and shifts related to the selected calendar:",
+                    "View or add holidays and shifts for the selected calendar:",
                 sections: [
                     {
                         title: "Related Actions",
                         icon: <FaCalendarAlt />,
                         items: [
-                            "Click <strong>'See List of Holidays'</strong> to view all configured holidays.",
-                            "Click <strong>'Add New Holiday'</strong> to register additional holidays.",
-                            "Click <strong>'See List of Shifts'</strong> to view all defined shifts.",
-                            "Click <strong>'Add Shift'</strong> to configure a new shift.",
+                             "Scroll down to see the holiday and shift lists if already configured.",
+                             "If no holidays are listed, click <strong>'Add New Holiday'</strong> to add one.",
+                             "If no shifts are listed, click <strong>'Add Shift'</strong> to create a new shift.",
+                             "Click <strong>'See List of Shifts'</strong> to view all defined shifts.",
                         ],
                     },
                 ],
@@ -2088,23 +2092,21 @@ export const HrmManualStep = [
             {
                 title: "Navigate to Add New Holiday Form",
                 description:
-                    "Follow the steps to add a new holiday to the holiday calendar in HRMS:",
+                    "Follow the steps below to add a new holiday to the holiday calendar in HRMS:",
                 sections: [
                     {
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
-                            "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'Holiday Calendar'</strong>",
-                            "Select <strong>'Update'</strong> for a calendar entry",
-                            "Click on <strong>'Add New Holiday'</strong>",
+                            "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Manager (HRMS)'</strong>.",                            "Click on <strong>'Setup'</strong>.",
+                            "Click on <strong>'Holiday Calendar'</strong>.",
+                            "Click the <strong>'Update'</strong> button next to the year where you want to add a holiday.",
+                            "Scroll down and Click <strong>'Add New Holiday'</strong> to register a new holiday.",
                         ],
                     },
                 ],
                 notes: [
-                    "Ensure you have appropriate permissions to modify the holiday calendar.",
+                    "Ensure you have the necessary permissions to modify the holiday calendar before making changes."
                 ],
             },
             {
@@ -2140,7 +2142,7 @@ export const HrmManualStep = [
                         icon: <FaPaperPlane />,
                         items: [
                             "Ensure all <strong>required fields</strong> are filled correctly.",
-                            "Click <strong>'Save'</strong> to add the new holiday.",
+                            "Click <strong>'Add to holiday list'</strong> to add the new holiday.",
                         ],
                     },
                 ],
@@ -2162,17 +2164,16 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
-                            "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'Holiday Calendar'</strong>",
-                            "Click on <strong>'Update'</strong> to open a calendar entry",
+                            "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Manager (HRMS)'</strong>.",                            "Click on <strong>'Setup'</strong>.",
+                            "Click on <strong>'Holiday Calendar'</strong>.",
+                            "Click the <strong>'Update'</strong> button next to the year where you want to update a holiday.",
+                            "Scroll down to see the list of holidays if already configured.",
                             "Select the holiday you want to update and click <strong>'Edit'</strong>",
                         ],
                     },
                 ],
                 notes: [
-                    "Editing holiday entries requires appropriate access permissions.",
+                    "Ensure you have the necessary permissions to modify the holiday calendar before making changes."
                 ],
             },
             {
@@ -2207,7 +2208,7 @@ export const HrmManualStep = [
                         icon: <FaPaperPlane />,
                         items: [
                             "Review the changes made to the holiday entry.",
-                            "Click <strong>'Save'</strong> or <strong>'Update'</strong> to apply changes.",
+                            "Click <strong>'Update Holiday list'</strong> to apply changes.",
                         ],
                     },
                 ],
@@ -2230,16 +2231,15 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
-                            "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'Holiday Calendar'</strong>",
-                            "Click on <strong>'Update'</strong> to open a holiday calendar entry",
-                            "Click on <strong>'Add Shift'</strong> to open the shift form",
+                            "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Manager (HRMS)'</strong>.",
+                            "Click on <strong>'Setup'</strong>.",
+                            "Click on <strong>'Holiday Calendar'</strong>",
+                            "Click on <strong>'Update'</strong> button next to the year you want to add a new shift",
+                            "Scroll down and Click on <strong>'Add Shift'</strong>",
                         ],
                     },
                 ],
-                notes: ["You must have valid permissions to add a shift."],
+                notes: ["Ensure you have the necessary permissions to add the shift in calendar before making changes."],
             },
             {
                 title: "Shift Form Fields",
@@ -2261,7 +2261,7 @@ export const HrmManualStep = [
                     },
                 ],
                 notes: [
-                    "<strong>Shift No</strong>, <strong>Start Time</strong>, and <strong>End Time</strong> are Mandatory fields.",
+                    "<strong>Shift No.</strong>, <strong>Start Time</strong>, and <strong>End Time</strong> are Mandatory fields.",
                     "Ensure shift timings do not overlap with existing shifts for the same calendar.",
                 ],
             },
@@ -2274,7 +2274,7 @@ export const HrmManualStep = [
                         icon: <FaPaperPlane />,
                         items: [
                             "Verify all input fields are correctly filled.",
-                            "Click <strong>'Save'</strong> to add the shift to the holiday calendar.",
+                            "Click <strong>'Add to Shift List'</strong> to add the shift in calendar.",
                         ],
                     },
                 ],
@@ -2297,17 +2297,17 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Open the <strong>'Left menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
-                            "Click on <strong>'Setup'</strong>",
-                            "Go to <strong>'Holiday Calendar'</strong>",
-                            "Click on <strong>'Update'</strong> to select the relevant calendar",
-                            "Click on <strong>'Edit'</strong> beside the shift you want to modify",
+                            "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Manager (HRMS)'</strong>.",
+                            "Click on <strong>'Setup'</strong>.",
+                            "Click on <strong>'Holiday Calendar'</strong>.",
+                            "Click the <strong>'Update'</strong> button next to the year where you want to update shift.",
+                            "Scroll down to see the list of shifts if already configured.",
+                            "Click on <strong>'Edit'</strong> beside the shift you want to update",
                         ],
                     },
                 ],
                 notes: [
-                    "Ensure you have appropriate access rights to edit shifts.",
+                    "Ensure you have the necessary permissions to edit shift in calendar before making changes.",
                     "Editing a shift will update its schedule across the calendar.",
                 ],
             },
@@ -2343,7 +2343,7 @@ export const HrmManualStep = [
                         icon: <FaPaperPlane />,
                         items: [
                             "Review the updated values.",
-                            "Click on <strong>'Update'</strong> to apply changes.",
+                            "Click on <strong>'Update Shift list'</strong> to apply changes.",
                             "A confirmation message will appear upon successful update.",
                         ],
                     },
@@ -2357,45 +2357,45 @@ export const HrmManualStep = [
 
     // Setup(HR Policy Documents)
     {
-        "HR Policy Documents Setup": [
-            { accesspath: "HR Policy Documents Setup" },
+        "HR Policy Documents List": [
+            { accesspath: "HR Policy Documents List" },
             {
                 title: "Navigate to HR Policy Documents",
                 description:
-                    "Follow the steps below to view HR Policy Documents configured in the HRMS system:",
+                    "Follow the steps below to view HR Policy Documents configured in ERP:",
                 sections: [
                     {
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
-                            "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'Policy Documents'</strong>",
+                            "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Manager (HRMS)'</strong>.",
+                            "Click on <strong>'Setup'</strong>.",
+                            "Click on <strong>'HR Policy Documents'</strong>.",
+                            "Now you will see Configured HR Policy Documents List",
                         ],
                     },
                 ],
                 notes: [
-                    "Only users with <strong>view access</strong> can see policy documents.",
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can configure the HR policy documents based on company requirements."
                 ],
             },
-            {
-                title: "Viewing Policy Documents",
-                description: "Access and view available HR policies:",
-                sections: [
-                    {
-                        title: "View Options",
-                        icon: <FaEye />,
-                        items: [
-                            "A list of policy documents will be displayed with details like <strong>Title</strong>, <strong>Category</strong>",
-                        ],
-                    },
-                ],
-                notes: [
-                    "Documents are available in PDF or DOC format.",
-                    "Ensure your browser supports file preview or downloads.",
-                ],
-            },
+            // {
+            //     title: "Viewing Policy Documents",
+            //     description: "Access and view available HR policies:",
+            //     sections: [
+            //         {
+            //             title: "View Options",
+            //             icon: <FaEye />,
+            //             items: [
+            //                 "A list of policy documents will be displayed with details like <strong>Title</strong>",
+            //             ],
+            //         },
+            //     ],
+            //     notes: [
+            //         "Documents are available in PDF or DOC format.",
+            //         "Ensure your browser supports file preview or downloads.",
+            //     ],
+            // },
             {
                 title: "Download Functionality",
                 description: "Export HR policy document records if needed:",
@@ -2404,7 +2404,7 @@ export const HrmManualStep = [
                         title: "Download Options",
                         icon: <FaDownload />,
                         items: [
-                            "Click on the <strong>'Download PDF/Excel '</strong> button to export the policy document list for reference.",
+                            "Click on the <strong>'XLS File'</strong> button to export the policy document list."
                         ],
                     },
                 ],
@@ -2423,16 +2423,15 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
-                            "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'HR Policy Documents'</strong>",
+                            "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Manager (HRMS)'</strong>.",
+                            "Click on <strong>'Setup'</strong>.",
+                            "Click on <strong>'HR Policy Documents'</strong>.",
                             "Click on <strong>'Add HR Policy Documents'</strong>",
                         ],
                     },
                 ],
                 notes: [
-                    "Only users with appropriate permissions can access and upload policy documents.",
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can add hr policy documents based on company requirements."
                 ],
             },
             {
@@ -2466,7 +2465,7 @@ export const HrmManualStep = [
                         title: "Submission Process",
                         icon: <FaPaperPlane />,
                         items: [
-                            "Ensure all <strong>required fields</strong> are completed.",
+                            "Ensure all <strong>required fields</strong> are filled.",
                             "Click <strong>'Submit'</strong> to upload the document.",
                         ],
                     },
@@ -2502,21 +2501,20 @@ export const HrmManualStep = [
                     {
                         title: "Navigation Path",
                         icon: <FaRoute />,
-                        items: [
-                            "Go to the <strong>'Left Menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
-                            "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'HR Policy Documents'</strong>",
-                            "Click on <strong>'Update'</strong> next to the document you wish to modify",
+                        items: [ 
+                            "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Manager (HRMS)'</strong>.",
+                            "Click on <strong>'Setup'</strong>.",
+                            "Click on <strong>'HR Policy Documents'</strong>.",
+                            "Click on <strong>'Update'</strong> next to the document you want to update.",
                         ],
                     },
                 ],
-                notes: ["Only authorized users can update HR policy documents."],
+                notes: ["Only the <strong>Admin</strong> or <strong>HR Manager</strong> can update hr policy documents based on company requirements."],
             },
             {
                 title: "Update HR Policy Document Form Fields",
                 description:
-                    "Modify the fields in the form to update the policy document details. Ensure all required fields are properly filled.",
+                    "Edit the fields in the form to update the policy document details. Make sure all required fields are completed correctly.",
                 sections: [
                     {
                         title: "Field Information",
@@ -2526,14 +2524,16 @@ export const HrmManualStep = [
                                 columns={["Field", "Input Type", "Validation"]}
                                 rows={[
                                     ["Document Name", "Dropdown", "Required"],
-                                    ["Document", "File Upload", "Required"]
+                                    ["Document", "File Upload", "Required"],
+                                    ["clear", "checkbox", "optional"]
                                 ]}
                             />
                         ),
                     },
                 ],
                 notes: [
-                    "<strong>Document Name</strong> and <strong>Document</strong> file must be provided to proceed with the update.",
+                    "Both <strong>Document Name</strong> and the <strong>Document</strong> file are required to complete the update.",
+                    "To remove the existing document, select the <strong>'Clear'</strong> checkbox and then click the <strong>'Submit'</strong> button."
                 ],
             },
             {
@@ -2579,42 +2579,41 @@ export const HrmManualStep = [
             {
                 title: "Navigate to Approval Limit Setup",
                 description:
-                    "Use this section to view and manage the approval limits configured within the HRMS system.",
+                    "Use this section to view and manage the approval limits configured within the ERP system.",
                 sections: [
                     {
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left Menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
-                            "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'Approval Limit'</strong>",
+                            "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Manager (HRMS)'</strong>.",
+                            "Click on <strong>'Setup'</strong>.",
+                            "Click on <strong>'Approval Limit'</strong>.",
                         ],
                     },
                 ],
                 notes: [
-                    "This module is accessible only to authorized HR managers and administrators.",
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can add policy documents based on company requirements."
                 ],
             },
             {
                 title: "Approval Limit View Screen",
                 description:
-                    "The view screen allows you to review the existing approval limits assigned to various grades or roles.",
+                    "The view screen allows you to review the existing approval limits assigned to various grades.",
                 sections: [
                     {
                         title: "Information Displayed",
                         icon: <FaEye />,
                         items: [
-                            "Grade or Role Name",
+                            "Approval Type",
+                            "Grade level",
                             "Approval Limit Amount",
-                            "Effective From Date",
-                            "Approval Type (e.g., Financial, Leave, etc.)",
+                            "Days limit",
                         ],
                     },
                 ],
                 notes: [
                     "Ensure consistency in approval policies across departments.",
-                    "You cannot edit data directly from this view page — use the Add or Update options for modifications.",
+                    "You cannot edit data directly from this view page — use the Add Approval limit or Update button for modifications.",
                 ],
             },
             {
@@ -2626,7 +2625,7 @@ export const HrmManualStep = [
                         title: "Download Options",
                         icon: <FaDownload />,
                         items: [
-                            "Click <strong>'Download PDF'</strong> or <strong>'Export to Excel'</strong> for offline reference.",
+                            "Click <strong>'XLS File'</strong> for offline reference.",
                         ],
                     },
                 ],
@@ -2641,25 +2640,25 @@ export const HrmManualStep = [
             {
                 title: "Navigate to Add Approval Limit Form",
                 description:
-                    "Follow the steps below to configure a new approval limit within the HRMS system",
+                    "Follow the steps below to configure a new approval limit within the ERP ",
                 sections: [
                     {
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left Menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
-                            "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'Approval Limit'</strong>",
+                            "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Manager (HRMS)'</strong>.",
+                            "Click on <strong>'Setup'</strong>.",
+                            "Click on <strong>'Approval Limit'</strong>.",
                             "Click on <strong>'Add Approval Limit'</strong>",
                         ],
                     },
                 ],
+                notes: ["Only the <strong>Admin</strong> or <strong>HR Manager</strong> can add policy documents based on company requirements."],
             },
             {
                 title: "Approval Limit Form Fields",
                 description:
-                    "Fill out the form fields accurately to define the new approval limit. The approval limits are applied based on the selected role or grade.",
+                    "Fill out the form fields accurately to define the new approval limit. The approval limits are applied based on defined Min Grade level and day limits.",
                 sections: [
                     {
                         title: "Field Information",
@@ -2679,8 +2678,8 @@ export const HrmManualStep = [
                     },
                 ],
                 notes: [
-                    "All fields except Image are mandatory.",
                     "Ensure numeric fields like Amount Limit, Days Limit, and Grade Level are filled with valid values.",
+                    "<strong>Days Limit</strong> is used when claims exceed the allowed number of days; in such cases, the request is forwarded to a manager with a higher grade level.",
                 ],
             },
             {
@@ -2732,16 +2731,15 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left Menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
-                            "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'Approval Limit'</strong>",
-                            "Click on <strong>'Update'</strong> beside the approval record you wish to modify",
+                            "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Manager (HRMS)'</strong>.",
+                            "Click on <strong>'Setup'</strong>.",
+                            "Click on <strong>'Approval Limit'</strong>.",
+                            "Click on <strong>'Update'</strong> beside the approval record you want to update",
                         ],
                     },
                 ],
                 notes: [
-                    "Only users with necessary permissions can update approval limits.",
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can add policy documents based on company requirements.",
                     "Changes will overwrite the existing configuration for the selected approval limit.",
                 ],
             },
@@ -2768,6 +2766,8 @@ export const HrmManualStep = [
                     },
                 ],
                 notes: [
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can add policy documents based on company requirements.",
+                    "<strong>Days Limit</strong> is used when claims exceed the allowed number of days; in such cases, the request is forwarded to a manager with a higher grade level.",
                     "Fields marked as required must be completed to successfully update the record.",
                 ],
             },
@@ -2781,7 +2781,7 @@ export const HrmManualStep = [
                         icon: <FaPaperPlane />,
                         items: [
                             "Review all changes carefully.",
-                            "Click <strong>'Update'</strong> to save the changes.",
+                            "Click <strong>'Submit'</strong> to save the changes.",
                         ],
                     },
                 ],
@@ -2821,7 +2821,7 @@ export const HrmManualStep = [
                         icon: <FaRoute />,
                         items: [
                             "Go to the <strong>'Left Menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "Select <strong>'Training and Appraisal'</strong>",
                             "Click on <strong>'Setup'</strong>",
                             "Choose <strong>'Appraisal Structure'</strong>",
                         ],
@@ -2829,7 +2829,7 @@ export const HrmManualStep = [
                 ],
                 notes: [
                     "This setup section is used to view the existing appraisal structure configurations.",
-                    "Only users with appropriate access rights can view or modify appraisal structures.",
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can view or modify appraisal structures based on company requirements.",
                 ],
             },
             {
@@ -2842,12 +2842,11 @@ export const HrmManualStep = [
                         icon: <FaEye />,
                         items: [
                             "View existing <strong>appraisal structure entries</strong>",
-                            "Check <strong>assigned weightage</strong> and <strong>applicable roles or grades</strong>",
                         ],
                     },
                 ],
                 notes: [
-                    "Any structural modifications must be done through the respective 'Add' or 'Update' actions.",
+                    "Any structural modifications must be done through the respective 'Add Appraisal Structure' or 'Update' buttons.",
                 ],
             },
             {
@@ -2859,7 +2858,7 @@ export const HrmManualStep = [
                         title: "Download Options",
                         icon: <FaDownload />,
                         items: [
-                            "Click <strong>' On Excel'</strong> to download appraisal structure data in a spreadsheet format (.xls/.xlsx).",
+                            "Click <strong>'XLS File'</strong> to download appraisal structure data in a spreadsheet format (.xls/.xlsx).",
                         ],
                     },
                 ],
@@ -2882,7 +2881,7 @@ export const HrmManualStep = [
                         icon: <FaRoute />,
                         items: [
                             "Go to the <strong>'Left Menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "Select <strong>'Training and Appraisal'</strong>",
                             "Click on <strong>'Setup'</strong>",
                             "Choose <strong>'Appraisal Structure'</strong>",
                             "Click on <strong>'Add Appraisal Structure'</strong>",
@@ -2890,7 +2889,7 @@ export const HrmManualStep = [
                     },
                 ],
                 notes: [
-                    "Only authorized Users can access this section to define appraisal structures.",
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can access this section to define appraisal structures based on company requirements.",
                 ],
             },
             {
@@ -2947,7 +2946,7 @@ export const HrmManualStep = [
                         icon: <FaUpload />,
                         items: [
                             "Click on the <strong>'Upload'</strong> button.",
-                            "Select a valid <strong>Excel/PDF file (.xls or .xlsx)</strong> with the required appraisal structure format.",
+                            "Select a valid <strong>XLS file (.xls or .xlsx)</strong> with the required appraisal structure format.",
                             "Ensure the file follows the prescribed template for successful import.",
                         ],
                     },
@@ -3059,6 +3058,692 @@ export const HrmManualStep = [
             },
         ]
     },
+    
+    //Training module
+    {
+    "Training Module List": [
+        { accesspath: "Training Module List" },
+        {
+        title: "Navigate to Training Module Setup",
+        description: "This section guides you through how to access and set up the Training Module in the HRMS system.",
+        sections: [
+            {
+            title: "Navigation Path",
+            icon: <FaRoute />,
+            items: [
+                "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Training & Appraisal'</strong>.",
+                "Click on <strong>'Setup'</strong>.",
+                "If training modules are already set up, the list will appear. Otherwise, click <strong>'Add Training Module'</strong> to create a new one."
+            ]
+            }
+        ],
+        notes: [
+            "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can create or modify training modules as per company policies."
+        ]
+        },
+        {
+        title: "Download and Export Training Module List",
+        description: "This section allows you to download or export the list of available training modules for reporting or record-keeping.",
+        sections: [
+            {
+            title: "Download Options",
+            icon: <FaDownload />,
+            items: [
+                "Click <strong>'XLS File'</strong> to download the training module list in spreadsheet format (.xls/.xlsx)."
+            ]
+            }
+        ],
+        notes: [
+            "Ensure that the training module list is up-to-date before exporting.",
+            "Downloaded files can be used for auditing, sharing, or offline analysis."
+        ]
+        }
+    ]
+    },
+    {
+        "Add Training Module": [
+            { accesspath: "Add Training Module" },
+            {
+                title: "Navigate to add a new Training Module",
+                description: "This section guides you through how to add a Training Module in the HRMS system.",
+                sections: [
+                    {
+                        title: "Navigation Path",
+                        icon: <FaRoute />,
+                        items: [
+                            "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Training & Appraisal'</strong>.",
+                            "Click on <strong>'Setup'</strong>.",
+                            "Click on <strong>'Add Training Module'</strong>."
+                        ]
+                    }
+                ],
+                notes: [
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can add a training modules as per company policies."
+                ]
+            },
+            {
+                title: "Training Module Form",
+                description: "Provide the necessary details to create or update a training module.",
+                sections: [
+                    {
+                        title: "Form Information",
+                        icon: <FaEdit />,
+                        content: (
+                            <DynamicTable
+                                columns={["Field", "Input Type", "Validation"]}
+                                rows={[
+                                    ["Training Module Name", "Text", "Required"],
+                                    ["Training Code", "Text", "Required"],
+                                    ["Training Type", "Dropdown", "Required"],
+                                    ["Training Mode", "Dropdown", "Required"],
+                                    ["Frequency", "Dropdown", "Required"],
+                                    ["Description", "Textarea", "Optional"],
+                                    ["No. of Days", "Number", "Required"],
+                                    ["No. of Credits", "Number", "Required"],
+                                    ["Issue Date", "Date Picker", "Optional"],
+                                    ["Effective Date", "Date Picker", "Required"],
+                                    ["Version", "Text", "Optional"],
+                                    ["Is Mandatory", "Checkbox", "Optional"],
+                                    ["Remarks / Expected Output", "Textarea", "Optional"],
+                                    ["Training Material No.", "Text", "Optional"],
+                                    ["Image", "File Upload", "Optional"]
+                                ]}
+                            />
+                        ),
+                    },
+                ],
+                notes: [
+                    "Ensure all mandatory details are provided for successful submission.",
+                    "Optional fields can be filled in based on relevance.",
+                    "<strong>Training Mode</strong> indicates how the training will be delivered.",
+                    "<strong>Frequency</strong> specifies how often the training is scheduled."
+                ],
+            },
+            {
+                title: "Submit Training Module",
+                description: "After filling all the required fields, use the button below to save the training module details.",
+                sections: [
+                    {
+                        title: "Action",
+                        icon: <FaCheckCircle />,
+                        items: [
+                            "Click on the <strong>Submit</strong> button to save the training module.",
+                            "The system will validate all required fields before submission.",
+                        ],
+                    },
+                ],
+            },
+            {
+                title: "Back Navigation",
+                description:
+                    "You can return to the previous screen without saving changes.",
+                sections: [
+                    {
+                        title: "Back Option",
+                        icon: <FaArrowLeft />,
+                        items: [
+                            "Click on <strong>Training Module List</strong> top right corner to return to Training module list .",
+                        ],
+                    },
+                ],
+                notes: ["Unsaved modifications will be lost upon navigating back."],
+            },
+
+        ]
+    },
+    {
+        "Update Training module": [
+            { accesspath: "Add Training Module" },
+            {
+                title: "Navigate to Update Training Module",
+                description: "This section guides you through how to update a Training Module in the HRMS system.",
+                sections: [
+                    {
+                        title: "Navigation Path",
+                        icon: <FaRoute />,
+                        items: [
+                            "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Training & Appraisal'</strong>.",
+                            "Click on <strong>'Setup'</strong>.",
+                            "Click on <strong>'Update'</strong> button of a Training Module that want to Update."
+                        ]
+                    }
+                ],
+                notes: [
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can add a training modules as per company policies."
+                ]
+            },
+            {
+                title: "Training Module Form",
+                description: "Provide the necessary details to create or update a training module.",
+                sections: [
+                    {
+                        title: "Form Information",
+                        icon: <FaEdit />,
+                        content: (
+                            <DynamicTable
+                                columns={["Field", "Input Type", "Validation"]}
+                                rows={[
+                                    ["Training Module Name", "Text", "Required"],
+                                    ["Training Code", "Text", "Required"],
+                                    ["Training Type", "Dropdown", "Required"],
+                                    ["Training Mode", "Dropdown", "Required"],
+                                    ["Frequency", "Dropdown", "Required"],
+                                    ["Description", "Textarea", "Optional"],
+                                    ["No. of Days", "Number", "Required"],
+                                    ["No. of Credits", "Number", "Required"],
+                                    ["Issue Date", "Date Picker", "Optional"],
+                                    ["Effective Date", "Date Picker", "Required"],
+                                    ["Version", "Text", "Optional"],
+                                    ["Is Mandatory", "Checkbox", "Optional"],
+                                    ["Remarks / Expected Output", "Textarea", "Optional"],
+                                    ["Training Material No.", "Text", "Optional"],
+                                    ["Image", "File Upload", "Optional"]
+                                ]}
+                            />
+                        ),
+                    },
+                ],
+                notes: [
+                    "Ensure all mandatory details are provided for successful submission.",
+                    "Optional fields can be filled in based on relevance.",
+                    "<strong>Training Mode</strong> indicates how the training will be delivered.",
+                    "<strong>Frequency</strong> specifies how often the training is scheduled."
+                ],
+            },
+            {
+                title: "Update Training Module",
+                description: "After filling all the required fields, use the button below to update the training module details.",
+                sections: [
+                    {
+                        title: "Action",
+                        icon: <FaCheckCircle />,
+                        items: [
+                            "Click on the <strong>Submit</strong> button to update the training module.",
+                            "The system will validate all required fields before submission.",
+                        ],
+                    },
+                ],
+            },
+            {
+                title: "Back Navigation",
+                description:
+                    "You can return to the previous screen without saving changes.",
+                sections: [
+                    {
+                        title: "Back Option",
+                        icon: <FaArrowLeft />,
+                        items: [
+                            "Click on <strong>Training Module List</strong> on top right corner to return to Training module list .",
+                        ],
+                    },
+                ],
+                notes: ["Unsaved modifications will be lost upon navigating back."],
+            },
+        ]
+    },
+    {
+        "Trainer List": [
+            { accesspath: "Trainer List" },
+        {
+        title: "Navigate to Trainer List",
+        description: "This section guides you through how to access and set up new trainer in the HRMS system.",
+        sections: [
+            {
+            title: "Navigation Path",
+            icon: <FaRoute />,
+            items: [
+                "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Training & Appraisal'</strong>.",
+                "Click on <strong>'Setup'</strong>.",
+                "Select <strong>'Module Trainers'</strong>.",
+                "If trainers are already set up, the list will appear. Otherwise, click <strong>'Add Module Trainer'</strong> to create a new one."
+            ]
+            }
+        ],
+        notes: [
+            "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can create or modify this section as per company policies."
+        ]
+    },
+    {
+        title: "Download and Export Trainer List",
+        description: "This section allows you to download or export the list of available trainer for reporting or record-keeping.",
+        sections: [
+            {
+            title: "Download Options",
+            icon: <FaDownload />,
+            items: [
+                "Click <strong>'XLS File'</strong> to download the trainer list in spreadsheet format (.xls/.xlsx)."
+            ]
+            }
+        ],
+        notes: [
+            "Ensure that the trainer list is up-to-date before exporting.",
+            "Downloaded files can be used for auditing, sharing, or offline analysis."
+        ]
+        }
+        ]
+    },
+    {
+        "Add Trainer": [
+            { accesspath: "Add Trainer" },
+            {
+                title: "Navigate to add a new Trainer.",
+                description: "This section guides you through how to add a Training Module in the HRMS system.",
+                sections: [
+                    {
+                        title: "Navigation Path",
+                        icon: <FaRoute />,
+                        items: [
+                            "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Training & Appraisal'</strong>.",
+                            "Click on <strong>'Setup'</strong>.",
+                            "Select <strong>'Module Trainers'</strong>.",
+                            "Click <strong>'Add Module Trainer'</strong> placed in top right corner to create a new Trainer."
+                        ]
+                    }
+                ],
+                notes: [
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can add a trainers as per company policies."
+                ]
+            },
+            {
+                title: "Add Module Trainer Form Fields",
+                description: "Fill the form to add a new trainer for a training module.",
+                sections: [
+                    {
+                        title: "Field Information",
+                        icon: <FaEdit />,
+                        content: (
+                            <DynamicTable
+                                columns={["Field", "Input Type", "Validation"]}
+                                rows={[
+                                    ["Trainer Name", "Text", "Required"],
+                                    ["Training Module", "Dropdown", "Required"],
+                                    ["Qualification", "Textarea", "Optional"],
+                                    ["Employee", "Dropdown", "Optional"],
+                                    ["Organisation", "Text", "Optional"],
+                                    ["Remarks", "Text", "Optional"],
+                                    ["Image", "File Upload", "Optional"]
+                                ]}
+                            />
+                        ),
+                    },
+                ],
+                notes: [
+                    "If the trainer is an employee, select the employee from the dropdown.",
+                    "If the trainer belongs to another organisation, specify the organisation name in the field provided.",
+                ],
+            },
+            {
+                title: "Submit Training Module",
+                description: "After filling all the required fields, use the button below to save the training module details.",
+                sections: [
+                    {
+                        title: "Action",
+                        icon: <FaCheckCircle />,
+                        items: [
+                            "Click on the <strong>Submit</strong> button to save the trainer details.",
+                            "The system will validate all required fields before submission.",
+                        ],
+                    },
+                ],
+            },
+            {
+                title: "Back Navigation",
+                description:
+                    "You can return to the previous screen without saving changes.",
+                sections: [
+                    {
+                        title: "Back Option",
+                        icon: <FaArrowLeft />,
+                        items: [
+                            "Click on <strong>Module Trainer List</strong> top right corner to return to Trainer list screen .",
+                        ],
+                    },
+                ],
+                notes: ["Unsaved modifications will be lost upon navigating back."],
+            },
+
+        ]
+    },
+    {
+        "Update Trainer": [
+            { accesspath: "Update Trainer" },
+            {
+                title: "Navigate to update a Trainer.",
+                description: "This section guides you through how to update an existing Trainer in the HRMS system.",
+                sections: [
+                    {
+                        title: "Navigation Path",
+                        icon: <FaRoute />,
+                        items: [
+                            "In the left <strong>Sidebar Menu</strong>, click on <strong>Training & Appraisal</strong>.",
+                            "Click on <strong>Setup</strong>.",
+                            "Select <strong>Module Trainers</strong>.",
+                            "From the <strong>Trainer List</strong>, click on the <strong>Update</strong> button of the trainer whose details you want to modify."
+                        ]
+                    }
+                ],
+                notes: [
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can update trainer details as per company policies."
+                ]
+            },
+            {
+                title: "Update Module Trainer Form Fields",
+                description: "Modify the form fields to update trainer details for a training module.",
+                sections: [
+                    {
+                        title: "Field Information",
+                        icon: <FaEdit />,
+                        content: (
+                            <DynamicTable
+                                columns={["Field", "Input Type", "Validation"]}
+                                rows={[
+                                    ["Trainer Name", "Text", "Required"],
+                                    ["Training Module", "Dropdown", "Required"],
+                                    ["Qualification", "Textarea", "Optional"],
+                                    ["Employee", "Dropdown", "Optional"],
+                                    ["Organisation", "Text", "Optional"],
+                                    ["Remarks", "Text", "Optional"],
+                                    ["Image", "File Upload", "Optional"]
+                                ]}
+                            />
+                        ),
+                    },
+                ],
+                notes: [
+                    "If the trainer is an employee, ensure the correct employee is selected from the dropdown.",
+                    "If the trainer belongs to another organisation, update the organisation name as required."
+                ],
+            },
+            {
+                title: "Submit Updated Trainer Details",
+                description: "After making necessary changes, use the button below to save the updated trainer details.",
+                sections: [
+                    {
+                        title: "Action",
+                        icon: <FaCheckCircle />,
+                        items: [
+                            "Click on the <strong>Submit</strong> button to save the modified trainer details.",
+                            "The system will validate all required fields before updating."
+                        ],
+                    },
+                ],
+            },
+            {
+                title: "Back Navigation",
+                description:
+                    "You can return to the previous screen without saving changes.",
+                sections: [
+                    {
+                        title: "Back Option",
+                        icon: <FaArrowLeft />,
+                        items: [
+                            "Click on <strong>Module Trainer List</strong> in the top right corner to return to the Trainer list screen."
+                        ],
+                    },
+                ],
+                notes: ["Unsaved modifications will be lost upon navigating back."]
+            }
+        ]
+    },
+    {
+        "Training Session List": [
+            {
+                accesspath: "Training Session List"
+            },
+            {
+                title: "Navigate to Training Session Dashboard",
+                description: "Follow this path to open the Training Session Dashboard:",
+                sections: [
+                    {
+                        title: "Navigation Path",
+                        icon: <FaRoute />,
+                        items: [
+                            "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Training & Appraisal'</strong>.",
+                            "Then click on <strong>'Manage Training Session'</strong>."
+                        ]
+                    }
+                ],
+                notes: [
+                    "Only <strong>Admin</strong> or <strong>HR Manager</strong> can access this page, depending on company requirements."
+                ]
+            },
+            {
+                title: "Training Session List Dashboard Filters",
+                description: "Filter training sessions based on different criteria as needed:",
+                sections: [
+                    {
+                        title: "Filter Fields",
+                        icon: <FaEdit />,
+                        items: [
+                            "From the dropdown menu, select a field, type a keyword in the search bar, and click the <strong>Search</strong> button.",
+                            "Filter by <strong>Training Modules</strong> to view specific training sessions.",
+                            "Filter by <strong>Trainers</strong> to view sessions conducted by a particular trainer.",
+                            "Sort results using options like session name, trainer, module name, financial period, or status (e.g., upcoming, cancelled, etc.)."
+                        ]
+                    }
+                ],
+                notes: [
+                    "Sorting helps in organizing training sessions for easier review.",
+                    "💡 Tip: Use multiple filters together (e.g., Employee Name + Session Status) for more accurate results."
+                ]
+            },
+            {
+                title: "Graphical Data Representation",
+                description: "View training session data using charts and graphs:",
+                sections: [
+                    {
+                        title: "Data Visualization",
+                        icon: <FaChartPie />,
+                        items: [
+                            "Training Session Status: Pie Chart",
+                            "Upcoming Training Module Distribution: Bar Graph"
+                        ]
+                    }
+                ],
+                notes: [
+                    "Use a pie chart to view Training Session Status and a bar graph to see the distribution of Upcoming Training Modules."
+                ]
+            },
+            {
+                title: "Clear and View Training Sessions",
+                description: "Users can clear filters or view specific training sessions directly from the dashboard:",
+                sections: [
+                    {
+                        title: "Actions",
+                        icon: <FaTrash />,
+                        items: [
+                            "Click <strong>'Clear'</strong> to remove all filters and return to the default training session list."
+                        ]
+                    }
+                ],
+                notes: [
+                    "Use <strong>'Clear'</strong> when you want to reset the dashboard view and start a new search."
+                ]
+            },
+            {
+                title: "Download Training Session List",
+                description: "Download the filtered training session list in your preferred format:",
+                sections: [
+                    {
+                        title: "Download Options",
+                        icon: <FaDownload />,
+                        items: [
+                            "Click the <strong>'XLS File'</strong> button to download the list in Excel format.",
+                            "Click the <strong>'PDF File'</strong> button to download the list in PDF format."
+                        ]
+                    }
+                ],
+                notes: [
+                    "The downloaded file will include all training sessions based on the filters applied."
+                ]
+            }
+        ]
+    },
+    {
+        "Add New Training Session": [
+            { accesspath: "Add Training Session" },
+            {
+                title: "Navigate to Add a New Training Session",
+                description: "This section explains how to create a new Training Session in the HRMS system.",
+                sections: [
+                    {
+                        title: "Navigation Path",
+                        icon: <FaRoute />,
+                        items: [
+                            "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Training & Appraisal'</strong>.",
+                            "Click on <strong>'Manage Training Session'</strong>.",
+                            "Click on the <strong>'New Training'</strong> button on the top right to create a new session."
+                        ]
+                    }
+                ],
+                notes: [
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can add a new training session as per company policies."
+                ]
+            },
+            {
+                title: "Add Training Session Form Fields",
+                description: "Fill in the form to create a new training session.",
+                sections: [
+                    {
+                        title: "Field Information",
+                        icon: <FaEdit />,
+                        content: (
+                            <DynamicTable
+                            columns= {["Field", "Input Type", "Validation"]}
+                            rows= {[
+                                ["Session Name", "Text", "Required"],
+                                ["Training Module", "Dropdown", "Required"],
+                                ["Trainer", "Dropdown", "Required"],
+                                ["Location", "Text", "Optional"],
+                                ["Session Date", "Date Picker", "Optional"],
+                                ["Maximum Attendance", "Number", "Optional (Enter 0 if not applicable)"],
+                                ["Description", "Textarea", "Optional"],
+                                ["Session Ref. File", "File Upload", "Optional"],
+                                ["Remarks", "Textarea", "Optional"]
+                            ]}
+                            />
+                        )
+                    }
+                ],
+                notes: [
+                    "Ensure that mandatory fields like <strong>Session Name</strong>, <strong>Training Module</strong>, and <strong>Trainer</strong> are filled before submission."
+                ]
+            },
+            {
+                title: "Submit Training Session",
+                description: "After completing the form, save the training session details.",
+                sections: [
+                    {
+                        title: "Action",
+                        icon: <FaCheckCircle />,
+                        items: [
+                            "Click the <strong>Submit</strong> button to save the training session details.",
+                            "The system will validate required fields before submission."
+                        ]
+                    }
+                ]
+            },
+            {
+                title: "Back Navigation",
+                description: "You can return to the Training Session List without saving changes.",
+                sections: [
+                    {
+                        title: "Back Option",
+                        icon: <FaArrowLeft />,
+                        items: [
+                            "Click on <strong>Training List</strong> (top right corner) to return to the session list page."
+                        ]
+                    }
+                ],
+                notes: [
+                    "Any unsaved changes will be lost if you navigate back."
+                ]
+            }
+        ]
+    },
+    {
+        "Update Training Session": [
+            { accesspath: "Update Training Session" },
+            {
+                title: "Navigate to Update a Training Session",
+                description: "This section explains how to update an existing Training Session in the HRMS system.",
+                sections: [
+                    {
+                        title: "Navigation Path",
+                        icon: <FaRoute />,
+                        items: [
+                            "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Training & Appraisal'</strong>.",
+                            "Click on <strong>'Manage Training Session'</strong>.",
+                            "Click on the <strong>'Update'</strong> button for the training session you want to edit from the training session list."
+                        ]
+                    }
+                ],
+                notes: [
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can update a training session as per company policies."
+                ]
+            },
+            {
+                title: "Update Training Session Form Fields",
+                description: "Modify the form fields to update the training session details.",
+                sections: [
+                    {
+                        title: "Field Information",
+                        icon: <FaEdit />,
+                        content: (
+                            <DynamicTable
+                                columns={["Field", "Input Type", "Validation"]}
+                                rows={[
+                                    ["Session Name", "Text", "Required"],
+                                    ["Training Module", "Dropdown", "Required"],
+                                    ["Trainer", "Dropdown", "Required"],
+                                    ["Location", "Text", "Optional"],
+                                    ["Session Date", "Date Picker", "Optional"],
+                                    ["Maximum Attendance", "Number", "Optional (Enter 0 if not applicable)"],
+                                    ["Description", "Textarea", "Optional"],
+                                    ["Session Ref. File", "File Upload", "Optional"],
+                                    ["Remarks", "Textarea", "Optional"]
+                                ]}
+                            />
+                        )
+                    }
+                ],
+                notes: [
+                    "Ensure all required fields are filled correctly before updating."
+                ]
+            },
+            {
+                title: "Update Training Session",
+                description: "After making the necessary changes, save the updated training session details.",
+                sections: [
+                    {
+                        title: "Action",
+                        icon: <FaCheckCircle />,
+                        items: [
+                            "Click the <strong>Submit</strong> button to save the updated training session details.",
+                            "The system will validate required fields before saving changes."
+                        ]
+                    }
+                ]
+            },
+            {
+                title: "Back Navigation",
+                description: "You can return to the Training Session List without saving changes.",
+                sections: [
+                    {
+                        title: "Back Option",
+                        icon: <FaArrowLeft />,
+                        items: [
+                            "Click on <strong>Training List</strong> (top right corner) to return to the session list page."
+                        ]
+                    }
+                ],
+                notes: [
+                    "Any unsaved changes will be lost if you navigate back."
+                ]
+            }
+        ]
+    },
+
     // Setup(Exit Process)
     {
         "Exit process Setup": [
@@ -3085,7 +3770,7 @@ export const HrmManualStep = [
             {
                 title: "Exit Process Overview",
                 description:
-                    "The Exit Process setup typically includes steps such as employee notification, exit interviews, return of company assets, knowledge transfer, and transition planning.",
+                    "The Exit Process setup typically includes steps such as employee notification, exit interviews, return of company assets, knowledge transfer, and transition planning etc.",
                 sections: [
                     {
                         title: "Common Configuration Elements",
@@ -3248,16 +3933,15 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left Menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
                             "Click on <strong>'Setup'</strong>",
-                            "Open <strong>'Exit Process'</strong>",
+                            "Click on <strong>'Exit Process'</strong>",
                             "Click on <strong>'Update'</strong> next to the desired Exit Process entry",
                         ],
                     },
                 ],
                 notes: [
-                    "Ensure you have the necessary permissions to update exit process steps.",
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can update exit process setup based on company requirements.",
                 ],
             },
             {
@@ -3274,7 +3958,7 @@ export const HrmManualStep = [
                                     ["Name", "Text", "Required"],
                                     ["Is Document to be Uploaded?", "Checkbox", "Optional"],
                                     ["Which Department?", "Dropdown", "Required"],
-                                    ["Sequence No", "Number", "Optional"],
+                                    ["Sequence No", "Number", "Required"],
                                     ["Description", "Text", "Required"],
                                     ["Image", "File Upload", "Optional"]
                                 ]}
@@ -3295,7 +3979,7 @@ export const HrmManualStep = [
                         icon: <FaPaperPlane />,
                         items: [
                             "Ensure all required fields are completed.",
-                            "Click <strong>'Update'</strong> to save the changes.",
+                            "Click <strong>'Submit'</strong> to save the changes.",
                         ],
                     },
                 ],
@@ -3333,13 +4017,12 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left Menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
                             "Click on <strong>'Appointee List'</strong>",
                         ],
                     },
                 ],
-                notes: ["Only authorized users can access the Appointee List dashboard."],
+                notes: ["Only the <strong>Admin</strong> or <strong>HR Manager</strong> can view appointee list based on company requirements.",],
             },
             {
                 title: "Dashboard Overview",
@@ -3353,7 +4036,7 @@ export const HrmManualStep = [
                             <DynamicTable
                                 columns={["Component", "Description"]}
                                 rows={[
-                                    ["Search By", "Search employees using Employee Name, ID, Mobile No, or Email."],
+                                    ["Search By", "Search employees using Employee Name, ID, Mobile No, or Email etc."],
                                     ["Filter By", "Filter employees by Department and Grade."],
                                     ["Grade-wise Distribution", "Pie chart displaying employee distribution by grade."],
                                     ["Department-wise Distribution", "Pie chart showing employee count per department."],
@@ -3376,12 +4059,12 @@ export const HrmManualStep = [
                         title: "Download Options",
                         icon: <FaDownload />,
                         items: [
-                            "Click on <strong>'Download PDF/Excel'</strong> to export the dashboard help guide.",
+                            "Click on <strong>'XLS File'</strong> or <strong>'PDF File'</strong> to export the dashboard help guide.",
                         ],
                     },
                 ],
                 notes: [
-                    "This can serve as a reference for HR teams and management reports.",
+                    "These exported files can be used as references for HR teams and for management reporting."
                 ],
             },
         ]
@@ -3398,15 +4081,14 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left Menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
                             "Click on <strong>'Appointee List'</strong>",
                             "Click on <strong>'Add Appointee'</strong>",
                         ],
                     },
                 ],
                 notes: [
-                    "Only users with appropriate permissions can add a new appointee.",
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can add appointee based on company requirements.",
                 ],
             },
             {
@@ -3425,8 +4107,8 @@ export const HrmManualStep = [
                                     ["Appointee Job ID", "Auto-generated from My Office → Setup → Numbering", "System Generated"],
                                     ["PAN Number", "Text", "Optional"],
                                     ["Email ID", "email", "Required"],
-                                    ["Mobile No", "Num", "Optional"],
-                                    ["Alternate Mobile No", "Num", "Optional"],
+                                    ["Mobile No", "Number", "Optional"],
+                                    ["Alternate Mobile No", "Number", "Optional"],
                                     ["Employee Department", "Dropdown", "Required"],
                                     ["Employee Grade", "Dropdown", "Optional"],
                                     ["Date of Join", "Date", "Optional"],
@@ -3439,13 +4121,17 @@ export const HrmManualStep = [
                                     ["Country", "Text", "Optional"],
                                     ["Address Proof Govt ID Number", "Text (e.g., Aadhaar)", "Optional"],
                                     ["Personal Email ID", "Text", "Optional"],
-                                    ["Image", "File Upload", "Optional"],
                                     ["Employee Manager", "Dropdown", "Optional"],
                                     ["HR Manager", "Dropdown", "Optional"],
                                     ["HR Coordinator/Contact Details", "Text", "Optional"],
+                                    ["Qualification", "Text", "Optional"],
+                                    ["Prior experience", "Text", "Optional"],
+                                    ["Prior Experience in Years", "Number", "Optional"],
+                                    ["Is Vaccinated ?", "Checkbox", "Optional"],
                                     ["Probation/Training Period (Months)", "Number", "Optional"],
+                                    ["No of Leaves (Training)", "Number", "Optional"],
                                     ["Confirmation Date", "Date", "Optional"],
-                                    ["No of Leaves during Training Period", "Number", "Optional"]
+                                    ["Image", "File Upload", "Optional"],
                                 ]}
                             />
                         ),
@@ -3483,7 +4169,7 @@ export const HrmManualStep = [
                         title: "Back Option",
                         icon: <FaArrowLeft />,
                         items: [
-                            "Click on <strong>'Back'</strong> to exit without saving the form.",
+                            "Click on <strong>'Appointee List'</strong> to exit without saving the form.",
                         ],
                     },
                 ],
@@ -3503,14 +4189,13 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left Menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
                             "Click on <strong>'Appointee List'</strong>",
-                            "Click on <strong>'Update'</strong> next to the appointee you want to edit",
+                            "Click on <strong>'Update'</strong> next to the appointee you want to update the details",
                         ],
                     },
                 ],
-                notes: ["Only users with update permission can modify appointee data."],
+                notes: ["Only the <strong>Admin</strong> or <strong>HR Manager</strong> can update appointee details based on company requirements.",],
             },
             {
                 title: "Appointee Details - Editable Fields",
@@ -3545,9 +4230,14 @@ export const HrmManualStep = [
                                     ["Employee Manager", "Dropdown", "Optional"],
                                     ["HR Manager", "Dropdown", "Optional"],
                                     ["HR Coordinator Contact", "Text", "Optional"],
-                                    ["Training Period (Months)", "Number", "Optional"],
+                                    ["Qualification", "Text", "Optional"],
+                                    ["Prior experience", "Text", "Optional"],
+                                    ["Prior Experience in Years", "Number", "Optional"],
+                                    ["Is Vaccinated ?", "Checkbox", "Optional"],
+                                    ["Probation/Training Period (Months)", "Number", "Optional"],
+                                    ["No of Leaves (Training)", "Number", "Optional"],
                                     ["Confirmation Date", "Date", "Optional"],
-                                    ["Leaves during Training", "Number", "Optional"],
+                                    ["Image", "File Upload", "Optional"],
                                 ]}
                             />
                         ),
@@ -3555,7 +4245,7 @@ export const HrmManualStep = [
                 ],
                 notes: [
                     "<strong>Employee Name</strong>, <strong>Email ID</strong>, <strong>Employee Department</strong>, and <strong>Employee Address</strong> are mandatory fields.",
-                    "Changes are saved immediately after clicking <strong>'Submit'</strong>.",
+                    "Changes are saved immediately after clicking <strong>'Submit'</strong> button.",
                 ],
             },
             {
@@ -3583,7 +4273,7 @@ export const HrmManualStep = [
                         title: "Cancel/Back Option",
                         icon: <FaArrowLeft />,
                         items: [
-                            "Click on <strong>'Back'</strong> or navigate away without saving.",
+                            "Click on <strong>'Appointee List'</strong> button or navigate away without saving.",
                         ],
                     },
                 ],
@@ -3603,8 +4293,8 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left Menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
+                            "Click on <strong>'Setup'</strong>",
                             "Click on <strong>'Appointee List'</strong>",
                             "Click on <strong>'Update'</strong> next to the employee",
                             "Navigate to the <strong>'Documents'</strong> section",
@@ -3649,7 +4339,7 @@ export const HrmManualStep = [
                         title: "Submission Process",
                         icon: <FaPaperPlane />,
                         items: [
-                            "After uploading documents, click the <strong>'Update'</strong> or <strong>'Save'</strong> button.",
+                            "After uploading documents, click the <strong>'Update Documents'</strong> button.",
                         ],
                     },
                 ],
@@ -3665,7 +4355,7 @@ export const HrmManualStep = [
                         title: "Cancel/Back Option",
                         icon: <FaArrowLeft />,
                         items: [
-                            "Click 'Cancel' or navigate back to return to the Employee List Dashboard without uploading any files.",
+                            "Click <strong>'Employee List'</strong> or navigate back to return to the Employee List Dashboard without uploading any files.",
                         ],
                     },
                 ],
@@ -3685,8 +4375,8 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left Menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
+                            "Click on <strong>'Setup'</strong>",
                             "Click on <strong>'Appointee List'</strong>",
                             "Click on <strong>'Update'</strong> next to the appointee whose bank account needs to be updated",
                             "Navigate to the <strong>'Documents'</strong> section",
@@ -3695,7 +4385,7 @@ export const HrmManualStep = [
                     },
                 ],
                 notes: [
-                    "Ensure that you have the necessary permissions to update bank account details.",
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can view this section based on company requirements.",
                 ],
             },
             {
@@ -3756,7 +4446,7 @@ export const HrmManualStep = [
                         title: "Cancel Option",
                         icon: <FaArrowLeft />,
                         items: [
-                            "Click on <strong>'Cancel'</strong> to discard any changes and return to the previous page.",
+                            "Click on <strong>'Bank Account'</strong> to discard any changes and return to the previous page.",
                         ],
                     },
                 ],
@@ -3778,8 +4468,8 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left Menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
+                            "Click on <strong>'Setup'</strong>",
                             "Click on <strong>'Appointee List'</strong>",
                             "Find the appointee whose status needs to be restored.",
                             "Click on <strong>'Restore Status'</strong> next to the appointee.",
@@ -3787,7 +4477,7 @@ export const HrmManualStep = [
                     },
                 ],
                 notes: [
-                    "Only users with the necessary permissions can restore the status of an appointee.",
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can restore status of a appointee based on company requirements.",
                     "Restoring an appointee's status will reactivate their record in the system.",
                 ],
             },
@@ -3842,16 +4532,16 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left Menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
+                            "Click on <strong>'Setup'</strong>",
                             "Click on <strong>'Appointee List'</strong>",
                             "Locate the appointee whose status needs to be updated.",
-                            "Click on <strong>'Update Status'</strong> next to the appointee.",
+                            "Click on <strong>'Update Status as Employee'</strong> next to the appointee.",
                         ],
                     },
                 ],
                 notes: [
-                    "Only users with the necessary permissions can update the status of an appointee.",
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can update the status as employee based on company requirements.",
                 ],
             },
             {
@@ -4119,7 +4809,7 @@ export const HrmManualStep = [
         ]
     },
 
-    //
+    //Shift view
     {
         "Shift Views Dashboard": [
             { accesspath: "Shift View Dashboard" },
@@ -4185,10 +4875,10 @@ export const HrmManualStep = [
 
     // Employee List
     {
-        "Add Employee": [
-            { accesspath: "Add Employee" },
+        "Add New Employee": [
+            { accesspath: "Add New Employeee" },
             {
-                title: "Navigate to Add Employee",
+                title: "Navigate to Add a new Employee",
                 description:
                     "Use this form to add a new employee to the HRMS system. Follow the instructions to enter accurate employee details.",
                 sections: [
@@ -4196,14 +4886,13 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to the <strong>'Left Menu'</strong>",
-                            "Select <strong>'Manager (HRMS)'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
                             "Click on <strong>'Employee List'</strong>",
                             "Click on <strong>'Add Employee'</strong>",
                         ],
                     },
                 ],
-                notes: ["Only authorized users can add new employees to the system."],
+                notes: ["Only the <strong>Admin</strong> or <strong>HR Manager</strong> can add employee based on company requirements.",],
             },
             {
                 title: "Employee Form Fields",
@@ -4234,13 +4923,17 @@ export const HrmManualStep = [
                                     ["Country", "Dropdown", "Optional"],
                                     ["Address Proof Govt ID Number", "Text (e.g., Aadhaar)", "Required"],
                                     ["Personal Email ID", "Text", "Optional"],
-                                    ["Image", "File Upload", "Optional"],
                                     ["EMP Manager", "Dropdown", "Optional"],
                                     ["HR Manager", "Dropdown", "Optional"],
                                     ["HR Coordinator/Contact Details", "Text", "Optional"],
+                                    ["Qualification", "Text", "Optional"],
+                                    ["Prior experience", "Text", "Optional"],
+                                    ["Prior Experience in Years", "Number", "Optional"],
+                                    ["Is Vaccinated ?", "Checkbox", "Optional"],
                                     ["Probation/Training Period (Months)", "Number", "Optional"],
-                                    ["Joining Date", "Calendar Picker", "Optional"],
-                                    ["No. of Leaves During Training Period", "Number", "Optional"]
+                                    ["No of Leaves (Training)", "Number", "Optional"],
+                                    ["Confirmation Date", "Date", "Optional"],
+                                    ["Image", "File Upload", "Optional"],
                                 ]}
                             />
                         ),
@@ -4277,7 +4970,7 @@ export const HrmManualStep = [
                         title: "Back Option",
                         icon: <FaArrowLeft />,
                         items: [
-                            "Click on <strong>'Back'</strong> to return to the <strong>'Employee List'</strong> screen.",
+                            "Click on <strong>'Employee List'</strong> to return to the Employee List screen.",
                         ],
                     },
                 ],
@@ -4288,6 +4981,366 @@ export const HrmManualStep = [
             },
         ]
     },
+    {
+        "Update Employee Details": [
+            { accesspath: "Update Employee Details" },
+            {
+                title: "Navigate to Update Employee Details",
+                description:
+                    "Use this form to update existing employee details in the HRMS system.",
+                sections: [
+                    {
+                        title: "Navigation Path",
+                        icon: <FaRoute />,
+                        items: [
+                            "In the left <strong>'Sidebar Menu'</strong>, click on <strong>'Manager (HRMS)'</strong>.",
+                            "Click on <strong>'Employee List'</strong>.",
+                            "Click on the <strong>'Update'</strong> button next to the employee you want to edit."
+                        ]
+                    }
+                ],
+                notes: [
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can update employee details as per company requirements."
+                ]
+            },
+            {
+                title: "Employee Form Fields",
+                description: "Review and modify the necessary fields in the employee form:",
+                sections: [
+                    {
+                        title: "Field Details",
+                        icon: <FaEdit />,
+                        content: (
+                            <DynamicTable
+                                columns={["Field", "Input Type", "Validation"]}
+                                rows={[
+                                    ["Employee Name", "Text", "Required"],
+                                    ["Employee ID", "Auto-generated", "System-generated"],
+                                    ["PAN Number", "Text", "Optional"],
+                                    ["Email ID", "Text", "Required"],
+                                    ["Mobile Number", "Number", "Optional"],
+                                    ["Alternate Contact Number", "Number", "Optional"],
+                                    ["Emp Department", "Dropdown", "Optional"],
+                                    ["Emp Grade", "Dropdown", "Optional"],
+                                    ["Date of Joining", "Calendar Picker", "Optional"],
+                                    ["Gender", "Dropdown", "Optional"],
+                                    ["Marital Status", "Dropdown", "Optional"],
+                                    ["DOB", "Calendar Picker", "Optional"],
+                                    ["Blood Group", "Dropdown", "Optional"],
+                                    ["Employee Address", "Text", "Required"],
+                                    ["Pin Code", "Number", "Optional"],
+                                    ["Country", "Dropdown", "Optional"],
+                                    ["Address Proof Govt ID Number", "Text (e.g., Aadhaar)", "Required"],
+                                    ["Personal Email ID", "Text", "Optional"],
+                                    ["EMP Manager", "Dropdown", "Optional"],
+                                    ["HR Manager", "Dropdown", "Optional"],
+                                    ["HR Coordinator/Contact Details", "Text", "Optional"],
+                                    ["Qualification", "Text", "Optional"],
+                                    ["Prior experience", "Text", "Optional"],
+                                    ["Prior Experience in Years", "Number", "Optional"],
+                                    ["Is Vaccinated ?", "Checkbox", "Optional"],
+                                    ["Probation/Training Period (Months)", "Number", "Optional"],
+                                    ["No of Leaves (Training)", "Number", "Optional"],
+                                    ["Confirmation Date", "Date", "Optional"],
+                                    ["Image", "File Upload", "Optional"]
+                                ]}
+                            />
+                        )
+                    }
+                ],
+                notes: [
+                    "<strong>Employee Name</strong>, <strong>Email ID</strong>, <strong>Employee Address</strong>, and <strong>Address Proof Govt ID Number</strong> are mandatory fields.",
+                    "Employee ID is system-generated and cannot be modified."
+                ]
+            },
+            {
+                title: "Submit the Updated Employee Details",
+                description: "After making the required changes:",
+                sections: [
+                    {
+                        title: "Submission Process",
+                        icon: <FaPaperPlane />,
+                        items: [
+                            "Verify that all <strong>required fields</strong> are correctly filled.",
+                            "Click <strong>'Submit'</strong> to save the updated employee details."
+                        ]
+                    }
+                ],
+                notes: [
+                    "After submission, the changes will be reflected in the Employee List."
+                ]
+            },
+            {
+                title: "Back Navigation",
+                description:
+                    "You can return to the previous screen without saving changes.",
+                sections: [
+                    {
+                        title: "Back Option",
+                        icon: <FaArrowLeft />,
+                        items: [
+                            "Click on <strong>'Employee List'</strong> to go back to the Employee List screen."
+                        ]
+                    }
+                ],
+                notes: [
+                    "Any unsaved modifications will be lost when navigating back.",
+                    "Ensure to submit the form before going back if you want to keep the changes."
+                ]
+            }
+        ]
+    },
+    {
+        "Employee Documents Add/Update": [
+            { accesspath: "Employee Documents Add/Update" },
+            {
+                title: "Navigate to Add or Update Documents of Employee",
+                description:
+                    "Follow the steps below to add new documents or update existing ones for an employee in the HRMS system.",
+                sections: [
+                    {
+                        title: "Navigation Path",
+                        icon: <FaRoute />,
+                        items: [
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
+                            "Click on <strong>'Employee List'</strong>",
+                            "Click on <strong>'Update'</strong> next to the employee",
+                            "Navigate to the <strong>'Documents'</strong> section where you can add or update files",
+                        ],
+                    },
+                ],
+                notes: [
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can add or update documents of a employee based on company requirements.",
+                ],
+            },
+            {
+                title: "Employee Document Upload Fields",
+                description: "Add new documents or replace existing ones as needed:",
+                sections: [
+                    {
+                        title: "Document Types",
+                        icon: <FaFileUpload />,
+                        content: (
+                            <DynamicTable
+                                columns={["Document Type", "Input Type", "Validation"]}
+                                rows={[
+                                    ["Employee Joining Document", "File Upload", "Optional"],
+                                    ["Agreement Document", "File Upload", "Optional"],
+                                    ["Misc Document - 1", "File Upload", "Optional"],
+                                    ["Misc Document - 2", "File Upload", "Optional"],
+                                    ["Resign Document", "File Upload", "Optional"],
+                                ]}
+                            />
+                        ),
+                    },
+                ],
+                notes: [
+                    "All file uploads are optional but important for maintaining a complete employee record.",
+                    "You can upload new files or update previously uploaded ones in the same place.",
+                ],
+            },
+            {
+                title: "Save or Submit",
+                description: "Steps to finalize adding or updating documents:",
+                sections: [
+                    {
+                        title: "Submission Process",
+                        icon: <FaPaperPlane />,
+                        items: [
+                            "After adding or updating documents, click the <strong>'Update Documents'</strong> button.",
+                        ],
+                    },
+                ],
+                notes: [
+                    "If you navigate away without saving, the changes will be lost.",
+                ],
+            },
+            {
+                title: "Cancel Document Upload",
+                description: "How to cancel the operation without saving changes:",
+                sections: [
+                    {
+                        title: "Cancel/Back Option",
+                        icon: <FaArrowLeft />,
+                        items: [
+                            "Click <strong>'Employee List'</strong> or navigate back to return to the Employee List Dashboard without adding or updating any files.",
+                        ],
+                    },
+                ],
+                notes: ["No changes will be saved unless explicitly submitted."],
+            },
+        ]
+    },
+    {
+    "Link Bank Account Details": [
+        { accesspath: "Link Bank Account Details" },
+        {
+            title: "Navigate to Link Bank Account",
+            description:
+                "Follow the steps below to link your bank account details for a employee in the HRMS system.",
+            sections: [
+                {
+                    title: "Navigation Path",
+                    icon: <FaRoute />,
+                    items: [
+                        "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Manager (HRMS)'</strong>",
+                        "Click on <strong>'Setup'</strong>",
+                        "Click on <strong>'Employee List'</strong>",
+                        "Click on <strong>'Update'</strong> next to the appointee whose bank account needs to be updated",
+                        "Click on the <strong>'Bank Account'</strong> tab to open the form",
+                    ],
+                },
+            ],
+            notes: [
+                "You can only link your bank details once your employee profile is activated.",
+            ],
+        },
+        {
+            title: "Bank Account Form Fields",
+            description:
+                "Fill in the required details for linking your bank account:",
+            sections: [
+                {
+                    title: "Field Information",
+                    icon: <FaEdit />,
+                    content: (
+                        <DynamicTable
+                            columns={["Field", "Input Type", "Validation"]}
+                            rows={[
+                                ["Account Number", "Text", "Required"],
+                                ["Account Name", "Text", "Required"],
+                                ["Account Currency", "Dropdown", "Required"],
+                                ["Bank Name", "Dropdown", "Required"],
+                                ["IFSC Code", "Text", "Required"],
+                                ["BIC Code", "Text", "Optional"],
+                                ["Branch Address", "Text", "Required"],
+                                ["Set as Default Account", "Checkbox", "Optional"],
+                            ]}
+                        />
+                    ),
+                },
+            ],
+            notes: [
+                "<strong>Account Number, Account Name, Account Currency, Bank Name, IFSC Code, and Branch Address</strong> must be provided.",
+                "Ensure that the IFSC code is correct to avoid payment failures.",
+            ],
+        },
+        {
+            title: "Submit Bank Account Information",
+            description:
+                "Once you have entered all the details, submit your bank account for linking:",
+            sections: [
+                {
+                    title: "Submission Process",
+                    icon: <FaPaperPlane />,
+                    items: [
+                        "Double-check that all <strong>mandatory fields</strong> are correctly filled.",
+                        "Click <strong>'Create'</strong> to save and link employee's bank account.",
+                    ],
+                },
+            ],
+            // notes: [
+            //     "After submission, your bank details will be sent for HR/payroll verification.",
+            //     "Payments will be credited to the linked account after approval.",
+            // ],
+        },
+         {
+                title: "Cancel Changes",
+                description:
+                    "If you wish to cancel the changes without saving, follow the steps below:",
+                sections: [
+                    {
+                        title: "Cancel Option",
+                        icon: <FaArrowLeft />,
+                        items: [
+                            "Click on <strong>'Bank Account'</strong> to discard any changes and return to the previous page.",
+                        ],
+                    },
+                ],
+                notes: [
+                    "Changes will only be saved if you click on <strong>'Submit'</strong>.",
+                ],
+            },
+        ]
+    },
+    {
+    "Employee Pin generation": [
+        { accesspath: "Employee Pin generation" },
+        {
+            title: "Navigate to Update / Check PIN",
+            description: "Follow the steps below to update or verify the PIN of a selected employee in the HRMS system.",
+            sections: [
+                {
+                    title: "Navigation Path",
+                    icon: <FaRoute />,
+                    items: [
+                        "In the left <strong>'Sidebar Menu'</strong> click on <strong>'Manager (HRMS)'</strong>",
+                        "Click on <strong>'Employee List'</strong>",
+                        "Click on the desired <strong>Employee</strong> from the list",
+                        "Navigate to the <strong>'PIN'</strong> tab"
+                    ]
+                }
+            ],
+            notes: [
+                "Only the <strong>Admin</strong> or <strong>HR Manager</strong> can update or check an employee's PIN based on company requirements.",
+            ]
+        },
+        {
+            title: "PIN Update / Check Fields",
+            description: "Enter the required details to update or verify the employee's PIN:",
+            sections: [
+                {
+                    title: "Input Fields",
+                    icon: <FaKey />,
+                    content: <DynamicTable 
+                                columns={['Field', 'Input Type', 'Validation']} 
+                                rows={[['User PIN', 'Text/Number Input', 'Mandatory'], 
+                                    ['Confirm PIN', 'Text/Number Input', 'Must match User PIN']]} 
+                            />
+                }
+            ],
+            notes: [
+                "PIN must meet the security requirements set by the organization.",
+                "Confirm PIN must exactly match User PIN before submission."
+            ]
+        },
+        {
+            title: "Actions",
+            description: "You can perform the following actions on this page:",
+            sections: [
+                {
+                    title: "Available Buttons",
+                    icon: <FaTools />,
+                    items: [
+                        "<strong>'Update PIN'</strong> - Saves the new PIN for the employee.",
+                        "<strong>'Check PIN'</strong> - Validates if the entered PIN matches the existing one and displays a message accordingly."
+                    ]
+                }
+            ],
+            notes: [
+                "Once updated, the old PIN will be replaced by the new one.",
+                "Check PIN will not change any data; it only verifies the entered PIN."
+            ]
+        },
+        {
+            title: "Cancel Operation",
+            description: "How to exit without making any changes:",
+            sections: [
+                {
+                    title: "Cancel/Back Option",
+                    icon: <FaArrowLeft />,
+                    items: [
+                        "Click <strong>'Employee List'</strong> or use the browser back button to return to the Employee List Dashboard without updating or checking the PIN."
+                    ]
+                }
+            ],
+            notes: [
+                "No changes will be saved unless the Update PIN button is clicked."
+            ]
+        }
+        ]
+    },
+
 
 
     // PAYROLL HRMS
@@ -5820,23 +6873,22 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to <strong>'Left Menu'</strong>",
-                            "Select <strong>'Claim System'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Claim System'</strong>",
                             "Click on <strong>'Claim Setup'</strong>",
                             "Go to <strong>'Expense Category'</strong>",
                             "Click <strong>'Add Expense Category'</strong>",
                         ],
                     },
                 ],
+                notes: ["Only the <strong>Admin</strong> or <strong>HR Manager</strong> can add expanse category based on company requirements.",],
             },
             {
-                title: "Form Fields",
-                description:
-                    "Fill in the following fields to define a new Expense Category:",
-                sections: [
-                    {
-                        title: "Field Descriptions",
-                        icon: <FaEdit />,
+            title: "Form Fields",
+            description: "Fill in the following fields to define a new Expense Category:",
+            sections: [
+                {
+                title: "Field Descriptions",
+                icon: <FaEdit />,
                         content: (
                             <DynamicTable
                                 columns={["Field Name", "Input Type", "Validation"]}
@@ -5853,13 +6905,13 @@ export const HrmManualStep = [
                                     ["Image", "Upload", "Required"]
                                 ]}
                             />
-                        ),
-                    },
+                        )
+                    }
                 ],
-                notes: [
-                    "Make sure the expense category name is unique and descriptive.",
-                    "You can upload supporting documents such as tax policies, eligibility proofs, or related attachments if needed.",
-                ],
+            notes: [
+                "Make sure the <strong>Expense Category Name</strong> is unique and descriptive.",
+                "If <strong>Is Bill Required to be Submitted?</strong> is checked, then when an employee applies for a claim under this category, they must upload the bill while submitting the claim."
+            ]
             },
             {
                 title: "Submission Process",
@@ -5880,15 +6932,19 @@ export const HrmManualStep = [
                 description: "To cancel without saving:",
                 sections: [
                     {
-                        title: "Cancel Action",
-                        icon: <FaTimesCircle />,
-                        items: [
-                            "Click the <strong>'On going back'</strong> it discards changes.",
-                            "You will be redirected back to the <strong>Expense Category List</strong> screen.",
-                        ],
-                    },
+                    title: "Cancel Action",
+                    icon: <FaTimesCircle />,
+                    items: [
+                        "Click the <strong>'Expense Category List'</strong> button at the top-right corner to discard changes.",
+                        "You will be redirected back to the <strong>Expense Category List</strong> screen."
+                    ]
+                    }
                 ],
-            },
+                notes: [
+                    "Unsaved changes will be lost once you cancel the setup.",
+                    "Ensure you have saved necessary details before performing cancel action."
+                ]
+            }
         ]
     },
 
@@ -5907,14 +6963,14 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to <strong>'Left Menu'</strong>",
-                            "Select <strong>'Claim System'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Claim System'</strong>",
                             "Click on <strong>'Claim Setup'</strong>",
                             "Go to <strong>'Expense Item'</strong>",
                             "Click <strong>'Add Expense Item'</strong>",
                         ],
                     },
                 ],
+                notes: ["Only the <strong>Admin</strong> or <strong>HR Manager</strong> can add expense item based on company requirements.",]
             },
             {
                 title: "Form Fields",
@@ -5930,9 +6986,9 @@ export const HrmManualStep = [
                                     ["Name", "Text", "Required"],
                                     ["Service Code", "Text", "Required"],
                                     ["Service Category", "Dropdown", "Optional"],
-                                    ["Service Cost", "Price", "Required"],
+                                    ["Service Cost", "Number", "Required"],
                                     ["Description", "Text", "Optional"],
-                                    ["Image", "Upload", "Optional"]
+                                    ["Image", "File Upload", "Optional"]
                                 ]}
                             />
                         ),
@@ -5951,13 +7007,13 @@ export const HrmManualStep = [
                         icon: <FaPaperPlane />,
                         items: [
                             "Complete all required fields and click <strong>'Submit'</strong>.",
-                            "The system will validate and save the expense item to the category list.",
+                            "The system will validate and save in expense item list.",
                         ],
                     },
                 ],
-                notes: [
-                    "Image upload is optional but supported — you can upload relevant documentation or supporting visuals for the expense item, including data or proof if necessary.",
-                ],
+                // notes: [
+                //     "Image upload is optional but supported — you can upload relevant documentation or supporting visuals for the expense item, including data or proof if necessary.",
+                // ],
             },
             {
                 title: "Cancel Setup",
@@ -5967,8 +7023,8 @@ export const HrmManualStep = [
                         title: "Cancel Action",
                         icon: <FaTimesCircle />,
                         items: [
-                            "Click the <strong>'Back/'Expense Item List</strong> button.",
-                            "You will be redirected back to the <strong>Expense Item List</strong> screen.",
+                            "Click the <strong>'Expense Item List'</strong> button at the top-right corner to discard changes.",
+                            "You will be redirected back to the <strong>Expense Item List</strong> screen."
                         ],
                     },
                 ],
@@ -5977,7 +7033,7 @@ export const HrmManualStep = [
     },
 
     {
-        "Claim Expense": [
+        "Claim Expense List": [
             {
                 accesspath: "Login --> General --> Claim System --> Claim Expenses",
             },
@@ -5989,42 +7045,33 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to <strong>'Left Menu'</strong> section",
-                            "Click on <strong>'Claim System'</strong>",
-                            "Choose <strong>'Claim Expenses'</strong> option",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Claim System'</strong>",
+                            "Click on <strong>'Claim Expenses'</strong>",
                         ],
                     },
                 ],
-                notes: [
-                    "<strong>Login</strong> to the Claim System to access <strong>'Claim Expenses'</strong>",
-                ],
+                // notes: ["Only the <strong>Admin</strong> or <strong>HR Manager</strong> can add claim expense based on company requirements.",],
+
             },
             {
-                title: "Claim Dashboard Filters and Data Entry",
-                description: "Complete all required fields to filter claim data:",
+                title: "Claim Dashboard Filters",
+                description: "Filter your claims based on different criteria as per requirement:",
                 sections: [
                     {
-                        title: "Filter Inputs",
-                        icon: <FaEdit />,
-                        content: (
-                            <DynamicTable
-                                columns={["Field", "Input Type", "Validation"]}
-                                rows={[
-                                    ["Employee Name", "Dropdown", "Required"],
-                                    ["Search Employee", "Dropdown", "Required"],
-                                    ["All Expense Item", "Dropdown", "Required"],
-                                    ["All Status", "Dropdown", "Required"],
-                                    ["Search", "Button", "Click to filter records"],
-                                    ["Record Created", "Dropdown", "Required, No manual entry"],
-                                    ["Order By", "Dropdown (Ascending/Descending)", "Required, Select sort order"]
-                                ]}
-                            />
-                        ),
-                    },
+                    title: "Filter Fields",
+                    icon: <FaEdit />,
+                    items: [
+                       "From the dropdown menu, select a field, enter your keyword in the search bar, and click the <strong>Search</strong> icon button.",
+                        "Filter by <strong>Expense Item</strong> to narrow down specific claim categories.",
+                        "Filter by <strong>Claim Status</strong> to view claims based on approval stages (Approved, Rejected, Settled etc.).",
+                        "Sort results by selecting an option from the available sort fields, such as dates, names, projects, or financial periods."
+                    ]
+                    }
                 ],
                 notes: [
-                    "Ensure that all dropdown selections are made, no manual entry is allowed.",
-                ],
+                    "Sorting helps in better organizing claims for review.",
+                    "💡 Tip: Combine multiple filters (e.g., Employee Name + Claim Status) to refine search results more effectively."
+                ]
             },
             {
                 title: "Graphical Data Representation",
@@ -6044,22 +7091,22 @@ export const HrmManualStep = [
                 ],
             },
             {
-                title: "Clear and View Claim",
-                description:
-                    "Users can clear filters or view specific claims from the dashboard.",
-                sections: [
-                    {
-                        title: "Actions",
-                        icon: <FaTrash />,
-                        items: [
-                            "Click <strong>'Clear'</strong> to reset filters.",
-                            "Click <strong>'View Claim'</strong> to access detailed claim records.",
-                        ],
-                    },
-                ],
-                notes: [
-                    "Click 'Clear' to remove filters, click 'View Claim' for detailed records.",
-                ],
+            title: "Clear and View Claim",
+            description: "Users can clear filters or view specific claims directly from the dashboard.",
+            sections: [
+                {
+                title: "Actions",
+                icon: <FaTrash />,
+                items: [
+                    "Click <strong>'Clear'</strong> to reset all applied filters and return to the default claim list.",
+                    "Click <strong>'View Claim'</strong> to open and access detailed records for a specific claim."
+                ]
+                }
+            ],
+            notes: [
+                "Use <strong>'Clear'</strong> when you want to reset the dashboard view and start a fresh search.",
+                "Use <strong>'View Claim'</strong> to drill down into details of a selected claim.",
+            ]
             },
             {
                 "title": "Download Claim List",
@@ -6069,8 +7116,9 @@ export const HrmManualStep = [
                         "title": "Download Options",
                         "icon": <FaDownload />,
                         "items": [
-                            "You can download the claim expense list as XLS or PDF file buttons provided below."
-                        ]
+                            "Click the <strong>'XLS File'</strong> button to download the expense list in Excel format.",
+                            "Click the <strong>'PDF File'</strong> button to download the expense list in PDF format." 
+                           ]
                     }
                 ],
                 "notes": [
@@ -6082,9 +7130,9 @@ export const HrmManualStep = [
 
     {
         "Add New Claim": [
-            {
-                accesspath:
-                    "Login --> General --> Claim System --> Claim Expenses --> New claim",
+             {
+            accesspath:
+                "Login --> General --> Claim System --> Claim Expenses --> New claim",
             },
             {
                 title: "Navigate to Claim Expenses",
@@ -6094,8 +7142,7 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to <strong>'Left Menu'</strong>",
-                            "Select <strong>'Claim System'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Claim System'</strong>",
                             "Click on <strong>'Claim Expenses'</strong>",
                             "Click on <strong>'New claim'</strong>",
                         ],
@@ -6107,7 +7154,7 @@ export const HrmManualStep = [
             },
             {
                 title: "Claim Form Fields",
-                description: "Fill in the mandatory fields to submit a new claim:",
+                description: "Fill in the mandatory fields to create a new claim. The claim will be saved in draft mode and can be submitted later.",
                 sections: [
                     {
                         title: "Form Input Fields",
@@ -6116,11 +7163,11 @@ export const HrmManualStep = [
                             <DynamicTable
                                 columns={["Field", "Type", "Validation"]}
                                 rows={[
-                                    ["Expense Item", "Dropdown", "Required, No manual entry"],
-                                    ["Project", "Dropdown", "Required, No manual entry"],
-                                    ["Claimed Amount", "Amount", "Required"],
-                                    ["Expense Date", "Date Picker", "Required, Should match the date in the expense bill"],
-                                    ["Expense Bill/Invoice File", "File Upload", "Required, Based on Selected claim"],
+                                    ["Expense Item", "Dropdown", "Required"],
+                                    ["Project", "Dropdown", "Required"],
+                                    ["Claimed Amount", "Number", "Required"],
+                                    ["Expense Date", "Date Picker", "Required"],
+                                    ["Expense Bill/Invoice File", "File Upload", "Required, Based on Selected claim item"],
                                     ["Remarks", "Text", "Optional"]
                                 ]}
                             />
@@ -6128,66 +7175,57 @@ export const HrmManualStep = [
                     },
                 ],
                 notes: [
-                    "You cannot enter anything manually for the 'Expense Item' and 'Project' fields — these should be selected from the dropdowns.",
-                    "All fields, except for 'Remarks' and 'Project', are mandatory.",
+                    "After filling the form, the claim will be saved as a draft (master claim) and you can add claim items later before final submission.",
+                ],
+            },
+            {
+                title: "Add Claim Item",
+                description: "Employee can be add single expense item or multiple expense item under a single claim.",
+                sections: [
+                    {
+                        title: "Single Claim Item",
+                        icon: <FaPlusCircle />,
+                        items: [
+                            "Click <strong>New claim</strong> to add a new claim item",
+                            "The claim will remain in draft mode until submitted."
+                        ],
+                    },
+                    {
+                        title: "Multiple Claim Items",
+                        icon: <FaListAlt />,
+                        items: [
+                            "Choose a claim in which you want to add multiple claim items",
+                            "Click on <strong>Add Claim Item</strong> to add new claim item, similar to when creating a new claim.",
+                            "Each expense item will be saved under the claim in draft mode."
+                        ],
+                    },
+                ],
+                notes: [
+                    "Both single and multiple claim items are saved in draft mode until the claim is explicitly submitted.",
                 ],
             },
             {
                 title: "Submit Your Claim",
-                description: "Final steps to submit your claim:",
+                description: "Submit your claim after adding all necessary claim items.",
                 sections: [
                     {
                         title: "Submission Process",
                         icon: <FaPaperPlane />,
                         items: [
-                            "<strong>Complete</strong> all required fields and click <strong>'Save claim'</strong>",
-                            "The system will validate and save the new claim details",
+                            "Go to the <strong>Claim List</strong> screen.",
+                            "Choose it claim want to submit,then click on the <strong>Submit claim</strong> button.",
+                            "Once clicked, the system will submit the claim and provide confirmation."
                         ],
                     },
                 ],
                 notes: [
-                    "Once submitted, the system will save the claim details and provide a confirmation.",
+                    "If you do not click on 'Submit claim', the claim will remain in draft/save mode.",
                 ],
-            },
-            {
-                title: "Add Claim item",
-                description: "Once claim is created user can add the multiple claim items.",
-                sections: [
-                    {
-                        title: "Add Claim Process",
-                        icon: <FaPaperPlane />,
-                        items: [
-                            "Select the claim in which you want to add claim item.",
-                            "click on <strong>'Add claim item'</strong> to add the item to the claim."
-                        ],
-                    },
-                ],
-                notes: [
-                    "After submission, the system will save the claim item details and display a confirmation message.",
-                ],
-            },
-            {
-                title: "Cancel Setup",
-                description: "To cancel the claim setup without saving:",
-                sections: [
-                    {
-                        title: "Cancel Action",
-                        icon: <FaTimesCircle />,
-                        items: [
-                            "Click the <strong>'Cancel/Expense Claims'</strong> button.",
-                            "You will be redirected back to the <strong>Expense Claims</strong> list.",
-                        ],
-                    },
-                ],
-                notes: [
-                    "This will cancel the current claim setup without saving any information.",
-                ],
-            },
+            }
         ]
     },
-
     {
-        "Employee Advances - Dashboard": [
+        "Employee Advances List": [
             {
                 accesspath: "Login --> General --> Claim System --> Employee Advances",
             },
@@ -6199,41 +7237,31 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to <strong>'Left Menu'</strong> section",
-                            "Click on <strong>'Claim System'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Claim System'</strong>",
                             "Select <strong>'Employee Advances'</strong>",
                         ],
                     },
                 ],
-                notes: [
-                    "<strong>Login</strong> to the System to access <strong>Employee Advances Dashboard</strong>",
-                ],
+                notes: ["Only the <strong>Admin</strong> or <strong>HR Manager</strong> can add employee advances on company requirements.",],
+
             },
             {
-                title: "Dashboard Filters and Data Entry",
-                description: "Use the filters below to search and manage advance records:",
+                title: "Employee Advances List Filters",
+                description: "Filter and sort your advance requests based on various criteria to quickly find the required records.",
                 sections: [
                     {
-                        title: "Filter Inputs",
+                        title: "Filter Fields",
                         icon: <FaEdit />,
-                        content: (
-                            <DynamicTable
-                                columns={["Field", "Input Type", "Validation"]}
-                                rows={[
-                                    ["Employee Name", "Dropdown", "Required"],
-                                    ["Search Lead", "Search Box", "Manual entry allowed"],
-                                    ["Record Created", "Dropdown", "Required, No manual entry"],
-                                    ["Order By", "Dropdown (Ascending/Descending)", "Required"],
-                                    ["Search", "Button", "Click to filter records"],
-                                    ["Clear", "Button", "Click to reset filters"]
-                                ]}
-                            />
-                        ),
-                    },
+                        items: [
+                            "Use the search filter by selecting an option from the dropdown menu, then enter your keyword in the search bar and click the <strong>Search</strong> icon.",
+                            "Sort results using <strong>Record Created</strong>, <strong>Employee Name</strong>, <strong>Employee ID</strong>, <strong>Advance Date</strong>, or <strong>Approve Date</strong>."
+                        ]
+                    }
                 ],
                 notes: [
-                    "Only <strong>'Search Lead'</strong> field allows manual input. All others must be selected from dropdowns.",
-                ],
+                    "Sorting helps in better organizing advances for quick review.",
+                    // "💡 Tip: Combine filters (e.g., Employee ID + Advance Date) to narrow down results more effectively."
+                ]
             },
             {
                 title: "Graphical Representation of Advance Data",
@@ -6268,16 +7296,14 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to <strong>'Left Menu'</strong> section",
-                            "Click on <strong>'Claim System'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Claim System'</strong>",
                             "Select <strong>'Employee Advances'</strong>",
                             "Click on <strong>'New Advances'</strong>",
                         ],
                     },
                 ],
-                notes: [
-                    "<strong>Login</strong> to the System to access <strong>'New Advance'</strong> form.",
-                ],
+                notes: ["Only the <strong>Admin</strong> or <strong>HR Manager</strong> can add new employee advance based on company requirements.",],
+
             },
             {
                 title: "New Advance Entry Details",
@@ -6290,19 +7316,19 @@ export const HrmManualStep = [
                             <DynamicTable
                                 columns={["Field", "Input Type", "Validation"]}
                                 rows={[
-                                    ["Employee", "Dropdown", "Mandatory"],
-                                    ["Advance Type", "Dropdown", "Mandatory"],
-                                    ["Advance Date", "Date Picker", "Mandatory"],
-                                    ["Advance Amount", "Amount Input", "Mandatory"],
-                                    ["Repayment Type", "Dropdown", "Mandatory"],
-                                    ["Installment Amount", "Amount Input", "Mandatory"],
+                                    ["Employee", "Dropdown", "Required"],
+                                    ["Advance Type", "Dropdown", "Required"],
+                                    ["Advance Date", "Date Picker", "Required"],
+                                    ["Advance Amount", "Number", "Required"],
+                                    ["Repayment Type", "Dropdown", "Required"],
+                                    ["Installment Amount", "Number", "Required"],
                                     ["Remarks", "Text Area", "Optional"]
                                 ]}
                             />
                         ),
                     },
                 ],
-                notes: ["All fields except <strong>Remarks</strong> are mandatory."],
+                notes: ["All fields except <strong>Remarks</strong> are Required."],
             },
             {
                 title: "Submit New Advance",
@@ -6317,7 +7343,7 @@ export const HrmManualStep = [
                         ],
                     },
                 ],
-                notes: ["No supporting documents are required for submission."],
+                // notes: ["No supporting documents are required for submission."],
             },
             {
                 title: "Employee Advance List",
@@ -6327,8 +7353,8 @@ export const HrmManualStep = [
                         title: "Advance List Access",
                         icon: <FaListAlt />,
                         items: [
-                            "Navigate to <strong>'Employee Advances'</strong> from Right menu",
-                            "Click on <strong>'Employee Advance List'</strong> to view all entries",
+                            "Navigate to Employee Advances List from right top menu",
+                            "Click on <strong>'Emp Advance List'</strong> to view all entries",
                         ],
                     },
                 ],
@@ -6336,7 +7362,7 @@ export const HrmManualStep = [
         ]
     },
     {
-        "Approve Claims Dashboard": [
+        "Approve Claims List": [
             {
                 accesspath: "Login --> General --> Claim System --> Approve Claims",
             },
@@ -6348,42 +7374,33 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to <strong>'Left Menu'</strong>",
-                            "Click <strong>'Claim System'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Claim System'</strong>",
                             "Select <strong>'Approve Claims'</strong>",
                         ],
                     },
                 ],
-                notes: [
-                    "<strong>Login</strong> to the system to access the <strong>'Approve Claims - Dashboard'</strong>",
-                ],
+                notes: ["Only the <strong>Admin</strong> or <strong>HR Manager</strong> can access Approve Claims Dashboard based on company requirements.",],
+
             },
             {
-                title: "Dashboard Filters & Search",
-                description: "Use filters and charts to review and manage claims effectively:",
+                title: "Dashboard Filters",
+                description: "Filter your claims based on different criteria as per requirement:",
                 sections: [
                     {
-                        title: "Filter & Search Options",
-                        icon: <FaEdit />,
-                        content: (
-                            <DynamicTable
-                                columns={["Field", "Input Type", "Validation"]}
-                                rows={[
-                                    ["Employee Name", "Dropdown", "Selection required, no manual input"],
-                                    ["Search Employee", "Dropdown", "No manual input allowed"],
-                                    ["All Expense Item", "Dropdown", "No manual input allowed"],
-                                    ["All Status", "Dropdown", "No manual input allowed"],
-                                    ["Record Created", "Dropdown", "Optional filter, dropdown only"],
-                                    ["Order By", "Dropdown (Asc/Desc)", "No manual input allowed"]
-                                ]}
-                            />
-                        ),
-                    },
+                    title: "Filter Fields",
+                    icon: <FaEdit />,
+                    items: [
+                        "From the dropdown menu, select a field, enter your keyword in the search bar, and click the <strong>Search</strong> icon button.",
+                        "Filter by <strong>Expense Item</strong> to narrow down specific claim categories.",
+                        "Filter by <strong>Claim Status</strong> to view claims based on approval stages (Approved, Rejected, Settled etc.).",
+                        "Sort results by selecting an option from the available sort fields, such as dates, names, projects, or financial periods."
+                    ]
+                    }
                 ],
                 notes: [
-                    "All filters are dropdown-based.",
-                    "No manual entry is permitted in any search/filter fields.",
-                ],
+                    "Sorting helps in better organizing claims for review.",
+                    "💡 Tip: Combine multiple filters (e.g., Employee Name + Claim Status) to refine search results more effectively."
+                ]
             },
             {
                 title: "Claim Summary Charts",
@@ -6400,108 +7417,166 @@ export const HrmManualStep = [
                 ],
                 notes: ["Charts are dynamic based on filter selections."],
             },
-            {
-                title: "Action Buttons",
-                description: "Use these to manage view and filter actions:",
-                sections: [
-                    {
-                        title: "Available Buttons",
-                        icon: <FaTools />,
-                        items: [
-                            "<strong>Search</strong> – Apply filters and load claims.",
-                            "<strong>Clear</strong> – Reset all filters.",
-                            "<strong>View Claim</strong> – See detailed information for a selected claim.",
-                        ],
-                    },
-                ],
-            },
+            // {
+            //     title: "Action Buttons",
+            //     description: "Use these to manage view and filter actions:",
+            //     sections: [
+            //         {
+            //             title: "Available Buttons",
+            //             icon: <FaTools />,
+            //             items: [
+            //                 "<strong>Search</strong> – Apply filters and load claims.",
+            //                 "<strong>Clear</strong> – Reset all filters.",
+            //                 "<strong>View Claim</strong> – See detailed information for a selected claim.",
+            //             ],
+            //         },
+            //     ],
+            // },
         ]
     },
 
     {
-        "New Approve Claim": [
+        "Approve Employee's Claim": [
             {
                 accesspath: "Login --> General --> Claim System --> Approve Claims --> New Claim",
             },
             {
-                title: "Navigate to Approve Claims - New Claim",
-                description: "Follow this path to add a new claim for approval:",
+                title: "Navigate to Approve Claims",
+                description: "Follow this path to approve a claim:",
                 sections: [
                     {
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to <strong>'Left Menu'</strong> section",
-                            "Click on <strong>'Claim System'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Claim System'</strong>",
                             "Select <strong>'Approve Claims'</strong>",
-                            "Choose <strong>'New Claim'</strong>",
+                        ],
+                    },
+                ],
+                notes: ["Access to the Approve Claims Dashboard is restricted based on role permissions (e.g., Admin or HR Manager).",],            
+            },
+            {
+                title: "Approve Submitted Claims",
+                description: "Review and approve claims submitted by employees:",
+                sections: [
+                    {
+                        title: "Approval Process",
+                        icon: <FaRoute />,
+                        items: [
+                            "On the Approve Claims list screen, all submitted claims will be displayed.",
+                            "To approve a claim, choose the desired claim and click on the <strong>Approve claim</strong> button.",
+                            "Follow the guided steps to complete the approval process.",
                         ],
                     },
                 ],
                 notes: [
-                    "<strong>Login</strong> to the System to access the <strong>'Approve Claims'</strong> module",
+                    "Ensure that claims are thoroughly verified before approval.",
                 ],
             },
-            {
-                title: "New Claim Data Entry",
-                description: "Fill in the details to submit a new expense claim for approval:",
+             {
+                title: "Approve Claim Form Fields",
+                description: "Fill in the mandatory fields for approval of a claim item.",
                 sections: [
                     {
-                        title: "Claim Form Fields",
+                        title: "Form Input Fields",
                         icon: <FaEdit />,
                         content: (
                             <DynamicTable
-                                columns={["Field", "Input Type", "Validation"]}
+                                columns={["Field", "Type", "Validation"]}
                                 rows={[
-                                    ["Expense Item", "Dropdown", "Required"],
-                                    ["Project", "Dropdown", "Optional"],
-                                    ["Claimed Amount", "Amount Input", "Required"],
-                                    ["Expense Date", "Date Picker", "Required"],
-                                    ["Expense Bill/Invoice", "File Upload", "Required"],
-                                    ["Remarks", "Text Area", "Optional"]
+                                    ["Claim Detail", "Text", "View only"],
+                                    ["Claim Date", "Date", "View only"],
+                                    ["Expense Date", "Date", "View only"],
+                                    ["Claim Amt", "Number", "View only"],
+                                    ["Approve Amt", "Number", "Optional"],
+                                    ["Forwarded To", "Dropdown", "Optional (Base on Approval Limit)"],
+                                    ["Is Selected ?", "Text", "Optional"],
+                                    ["Approval Type", "Dropdown", "Required"],
+                                    ["Remarks", "Text Area", "Optional"],
+                                    ["Approval Remarks", "Text Area", "Required"]
                                 ]}
                             />
                         ),
                     },
                 ],
                 notes: [
-                    "<strong>Expense Date</strong> and the date in the bill must be the same.",
-                    "All fields are mandatory except <strong>Project</strong> and <strong>Remarks</strong>.",
+                    "<strong>Is Selected ?</strong> checkbox is for select the claim item goes for approval process or not.",
                 ],
             },
             {
-                title: "Upload & Submit Claim",
-                description: "Attach the invoice and complete the claim submission process:",
-                sections: [
-                    {
-                        title: "Submission & Upload",
-                        icon: <FaPaperPlane />,
-                        items: [
-                            "Click <strong>'Upload'</strong> to attach your Expense Bill/Invoice.",
-                            "Click <strong>'Submit'</strong> to send the claim for approval.",
-                            "Wait for <strong>confirmation message</strong> after submission.",
-                        ],
-                    },
-                ],
-                notes: [
-                    "Ensure invoice file is uploaded before submission.",
-                    "Submitted claims will appear in the <strong>'Expense Claims'</strong> list.",
-                ],
-            },
-            {
-                title: "Download Claims",
-                description: "Download the list of submitted claims for your reference:",
-                sections: [
-                    {
-                        title: "Download Section",
-                        icon: <FaDownload />,
-                        items: [
-                            "Click on the <strong>'Download'</strong> button to export claims list in Excel or PDF format.",
-                        ],
-                    },
-                ],
-                notes: ["Only successfully submitted claims will be included in the download."],
-            },
+            title: "Navigate to Approve Claim Screen",
+            description: "After clicking on the 'Approve Claim' button, the system will display the approval screen with claim details.",
+            sections: [
+                {
+                    title: "Claim Details",
+                    icon: <FaInfoCircle />,
+                    items: [
+                        "View <strong>Employee ID</strong> of the employee how apply the claim and <strong>Claim ID</strong> at the top.",
+                        "Each claim item will show <strong>Expense Item</strong>, <strong>Expense Date</strong>, <strong>Claim Date</strong>, and <strong>Claim Amount</strong>.",
+                        "Check uploaded documents by clicking on the <strong>'View File'</strong> button."
+                    ]
+                }
+            ],
+            notes: [
+                "All claim items are listed individually for review, if the claim have multiple expense item."
+            ]
+        },
+        {
+            title: "Review and Take Action on Claims",
+            description: "Review submitted claims and take the appropriate action:",
+            sections: [
+                {
+                    title: "Approval Actions",
+                    icon: <FaCheckCircle />,
+                    items: [
+                        "Select the checkbox under <strong>'Is Selected?'</strong> to include the claim item in approval.",
+                        "Choose the <strong>Approval Type</strong> (e.g., Approved, Reject, Back to Claimant, Forward to Next Level).",
+                        "If forwarding, select the appropriate <strong>Approval Manager</strong> from the dropdown.",
+                        "If the claim is above manager's <strong>approval limit</strong> then, system will automatically select the appropriate <strong>Approval Manager</strong> from the dropdown.",
+                        "Add remarks in the <strong>Remarks</strong> box for the specific claim item."
+                    ]
+                }
+            ],
+            notes: [
+                "Multiple claim items can be approved or forwarded at the same time.",
+                "Use remarks to provide context for approvals or rejections."
+            ]
+        },
+        {
+            title: "Approval Remarks",
+            description: "Provide overall remarks for the entire claim:",
+            sections: [
+                {
+                    title: "Final Remarks Section",
+                    icon: <FaCommentDots />,
+                    items: [
+                        "Enter overall remarks in the <strong>Approval Remarks</strong> text area.",
+                        "Click on the <strong>'Approve Claim'</strong> button to finalize the approval action."
+                    ]
+                }
+            ],
+            notes: [
+                "These remarks apply to the overall claim, not just individual claim items."
+            ]
+        },
+        {
+            title: "Approved Claim Status",
+            description: "After approval, the claim status will update and reflect in the claim list:",
+            sections: [
+                {
+                    title: "Status Update",
+                    icon: <FaClipboardCheck />,
+                    items: [
+                        "The claim status will be updated <strong>Submitted</strong> to <strong>Approved</strong>.",
+                        "Then the claim will go for settlement process."
+                    ]
+                }
+            ],
+            notes: [
+                "Once approved, claims cannot be modified by the employee.",
+                "Approval history is stored for audit purposes."
+            ]
+        },
             {
                 title: "Back Navigation",
                 description: "Return to the Approve Claims main dashboard:",
@@ -6510,7 +7585,7 @@ export const HrmManualStep = [
                         title: "Go Back",
                         icon: <FaArrowLeft />,
                         items: [
-                            "Click on the <strong>'Back/Expense Claim'</strong> button to return to the <strong>'Expense Claims'</strong> dashboard.",
+                            "Click on the <strong>'Approve List'</strong> button in top right to return to the <strong>'Approve Claim Dashboard'</strong>.",
                         ],
                     },
                 ],
@@ -6532,57 +7607,65 @@ export const HrmManualStep = [
                         title: "Navigation Path",
                         icon: <FaRoute />,
                         items: [
-                            "Go to <strong>'Left Menu'</strong>",
-                            "Click on <strong>'Claim System'</strong>",
+                            "In left <strong>'Sidebar Menu'</strong> Click on <strong>'Claim System'</strong>",
                             "Select <strong>'Settle Claims'</strong> option",
                         ],
                     },
                 ],
-                notes: [
-                    "<strong>Login</strong> to the system to access the <strong>'Settle Claims - Dashboard'</strong>",
-                ],
+                notes: ["Access to the <strong>Settle Claims Dashboard</strong> is restricted based on role permissions (e.g., Admin or HR Manager).",],
             },
             {
-                title: "Settlement Filters & Inputs",
-                description: "Fill in or select the appropriate data to process claim settlements:",
+                title: "Filter Settlement Records",
+                description: "Use these options to find and prepare claims for settlement:",
                 sections: [
                     {
-                        title: "Filter & Data Entry",
-                        icon: <FaEdit />,
-                        content: (
-                            <DynamicTable
-                                columns={["Field", "Input Type", "Validation"]}
-                                rows={[
-                                    ["All Employees", "Dropdown", "Required, no manual entry"],
-                                    ["All Grades", "Dropdown", "Required, no manual entry"],
-                                    ["Claim Number", "View Only", "Auto-populated per employee selection"],
-                                    ["Settlement Amt (INR)", "Input Field", "Enter amount to be settled"],
-                                    ["Remarks", "Input Field", "Optional"],
-                                    ["Settle Now?", "Checkbox", "Tick to initiate settlement"],
-                                    ["View File/Details", "Button", "Opens file or claim detail"]
-                                ]}
-                            />
-                        ),
-                    },
-                ],
-                notes: [
-                    "Manual entry is restricted for 'All Employees' and 'All Grades'.",
-                    "Claim number is auto-generated based on filters.",
-                ],
+                    title: "Filter",
+                    icon: <FaFilter />,
+                    items: [
+                        "Use the dropdowns at the top to filter by employee and grade.",
+                        "Click <strong>'Get Settlement Records'</strong> to load claims based on the selected criteria.",
+                        "Click <strong>'Clear'</strong> to reset filters and view all claims."
+                    ]
+                    }
+                ]
             },
             {
-                title: "Settlement Actions",
-                description: "Actions available to manage and process settlement records:",
+                title: "Review and Enter Settlement Details",
+                description: "Review claim information, enter amounts, and mark claims for settlement.",
                 sections: [
                     {
-                        title: "Available Actions",
-                        icon: <FaTools />,
-                        items: [
-                            "<strong>Settle Now?</strong> – Tick the checkbox to confirm settlement.",
-                            "<strong>View File/Details</strong> – View detailed claim file or attachments.",
-                        ],
-                    },
+                    title: "Settlement Inputs",
+                    icon: <FaEdit />,
+                    items: [
+                        "For each claim, review the <strong>Claim No</strong>, <strong>Claim Amount</strong>, and <strong>Expense Date</strong>.",
+                        "Enter the <strong>Settlement Amt (INR)</strong> and add <strong>Settlement Remarks</strong> if required.",
+                        "Checked <strong>'Settle Now?'</strong> to mark the claim for settlement.",
+                        "Use <strong>'View File/Details'</strong> to open supporting documents before settling.",
+                        "Click <strong>Claim</strong> in View File/Details to view the claim details.",
+                    ]
+                    }
                 ],
+                notes: [
+                    "Ensure the settlement amount aligns with approved values.",
+                    "Multiple claims can be marked using <strong>'Settle Now?'</strong> and processed together."
+                ]
+            },
+            {
+                title: "Finalize Settlement",
+                description: "Process the selected claims.",
+                sections: [
+                    {
+                    title: "Submit Settlement",
+                    icon: <FaCheck />,
+                    items: [
+                        "Scroll to the bottom of the list.",
+                        "Click <strong>'Settle Selected Claim'</strong> to process all marked claims."
+                    ]
+                    }
+                ],
+                notes: [
+                    "Once settled, claims are removed from the pending list and recorded as settled."
+                ]
             },
         ]
     },
@@ -6746,7 +7829,9 @@ export const HrmManualStep = [
                         ],
                     },
                 ],
-                notes: ["You must be a manager or admin to assign help tickets."],
+                notes: [
+                    "Only the <strong>Admin</strong> or <strong>HR Manager</strong> assign help tickets based on company requirements.",
+                ],
             },
             {
                 title: "Help Ticket Assignment Form",
@@ -8107,7 +9192,7 @@ export const HrmManualStep = [
                         title: "Submission",
                         icon: <FaPaperPlane />,
                         items: [
-                            "Click <strong>'Save'</strong> to submit the new asset item entry.",
+                            "Click <strong>'Submit'</strong> to save the new asset item entry.",
                             "Form cannot be submitted unless all required fields are valid.",
                         ],
                     },

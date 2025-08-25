@@ -37,6 +37,7 @@ import {
   FaHeadset,
   FaUserCircle,
 } from "react-icons/fa";
+import { PiChalkboardTeacherFill } from "react-icons/pi";
 
 // Modern Theme
 const theme = {
@@ -600,15 +601,11 @@ const getModuleData = () => ({
           },
           {
             name: "Setup HR Policy Documents",
-            subtopics: ["HR Policy Documents Setup", "Add HR Policy Documents", "Update HR Policy Documents"],
+            subtopics: ["HR Policy Documents List", "Add HR Policy Documents", "Update HR Policy Documents"],
           },
           {
             name: "Setup Approval Limit",
             subtopics: ["Approval Limit Setup", "Add Approval Limit","Update Approval Limit"],
-          },
-          {
-            name: "Setup Appraisal Structure",
-            subtopics: ["Appraisal Structure Setup", "Add Appraisal Structure", "Update Appraisal Structure"],
           },
           {
             name: "Setup Exit Process",
@@ -627,8 +624,8 @@ const getModuleData = () => ({
             subtopics: ["Shift Views Dashboard"],
           },
           {
-            name: "Employee Lists",
-            subtopics: ["Add Employee"],
+            name: "Employee Data Management",
+            subtopics: ["Add New Employee", "Update Employee Details", "Employee Documents Add/Update", "Link Bank Account Details", "Employee Pin generation"],
           },
           
         ],
@@ -661,15 +658,15 @@ const getModuleData = () => ({
           },
           {
             name: "Claims Expense",
-            subtopics: ["Claim Expense","Add New Claim"],
+            subtopics: ["Claim Expense List","Add New Claim"],
           },
           {
             name: "Employee Advances",
-            subtopics: ["Employee Advances - Dashboard","New Advance"],
+            subtopics: ["Employee Advances List","New Advance"],
           },
           {
             name: "Approve Claims",
-            subtopics: ["Approve Claims Dashboard","New Approve Claim"],
+            subtopics: ["Approve Claims List","Approve Employee's Claim"],
           },
           {
             name: "Settle Claims",
@@ -725,6 +722,20 @@ const getModuleData = () => ({
           {
             name: "Asset List",
             subtopics: ["Add Asset Item", "Asset Items Dashboard", "Update Warranty Details"],
+          },
+        ],
+      },
+      "Training and Appraisal": {
+        icon: <PiChalkboardTeacherFill size={20}/>,
+        
+        topics: [
+          {
+            name: "Setup Appraisal Structure",
+            subtopics: ["Appraisal Structure Setup", "Add Appraisal Structure", "Update Appraisal Structure"],
+          },
+          {
+            name: "Training module Setup",
+            subtopics: ["Training Module List", "Add Training Module", "Update Training module" , "Trainer List","Add Trainer", "Update Trainer" ,"Training Session List" ,"Add New Training Session", "Update Training Session"],
           },
         ],
       },

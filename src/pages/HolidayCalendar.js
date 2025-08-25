@@ -923,9 +923,10 @@ const handleSubmit = (formattedDate,type,id) => {
                                 {isSelected ? (
                                   <Button 
                                     variant="outlines" size="sm"
+                                    title="Remove"
                                     onClick={() =>  handleSubmit(holiday.day,"CANCEL",999999999)}
                                   >
-                                     ❌ Remove
+                                     ❌
                                   </Button>
                                 ) : (
                                   <Button 

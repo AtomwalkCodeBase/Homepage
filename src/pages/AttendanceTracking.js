@@ -331,7 +331,6 @@ const ErrorText = styled.div`
   margin-top: 0.5rem;
 `
 
-
 const AttendanceTracking = () => {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [checkedIn, setCheckedIn] = useState(false)
@@ -354,6 +353,46 @@ const AttendanceTracking = () => {
   const navigate = useNavigate()
   const emp_id = localStorage.getItem("empId")
   const [previousDayUnchecked, setPreviousDayUnchecked] = useState(false);
+
+  //Location Modal state and function
+  const [coords, setCoords] = useState({ lat: null, lng: null, label: "" });
+  const [modalOpen, setModalOpen] = useState(false);
+  const mapUrl = (coords.lat !== null && coords.lng !== null)
+    ? `https://maps.google.com/maps?q=${encodeURIComponent(coords.lat)},${encodeURIComponent(coords.lng)}${coords.label ? `(${encodeURIComponent(coords.label)})` : ''}&z=15&output=embed`
+    : '';
+  const hasCoordinates = (geoPoint) => {
+    const latitude = geoPoint?.latitude_id
+    const longitude = geoPoint?.longitude_id
+    return (
+      latitude !== null && latitude !== undefined && latitude !== '' &&
+      longitude !== null && longitude !== undefined && longitude !== ''
+    )
+  }
+
+  const getGeoByType = (geoData, type) => {
+    return Array.isArray(geoData) ? geoData.find((g) => g.geo_type === type) : null
+  }
+
+  const openMapFromGeo = (geoPoint, label) => {
+    if (hasCoordinates(geoPoint)) {
+      setCoords({ lat: geoPoint.latitude_id, lng: geoPoint.longitude_id, label: label || '' });
+      setModalOpen(true);
+    } else {
+      alert("No location data available");
+    }
+  };
+
+  const getLocationDisplay = (statusDisplay, showCheckIn, showCheckOut) => {
+    if (statusDisplay === "Leave") {
+      return { type: "message", content: "Employee is on leave" };
+    }
+    
+    if (!showCheckIn && !showCheckOut) {
+      return { type: "message", content: "Location data not available" };
+    }
+    
+    return { type: "buttons", showCheckIn, showCheckOut };
+  };
 
   // In the component, add these state variables after the existing state declarations
   const [statusFilter, setStatusFilter] = useState("All Status")
@@ -840,7 +879,7 @@ const AttendanceTracking = () => {
       {/* <HistoryButton>
         <FaHistory /> View Attendance History
       </HistoryButton> */}
-      <Card title="Recent Attendance">
+      <Card title="Monthly Attendance Record">
         <FilterContainer>
           {/* <FilterSelect value={timeFilter} onChange={(e) => setTimeFilter(e.target.value)}>
             <option>All Time</option>
@@ -866,6 +905,7 @@ const AttendanceTracking = () => {
                 <th>Check In</th>
                 <th>Check Out</th>
                 <th>Status</th>
+                {profile?.is_manager && <th>Location</th>}
               </tr>
             </thead>
             <tbody>
@@ -886,6 +926,13 @@ const AttendanceTracking = () => {
                           : isWeekend
                             ? "Weekend"
                             : "Absent"
+                  const checkInData = getGeoByType(data.geo_data, "I")
+                  const checkOutData = getGeoByType(data.geo_data, "O")
+                  const showLocation = statusDisplay === "Present"
+                  const showCheckIn = showLocation && hasCoordinates(checkInData) 
+                  const showCheckOut = showLocation && hasCoordinates(checkOutData)
+                  const locationDisplay = getLocationDisplay(statusDisplay, showCheckIn, showCheckOut)
+
                   return (
                     <tr key={index}>
                       <td>
@@ -914,12 +961,59 @@ const AttendanceTracking = () => {
                           {statusDisplay}
                         </Badge>
                       </td>
+                      <td>
+                         {profile?.is_manager && (
+                           locationDisplay.type === "message" ? (
+                             <span style={{ color: "#666", fontStyle: "italic" }}>
+                              <Badge
+                          variant={
+                            data.attendance_type_display === "Present"
+                              ? "success"
+                              : data.attendance_type_display === "On Leave"
+                                ? "warning"
+                                : statusDisplay === "Absent"
+                                  ? "error"
+                                  : isHoliday || isWeekend
+                                    ? "secondary"
+                                    : "error"
+                          }
+                        >
+                          {/* {statusDisplay} */}
+                              {locationDisplay.content}
+                        </Badge>
+                              </span>
+                           ) : (
+                             <div style={{ display: "flex", gap: "1rem" }}>
+                               {locationDisplay.showCheckIn ? 
+                                 <Button
+                                   variant="primary"
+                                   size="sm"
+                                  //  style={{ visibility: showCheckIn ? "visible" : "hidden" }}
+                                   onClick={() => openMapFromGeo(checkInData, "Check In")}
+                                 >
+                                   View check-in location
+                                 </Button> : "Checked-in location data not available"
+                               } 
+                               {locationDisplay.showCheckOut ?
+                                 <Button
+                                   variant="primary"
+                                   size="sm"
+                                  //  style={{ visibility: showCheckOut ? "visible" : "hidden" }}
+                                   onClick={() => openMapFromGeo(checkOutData, "Check Out")}
+                                 >
+                                   View checked-out location
+                                 </Button> : "Checked-out location data not available"
+                               } 
+                             </div>
+                           )
+                         )}
+                        </td>
                     </tr>
                   )
                 })
               ) : (
                 <tr>
-                  <td colSpan={4} style={{ textAlign: "center", padding: "1rem" }}>
+                  <td colSpan={5} style={{ textAlign: "center", padding: "1rem" }}>
                     No attendance records found
                   </td>
                 </tr>
@@ -986,6 +1080,19 @@ const AttendanceTracking = () => {
        {isModalOpens && (
                     <RequestModal call_type="R" empId={emp_id} onClose={() => setIsModalOpens(false)} onSuccess={handleSuccess} />
                   )}
+
+                  {modalOpen && 
+                    <Modal onClose={() => setModalOpen(false)}>
+                      <h3>{coords.label === "Check In"? "Check In": "Check out"} Location</h3>
+                  <iframe
+                    src={mapUrl}
+                    width="100%"
+                    height="500"
+                    allowFullScreen=""
+                    loading="lazy"
+                    title="map"
+                  ></iframe>
+                    </Modal>}
     </Layout>
   )
 }

@@ -20,6 +20,7 @@ import ConfirmationPopup from "../components/modals/ConfirmationPopup"
 import { toast } from "react-toastify"
 import { theme } from "../styles/Theme"
 import { useAuth } from "../context/AuthContext"
+import LeaveManagementDetailsModal from "../components/modals/LeaveManagementDetailsModal"
 
 // Register ChartJS components
 ChartJS.register(
@@ -136,6 +137,9 @@ const LeaveManagement = () => {
   const [relode, setRelode] = useState(1)
   const [showPopup, setShowPopup] = useState(false);
   const [approve , setApprove] = useState(false);
+  const [leaveData , setLeaveData] = useState(null);
+  const [showModal , setShowModal] = useState(false);
+
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const [year, month, day] = dateString.split("-");
@@ -360,6 +364,11 @@ const formatDateDisplay = (dateString) => {
   });
 };
 
+const handleModalData = (data) => {
+  setLeaveData(data);
+  setShowModal(true);
+}
+
   return (
     <Layout title="Leave Management">
       <LeaveHeader>
@@ -437,7 +446,6 @@ const formatDateDisplay = (dateString) => {
                   <th>Type</th>
                   <th>Period</th>
                   <th>Days</th>
-                  <th>Reason</th>
                   <th>Applied On</th>
                   <th>Status</th>
                   <th>Actions</th>
@@ -451,7 +459,6 @@ const formatDateDisplay = (dateString) => {
                        {formatDateDisplay(request.from_date)} to {formatDateDisplay(request.to_date)}
                     </td>
                     <td>{request.no_leave_count === "0.5" ? request.no_leave_count : Math.floor(parseFloat(request.no_leave_count))}</td>
-                    <td>{request.remarks}</td>
                     <td>{request.submit_date}</td>
                     <td>
                       <Badge
@@ -463,10 +470,13 @@ const formatDateDisplay = (dateString) => {
                       </Badge>
                     </td>
                     <td>
-                      <ActionButtons onClick={()=>handleOpenPopup(request)}>
+                      <ActionButtons>
+                        <Button variant="ghost" size="sm" title="View" onClick={() => handleModalData(request)}>
+                          <FaEye />
+                        </Button>
                         {request.status_display === "Submitted" && (
                           <>
-                        <Button variant="outlines" size="sm" title="Cancel">
+                        <Button variant="outlines" size="sm" title="Cancel" onClick={()=>handleOpenPopup(request)}>
                         ❌
                         </Button>
                           </>
@@ -485,7 +495,7 @@ const formatDateDisplay = (dateString) => {
                   <th>Type</th>
                   <th>Period</th>
                   <th>Days</th>
-                  <th>Reason</th>
+                  {/* <th>Reason</th> */}
                   <th>Applied On</th>
                   <th>Status</th>
                   <th>Actions</th>
@@ -499,7 +509,7 @@ const formatDateDisplay = (dateString) => {
                        {formatDateDisplay(request.from_date)} to {formatDateDisplay(request.to_date)}
                     </td>
                     <td>{Math.floor(parseFloat(request.no_leave_count))}</td>
-                    <td>{request.remarks}</td>
+                    {/* <td>{request.remarks}</td> */}
                     <td>{request.submit_date}</td>
                     <td>
                       <Badge
@@ -511,13 +521,16 @@ const formatDateDisplay = (dateString) => {
                       </Badge>
                     </td>
                     <td>
-                    <ActionButtons onClick={()=>handleOpenPopup(request)}>
-                        {request.status_display === "Submitted" && (
-                          <>
-                        <Button variant="outlines" size="sm">
-                        ❌ Cancel
+                    <ActionButtons>
+                      <Button variant="ghost" size="sm" title="View" onClick={() => handleModalData(request)}>
+                          <FaEye />
                         </Button>
-                          </>
+                        {request.status_display === "Submitted" && (
+                          
+                        <Button variant="outlines" size="sm" onClick={()=>handleOpenPopup(request)}>
+                        ❌
+                        </Button>
+                          
                         )}
                       </ActionButtons>
                     </td>
@@ -534,7 +547,6 @@ const formatDateDisplay = (dateString) => {
                   <th>Type</th>
                   <th>Period</th>
                   <th>Days</th>
-                  <th>Reason</th>
                   <th>Applied On</th>
                   <th>Status</th>
                   <th>Actions</th>
@@ -549,7 +561,6 @@ const formatDateDisplay = (dateString) => {
                     {request.from_date} to {request.to_date}
                     </td>
                     <td>{Math.floor(parseFloat(request.no_leave_count))}</td>
-                    <td>{request.remarks}</td>
                     <td>{request.submit_date}</td>
                     <td>
                       <Badge
@@ -562,7 +573,7 @@ const formatDateDisplay = (dateString) => {
                     </td>
                     <td>
                       <ActionButtons>
-                        <Button variant="ghost" size="sm" title="View">
+                        <Button variant="ghost" size="sm" title="View" onClick={() => handleModalData(request)}>
                           <FaEye />
                         </Button>
                         <Button onClick={()=>handleOpenPopup(request,"APPROVE")} variant="primary" size="sm">
@@ -586,7 +597,6 @@ const formatDateDisplay = (dateString) => {
                   <th>Type</th>
                   <th>Period</th>
                   <th>Days</th>
-                  <th>Reason</th>
                   <th>Applied On</th>
                   <th>Status</th>
                   <th>Actions</th>
@@ -601,7 +611,6 @@ const formatDateDisplay = (dateString) => {
                     {request.from_date} to {request.to_date}
                     </td>
                     <td>{Math.floor(parseFloat(request.no_leave_count))}</td>
-                    <td>{request.remarks}</td>
                     <td>{request.submit_date}</td>
                     <td>
                       <Badge
@@ -614,7 +623,7 @@ const formatDateDisplay = (dateString) => {
                     </td>
                     <td>
                       <ActionButtons>
-                         <Button variant="ghost" size="sm" title="View">
+                         <Button variant="ghost" size="sm" title="View" onClick={() => handleModalData(request)}>
                           <FaEye />
                         </Button>
                           {request.status_display === "Approved"?  
@@ -680,9 +689,9 @@ const formatDateDisplay = (dateString) => {
                   <th>Type</th>
                   <th>Period</th>
                   <th>Days</th>
-                  <th>Reason</th>
                   <th>Applied On</th>
                   <th>Status</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -695,10 +704,16 @@ const formatDateDisplay = (dateString) => {
                         {request.from_date} to {request.to_date}
                       </td>
                       <td>{request.no_leave_count === "0.5" ? request.no_leave_count : Math.floor(parseFloat(request.no_leave_count))}</td>
-                      <td>{request.remarks}</td>
                       <td>{request.submit_date}</td>
                       <td>
                         <Badge variant={request.status_display === "Approved" ? "success" : "error"}>{request.status_display}</Badge>
+                      </td>
+                      <td>
+                        <ActionButtons>
+                         <Button variant="ghost" size="sm" title="View" onClick={() => handleModalData(request)}>
+                          <FaEye />
+                        </Button>
+                        </ActionButtons>
                       </td>
                     </tr>
                   ))}
@@ -711,6 +726,7 @@ const formatDateDisplay = (dateString) => {
       <ConfirmationPopup  isOpen={showPopup}
         onClose={handleClosePopup}
         onConfirm={handleConfirm} approve={approve}></ConfirmationPopup>
+      {(showModal && leaveData) && <LeaveManagementDetailsModal leaveData={leaveData} setShowModal={setShowModal} />}
     </Layout>
   )
 }

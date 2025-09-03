@@ -2,16 +2,18 @@
 
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { FaTicketAlt, FaSearch, FaPlus, FaFilter, FaEye, FaLaptop, FaFileAlt, FaFileExport, FaEdit } from "react-icons/fa"
+import { FaTicketAlt, FaSearch, FaPlus, FaFilter, FaEye, FaLaptop, FaFileAlt, FaFileExport, FaEdit, FaPlane, FaTrain, FaBus, FaTaxi, FaCar, FaQuestionCircle } from "react-icons/fa"
+import { BiSolidPlaneAlt } from "react-icons/bi";
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
 import Badge from "../components/Badge"
-import { getEmployeeRequest, getRequestCategory } from "../services/productServices"
+import { getEmployeeRequest, getRequestCategory, getTravelRequestList } from "../services/productServices"
 import { toast } from "react-toastify"
 import RequestModal from "../components/modals/RequestModal"
-import Modal from "../components/modals/Modal"
 import { useExport } from "../context/ExportContext"
+import AddTravelModal from "../components/modals/AddTravelModal"
+import RequestScreenModal from "../components/modals/RequestScreenModal";
 
 const RequestDeskHeader = styled.div`
   display: flex;
@@ -144,10 +146,12 @@ const RequestDesk = () => {
   const [allRequests, setAllRequests] = useState([])
   const [requestTypes, setRequestTypes] = useState([])
   const [isModalOpens, setIsModalOpens] = useState(false)
+  const [openTravelModal, setOpenTravelModal] = useState(false)
   const [dropdownValue, setDropdownValue] = useState("")
   const emp_id = localStorage.getItem("empId")
   const [selectedTicket, setSelectedTicket] = useState(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState(null);
   const [pageref, setPageRef] = useState(1)
   const { exportHelpdeskdat } = useExport()
   // Add these state variables after the existing state declarations
@@ -156,15 +160,27 @@ const RequestDesk = () => {
   const [filteredRequestsData, setFilteredRequestsData] = useState([])
     const [updateTicket, setUpdateTicket] = useState(null);
     const [isUpdate, setIsUpadte] = useState(false);
+    const [travelList, setTravelList] = useState([]);
+      const myRequests = allRequests.filter((request) => request?.emp_id === emp_id && request?.request_type === "R")
+    const [requestList, setRequestList] = useState(myRequests);
+    
 
   const handleSuccess = () => {
     setIsModalOpens(false)
     toast.success("Request submitted successfully!")
     setPageRef(pageref + 1)
   }
+
+  const handleSuccessTravel = () => {
+    setOpenTravelModal(false)
+    toast.success("Travel request submitted successfully!")
+    setPageRef(pageref + 1)
+  }
+
   useEffect(() => {
     fetchRequest()
     fetchRequestCategory()
+    fetchTravelList()
   }, [pageref])
 
   const fetchRequestCategory = async () => {
@@ -176,6 +192,15 @@ const RequestDesk = () => {
       console.error("Error fetching categories:", err)
     }
   }
+
+  const fetchTravelList = async () => {
+    try {
+      const res = await getTravelRequestList()
+      setTravelList(res.data.reverse());
+    } catch (err) {
+      console.error("Error fetching travel List:", err)
+    }
+  }
   const fetchRequest = async () => {
     try {
       const res = await getEmployeeRequest()
@@ -184,7 +209,7 @@ const RequestDesk = () => {
       console.log("Error fetching requests:", err)
     }
   }
-  const myRequests = allRequests.filter((request) => request?.emp_id === emp_id && request?.request_type === "R")
+
   const handleSearch = (e) => {
     setSearchTerm(e.target.value)
   }
@@ -201,6 +226,20 @@ const RequestDesk = () => {
     }
   }
 
+  const getTravelModeIcon = (mode) => {
+    const iconMap = {
+      AIR: { icon: <FaPlane style={{ color: "#3a86ff" }} />, name: "Air" },
+      TRAIN: { icon: <FaTrain style={{ color: "#06d6a0" }} />, name: "Train" },
+      BUS: { icon: <FaBus style={{ color: "#ffb703" }} />, name: "Bus" },
+      CAR: { icon: <FaTaxi style={{ color: "#f77f00" }} />, name: "Taxi" },
+      SLF: { icon: <FaCar style={{ color: "#8ecae6" }} />, name: "Self" },
+      OTH: { icon: <FaQuestionCircle style={{ color: "#adb5bd" }} />, name: "Other" },
+    };
+
+    return iconMap[mode] || { icon: <FaQuestionCircle style={{ color: "#adb5bd" }} />, name: "Unknown" };
+  };
+
+
   // Get status info for badge
   const getStatusInfo = (request) => {
     switch (request.request_status) {
@@ -216,6 +255,20 @@ const RequestDesk = () => {
         return { text: request.status_display, variant: "warning" }
     }
   }
+  const getStatusTravelInfo = (request) => {
+    switch (request.status) {
+      case "S":
+        return { text: "Submitted", variant: "warning" }
+      case "D":
+        return { text: "Draft", variant: "info" }
+      case "X":
+        return { text: "Cancelled", variant: "error" }
+      case "B":
+        return { text: "Booked", variant: "success" }
+      default:
+        return { text: request.status, variant: "warning" }
+    }
+  }
 
   // Filter requests based on search term and active tab
   const filteredRequests = (activeTab === "my-requests" ? myRequests : allRequests).filter(
@@ -223,8 +276,9 @@ const RequestDesk = () => {
       request.request_text.toLowerCase().includes(searchTerm.toLowerCase()) ||
       request.request_sub_type.toLowerCase().includes(searchTerm.toLowerCase()),
   )
-  const openModal = (ticket) => {
+  const openModal = (ticket, mode) => {
     setSelectedTicket(ticket)
+    setModalType(mode)
     setIsModalOpen(true)
   }
 
@@ -234,8 +288,15 @@ const RequestDesk = () => {
     setUpdateTicket(ticket)
   }
 
+    const handleTravelUpdate = (travel, buttonMode) => {
+    setIsUpadte(true)
+    setOpenTravelModal(true)
+    setUpdateTicket({...travel, buttonMode})
+  }
+
   const closeModal = () => {
     setIsModalOpen(false)
+    setModalType(null)
     setSelectedTicket(null)
   }
 
@@ -245,6 +306,16 @@ const RequestDesk = () => {
     allRequests.forEach((request) => {
       if (request.request_sub_type && !types.includes(request.request_sub_type)) {
         types.push(request.request_sub_type)
+      }
+    })
+    return types
+  }
+
+  const getUniqueTravelTypes = () => {
+    const types = ["All Types"]
+    travelList.forEach((request) => {
+      if (request.travel_mode && !types.includes(request.travel_mode)) {
+        types.push(request.travel_mode)
       }
     })
     return types
@@ -278,54 +349,124 @@ const RequestDesk = () => {
     return statuses
   }
 
-  // Add this useEffect to handle filtering
+  const getUniqueTravelStatuses = () => {
+    const statuses = ["All Status"]
+    travelList.forEach((request) => {
+      let status = ""
+      switch (request.status) {
+        case "S":
+          status = "Submitted"
+          break
+        case "B":
+          status = "Booked"
+          break
+        case "D":
+          status = "Draft"
+          break
+        case "X":
+          status = "Cancelled"
+          break
+        case "C":
+          status = "Completed"
+          break
+        default:
+          status = request.status || "Unknown"
+      }
+      if (!statuses.includes(status)) {
+        statuses.push(status)
+      }
+    })
+    return statuses
+  }
+
   useEffect(() => {
-    const requests = activeTab === "my-requests" ? myRequests : allRequests
+    let filtered = []
+    
+    if (activeTab === "travel-list") {
+      filtered = travelList.filter(
+        (request) =>
+          request.travel_purpose.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (request.remarks && request.remarks.toLowerCase().includes(searchTerm.toLowerCase())),
+      )
 
-    let filtered = requests.filter(
-      (request) =>
-        request.request_text.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        request.request_sub_type.toLowerCase().includes(searchTerm.toLowerCase()),
-    )
+      if (typeFilter !== "All Types") {
+        filtered = filtered.filter((request) => request.travel_mode === typeFilter)
+      }
 
-    // Apply type filter
-    if (typeFilter !== "All Types") {
-      filtered = filtered.filter((request) => request.request_sub_type === typeFilter)
+      if (statusFilter !== "All Status") {
+        filtered = filtered.filter((request) => {
+          let status = ""
+          switch (request.status) {
+            case "S":
+              status = "Submitted"
+              break
+            case "B":
+              status = "Booked"
+              break
+            case "D":
+              status = "Draft"
+              break
+            case "X":
+              status = "Cancelled"
+              break
+            case "C":
+              status = "Completed"
+              break
+            default:
+              status = request.status || "Unknown"
+          }
+          return status === statusFilter
+        })
+      }
+    } else {
+      const requests = activeTab === "my-requests" ? myRequests : allRequests
+      
+      filtered = requests.filter(
+        (request) =>
+          request.request_text.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          request.request_sub_type.toLowerCase().includes(searchTerm.toLowerCase()),
+      )
+
+      if (typeFilter !== "All Types") {
+        filtered = filtered.filter((request) => request.request_sub_type === typeFilter)
+      }
+
+      // Apply status filter for requests
+      if (statusFilter !== "All Status") {
+        filtered = filtered.filter((request) => {
+          let status = ""
+          switch (request.request_status) {
+            case "S":
+              status = "Submitted"
+              break
+            case "A":
+              status = "Assigned"
+              break
+            case "X":
+              status = "Cancelled"
+              break
+            case "C":
+              status = "Completed"
+              break
+            default:
+              status = request.status_display || "Unknown"
+          }
+          return status === statusFilter
+        })
+      }
     }
-
-    // Apply status filter
-    if (statusFilter !== "All Status") {
-      filtered = filtered.filter((request) => {
-        let status = ""
-        switch (request.request_status) {
-          case "S":
-            status = "Submitted"
-            break
-          case "A":
-            status = "Assigned"
-            break
-          case "X":
-            status = "Cancelled"
-            break
-          case "C":
-            status = "Completed"
-            break
-          default:
-            status = request.status_display || "Unknown"
-        }
-        return status === statusFilter
-      })
-    }
-
+    
     setFilteredRequestsData(filtered)
-  }, [myRequests, allRequests, activeTab, searchTerm, typeFilter, statusFilter])
+
+  }, [activeTab, searchTerm, typeFilter, statusFilter, travelList, requestList, allRequests])
 
   // Add handleFilter function
   const handleFilter = () => {
     // Filtering is already handled by the useEffect
     toast.info("Filters applied")
   }
-     const handleExport = (data) => {
+
+  const handleExport = (data) => {
           const result = exportHelpdeskdat(data, "Help_data")
           if (result.success) {
           toast.success("Exported successfully")
@@ -334,21 +475,27 @@ const RequestDesk = () => {
           }
         }
   return (
-    <Layout title="Resource Request Desk">
+    <Layout title={activeTab === "travel-list"? "Travel Portal" :"Resource Request Desk"}>
       <RequestDeskHeader>
         <div>
-          <Paragraphdata>Submit and track your resource requests</Paragraphdata>
+          <Paragraphdata>{activeTab === "travel-list"? "See your all travel list":"Submit and track your resource requests"}</Paragraphdata>
         </div>
+
+        <div style={{display: "flex", gap: 10}}>
+        <Button onClick={() => setOpenTravelModal(true)} variant="primary">
+          <FaPlus /> New Travel
+        </Button>
 
         <Button onClick={() => setIsModalOpens(true)} variant="primary">
           <FaPlus /> New Request
         </Button>
+        </div>
       </RequestDeskHeader>
 
       <SearchContainer>
         <SearchInput>
           <FaSearch />
-          <input type="text" placeholder="Search resource requests..." value={searchTerm} onChange={handleSearch} />
+          <input type="text" placeholder="Search requests..." value={searchTerm} onChange={handleSearch} />
         </SearchInput>
       </SearchContainer>
 
@@ -367,6 +514,11 @@ const RequestDesk = () => {
             <FaTicketAlt style={{ marginRight: "0.5rem" }} />
             All Requests
           </Tab>
+          <Tab active={activeTab === "travel-list"} onClick={() => setActiveTab("travel-list")}>
+            <BiSolidPlaneAlt style={{ marginRight: "0.5rem" }} size={18} />
+            Travel list
+          </Tab>
+
         </TabContainer>
 
         {activeTab === "my-requests" && (
@@ -396,7 +548,7 @@ const RequestDesk = () => {
                     <th>Request ID</th>
                     <th>Type</th>
                     <th>Description</th>
-                    <th>Remarks</th>
+                    {/* <th>Remarks</th> */}
                     <th>Created Date</th>
                     <th>Status</th>
                     <th>Actions</th>
@@ -415,21 +567,21 @@ const RequestDesk = () => {
                               {request.request_sub_type}
                             </div>
                           </td>
-                          <td>{request.request_text}</td>
-                          <td>{request.remarks || "-"}</td>
+                          <td style={{whiteSpace: "nowrap",overflow: "hidden", textOverflow: "ellipsis",  maxWidth: "200px" }}>{request.request_text}</td>
+                          {/* <td>{request.remarks || "-"}</td> */}
                           <td>{request.created_date}</td>
                           <td>
                             <Badge variant={statusInfo.variant}>{statusInfo.text}</Badge>
                           </td>
                           <td>
-                            <ActionButtons onClick={() => openModal(request)}>
-                              <Button variant="ghost" size="sm" title="View">
+                            <ActionButtons>
+                              <Button variant="ghost" size="sm" title="View" onClick={() => openModal(request, "request")}>
                                 <FaEye />
                               </Button>
                               {request.request_status === "S" &&
-                                                            <Button variant="primary" size="sm" title="Update" onClick={() => handleUpdate(request)}>
-                                                              <FaEdit />
-                                                            </Button>}
+                                <Button variant="primary" size="sm" title="Update" onClick={() => handleUpdate(request)}>
+                                  <FaEdit />
+                                </Button>}
                             </ActionButtons>
                           </td>
                         </tr>
@@ -505,7 +657,7 @@ const RequestDesk = () => {
                     <th>Employee ID</th>
                     <th>Type</th>
                     <th>Description</th>
-                    <th>Remarks</th>
+                    {/* <th>Remarks</th> */}
                     <th>Created Date</th>
                     <th>Status</th>
                     <th>Actions</th>
@@ -524,14 +676,14 @@ const RequestDesk = () => {
                             {request.request_sub_type}
                           </div>
                         </td>
-                        <td>{request.request_text}</td>
-                        <td>{request.remarks || "-"}</td>
+                        <td style={{whiteSpace: "nowrap",overflow: "hidden", textOverflow: "ellipsis",  maxWidth: "200px" }}>{request.request_text}</td>
+                        {/* <td>{request.remarks || "-"}</td> */}
                         <td>{request.created_date}</td>
                         <td>
                           <Badge variant={statusInfo.variant}>{statusInfo.text}</Badge>
                         </td>
                         <td>
-                          <ActionButtons onClick={() => openModal(request)}>
+                          <ActionButtons onClick={() => openModal(request, "request")}>
                             <Button variant="ghost" size="sm" title="View">
                               <FaEye />
                             </Button>
@@ -550,42 +702,112 @@ const RequestDesk = () => {
             </TableContainer>
           </>
         )}
+      {activeTab === "travel-list" && (
+          <>
+            <FilterContainer>
+              <FilterSelect value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
+                {getUniqueTravelTypes().map((type, index) => (
+                  <option key={index}>{type}</option>
+                ))}
+              </FilterSelect>
+
+              <FilterSelect value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+                {getUniqueTravelStatuses().map((status, index) => (
+                  <option key={index}>{status}</option>
+                ))}
+              </FilterSelect>
+
+              <Button variant="outline" size="sm" onClick={handleFilter}>
+                <FaFilter /> Filter
+              </Button>
+            </FilterContainer>
+
+            <TableContainer>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Travel ID</th>
+                    <th>Project Name</th>
+                    <th>Travel Mode</th>
+                    {/* <th>Travel purpose</th> */}
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredRequestsData.length > 0 ? (
+                    filteredRequestsData.map((request) => {
+                      const statusInfo = getStatusTravelInfo(request)
+                      return (
+                        <tr key={request.id}>
+                          <td>{request.travel_id}</td>
+                          <td>{request.project_name || "--"}</td>
+                          <td>
+                            <div style={{ display: "flex", alignItems: "center" }}>
+                              {(() => {
+                                const { icon, name } = getTravelModeIcon(request.travel_mode);
+                                return (
+                                  <>
+                                    <span style={{ marginRight: "0.5rem" }}>{icon}</span>
+                                    {name}
+                                  </>
+                                );
+                              })()}
+                            </div>
+                          </td>
+                          {/* <td>{request.travel_purpose}</td> */}
+                          <td>{request.start_date}</td>
+                          <td>{request.end_date}</td>
+                          <td>
+                            <Badge variant={statusInfo.variant}>{statusInfo.text}</Badge>
+                          </td>
+                          <td>
+                            <ActionButtons>
+                              <Button variant="ghost" size="sm" title="View" onClick={() => openModal(request, "travel")}>
+                                <FaEye />
+                              </Button>
+                              {request.status === "D" &&
+                              <>
+                                  <Button variant="primary" size="sm" title="Update" onClick={() => handleTravelUpdate(request, "update")}>
+                                    <FaEdit />
+                                  </Button>
+
+                                  <Button variant="outlines" size="sm" title="Cancel" onClick={() => handleTravelUpdate(request, "cancel")}>
+                                    ❌
+                                  </Button>
+                                  </>
+                                  }
+                            </ActionButtons>
+                          </td>
+                        </tr>
+                      )
+                    })
+                  ) : (
+                    <tr>
+                      <td colSpan={8} style={{ textAlign: "center", padding: "1rem" }}>
+                        No travel requests found for the selected filters
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+               {/* {filteredRequestsData.length >0 &&<div style={{ marginTop: "1rem", textAlign: "right" }}>
+                                      <Button variant="primary" size="sm" onClick={()=>handleExport(filteredRequestsData)}>
+                                       <FaFileExport /> Export
+                                      </Button>
+                                      </div>} */}
+            </TableContainer>
+          </>
+        )}
       </Card>
-      {isModalOpen && (
-        <Modal onClose={closeModal}>
-          <h2>Ticket Details</h2>
-          <p>
-            <strong>Request ID:</strong> {selectedTicket.request_id}
-          </p>
-          <p>
-            <strong>Type:</strong> {selectedTicket.request_sub_type}
-          </p>
-          <p>
-            <strong>Description:</strong> {selectedTicket.request_text}
-          </p>
-          <p>
-            <strong>Remarks:</strong> {selectedTicket.remarks || "-"}
-          </p>
-          <p>
-            <strong>Created Date:</strong> {selectedTicket.created_date}
-          </p>
-          <p>
-            <strong>Status:</strong> {getStatusInfo(selectedTicket).text}
-          </p>
-          <img
-            src={selectedTicket.submitted_file_1 || "/placeholder.svg"}
-            // alt="Request Image"
-            style={{ width: "100%", height: "auto", borderRadius: "8px", marginTop: "1rem" }}
-          />
-          <div style={{ marginTop: "1rem" }}>
-            <Button variant="primary" onClick={closeModal}>
-              Close
-            </Button>
-          </div>
-        </Modal>
-      )}
+      {isModalOpen && ( <RequestScreenModal modalType={modalType} selectedTicket={selectedTicket} closeModal={closeModal} />)}
       {isModalOpens && (
-        <RequestModal call_type="R" empId={emp_id} onClose={() =>{ setIsModalOpens(false); setUpdateTicket(null)}} onSuccess={handleSuccess} dropdownValue={dropdownValue} isUpdate={isUpdate} updateTicket={updateTicket}  />
+        <RequestModal call_type="R" empId={emp_id} onClose={() =>{ setIsModalOpens(false); setUpdateTicket(null);}} onSuccess={handleSuccess} dropdownValue={dropdownValue} isUpdate={isUpdate} updateTicket={updateTicket}  />
+      )}
+      {openTravelModal && (
+        <AddTravelModal onClose={() =>{ setOpenTravelModal(false); setUpdateTicket(null); setIsUpadte(false)}} onSuccess={handleSuccessTravel} isUpdate={isUpdate} updateTicket={updateTicket} />
       )}
     </Layout>
   )

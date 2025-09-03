@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { FaTimes, FaUpload, FaMoneyBillWave, FaCalendarAlt, FaStickyNote } from "react-icons/fa"
+import { FaTimes, FaMoneyBillWave, FaCalendarAlt } from "react-icons/fa"
 import Button from "../Button"
 import { toast } from "react-toastify"
-import { getProjectlist, getTravelMode, postClaim, postTravelRequests } from "../../services/productServices"
+import { getProjectlist, getTravelMode, postTravelRequests } from "../../services/productServices"
 import ConfirmPopup from "./ConfirmPopup"
 
 const ModalOverlay = styled.div`
@@ -166,60 +166,6 @@ const TextArea = styled.textarea`
     box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.primary}20;
   }
 `
-
-const FileUploadContainer = styled.div`
-  border: 2px dashed ${({ theme }) => theme.colors.border};
-  border-radius: 4px;
-  padding: 1.5rem;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  
-  &:hover {
-    border-color: ${({ theme }) => theme.colors.primary};
-    background: ${({ theme }) => theme.colors.primaryLight}22;
-  }
-`
-
-const FileUploadIcon = styled.div`
-  font-size: 2rem;
-  color: ${({ theme }) => theme.colors.primary};
-  margin-bottom: 0.5rem;
-`
-
-const FileUploadText = styled.div`
-  color: ${({ theme }) => theme.colors.textLight};
-  margin-bottom: 0.5rem;
-`
-
-const FileInput = styled.input`
-  display: none;
-`
-
-const UploadedFile = styled.div`
-  display: flex;
-  align-items: center;
-  background: ${({ theme }) => theme.colors.backgroundAlt};
-  padding: 0.5rem;
-  border-radius: 4px;
-  margin-top: 0.5rem;
-  
-  span {
-    flex: 1;
-    margin-left: 0.5rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  
-  button {
-    background: transparent;
-    border: none;
-    color: ${({ theme }) => theme.colors.error};
-    cursor: pointer;
-  }
-`
-
 const ModalFooter = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -244,7 +190,6 @@ const ErrorMessage = styled.div`
 
 const AddTravelModal = ({ onClose, onSuccess, isUpdate, updateTicket }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const [isFileError, setIsFileError] = useState(false)
   const [errors, setErrors] = useState({});
   const [projects, setProjects] = useState([]);
   const [travelMode, setTravelMode] = useState([]);
@@ -591,7 +536,6 @@ const AddTravelModal = ({ onClose, onSuccess, isUpdate, updateTicket }) => {
 
             <FormGroup>
               <FormLabel  htmlFor="travelToCity">
-              <FaStickyNote />
                 Travel to city
                 </FormLabel>
                 <TextArea
@@ -677,7 +621,6 @@ const AddTravelModal = ({ onClose, onSuccess, isUpdate, updateTicket }) => {
 
             <FormGroup>
               <FormLabel htmlFor="remarks">
-                <FaStickyNote />
                 Remarks
               </FormLabel>
               <TextArea

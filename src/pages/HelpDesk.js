@@ -178,7 +178,6 @@ const HelpDesk = () => {
   // const location = useLocation();
   const [activeTab, setActiveTab] = useState("tickets")
   const [searchTerm, setSearchTerm] = useState("")
-  const [allRequests, setAllRequests] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isModalOpens, setIsModalOpens] = useState(false)
   const [selectedTicket, setSelectedTicket] = useState(null)

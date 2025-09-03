@@ -16,6 +16,7 @@ import moment from "moment/moment"
 import { useExport } from "../context/ExportContext"
 import { useNavigate } from "react-router-dom"
 import RequestModal from "../components/modals/RequestModal"
+import { FaLocationDot } from "react-icons/fa6"
 // import Modal from "../components/Modal"
 // import Input from "../components/Input"
 
@@ -905,7 +906,7 @@ const AttendanceTracking = () => {
                 <th>Check In</th>
                 <th>Check Out</th>
                 <th>Status</th>
-                {profile?.is_manager && <th>Location</th>}
+                <th>Location</th>
               </tr>
             </thead>
             <tbody>
@@ -962,8 +963,7 @@ const AttendanceTracking = () => {
                         </Badge>
                       </td>
                       <td>
-                         {profile?.is_manager && (
-                           locationDisplay.type === "message" ? (
+                         {locationDisplay.type === "message" ? (
                              <span style={{ color: "#666", fontStyle: "italic" }}>
                               <Badge
                           variant={
@@ -978,7 +978,6 @@ const AttendanceTracking = () => {
                                     : "error"
                           }
                         >
-                          {/* {statusDisplay} */}
                               {locationDisplay.content}
                         </Badge>
                               </span>
@@ -986,27 +985,27 @@ const AttendanceTracking = () => {
                              <div style={{ display: "flex", gap: "1rem" }}>
                                {locationDisplay.showCheckIn ? 
                                  <Button
-                                   variant="primary"
+                                   variant="outline"
                                    size="sm"
-                                  //  style={{ visibility: showCheckIn ? "visible" : "hidden" }}
                                    onClick={() => openMapFromGeo(checkInData, "Check In")}
                                  >
+                                  <FaLocationDot />
                                    View check-in location
                                  </Button> : "Checked-in location data not available"
                                } 
                                {locationDisplay.showCheckOut ?
                                  <Button
-                                   variant="primary"
+                                   variant="outline"
                                    size="sm"
-                                  //  style={{ visibility: showCheckOut ? "visible" : "hidden" }}
                                    onClick={() => openMapFromGeo(checkOutData, "Check Out")}
                                  >
+                                  <FaLocationDot />
                                    View checked-out location
                                  </Button> : "Checked-out location data not available"
                                } 
                              </div>
                            )
-                         )}
+                         }
                         </td>
                     </tr>
                   )

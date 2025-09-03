@@ -271,13 +271,6 @@ const ModalValue = styled.p`
   color: ${({ theme }) => theme.colors.textLight};
 `
 
-const ReceiptImage = styled.img`
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-`
-
 const ExpandableRow = styled.tr`
   cursor: pointer;
   &:hover {
@@ -603,6 +596,9 @@ const MyClaims = () => {
     if (claim.expense_status === "B") {
       return { text: "Back To Claimant", variant: "back" }
     }
+    if (claim.expense_status === "P") {
+      return { text: "Settled", variant: "settle" };
+    }
 
     return { text: "Submitted", variant: "warning" }
   }
@@ -838,7 +834,7 @@ const MyClaims = () => {
                           </td>
                           <td>{claim.master_claim_id}</td>
                           <td>{claim.employee_name}</td>
-                          <td>₹{formatIndianCurrency(claim.expense_amt)}</td>
+                          <td style={{ textAlign: "right" }}>₹{formatIndianCurrency(claim.expense_amt)}</td>
                           <td>{claim.claim_date}</td>
                           <td>{claim.claim_items?.length || 0}</td>
                           <td>
@@ -1016,7 +1012,7 @@ const MyClaims = () => {
                             </Button>
                           </td>
                           <td>{claim.master_claim_id}</td>
-                          <td>₹{formatIndianCurrency(claim.expense_amt)}</td>
+                          <td style={{ textAlign: "right" }}>₹{formatIndianCurrency(claim.expense_amt)}</td>
                           <td>{claim.claim_date}</td>
                           <td>{claim.claim_items?.length || 0}</td>
                           <td>
@@ -1193,7 +1189,7 @@ const MyClaims = () => {
                   <ModalValue>{selectedClaim.employee_name}</ModalValue>
 
                   <ModalLabel>Total Amount</ModalLabel>
-                  <ModalValue>₹{selectedClaim.expense_amt}</ModalValue>
+                  <ModalValue>₹{formatIndianCurrency(selectedClaim.expense_amt)}</ModalValue>
 
                   <ModalLabel>Claim Date</ModalLabel>
                   <ModalValue>{selectedClaim.claim_date}</ModalValue>
@@ -1237,7 +1233,7 @@ const MyClaims = () => {
                     <th>Project</th>
                     <th>Amount</th>
                     <th>Date</th>
-                    <th>Remarks</th>
+                    {/* <th>Remarks</th> */}
                     <th>Status</th>
                     <th>Receipt</th>
                   </tr>
@@ -1246,30 +1242,48 @@ const MyClaims = () => {
                   {selectedClaim.claim_items?.map((item) => {
                     const substatus = getStatusInfo(item)
                     return(
-                    <ClaimItemRow key={item.id}>
-                      <td>
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <span style={{ marginRight: "0.5rem" }}>{getItemIcon(item.item_name)}</span>
-                          {item.item_name}
-                        </div>
-                      </td>
-                      <td>{item.project_name || "N/A"}</td>
-                      <td>₹{item.expense_amt}</td>
-                      <td>{item.expense_date}</td>
-                      <td>{item.remarks}</td>
-                      <td>
-                        <Badge variant={substatus.variant}>{substatus.text}</Badge>
-                      </td>
-                      <td>
-                        {item.submitted_file_1 ? (
-                          <a href={item.submitted_file_1} target="_blank" rel="noopener noreferrer">
-                            <Badge variant="success">View</Badge>
-                          </a>
-                        ) : (
-                          <Badge variant="error">No</Badge>
-                        )}
-                      </td>
-                    </ClaimItemRow>
+                      <>
+                      <ClaimItemRow key={item.id}>
+                        <td style={{ verticalAlign: "top" }}>
+                          <div style={{ display: "flex", alignItems: "center" }}>
+                            <span style={{ marginRight: "0.5rem" }}>{getItemIcon(item.item_name)}</span>
+                            {item.item_name}
+                          </div>
+                          {item.remarks && (
+                                <div style={{ fontSize: "1rem", color: "#555", marginTop: "10px" }}>
+                                  <ModalLabel
+                                    style={{
+                                      fontSize: "1rem",
+                                      color: "#888",
+                                      display: "inline-block",
+                                      marginRight: "4px",
+                                    }}
+                                  >
+                                    Remarks:
+                                  </ModalLabel>
+                                  <span>{item.remarks || "N/A"}</span>
+                                </div>
+                              )}
+                        </td>
+                        <td style={{ verticalAlign: "top" }}>{item.project_name || "N/A"}</td>
+                        <td style={{ verticalAlign: "top" }}>₹{formatIndianCurrency(item.expense_amt)}</td>
+                        <td style={{ verticalAlign: "top" }}>{item.expense_date}</td>
+
+                        <td style={{ verticalAlign: "top" }}>
+                          <Badge variant={substatus.variant}>{substatus.text}</Badge>
+                        </td>
+
+                        <td style={{ verticalAlign: "top" }}>
+                          {item.submitted_file_1 ? (
+                            <a href={item.submitted_file_1} target="_blank" rel="noopener noreferrer">
+                              <Badge variant="success">View</Badge>
+                            </a>
+                          ) : (
+                            <Badge variant="error">No</Badge>
+                          )}
+                        </td>
+                      </ClaimItemRow>
+                    </>
                   )})}
                 </tbody>
               </ClaimItemsTable>

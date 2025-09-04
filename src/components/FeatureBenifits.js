@@ -7,11 +7,13 @@ import {
   FaFileInvoiceDollar, FaShieldAlt, FaCogs, FaExpandArrowsAlt,
   FaTrashAlt, FaTrashRestoreAlt, FaChartPie, FaHardHat,
   FaBuilding, FaHospital, FaSolarPanel, FaRobot, FaEye,
-  FaFileAlt, FaExclamationTriangle, FaTachometerAlt 
+  FaFileAlt, FaExclamationTriangle, FaTachometerAlt,
+  FaProjectDiagram, FaTruckLoading, FaQrcode // ✅ added
 } from 'react-icons/fa';
+
+import { BsFillGearFill, BsGraphUpArrow, BsBoxSeam } from 'react-icons/bs';
 import { GiReceiveMoney, GiSandsOfTime } from 'react-icons/gi';
 import { MdOutlinePrecisionManufacturing, MdHealthAndSafety } from 'react-icons/md';
-import { BsFillGearFill, BsGraphUpArrow } from 'react-icons/bs';
 
 const Section = styled.section`
   padding: 100px 20px;
@@ -314,6 +316,46 @@ const Solar = [
   { title: 'Real-Time Task Management', text: 'In solar operations, it ensures tasks are efficiently assigned to the right team members for smooth workflow', bgColor: '#4caf50', icon: <BsFillGearFill /> },
 ];
 
+const inventoryManagement = [
+  { 
+    title: "Structured Setup & Categorization", 
+    text: "Define inventory categories, organize items by location, and manage multiple inventories with full compliance.", 
+    bgColor: "#00bcd4", 
+    icon: <FaProjectDiagram /> 
+  },
+  { 
+    title: "Flexible Item Management", 
+    text: "Add and maintain items with supplier details, batch/expiry info, BIN locations, and custom additional fields.", 
+    bgColor: "#4caf50", 
+    icon: <BsBoxSeam /> 
+  },
+  { 
+    title: "Stock Inflow via Purchase Orders", 
+    text: "Automatically increase stock levels during goods receipt, with GRN, BIN allocation, and auto accounting entries.", 
+    bgColor: "#ffc107", 
+    icon: <FaTruckLoading /> 
+  },
+  { 
+    title: "QR-Based Stock Inspection", 
+    text: "Perform physical stock checks with QR code scanning to instantly verify and adjust discrepancies.", 
+    bgColor: "#9c27b0", 
+    icon: <FaQrcode /> 
+  },
+  { 
+    title: "Automated Consumption Adjustments", 
+    text: "Track real-time stock reductions during sales and work orders with FIFO-based allocation and history logs.", 
+    bgColor: "#ff9800", 
+    icon: <FaCogs /> 
+  },
+  { 
+    title: "Comprehensive Audit Trail", 
+    text: "Maintain transparent, audit-ready inventory movement records for accountability and compliance.", 
+    bgColor: "#4caf50", 
+    icon: <FaFileInvoiceDollar /> 
+  }
+];
+
+
 const Ai = [
   { title: 'PPE Detection', text: 'Real-time verification of safety gear—helmets, gloves, vests—ensures worker compliance before entering critical zones', bgColor: '#00bcd4', icon: <MdHealthAndSafety /> },
   { title: 'Surveillance & Activity Monitoring', text: '24/7 AI-powered monitoring for motion detection, zone violations, crowd density, and action recognition like running or fighting.', bgColor: '#4caf50', icon: <FaEye /> },
@@ -334,6 +376,7 @@ const FeatureBenefits = ({ data }) => {
                    data === 'HR' ? hrmBenefits : 
                    data === 'Equipment' ? labEquipment : 
                    data === 'Waste' ? wasteManagement : 
+                   data === 'Inventory' ? inventoryManagement : 
                    data === 'Sales and Procurement' ? sales : 
                    leaveBenefits;
 

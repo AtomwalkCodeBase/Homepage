@@ -67,7 +67,7 @@ const SectionTitle = styled.h2`
 // Grid layout for cards - 2x2 on desktop
 const CardsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Always 2 columns on desktop */
+  grid-template-columns: repeat(3, 1fr); /* Always 2 columns on desktop */
   gap: 30px;
   
   /* For tablets */
@@ -201,31 +201,31 @@ const PatentAndPublications = () => {
     {
       title: "Intellectual Property",
       subtitle: "Our Patents & Innovations",
-      image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/Patent_Image_Code.png",
+      image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/Patent_Img.jpg",
       delay: "100ms",
       path: "/intellectual-property"
     },
     {
-      title: "Publications",
-      subtitle: "Scientific Publication",
-      image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      delay: "200ms",
-      path: "/publications"
-    },
-    {
       title: "Awards",
       subtitle: "Industry Recognition",
-      image: "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      delay: "300ms",
+      image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/Award_Img.jpg",
+      delay: "200ms",
       path: "/awards"
     },
     {
       title: "News & Events",
       subtitle: "Latest Updates",
-      image: "https://images.unsplash.com/photo-1552581234-26160f608093?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      delay: "400ms",
-      path: "/news-events"
+      image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/News_Img.jpg",
+      delay: "300ms",
+      path: "/news-events.html"
     },
+    // {
+    //   title: "Publications",
+    //   subtitle: "Scientific Publication",
+    //   image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    //   delay: "400ms",
+    //   path: "/publications"
+    // },
   ];
 
   return (

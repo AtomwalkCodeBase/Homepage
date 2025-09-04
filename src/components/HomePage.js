@@ -9,6 +9,7 @@ import CustomerLogos from './CustomerLogos'
 import HeroSection from './HeroSection'
 import FloatingActionButton from './FloatingActionButton'
 import Askme from './loginpage/Askme'
+import PatentAndPublications from './PatentAndPublications'
 
 const HomePage = () => {
 const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -45,6 +46,7 @@ useEffect(()=>{
     <Skills></Skills>
     {/* <UnlockFuture></UnlockFuture> */}
     <Features></Features>
+    <PatentAndPublications/>
     {/* need to work one that page  */}
    <Testimonial></Testimonial>
    <CustomerLogos/>

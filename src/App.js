@@ -103,6 +103,7 @@ import NewsEventForm from "./components/NewsEvents/NewsEventForm";
 import InPatients from "./pages/IPDappointments";
 import PatientAdmission from "./pages/PatientAdmission";
 import PatentPage from "./components/PatentPage";
+import AwardsPage from "./components/AwardsPage";
 
 function App() {
   const url = "https://www.atomwalk.com/rest-auth/login/";
@@ -212,6 +213,8 @@ function App() {
               <Route path="/employee-manager-accessibility" element={<HRMRoleBasedAccessibility/>} />
               <Route path="/hr-manager-accessibility" element={<HRMRoleBasedAccessibility/>} />
               <Route path="/intellectual-property" element={<PatentPage/>} />
+              <Route path="/awards" element={<AwardsPage/>} />
+
     
               {/* Login Route */}
               <Route path="/login" element={<Login />} />

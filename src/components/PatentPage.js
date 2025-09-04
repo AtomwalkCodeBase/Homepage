@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
+import Modal from "./modals/Modal";
 
 // Animations
 const fadeIn = keyframes`
@@ -13,12 +14,115 @@ const gradientShift = keyframes`
   100% { background-position: 0% 50%; }
 `;
 
-// Main container
+const float = keyframes`
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+`;
+
+const shimmer = keyframes`
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+`;
+
+const cardHover = keyframes`
+  0% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-5px) rotate(0.5deg); }
+  100% { transform: translateY(-8px) rotate(0); }
+`;
+
+const pulse = keyframes`
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+`;
+
+const slideIn = keyframes`
+  from { transform: translateX(-20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+`;
+
+// Main container with animated background
+const MainContainer = styled.div`
+  min-height: 100vh;
+  background: linear-gradient(-45deg, #f8fafc, #f1f5f9, #e0e7ff, #dbeafe);
+  background-size: 400% 400%;
+  animation: ${gradientShift} 15s ease infinite;
+  padding: 20px 0;
+  overflow-x: hidden;
+`;
+
+// Page container
 const PageContainer = styled.div`
   max-width: 1200px;
   margin: 90px auto;
   padding: 20px;
   color: #2d3748;
+  position: relative;
+  z-index: 2;
+`;
+
+// Floating particles background
+const ParticlesContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+`;
+
+const Particle = styled.div`
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(79, 70, 229, 0.15);
+  border-radius: 50%;
+  animation: ${float} 10s infinite ease-in-out;
+  animation-delay: ${props => props.delay || '0s'};
+  
+  &:nth-child(1) {
+    top: 20%;
+    left: 10%;
+  }
+  &:nth-child(2) {
+    top: 60%;
+    left: 5%;
+    width: 8px;
+    height: 8px;
+  }
+  &:nth-child(3) {
+    top: 40%;
+    left: 15%;
+    width: 10px;
+    height: 10px;
+  }
+  &:nth-child(4) {
+    top: 80%;
+    left: 20%;
+  }
+  &:nth-child(5) {
+    top: 30%;
+    right: 10%;
+  }
+  &:nth-child(6) {
+    top: 70%;
+    right: 5%;
+    width: 8px;
+    height: 8px;
+  }
+  &:nth-child(7) {
+    top: 50%;
+    right: 15%;
+    width: 10px;
+    height: 10px;
+  }
+  &:nth-child(8) {
+    top: 20%;
+    right: 20%;
+  }
 `;
 
 // Header Section
@@ -26,11 +130,14 @@ const HeaderSection = styled.section`
   text-align: center;
   padding: 60px 20px 60px;
   margin-bottom: 40px;
-  background: linear-gradient(135deg, #f6f9fc 0%, #f1f5f9 100%);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
   border-radius: 20px;
   position: relative;
   overflow: hidden;
   animation: ${fadeIn} 0.8s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.5);
 
   &::before {
     content: '';
@@ -105,12 +212,13 @@ const StatsSection = styled.section`
 `;
 
 const StatCard = styled.div`
-  background: white;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 30px 25px;
   text-align: center;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-  border: 1px solid #f1f5f9;
+  border: 1px solid rgba(255, 255, 255, 0.5);
   transition: all 0.3s ease;
   animation: ${fadeIn} 0.8s ease both;
   animation-delay: ${props => props.delay || '0ms'};
@@ -153,7 +261,7 @@ const StatLabel = styled.div`
   font-size: 1.1rem;
 `;
 
-// Patent Table Section
+// Patent Section
 const PatentSection = styled.section`
   margin-bottom: 70px;
   animation: ${fadeIn} 0.8s ease;
@@ -185,158 +293,32 @@ const SectionTitle = styled.h2`
   }
 `;
 
-const PatentTable = styled.div`
-  background: white;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-  border: 1px solid #f1f5f9;
-`;
-
-const TableHeader = styled.div`
+const PatentGrid = styled.div`
   display: grid;
-  grid-template-columns: 1.2fr 1.8fr 1fr;
-  background: linear-gradient(90deg, #4f46e5, #3b82f6);
-  padding: 18px 30px;
-  font-weight: 600;
-  color: white;
-  font-size: 1.1rem;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    display: none;
-  }
-`;
-
-const PatentRow = styled.div`
-  display: grid;
-  grid-template-columns: 1.2fr 1.8fr 1fr;
-  padding: 25px 30px;
-  border-bottom: 1px solid #f1f5f9;
-  transition: all 0.2s ease;
-  align-items: start;
-  gap: 25px;
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  &:hover {
-    background: #f8fafc;
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 18px;
-    padding: 20px;
-  }
-`;
-
-const PatentNumber = styled.div`
-  font-weight: 600;
-  color: #1e40af;
-  font-size: 1.1rem;
-  line-height: 1.4;
-  display: flex;
-  align-items: center;
-
-  &::before {
-    content: '📄';
-    margin-right: 10px;
-    font-size: 1.2rem;
-  }
-
-  @media (max-width: 768px) {
-    &::before {
-      content: "Patent Number: ";
-      font-weight: 600;
-      color: #64748b;
-      margin-right: 5px;
-    }
-    
-    &::after {
-      display: none;
-    }
-  }
-`;
-
-const PatentTitle = styled.div`
-  font-weight: 500;
-  color: #1e293b;
-  line-height: 1.5;
-  font-size: 1.1rem;
-  padding-right: 15px;
-
-  @media (max-width: 768px) {
-    &::before {
-      content: "Title: ";
-      font-weight: 600;
-      color: #64748b;
-      display: block;
-      margin-bottom: 8px;
-      font-size: 0.95rem;
-    }
-  }
-`;
-
-const PatentStatus = styled.div`
-  color: ${props => props.status === "Granted" ? "#059669" : "#d97706"};
-  font-weight: 600;
-  font-size: 1.05rem;
-  display: flex;
-  align-items: center;
-  
-  &::before {
-    content: "";
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: ${props => props.status === "Granted" ? "#10b981" : "#f59e0b"};
-    margin-right: 10px;
-    box-shadow: 0 0 0 3px ${props => props.status === "Granted" ? "rgba(16, 185, 129, 0.2)" : "rgba(245, 158, 11, 0.2)"};
-  }
-
-  @media (max-width: 768px) {
-    &::before {
-      content: "Status: ";
-      font-weight: 600;
-      color: #64748b;
-      background: none;
-      width: auto;
-      height: auto;
-      margin-right: 5px;
-      box-shadow: none;
-    }
-  }
-`;
-
-// Trademark Section
-const TrademarkSection = styled.section`
-  margin-bottom: 70px;
-  animation: ${fadeIn} 0.8s ease;
-`;
-
-const TrademarkGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
   margin-top: 30px;
 `;
 
-const TrademarkCard = styled.div`
-  background: white;
-  border-radius: 16px;
-  padding: 25px;
+const PatentCard = styled.div`
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-  border: 1px solid #f1f5f9;
-  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.4s ease;
   position: relative;
   overflow: hidden;
-
+  animation-delay: ${props => props.delay || '0ms'};
+  cursor: ${props => props.isGranted ? 'pointer' : 'default'};
+  
   &:hover {
-    transform: translateY(-5px);
+    transform: ${props => props.isGranted ? 'translateY(-8px)' : 'translateY(-3px)'};
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    ${props => props.isGranted && css`
+      animation: ${cardHover} 0.8s ease forwards;
+    `}
   }
 
   &::before {
@@ -345,56 +327,142 @@ const TrademarkCard = styled.div`
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #ec4899, #f472b6);
+    height: 5px;
+    background: ${props => props.isGranted 
+      ? 'linear-gradient(90deg, #10b981, #059669)' 
+      : 'linear-gradient(90deg, #4f46e5, #3b82f6)'};
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(120deg, rgba(255,255,255,0), rgba(255,255,255,0.3), rgba(255,255,255,0));
+    background-size: 200% 100%;
+    animation: ${shimmer} 8s infinite;
+    pointer-events: none;
+    opacity: 0.5;
   }
 `;
 
-const TrademarkIcon = styled.div`
+const PatentIcon = styled.div`
   font-size: 2.5rem;
   margin-bottom: 15px;
-  color: #db2777;
+  color: ${props => props.isGranted ? '#10b981' : '#4f46e5'};
+  animation: ${pulse} 2s infinite ease-in-out;
 `;
 
-const TrademarkName = styled.h3`
-  font-size: 1.3rem;
+const PatentNumber = styled.h3`
+  font-size: 1.1rem;
   font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 10px;
-`;
-
-const TrademarkNumber = styled.p`
-  color: #1e40af;
-  font-weight: 600;
-  margin-bottom: 8px;
-  font-size: 0.95rem;
-`;
-
-const TrademarkClass = styled.p`
-  color: #64748b;
-  font-size: 0.9rem;
+  color: ${props => props.isGranted ? '#059669' : '#1e40af'};
   margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  &::before {
+    content: ${props => props.isGranted ? "'🏆'" : "'📄'"};
+    font-size: 1.4rem;
+  }
 `;
 
-const TrademarkStatus = styled.div`
-  display: inline-block;
-  padding: 5px 12px;
+const PatentTitle = styled.h4`
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 15px;
+  line-height: 1.4;
+`;
+
+const PatentDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+`;
+
+const PatentDetailItem = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+  color: #64748b;
+  
+  &::before {
+    content: '${props => props.icon}';
+    margin-right: 10px;
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+  }
+`;
+
+const PatentStatus = styled.div`
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 600;
-  background-color: ${props => props.status === "Registered" ? "#dcfce7" : "#fef3c7"};
-  color: ${props => props.status === "Registered" ? "#166534" : "#92400e"};
+  background-color: ${props => {
+    if (props.status === "Granted") return "#dcfce7";
+    if (props.status === "Filled") return "#dbeafe";
+    return "#fef3c7";
+  }};
+  color: ${props => {
+    if (props.status === "Granted") return "#166534";
+    if (props.status === "Filled") return "#1e40af";
+    return "#92400e";
+  }};
+  margin-top: 10px;
+  animation: ${slideIn} 0.5s ease both;
+  
+  &::before {
+    content: "${props => {
+      if (props.status === "Granted") return "✓";
+      if (props.status === "Filled") return "⏳";
+      return "⚠";
+    }}";
+  }
+`;
+
+const ViewCertificateButton = styled.button`
+  background: linear-gradient(90deg, #10b981, #059669);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 15px;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(5, 150, 105, 0.2);
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(5, 150, 105, 0.3);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
 `;
 
 // Info Section
 const InfoSection = styled.section`
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  background: rgba(248, 250, 252, 0.9);
+  backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 50px;
   margin-bottom: 70px;
   animation: ${fadeIn} 0.8s ease;
   position: relative;
   overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.5);
 
   &::before {
     content: '';
@@ -453,6 +521,7 @@ const CTASection = styled.section`
   color: white;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 20px 40px rgba(79, 70, 229, 0.3);
 
   &::before {
     content: '';
@@ -514,158 +583,253 @@ const CTAButton = styled.button`
 `;
 
 const PatentPage = () => {
+  const [showCertificate, setShowCertificate] = useState(false);
+  const [selectedPatent, setSelectedPatent] = useState(null);
+
   const patents = [
     {
-      number: "US 11,234,567 B2",
-      title: "Compositions and Methods for Treating Metabolic Disorders",
-      status: "Granted"
+      number: "201941005203",
+      title: "FACILITATING FINANCING IN SUPPLY CHAIN MANAGEMENT USING BLOCKCHAIN",
+      filingDate: "10th Feb 2019",
+      jurisdiction: "India",
+      isGranted: false,
+      status: "Filled",
+      icon: "🔗"
     },
     {
-      number: "US 10,987,654 B1",
-      title: "Novel Protein Formulations for Enhanced Stability",
-      status: "Granted"
+      number: "PCT/IN2020/050134",
+      title: "FACILITATING FINANCING IN SUPPLY CHAIN MANAGEMENT USING BLOCKCHAIN",
+      filingDate: "10th Feb 2020",
+      jurisdiction: "Entered to PCT",
+      isGranted: false,
+      status: "Filled",
+      icon: "🌐"
     },
     {
-      number: "PCT/US2022/025678",
-      title: "Delivery Systems for Bioactive Compounds",
-      status: "Pending"
+      number: "17/429,751",
+      title: "FACILITATING FINANCING IN SUPPLY CHAIN MANAGEMENT USING BLOCKCHAIN",
+      filingDate: "10th Aug 2021",
+      jurisdiction: "NP Entry- US",
+      isGranted: false,
+      status: "Filled",
+      icon: "🇺🇸"
     },
     {
-      number: "EP 3,456,789 A1",
-      title: "Methods of Manufacturing Sustained Release Formulations",
-      status: "Granted"
+      number: "202141060251",
+      title: "A CLOUD-BASED ERP SYSTEM FOR SECURE DATA EXCHANGE BETWEEN ENTITIES",
+      filingDate: "23rd Dec 2021",
+      jurisdiction: "India",
+      isGranted: false,
+      status: "Filled",
+      icon: "☁️"
     },
     {
-      number: "US 2022/0123456 A1",
-      title: "Diagnostic Assays for Nutritional Status Assessment",
-      status: "Pending"
+      number: "PCT/IB2022/062742",
+      title: "A CLOUD-BASED ERP SYSTEM FOR SECURE DATA EXCHANGE BETWEEN ENTITIES",
+      filingDate: "23rd Dec 2022",
+      jurisdiction: "Entered to PCT",
+      isGranted: false,
+      status: "Filled",
+      icon: "🌐"
     },
     {
-      number: "US 10,654,321 C1",
-      title: "Stable Oral Formulations of Amino Acid Compounds",
-      status: "Granted"
+      number: "202447056087",
+      title: "A CLOUD-BASED ERP SYSTEM FOR SECURE DATA EXCHANGE BETWEEN ENTITIES",
+      filingDate: "23rd July 2024",
+      jurisdiction: "NP Entry- India",
+      isGranted: false,
+      status: "Filled",
+      icon: "🇮🇳"
+    },
+    {
+      number: "18/723,533",
+      title: "A CLOUD-BASED ERP SYSTEM FOR SECURE DATA EXCHANGE BETWEEN ENTITIES",
+      filingDate: "24th June 2024",
+      jurisdiction: "NP Entry- US",
+      isGranted: false,
+      status: "Filled",
+      icon: "🇺🇸"
+    },
+    {
+      number: "202141060263",
+      title: "A CLOUD-BASED ERP SYSTEM FOR DATA SHARING BETWEEN BUSINESS ENTITIES TO ENABLE MARKET PLACE FEATURE",
+      filingDate: "23rd Dec 2021",
+      jurisdiction: "India",
+      isGranted: true,
+      status: "Granted",
+      icon: "🏆",
+      certificateImage: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/Patent_202141060263.jpeg"
+    },
+    {
+      number: "PCT/IB2022/062744",
+      title: "A CLOUD-BASED ERP SYSTEM FOR DATA SHARING BETWEEN BUSINESS ENTITIES TO ENABLE MARKET PLACE FEATURE",
+      filingDate: "23rd Dec 2022",
+      jurisdiction: "Entered to PCT",
+      isGranted: false,
+      status: "Filled",
+      icon: "🌐"
+    },
+    {
+      number: "202141060570",
+      title: "AI – BASED BANK ACCOUNT RECONCILIATION AND CREATION OF LEDGER ENTRY IN ERP SYSTEM",
+      filingDate: "24th Dec 2021",
+      jurisdiction: "India",
+      isGranted: false,
+      status: "Filled",
+      icon: "🤖"
+    },
+    {
+      number: "PCT/IB2022/062780",
+      title: "AI – BASED BANK ACCOUNT RECONCILIATION AND CREATION OF LEDGER ENTRY IN ERP SYSTEM",
+      filingDate: "26th Dec 2022",
+      jurisdiction: "Entered to PCT",
+      isGranted: false,
+      status: "Filled",
+      icon: "🌐"
+    },
+    {
+      number: "202541083534",
+      title: "AI-BASED IMAGING AND PATHOLOGY DIAGNOSTIC SYSTEM FOR EARLY AND ACCURATE ORAL CANCER DETECTION",
+      filingDate: "2nd Sept 2025",
+      jurisdiction: "India",
+      isGranted: false,
+      status: "Filled",
+      icon: "🏥"
     }
   ];
 
-  const trademarks = [
-    {
-      name: "NUTRACELL",
-      number: "5,123,456",
-      class: "Class 5: Pharmaceutical preparations",
-      status: "Registered",
-      icon: "™"
-    },
-    {
-      name: "BIOFORMULA+",
-      number: "5,789,012",
-      class: "Class 5: Dietary supplements",
-      status: "Registered",
-      icon: "™"
-    },
-    {
-      name: "HEALTHOPTIMA",
-      number: "6,345,678",
-      class: "Class 42: Scientific research services",
-      status: "Pending",
-      icon: "™"
-    },
-    {
-      name: "VITABOOST",
-      number: "6,901,234",
-      class: "Class 29: Dietary food supplements",
-      status: "Registered",
-      icon: "™"
+  const handlePatentClick = (patent) => {
+    if (patent.isGranted) {
+      setSelectedPatent(patent);
+      setShowCertificate(true);
     }
-  ];
+  };
+
+  const closeCertificate = () => {
+    setShowCertificate(false);
+    setSelectedPatent(null);
+  };
 
   const reqdemo = () => {
     window.location.href = "/demo.html";
   };
 
   return (
-    <PageContainer>
-      <HeaderSection>
-        <PageTitle>Intellectual Property</PageTitle>
-        <PageSubtitle>
-          Our growing intellectual property portfolio protects innovations in biotherapeutics, 
-          formulations, and manufacturing processes that advance our mission of improving human health.
-        </PageSubtitle>
-      </HeaderSection>
+    <MainContainer>
+      <ParticlesContainer>
+        <Particle delay="0s" />
+        <Particle delay="1s" />
+        <Particle delay="2s" />
+        <Particle delay="3s" />
+        <Particle delay="4s" />
+        <Particle delay="5s" />
+        <Particle delay="6s" />
+        <Particle delay="7s" />
+      </ParticlesContainer>
 
-      <StatsSection>
-        <StatCard delay="100ms">
-          <StatNumber>15+</StatNumber>
-          <StatLabel>Patents Granted</StatLabel>
-        </StatCard>
-        <StatCard delay="200ms">
-          <StatNumber>10+</StatNumber>
-          <StatLabel>Pending Applications</StatLabel>
-        </StatCard>
-        <StatCard delay="300ms">
-          <StatNumber>30+</StatNumber>
-          <StatLabel>Countries</StatLabel>
-        </StatCard>
-      </StatsSection>
+      <PageContainer>
+        <HeaderSection>
+          <PageTitle>Intellectual Property</PageTitle>
+          <PageSubtitle>
+            Our growing intellectual property portfolio protects innovations in blockchain,
+            cloud-based ERP systems, AI technologies, and healthcare diagnostics that advance
+            our mission of digital transformation across industries.
+          </PageSubtitle>
+        </HeaderSection>
 
-      <PatentSection>
-        <SectionTitle>Patent Portfolio</SectionTitle>
-        <PatentTable>
-          <TableHeader>
-            <div>Patent Number</div>
-            <div>Title</div>
-            <div>Status</div>
-          </TableHeader>
-          {patents.map((patent, index) => (
-            <PatentRow key={index}>
-              <PatentNumber>{patent.number}</PatentNumber>
-              <PatentTitle>{patent.title}</PatentTitle>
-              <PatentStatus status={patent.status}>{patent.status}</PatentStatus>
-            </PatentRow>
-          ))}
-        </PatentTable>
-      </PatentSection>
+        <StatsSection>
+          <StatCard delay="100ms">
+            <StatNumber>12</StatNumber>
+            <StatLabel>Patent Applications</StatLabel>
+          </StatCard>
+          <StatCard delay="200ms">
+            <StatNumber>30+ Countries</StatNumber>
+            <StatLabel>Trademarks Filed</StatLabel>
+          </StatCard>
+          <StatCard delay="300ms">
+            <StatNumber>10+</StatNumber>
+            <StatLabel>Technology Domains</StatLabel>
+          </StatCard>
+        </StatsSection>
 
-      <TrademarkSection>
-        <SectionTitle>Trademark Portfolio</SectionTitle>
-        <TrademarkGrid>
-          {trademarks.map((trademark, index) => (
-            <TrademarkCard key={index}>
-              <TrademarkIcon>{trademark.icon}</TrademarkIcon>
-              <TrademarkName>{trademark.name}</TrademarkName>
-              <TrademarkNumber>Reg. No: {trademark.number}</TrademarkNumber>
-              <TrademarkClass>{trademark.class}</TrademarkClass>
-              <TrademarkStatus status={trademark.status}>
-                {trademark.status}
-              </TrademarkStatus>
-            </TrademarkCard>
-          ))}
-        </TrademarkGrid>
-      </TrademarkSection>
+        <PatentSection>
+          <SectionTitle>Patent Portfolio</SectionTitle>
+          <PatentGrid>
+            {patents.map((patent, index) => (
+              <PatentCard 
+                key={index} 
+                isGranted={patent.isGranted}
+                delay={`${index * 100}ms`}
+                onClick={() => handlePatentClick(patent)}
+              >
+                <PatentIcon isGranted={patent.isGranted}>
+                  {patent.icon}
+                </PatentIcon>
+                <PatentNumber isGranted={patent.isGranted}>
+                  {patent.number}
+                </PatentNumber>
+                <PatentTitle>{patent.title}</PatentTitle>
+                <PatentDetails>
+                  <PatentDetailItem icon="📅">
+                    Filed: {patent.filingDate}
+                  </PatentDetailItem>
+                  <PatentDetailItem icon="🗺️">
+                    Jurisdiction: {patent.jurisdiction}
+                  </PatentDetailItem>
+                </PatentDetails>
+                <PatentStatus status={patent.status}>
+                  {patent.status}
+                </PatentStatus>
+                {patent.isGranted && (
+                  <ViewCertificateButton>
+                    View Certificate
+                  </ViewCertificateButton>
+                )}
+              </PatentCard>
+            ))}
+          </PatentGrid>
+        </PatentSection>
 
-      <InfoSection>
-        <InfoTitle>Our Intellectual Property Strategy</InfoTitle>
-        <InfoText>
-          We pursue a comprehensive intellectual property strategy to protect our innovations across 
-          multiple technology platforms and geographic regions. Our patent portfolio covers novel 
-          compositions, manufacturing processes, methods of use, and delivery technologies that 
-          form the foundation of our product pipeline.
-        </InfoText>
-        <InfoText>
-          We work with leading intellectual property law firms to develop and execute our IP strategy, 
-          ensuring strong protection for our innovations while maintaining the freedom to operate in 
-          our core areas of research and development.
-        </InfoText>
-      </InfoSection>
+        <InfoSection>
+          <InfoTitle>Our Intellectual Property Strategy</InfoTitle>
+          <InfoText>
+            We pursue a comprehensive intellectual property strategy to protect our innovations across
+            multiple technology platforms and geographic regions. Our patent portfolio covers blockchain
+            applications, cloud-based ERP systems, AI technologies, and healthcare diagnostics that
+            form the foundation of our product offerings.
+          </InfoText>
+          <InfoText>
+            We work with leading intellectual property law firms to develop and execute our IP strategy,
+            ensuring strong protection for our innovations while maintaining the freedom to operate in
+            our core areas of research and development.
+          </InfoText>
+        </InfoSection>
 
-      <CTASection>
-        <CTATitle>Partner with Us</CTATitle>
-        <CTAText>
-          Interested in licensing our technology or exploring collaboration opportunities? 
-          Contact us to know more.
-        </CTAText>
-        <CTAButton onClick={reqdemo}>Request a demo</CTAButton>
-      </CTASection>
-    </PageContainer>
+        <CTASection>
+          <CTATitle>Partner with Us</CTATitle>
+          <CTAText>
+            Interested in licensing our technology or exploring collaboration opportunities?
+            Contact us to know more.
+          </CTAText>
+          <CTAButton onClick={reqdemo}>Contact Us</CTAButton>
+        </CTASection>
+      </PageContainer>
+
+      {showCertificate && (
+        <Modal onClose={closeCertificate} position="top">
+          <img
+            src={selectedPatent.certificateImage}
+            alt="Patent Certificate"
+            style={{
+              width: "100%",
+              height: "auto",
+              borderRadius: "12px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+            }}
+          />
+        </Modal>
+      )}
+    </MainContainer>
   );
 };
 

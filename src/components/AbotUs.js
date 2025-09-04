@@ -17,7 +17,7 @@ const AbotUs = () => {
       <AdvantageSection/>
       <LeadershipTeam></LeadershipTeam>
       <AdvisoryBoard/>
-      {/* <PatentAndPublications/> */}
+      <PatentAndPublications/>
     </div>
   )
 }

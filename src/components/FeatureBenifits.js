@@ -156,20 +156,6 @@ const BenefitText = styled(motion.p)`
   line-height: 1.6;
 `;
 
-const ConnectorLine = styled(motion.div)`
-  position: absolute;
-  top: 50px;
-  left: -20px;
-  width: 40px;
-  height: 2px;
-  background: #6a1b9a;
-  opacity: 0.3;
-  
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
 // Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },

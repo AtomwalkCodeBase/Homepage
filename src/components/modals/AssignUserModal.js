@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect } from "react"
 import styled from "styled-components"
 import { FaTimes, FaUsers, FaSearch, FaUserMinus } from "react-icons/fa"
 import { useTheme } from "../../context/ThemeContext"

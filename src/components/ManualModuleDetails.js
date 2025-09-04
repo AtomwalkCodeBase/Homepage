@@ -27,8 +27,7 @@ import {
   FaLayerGroup,
   FaSearch,
   FaHome,
-  FaQuestionCircle,
-  FaBuilding,     
+  FaQuestionCircle,    
   FaTachometerAlt, 
   FaWarehouse,    
   FaProjectDiagram, 
@@ -118,25 +117,6 @@ const AppContainer = styled.div`
   min-height: 100vh;
   background-color: ${(props) => props.theme.colors.background};
 `;
-
-// const MainContainer = styled.main`
-//   flex: 1;
-//   padding: ${(props) => props.theme.spacing.xxl};
-//   padding-top: 80px;
-//   max-width: 1600px;
-//   margin: 0 auto;
-//   width: 100%;
-
-//   @media (max-width: ${(props) => props.theme.breakpoints.lg}) {
-//     padding: ${(props) => props.theme.spacing.xl};
-//     padding-top: 80px;
-//   }
-
-//   @media (max-width: ${(props) => props.theme.breakpoints.md}) {
-//     padding: ${(props) => props.theme.spacing.lg};
-//     padding-top: 70px;
-//   }
-// `;
 const MainContainer = styled.main`
   margin-left: 280px; /* Leave space for sidebar */
   flex: 1;
@@ -182,33 +162,6 @@ const LoadingState = styled.div`
     }
   }
 `;
-
-// Navigation Components
-// const SidebarNav = styled.nav`
-//   width: 280px;
-//   background: ${(props) => props.theme.colors.card};
-//   border-right: 1px solid ${(props) => props.theme.colors.borderColor};
-//   height: 100vh;
-//   position: sticky;
-//   margin-top: 120px;
-//   top: 0;
-//   overflow-y: auto;
-//   padding: ${(props) => props.theme.spacing.lg} 0;
-
-//   @media (max-width: ${(props) => props.theme.breakpoints.lg}) {
-//     width: 240px;
-//   }
-
-//   @media (max-width: ${(props) => props.theme.breakpoints.md}) {
-//     position: fixed;
-//     z-index: 100;
-//     width: 280px;
-//     transform: ${(props) =>
-//       props.isOpen ? "translateX(0)" : "translateX(-100%)"};
-//     transition: transform 0.3s ease;
-//     box-shadow: ${(props) => props.theme.shadows.lg};
-//   }
-// `;
 const SidebarNav = styled.nav`
   width: 280px;
   background: ${(props) => props.theme.colors.card};

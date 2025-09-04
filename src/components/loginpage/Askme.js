@@ -4,7 +4,6 @@ import axios from "axios";
 import ReactMarkdown from "react-markdown";
 import SlidingPane from "react-sliding-pane";
 import "react-sliding-pane/dist/react-sliding-pane.css";
-import Robo from './images/blue-robot-holding-a-sign-with-space-chatbot-icon-concept-chat-bot-or-chatterbot-png-image-vector-removebg-preview.png';
 
 const ChatContainer = styled.div`
   display: flex;
@@ -281,7 +280,7 @@ const isMobile = window.innerWidth <= 768;
             </Message>
           ))}
           {isLoading && <Message isBot={true}>Generating...</Message>}
-          {messages.length==0&&<Charboat>Hii how can i help you💁‍♀️</Charboat>}
+          {messages.length===0&&<Charboat>Hii how can i help you💁‍♀️</Charboat>}
         </ChatBox>
     
         <LinkButtonContainer>

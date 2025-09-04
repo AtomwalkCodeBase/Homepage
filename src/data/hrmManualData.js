@@ -10,7 +10,6 @@ import {
     FaTrash,
     FaTable,
     FaListAlt,
-    FaUserShield,
     FaUndo,
     FaCogs,
     FaSearch,

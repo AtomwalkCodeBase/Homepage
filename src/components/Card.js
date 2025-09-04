@@ -1,7 +1,6 @@
 "use client"
 
 import styled from "styled-components"
-import { useContext } from "react"
 import { useTheme } from "../context/ThemeContext"
 
 const CardContainer = styled.div`

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useLocation } from 'react-router-dom';
-import { FaMobileAlt, FaDesktop, FaServer, FaUserTie, FaUsersCog, FaUserShield } from 'react-icons/fa';
+import { FaMobileAlt, FaDesktop, FaServer } from 'react-icons/fa';
 
 // Keep the HRM_DATA exactly as it was
 const HRM_DATA = {
@@ -313,18 +313,6 @@ const fadeIn = keyframes`
   to { opacity: 1; transform: translateY(0); }
 `;
 
-const pulse = keyframes`
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-`;
-
-const gradientBG = keyframes`
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-`;
-
 // Styled Components with enhanced design
 const Container = styled.div`
   padding: 2rem 1rem;
@@ -587,21 +575,6 @@ const FeatureItem = styled.li`
   @media (max-width: 768px) {
     padding-left: 1.25rem;
     margin-left: 0;
-  }
-`;
-
-const RoleIconWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-  animation: ${pulse} 2s infinite;
-
-  svg {
-    font-size: 3rem;
-    color: #3498db;
-    background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(46, 204, 113, 0.1));
-    padding: 1.5rem;
-    border-radius: 50%;
   }
 `;
 

@@ -368,7 +368,7 @@ export const SalesOrderManualStep = [
                                     ["Expected Due Date", "Date Picker", "Optional"],
                                     ["Unit Price Type", "Dropdown", "Optional"],
                                     ["Part Delivery Allowed", "Checkbox", "Optional"],
-                                    ["Additional Remarks", "Text", "Optional"]
+                                    ["Additional Remarks", "Text", "Optional"],
                                     ["Sales Order Ref Number", "Dropdown", "Optional"],
                                     ["Shipment Address", "Dropdown", "Mandatory"],
                                     ["Which Branch Office?", "Dropdown", "Mandatory"]

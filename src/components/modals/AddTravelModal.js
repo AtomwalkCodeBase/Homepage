@@ -207,8 +207,6 @@ const AddTravelModal = ({ onClose, onSuccess, isUpdate, updateTicket }) => {
     city: ""
   })
 
-  console.log("updateTicket", updateTicket)
-
   useEffect(() => {
     fetchprojectCategories();
     fetchTravelMode();

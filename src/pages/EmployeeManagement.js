@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { FaSearch, FaPlus, FaEdit, FaTrash, FaEye, FaFilter, FaFileExport, FaCalendarAlt, FaClock, FaChartBar } from "react-icons/fa"
+import { FaSearch, FaFileExport, FaClock, FaChartBar } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
@@ -41,15 +41,6 @@ const SearchInput = styled.div`
     padding: 0.75rem 0;
     outline: none;
   }
-`
-
-const TableActions = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-  gap: 1rem;
 `
 
 const ActionButtons = styled.div`

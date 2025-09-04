@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import styled from "styled-components"
-import { FaChevronLeft, FaChevronRight, FaFilter, FaSignInAlt, FaSignOutAlt, FaPlus, FaFileExport, FaUserCircle } from "react-icons/fa"
+import { FaChevronLeft, FaChevronRight, FaSignInAlt, FaSignOutAlt, FaPlus, FaFileExport, FaUserCircle } from "react-icons/fa"
 import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
@@ -10,15 +10,13 @@ import Badge from "../components/Badge"
 import { useAuth } from "../context/AuthContext"
 import { getEmpAttendance, getEmpHoliday, postCheckIn } from "../services/productServices"
 import Modal from "../components/modals/Modal"
-import AttendanceModal from "../components/modals/AttendanceModal"
+// import AttendanceModal from "../components/modals/AttendanceModal"
 import { toast } from "react-toastify"
 import moment from "moment/moment"
 import { useExport } from "../context/ExportContext"
 import { useNavigate } from "react-router-dom"
 import RequestModal from "../components/modals/RequestModal"
 import { FaLocationDot } from "react-icons/fa6"
-// import Modal from "../components/Modal"
-// import Input from "../components/Input"
 
 const AttendanceHeader = styled.div`
   display: flex;

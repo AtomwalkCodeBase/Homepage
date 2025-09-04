@@ -4,9 +4,6 @@ import {
   FaBed,
   FaChevronDown,
   FaSpinner,
-  FaCalendar,
-  FaClock,
-  FaUser
 } from 'react-icons/fa';
 import { 
   getEquipentTypeListView, 
@@ -135,18 +132,6 @@ const Input = styled.input`
     color: ${({ theme }) => theme.colors.textLight};
   }
 `;
-
-const DateSlotsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing.md};
-  margin: ${({ theme }) => theme.spacing.xs} 0;
-  width: 100%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    gap: ${({ theme }) => theme.spacing.sm};
-  }
-`;
-
 const ActionButtons = styled.div`
   display: flex;
   align-items: center;
@@ -189,24 +174,6 @@ const SearchButton = styled(Button)`
     min-width: unset;
   }
 `;
-
-const InlineControls = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.md};
-  align-items: center;
-  width: 100%;
-  
-  & > ${Input} {
-    flex: 1;
-  }
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    flex-direction: column;
-    align-items: stretch;
-    gap: ${({ theme }) => theme.spacing.sm};
-  }
-`;
-
 const EquipmentCard = styled.div`
   background: ${({ theme }) => theme.colors.card};
   border: 1px solid ${({ theme }) => theme.colors.border};
@@ -230,21 +197,6 @@ const EquipmentName = styled.h3`
   font-weight: 600;
   color: ${({ theme }) => theme.colors.text};
   margin: 0;
-`;
-
-const EquipmentDetails = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: ${({ theme }) => theme.spacing.md};
-  margin-bottom: ${({ theme }) => theme.spacing.md};
-`;
-
-const DetailItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
-  font-size: ${({ theme }) => theme.fontSizes.sm};
-  color: ${({ theme }) => theme.colors.textLight};
 `;
 
 const DateSlotsGrid = styled.div`

@@ -317,28 +317,6 @@ const CategoryTag = styled.div`
   }
 `;
 
-const Priority = styled.div`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #ef4444;
-  ${props => props.priority === 'high' && `
-    background: #ef4444;
-    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.3);
-  `}
-  ${props => props.priority === 'medium' && `
-    background: #f59e0b;
-    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.3);
-  `}
-  ${props => props.priority === 'low' && `
-    background: #10b981;
-    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.3);
-  `}
-`;
-
 const CardContent = styled.div`
   padding: 1.5rem;
 `;
@@ -642,7 +620,6 @@ const NewsEventsList = () => {
                   {getCategoryIcon(item.category)}
                   {item.category || 'Update'}
                 </CategoryTag>
-                <Priority priority="medium" />
               </ImageContainer>
               
               <CardContent>

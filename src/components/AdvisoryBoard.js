@@ -430,43 +430,43 @@ const ProfileButton = styled.a`
 `;
 
 // Navigation Controls
-const NavigationControls = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 20px;
-`;
+// const NavigationControls = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   gap: 16px;
+//   margin-top: 20px;
+// `;
 
-const NavButton = styled.button`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid #e8e2d1;
-  background: white;
-  color: #b8860b;
-  cursor: pointer;
-  transition: all 0.3s ease;
+// const NavButton = styled.button`
+//   display: inline-flex;
+//   align-items: center;
+//   justify-content: center;
+//   width: 44px;
+//   height: 44px;
+//   border-radius: 50%;
+//   border: 1px solid #e8e2d1;
+//   background: white;
+//   color: #b8860b;
+//   cursor: pointer;
+//   transition: all 0.3s ease;
   
-  &:hover {
-    background: rgba(184, 134, 11, 0.05);
-    border-color: #b8860b;
-    transform: translateY(-2px);
-  }
+//   &:hover {
+//     background: rgba(184, 134, 11, 0.05);
+//     border-color: #b8860b;
+//     transform: translateY(-2px);
+//   }
   
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-  }
+//   &:disabled {
+//     opacity: 0.5;
+//     cursor: not-allowed;
+//     transform: none;
+//   }
   
-  svg {
-    width: 20px;
-    height: 20px;
-  }
-`;
+//   svg {
+//     width: 20px;
+//     height: 20px;
+//   }
+// `;
 
 const AdvisoryBoard = () => {
   const [expandedBios, setExpandedBios] = useState({});
@@ -479,13 +479,13 @@ const AdvisoryBoard = () => {
     }));
   };
 
-  const nextAdvisor = () => {
-    setCurrentIndex(prev => (prev + 1) % advisors.length);
-  };
+  // const nextAdvisor = () => {
+  //   setCurrentIndex(prev => (prev + 1) % advisors.length);
+  // };
 
-  const prevAdvisor = () => {
-    setCurrentIndex(prev => (prev - 1 + advisors.length) % advisors.length);
-  };
+  // const prevAdvisor = () => {
+  //   setCurrentIndex(prev => (prev - 1 + advisors.length) % advisors.length);
+  // };
 
   const advisors = [
     {

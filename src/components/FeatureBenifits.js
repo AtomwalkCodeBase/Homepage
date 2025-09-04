@@ -3,10 +3,10 @@ import { motion } from 'framer-motion';
 
 // Icons (same as before)
 import { 
-  FaClock, FaCrown, FaChartLine, FaMobileAlt, FaUserTie, 
+  FaCrown, FaChartLine, FaMobileAlt, FaUserTie, 
   FaFileInvoiceDollar, FaShieldAlt, FaCogs, FaExpandArrowsAlt,
   FaTrashAlt, FaTrashRestoreAlt, FaChartPie, FaHardHat,
-  FaBuilding, FaHospital, FaSolarPanel, FaRobot, FaEye,
+  FaBuilding, FaEye,
   FaFileAlt, FaExclamationTriangle, FaTachometerAlt,
   FaProjectDiagram, FaTruckLoading, FaQrcode // ✅ added
 } from 'react-icons/fa';

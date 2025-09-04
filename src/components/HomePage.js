@@ -7,7 +7,6 @@ import ProductDemoModal from './ProductDemoModal'
 import Success from './SuccessBanner'
 import CustomerLogos from './CustomerLogos'
 import HeroSection from './HeroSection'
-import FloatingActionButton from './FloatingActionButton'
 import Askme from './loginpage/Askme'
 import PatentAndPublications from './PatentAndPublications'
 
@@ -40,21 +39,14 @@ useEffect(()=>{
   return (
     <div>
       {showsuccess&&<Success message="We have successfully recorded your information."></Success>}
-    {/* <Banner></Banner> */}
-    {/* <Resource></Resource> */}
     <HeroSection/>
     <Skills></Skills>
-    {/* <UnlockFuture></UnlockFuture> */}
     <Features></Features>
     <PatentAndPublications pageType="HOME_PAGE" />
-    {/* need to work one that page  */}
    <Testimonial></Testimonial>
    <CustomerLogos/>
-    {/* <Pricing></Pricing> */}
-    {/* <PricingAvtar></PricingAvtar> */}
     <Contact setShowsuccess={setShowsuccess}></Contact>
     <ProductDemoModal isOpen={modalIsOpen} onRequestClose={closeModal} setShowsuccess={setShowsuccess} />
-    {/* <FloatingActionButton setOpenslide={setOpenslide} ></FloatingActionButton> */}
     {openslide&&<Askme setOpenslide={setOpenslide}/>}
     </div>
   )

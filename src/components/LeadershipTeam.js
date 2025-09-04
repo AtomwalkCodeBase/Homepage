@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import Team from './../assets/img/TemIcon.jpg';
 import Lipika from './../assets/img/lipika.png';
@@ -67,21 +67,7 @@ const scaleIn = keyframes`
   }
 `;
 
-const rotateIn = keyframes`
-  0% { 
-    opacity: 0; 
-    transform: rotate(-180deg) scale(0.5); 
-  }
-  100% { 
-    opacity: 1; 
-    transform: rotate(0deg) scale(1); 
-  }
-`;
 
-const textGlow = keyframes`
-  0%, 100% { text-shadow: 0 0 5px rgba(251, 146, 60, 0.5); }
-  50% { text-shadow: 0 0 20px rgba(251, 146, 60, 0.8), 0 0 30px rgba(251, 146, 60, 0.6); }
-`;
 
 const bounceIn = keyframes`
   0% {
@@ -549,15 +535,8 @@ const SparkleEffect = styled.div`
 `;
 
 const LeadershipAdvisors = () => {
-  const [visibleCards, setVisibleCards] = useState([]);
   const [expandedDescriptions, setExpandedDescriptions] = useState({});
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setVisibleCards([0, 1, 2, 3, 4, 5, 6]);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
 
   const toggleDescription = (id) => {
     setExpandedDescriptions(prev => ({

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
@@ -25,34 +25,47 @@ const PageContainer = styled.div`
   }
 `;
 
+
+const gradientShift = keyframes`
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+`;
+
+
 const Section = styled.div`
   margin-bottom: 60px;
   perspective: 1000px;
 `;
 
-const Title = styled(motion.h1)`
-  margin-top: 40px;
-  font-size: 35px;
-  font-weight: 700;
-  color: #2c3e50;
+const SectionTitle = styled.h2`
+  font-size: 3.5rem;
+  font-weight: 800;
   text-align: center;
   margin-bottom: 60px;
+  background: linear-gradient(270deg, #1f2937, #ea580c, #1f2937, #ea580c);
+  background-size: 300% 300%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: ${gradientShift} 8s ease infinite;
   position: relative;
-
-  &:after {
-    content: "";
+  
+  &::after {
+    content: '';
     position: absolute;
-    width: 100px;
-    height: 4px;
-    background: linear-gradient(90deg, #ff6b6b, #6c5ce7);
     bottom: -15px;
     left: 50%;
     transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(to right, #1f2937, #ea580c);
     border-radius: 2px;
   }
-
-  @media (min-width: 768px) {
-    font-size: 45px;
+  
+  @media (max-width: 768px) {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
   }
 `;
 
@@ -383,13 +396,9 @@ export const Skills = () => {
 
   return (
     <PageContainer>
-      <Title
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
+      <SectionTitle>
         Empowering Industries with Smart Solutions
-      </Title>
+      </SectionTitle>
 
       {industries.map((industry, index) => (
         <IndustrySection key={index} industry={industry} index={index} />

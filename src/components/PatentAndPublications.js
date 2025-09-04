@@ -2,7 +2,7 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-// Enhanced animations
+// Animations
 const fadeIn = keyframes`
   from { 
     opacity: 0; 
@@ -20,19 +20,29 @@ const gradientShift = keyframes`
   100% { background-position: 0% 50%; }
 `;
 
-// Main container with improved spacing
-const Container = styled.section`
-  max-width: 1200px;
-  margin: 80px auto;
-  padding: 0 20px;
-
+// Main container with full-width background
+const FullWidthContainer = styled.div`
+  width: 100%;
+  background-color: ${({ pageType }) =>
+    pageType === "HOME_PAGE" ? "rgb(234 244 255)" : "transparent"};
+  padding: 80px 0;
+  
   @media (max-width: 768px) {
-    margin: 60px auto;
+    padding: 60px 0;
+  }
+`;
+
+// Content container with max-width
+const ContentContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  
+  @media (max-width: 768px) {
     padding: 0 16px;
   }
 `;
 
-// Section title with animated gradient
 const SectionTitle = styled.h2`
   font-size: 3.5rem;
   font-weight: 800;
@@ -64,20 +74,19 @@ const SectionTitle = styled.h2`
   }
 `;
 
-// Grid layout for cards - 2x2 on desktop
+// Grid layout for cards
 const CardsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Always 2 columns on desktop */
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
   
-  /* For tablets */
   @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
   
-  /* For mobile devices */
   @media (max-width: 768px) {
-    grid-template-columns: 1fr; /* Single column on mobile */
+    grid-template-columns: 1fr;
     gap: 20px;
   }
 `;
@@ -102,7 +111,6 @@ const Card = styled.div`
     }
   }
   
-  /* Adjust height for smaller screens */
   @media (max-width: 1024px) {
     height: 300px;
   }
@@ -194,7 +202,7 @@ const SubtitleBox = styled.div`
   }
 `;
 
-const PatentAndPublications = () => {
+const PatentAndPublications = ({ pageType }) => {
   const navigate = useNavigate();
 
   const cards = [
@@ -229,22 +237,24 @@ const PatentAndPublications = () => {
   ];
 
   return (
-    <Container>
-      <SectionTitle>Our Achievements</SectionTitle>
-      <CardsGrid>
-        {cards.map((card, index) => (
-          <Card key={index} delay={card.delay}>
-            <BackgroundImage src={card.image} alt={card.title} />
-            <Overlay>
-              <Title>{card.title}</Title>
-              <SubtitleBox onClick={() => window.location.href=card.path}>
-                {card.subtitle}
-              </SubtitleBox>
-            </Overlay>
-          </Card>
-        ))}
-      </CardsGrid>
-    </Container>
+    <FullWidthContainer pageType={pageType}>
+      <ContentContainer>
+        <SectionTitle>Our Achievements</SectionTitle>
+        <CardsGrid>
+          {cards.map((card, index) => (
+            <Card key={index} delay={card.delay}>
+              <BackgroundImage src={card.image} alt={card.title} />
+              <Overlay>
+                <Title>{card.title}</Title>
+                <SubtitleBox onClick={() => navigate(card.path)}>
+                  {card.subtitle}
+                </SubtitleBox>
+              </Overlay>
+            </Card>
+          ))}
+        </CardsGrid>
+      </ContentContainer>
+    </FullWidthContainer>
   );
 };
 

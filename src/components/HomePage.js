@@ -46,7 +46,7 @@ useEffect(()=>{
     <Skills></Skills>
     {/* <UnlockFuture></UnlockFuture> */}
     <Features></Features>
-    <PatentAndPublications/>
+    <PatentAndPublications pageType="HOME_PAGE" />
     {/* need to work one that page  */}
    <Testimonial></Testimonial>
    <CustomerLogos/>

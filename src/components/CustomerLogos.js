@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { motion } from "framer-motion";
 import Meteonic from "./../assets/img/m-logo.png";
 import Fluxgen from "./../assets/img/fluxgon_logo.png";
@@ -15,6 +15,14 @@ import Start_Up_KA from './../assets/img/Startup_Karnataka.png';
 import Nasscom from './../assets/img/NASSCOM.png';
 import msme from './../assets/img/msme.png';
 
+
+
+const gradientShift = keyframes`
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+`;
+
 // Styled Components
 const Section = styled.section`
   text-align: center;
@@ -23,10 +31,37 @@ const Section = styled.section`
   overflow: hidden;
 `;
 
-const Title = styled.h2`
-  font-size: 2.5rem;
-  color: #2c3e50;
-  margin-bottom: 10px;
+
+
+const SectionTitle = styled.h2`
+  font-size: 3.5rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 60px;
+  background: linear-gradient(270deg, #1f2937, #ea580c, #1f2937, #ea580c);
+  background-size: 300% 300%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: ${gradientShift} 8s ease infinite;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(to right, #1f2937, #ea580c);
+    border-radius: 2px;
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+  }
 `;
 
 const LogoScrollContainer = styled.div`
@@ -83,7 +118,7 @@ const logos = [Meteonic, Fluxgen, IISER, Veekay, Lifeintelect, Ramaiah, Universe
 const CustomerLogos = () => {
   return (
     <Section>
-      <Title>Brands we are associated with</Title>
+      <SectionTitle>Brands we are associated with</SectionTitle>
       <LogoScrollContainer>
         <LogoTrack>
           {logos.concat(logos).map((logo, index) => (

@@ -1,4 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap";
+import styled, { keyframes } from "styled-components";
 import projImg1 from "../assets/img/Default_A_bustling_industrial_scene_depicting_modern_manufactu_1.jpg";
 import projImg2 from "../assets/img/Management.jpg";
 import projImg3 from "../assets/img/Hrandpayroll.jpg";
@@ -10,6 +11,43 @@ import projImg8 from "../assets/img/Lab Equipment Management System with lab equ
 import projImg9 from "../assets/img/good laboratory practices.png";
 import Newcard from "./Newcard";
 
+
+const gradientShift = keyframes`
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+`;
+
+const SectionTitle = styled.h2`
+  font-size: 3.5rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 60px;
+  background: linear-gradient(270deg, #1f2937, #ea580c, #1f2937, #ea580c);
+  background-size: 300% 300%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: ${gradientShift} 8s ease infinite;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(to right, #1f2937, #ea580c);
+    border-radius: 2px;
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+  }
+`;
 const Features = () => {
   const projects = [
     {
@@ -78,7 +116,8 @@ const Features = () => {
   return (
     <section className="project" id="projects">
       <Container>
-        <h2>Comprehensive Business Management Solution</h2>
+        <SectionTitle>Comprehensive Business Management Solution</SectionTitle>
+
         <p>
         “Empowering organizations by simplifying business complexities for sustainable growth and driving business excellence. Atomwalk office software solutions transform your data into actionable insights to drive your business forward with confidence.”
         </p>

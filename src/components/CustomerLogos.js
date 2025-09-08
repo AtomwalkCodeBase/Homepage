@@ -76,17 +76,18 @@ const LogoTrack = styled.div`
   display: flex;
   align-items: center;
   gap: 40px;
-  animation: scroll 20s linear infinite;
-  min-width: 200%;
+  animation: scroll 40s linear infinite;
+
   @keyframes scroll {
-    from {
+    0% {
       transform: translateX(0);
     }
-    to {
+    100% {
       transform: translateX(-50%);
     }
   }
 `;
+
 
 const LogoCard = styled(motion.div)`
   background: white;
@@ -113,7 +114,27 @@ const LogoImage = styled.img`
 `;
 
 // Logo Data
-const logos = [Meteonic, Fluxgen, IISER, Veekay, Lifeintelect, Ramaiah, UniversePower, Advika, Olety,Start_Up_Inda,Make_In_Inda,Start_Up_KA,Nasscom,msme];
+const logos = [
+  Meteonic,
+  Fluxgen,
+  IISER,
+  Veekay,
+  Lifeintelect,
+  Ramaiah,
+  UniversePower,
+  Advika,
+  Olety,
+  Start_Up_Inda,
+  Make_In_Inda,
+  Start_Up_KA,
+  Nasscom,
+  msme,
+  "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/CL1.png",
+  "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/CL2.jpg",
+  "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/CL3.jpg",
+  "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/CL4.png",
+];
+
 
 const CustomerLogos = () => {
   return (

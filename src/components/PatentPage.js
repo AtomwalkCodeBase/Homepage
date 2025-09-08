@@ -429,28 +429,6 @@ const PatentStatus = styled.div`
   }
 `;
 
-const ViewCertificateButton = styled.button`
-  background: linear-gradient(90deg, #10b981, #059669);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 15px;
-  width: 100%;
-  box-shadow: 0 4px 6px rgba(5, 150, 105, 0.2);
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(5, 150, 105, 0.3);
-  }
-  
-  &:active {
-    transform: translateY(0);
-  }
-`;
 
 // Info Section
 const InfoSection = styled.section`
@@ -773,18 +751,10 @@ const PatentPage = () => {
                   <PatentDetailItem icon="📅">
                     Filed: {patent.filingDate}
                   </PatentDetailItem>
-                  <PatentDetailItem icon="🗺️">
-                    Jurisdiction: {patent.jurisdiction}
-                  </PatentDetailItem>
                 </PatentDetails>
                 <PatentStatus status={patent.status}>
                   {patent.status}
                 </PatentStatus>
-                {patent.isGranted && (
-                  <ViewCertificateButton>
-                    View Certificate
-                  </ViewCertificateButton>
-                )}
               </PatentCard>
             ))}
           </PatentGrid>

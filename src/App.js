@@ -55,10 +55,10 @@ import Appointees from "./pages/Appointees";
 import Analytics from "./pages/Analytics";
 import HelpDesk from "./pages/HelpDesk";
 import RequestDesk from "./pages/RequestDesk";
-import FmsDashBoard from "./pages/fmsPages/FmsDashBoard";
-import TaskScreen from "./pages/fmsPages/TaskScreen";
-import CustomerList from "./pages/fmsPages/CustomerList";
-import TicketListScreen from "./pages/fmsPages/TicketListScreen";
+// import FmsDashBoard from "./pages/fmsPages/FmsDashBoard";
+// import TaskScreen from "./pages/fmsPages/TaskScreen";
+// import CustomerList from "./pages/fmsPages/CustomerList";
+// import TicketListScreen from "./pages/fmsPages/TicketListScreen";
 
 // Domain Specific
 import HrmComponent from "./components/hrm/HrmComponent";
@@ -108,7 +108,7 @@ import InPatients from "./pages/IPDappointments";
 import PatientAdmission from "./pages/PatientAdmission";
 import PatentPage from "./components/PatentPage";
 import AwardsPage from "./components/AwardsPage";
-import MyAppriaisal from "./pages/MyAppriaisal";
+// import MyAppriaisal from "./pages/MyAppriaisal";
 
 function App() {
   const url = "https://www.atomwalk.com/rest-auth/login/";
@@ -274,13 +274,13 @@ function App() {
                 <Route path="/my-training" element={<MyTraining />} />
                 <Route path="/IPDappointments" element={<InPatients />} />
                 <Route path="/patient-admission" element={<PatientAdmission />} />
-                <Route path="/appraisal" element={<MyAppriaisal />} />
+                {/* <Route path="/appraisal" element={<MyAppriaisal />} /> */}
 
                 {/* FMS PAGE ROUTES */}
-                <Route path="/fmsdashboard" element={<FmsDashBoard />} />
+                {/* <Route path="/fmsdashboard" element={<FmsDashBoard />} />
                 <Route path="/tasks" element={<TaskScreen />} />
                 <Route path="/customerList" element={<CustomerList />} />
-                <Route path="/ticketList" element={<TicketListScreen />} />
+                <Route path="/ticketList" element={<TicketListScreen />} /> */}
               </Route>
     
               {/* Catch All */}

@@ -205,6 +205,12 @@ const SubtitleBox = styled.div`
 const PatentAndPublications = ({ pageType }) => {
   const navigate = useNavigate();
 
+  const navigateTo = (path) => {
+    navigate(path);
+    window.scrollTo(0, 0);
+  };
+
+
   const cards = [
     {
       title: "Intellectual Property",
@@ -246,9 +252,10 @@ const PatentAndPublications = ({ pageType }) => {
               <BackgroundImage src={card.image} alt={card.title} />
               <Overlay>
                 <Title>{card.title}</Title>
-                <SubtitleBox onClick={() => navigate(card.path)}>
+                <SubtitleBox onClick={() => navigateTo(card.path)}>
                   {card.subtitle}
                 </SubtitleBox>
+
               </Overlay>
             </Card>
           ))}

@@ -90,7 +90,13 @@ export const NavBar = () => {
      "DoctorDashboard",
    "IPDappointments",
    "patient-admission",
-     "my-training"
+     "my-training",
+    //  "appraisal",
+     //FMS ROUTES
+     "fmsdashboard",
+     "tasks",
+     "customerList",
+     "ticketList"
   ];
   
   useEffect(() => {
@@ -157,6 +163,9 @@ export const NavBar = () => {
   }
   const handleHRMSLogin = () => {
     window.location.href = "https://home.atomwalk.com/login/";
+  };
+  const handleFMSLogin = () => {
+    window.location.href = "https://home.atomwalk.com/login/#fms";
   };
  const handlecustomerLogin = () => {
     window.location.href = "https://home.atomwalk.com/customer/login.html";
@@ -235,9 +244,13 @@ export const NavBar = () => {
                       <span role="img" aria-label="HRMS" style={{ marginRight: 8 }}>👤</span>
                       Login to Employee HRMS
                     </LoginOption>
-                       <LoginOption onClick={handlecustomerLogin}>
+                    <LoginOption onClick={handlecustomerLogin}>
                       <span role="img" aria-label="HRMS" style={{ marginRight: 8 }}>🛃</span>
                       Login as Customer
+                    </LoginOption>
+                    <LoginOption onClick={handleFMSLogin}>
+                      <span role="img" aria-label="FMS" style={{ marginRight: 8 }}>🛃</span>
+                      Login as FMS Manager
                     </LoginOption>
                   </LoginDropdownMenu>
                 </LoginDropdownWrapper>

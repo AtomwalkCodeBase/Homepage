@@ -481,7 +481,7 @@ const Login = () => {
 
   useEffect(() => {
     const fetchCompanyName = async () => {
-      const company = await getCompanyName()
+      const company = await getCompanyName(isFms)
       if (company.status === 200) {
         setCompanies(company.data)
       }
@@ -489,7 +489,11 @@ const Login = () => {
     fetchCompanyName()
     setCaptchaText(generateCaptcha())
     if (localStorage.getItem("userToken")) {
+      if(localStorage.getItem("fmsUser")){
+        navigation("/fmsdashboard")
+      }else{
       navigation("/dashboard")
+      }
     }
   }, [])
 
@@ -588,17 +592,21 @@ const Login = () => {
     refreshCaptcha()
   }
 
+  const urlParams = new URLSearchParams(window.location.search)
+  const product = urlParams.get("product")
+  const isFms = product === "fms" || window.location.hash.replace('#','') === 'fms'
+
   return (
     <PageBackground>
       <LoginContainer>
         <LoginCard>
           <BrandSection>
             <BrandContent>
-              <BrandTitle>ATOMWALK HRMS</BrandTitle>
+              <BrandTitle>{isFms ? "ATOMWALK FMS" : "ATOMWALK HRMS"}</BrandTitle>
               <BrandSubtitle>
-                Modern Human Resource Management System
+                {isFms ? "Facility Management System" : "Modern Human Resource Management System"}
               </BrandSubtitle>
-              <FeatureGrid>
+             {!isFms && <FeatureGrid>
                 <FeatureCard>
                   <FaUsers />
                   <span>Employee Management</span>
@@ -611,7 +619,7 @@ const Login = () => {
                   <FaChartLine />
                   <span>Analytics & Reports</span>
                 </FeatureCard>
-              </FeatureGrid>
+              </FeatureGrid>}
             </BrandContent>
           </BrandSection>
 

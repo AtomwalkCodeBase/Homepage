@@ -40,7 +40,7 @@ const ModalContent = styled.div`
   background: white;
   border-radius: 12px;
   padding: 2rem;
-  width: 500px;
+  width: 530px;
   max-width: 90%;
   box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
   animation: ${scaleUp} 0.3s ease;

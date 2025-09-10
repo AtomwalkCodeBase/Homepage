@@ -24,14 +24,15 @@ import {
   FaChartBar,
   FaUsers,
   FaFileInvoice,
-  FaUserFriends,
   FaGraduationCap,
   FaKey,
+  FaTasks,
 } from "react-icons/fa"
 import { SiGooglecalendar } from "react-icons/si"
 import { PiListPlusFill } from "react-icons/pi"
 import { useAuth } from "../context/AuthContext"
 import { useTheme } from "../context/ThemeContext"
+import { IoTicket } from "react-icons/io5"
 const SidebarContainer = styled.div`
   width: ${(props) => {
     const { isOpen, uiPreferences } = props
@@ -482,25 +483,39 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
   const [isOpen, setIsOpen] = useState(initialOpen)
   const [expandedGroups, setExpandedGroups] = useState({})
   const location = useLocation()
-  const { currentUser, logout, profile, companyInfo, iscoustomerLogin } = useAuth()
+  const { logout, profile,  iscoustomerLogin } = useAuth()
   const { theme, uiPreferences } = useTheme()
   const customerdata = localStorage.getItem("customerUser")
+  const fmsdata = localStorage.getItem("fmsUser")
   const sidebarStyle = uiPreferences?.layout?.sidebarStyle || "standard"
   // Grouped menu items structure
   const menuGroups = customerdata
-    ? [
-        {
-          name: "Customer Portal",
-          icon: <FaUserCircle />,
-          items: [
-            { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
-            { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
-            { path: "/appointments", name: "Book Appointments", icon: <FaStethoscope /> },
-            { path: "/appointmentlist", name: "My Appointments", icon: <FaCalendarAlt /> },
-          ],
-        },
-      ]
-    : [
+  ? [
+      {
+        name: "Customer Portal",
+        icon: <FaUserCircle />,
+        items: [
+          { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
+          { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
+          { path: "/appointments", name: "Book Appointments", icon: <FaStethoscope /> },
+          { path: "/appointmentlist", name: "My Appointments", icon: <FaCalendarAlt /> },
+        ],
+      },
+    ]
+  : fmsdata
+  ? [
+    {
+        name: "Facility Management Portal",
+        icon: <FaUserCircle />,
+        items: [
+          { path: "/fmsdashboard", name: "Overall", icon: <FaHome /> },
+          { path: "/tasks", name: "Task List", icon: <FaTasks /> },
+          { path: "/ticketList", name: "Ticket List", icon: <IoTicket /> },
+          { path: "/customerList", name: "Customer List", icon: <FaUsers /> },
+        ],
+      },
+  ]
+  : [
         {
           name: "Dashboard",
           icon: <FaHome />,
@@ -614,7 +629,14 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
         { path: "/appointments", name: "Book Appointments", icon: <FaStethoscope /> },
         { path: "/appointmentlist", name: "My Appointments", icon: <FaCalendarAlt /> },
       ]
-    : [
+    : fmsdata
+    ? [
+      { path: "/fmsdashboard", name: "Overall", icon: <FaHome /> },
+      { path: "/tasks", name: "Task List", icon: <FaTasks /> },
+      { path: "/ticketList", name: "Ticket List", icon: <IoTicket /> },
+      { path: "/customerList", name: "Customer List", icon: <FaUsers /> }
+    ]: 
+    [
         { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },
         ...(profile?.is_manager ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : []),
         { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
@@ -622,6 +644,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
         { path: "/leave-management", name: "Leave Management", icon: <FaCalendarAlt /> },
         { path: "/holidays", name: "Holiday Calendar", icon: <FaCalendarCheck /> },
         { path: "/my-training", name: "My Training", icon: <FaGraduationCap /> },
+        // { path: "/appraisal", name: "Appraisal", icon: <BsGraphUpArrow /> },
         ...(profile?.is_manager ? [{ path: "/shifts", name: "Shift Scheduling", icon: <SiGooglecalendar /> }] : []),
         ...(profile?.is_manager
           ? [{ path: "/claims", name: "Claims Management", icon: <FaMoneyBillWave /> }]
@@ -663,7 +686,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
               alt="Company Logo"
               style={{ width: "80px", marginRight: "1rem", borderRadius: "10px" }}
             />{" "}
-            HRMS
+           {fmsdata? "FMS": "HRMS"}
           </Logo>
         )}
         <ToggleButton onClick={toggleSidebar} uiPreferences={uiPreferences}>

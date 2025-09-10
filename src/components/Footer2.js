@@ -10,6 +10,8 @@ import navIcon2 from "../assets/img/nav-icon2.svg";
 import navIcon3 from "../assets/img/nav-icon3.svg";
 import navIcon4 from "../assets/img/youtube-icon.png";
 import UnderConstructionPopup from "./UnderConstructionPopup";
+// import Modal from "./modals/Modal";
+// import { FaLock, FaUser } from "react-icons/fa";
 const FooterContainer = styled.footer`
  background-color: rgb(13, 11, 62); /* Dark background color */
   /* background-image: url(${Footer}); */
@@ -230,23 +232,29 @@ export default function Footer2() {
     'analytics',
     'helpdesk',
     "requestdesk",
+    // "appraisal",
     "resolvedesk",
     "profile",
     "claims",
     "payslip",
     "invoices",
     "tickets",
-   "shift-detail",
-   "appointments",
-   "appointmentlist",
-   "doctordashboard",
-   "OPDappointments",
+    "shift-detail",
+    "appointments",
+    "appointmentlist",
+    "doctordashboard",
+    "OPDappointments",
     "projectmanagement",
     "project-report",
     "DoctorDashboard",
    "IPDappointments",
    "patient-admission",
-    "my-training"
+    "my-training",
+    // FMSROUTES
+    "fmsdashboard",
+    "tasks",
+    "customerList",
+    "ticketList"
   ];
   
   useEffect(() => {

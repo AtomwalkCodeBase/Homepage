@@ -55,10 +55,10 @@ import Appointees from "./pages/Appointees";
 import Analytics from "./pages/Analytics";
 import HelpDesk from "./pages/HelpDesk";
 import RequestDesk from "./pages/RequestDesk";
-// import FmsDashBoard from "./pages/fmsPages/FmsDashBoard";
-// import TaskScreen from "./pages/fmsPages/TaskScreen";
-// import CustomerList from "./pages/fmsPages/CustomerList";
-// import TicketListScreen from "./pages/fmsPages/TicketListScreen";
+import FmsDashBoard from "./pages/fmsPages/FmsDashBoard";
+import TaskScreen from "./pages/fmsPages/TaskScreen";
+import CustomerList from "./pages/fmsPages/CustomerList";
+import TicketListScreen from "./pages/fmsPages/TicketListScreen";
 
 // Domain Specific
 import HrmComponent from "./components/hrm/HrmComponent";
@@ -277,10 +277,10 @@ function App() {
                 {/* <Route path="/appraisal" element={<MyAppriaisal />} /> */}
 
                 {/* FMS PAGE ROUTES */}
-                {/* <Route path="/fmsdashboard" element={<FmsDashBoard />} />
+                <Route path="/fmsdashboard" element={<FmsDashBoard />} />
                 <Route path="/tasks" element={<TaskScreen />} />
                 <Route path="/customerList" element={<CustomerList />} />
-                <Route path="/ticketList" element={<TicketListScreen />} /> */}
+                <Route path="/ticketList" element={<TicketListScreen />} />
               </Route>
     
               {/* Catch All */}

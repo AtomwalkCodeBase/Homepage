@@ -4,7 +4,7 @@ import { customerslogin, empLoginURL } from "../services/ConstantServies"
 import { getCompanyInfo, getEmployeeInfo } from "../services/authServices"
 // import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-import { getCustomerDetailList } from "../services/productServices"
+import { getCustomerDetailList, getTasksList } from "../services/productServices"
 
 const AuthContext = createContext()
 
@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [companyInfo, setCompanyInfo] = useState([]) 
    const [error, setError] = useState("")  
    const iscoustomerLogin = localStorage.getItem("customerUser") ? true : false
+   const [taskResponse, setTaskResponse] = useState([]);
   // const navigate = useNavigate()
   useEffect(() => {
     const fetchProfile = async () => {
@@ -52,7 +53,7 @@ export const AuthProvider = ({ children }) => {
     }
     
     // Check if user is logged in from localStorage
-    const user = localStorage.getItem("hrmsUser")||localStorage.getItem("customerUser");
+    const user = localStorage.getItem("hrmsUser") || localStorage.getItem("fmsUser") || localStorage.getItem("customerUser");
     if (user) {
       setCurrentUser(JSON.parse(user))
     }
@@ -89,11 +90,23 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('empId', emp_id);
         localStorage.setItem('empNoId', String(e_id));
         localStorage.setItem('userPin', userData.password);
-        localStorage.setItem("hrmsUser", JSON.stringify(userData));
+        // Determine HRMS vs FMS by URL (supports query or hash)
+        const isFmsLogin = (() => {
+          try {
+            const params = new URLSearchParams(window.location.search);
+            const product = params.get('product');
+            const hash = (window.location.hash || '').replace('#','');
+            return product === 'fms' || hash === 'fms';
+          } catch (_) {
+            return false;
+          }
+        })();
+        const userKey = isFmsLogin ? 'fmsUser' : 'hrmsUser';
+        localStorage.setItem(userKey, JSON.stringify(userData));
         localStorage.setItem("dbName", userData.company);
         setCurrentUser(userData);
         toast.success("Login successful!");
-        window.location.href = "/dashboard";
+        window.location.href = isFmsLogin ? "/fmsdashboard" : "/dashboard";
         return true;
       }
     } catch (error) {
@@ -121,6 +134,7 @@ export const AuthProvider = ({ children }) => {
       window.location.href = "/customer/login.html";
     }
     localStorage.removeItem("hrmsUser")
+    localStorage.removeItem("fmsUser")
     localStorage.removeItem("dbName")
     localStorage.removeItem("userToken")
     localStorage.removeItem("empId")
@@ -151,6 +165,20 @@ const customerlogin = async(userData) => {
       toast.error(error.response.data.error);
   }
   }
+
+  // this is for FMS Dashboard
+  const fetchTasks = async () => {
+      try {
+        setLoading(true)
+        const res = await getTasksList("ALL_FMS", '', '');
+        setTaskResponse(res?.data.reverse());
+        // console.log(res?.data || []);
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
   const value = {
     currentUser,
     login,
@@ -160,7 +188,10 @@ const customerlogin = async(userData) => {
     companyInfo,
     error,
     customerlogin,
-    iscoustomerLogin
+    iscoustomerLogin,
+    taskResponse,
+    setTaskResponse,
+    fetchTasks
   }
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>

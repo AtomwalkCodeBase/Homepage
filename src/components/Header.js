@@ -14,9 +14,13 @@ import {
   FaGift,
   FaUserCircle,
   FaKey,
+  FaHome,
+  FaUsers,
+  FaTasks,
 } from "react-icons/fa"
 import { useAuth } from "../context/AuthContext"
 import { theme } from "../styles/Theme"
+import { IoTicket } from "react-icons/io5"
 
 
 const HeaderContainer = styled.header`
@@ -206,9 +210,17 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
   const [searchResults, setSearchResults] = useState([])
   const [showResults, setShowResults] = useState(false)
   const navigate = useNavigate()
+  const fmsdata = localStorage.getItem("fmsUser")
 
   // Menu items for search
-  const menuItems = [
+  const menuItems = fmsdata? 
+  [
+    { path: "/fmsdashboard", name: "Overall", icon: <FaHome /> },
+    { path: "/tasks", name: "Task List", icon: <FaTasks /> },
+    { path: "/ticketList", name: "Ticket List", icon: <IoTicket /> },
+    { path: "/customerList", name: "Customer List", icon: <FaUsers /> }
+  ]:
+  [
     { path: "/dashboard", name: "Dashboard", icon: <FaUser /> },
     { path: "/employees", name: "Employees", icon: <FaUser /> },
     { path: "/attendance-tracking", name: "Attendance", icon: <FaUser /> },
@@ -221,6 +233,7 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
     { path: "/analytics", name: "Analytics", icon: <FaUser /> },
     { path: "/helpdesk", name: "Help Desk", icon: <FaQuestion /> },
     { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
+    // { path: "/appraisal", name: "Appraisal", icon: <BsGraphUpArrow /> },
     { path: "/resolvedesk", name: "Resolve Desk", icon: <FaKey /> },
     { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
     { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
@@ -257,6 +270,7 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
         'pay': ['payslip'],
         'help': ['helpdesk'],
         'request': ['requestdesk'],
+        // 'appraisal': ['appraisal'],
         'resolve': ['resolvedesk'],
         'wish': ['wishes'],
         'employee': ['employees'],

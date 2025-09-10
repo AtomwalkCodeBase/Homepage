@@ -372,6 +372,98 @@ const AttendanceTracking = () => {
     return Array.isArray(geoData) ? geoData.find((g) => g.geo_type === type) : null
   }
 
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371e3; // Earth radius in meters
+    const φ1 = lat1 * Math.PI / 180;
+    const φ2 = lat2 * Math.PI / 180;
+    const Δφ = (lat2 - lat1) * Math.PI / 180;
+    const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) *
+      Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c;
+  };
+
+  const parseGeoLocationString = (geoString) => {
+    if (!geoString || geoString === '' || geoString === null) {
+      return { latitude: null, longitude: null };
+    }
+    const parts = geoString.split(',').map(s => s.trim());
+    if (parts.length === 2) {
+      const latitude = parseFloat(parts[0]);
+      const longitude = parseFloat(parts[1]);
+      if (!isNaN(latitude) && !isNaN(longitude)) {
+        return { latitude, longitude };
+      }
+    }
+    return { latitude: null, longitude: null };
+  };
+
+  const initializeGeoLocationConfig = (companyData, profileData) => {
+    try {
+      const companyAllowedDistance = companyData?.geo_allowed_distance;
+      let companyOriginLat = null;
+      let companyOriginLon = null;
+
+      if (companyData?.geo_location_data) {
+        const { latitude, longitude } = parseGeoLocationString(companyData.geo_location_data);
+        companyOriginLat = latitude;
+        companyOriginLon = longitude;
+      }
+
+      let finalOriginLat = companyOriginLat;
+      let finalOriginLon = companyOriginLon;
+
+      if (profileData) {
+        const profile = profileData;
+        if (profile.geo_location_data) {
+          const { latitude, longitude } = parseGeoLocationString(profile.geo_location_data);
+          if (latitude !== null && longitude !== null) {
+            finalOriginLat = latitude;
+            finalOriginLon = longitude;
+          }
+        }
+      }
+
+      return {
+        // isEnabled: !!companyGeoEnabled && !!companyAllowedDistance,
+        allowedRadius: companyAllowedDistance,
+        originLatitude: finalOriginLat,
+        originLongitude: finalOriginLon,
+      };
+    } catch (error) {
+      console.error("Error initializing geolocation config:", error);
+      return null;
+    }
+  };
+
+  const geoConfig = initializeGeoLocationConfig(companyInfo, profile);
+
+const isWithinAllowedRange = (geoPoint, geoConfig) => {
+  if (!geoPoint || !hasCoordinates(geoPoint)) return "outline";
+
+  const { originLatitude, originLongitude, allowedRadius, } = geoConfig || {};
+
+  if ((allowedRadius && (!originLatitude || !originLongitude)) || 
+      ((!allowedRadius || allowedRadius === 0) && (originLatitude && originLongitude)) ||
+      (!allowedRadius && !originLatitude && !originLongitude)) { 
+    return "outline";
+  }
+
+  const distance = calculateDistance(
+    originLatitude,
+    originLongitude,
+    geoPoint.latitude_id,
+    geoPoint.longitude_id
+  );
+
+
+  return distance <= allowedRadius ? "outline" : "outlines";
+};
+
   const openMapFromGeo = (geoPoint, label) => {
     if (hasCoordinates(geoPoint)) {
       setCoords({ lat: geoPoint.latitude_id, lng: geoPoint.longitude_id, label: label || '' });
@@ -961,50 +1053,50 @@ const AttendanceTracking = () => {
                         </Badge>
                       </td>
                       <td>
-                         {locationDisplay.type === "message" ? (
-                             <span style={{ color: "#666", fontStyle: "italic" }}>
-                              <Badge
-                          variant={
-                            data.attendance_type_display === "Present"
-                              ? "success"
-                              : data.attendance_type_display === "On Leave"
-                                ? "warning"
-                                : statusDisplay === "Absent"
-                                  ? "error"
-                                  : isHoliday || isWeekend
-                                    ? "secondary"
-                                    : "error"
-                          }
-                        >
+                        {locationDisplay.type === "message" ? (
+                          <span style={{ color: "#666", fontStyle: "italic" }}>
+                            <Badge
+                              variant={
+                                data.attendance_type_display === "Present"
+                                  ? "success"
+                                  : data.attendance_type_display === "On Leave"
+                                    ? "warning"
+                                    : statusDisplay === "Absent"
+                                      ? "error"
+                                      : isHoliday || isWeekend
+                                        ? "secondary"
+                                        : "error"
+                              }
+                            >
                               {locationDisplay.content}
-                        </Badge>
-                              </span>
-                           ) : (
-                             <div style={{ display: "flex", gap: "1rem" }}>
-                               {locationDisplay.showCheckIn ? 
-                                 <Button
-                                   variant="outline"
-                                   size="sm"
-                                   onClick={() => openMapFromGeo(checkInData, "Check In")}
-                                 >
-                                  <FaLocationDot />
-                                   View check-in location
-                                 </Button> : "Checked-in location data not available"
-                               } 
-                               {locationDisplay.showCheckOut ?
-                                 <Button
-                                   variant="outline"
-                                   size="sm"
-                                   onClick={() => openMapFromGeo(checkOutData, "Check Out")}
-                                 >
-                                  <FaLocationDot />
-                                   View checked-out location
-                                 </Button> : "Checked-out location data not available"
-                               } 
-                             </div>
-                           )
-                         }
-                        </td>
+                            </Badge>
+                          </span>
+                        ) : (
+                          <div style={{ display: "flex", gap: "1rem" }}>
+                            {locationDisplay.showCheckIn ?
+                              <Button
+                                variant={isWithinAllowedRange(checkInData, geoConfig)}
+                                size="sm"
+                                onClick={() => openMapFromGeo(checkInData, "Check In")}
+                              >
+                                <FaLocationDot />
+                                View check-in location
+                              </Button> : "Checked-in location data not available"
+                            }
+                            {locationDisplay.showCheckOut ?
+                              <Button
+                                variant={isWithinAllowedRange(checkOutData, geoConfig)}
+                                size="sm"
+                                onClick={() => openMapFromGeo(checkOutData, "Check Out")}
+                              >
+                                <FaLocationDot />
+                                View checked-out location
+                              </Button> : "Checked-out location data not available"
+                            }
+                          </div>
+                        )
+                        }
+                      </td>
                     </tr>
                   )
                 })
@@ -1018,10 +1110,10 @@ const AttendanceTracking = () => {
             </tbody>
           </table>
           <div style={{ marginTop: "1rem", textAlign: "right" }}>
-                    <Button variant="primary" size="sm" onClick={()=>handleExport(filteredAttendanceData)}>
-                     <FaFileExport /> Export
-                    </Button>
-                    </div>
+            <Button variant="primary" size="sm" onClick={() => handleExport(filteredAttendanceData)}>
+              <FaFileExport /> Export
+            </Button>
+          </div>
         </TableContainer>
       </Card>
       {isRemarkModalOpen && (
@@ -1074,22 +1166,22 @@ const AttendanceTracking = () => {
         onClose={() => setIsAttendanceModalOpen(false)}
         onSubmit={handleAttendanceSubmit}
       /> */}
-       {isModalOpens && (
-                    <RequestModal call_type="R" empId={emp_id} onClose={() => setIsModalOpens(false)} onSuccess={handleSuccess} />
-                  )}
+      {isModalOpens && (
+        <RequestModal call_type="R" empId={emp_id} onClose={() => setIsModalOpens(false)} onSuccess={handleSuccess} />
+      )}
 
-                  {modalOpen && 
-                    <Modal onClose={() => setModalOpen(false)}>
-                      <h3>{coords.label === "Check In"? "Check In": "Check out"} Location</h3>
-                  <iframe
-                    src={mapUrl}
-                    width="100%"
-                    height="500"
-                    allowFullScreen=""
-                    loading="lazy"
-                    title="map"
-                  ></iframe>
-                    </Modal>}
+      {modalOpen &&
+        <Modal onClose={() => setModalOpen(false)}>
+          <h3>{coords.label === "Check In" ? "Check In" : "Check out"} Location</h3>
+          <iframe
+            src={mapUrl}
+            width="100%"
+            height="500"
+            allowFullScreen=""
+            loading="lazy"
+            title="map"
+          ></iframe>
+        </Modal>}
     </Layout>
   )
 }

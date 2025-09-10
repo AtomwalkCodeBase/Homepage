@@ -116,9 +116,9 @@ export function getEventLists(datas) {
   };
   return authAxios(getEventList, data)
 }
-export function getCompanyName() {
+export function getCompanyName(isFms) {
   let data = {
-    'mobile_app_type': 'HRM_E',
+    'mobile_app_type': isFms ? 'FMS_E' :'HRM_E',
   };
   return authAxiosget(getCompany, data)
 }
@@ -225,10 +225,14 @@ export function getCustomerDetailList(customerId) {
   }
   return authAxios(getCustomerDetailListURL, data);
 }
-export function getTasksList(task_type, customer_id) {
+export function getTasksList(task_type, emp_id, customer_id) {
   let data = {};
+  // const emp_id= localStorage.getItem('empId');
   if (task_type) {
     data['task_type'] = task_type;
+  }
+    if (emp_id) {
+    data['emp_id'] = emp_id;
   }
   if (customer_id) {
     data['customer_id'] = customer_id;

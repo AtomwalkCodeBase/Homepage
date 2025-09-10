@@ -249,7 +249,7 @@ export const NavBar = () => {
                       Login as Customer
                     </LoginOption>
                     <LoginOption onClick={handleFMSLogin}>
-                      <span role="img" aria-label="FMS" style={{ marginRight: 8 }}>🛃</span>
+                      <span role="img" aria-label="FMS" style={{ marginRight: 8 }}>👷🏼</span>
                       Login as FMS Manager
                     </LoginOption>
                   </LoginDropdownMenu>

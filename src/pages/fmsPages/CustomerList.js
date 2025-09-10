@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import styled from "styled-components"
 import Layout from '../../components/Layout'
 import Button from '../../components/Button'
@@ -7,6 +7,7 @@ import { HiClipboardList } from "react-icons/hi";
 import { getCustomerDetailList } from '../../services/productServices'
 import Card from '../../components/Card'
 import { IoTicket, IoTicketOutline } from 'react-icons/io5'
+import { useAuth } from '../../context/AuthContext'
 
 const RequestDeskHeader = styled.div`
   display: flex;
@@ -55,11 +56,34 @@ const TableActions = styled.div`
 `
 
 const CustomerList = () => {
+  const {  taskResponse, fetchTasks } = useAuth()
 	const [customerList, setCustomerList] = useState([])
 		const [loading, setLoading] = useState(false)
 		const [error, setError] = useState(null)
 		const [openModal, setOpenModal] = useState(false)
 		const [selectedCustomer, setSelectedCustomer] = useState(null)
+
+  const customerTotals = useMemo(() => {
+    if (!taskResponse) return {};
+
+    return taskResponse.reduce((acc, task) => {
+      const customerName = task?.customer?.name;
+      if (!customerName) return acc;
+
+      if (!acc[customerName]) {
+        acc[customerName] = { totalTickets: 0, totalTasks: 0 };
+      }
+
+      if (task.is_ticket_task) {
+        acc[customerName].totalTickets += 1;
+      } else {
+        acc[customerName].totalTasks += 1;
+      }
+
+      return acc;
+    }, {});
+  }, [taskResponse]);
+
 	  useEffect(() => {
 		 const fetchcustomerProfile = async () => {
 		  try {
@@ -72,7 +96,14 @@ const CustomerList = () => {
 		};
 		 fetchcustomerProfile();
 	  }, [])
-
+    useEffect(() => {
+      const loadData = async () => {
+        if (!taskResponse || taskResponse.length === 0) {
+          await fetchTasks();
+        }
+      };
+      loadData();
+    }, [fetchTasks, taskResponse]);
 	  
 	const handleViewDetails = (data) => {
     setSelectedCustomer(data)
@@ -85,11 +116,11 @@ const CustomerList = () => {
           <Paragraphdata>View All Employee Task </Paragraphdata>
         </div>
 
-        <div style={{ display: "flex", gap: 10 }}>
+        {/* <div style={{ display: "flex", gap: 10 }}>
           <Button variant="primary">
             <FaPlus /> Add New Customer
           </Button>
-        </div>
+        </div> */}
       </RequestDeskHeader>
 	  <Card>
 		<TableContainer>
@@ -120,41 +151,59 @@ const CustomerList = () => {
                   </td>
                 </tr>
               ) : (
-                customerList.map((customer, index) => (
-                  <tr key={index}>
-                    <td>
-        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-          <img
-            src={customer.image || "/placeholder.svg"}
-            alt={`${customer.name} profile image`}
-            style={{
-              width: "80px",
-              height: "80px",
-              borderRadius: "50%",
-              objectFit: "cover"
-            }}
-          />
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <strong>{customer.name}</strong>
-            <span>M: {customer.mobile_number}</span>
-          </div>
-        </div>
-      </td>
-      <td>
-                      <ActionButtons>
-                        <Button onClick={() => handleViewDetails(customer)} variant="ghost" size="sm" title="View">
-                          <FaEye />
-                        </Button>
-                        <Button  variant="primary" size="sm" title="Total Task">
-                          <FaClipboardList /> Total Task {customer.no_of_task}
-                        </Button>
-                        <Button variant="primary" size="sm" title="Total Tickets">
-                          <IoTicket size={20} /> Total Tickets 10
-                        </Button>
-                      </ActionButtons>
-                    </td>
-                  </tr>
-                ))
+                customerList.map((customer, index) => {
+                  const totals = customerTotals[customer.name] || {
+                    totalTickets: 0,
+                    totalTasks: 0,
+                  };
+
+                  return (
+                    <tr key={index}>
+                      <td>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "20px",
+                          }}
+                        >
+                          <img
+                            src={customer.image || "/placeholder.svg"}
+                            alt={`${customer.name} profile image`}
+                            style={{
+                              width: "80px",
+                              height: "80px",
+                              borderRadius: "50%",
+                              objectFit: "cover",
+                            }}
+                          />
+                          <div style={{ display: "flex", flexDirection: "column" }}>
+                            <strong>{customer.name}</strong>
+                            <span>M: {customer.mobile_number}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <ActionButtons>
+                          {/* <Button
+                            onClick={() => handleViewDetails(customer)}
+                            variant="ghost"
+                            size="sm"
+                            title="View"
+                          >
+                            <FaEye />
+                          </Button> */}
+                          <Button variant="primary" size="sm" title="Total Task">
+                            <FaClipboardList /> Total Task {totals.totalTasks}
+                          </Button>
+                          <Button variant="primary" size="sm" title="Total Tickets">
+                            <IoTicket size={20} /> Total Tickets {totals.totalTickets}
+                          </Button>
+                        </ActionButtons>
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>

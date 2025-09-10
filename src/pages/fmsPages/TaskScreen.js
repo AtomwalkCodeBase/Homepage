@@ -340,8 +340,8 @@ export const BarChart = ({ data, isTicket, title }) => {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <h3>{title}</h3>
           <div style={{ display: "flex", gap: 10 }}>
-            <Button onClick={() => { setView("weekly"); setOffset(0); }}>Weekly</Button>
-            <Button onClick={() => { setView("monthly"); setOffset(0); }}>Monthly</Button>
+            <Button onClick={() => { setView("weekly"); setOffset(0); }} variant={view=== "weekly"? "primary": "outline"}>Weekly</Button>
+            <Button onClick={() => { setView("monthly"); setOffset(0); }} variant={view=== "monthly"? "primary": "outline"}>Monthly</Button>
           </div>
         </div>
 
@@ -435,11 +435,11 @@ useEffect(() => {
           <Paragraphdata>View All Employee Task </Paragraphdata>
         </div>
 
-        <div style={{ display: "flex", gap: 10 }}>
+        {/* <div style={{ display: "flex", gap: 10 }}>
           <Button variant="primary">
             <FaPlus /> Add New Task
           </Button>
-        </div>
+        </div> */}
       </RequestDeskHeader>
        <TabContainer>
           <Tab active={activeTab === "analysis"} onClick={() => setActiveTab("analysis")}>

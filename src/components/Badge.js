@@ -71,6 +71,13 @@ ${(props) =>
   background: #eaf2f8;
   color: #2980b9;
 `}
+
+${(props) =>
+  props.variant === "notPlanned" &&
+  `
+  background: #66666622;
+  color: #666666;
+`}
 `
 
 const Badge = ({ children, variant = "primary", ...props }) => {

@@ -2,12 +2,13 @@ import React, { useEffect, useMemo, useState } from 'react'
 import styled from "styled-components"
 import Layout from '../../components/Layout'
 import Button from '../../components/Button'
-import { FaClipboardList, FaEye, FaFileExport, FaFilter, FaPlus } from 'react-icons/fa'
-import { HiClipboardList } from "react-icons/hi";
+import { FaClipboardList,FaEye,FaFileExport } from 'react-icons/fa'
 import { getCustomerDetailList } from '../../services/productServices'
 import Card from '../../components/Card'
-import { IoTicket, IoTicketOutline } from 'react-icons/io5'
+import { IoTicket } from 'react-icons/io5'
 import { useAuth } from '../../context/AuthContext'
+import { useNavigate } from "react-router-dom"
+import Modal from '../../components/modals/Modal'
 
 const RequestDeskHeader = styled.div`
   display: flex;
@@ -25,19 +26,19 @@ const RequestDeskHeader = styled.div`
 const Paragraphdata = styled.p`
   color: ${({ theme }) => theme.colors.textLight};
 `
-const FilterContainer = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-  color: ${({ theme }) => theme.colors.text};
-`
-const FilterSelect = styled.select`
-  padding: 0.5rem 1rem;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 4px;
-  background: white;
-`
+// const FilterContainer = styled.div`
+//   display: flex;
+//   gap: 1rem;
+//   margin-bottom: 1rem;
+//   flex-wrap: wrap;
+//   color: ${({ theme }) => theme.colors.text};
+// `
+// const FilterSelect = styled.select`
+//   padding: 0.5rem 1rem;
+//   border: 1px solid ${({ theme }) => theme.colors.border};
+//   border-radius: 4px;
+//   background: white;
+// `
 const TableContainer = styled.div`
   overflow-x: auto;
 `
@@ -56,12 +57,13 @@ const TableActions = styled.div`
 `
 
 const CustomerList = () => {
-  const {  taskResponse, fetchTasks } = useAuth()
+  const {  taskResponse } = useAuth()
 	const [customerList, setCustomerList] = useState([])
 		const [loading, setLoading] = useState(false)
 		const [error, setError] = useState(null)
 		const [openModal, setOpenModal] = useState(false)
 		const [selectedCustomer, setSelectedCustomer] = useState(null)
+      const Navigate= useNavigate()
 
   const customerTotals = useMemo(() => {
     if (!taskResponse) return {};
@@ -86,29 +88,34 @@ const CustomerList = () => {
 
 	  useEffect(() => {
 		 const fetchcustomerProfile = async () => {
+      setLoading(true)
 		  try {
 			const res = await getCustomerDetailList();
 			setCustomerList(res?.data);
-			console.log(res?.data)
+      console.log(res?.data)
 		  } catch (error) {
 			console.error('Failed to fetch profile:', error);
-		  }
+      setError("Failed to Load Customer List");
+		  }finally{
+        setLoading(false)
+      }
 		};
 		 fetchcustomerProfile();
 	  }, [])
-    useEffect(() => {
-      const loadData = async () => {
-        if (!taskResponse || taskResponse.length === 0) {
-          await fetchTasks();
-        }
-      };
-      loadData();
-    }, [fetchTasks, taskResponse]);
 	  
 	const handleViewDetails = (data) => {
     setSelectedCustomer(data)
     setOpenModal(true)
   }
+
+  const handleViewList = (type, data) => {
+    if(type === "customer"){
+    Navigate(`/ticketList?customer=${data}`) 
+    }
+    else{
+    Navigate(`/tasks?customer=${data}`) 
+  }
+}
   return (
 	<Layout title="Customer List">
 		<RequestDeskHeader>
@@ -185,18 +192,18 @@ const CustomerList = () => {
                       </td>
                       <td>
                         <ActionButtons>
-                          {/* <Button
+                          <Button
                             onClick={() => handleViewDetails(customer)}
                             variant="ghost"
                             size="sm"
                             title="View"
                           >
                             <FaEye />
-                          </Button> */}
-                          <Button variant="primary" size="sm" title="Total Task">
+                          </Button>
+                          <Button variant="primary" size="sm" title="Total Task" onClick={() => handleViewList("task", customer.name)}>
                             <FaClipboardList /> Total Task {totals.totalTasks}
                           </Button>
-                          <Button variant="primary" size="sm" title="Total Tickets">
+                          <Button variant="primary" size="sm" title="Total Tickets" onClick={() => handleViewList("customer", customer.name)}>
                             <IoTicket size={20} /> Total Tickets {totals.totalTickets}
                           </Button>
                         </ActionButtons>
@@ -216,6 +223,48 @@ const CustomerList = () => {
         </TableContainer>
 		
 	  </Card>
+    {openModal && selectedCustomer && 
+    <Modal onClose={() => setOpenModal(false)}>
+			<div style={{ padding: "0.8rem" }}>
+				<h2 style={{ textAlign: "center", marginBottom: "1rem" }}>Customer Details</h2>
+				<table style={{ width: "100%", borderCollapse: "collapse" }}>
+					<tbody>
+						<tr>
+							<td><strong>Customer Name:</strong></td>
+							<td>{selectedCustomer.name || "—"}</td>
+						</tr>
+						{selectedCustomer.email_id && <tr>
+							<td><strong>Email:</strong></td>
+							<td>{selectedCustomer.email_id || "—"}</td>
+						</tr>}
+						{selectedCustomer.mobile_number && <tr>
+							<td><strong>Mobile Number:</strong></td>
+							<td>{selectedCustomer.mobile_number || "—"}</td>
+						</tr>}
+						{selectedCustomer.customer_group && <tr>
+							<td><strong>Customer Group:</strong></td>
+							<td>{selectedCustomer.customer_group || "—"}</td>
+						</tr>}
+						{selectedCustomer.address_line_1 && <tr>
+							<td><strong>Address Line 1:</strong></td>
+							<td>{selectedCustomer.address_line_1 || "—"}</td>
+						</tr>}
+						{selectedCustomer.address_line_2 && <tr>
+							<td><strong>Address Line 2:</strong></td>
+							<td>{selectedCustomer.address_line_2 || "—"}</td>
+						</tr>}
+						
+					</tbody>
+				</table>
+
+				<div style={{ marginTop: "1.5rem", textAlign: "center" }}>
+					<Button variant="primary" onClick={() => setOpenModal(false)}>
+						Close
+					</Button>
+				</div>
+			</div>
+		</Modal>
+    }
 	</Layout>
   )
 }

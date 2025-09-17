@@ -133,6 +133,9 @@ export const AuthProvider = ({ children }) => {
       toast.success("Logout successful!");
       window.location.href = "/customer/login.html";
     }
+    if(localStorage.getItem("fmsUser")){
+      window.location.href = "/login/#fms";
+    }
     localStorage.removeItem("hrmsUser")
     localStorage.removeItem("fmsUser")
     localStorage.removeItem("dbName")
@@ -167,10 +170,14 @@ const customerlogin = async(userData) => {
   }
 
   // this is for FMS Dashboard
+  useEffect(()=>{
   const fetchTasks = async () => {
+    const emp_id= localStorage.getItem('empId');
+    console.log(profile.is_manager)
+    const manager = profile?.is_manager
       try {
         setLoading(true)
-        const res = await getTasksList("ALL_FMS", '', '');
+        const res = await getTasksList(`${manager ? "ALL_FMS" : "ALL"}`, `${manager ? '' : emp_id}`, '');
         setTaskResponse(res?.data.reverse());
         // console.log(res?.data || []);
       } catch (error) {
@@ -179,6 +186,8 @@ const customerlogin = async(userData) => {
         setLoading(false);
       }
     };
+    fetchTasks();
+    },[profile?.is_manager])
   const value = {
     currentUser,
     login,
@@ -191,7 +200,6 @@ const customerlogin = async(userData) => {
     iscoustomerLogin,
     taskResponse,
     setTaskResponse,
-    fetchTasks
   }
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>

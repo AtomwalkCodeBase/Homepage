@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { getTasksList } from '../../services/productServices';
 import Layout from '../../components/Layout';
 import styled from "styled-components"
 import Button from '../../components/Button';
@@ -203,7 +202,7 @@ const SearchContainer = styled.div`
 `
 
 const FmsDashBoard = () => {
-  const { fetchTasks, taskResponse,loading } = useAuth()
+  const { taskResponse,loading } = useAuth()
   // const [isLoading, setIsLoading] = useState(false)
   const [allTasks, setAllTasks] = useState([]);
   const [error, setError] = useState(null)
@@ -220,19 +219,9 @@ const FmsDashBoard = () => {
   const [tableActiveTab, setTableActiveTab] = useState('task');
   const [filters, setFilters] = useState({ status: 'All Status', customer: '', searchTerm: '' });
 
-  
-useEffect(() => {
-  const loadData = async () => {
-    if (!taskResponse || taskResponse.length === 0) {
-      await fetchTasks();
-    }
-  };
-  loadData();
-}, [fetchTasks, taskResponse]);
-
 useEffect(() => {
   if (taskResponse && taskResponse.length > 0) {
-    const tasks = [...taskResponse].reverse();
+    const tasks = [...taskResponse];
     setAllTasks(tasks);
 
     const getUniqueValues = (data, key) => {
@@ -389,8 +378,8 @@ useEffect(() => {
       )}
 
       <div style={{ padding: '20px' }}>
-        <SummaryCards data={allTasks} isTicket={false} monthOffset={offset} periodType={periodType} period={selectedPeriod} title="Tasks Summary" onFilterStatus={(status) => {setFilters((prev) => ({ ...prev, status })); setActiveTab("list"); setTableActiveTab("task")}} />
-        <SummaryCards data={allTasks} isTicket={true} monthOffset={offset} periodType={periodType} period={selectedPeriod} title="Customer Tickets Summary" onFilterStatus={(status) => {setFilters((prev) => ({ ...prev, status })); setActiveTab("list"); setTableActiveTab("tickets")}} />
+        <SummaryCards data={allTasks} isTicket={false} monthOffset={offset} periodType={periodType} period={selectedPeriod} title="Tasks Summary" onFilterStatus={(status) => {setFilters((prev) => ({ ...prev, status })); setActiveTab("list"); setTableActiveTab("task"); window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });}} />
+        <SummaryCards data={allTasks} isTicket={true} monthOffset={offset} periodType={periodType} period={selectedPeriod} title="Customer Tickets Summary" onFilterStatus={(status) => {setFilters((prev) => ({ ...prev, status })); setActiveTab("list"); setTableActiveTab("tickets"); window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });}} />
       </div>
       <Card>
 
@@ -507,6 +496,7 @@ useEffect(() => {
                       <th>Status</th>
                       <th>Employee</th>
                       <th>Task Date</th>
+                      <th>Actions</th>
                     </tr>
                   ) : (
                     <tr>
@@ -551,6 +541,18 @@ useEffect(() => {
                             <td>{task.task_status}</td>
                             <td>{task.emp_assigned || '--'}</td>
                             <td>{task.task_date || '--'}</td>
+                            <td>
+                                <ActionButtons>
+                                  <Button
+                                    onClick={() => handleViewDetails(task)}
+                                    variant="ghost"
+                                    size="sm"
+                                    title="View"
+                                  >
+                                    <FaEye />
+                                  </Button>
+                                </ActionButtons>
+                              </td>
                           </tr>
                         ))}
 
@@ -718,7 +720,7 @@ const filterByPeriod = (data, period, monthOffset, periodType) => {
 }
 
 // Utility function to get summary counts (reusable for both tickets and tasks)
-const getSummary = (items, isTicket,period, today = moment()) => {
+export const getSummary = (items, isTicket,period, today = moment()) => {
   let total = 0;
   let complete = 0;
   let planned = 0;

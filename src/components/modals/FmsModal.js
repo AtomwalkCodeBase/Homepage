@@ -11,6 +11,8 @@ const FmsModal = ({ onClose, ticket, isTicket }) => {
 	const [employees, setEmployees] = useState([]);
 	const [assignedEmployee, setAssignedEmployee] = useState(null);
 
+	console.log(ticket)
+
 	useEffect(() => {
 		const fetchEmployees = async () => {
 			try {
@@ -89,6 +91,11 @@ const FmsModal = ({ onClose, ticket, isTicket }) => {
 							<td><strong>Assigned Employee:</strong></td>
 							<td>{ticket.emp_assigned || "—"}</td>
 						</tr>
+						{ticket.ref_file && 
+						<tr>
+							<td><strong>Reference Image:</strong></td>
+							<td><a href={ticket.ref_file} target="_blank" rel="noopener noreferrer"> click </a></td>
+						</tr>}
 
 						{/* Status Row for Loading / Error / Employee */}
 						{loading && (
@@ -109,13 +116,14 @@ const FmsModal = ({ onClose, ticket, isTicket }) => {
 
 						{!loading && !error && assignedEmployee ? (
 							<tr>
-								<td colSpan={2}>
+								<td colSpan={2} style={{paddingLeft: "0rem", paddingRight: "0rem"}}>
 									<div
 										style={{
 											marginTop: "1rem",
 											border: "1px solid #ddd",
 											padding: "1rem",
 											borderRadius: "6px",
+											paddingRight: "0rem"
 										}}
 									>
 										<h4 style={{ marginBottom: "0.5rem" }}>Employee Details</h4>

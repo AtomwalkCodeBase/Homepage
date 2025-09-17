@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react"
 import styled, { keyframes } from "styled-components"
 import { FaUser, FaLock, FaBuilding, FaSyncAlt, FaShieldAlt, FaUsers, FaChartLine, FaChevronDown } from "react-icons/fa"
+import { VscEye, VscEyeClosed } from "react-icons/vsc";
 import { useAuth } from "../context/AuthContext"
 import { toast } from "react-toastify"
 import { forgetUserPinView, getCompanyName } from "../services/productServices"
 import { useNavigate } from "react-router-dom"
+import { IoBarChartSharp, IoTicketOutline } from "react-icons/io5";
+import { LuClipboardList } from "react-icons/lu";
+import { MdOutlineTimer } from "react-icons/md";
 
 const slideUp = keyframes`
   from {
@@ -251,6 +255,15 @@ const InputIcon = styled.div`
   z-index: 1;
   font-size: 0.9rem; /* Smaller icon */
 `
+const InputRightIcon = styled.div`
+  position: absolute;
+  right: 0.8rem; /* Adjusted for smaller inputs */
+  color: ${({ theme }) => theme.colors.textLight};
+  z-index: 1;
+  font-size: 1.1rem; /* Smaller icon */
+  font-weight: 700;
+  cursor: pointer
+`
 
 const StyledInput = styled.input`
   width: 100%;
@@ -469,6 +482,8 @@ const Login = () => {
   const [captchaText, setCaptchaText] = useState("")
   const { login, error } = useAuth()
   const navigation = useNavigate()
+  const [passShow, setPassShow] = useState(false)
+
   // Generate random captcha
   const generateCaptcha = () => {
     const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -598,7 +613,7 @@ const Login = () => {
 
   return (
     <PageBackground>
-      <LoginContainer>
+      <LoginContainer style={{cursor: "pointer"}}>
         <LoginCard>
           <BrandSection>
             <BrandContent>
@@ -606,7 +621,31 @@ const Login = () => {
               <BrandSubtitle>
                 {isFms ? "Facility Management System" : "Modern Human Resource Management System"}
               </BrandSubtitle>
-             {!isFms && <FeatureGrid>
+             {isFms ?
+             <FeatureGrid>
+                <FeatureCard>
+                  <LuClipboardList />
+                  <span>Task Management</span>
+                </FeatureCard>
+                <FeatureCard>
+                  <IoTicketOutline />
+                  <span>Customer Ticket management</span>
+                </FeatureCard>
+                <FeatureCard>
+                  <MdOutlineTimer />
+                  <span>SLA Monitoring</span>
+                </FeatureCard>
+                <FeatureCard>
+                  <IoBarChartSharp />
+                  <span>Analytics & Reports</span>
+                </FeatureCard>
+                <FeatureCard>
+                  <FaUsers />
+                  <span>Multi-Customer Management</span>
+                </FeatureCard>
+              </FeatureGrid>
+             
+             :<FeatureGrid>
                 <FeatureCard>
                   <FaUsers />
                   <span>Employee Management</span>
@@ -691,7 +730,7 @@ const Login = () => {
                         <FaLock />
                       </InputIcon>
                       <StyledInput
-                        type="password"
+                        type={passShow? "text" : "password"}
                         id="password"
                         name="password"
                         placeholder="Enter your PIN"
@@ -700,6 +739,10 @@ const Login = () => {
                         maxLength={6}
                         required
                       />
+                      {formData.password && 
+                      <InputRightIcon>
+                        {passShow ? <VscEyeClosed onClick={() => setPassShow(!passShow)} /> : <VscEye onClick={() => setPassShow(!passShow)} />}
+                        </InputRightIcon>}
                     </InputContainer>
                   </FormGroup>
                 )}

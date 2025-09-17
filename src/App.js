@@ -58,7 +58,6 @@ import RequestDesk from "./pages/RequestDesk";
 import FmsDashBoard from "./pages/fmsPages/FmsDashBoard";
 import TaskScreen from "./pages/fmsPages/TaskScreen";
 import CustomerList from "./pages/fmsPages/CustomerList";
-import TicketListScreen from "./pages/fmsPages/TicketListScreen";
 
 // Domain Specific
 import HrmComponent from "./components/hrm/HrmComponent";
@@ -280,7 +279,7 @@ function App() {
                 <Route path="/fmsdashboard" element={<FmsDashBoard />} />
                 <Route path="/tasks" element={<TaskScreen />} />
                 <Route path="/customerList" element={<CustomerList />} />
-                <Route path="/ticketList" element={<TicketListScreen />} />
+                <Route path="/ticketList" element={<TaskScreen />} />
               </Route>
     
               {/* Catch All */}

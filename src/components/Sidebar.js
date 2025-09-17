@@ -511,7 +511,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
           { path: "/fmsdashboard", name: "Overall", icon: <FaHome /> },
           { path: "/tasks", name: "Task List", icon: <FaTasks /> },
           { path: "/ticketList", name: "Ticket List", icon: <IoTicket /> },
-          { path: "/customerList", name: "Customer List", icon: <FaUsers /> },
+          ...(profile?.is_manager ? [{ path: "/customerList", name: "Customer List", icon: <FaUsers /> }] : [] )
         ],
       },
   ]

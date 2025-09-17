@@ -173,7 +173,6 @@ const customerlogin = async(userData) => {
   useEffect(()=>{
   const fetchTasks = async () => {
     const emp_id= localStorage.getItem('empId');
-    console.log(profile.is_manager)
     const manager = profile?.is_manager
       try {
         setLoading(true)

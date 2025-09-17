@@ -1114,6 +1114,7 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState("personal")
   const [profileData, setProfileData] = useState({})
   const [activeThemeTab, setActiveThemeTab] = useState("presets")
+  const isFmsLogin = localStorage.getItem("fmsUser")
   const {
     theme,
     currentTheme,
@@ -2289,6 +2290,7 @@ $
             </ProfileInfo>
           </StyledCard>
 
+          {!isFmsLogin && 
           <StyledCard>
             <div style={{ padding: "1.5rem" }}>
               <SectionTitle>Quick Stats</SectionTitle>
@@ -2302,7 +2304,7 @@ $
                 </StatCard>
               </div>
             </div>
-          </StyledCard>
+          </StyledCard>}
         </ProfileSidebar>
 
         <ProfileContent>

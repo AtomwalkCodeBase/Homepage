@@ -665,6 +665,7 @@ export const getBarChartData = (data, isTicket, view = "weekly", selectedDate) =
   let plannedData = [];
   let notPlannedData = [];
 
+  // console.log(JSON.stringify(data[1]))
   // Filter tasks by type
   const filteredData = data.filter((item) => item.is_ticket_task === isTicket);
 
@@ -704,6 +705,7 @@ export const getBarChartData = (data, isTicket, view = "weekly", selectedDate) =
     completeData = Array(7).fill(0);
     pendingData = Array(7).fill(0);
     plannedData = Array(7).fill(0);
+    notPlannedData = Array(7).fill(0);
 
     const startOfWeek = selectedDate.clone().startOf("week"); // Sunday
     const endOfWeek = selectedDate.clone().endOf("week"); // Saturday
@@ -714,19 +716,23 @@ export const getBarChartData = (data, isTicket, view = "weekly", selectedDate) =
 
       if (taskDate.isBetween(startOfWeek, endOfWeek, "day", "[]")) {
         const dayOfWeek = taskDate.day();
-        if (item.task_status === "Completed") {
+        const status = (item.task_status || '').toLowerCase().trim();
+        if (status === "completed") {
           completeData[dayOfWeek]++;
-        } else if (item.task_status === "Planned") {
-          if (taskDate.isSame(today, "day")) {
-            plannedData[dayOfWeek]++;
-          } else if (taskDate.isBefore(today, "day")) {
+        } else if (status === "planned") {
+          if (taskDate.isBefore(today, "day")) {
+            // Overdue planned → count as pending (SLA not meet)
             pendingData[dayOfWeek]++;
+          } else {
+            // Today or future within the range → planned
+            plannedData[dayOfWeek]++;
           }
-        } else if (item.task_status === "Not Planned") {
+        } else if (status === "not planned" || status === 'not_planned' || status === 'notplanned') {
           notPlannedData[dayOfWeek]++;
         }
       }
     });
+      //  console.log("not palnned in weekly", notPlannedData)
     return {
       labels,
       datasets: [
@@ -742,6 +748,7 @@ export const getBarChartData = (data, isTicket, view = "weekly", selectedDate) =
     completeData = Array(daysInMonth).fill(0);
     pendingData = Array(daysInMonth).fill(0);
     plannedData = Array(daysInMonth).fill(0);
+    notPlannedData = Array(daysInMonth).fill(0);
 
     filteredData.forEach((item) => {
       const taskDate = moment(item.task_date, "DD-MM-YYYY", true);
@@ -749,19 +756,24 @@ export const getBarChartData = (data, isTicket, view = "weekly", selectedDate) =
 
       if (taskDate.isSame(selectedDate, "month")) {
         const dateIndex = taskDate.date() - 1;
-        if (item.task_status === "Completed") {
+        const status = (item.task_status || '').toLowerCase().trim();
+        if (status === "completed") {
           completeData[dateIndex]++;
-        } else if (item.task_status === "Planned") {
-          if (taskDate.isSame(today, "day")) {
-            plannedData[dateIndex]++;
-          } else if (taskDate.isBefore(today, "day")) {
+        } else if (status === "planned") {
+          if (taskDate.isBefore(today, "day")) {
+            // Overdue planned → count as pending (SLA not meet)
             pendingData[dateIndex]++;
+          } else {
+            // Today or future within the month → planned
+            plannedData[dateIndex]++;
           }
-        } else if (item.task_status === "Not Planned") {
+        } else if (status === "not planned" || status === 'not_planned' || status === 'notplanned') {
           notPlannedData[dateIndex]++;
         }
       }
     });
+
+      //  console.log("not palnned in monthly", plannedData)
     return {
       labels,
       datasets: [
@@ -860,7 +872,7 @@ export const BarChart = ({ data, isTicket, title }) => {
           <BsFillCaretLeftFill /> Previous
         </Button>
         <h4>{getPeriodLabel(view, selectedDate)}</h4>
-        <Button onClick={() => setOffset((prev) => (prev < 0 ? prev + 1 : 0))}>
+        <Button onClick={() => setOffset((prev) => (prev < 0 ? prev + 1 : 0))} disabled={offset === 0}>
           Next <BsFillCaretRightFill />
         </Button>
       </div>

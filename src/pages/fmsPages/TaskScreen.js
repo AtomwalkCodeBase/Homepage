@@ -204,6 +204,12 @@ const PaginationInfo = styled.div`
 const PaginationButtons = styled.div`
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  
+  @media (max-width: 768px) {
+    gap: 0.25rem;
+  }
 `
 
 const PageButton = styled.button`
@@ -218,6 +224,7 @@ const PageButton = styled.button`
   color: ${(props) => (props.active ? "white" : props.theme.colors.text)};
   cursor: pointer;
   transition: all 0.3s ease;
+  font-size: 14px;
   
   &:hover {
     border-color: ${({ theme }) => theme.colors.primary};
@@ -227,6 +234,12 @@ const PageButton = styled.button`
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+  
+  @media (max-width: 768px) {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
   }
 `
 
@@ -265,7 +278,7 @@ const TaskScreen = () => {
   const [ticket, setTickets] = useState(null);
   const [allTasks, setAllTasks] = useState([]);
   const [activeTab, setActiveTab] = useState('analysis');
-  const [filters, setFilters] = useState({ status: 'All Status', customer: '', searchTerm: '', category: 'All Category' });
+  const [filters, setFilters] = useState({ status: 'All Status', customer: '', searchTerm: '', category: 'All Category'});
   const [uniqueData, setUniqueData] = useState({ taskStatus: [], customers: [], category: [] });
   const [selectedCustomers, setSelectedCustomers] = useState([]);
   const currentUrl = window.location.pathname;
@@ -282,6 +295,8 @@ const TaskScreen = () => {
       setSelectedCustomers([]);
     }
   }, []);
+
+  // console.log("allTasks", allTasks);
 
 
 
@@ -301,7 +316,14 @@ const TaskScreen = () => {
         category: getUniqueValues(tasks, "task_category_name"),
       });
     }
+    setCurrentPage(1);
+    setFilters({ status: 'All Status', searchTerm: '', category: 'All Category' })
+
   }, [taskResponse, isTicketScreen]);
+
+  // Reset pagination when switching between task and ticket screens
+  // useEffect(() => {
+  // }, [isTicketScreen]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target
@@ -309,12 +331,16 @@ const TaskScreen = () => {
       ...prev,
       [name]: value,
     }));
+    // Reset pagination when filters change
+    setCurrentPage(1);
   }
 
   const handleViewDetails = (data) => {
     setTickets(data)
     setOpenModal(true)
   }
+
+  // console.log("filters", filters)
   const filteredData = useMemo(() => {
     return allTasks.filter((item) => {
       const matchesStatus = filters.status === 'All Status' || item.task_status === filters.status;
@@ -324,11 +350,18 @@ const TaskScreen = () => {
         filters.searchTerm === "" ||
         item.customer?.name?.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
         item.task_category_name?.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
-        item.task_sub_category_name?.toLowerCase().includes(filters.searchTerm.toLowerCase());
+        item.task_sub_category_name?.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+        item.emp_assigned?.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+        item.task_ref_id?.toLowerCase().includes(filters.searchTerm.toLowerCase()) 
 
       return matchesStatus && matchesCustomer && matchesSearchTerm && matchesCategory;
     });
   }, [allTasks, filters.status, selectedCustomers, filters.searchTerm, filters.category]);
+
+  // Reset pagination when filtered data changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filteredData.length]);
 
 
   // Pagination
@@ -375,7 +408,7 @@ const TaskScreen = () => {
         :
         <Card>
           <FilterContainer>
-            <div style={{ display: "flex", gap: "10px" }}>
+            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
               <FilterSelect name="status" value={filters.status} onChange={handleFilterChange}>
                 <option>All Status</option>
                 {uniqueData.taskStatus?.map((status, index) => (
@@ -392,8 +425,6 @@ const TaskScreen = () => {
                 ))}
               </FilterSelect>
             </div>
-
-
           </FilterContainer>
           {selectedCustomers.length !== 0 &&
             <AssignedUsersSection>
@@ -419,6 +450,7 @@ const TaskScreen = () => {
               </AssignedUserList>
             </AssignedUsersSection>
           }
+
           <SearchContainer>
             <SearchInput>
               <FaSearch /><input type="text" name="searchTerm" placeholder="Search..." value={filters.searchTerm} onChange={handleFilterChange} />
@@ -533,11 +565,60 @@ const TaskScreen = () => {
                 &lt;
               </PageButton>
 
-              {[...Array(totalPages)].map((_, index) => (
-                <PageButton key={index} active={currentPage === index + 1} onClick={() => setCurrentPage(index + 1)}>
-                  {index + 1}
-                </PageButton>
-              ))}
+              {(() => {
+                const maxVisiblePages = 5;
+                const pages = [];
+                
+                if (totalPages <= maxVisiblePages) {
+                  // Show all pages if total is small
+                  for (let i = 1; i <= totalPages; i++) {
+                    pages.push(
+                      <PageButton key={i} active={currentPage === i} onClick={() => setCurrentPage(i)}>
+                        {i}
+                      </PageButton>
+                    );
+                  }
+                } else {
+                  // Show pages with ellipsis
+                  const startPage = Math.max(1, currentPage - 2);
+                  const endPage = Math.min(totalPages, currentPage + 2);
+                  
+                  // Always show first page
+                  if (startPage > 1) {
+                    pages.push(
+                      <PageButton key={1} active={currentPage === 1} onClick={() => setCurrentPage(1)}>
+                        1
+                      </PageButton>
+                    );
+                    if (startPage > 2) {
+                      pages.push(<span key="ellipsis1" style={{ padding: '0 8px', color: '#666' }}>...</span>);
+                    }
+                  }
+                  
+                  // Show middle pages
+                  for (let i = startPage; i <= endPage; i++) {
+                    pages.push(
+                      <PageButton key={i} active={currentPage === i} onClick={() => setCurrentPage(i)}>
+                        {i}
+                      </PageButton>
+                    );
+                  }
+                  
+                  // Always show last page
+                  if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                      pages.push(<span key="ellipsis2" style={{ padding: '0 8px', color: '#666' }}>...</span>);
+                    }
+                    pages.push(
+                      <PageButton key={totalPages} active={currentPage === totalPages} onClick={() => setCurrentPage(totalPages)}>
+                        {totalPages}
+                      </PageButton>
+                    );
+                  }
+                }
+                
+                return pages;
+              })()}
 
               <PageButton
                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
@@ -551,7 +632,7 @@ const TaskScreen = () => {
 
         </Card>
       }
-      {openModal && <FmsModal onClose={() => setOpenModal(false)} ticket={ticket} isTicket={false} />}
+      {openModal && <FmsModal onClose={() => setOpenModal(false)} ticket={ticket} isTicket={isTicketScreen ? true : false} />}
     </Layout>
   )
 }

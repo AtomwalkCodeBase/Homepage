@@ -15,6 +15,7 @@ import moment from 'moment/moment';
 import FmsModal from '../../components/modals/FmsModal';
 import { MultiSelectDropdown } from '../../components/MultiSelectDropdown';
 import { useAuth } from '../../context/AuthContext';
+import Badge from '../../components/Badge';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title);
 
@@ -200,6 +201,35 @@ const SearchContainer = styled.div`
     flex-direction: column;
   }
 `
+const getStatusTravelInfo = (request) => {
+  if (!request) {
+    return { text: "Unknown", variant: "warning" };
+  }
+
+  const today = moment();
+  const taskDate = moment(request.task_date, 'DD-MM-YYYY');
+
+  switch (request.task_status) {
+    case "Completed":
+      return { text: "Complete", variant: "success" };
+
+    case "Planned":
+      if (taskDate.isBefore(today, 'day')) {
+        return { text: "SLA not meet", variant: "warning" }
+      } else {
+        return { text: "Planned", variant: "info" }
+      }
+    // break; // no return here, just counters
+
+    case "Not Planned":
+      return { text: "Not Planned", variant: "notPlanned" }
+    // break;
+
+    default:
+      return { text: request.task_status, variant: "warning" };
+  }
+
+}
 
 const FmsDashBoard = () => {
   const { taskResponse,loading } = useAuth()
@@ -217,7 +247,7 @@ const FmsDashBoard = () => {
   const [periodType, setPeriodType] = useState('day');
   const [activeTab, setActiveTab] = useState('analysis');
   const [tableActiveTab, setTableActiveTab] = useState('task');
-  const [filters, setFilters] = useState({ status: 'All Status', customer: '', searchTerm: '' });
+  const [filters, setFilters] = useState({ status: 'All Status', customer: '', searchTerm: '', category: 'All Category' });
 
 useEffect(() => {
   if (taskResponse && taskResponse.length > 0) {
@@ -253,7 +283,7 @@ useEffect(() => {
     }
       const matchesTab = tableActiveTab === 'task' ? !item.is_ticket_task : item.is_ticket_task;
       const matchesStatus = filters.status === 'All Status' || derivedStatus === filters.status;
-      // const matchesCustomer = filters.customer === 'All Customer' || item.customer?.name === filters.customer;
+      const matchesCategory = filters.category === 'All Category' || item.task_category_name === filters.category;
       const matchesCustomer = selectedCustomers.length === 0 || selectedCustomers.includes(item.customer?.name);
       const matchesSearchTerm =
         filters.searchTerm === "" ||
@@ -261,9 +291,9 @@ useEffect(() => {
         item.task_category_name?.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
         item.task_sub_category_name?.toLowerCase().includes(filters.searchTerm.toLowerCase());
 
-      return matchesTab && matchesStatus && matchesCustomer && matchesSearchTerm;
+      return matchesTab && matchesStatus && matchesCustomer && matchesSearchTerm && matchesCategory;
     });
-  }, [allTasks, selectedPeriod, offset, periodType, tableActiveTab, filters.status, filters.searchTerm, selectedCustomers]);
+  }, [allTasks, selectedPeriod, offset, periodType, tableActiveTab, filters.status, filters.searchTerm, selectedCustomers,filters.category]);
 
   const toggleExpand = (customerName) => {
     setExpandedCustomer((prev) => {
@@ -434,7 +464,7 @@ useEffect(() => {
               <MultiSelectDropdown customers={uniqueData.customers || []} selectedCustomers={selectedCustomers} setSelectedCustomers={setSelectedCustomers}/>
 
 
-              <FilterSelect name="customer" value={filters.customer} onChange={handleFilterChange}>
+              <FilterSelect name="category" value={filters.category} onChange={handleFilterChange}>
                 <option>All Category</option>
                 {uniqueData.category?.map((status, index) => (
                   <option key={index}>{status}</option>
@@ -482,7 +512,7 @@ useEffect(() => {
               <SearchInput>  
                 <FaSearch /><input type="text" name="searchTerm" placeholder="Search..." value={filters.searchTerm} onChange={handleFilterChange} />
               </SearchInput>
-              <Button variant="primary" onClick={() => {setFilters({ status: 'All Status', customer: '', searchTerm: '' }); setSelectedCustomers([])}}>
+              <Button variant="primary" onClick={() => {setFilters({ status: 'All Status', customer: '', searchTerm: '', category: 'All Category' }); setSelectedCustomers([])}}>
                 <MdClear /> Clear All
               </Button>
             </SearchContainer>
@@ -538,7 +568,7 @@ useEffect(() => {
                           <tr key={task.id}>
                             <td>{task.customer?.name || '--'}</td>
                             <td>{tableActiveTab === "task" ? task.name : task.task_category_name}</td>
-                            <td>{task.task_status}</td>
+                            <td><Badge variant={getStatusTravelInfo(task).variant}>{getStatusTravelInfo(task).text}</Badge></td>
                             <td>{task.emp_assigned || '--'}</td>
                             <td>{task.task_date || '--'}</td>
                             <td>
@@ -604,7 +634,8 @@ useEffect(() => {
                                             <td>{tableActiveTab === "task" ? t.name : t.task_category_name}</td>
                                             {tableActiveTab === "ticket" && <td>{t.task_sub_category_name || '--'}</td>}
                                             <td>{t.task_date}</td>
-                                            <td>{t.task_status}</td>
+                                            {/* <td>{t.task_status}</td> */}
+                                            <td><Badge variant={getStatusTravelInfo(t).variant}>{getStatusTravelInfo(t).text}</Badge></td>
                                             <td>{t.emp_assigned || '--'}</td>
                                             <td>
                                               <ActionButtons>

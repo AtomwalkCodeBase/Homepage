@@ -11,7 +11,7 @@ const FmsModal = ({ onClose, ticket, isTicket }) => {
 	const [employees, setEmployees] = useState([]);
 	const [assignedEmployee, setAssignedEmployee] = useState(null);
 
-	console.log(ticket)
+	// console.log(ticket)
 
 	useEffect(() => {
 		const fetchEmployees = async () => {
@@ -75,17 +75,18 @@ const FmsModal = ({ onClose, ticket, isTicket }) => {
 							<td><strong>Customer Name:</strong></td>
 							<td>{ticket.customer?.name || "—"}</td>
 						</tr>
+						{!isTicket && <tr>
+							<td><strong>Task Name:</strong></td>
+							<td>{ticket?.name || "—"}</td>
+						</tr>}
 						<tr><td><strong>Status:</strong></td><td><Badge variant={getStatusTravelInfo(ticket).variant}>{getStatusTravelInfo(ticket).text}</Badge></td></tr>
-						<tr><td><strong>Task Date:</strong></td><td>{ticket.task_date}</td></tr>
-						{isTicket && <tr><td><strong>Category:</strong></td><td>{ticket.task_category_name}</td></tr>}
-						{isTicket && <tr><td><strong>Sub Category:</strong></td><td>{ticket.task_sub_category_name}</td></tr>}
+						<tr><td><strong>Task Date:</strong></td><td>{ticket.task_date || '--'}</td></tr>
+						{(ticket.start_time && ticket.end_time) && <tr><td><strong>Time:</strong></td><td>{ticket.start_time} to {ticket.end_time}</td></tr>}
+						{ticket.task_category_name && <tr><td><strong>Category:</strong></td><td>{ticket.task_category_name}</td></tr>}
+						{ticket.task_sub_category_name && <tr><td><strong>Sub Category:</strong></td><td>{ticket.task_sub_category_name}</td></tr>}
 						<tr>
 							<td><strong>Description:</strong></td>
 							<td>{ticket.remarks || "—"}</td>
-						</tr>
-						<tr>
-							<td><strong>Task Date:</strong></td>
-							<td>{ticket.task_date || "—"}</td>
 						</tr>
 						<tr>
 							<td><strong>Assigned Employee:</strong></td>

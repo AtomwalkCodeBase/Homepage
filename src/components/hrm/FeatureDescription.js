@@ -303,8 +303,8 @@ const FeatureDescription = ({ data }) => {
         {
           title: "Apply Leave from Anywhere Anytime",
           subtitle: "Simple Leave Application: easy to apply and cancel from anywhere & anytime.",
-          description: "Employee can apply for multiple types of leaves like Earned Leave, Work From Home, and Loss of Pay through both web and mobile apps. On submitted, the leave request automatically moves to manager's dashboard for approval, streamlining the process.",
-          benefits: ["Both Web and Mobile Convenience", "Multiple leave types", "Easy Application process with Holiday List Integration, to alter users"],
+          description: "Employee can apply for multiple types of leaves like Earned Leave, Half Day Leave, Work From Home, On Duty and Loss of Pay through both web and mobile apps. On submitted, the leave request automatically moves to manager's dashboard for approval, streamlining the process.",
+          benefits: ["Both Web and Mobile Convenience", "Multiple leave types supported (Earned Leave, Half Day, Work From Home, On Duty and Loss of Pay)", "Easy Application process with Holiday List Integration, to alter users"],
           imageSrc: img9,
           imageAlt: "Leave Application",
           imgPosition: "left"

@@ -646,7 +646,7 @@ const LeadershipAdvisors = () => {
     },
     {
       id: 7,
-      name: "Jayanthi S Vel",
+      name: "Ms. Jayanthi S Vel",
       role: "Human Resources Officer (HRO)",
       image: `${Jayanthi}`,
       shortDesc: "Ms. Jayanthi is an accomplished human resource professional responsible for leading and shaping the organization’s strategy.",

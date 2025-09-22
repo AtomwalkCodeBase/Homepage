@@ -40,19 +40,68 @@ const SectionContainer = styled.div`
     background: rgba(125, 62, 255, 0.03);
     z-index: 0;
   }
+
+  @media (max-width: 768px) {
+    padding: 60px 15px;
+    
+    &::before {
+      top: -50px;
+      right: -50px;
+      width: 200px;
+      height: 200px;
+    }
+    
+    &::after {
+      bottom: -50px;
+      left: -50px;
+      width: 250px;
+      height: 250px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 50px 10px;
+    
+    &::before {
+      top: -30px;
+      right: -30px;
+      width: 150px;
+      height: 150px;
+    }
+    
+    &::after {
+      bottom: -30px;
+      left: -30px;
+      width: 180px;
+      height: 180px;
+    }
+  }
 `;
 
 const MainTitle = styled.h2`
   font-size: 2.5em;
   font-weight: bold;
   color: #333;
+  margin: 0 auto;
+  max-width: 90%;
 
   span {
-    color: #7d3eff; /* Purple color for "greytHR" */
+    color: #7d3eff;
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 2.2em;
   }
 
   @media (max-width: 768px) {
-    font-size: 2em;
+    font-size: 1.8em;
+    max-width: 95%;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.6em;
+    max-width: 100%;
+    padding: 0 5px;
   }
 `;
 
@@ -62,13 +111,32 @@ const Subtitle = styled.p`
   color: #666;
   margin-top: 10px;
   margin-bottom: 60px;
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+
+  @media (max-width: 1024px) {
+    font-size: 1.1em;
+    max-width: 95%;
+  }
 
   @media (max-width: 768px) {
     font-size: 1em;
+    margin-bottom: 40px;
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.95em;
+    margin-bottom: 35px;
+    padding: 0 5px;
+    line-height: 1.5;
   }
 `;
 
-// Container for features - Updated to center items
+// Container for features
 const FeaturesContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -77,7 +145,7 @@ const FeaturesContainer = styled.div`
   margin: 0 auto;
   position: relative;
   z-index: 1;
-  justify-items: center; /* Center items horizontally */
+  justify-items: center;
 
   /* For desktop view with exactly 6 items (2 rows of 3) */
   &:has(> :nth-child(6):last-child) {
@@ -85,17 +153,27 @@ const FeaturesContainer = styled.div`
   }
 
   @media (max-width: 1024px) {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 0 20px;
+    
+    &:has(> :nth-child(6):last-child) {
+      grid-template-columns: repeat(2, minmax(280px, 1fr));
+    }
   }
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
     padding: 0 15px;
-    gap: 25px;
+    max-width: 500px;
   }
 
   @media (max-width: 480px) {
-    gap: 20px;
+    gap: 18px;
+    padding: 0 10px;
   }
 `;
 
@@ -139,12 +217,20 @@ const FeatureBox = styled.div`
 
   @media (max-width: 1024px) {
     padding: 35px 20px;
-    max-width: 340px;
+    max-width: 100%;
   }
 
   @media (max-width: 768px) {
     max-width: 100%;
+    width: 100%;
     padding: 30px 20px;
+    margin: 0;
+  }
+
+  @media (max-width: 480px) {
+    padding: 25px 15px;
+    border-radius: 12px;
+    width: 100%;
   }
 `;
 
@@ -168,9 +254,20 @@ const IconContainer = styled.div`
   @media (max-width: 1024px) {
     width: 80px;
     height: 80px;
+    margin-bottom: 20px;
     
     svg {
       font-size: 35px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 15px;
+    
+    svg {
+      font-size: 30px;
     }
   }
 `;
@@ -181,13 +278,21 @@ const FeatureTitle = styled.h3`
   color: #222;
   margin-bottom: 15px;
   font-weight: 700;
+  line-height: 1.3;
 
   @media (max-width: 1024px) {
     font-size: 1.3em;
+    margin-bottom: 12px;
   }
 
   @media (max-width: 768px) {
-    font-size: 1.35em;
+    font-size: 1.25em;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.15em;
+    margin-bottom: 10px;
+    padding: 0 5px;
   }
 `;
 
@@ -199,6 +304,18 @@ const FeatureDescription = styled.p`
 
   @media (max-width: 1024px) {
     font-size: 1em;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.95em;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.9em;
+    line-height: 1.5;
+    padding: 0 5px;
   }
 `;
 
@@ -225,8 +342,6 @@ const WhatAtomwalkCovers = () => {
             iconBg: "#D8F5E3",
             iconColor: "#2ecc71"
         },
-        
-        
         {
             icon: <FiLayers />,
             title: "R&D in Business Automation",

@@ -5,6 +5,7 @@ import ProductPage from './ProductPage';
 import PlanSuccess from './PlanSuccess';
 import SeamlessIntegration from './SeamlessIntegration';
 import ProductCard from './ProductCard';
+import WhatAtomwalkCovers from './WhatAtomwalkCovers';
 
 // Main Component
 const Product = () => {
@@ -15,6 +16,7 @@ const Product = () => {
    background={"#52ebff"}
    data={true}></LetsConnect>
    <ProductPage></ProductPage>
+   <WhatAtomwalkCovers/>
    <ProductCard></ProductCard>
    <PlanSuccess></PlanSuccess>
    <SeamlessIntegration></SeamlessIntegration>

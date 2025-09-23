@@ -18,7 +18,6 @@
     "firebase": "^11.7.3",
     "framer-motion": "^12.4.2",
     "jspdf": "^3.0.1",
-    "jspdf-autotable": "^5.0.2",
     "lucide-react": "^0.475.0",
     "moment": "^2.30.1",
     "react": "^18.3.1",

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
 import styled from "styled-components"
 import {FaFileInvoiceDollar, FaDownload, FaCalendarAlt, FaChevronLeft, FaChevronRight, FaMoneyBillWave, FaPlus, FaMinus, FaPrint} from "react-icons/fa"
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid} from "recharts"
@@ -431,10 +430,6 @@ const MyPaySlip = () => {
     newDate.setMonth(newDate.getMonth() + direction)
     setCurrentMonth(newDate)
   }
-
-  // console.log("curernt month",currentMonth)
-  // console.log("selected month",selectedMonth.toLocaleString("default", { month: "long", year: "numeric" }));
-
   const handleViewPayslip = async (monthDate) => {
     try {
       setError(''); // Clear any previous errors
@@ -482,17 +477,12 @@ const MyPaySlip = () => {
   const generatePdf = (data, monthDate) => {
     const salaryData = data?.salary_list || [];
     try {
-      // Validate data
       if (!Array.isArray(salaryData)) {
         throw new Error("Invalid salary data provided");
       }
 
-      const grossSalary = salaryData.find((item) => item.sg_type === "G")?.sg_amt || 0;
-
       const fixedEarningsForNetSalary = salaryData
-        .filter(
-          (item) => item.sg_type !== "D" && item.sg_type !== "G" && item.sg_type !== "V" && item.sg_type !== "R"
-        )
+        .filter((item) => item.sg_type !== "D" && item.sg_type !== "G" && item.sg_type !== "V" && item.sg_type !== "R")
         .reduce((sum, item) => sum + item.sg_amt, 0);
 
       const totalDeductions = salaryData
@@ -503,26 +493,22 @@ const MyPaySlip = () => {
 
       const doc = new jsPDF();
 
-      if (typeof autoTable !== "function") {
-        throw new Error("autoTable function not available. Make sure jspdf-autotable is properly imported.");
-      }
-
       // === Header ===
-      let currentY = 20; // top margin
-    const leftX = 20; // logo X position
-    const rightX = 110; // company details X position
-    // Logo on left
-    if (companyInfo.image) {
-      try {
-        doc.addImage(companyInfo.image, "PNG", leftX, 10, 40, 30);
-      } catch (error) {
-        console.log("Could not load company image:", error);
+      let currentY = 20;
+      const leftX = 20;
+      const rightX = 110;
+
+      if (companyInfo.image) {
+        try {
+          doc.addImage(companyInfo.image, "PNG", leftX, 10, 40, 30);
+        } catch (error) {
+          console.log("Could not load company image:", error);
+        }
       }
-    }
 
       let detailsY = currentY;
       doc.setFontSize(16);
-      doc.text(companyInfo.name || "Company Name",  rightX, detailsY, { align: "left" });
+      doc.text(companyInfo.name || "Company Name", rightX, detailsY, { align: "left" });
 
       doc.setFontSize(10);
       const addressLines = [
@@ -533,33 +519,25 @@ const MyPaySlip = () => {
 
       addressLines.forEach((line) => {
         if (line) {
-          detailsY  += 5; // spacing between lines
+          detailsY += 5;
           doc.text(line, rightX, detailsY, { align: "left" });
         }
       });
 
       detailsY += 5;
-      if (companyInfo.pin_code) {
-        doc.text(`${companyInfo.pin_code}`, rightX, detailsY, { align: "left" });
-      }
-
-      // Add PAN with spacing
-      detailsY += 5;
-      if (companyInfo.pan_number) {
-        doc.text(`PAN: ${companyInfo.pan_number}`, rightX, detailsY, { align: "left" });
-      }
+      if (companyInfo.pin_code) doc.text(`${companyInfo.pin_code}`, rightX, detailsY, { align: "left" });
 
       detailsY += 5;
-      if (companyInfo.web_page) {
-        doc.text(`${companyInfo.web_page}`, rightX, detailsY, { align: "left" });
-      }
+      if (companyInfo.pan_number) doc.text(`PAN: ${companyInfo.pan_number}`, rightX, detailsY, { align: "left" });
 
-      // Separator line below header
+      detailsY += 5;
+      if (companyInfo.web_page) doc.text(`${companyInfo.web_page}`, rightX, detailsY, { align: "left" });
+
       currentY = Math.max(detailsY, currentY + 30);
       doc.setLineWidth(0.5);
       doc.line(20, currentY, 190, currentY);
 
-      // Payslip title
+      // Title
       currentY += 10;
       doc.setFontSize(14);
       doc.text(
@@ -569,10 +547,41 @@ const MyPaySlip = () => {
         { align: "center" }
       );
 
-      // === Employee Summary ===
-      currentY += 10;
-      doc.setFontSize(12);
-      doc.text("Employee Pay Summary", 14, currentY);
+          const drawTable = (headers, rows, startY) => {
+      let y = startY;
+      const rowHeight = 8;
+      const colWidths = [70, 110]; // adjust column widths
+      const xStart = 20;
+
+      doc.setFontSize(10);
+      doc.setFont(undefined, "bold");
+
+      // Header Row
+      doc.rect(xStart, y, colWidths[0], rowHeight);
+      doc.rect(xStart + colWidths[0], y, colWidths[1], rowHeight);
+      doc.text(headers[0], xStart + 2, y + 6);
+      doc.text(headers[1], xStart + colWidths[0] + 2, y + 6);
+      y += rowHeight;
+
+      doc.setFont(undefined, "normal");
+
+      // Data Rows
+      rows.forEach(([col1, col2]) => {
+        doc.rect(xStart, y, colWidths[0], rowHeight);
+        doc.rect(xStart + colWidths[0], y, colWidths[1], rowHeight);
+
+        doc.text(String(col1), xStart + 2, y + 6);
+        doc.text(String(col2), xStart + colWidths[0] + 2, y + 6);
+        y += rowHeight;
+      });
+
+      return y;
+    };
+
+      // === Employee Details Table ===
+      currentY += 15;
+      doc.setFontSize(11);
+      doc.text("Employee Pay Summary", 20, currentY);
 
       const employeeDetails = [
         ["Employee Name", profile?.name || "--"],
@@ -581,107 +590,84 @@ const MyPaySlip = () => {
         ["Designation", profile?.job_title || "--"],
         ["Grade", profile?.grade_name || "--"],
         ["Date of Joining", profile?.date_of_join || "--"],
-        [
-          "Leave Details",
-          `EL: ${count?.["Earned Leave"] || 0}, WFH: ${counts?.["Work from Home"] || 0}, HD: ${
-            count?.["Half Day Leave"] || 0
-          }, LWP: ${count?.["Leave without Pay"] || 0}`
-        ],
-        ["Salary Post Date", data?.post_date || "--"],
+        ["Leave Details", `EL: ${count?.["Earned Leave"] || 0}, WFH: ${counts?.["Work from Home"] || 0}, HD: ${count?.["Half Day Leave"] || 0}, LWP: ${count?.["Leave without Pay"] || 0}`],
+        ["Salary Post Date", data?.post_date || "--"]
       ];
 
-      autoTable(doc, {
-        startY: currentY + 5,
-        head: [["Field", "Value"]],
-        body: employeeDetails,
-        theme: "striped",
-        styles: { fontSize: 9 },
-        headStyles: { fillColor: [165, 166, 246] },
+      const col1X = 20;
+      const col2X = 80;
+      const rowHeight = 8;
+      currentY += 8;
+
+      doc.setFontSize(9);
+      employeeDetails.forEach(([field, value]) => {
+        doc.text(field, col1X, currentY);
+        doc.text(String(value), col2X, currentY);
+        currentY += rowHeight;
       });
 
-      // Update currentY for next section
-      currentY = doc.lastAutoTable.finalY + 10;
-
       // === Earnings Table ===
-      const earnings = salaryData
-        .filter((item) => item.sg_type !== "D" && item.sg_type !== "G")
-        .map((item) => [item.name, `Rs. ${item.sg_amt.toLocaleString()}`]);
+    const earnings = salaryData
+      .filter((item) => item.sg_type !== "D" && item.sg_type !== "G")
+      .map((item) => [item.name, `Rs. ${item.sg_amt.toLocaleString()}`]);
 
-      if (earnings.length > 0) {
-        autoTable(doc, {
-          startY: currentY,
-          head: [["Earnings", "+Amount (Rs.)"]],
-          body: earnings,
-          theme: "striped",
-          styles: { fontSize: 9 },
-          headStyles: { fillColor: [144, 145, 230] },
-        });
-        currentY = doc.lastAutoTable.finalY + 10;
-      }
-
-      // === Deductions Table ===
-      const deductions = salaryData
-        .filter((item) => item.sg_type === "D")
-        .map((item) => [item.name, `Rs. ${item.sg_amt.toLocaleString()}`]);
-
-      if (deductions.length > 0) {
-        deductions.push([
-          { content: "Total Deductions", styles: { fontStyle: "bold" } },
-          { content: `Rs. ${totalDeductions.toLocaleString()}`, styles: { fontStyle: "bold" } }
-        ]);
-
-        autoTable(doc, {
-          startY: currentY,
-          head: [["Deductions", "-Amount (Rs.)"]],
-          body: deductions,
-          theme: "striped",
-          styles: { fontSize: 9 },
-          headStyles: { fillColor: [144, 145, 230] },
-        });
-        currentY = doc.lastAutoTable.finalY + 10;
-      }
-
-      // === Footer ===
-      currentY = doc.lastAutoTable?.finalY + 10 || currentY + 10;
-      doc.setFontSize(11);
-      doc.setFont(undefined, "bold");
-      doc.text(
-        `Total Net Payable: Rs. ${netSalary.toLocaleString()} (Rupees ${convertToWords(Math.floor(netSalary))})`,
-        105,
-        currentY,
-        { align: "center" }
-      );
-      currentY += 10;
-      doc.setFontSize(9);
-      doc.setFont(undefined, "italic");
-      doc.text(
-        "This is a system generated pay slip and does not require signature.",
-        105,
-        currentY,
-        { align: "center" }
-      );
-
-      if (!salaryRes?.is_posted) {
-        currentY += 8;
-        doc.setTextColor(255, 165, 0); // orange color
-        doc.setFontSize(10);
-        doc.text(
-          "*This salary slip is provisional and has not yet been posted. Amounts are subject to change.",
-          105,
-          currentY,
-          { align: "center" }
-        );
-        doc.setTextColor(0, 0, 0); // reset color
-      }
-
-      // Save PDF
-      doc.save(`payslip_${monthDate.getFullYear()}_${monthDate.getMonth() + 1}.pdf`);
-
-    } catch (error) {
-      console.error("PDF Generation Error:", error);
-      toast.error("Error generating PDF: " + error.message);
+    if (earnings.length > 0) {
+      currentY = drawTable(["Earnings", "+Amount (Rs.)"], earnings, currentY) + 10;
     }
+
+    // === Deductions Table ===
+    const deductions = salaryData
+      .filter((item) => item.sg_type === "D")
+      .map((item) => [item.name, `Rs. ${item.sg_amt.toLocaleString()}`]);
+
+    if (deductions.length > 0) {
+      deductions.push(["Total Deductions", `Rs. ${totalDeductions.toLocaleString()}`]);
+      currentY = drawTable(["Deductions", "-Amount (Rs.)"], deductions, currentY) + 10;
+    }
+
+    // === Footer ===
+    currentY += 5;
+    doc.setFontSize(11);
+    doc.setFont(undefined, "bold");
+    doc.text(
+      `Total Net Payable: Rs. ${netSalary.toLocaleString()} (Rupees ${convertToWords(Math.floor(netSalary))})`,
+      105,
+      currentY,
+      { align: "center" }
+    );
+
+    currentY += 10;
+    doc.setFontSize(9);
+    doc.setFont(undefined, "italic");
+    doc.text(
+      "This is a system generated pay slip and does not require signature.",
+      105,
+      currentY,
+      { align: "center" }
+    );
+
+    if (!salaryRes?.is_posted) {
+      currentY += 8;
+      doc.setTextColor(255, 165, 0);
+      doc.setFontSize(10);
+      doc.text(
+        "*This salary slip is provisional and has not yet been posted. Amounts are subject to change.",
+        105,
+        currentY,
+        { align: "center" }
+      );
+      doc.setTextColor(0, 0, 0);
+    }
+
+    // Save PDF
+    doc.save(`payslip_${monthDate.getFullYear()}_${monthDate.getMonth() + 1}.pdf`);
+
+  } catch (error) {
+    console.error("PDF Generation Error:", error);
+    toast.error("Error generating PDF: " + error.message);
+  }
   };
+
 
   const convertToWords = (amount) => {
     const units = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];

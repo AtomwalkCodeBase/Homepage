@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import Layout from '../../components/Layout'
 import styled from "styled-components"
 import Button from '../../components/Button'
-import { FaEye, FaFileExport, FaSearch, FaUserMinus, FaUsers } from 'react-icons/fa'
+import { FaEye, FaSearch, FaUserMinus, FaUsers } from 'react-icons/fa'
 import Card from '../../components/Card'
 import Badge from '../../components/Badge'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title, } from "chart.js";
@@ -40,15 +40,6 @@ const ActionButtons = styled.div`
   display: flex;
   gap: 0.5rem;
 `
-const TableActions = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-  gap: 1rem;
-  color: ${({ theme }) => theme.colors.text};
-`
 const FilterContainer = styled.div`
   display: flex;
   gap: 1rem;
@@ -56,12 +47,6 @@ const FilterContainer = styled.div`
   flex-wrap: wrap;
   color: ${({ theme }) => theme.colors.text};
 `
-// const DateInput = styled.input`
-//   padding: 0.5rem 1rem;
-//   border: 1px solid ${({ theme }) => theme.colors.border};
-//   border-radius: 4px;
-//   background: white;
-// `
 const FilterSelect = styled.select`
   padding: 0.5rem 1rem;
   border: 1px solid ${({ theme }) => theme.colors.border};

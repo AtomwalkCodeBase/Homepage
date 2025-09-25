@@ -1096,6 +1096,18 @@ const OptionCardPreview = styled.div`
     }
   }
 `
+const ButtonContainer = styled.div`
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+`;
 
 const OptionCardLabel = styled.div`
   font-size: 0.85rem;
@@ -1541,14 +1553,14 @@ const Profile = () => {
                     )}
                   </ThemeGrid>
 
-                  <div style={{ marginTop: "1.5rem", display: "flex", justifyContent: "flex-end" }}>
-                    <StyledButton className="outline" onClick={resetCustomizations} style={{ marginRight: "1rem" }}>
+                  <ButtonContainer>
+                    <StyledButton className="outline" onClick={resetCustomizations}>
                       <FaUndo /> Reset All Customizations
                     </StyledButton>
                     <StyledButton className="primary" onClick={() => setActiveThemeTab("colors")}>
                       <FaPaintBrush /> Customize Theme
                     </StyledButton>
-                  </div>
+                  </ButtonContainer>
                 </>
               )}
 

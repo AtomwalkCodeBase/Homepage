@@ -326,7 +326,6 @@ const MyPaySlip = () => {
   const [error, setError] = useState('');
   const emp_id = localStorage.getItem("empNoId") 
   const [leaveRequests, setLeaveRequests] = useState([])
-  const [workleaveRequests, setworkleaveRequests] = useState([])
 
   useEffect(() => {
       const fetchSalaryData = async () => {
@@ -344,52 +343,51 @@ const MyPaySlip = () => {
     fetchSalaryData()
   }, [currentMonth])
 
-    const leaveDetails = (data) => {
-      getEmpLeave(data, emp_id)
-        .then((res) => {
-          const filtered = res.data.filter(item => {
-            const itemDate = new Date(item.from_date);
-            return (
-              item.status_display === "Approved" &&
-              itemDate.getMonth() === currentMonth.getMonth() &&
-              itemDate.getFullYear() === currentMonth.getFullYear()
-            );
-          });
-          setLeaveRequests(filtered);
-        });
-    };
+  const parseDate = (dateStr) => {
+    if (!dateStr) return null;
+    const [day, month, year] = dateStr.split("-").map(Number);
+    return new Date(year, month - 1, day);
+  };
 
-    const workfromhome = (data) => {
-      getEmpLeave(data, emp_id)
-        .then((res) => {
-          const filtered = res.data.filter(item => {
-            const itemDate = new Date(item.from_date);
-            return (
-              item.status_display === "Approved" &&
-              itemDate.getMonth() === currentMonth.getMonth() &&
-              itemDate.getFullYear() === currentMonth.getFullYear()
-            );
-          });
-          setworkleaveRequests(filtered);
-        });
-    };
+  const calculateDays = (from, to) => {
+    const fromDate = parseDate(from);
+    const toDate = parseDate(to);
+    if (!fromDate || !toDate) return 0;
+    const diff = (toDate - fromDate) / (1000 * 60 * 60 * 24);
+    return diff + 1;
+  };
 
-    useEffect(() => {
-        leaveDetails('EL');
-        workfromhome("WH")
-      }, [])
+  const fetchLeaveData = async (leaveType) => {
+    const res = await getEmpLeave(leaveType, emp_id);
+    return res.data
+      .filter((item) => {
+        const itemDate = parseDate(item.from_date);
+        return (
+          item.status_display === "Approved" &&
+          itemDate?.getMonth() === currentMonth.getMonth() &&
+          itemDate?.getFullYear() === currentMonth.getFullYear()
+        );
+      })
+      .map((item_1) => ({
+        ...item_1,
+        days: calculateDays(item_1.from_date, item_1.to_date),
+      }));
+  };
 
-  const count = leaveRequests.reduce((acc, request) => {
+  useEffect(() => {
+    Promise.all([fetchLeaveData("EL"), fetchLeaveData("WH")]).then(
+      ([earnedLeave, workFromHome]) => {
+        // console.log([...earnedLeave, ...workFromHome])
+        setLeaveRequests([...earnedLeave, ...workFromHome]);
+      }
+    );
+  }, [currentMonth]);
+
+  const counts = leaveRequests.reduce((acc, request) => {
     const leaveType = request.leave_type_display;
-    const days = parseFloat(request.no_leave_count) || 0;
+    const days = request.days || 0;
     acc[leaveType] = (acc[leaveType] || 0) + days;
     return acc;
-  }, {});
-  const counts = workleaveRequests.reduce((acc, request) => {
-    const leaveType = request.leave_type_display;
-    const days = parseFloat(request.no_leave_count) || 0;
-    acc[leaveType] = (acc[leaveType] || 0) + days;
-    return acc ;
   }, {});
 
   // Calculate totals
@@ -547,7 +545,7 @@ const MyPaySlip = () => {
         { align: "center" }
       );
 
-          const drawTable = (headers, rows, startY) => {
+      const drawTable = (headers, rows, startY) => {
       let y = startY;
       const rowHeight = 8;
       const colWidths = [70, 110]; // adjust column widths
@@ -590,7 +588,7 @@ const MyPaySlip = () => {
         ["Designation", profile?.job_title || "--"],
         ["Grade", profile?.grade_name || "--"],
         ["Date of Joining", profile?.date_of_join || "--"],
-        ["Leave Details", `EL: ${count?.["Earned Leave"] || 0}, WFH: ${counts?.["Work from Home"] || 0}, HD: ${count?.["Half Day Leave"] || 0}, LWP: ${count?.["Leave without Pay"] || 0}`],
+        ["Leave Details", `EL: ${counts?.["Earned Leave"] || 0}, WFH: ${counts?.["Work from Home"] || 0}, HD: ${counts?.["Half Day Leave"] || 0}, LWP: ${counts?.["Leave without Pay"] || 0}`],
         ["Salary Post Date", data?.post_date || "--"]
       ];
 
@@ -789,7 +787,7 @@ const MyPaySlip = () => {
       </tr>
       <tr>
         <td style="font-weight: bold; padding: 3px 0; line-height: 1.3;">Leave Details :</td>
-        <td style="padding: 3px 0; line-height: 1.3;">EL: ${count["Earned Leave"] || 0}, WFH: ${counts["Work from Home"] || 0}, HD: ${count["Half Day Leave"] || 0}, LWP: ${count["Leave without Pay"] || 0}</td>
+        <td style="padding: 3px 0; line-height: 1.3;">EL: ${counts["Earned Leave"] || 0}, WFH: ${counts["Work from Home"] || 0}, HD: ${counts["Half Day Leave"] || 0}, LWP: ${counts["Leave without Pay"] || 0}</td>
       </tr>
       <tr>
         <td style="font-weight: bold; padding: 3px 0; line-height: 1.3;">Pay Date :</td>
@@ -889,10 +887,11 @@ const MyPaySlip = () => {
         <div>
           <HeaderText>View and download your monthly salary statements</HeaderText>
         </div>
-
-        <Button onClick={handlePrintPayslip} variant="primary">
-          <FaDownload style={{ marginRight: "0.5rem" }} /> Download Pay Slip
-        </Button>
+        {salaryRes.is_posted &&
+          <Button onClick={handlePrintPayslip} variant="primary">
+            <FaDownload style={{ marginRight: "0.5rem" }} /> Download Pay Slip
+          </Button>
+        }
       </PayslipHeader>
 
       <SummaryGrid>
@@ -1130,9 +1129,10 @@ const MyPaySlip = () => {
                 ₹{netSalary.toLocaleString()}
               </MyPaySlips>
             </div>
+            {(!salaryRes.is_posted && salaryData.length !== 0) && 
             <div style={{color: "#FFA500", marginLeft: "auto", marginRight: "auto"}}>
               *This salary slip is provisional and has not yet been posted. Amounts are subject to change.
-            </div>
+            </div>}
           </PayslipContainer>
         )}
 

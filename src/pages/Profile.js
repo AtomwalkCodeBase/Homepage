@@ -409,8 +409,8 @@ const TabGroup = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing?.lg || "2rem"};
   overflow-x: auto;
   @media (max-width: 600px) {
-    margin-bottom: 1rem;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
+    gap: 0.6rem;
   }
   
   &::-webkit-scrollbar {

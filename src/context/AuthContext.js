@@ -180,6 +180,7 @@ const customerlogin = async(userData) => {
         setTaskResponse(res?.data.reverse());
         // console.log(res?.data || []);
       } catch (error) {
+        setError("Failed to fetch task list")
         console.error('Error fetching tasks:', error);
       } finally {
         setLoading(false);

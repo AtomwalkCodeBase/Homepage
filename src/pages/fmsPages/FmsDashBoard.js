@@ -232,10 +232,9 @@ const getStatusTravelInfo = (request) => {
 }
 
 const FmsDashBoard = () => {
-  const { taskResponse,loading } = useAuth()
+  const { taskResponse,loading, error } = useAuth()
   // const [isLoading, setIsLoading] = useState(false)
   const [allTasks, setAllTasks] = useState([]);
-  const [error, setError] = useState(null)
   const [openModal, setOpenModal] = useState(false)
   const [ticket, setTickets] = useState(null);
   const [expandedCustomer, setExpandedCustomer] = useState(new Set())

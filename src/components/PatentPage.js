@@ -673,6 +673,15 @@ const PatentPage = () => {
       isGranted: false,
       status: "Filled",
       icon: "🏥"
+    },
+    {
+      number: "202541094732",
+      title: "METHOD AND SYSTEM COMPRISING AN AI–BLOCKCHAIN INFRASTRUCTURE FOR LAB DATA MANAGEMENT",
+      filingDate: "1st Oct 2025",
+      jurisdiction: "India",
+      isGranted: false,
+      status: "Filled",
+      icon: "🔗",
     }
   ];
 
@@ -717,7 +726,7 @@ const PatentPage = () => {
 
         <StatsSection>
           <StatCard delay="100ms">
-            <StatNumber>12</StatNumber>
+            <StatNumber>13</StatNumber>
             <StatLabel>Patent Applications</StatLabel>
           </StatCard>
           <StatCard delay="200ms">

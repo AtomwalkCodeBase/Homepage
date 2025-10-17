@@ -3,8 +3,8 @@ import styled from "styled-components";
 import mainImage from "../../assets/img/Labtest.png"; // Your main image path
 import abstractShape from "../../assets/img/Logo placeholder.png"; // Abstract shapes in the top left
 import FeatureBenifits from "../FeatureBenifits";
-import FAQSection from "../hrm/FAQSection";
 import KeyFeaturelems from "./KeyFeaturelems";
+import NewFAQSection from "../hrm/NewFAQSection";
 const Section = styled.section`
   display: flex;
   justify-content: space-between;
@@ -111,7 +111,7 @@ with multiple servers.  </Description>
     </Section>
     <FeatureBenifits data={'Equipment'}></FeatureBenifits>
      <KeyFeaturelems></KeyFeaturelems>
-    <FAQSection data={"equipment"}></FAQSection>
+    <NewFAQSection data={"equipment"}></NewFAQSection>
     </>
   );
 };

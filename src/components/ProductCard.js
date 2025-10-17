@@ -404,7 +404,7 @@ const ProductCard = () => {
         "Warehouse management (Bin Locations)",
         "Item Serial Number handling",
         "Item physical inspection and open balance",
-        "Item min order qty and Expiry date tracking"
+        "Item Minimum Order Quantity and Expiry Date Tracking"
       ],
       onClick: () => salespage("/inventory.html"),
       delay: "0.3s"

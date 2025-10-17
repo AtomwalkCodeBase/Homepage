@@ -192,7 +192,7 @@ const NewFAQSection = ({ data }) => {
         { question: `Do you have provision to update the personal information, such as address or contact details?`, answer: `Yes, we support to update the personal information, such as address or contact details. For updating any other information, you must send a request via email to your HR manager. Only the HR manager has the authority to update these details in the system.` },
         { question: `Where can I view my performance reviews or appraisal details?`, answer: `For performance reviews, employees can visit the "My Weekly Score" section, where they can view their "Performance Score." Appraisal details are available under the "My Appraisal" section.` },
         { question: `Can I view my team’s details if I am a manager?`, answer: `Yes, managers have access to team details under the "Manager (HRMS)" sections, depending on system configuration.` },
-        
+
       ],
       'Performance Management': [
         { question: `How do I view my goals or Key Responsibility Area (KRA)?`, answer: `Goals and KRA are accessible in the "My Attendance" section at the weekly attendance submission.` },
@@ -203,7 +203,7 @@ const NewFAQSection = ({ data }) => {
       ],
       'Recruitment and Onboarding': [
         { question: `Do you support maintaining the data of selected candidate & creation of job offer/ appointment letter?`, answer: `Yes, we support maintaining the data of selected candidate & creation of job offer/ appointment letter. Company can customise the offer letter as per the requirements including the details of salary structure.` },
-      ],  
+      ],
     },
     CRM: {
       'General Overview': [
@@ -215,19 +215,19 @@ const NewFAQSection = ({ data }) => {
         { question: "Can I import/export customer data?", answer: "Yes, you can import and export customer data. On the Customer Details page, there is an option available in the top right corner. To import data, simply click on the “Upload” option, and then provide the necessary details in the format required. After submitting the information, the system will fetch and upload the customer data into the CRM. To export data, a similar process can be followed from the same menu, allowing you to download customer details in a compatible format for backup or external use. This feature ensures seamless management of customer information across your business systems." },
         { question: "Does the CRM support customer segmentation?", answer: "Yes, our CRM supports customer segmentation through fields like Customer Group, and Customer Group (Secondary). While adding a new customer, you can assign values to these fields to categorize customers based on your segmentation criteria. This enables you to organize customers effectively, tailor your marketing strategies, and provide personalized services based on their group or type." },
         { question: "How can I track sales leads in the CRM?", answer: "To track sales leads in the CRM, navigate to the CRM section from the left menu and select the Leads tab. Here, you can view all your leads in a centralized dashboard, organized by their status in the sales pipeline. Each lead entry provides details like contact information, lead source, and current stage. You can update the status of a lead as it progresses through the sales funnel, add notes or tasks for follow-ups, and scheou to focus on high-priority opportunities. This streamlined process ensures efficient tracking and management of sales leads." },
-    ],
-    'Sales and Leads': [
-      { question: "Can I create and send marketing campaigns through the CRM?", answer: "Yes, you can create and send marketing campaigns through the CRM. Users can choose to create custom templates or use system-generated templates for their campaigns. To get started, navigate to the CRM section in the left panel and click on Customer Campaigns. This will display a list of existing campaigns. To create a new one, click on the Add Campaign button in the top right corner. Fill in all the " },
-      { question: "Does it support email templates and personalization?", answer: "Yes, the CRM supports email templates and personalization. You can create custom email templates or use predefined system templates to streamline your marketing and communication efforts. These templates can be personalized by including dynamic fields such as the recipient’s name, company, or other customer-specific details, ensuring each email feels tailored and relevant. This functionality makes it easy to maintain consistency in branding while delivering a personalized experience to your audience. Additionally, templates can be saved for reuse, improving efficiency and enhancing the effectiveness of your email campaigns." },
-      { question: "How can I track campaign performance?", answer: "You can track campaign performance easily within the CRM. When creating a campaign, there are two options: Response Yes Button Text and Response No Button Text, where you can specify the labels for user reactions, such as Like and Dislike or any other relevant terms. Once the campaign is sent, recipients can interact with these buttons. To view the responses, go to the campaign list and click on List Responses for the specific campaign. This will display all the recipient responses, allowing you to gauge the campaign's success and gather valuable feedback for future improvements."},
-       ],
-  //      'Automation and Workflow': [
-  //   { question: "Can I automate customer lifecycle management? ", answer: "Yes, the CRM allows you to automate customer lifecycle management. It enables you to set up automated workflows that manage the entire customer journey from initial lead capture, through the sales process, to customer onboarding, and ongoing relationship management. You can automate follow-up actions, send personalized communications, track customer interactions, and manage renewals or upgrades based on predefined criteria. This automation ensures a consistent and efficient approach to managing customer relationships, enhances customer satisfaction, and drives retention and growth throughout the customer lifecycle."},
-  // ],
-  'Customization and Scalability': [
-    { question: "Can I add custom fields or modules?", answer: "Yes, the CRM allows you to add custom fields or modules to tailor the system to your specific business needs. You can create and modify custom fields for existing modules, such as adding additional contact details, notes, or custom attributes related to leads, customers, or opportunities. Additionally, you can create entirely new modules to track unique data or processes specific to your business, such as custom project tracking or additional support metrics. These customizations enable the CRM to align more closely with your workflows and data management requirements, enhancing its functionality and usability."},
-  ],
-  },
+      ],
+      'Sales and Leads': [
+        { question: "Can I create and send marketing campaigns through the CRM?", answer: "Yes, you can create and send marketing campaigns directly through the CRM. You have the flexibility to design your own custom templates or use system-generated ones for your campaigns. To begin, go to the CRM section in the left panel and select Customer Campaigns. You’ll see a list of existing campaigns. To create a new one, click the Add Campaign button in the top-right corner, fill in the required fields, attach any relevant files if needed, and choose your preferred campaign medium — WhatsApp or Email — to send the campaign." },
+        { question: "Does it support email templates and personalization?", answer: "Yes, the CRM supports email templates and personalization. You can create custom email templates or use predefined system templates to streamline your marketing and communication efforts. These templates can be personalized by including dynamic fields such as the recipient’s name, company, or other customer-specific details, ensuring each email feels tailored and relevant. This functionality makes it easy to maintain consistency in branding while delivering a personalized experience to your audience. Additionally, templates can be saved for reuse, improving efficiency and enhancing the effectiveness of your email campaigns." },
+        { question: "How can I track campaign performance?", answer: "You can track campaign performance easily within the CRM. When creating a campaign, there are two options: Response Yes Button Text and Response No Button Text, where you can specify the labels for user reactions, such as Like and Dislike or any other relevant terms. Once the campaign is sent, recipients can interact with these buttons. To view the responses, go to the campaign list and click on List Responses for the specific campaign. This will display all the recipient responses, allowing you to gauge the campaign's success and gather valuable feedback for future improvements." },
+      ],
+      //      'Automation and Workflow': [
+      //   { question: "Can I automate customer lifecycle management? ", answer: "Yes, the CRM allows you to automate customer lifecycle management. It enables you to set up automated workflows that manage the entire customer journey from initial lead capture, through the sales process, to customer onboarding, and ongoing relationship management. You can automate follow-up actions, send personalized communications, track customer interactions, and manage renewals or upgrades based on predefined criteria. This automation ensures a consistent and efficient approach to managing customer relationships, enhances customer satisfaction, and drives retention and growth throughout the customer lifecycle."},
+      // ],
+      'Customization and Scalability': [
+        { question: "Can I add custom fields or modules?", answer: "Yes, the CRM allows you to add custom fields or modules to tailor the system to your specific business needs. You can create and modify custom fields for existing modules, such as adding additional contact details, notes, or custom attributes related to leads, customers, or opportunities. Additionally, you can create entirely new modules to track unique data or processes specific to your business, such as custom project tracking or additional support metrics. These customizations enable the CRM to align more closely with your workflows and data management requirements, enhancing its functionality and usability." },
+      ],
+    },
     sales: {
       'Sales Process': [
         { question: 'What is a sales module in an ERP system?', answer: 'In the Sales module, Atomwalk helps manage processes such as sales orders, quotations, invoices, and customer interactions.' },
@@ -250,19 +250,19 @@ const NewFAQSection = ({ data }) => {
         { question: 'Can I manage service-based procurement?', answer: 'Yes, the module supports purchase service orders for services instead of physical goods.' },
         { question: 'Is it manage the Bin-Location on a Purchase?', answer: 'Yes, the module helps to mange the Bin-Location. While doing Order-In it automatilacally mange the allocated bin Location.' },
         { question: 'Can I manage the return or damage quantity?', answer: 'Yes, you can effectively manage the return and damage quantity.' },
-        
+
       ],
       'Compliance Process': [
         { question: 'What is a compliance module in an ERP system?', answer: `The compliance module ensures the organization adheres the rules, regulations, and standards.` },
         { question: 'How does the system handle GST filing?', answer: `Atomwalk automatically calculates GST for transactions, and helps users stay updated with compliance requirements.` },
-        { question: 'Can it manage TDS calculation? ', answer: `Yes, the module supports TDS calculation and provides reports.` },        
+        { question: 'Can it manage TDS calculation? ', answer: `Yes, the module supports TDS calculation and provides reports.` },
         { question: 'For a service are you able to calculate the TDS?', answer: 'Yes, Atomwalk help you calculate the TDS in a service also.' },
         { question: 'What types of regulatory reports can I generate?', answer: 'The system can generate reports for GST, TDS, audit trails, and other compliance-related requirements.' },
         { question: 'Can the module be configured for industry-specific compliance needs? ', answer: `Yes, the module is customizable to meet the compliance needs of specific industries, like healthcare, manufacturing, retail, service or any industry-specific.` },
         { question: 'How does it ensure data security for compliance records?', answer: 'The system implements role-based access, encryption, and audit trails to secure sensitive compliance data.' },
-        
+
       ],
-      
+
     },
     Project: {
       'General Overview': [
@@ -275,44 +275,118 @@ const NewFAQSection = ({ data }) => {
         { question: "How do I configure a process template for a recurring project?", answer: "Go to Process Templates, click Create New, define steps, assign roles, and set default timelines. Save it for future use." },
         { question: "Can I customize the fields and workflow in the process template?", answer: "Yes, Atomwalk allows customization of fields, task priorities, workflows, and deadlines in the process template to match your organizational needs." },
         { question: "How do I assign team members or departments to a project or task?", answer: "Within the project/task setup, assign team members or departments using the Assignment tab. You can search and add members based on skills or department availability." },
-    ],
-    'Execution and Monitoring': [
-      { question: "How do I track the progress of a work order/project?", answer: "Use the Project Dashboard to monitor task completion, milestone achievements, and overall progress in real time. " },
-      { question: "What reports can I generate for a project or work order?", answer: "Task status reports, Milestone tracking reports, Resource utilization reports, Budget vs. actual expenditure reports" },
-      { question: "How can I update the status of tasks or milestones?", answer: "Navigate to the task or milestone, select Update Status, and choose from predefined options like “In Progress,” “Completed,” or “Delayed.” Add comments if needed."},
-      { question: "What happens if there’s a delay in completing a task?", answer: "The system flags the delay and sends notifications to relevant stakeholders. The timeline is recalculated, considering dependencies and adjusted deadlines." },
-      { question: "Can I integrate the module with other tools or systems?", answer: "Yes, the module integrates seamlessly with Atomwalk’s other ERP modules like Sales, Procurement, and HRM, ensuring streamlined workflows. APIs are also available for third-party tool integration."},
-       ],
-       
-  },
-  Inventory: {
-    'General Overview': [
-      { question: "What is an Inventory Management module?", answer: "The Inventory Management module by Atomwalk Technology helps businesses efficiently track, manage, and control their inventory across multiple locations, ensuring accurate stock levels and smooth operations." },
-      { question: "What types of businesses can use this module?", answer: "Our module is versatile and suitable for businesses of all sizes, including retail, manufacturing, distribution, e-commerce, and service-based industries." },
-      { question: "How does the module help in inventory tracking?", answer: "Atomwalk’s module provides real-time tracking of inventory movement, from procurement to sales, using tools like barcode scanning, stock logs, and automated updates." },
-      { question: "Can it handle multiple warehouses or locations?", answer: "Yes, the module supports multi-warehouse management, allowing you to track and manage inventory across various locations seamlessly." },
-    ],
-    'Features & Functionalities': [
-      // { question: "5.	Does it support barcode scanning integration?", answer: "Yes, the module integrates with barcode scanners for faster and more accurate inventory updates." },
-      { question: "Can I track stock levels in real-time?", answer: "Absolutely! Real-time stock updates ensure that you always have accurate data on inventory availability." },
-      { question: "Does the module handle stock reordering or generate low-stock alerts?", answer: "Yes, it includes automatic reorder suggestions and low-stock alerts based on predefined thresholds." },
-      { question: "Is there support for batch and serial number tracking?", answer: "Yes, the module supports batch and serial number tracking for better traceability and quality control." },
-      { question: "How does the system manage product categories and variants?", answer: "Products can be categorized into multiple levels, with support for variants such as size, color, and other attributes." },
-      { question: "Can it track inventory valuation methods?", answer: "Yes, the module supports various inventory valuation methods batchwise to match your accounting preferences." },
-      { question: "Are damaged, expired, or returned goods tracked separately?", answer: "Yes, the module categorizes and tracks damaged, expired, and returned goods for better accountability." },
-  ],
-  'Integrations': [
-    { question: "Can the module integrate with sales, procurement, and accounting modules?", answer: "Yes, seamless integration with Atomwalk’s Sales, Procurement, and Accounting modules ensures end-to-end inventory control." },
-    { question: "Is there integration with e-commerce platforms or point-of-sale systems?", answer: "Yes, the module integrates with popular e-commerce platforms and POS systems to sync stock levels automatically." },
-    { question: "Can the system sync with third-party shipping or logistics tools?", answer: "Yes, integrations with logistics platforms enable real-time shipment tracking and automated updates."},
-     ],
-     
-    'Reports & Analytics': [
-      { question: "What types of inventory reports are available?", answer: "The module offers comprehensive reports such as stock aging, inventory turnover, valuation, and discrepancy analysis." },
-      { question: "How are inventory discrepancies reported and resolved?", answer: "Discrepancies are flagged automatically, with tools for physical investigation and adjustment to maintain accuracy." },
-    ],
-     
-},
+      ],
+      'Execution and Monitoring': [
+        { question: "How do I track the progress of a work order/project?", answer: "Use the Project Dashboard to monitor task completion, milestone achievements, and overall progress in real time. " },
+        { question: "What reports can I generate for a project or work order?", answer: "Task status reports, Milestone tracking reports, Resource utilization reports, Budget vs. actual expenditure reports" },
+        { question: "How can I update the status of tasks or milestones?", answer: "Navigate to the task or milestone, select Update Status, and choose from predefined options like “In Progress,” “Completed,” or “Delayed.” Add comments if needed." },
+        { question: "What happens if there’s a delay in completing a task?", answer: "The system flags the delay and sends notifications to relevant stakeholders. The timeline is recalculated, considering dependencies and adjusted deadlines." },
+        { question: "Can I integrate the module with other tools or systems?", answer: "Yes, the module integrates seamlessly with Atomwalk’s other ERP modules like Sales, Procurement, and HRM, ensuring streamlined workflows. APIs are also available for third-party tool integration." },
+      ],
+
+    },
+    Inventory: {
+      'General Overview': [
+        { question: "What is an Inventory Management module?", answer: "The Inventory Management module by Atomwalk Technology helps businesses efficiently track, manage, and control their inventory across multiple locations, ensuring accurate stock levels and smooth operations." },
+        { question: "What types of businesses can use this module?", answer: "Our module is versatile and suitable for businesses of all sizes, including retail, manufacturing, distribution, e-commerce, and service-based industries." },
+        { question: "How does the module help in inventory tracking?", answer: "Atomwalk’s module provides real-time tracking of inventory movement, from procurement to sales, using tools like barcode scanning, stock logs, and automated updates." },
+        { question: "Can it handle multiple warehouses or locations?", answer: "Yes, the module supports multi-warehouse management, allowing you to track and manage inventory across various locations seamlessly." },
+      ],
+      'Features & Functionalities': [
+        // { question: "5.	Does it support barcode scanning integration?", answer: "Yes, the module integrates with barcode scanners for faster and more accurate inventory updates." },
+        { question: "Can I track stock levels in real-time?", answer: "Absolutely! Real-time stock updates ensure that you always have accurate data on inventory availability." },
+        { question: "Does the module handle stock reordering or generate low-stock alerts?", answer: "Yes, it includes automatic reorder suggestions and low-stock alerts based on predefined thresholds." },
+        { question: "Is there support for batch and serial number tracking?", answer: "Yes, the module supports batch and serial number tracking for better traceability and quality control." },
+        { question: "How does the system manage product categories and variants?", answer: "Products can be categorized into multiple levels, with support for variants such as size, color, and other attributes." },
+        { question: "Can it track inventory valuation methods?", answer: "Yes, the module supports various inventory valuation methods batchwise to match your accounting preferences." },
+        { question: "Are damaged, expired, or returned goods tracked separately?", answer: "Yes, the module categorizes and tracks damaged, expired, and returned goods for better accountability." },
+      ],
+      'Integrations': [
+        { question: "Can the module integrate with sales, procurement, and accounting modules?", answer: "Yes, seamless integration with Atomwalk’s Sales, Procurement, and Accounting modules ensures end-to-end inventory control." },
+        { question: "Is there integration with e-commerce platforms or point-of-sale systems?", answer: "Yes, the module integrates with popular e-commerce platforms and POS systems to sync stock levels automatically." },
+        { question: "Can the system sync with third-party shipping or logistics tools?", answer: "Yes, integrations with logistics platforms enable real-time shipment tracking and automated updates." },
+      ],
+
+      'Reports & Analytics': [
+        { question: "What types of inventory reports are available?", answer: "The module offers comprehensive reports such as stock aging, inventory turnover, valuation, and discrepancy analysis." },
+        { question: "How are inventory discrepancies reported and resolved?", answer: "Discrepancies are flagged automatically, with tools for physical investigation and adjustment to maintain accuracy." },
+      ],
+
+    },
+    equipment: {
+      'General Overview': [
+        {
+          question: "Who can use the Lab Equipment Management module?",
+          answer: "The Lab Equipment Management module by Atomwalk Technology is designed for a wide range of users including R&D labs in companies and universities, biobanking facilities, food & beverage industries, medical labs, pharmaceuticals, clinical testing and molecular diagnostics labs, contract research organizations, environmental testing and management labs, forensics, mining and exploration, toxicology, molecular biology, public health sectors, clinical sectors, and startups."
+        },
+        {
+          question: "How can a user ID be created?",
+          answer: "Only administrators have the access to create user IDs using the user's registered email address."
+        },
+        {
+          question: "Can a user change their username or email?",
+          answer: "No, users cannot modify their username or email once created. For any changes, the user must contact the system administrator."
+        },
+        {
+          question: "What happens if I forget my username?",
+          answer: "The system allows users to create a nickname for login. For example, if Ram forgets his default username, he can still access the system using his personalized nickname."
+        },
+      ],
+
+      'Access Control & Permissions': [
+        {
+          question: "Is it possible to restrict certain users from accessing specific equipment?",
+          answer: "Yes, administrators can restrict specific users or groups from accessing particular equipment. For example, if Ram is not trained to operate a high-powered laser, the admin can prevent him from booking that machine."
+        },
+        {
+          question: "Can I set up different user groups for each department?",
+          answer: "Yes, user groups can be configured department-wise. For example, a Biology Department group can be assigned access only to relevant instruments, ensuring focused and secure usage."
+        },
+      ],
+
+      'Booking & Scheduling': [
+        {
+          question: "Can I view available booking slots for the current and upcoming week?",
+          answer: "Absolutely! Users can view available booking slots for both the current and upcoming weeks, helping them plan their research or testing schedules effectively."
+        },
+        {
+          question: "Can I cancel or reschedule a booking?",
+          answer: "Yes, users can cancel or reschedule their bookings at any time. For instance, if Jenny booked equipment for Thursday but needs it for Friday, she can cancel and rebook easily."
+        },
+        {
+          question: "Can the system block timeslots for scheduled maintenance?",
+          answer: "Yes, the system automatically blocks time slots during maintenance periods. For example, if the centrifuge is under maintenance at 2 PM, the system will block 1 PM to 4 PM to ensure no interruptions."
+        },
+        {
+          question: "How many times can I book equipment in a week?",
+          answer: "Each user’s booking frequency depends on the configured policy. For example, if the HPLC machine allows three slots per week and Ram books Monday, Tuesday, and Friday, he won’t be able to book again until the following week."
+        },
+        {
+          question: "Can I share my booked slot with another user?",
+          answer: "No, each booking is tied to the specific user who made it. However, managers or admins can modify the schedule when necessary."
+        },
+        {
+          question: "Can I book equipment outside of working hours?",
+          answer: "Yes, the system supports 24/7 booking. For example, if Ram prefers working late, he can reserve equipment at 11 PM as long as it’s available."
+        },
+        {
+          question: "Can I see my past bookings?",
+          answer: "Yes, users can view their complete booking history in the system. For instance, Ram can check when he last used the PCR machine from his booking records."
+        },
+      ],
+
+      'Reports & Data Management': [
+        {
+          question: "Can I generate reports for specific fields or data?",
+          answer: "Yes, users with the appropriate access can generate custom reports based on parameters such as equipment usage, booking frequency, and maintenance history."
+        },
+        {
+          question: "Can I delete unnecessary data from the system?",
+          answer: "Yes, administrators can purge outdated or unnecessary data to ensure smooth performance. For example, old booking logs can be safely removed without affecting active operations."
+        },
+      ],
+    },
+
   };
 
   const faqCategories = faqData[data] || {};

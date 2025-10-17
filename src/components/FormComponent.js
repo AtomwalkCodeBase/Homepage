@@ -226,7 +226,7 @@ const endpoint = 'https://www.atomwalk.com/api';
               <input type="checkbox" name="requirement" value="Customer Management" onChange={handleCheckboxChange} /> Customer Management
             </label>
             <label>
-              <input type="checkbox" name="requirement" value="Inventory Management" onChange={handleCheckboxChange} /> Inventory Managemen
+              <input type="checkbox" name="requirement" value="Inventory Management" onChange={handleCheckboxChange} /> Inventory Management
             </label>
             <label>
               <input type="checkbox" name="requirement" value="Process Templates & Project Management" onChange={handleCheckboxChange} /> Process Templates & Project Management

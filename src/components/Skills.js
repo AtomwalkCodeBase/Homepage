@@ -392,6 +392,17 @@ export const Skills = () => {
   "accentColor": "#8B5A2B",
   "accentColor2": "#D2A679"
     },
+    {
+      title: "Good Laboratory Practice",
+      description:
+        "Embrace the next era of laboratory innovation with Atomwalk’s GLP-enabled ecosystem—built to unify scientific processes and strengthen research accountability. From seamless study tracking to controlled data submission and equipment oversight, it transforms every stage of lab activity into a trusted, traceable, and performance-driven experience—ensuring quality, confidence, and readiness for any audit.",
+      image:
+        "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/glp_entry.png",
+      path: "/glp.html",
+      "bgColor": "#ffdee0",
+  "accentColor": "#ff868eff",
+  "accentColor2": "#f93441ff"
+    },
   ];
 
   return (

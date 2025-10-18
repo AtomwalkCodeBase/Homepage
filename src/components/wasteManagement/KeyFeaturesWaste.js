@@ -398,6 +398,37 @@ const KeyFeaturesWaste = (props) => {
       iconHover: "#7d3eff"
     },
   ];
+
+  const glpfeatures = [
+    {
+      icon: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/institute.png",
+      title: "Academic & Research Institutions",
+      accentColor: "#7d3eff",
+      iconBg: "#f0e7ff",
+      iconHover: "#7d3eff"
+    },
+    {
+      icon: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/lab_res.png", 
+      title: "Clinical & Diagnostic Labs",
+      accentColor: "#7d3eff",
+      iconBg: "#f0e7ff",
+      iconHover: "#7d3eff"
+    },
+    {
+      icon: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/pharma_testing.png",
+      title: "Pharmaceutical Testing Facilities",
+      accentColor: "#7d3eff",
+      iconBg: "#f0e7ff",
+      iconHover: "#7d3eff"
+    },
+    {
+      icon: 'https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/env_test.png',
+      title: "Environmental & Food Testing Labs",
+      accentColor: "#7d3eff",
+      iconBg: "#f0e7ff",
+      iconHover: "#7d3eff"
+    },
+  ];
   const[data, setdata] = useState(features);
   useEffect(() => {
     if(window.location.pathname === '/aimanagement.html'){
@@ -411,6 +442,9 @@ const KeyFeaturesWaste = (props) => {
     }
     else if(window.location.pathname === '/solarmanagement.html'){
       setdata(Smsfeatures);
+    }
+    else if(window.location.pathname === '/glp.html'){
+      setdata(glpfeatures);
     }
 
   }, []);

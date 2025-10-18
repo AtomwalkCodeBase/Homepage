@@ -8,7 +8,8 @@ import {
   FaTrashAlt, FaTrashRestoreAlt, FaChartPie, FaHardHat,
   FaBuilding, FaEye,
   FaFileAlt, FaExclamationTriangle, FaTachometerAlt,
-  FaProjectDiagram, FaTruckLoading, FaQrcode // ✅ added
+  FaProjectDiagram, FaTruckLoading, FaQrcode,
+  FaVials,  FaTasks,
 } from 'react-icons/fa';
 
 import { BsFillGearFill, BsGraphUpArrow, BsBoxSeam } from 'react-icons/bs';
@@ -351,6 +352,46 @@ const Ai = [
   { title: 'Predictive Maintenance', text: 'Forecast machine failures or end-of-life using historical usage, vibration, and temperature data—preventing unplanned downtime.', bgColor: '#4caf50', icon: <FaTachometerAlt /> },
 ];
 
+const glpmanagement = [
+  {
+    title: "Projects Tracking",
+    text: "Track assigned projects, animal groups, and test lists",
+    bgColor: "#00bcd4",
+    icon: <FaProjectDiagram />,
+  },
+  {
+    title: "Test Data Capture",
+    text: "Record results by date, group, and test type",
+    bgColor: "#4caf50",
+    icon: <FaVials />,
+  },
+  {
+    title: "Progress Tracking",
+    text: "Monitor study completion & filter results with ease",
+    bgColor: "#ffc107",
+    icon: <FaTasks />,
+  },
+  {
+    title: "GLP Compliance",
+    text: "Data locked upon submission for integrity",
+    bgColor: "#9c27b0",
+    icon: <FaShieldAlt />,
+  },
+  {
+    title: "Real-Time Dashboards",
+    text: "Gain insights into lab performance instantly.",
+    bgColor: "#ff9800",
+    icon: <FaChartPie />,
+  },
+  {
+    title: "Mobile Access",
+    text: "Manage study data anytime, anywhere via Atomwalk’s app",
+    bgColor: "#4caf50",
+    icon: <FaMobileAlt />,
+  },
+];
+
+
 const FeatureBenefits = ({ data }) => {
   const benefits = data === 'AI' ? Ai : 
                    data === 'Solar' ? Solar : 
@@ -364,6 +405,7 @@ const FeatureBenefits = ({ data }) => {
                    data === 'Waste' ? wasteManagement : 
                    data === 'Inventory' ? inventoryManagement : 
                    data === 'Sales and Procurement' ? sales : 
+                   data === 'GLP' ? glpmanagement : 
                    leaveBenefits;
 
   const getTitle = () => {
@@ -371,6 +413,7 @@ const FeatureBenefits = ({ data }) => {
       case 'Solar': return 'Solar Intelligence Optimize, Control, and Grow.';
       case 'Facility': return 'All-in-One Facility Management, Streamlined and Smarter.';
       case 'AI': return 'AI-Powered Insights for Smarter Operations';
+      case 'GLP': return 'Get your lab in order, and your data in line';
       default: return `All-in-One ${data} Management, Faster and Easier.`;
     }
   };
@@ -380,6 +423,7 @@ const FeatureBenefits = ({ data }) => {
       case 'Solar': return 'Harness the power of intelligent solar management for maximum efficiency and growth.';
       case 'Facility': return 'Comprehensive facility solutions that simplify operations and enhance productivity.';
       case 'AI': return 'Transform your operations with cutting-edge artificial intelligence solutions.';
+      case 'GLP': return 'Discover how our GLP can streamline your operations and boost productivity';
       default: return `Discover how our ${data} management solution can streamline your operations and boost productivity.`;
     }
   };

@@ -107,6 +107,7 @@ import InPatients from "./pages/IPDappointments";
 import PatientAdmission from "./pages/PatientAdmission";
 import PatentPage from "./components/PatentPage";
 import AwardsPage from "./components/AwardsPage";
+import GlpHeroPage from "./components/glp/GlpHeroPage";
 // import MyAppriaisal from "./pages/MyAppriaisal";
 
 function App() {
@@ -202,6 +203,7 @@ function App() {
               <Route path="/inventoryreport.html" element={<InventoryManagementSystem />} />
               <Route path="/assessment.html" element={<Assessment />} />
               <Route path="/wastemanagement.html" element={<WasteManagementHeroPage />} />
+              <Route path="/glp.html" element={<GlpHeroPage />} />
               <Route path="/facilitymanagement.html" element={<Fmsheropage />} />
               <Route path="/hospitalmanagement.html" element={<HmsHeroPage />} />
               <Route path="/solarmanagement.html" element={<Smsheropage />} />

@@ -186,7 +186,12 @@ const customerlogin = async(userData) => {
         setLoading(false);
       }
     };
-    fetchTasks();
+    const userToken = localStorage.getItem('userToken');
+    const isFmsUser = localStorage.getItem('fmsUser');
+      
+      if (userToken && isFmsUser && profile?.is_manager !== undefined) {
+        fetchTasks();
+      }
     },[profile?.is_manager])
   const value = {
     currentUser,

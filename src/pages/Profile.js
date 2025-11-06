@@ -2198,47 +2198,6 @@ const Profile = () => {
                       </OptionCard>
                     </OptionGrid>
                   </ComponentSection>
-
-                  <PreviewSection>
-                    <SectionTitle>Layout Preview</SectionTitle>
-                    <PreviewContainer>
-                      <PreviewCard className="layout-preview-card">
-                        <div className="layout-preview">
-                          <div
-                            className={`
-layout - sidebar
-$
-{
-  uiPreferences.layout.sidebarStyle
-}
-;`}
-                          >
-                            <div className="sidebar-item active"></div>
-                            <div className="sidebar-item"></div>
-                            <div className="sidebar-item"></div>
-                            <div className="sidebar-item"></div>
-                          </div>
-                          <div
-                            className={`
-layout - content
-$
-{
-  uiPreferences.layout.containerWidth
-}
-$
-{
-  uiPreferences.layout.density
-}
-`}
-                          >
-                            <div className="content-header"></div>
-                            <div className="content-card"></div>
-                            <div className="content-card"></div>
-                          </div>
-                        </div>
-                      </PreviewCard>
-                    </PreviewContainer>
-                  </PreviewSection>
                 </>
               )}
             </TabContainer>

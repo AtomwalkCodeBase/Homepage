@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [companyInfo, setCompanyInfo] = useState([]) 
    const [error, setError] = useState("")  
    const iscoustomerLogin = localStorage.getItem("customerUser") ? true : false
+   const usertoake = localStorage.getItem("userToken") 
    const [taskResponse, setTaskResponse] = useState([]);
   // const navigate = useNavigate()
   useEffect(() => {
@@ -49,7 +50,10 @@ export const AuthProvider = ({ children }) => {
      fetchcustomerProfile();
     }
     else{
-      fetchProfile();
+      if(usertoake){
+        fetchProfile();
+      }
+      
     }
     
     // Check if user is logged in from localStorage
@@ -189,7 +193,7 @@ const customerlogin = async(userData) => {
     const userToken = localStorage.getItem('userToken');
     const isFmsUser = localStorage.getItem('fmsUser');
       
-      if (userToken && isFmsUser && profile?.is_manager !== undefined) {
+      if (isFmsUser && profile?.is_manager !== undefined) {
         fetchTasks();
       }
     },[profile?.is_manager])

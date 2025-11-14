@@ -28,7 +28,7 @@ import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
 import Badge from "../components/Badge"
-import { getEmpClaim, getExpenseItem, getExpenseProjectList, postClaimAction, validateClaimItem } from "../services/productServices"
+import { getEmpClaim, getExpenseItem, getExpenseProjectList, getProjectlist, postClaimAction, validateClaimItem } from "../services/productServices"
 import ClaimModal from "../components/modals/ClaimModal"
 import ClaimActionModal from "../components/modals/ClaimActionModal"
 import { toast } from "react-toastify"
@@ -335,7 +335,7 @@ const MyClaims = () => {
 
   const fetchProjectList = async () => {
     try {
-      const response = await getExpenseProjectList()
+      const response = await getProjectlist()
       const data = response.data
       setProjecttype(data)
     } catch (error) {
@@ -463,7 +463,9 @@ const MyClaims = () => {
     fetchClaimDetails()
     fetchProjectList()
     // fetchClaimDetailsofemp()
-    validApproveClaim()
+    if(activeTab === "empdata"){
+      validApproveClaim()
+    }
   }, [isLoadings])
 
   useEffect(() => {

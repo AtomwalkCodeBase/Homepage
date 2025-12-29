@@ -395,11 +395,11 @@ export function postAllocationData(activity_data) {
   }
 
 export function getActivityList() { 
-    return authAxiosLAB(getActivities)
+    return authAxios(getActivities)
   }
 
 export function getGLPProjectList(){
-  return authAxiosLAB(projectList)
+  return authAxios(projectList)
 }
 
 export function getActivitiQcData(res){
@@ -408,5 +408,5 @@ export function getActivitiQcData(res){
       'call_mode': res.call_mode 
 
     };
-  return authAxiosLAB(getActivityQc,data)
+  return authAxios(getActivityQc,data)
 }

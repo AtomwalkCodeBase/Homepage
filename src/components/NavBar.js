@@ -96,7 +96,8 @@ export const NavBar = () => {
      "fmsdashboard",
      "tasks",
      "customerList",
-     "ticketList"
+     "ticketList",
+     "activityList"
   ];
   
   useEffect(() => {
@@ -169,6 +170,9 @@ export const NavBar = () => {
   };
  const handlecustomerLogin = () => {
     window.location.href = "https://home.atomwalk.com/customer/login.html";
+  };
+ const handleLabUserLogin = () => {
+    window.location.href = "https://home.atomwalk.com/LabUser/login.html";
   };
   const handleLoginClick = () => {
     // On mobile, toggle the dropdown instead of navigating directly
@@ -251,6 +255,10 @@ export const NavBar = () => {
                     <LoginOption onClick={handleFMSLogin}>
                       <span role="img" aria-label="FMS" style={{ marginRight: 8 }}>👷🏼</span>
                       Login as FMS Manager
+                    </LoginOption>
+                    <LoginOption onClick={handleLabUserLogin}>
+                      <span role="img" aria-label="FMS" style={{ marginRight: 8 }}>👷🏼</span>
+                      Login as Lab User
                     </LoginOption>
                   </LoginDropdownMenu>
                 </LoginDropdownWrapper>

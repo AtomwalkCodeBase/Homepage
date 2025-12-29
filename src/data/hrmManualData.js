@@ -38,6 +38,7 @@ import {
     FaClipboardCheck,
 } from "react-icons/fa";
 import styled from "styled-components";
+import { CUSTOMER_CONTRACT_RATE_DUE, EMP_ATTENDANCE_ALERT, MONTH_ATTENDANCE_ALERT } from "./EmailTemplate";
 
 const TableRow = styled.tr`
   &:nth-child(even) {
@@ -128,6 +129,125 @@ const DynamicTable = ({ columns = [], rows = [] }) => (
         </Table>
     </TableContainer>
 );
+
+const getHrmManualStep = () => {
+  const url = typeof window !== 'undefined' ? window.location.search : '';
+  const isCRM = url.includes("crm");
+  const isHRM = url.includes("hrm");
+  
+  // Get section title
+  const getSectionTitle = () => {
+    if (isCRM) return "Add Email Template for crm";
+    if (isHRM) return "Add Email Template for hrm";
+    return "Add Email Template";
+  };
+  
+  // Get template items
+  const getTemplateItems = () => {
+    const items = [];
+    
+    if (isHRM || !isCRM) { // Show HRM items for HRM URLs OR default
+      items.push(
+        {
+          type: "copy",
+          label: "Copy Employee's Attendance Email Template",
+          value: EMP_ATTENDANCE_ALERT, 
+        },
+        {
+          type: "copy",
+          label: "Copy Employee's Monthly Attendance Template",
+          value: MONTH_ATTENDANCE_ALERT,
+        }
+      );
+    }
+    
+    if (isCRM) { // Show CRM item only for CRM URLs
+      items.push({
+        type: "copy",
+        label: "Copy Customer Contract Rate Template",
+        value: CUSTOMER_CONTRACT_RATE_DUE, 
+      });
+    }
+    
+    return items;
+  };
+  
+  return {
+    titleSection: getSectionTitle(),
+    content: [
+      {
+        accesspath: "After Login → Sidebar → My Office"
+      },
+      {
+        title: "Add Email Template",
+        description: "This section guides users through the process of creating an email template that will be used for automated or manual email communication.",
+        sections: [
+          {
+            title: "Navigation Path",
+            icon: <FaRoute />,
+            items: [
+              "From the <strong>Left Sidebar</strong>, expand <strong>My Office</strong>",
+              "Click on <strong>Office Setup</strong>",
+              "On the right-hand side, click the <strong>'Add Email Template'</strong> button"
+            ]
+          },
+          {
+            title: "Email Template Screen Overview",
+            icon: <FaEdit />,
+            items: [
+              "After clicking <strong>'Add Email Template'</strong>, the Email Template Setup screen will appear",
+              "Users must provide required information to define the email template behavior and content"
+            ]
+          },
+          {
+            title: "Field Explanation",
+            icon: <FaEdit />,
+            content: (
+              <DynamicTable
+                columns={["Field Name", "Required", "Description"]}
+                rows={[
+                  [
+                    "Name*",
+                    "Yes",
+                    `Use this exact name for emails to work: ${isCRM ? '"CUSTOMER_CONTRACT_RATE_DUE"' : isHRM ? '"EMP_ATTENDANCE_ALERT" or "MONTH_ATTENDANCE_ALERT"' : ""}`                 
+                  ],
+                  [
+                    "Email Type*",
+                    "Yes",
+                    "Select the appropriate email category (e.g., Information Mail, Reminder Mail)"
+                  ],
+                  [
+                    "Subject",
+                    "No",
+                    "Enter the subject line that will appear in the recipient's inbox"
+                  ],
+                  [
+                    "Message HTML",
+                    "No",
+                    "Enter the HTML content of the email body. You can directly copy the content form below and paste it."
+                  ]
+                ]}
+              />
+            )
+          },
+          {
+            title: "Reference for mail templates. You can click to copy and paste it in Message HTML",
+            icon: <FaEdit />,
+            items: getTemplateItems()
+          },
+        ],
+        notes: [
+          "Fields marked with (*) are mandatory",
+          "Other fields such as <strong>Message Text</strong>, <strong>Reminder Fields</strong>, and <strong>Reset Options</strong> should be left unchanged unless specifically instructed",
+          "Improper modification of reset or reminder fields may affect system email behavior"
+        ]
+      }
+    ]
+  };
+};
+
+const emailTemplateSection = getHrmManualStep();
+
 
 export const HrmManualStep = [
 
@@ -9616,4 +9736,209 @@ export const HrmManualStep = [
             }
         ]
     },
+
+    {
+        "Add Email Account": [
+            {
+                accesspath: "After Login → Sidebar → My Office"
+            },
+
+            {
+                title: "Add Email Account (Sender Configuration)",
+                description:
+                    "This section explains how to configure an email account that will be used as the sender for system-generated emails.",
+                sections: [
+                    {
+                        title: "Navigation Path",
+                        icon: <FaRoute />,
+                        items: [
+                            "Login to the application with valid credentials",
+                            "From the <strong>Left Sidebar</strong>, expand <strong>My Office</strong>",
+                            "Click on <strong>My Site Data</strong>",
+                            "On the right-hand side of the screen, locate and click <strong>'Add Email User'</strong>"
+                        ]
+                    },
+                    {
+                        title: "Email User Configuration",
+                        icon: <FaEdit />,
+                        items: [
+                            "A modal window will appear after clicking <strong>'Add Email User'</strong>",
+                            "Enter the <strong>Email ID</strong> from which system emails will be sent",
+                            "Enter the <strong>Email Password</strong> as per the provided documentation",
+                            "Re-enter the <strong>Email Password</strong> for confirmation"
+                        ]
+                    }
+                ],
+                notes: [
+                    "<strong>Email ID</strong>, <strong>Email Password</strong>, and <strong>Re-enter Password</strong> are mandatory fields",
+                    "The email password must be configured according to the referenced documentation file <strong><a href=\"https://docs.google.com/document/d/18QkyFEXXna-O3tVfVzaKQlo-bOFqc5t4wYGwtoGX_aM/edit?tab=t.0#heading=h.qotdiysxxd8y\" target=\"_blank\">Document!</a></strong>",
+                    "If the user clicks <strong>'Forgot Password'</strong> for this email account, the email password must be reconfigured again in the system"
+                ]
+            },
+        ]
+    },
+    {[emailTemplateSection.titleSection]: emailTemplateSection.content},
+    {
+  "Batch Setup Configuration": [
+    {
+      accesspath: "After Login → Sidebar → My Office → Office Setup → Batch Setup"
+    },
+
+    {
+      title: "Access Batch Setup Screen",
+      description:
+        "This section explains how to access the Batch Setup module, where automated email processes are scheduled and managed.",
+      sections: [
+        {
+          title: "Navigation Path",
+          icon: <FaRoute />,
+          items: [
+            "Login to the application using valid credentials",
+            "From the <strong>Left Sidebar</strong>, scroll down expand <strong>All Setups</strong>",
+            "Click on <strong>Batch setup</strong>",
+            // "Open the <strong>Batch Setup</strong> screen by pasting the provided Batch Setup URL [Link] into the browser",
+            // "After login, in the browser URL bar (after 'https://crm.atomwalk.com/'), paste the Batch Setup URL 'setup/batch_setup/DAILY_BATCH'"
+          ]
+        }
+      ],
+      notes: [
+        "Batch Setup is used to automate email delivery based on predefined schedules",
+        "Ensure that the required Email Template is already configured before proceeding"
+      ]
+    },
+
+    {
+      title: "Select Batch Frequency",
+      description:
+        "This section explains how to choose the execution frequency for the automated email batch process.",
+      sections: [
+        {
+          title: "Available Frequency Options",
+          icon: <FaEdit />,
+          items: [
+            "Select <strong>Daily Batch</strong> to execute the email process every day",
+            "Select <strong>Weekly Batch</strong> to execute the email process once per week",
+            "Select <strong>Monthly Batch</strong> to execute the email process once per month"
+          ]
+        },
+        {
+          title: "Action",
+          icon: <FaArrowRight />,
+          items: [
+            "After selecting the required frequency tab, click on <strong>'Add Email Template'</strong>"
+          ]
+        }
+      ],
+      notes: [
+        "Only one frequency configuration is executed per batch entry",
+        "Choose the frequency carefully based on business or compliance requirements"
+      ]
+    },
+
+    {
+      title: "Configure Batch Details",
+      description:
+        "This section explains how to configure the batch details and link the previously created email template.",
+      sections: [
+        {
+          title: "Daily Batch Detail Fields",
+          icon: <FaEdit />,
+          content: (
+            <DynamicTable
+              columns={["Field Name", "Required", "Description"]}
+              rows={[
+                [
+                  "Name*",
+                  "Yes",
+                  "Enter a meaningful name for the batch process (e.g., Contract Due Reminder)"
+                ],
+                [
+                  "Batch Function*",
+                  "Yes",
+                  "Select the batch function corresponding to the Email Template created earlier"
+                ],
+                [
+                  "Execution Time (IST)*",
+                  "Yes",
+                  "Specify the time when the batch should execute (Allowed time: 1:00 AM to 7:00 AM IST)"
+                ],
+                // [
+                //   "Report Due Period (in days)*",
+                //   "Yes",
+                //   "Define the due period in days for which records should be considered"
+                // ],
+                // [
+                //   "Report Choice*",
+                //   "Yes",
+                //   "Select whether to include upcoming due records, overdue records, or both"
+                // ],
+                [
+                  "To List*",
+                  "Yes",
+                  "Enter recipient email IDs separated by a semicolon (;)"
+                ],
+                [
+                  "CC List",
+                  "No",
+                  "Enter additional recipients to be copied in the email (optional)"
+                ],
+                // [
+                //   "Subject",
+                //   "No",
+                //   "Enter the email subject if applicable; otherwise it will use the template default"
+                // ],
+                // [
+                //   "Message",
+                //   "No",
+                //   "Enter message content if required; otherwise it will use the template content"
+                // ]
+              ]}
+            />
+          ),
+        },
+        {
+          title: "Submit Configuration",
+          icon: <FaArrowRight />,
+          items: [
+            "After entering all required fields, click on the <strong>'Submit'</strong> button",
+            "The batch configuration will be saved and scheduled for execution"
+          ]
+        }
+      ],
+      notes: [
+        "Fields marked with (*) are mandatory",
+        "Batch execution time is based on IST but displayed internally in UTC",
+        "Ensure the selected Batch Function matches the intended Email Template logic",
+        "Only Field Name which is mentioned in the above table change it, rest leave as it is ",
+      ]
+    },
+    {
+      title: "Batch Record Status",
+      description:
+        "This section explains how to identify and manage the status of batch records.",
+      sections: [
+        {
+          title: "Batch Record Indicators",
+          icon: <FaEdit />,
+          items: [
+            "<strong>Active Record</strong> indicates the batch is currently enabled and will execute as scheduled",
+            "<strong>Deleted Record</strong> indicates the batch is disabled and will not execute"
+          ]
+        },
+        {
+          title: "Available Actions",
+          icon: <FaArrowRight />,
+          items: [
+            "Click <strong>'Update'</strong> to modify an existing active batch",
+            "Click <strong>'Activate'</strong> to re-enable a deleted batch"
+          ]
+        }
+      ],
+      notes: [
+        "Only active batches are executed by the system scheduler",
+        "Deactivated batches retain configuration data for future reactivation"
+      ]
+    }
+  ]
+}
 ]

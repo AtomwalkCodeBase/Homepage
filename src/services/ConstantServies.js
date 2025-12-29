@@ -1,7 +1,7 @@
 const localhost = "https://www.atomwalk.com"
 const newlocalhost = "https://crm.atomwalk.com"
 const apiURL = "/api";
-const db_name = localStorage.getItem("dbName") || "TR_012";
+const db_name = localStorage.getItem("dbName");
 export const endpoint = `${localhost}${apiURL}`;
 export const hrendpoint = `${newlocalhost}/api`;
 export const newhrendpoint = `${newlocalhost}/hr_api`;
@@ -105,9 +105,6 @@ export const getActivitylistURL = `${hrendpoint}/get_project_activity_list/${db_
 export const employeeTaskAllocationData = `${newhrendpoint}/get_emp_allocation_data/${db_name}/`;
 export const processAllocation = `${newhrendpoint}/process_emp_allocation/${db_name}/`;
 
-// export const getActivities = `${hrendpoint}/get_user_activity/${db_name}/`;
-export const getActivities = `${hrendpoint}/get_user_activity/LEM_002/`;
-// export const projectList = `${newhrendpoint}/get_project_list/${db_name}/`;
-export const projectList = `${newhrendpoint}/get_project_list/LEM_002/`;
-// export const getActivityQc = `${endpoint}/get_activity_data/${db_name}/`;
-export const getActivityQc = `${hrendpoint}/get_activity_data/LEM_002/`;
+export const getActivities = `${hrendpoint}/get_user_activity/${db_name}/`;
+export const projectList = `${newhrendpoint}/get_project_list/${db_name}/`;
+export const getActivityQc = `${endpoint}/get_activity_data/${db_name}/`;

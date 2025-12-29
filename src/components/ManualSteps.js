@@ -9,6 +9,7 @@ import {
   FaArrowLeft,
   FaCircle,
 } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 // Styled components with improved visual hierarchy
 const PageContainer = styled.div`
@@ -598,11 +599,27 @@ useEffect(() => {
                           {section.items.map((item, itemIndex) => (
                             <StepListItem key={itemIndex}>
                               <ListItemIcon />
+                             {typeof item === "object" && item.type === "copy" ? (
+                              <span
+                                style={{
+                                  cursor: "pointer",
+                                  color: "#1976d2",
+                                  textDecoration: "none",
+                                  fontWeight: 500,
+                                }}
+                                title="Click to copy"
+                                onClick={() => {navigator.clipboard.writeText(item.value); toast.success("Mail Template copy successfully!!!")}}
+                              >
+                                {item.label}
+                              </span>
+                            ) : (
+                              /* CASE 2: Existing HTML string */
                               <span
                                 dangerouslySetInnerHTML={{
                                   __html: highlightHTML(item),
                                 }}
                               />
+                            )}
                             </StepListItem>
                           ))}
                         </StepList>

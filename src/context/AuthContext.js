@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect, useContext } from "react"
 import { publicAxiosRequest } from "../services/HttpMethod"
-import { customerslogin, empLoginURL } from "../services/ConstantServies"
+import { customerslogin, empLoginURL, loginURL } from "../services/ConstantServies"
 import { getCompanyInfo, getEmployeeInfo } from "../services/authServices"
 // import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
     }
     
     // Check if user is logged in from localStorage
-    const user = localStorage.getItem("hrmsUser") || localStorage.getItem("fmsUser") || localStorage.getItem("customerUser");
+    const user = localStorage.getItem("hrmsUser") || localStorage.getItem("fmsUser") || localStorage.getItem("customerUser") || localStorage.getItem("labUser");
     if (user) {
       setCurrentUser(JSON.parse(user))
     }
@@ -127,6 +127,66 @@ export const AuthProvider = ({ children }) => {
       return false;
     }
   };
+
+  const labLogin = async (userData) => {
+     try {
+      const payload = {
+        username: userData.username,
+        password: userData.password
+      }
+      const response = await publicAxiosRequest.post(loginURL, payload);
+  
+  
+      if (response.status === 200) {
+        setError("");
+        const { key } = response.data;
+        console.log(response.data)
+        // Store token and emp_id in AsyncStorage
+        localStorage.setItem('userToken', key);
+        localStorage.setItem("labUser", JSON.stringify(payload));
+        const db_name = payload.username.split("@")
+        localStorage.setItem("dbName", db_name[1]);
+        console.log(db_name[1])
+        setCurrentUser(userData);
+        toast.success("Login successful!");
+        window.location.href = "/lab/dashboard";
+        return true;
+      }
+    } catch (error) {
+      console.log("Login error:", error.response.data.error);
+      setError(error.response.data.error);
+      toast.error(error.response.data.error);
+      if (error.response && error.response.status === 401) {
+        console.log("Invalid credentials");
+        return false;
+      } else if (error.response && error.response.status === 500) {
+        console.log("Server error");
+        return false;
+      }
+      return false;
+    }
+
+    //  try {
+    //         const res = await getCompanyInfo();
+    //         const companyInfo = res.data;
+    //         console.log("companyInfo", companyInfo)
+    //         const db_name = companyInfo.db_name.substr(3);
+    //         console.log("companyInfo", db_name)
+    //         localStorage.setItem('dbName', db_name);
+
+    //         // await AsyncStorage.multiSet([
+    //         //     ['companyInfo', JSON.stringify(companyInfo)],
+    //         //     ['dbName', db_name],
+    //         // ]);
+            
+    //         setCompanyInfo(companyInfo);
+    //         // setDbName(db_name);
+    //     } catch (error) {
+    //         console.log('Company Info Fetch Error:', error);
+    //     }
+
+
+  }
  
 
   const logout = () => {
@@ -140,6 +200,10 @@ export const AuthProvider = ({ children }) => {
     if(localStorage.getItem("fmsUser")){
       window.location.href = "/login/#fms";
     }
+    if(localStorage.getItem("labUser")){
+      window.location.href = "/LabUser/login.html";
+    }
+    localStorage.removeItem("labUser")
     localStorage.removeItem("hrmsUser")
     localStorage.removeItem("fmsUser")
     localStorage.removeItem("dbName")
@@ -209,6 +273,7 @@ const customerlogin = async(userData) => {
     iscoustomerLogin,
     taskResponse,
     setTaskResponse,
+    labLogin
   }
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>

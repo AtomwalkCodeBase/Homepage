@@ -37,6 +37,7 @@ import {
   FaUserCircle,
 } from "react-icons/fa";
 import { PiChalkboardTeacherFill } from "react-icons/pi";
+import { MdMail } from "react-icons/md";
 
 // Modern Theme
 const theme = {
@@ -498,6 +499,10 @@ const getModuleData = () => ({
             name: "User Profile Management",
             subtopics: ["Add User Profile","Edit User Profile", "Change Password"],
           },
+          {
+            name: "Mail Templates",
+            subtopics: ["Add Email Template for hrm"],
+          },
         ],
       },
       "Employee Guide": {
@@ -784,6 +789,10 @@ const getModuleData = () => ({
           {
             name: "Accessing Client Portal",
             subtopics: ["Accessing Client Portal"],
+          },
+          {
+            name: "Mail Templates",
+            subtopics: ["Add Email Template for crm"],
           },
           // {
           //   name: "Dashboard Navigation",
@@ -1277,6 +1286,30 @@ const getModuleData = () => ({
     },
   },
 
+  // {
+  //           name: "Mail Template Setup",
+  //           subtopics: ["Add Email Account", "Add Email Template", "Batch Setup Configuration"],
+  //         },
+
+  campaignTemplate: {
+    title: "Mail Campaign Template",
+    icon: <MdMail size={20} />,
+    description: "Comprehensive guide for mail campaign template setup.",
+    subModules: {
+      "Getting started": {
+        icon: <FaBook size={16} />,
+        topics: [
+          {
+            name: "Mail Account setup",
+            subtopics: ["Add Email Account", "Batch Setup Configuration"],
+          },
+          
+        ],
+      }, 
+
+    },
+  },
+
 
 });
 
@@ -1479,6 +1512,21 @@ const ManualModuleDetails = () => {
               }}
             >
               <FaUsersCog   /> Employee HRMS 
+            </NavItem>
+
+            <NavItem
+              active={activeMainModule === "campaignTemplate"}
+              onClick={() => {
+                setModuleData(modules.campaignTemplate);
+                setActiveSubModule(
+                  Object.keys(modules.campaignTemplate.subModules)[0]
+                );
+                setActiveMainModule("campaignTemplate");
+                setSidebarOpen(false);
+                setSearchQuery("");
+              }}
+            >
+              <MdMail /> Mail Campaign Template
             </NavItem>
 
           </NavSection>

@@ -254,7 +254,8 @@ export default function Footer2() {
     "fmsdashboard",
     "tasks",
     "customerList",
-    "ticketList"
+    "ticketList",
+    "activityList",
   ];
   
   useEffect(() => {

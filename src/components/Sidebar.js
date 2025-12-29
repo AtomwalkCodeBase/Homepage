@@ -522,7 +522,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
           name: "OverAll",
           icon: <FaHome />,
           items: [
-            { path: "/dashboard", name: "Activity Dashboard", icon: <FaHome /> },
+            { path: "/lab/dashboard", name: "Activity Dashboard", icon: <FaHome /> },
             { path: "/activityList", name: "Activity List", icon: <FaList /> },
           ],
         }
@@ -530,7 +530,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
         {
           name: "Dashboard",
           icon: <FaHome />,
-          items: [{ path: "/dashboard", name: `${companyInfo.business_type === "LMS" ? "Activity Dashboard" : "Overview"}`, icon: <FaHome /> }],
+          items: [{ path: `${companyInfo.business_type === "LMS"? "/lab/dashboard": "/dashboard"}`, name: `${companyInfo.business_type === "LMS" ? "Activity Dashboard" : "Overview"}`, icon: <FaHome /> }],
         },
         {
           name: "Time Management",
@@ -675,7 +675,7 @@ const finalMenuGroups = shouldHideForAPM
       ...(profile?.is_manager ? [{ path: "/customerList", name: "Customer List", icon: <FaUsers /> }] : [] )
     ]
     : companyInfo.business_type === "LMS" ? [
-      { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },
+      { path: "/lab/dashboard", name: "Dashboard", icon: <FaHome /> },
       { path: "/activityList", name: "Activity List", icon: <FaList /> },
     ]
     : [

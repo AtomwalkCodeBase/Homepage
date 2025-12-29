@@ -40,6 +40,7 @@ import { getEmpLeave, getEmpClaim, getEmployeeRequest, getEmpAttendance, getEven
 import { getEmployeesInfo } from "../services/authServices"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import { useAuth } from "../context/AuthContext"
 
 const float = keyframes`
   0% {
@@ -698,7 +699,13 @@ const Dashboard = () => {
   const emp_id = localStorage.getItem("empNoId")
   const empId = localStorage.getItem("empId")
   const navigation= useNavigate()
+  const { companyInfo } = useAuth();
   // Fetch data from various services
+  useEffect(()=>{
+    if(companyInfo.business_type === "APM"){
+      navigation("/timesheet")
+    }
+  },[companyInfo])
   useEffect(() => {
     // Fetch leave data
     getEmpLeave("EL", emp_id)

@@ -100,3 +100,14 @@ export const createaddressURL = `${hrendpoint}/address/create/${db_name}/`;
 export const equipentTypeListURL = `${hrendpoint}/get_equipment_type_list/${db_name}/`;
 export const getAvailableRoomslistURL = `${hrendpoint}/get_available_eq_list/${db_name}/`;
 export const getActivitylistURL = `${hrendpoint}/get_project_activity_list/${db_name}/`;
+
+
+export const employeeTaskAllocationData = `${newhrendpoint}/get_emp_allocation_data/${db_name}/`;
+export const processAllocation = `${newhrendpoint}/process_emp_allocation/${db_name}/`;
+
+// export const getActivities = `${hrendpoint}/get_user_activity/${db_name}/`;
+export const getActivities = `${hrendpoint}/get_user_activity/LEM_002/`;
+// export const projectList = `${newhrendpoint}/get_project_list/${db_name}/`;
+export const projectList = `${newhrendpoint}/get_project_list/LEM_002/`;
+// export const getActivityQc = `${endpoint}/get_activity_data/${db_name}/`;
+export const getActivityQc = `${hrendpoint}/get_activity_data/LEM_002/`;

@@ -32,6 +32,7 @@ const AboutTxt = styled.div`
         /* margin: 0 auto; */
         margin-top: 20px;
         width: 370px;
+        top: 2.7%;
     }
 
 `

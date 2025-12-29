@@ -27,12 +27,14 @@ import {
   FaGraduationCap,
   FaKey,
   FaTasks,
+  FaList,
 } from "react-icons/fa"
 import { SiGooglecalendar } from "react-icons/si"
 import { PiListPlusFill } from "react-icons/pi"
 import { useAuth } from "../context/AuthContext"
 import { useTheme } from "../context/ThemeContext"
 import { IoTicket } from "react-icons/io5"
+import { RiDashboardFill } from "react-icons/ri"
 const SidebarContainer = styled.div`
   width: ${(props) => {
     const { isOpen, uiPreferences } = props
@@ -483,7 +485,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
   const [isOpen, setIsOpen] = useState(initialOpen)
   const [expandedGroups, setExpandedGroups] = useState({})
   const location = useLocation()
-  const { logout, profile,  iscoustomerLogin } = useAuth()
+  const { companyInfo, logout, profile,  iscoustomerLogin } = useAuth()
   const { theme, uiPreferences } = useTheme()
   const customerdata = localStorage.getItem("customerUser")
   const fmsdata = localStorage.getItem("fmsUser")
@@ -515,18 +517,29 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
         ],
       },
   ]
-  : [
+  : companyInfo.business_type === "LMS"? [
+    {
+          name: "OverAll",
+          icon: <FaHome />,
+          items: [
+            { path: "/dashboard", name: "Activity Dashboard", icon: <FaHome /> },
+            { path: "/activityList", name: "Activity List", icon: <FaList /> },
+          ],
+        }
+  ] : [
         {
           name: "Dashboard",
           icon: <FaHome />,
-          items: [{ path: "/dashboard", name: "Overview", icon: <FaHome /> }],
+          items: [{ path: "/dashboard", name: `${companyInfo.business_type === "LMS" ? "Activity Dashboard" : "Overview"}`, icon: <FaHome /> }],
         },
         {
           name: "Time Management",
           icon: <FaClock />,
           items: [
             { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
-            { path: "/timesheet", name: "Timesheet", icon: <FaChartBar /> },
+            { path: "/timesheet", name: `${companyInfo.business_type === "APM" ? "Dashboard" : "Timesheet"}`, icon: <FaChartBar /> },
+            ...(companyInfo.business_type === "APM" && profile?.is_manager ? [{ path: "/managers/timesheet/dashboard", name: "Manager Dashboard", icon: <RiDashboardFill /> }] : []),
+
             ...(profile?.is_shift_applicable
               ? [{ path: "/shift-detail", name: "My Shifts", icon: <FaExchangeAlt /> }]
               : []),
@@ -594,6 +607,30 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
         },
       ]
 
+        // If company is APM, hide specific paths
+  const apmBlockedPaths = new Set([
+    "/dashboard",
+    "/attendance-tracking",
+    "/leave-management",
+    "/holidays",
+    "/my-training",
+    "/helpdesk",
+    "/requestdesk",
+    "/resolvedesk",
+    "/payslip",
+    "/shift-detail",
+    "/projectmanagement",
+    "/project-report",
+    "/wishes"
+  ])
+
+  const shouldHideForAPM = companyInfo?.business_type === "APM"
+const finalMenuGroups = shouldHideForAPM
+  ? menuGroups
+      .map(g => ({ ...g, items: g.items.filter(i => !apmBlockedPaths.has(i.path)) }))
+      .filter(g => g.items && g.items.length > 0)
+  : menuGroups
+
   useEffect(() => {
     setIsOpen(initialOpen)
     // Initialize expanded groups based on current path
@@ -636,12 +673,17 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
       { path: "/ticketList", name: "Ticket List", icon: <IoTicket /> },
       // { path: "/customerList", name: "Customer List", icon: <FaUsers /> },
       ...(profile?.is_manager ? [{ path: "/customerList", name: "Customer List", icon: <FaUsers /> }] : [] )
-    ]: 
-    [
+    ]
+    : companyInfo.business_type === "LMS" ? [
+      { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },
+      { path: "/activityList", name: "Activity List", icon: <FaList /> },
+    ]
+    : [
         { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },
+        ...(companyInfo.business_type === "APM" && profile?.is_manager ? [{ path: "/managers/timesheet/dashboard", name: "Manager Dashboard", icon: <RiDashboardFill /> }] : []),
         ...(profile?.is_manager ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : []),
         { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
-        { path: "/timesheet", name: "Timesheet", icon: <FaChartBar /> },
+        { path: "/timesheet", name: `${companyInfo.business_type === "APM" ? (profile?.is_manager) ? "Timesheet" : "Dashboard" : "Timesheet"}`, icon: <FaChartBar /> },
         { path: "/leave-management", name: "Leave Management", icon: <FaCalendarAlt /> },
         { path: "/holidays", name: "Holiday Calendar", icon: <FaCalendarCheck /> },
         { path: "/my-training", name: "My Training", icon: <FaGraduationCap /> },
@@ -669,6 +711,10 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
         { path: "/profile", name: "My Profile", icon: <FaUserCircle />, section: "Account" },
       ]
 
+const finalMenuItems = shouldHideForAPM
+  ? menuItems.filter(i => !apmBlockedPaths.has(i.path))
+  : menuItems
+
   return (
     <SidebarContainer isOpen={isOpen} theme={theme} uiPreferences={uiPreferences}>
       <SidebarHeader isOpen={isOpen} uiPreferences={uiPreferences}>
@@ -687,7 +733,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
               alt="Company Logo"
               style={{ width: "80px", marginRight: "1rem", borderRadius: "10px" }}
             />{" "}
-           {fmsdata? "FMS": "HRMS"}
+           {companyInfo.business_type === "APM" ? "PMT" : fmsdata? "FMS": "HRMS"}
           </Logo>
         )}
         <ToggleButton onClick={toggleSidebar} uiPreferences={uiPreferences}>
@@ -697,7 +743,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
 
       {sidebarStyle === "standard" ? (
         <SidebarMenu uiPreferences={uiPreferences}>
-          {menuItems.map((item) => (
+          {finalMenuItems.map((item) => (
             <SidebarMenuItem key={item.path} uiPreferences={uiPreferences}>
               <SidebarLink
                 to={item.path}
@@ -714,7 +760,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
         </SidebarMenu>
       ) : (
         <SidebarMenu uiPreferences={uiPreferences}>
-          {menuGroups.map((group) => (
+          {finalMenuGroups.map((group) => (
             <MenuGroup key={group.name}>
               <MenuGroupHeader
                 onClick={() => toggleGroup(group.name)}

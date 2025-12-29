@@ -108,6 +108,10 @@ import PatientAdmission from "./pages/PatientAdmission";
 import PatentPage from "./components/PatentPage";
 import AwardsPage from "./components/AwardsPage";
 import GlpHeroPage from "./components/glp/GlpHeroPage";
+import { TimesheetRouter,  DashboardRouter } from "./components/TimesheetRouter";
+import ProjectManagementTimesheet from "./pages/ProjectManagement/ProjectManagementTimesheet";
+import LmsActivityList from "./pages/LmsActivityList";
+// import LabLoginScreen from "./pages/LabUser/LabLoginScreen";
 // import MyAppriaisal from "./pages/MyAppriaisal";
 
 function App() {
@@ -154,6 +158,7 @@ function App() {
               <Route path="/demo.html" element={<FormComponent />} />
               <Route path="/seals.html" element={<ContactSalesPage />} />
               <Route path="/customer/login.html" element={<Logins/>} />  
+              {/* <Route path="/LabUser/login.html" element={<LabLoginScreen/>} />   */}
               <Route path="/careers.html" element={<Career />} />
               <Route path="/thankyou.html" element={<ThankYouPage />} />
               <Route path="/terms-and-conditions.html" element={<TermsAndConditions />} />
@@ -247,12 +252,16 @@ function App() {
                   </ProtectedRoute>
                 }
               >
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/dashboard" element={<DashboardRouter />} />
+                <Route path="/activityList" element={<LmsActivityList />} />
                 <Route path="/employees" element={<EmployeeManagement />} />
                 <Route path="/attendance-tracking" element={<AttendanceTracking />} />
                 <Route path="/leave-management" element={<LeaveManagement />} />
                 <Route path="/holidays" element={<HolidayCalendar />} />
-                <Route path="/timesheet" element={<TimeSheetManagement />} />
+                {/* <Route path="/timesheet" element={<TimeSheetManagement />} /> */}
+                <Route path="/timesheet" element={<TimesheetRouter />} />
+                <Route path="/managers/timesheet/dashboard" element={<ProjectManagementTimesheet />} />
+                {/* <Route path="/project-management-timesheet" element={<ProjectManagementTimesheet />} /> */}
                 <Route path="/shifts" element={<ShiftScheduling />} />
                 <Route path="/claims" element={<MyClaims />} />
                 <Route path="/appointees" element={<Appointees />} />

@@ -12,8 +12,9 @@ import {
   Timer,
   FileText,
   Play,
-  Loader2,
   TrendingUp,
+  PenBox,
+  MapPin,
 } from 'lucide-react';
 import { getCurrentDateTimeDefaults, getTodayApiDateStr } from './utils/utils';
 import Button from '../../components/Button';
@@ -22,18 +23,6 @@ import { FaBan, FaCheck } from 'react-icons/fa';
 import Badge from '../../components/Badge';
 
 // ====================== Styled Components with Theme ======================
-const Container = styled.div`
-  max-width: ${({ theme }) => 
-    theme.layout?.containerWidth === 'narrow' ? '800px' :
-    theme.layout?.containerWidth === 'wide' ? '1400px' : '1200px'};
-  margin: 0 auto;
-`;
-
-const Title = styled.h1`
-  font-size: ${({ theme }) => theme.fontSizes?.xl || '1.5rem'};
-  font-weight: ${({ theme }) => theme.fontWeights?.heading || '600'};
-  color: ${({ theme }) => theme.colors?.primary || '#6C63FF'};
-`;
 
 const CardHover = styled.div`
   background: ${({ theme }) => theme.colors?.card || '#fff'};
@@ -341,7 +330,7 @@ const SecondaryBtn = styled(Button)`
 
 export const ActivityCard = ({ activity, filterType, onAction, isManager }) => {
 
-  // console.log(filterType)
+  console.log(activity)
   // console.log(isManager)
   const [isLogsOpen, setIsLogsOpen] = useState(false);
 
@@ -376,11 +365,13 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager }) => {
             </StatusBadge></Item>
 
               <Item><Label><CalendarEvent size={14} />Planned Date</Label><DetailValue>{activity.planned_start_date} to {activity.planned_end_date}</DetailValue></Item>
+              {activity.original_P.store_name && <Item><Label><MapPin size={14} />Location</Label><DetailValue>{activity.original_P.store_name}</DetailValue></Item>}
           </Grid>
+              {activity.original_P.store_remarks && <Item><Label><PenBox size={14} />Remark</Label><DetailValue>{activity.original_P.store_remarks}</DetailValue></Item>}
 
          {!totalEffort === 0 && <ProgressBar completed={progress} total={totalEffort} label="Effort Progress" />}
 
-         {(filterType === "past7" || isManager) && 
+         {(filterType === "past7" || "custom" || isManager) && 
           <ActivityLogs
             logs={activity.day_logs}
             isOpen={isLogsOpen}
@@ -399,7 +390,7 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager }) => {
                   </Button>
                 </>
             )}
-        {!isManager && filterType === "today" && (
+        {!isManager && (filterType === "today" || "custom" || "past") && (
             <TodayActionButtons
               activity={activity}
               todayCheckedIn={todayCheckedIn}
@@ -499,7 +490,7 @@ const ActivityLogs = ({ logs, isOpen, onToggle }) => {
 };
 const StatusMessage = ({ children }) => (
   <div style={{ color: '#10b981', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
-    <CheckCircle2 size={18} />
+    <CheckCircle2 size={24} />
     {children}
   </div>
 );
@@ -522,28 +513,15 @@ const TodayActionButtons = ({
   const isPlannedEndToday = plannedEnd === todayISO;
 
   // 1. Fully complete
-  if (complete) {
-    return <StatusMessage>Project is complete</StatusMessage>;
+  if (activity.todaysStatus === "Planned") {
+        return (
+      <PrimaryBtn size="md" onClick={() => onAction({ type: "start", activity })}>
+        <PlayCircle /> Start Activity
+      </PrimaryBtn> )  
   }
 
-  // 2. Completed for today
-  if (todayCheckedIn && todayCheckedOut) {
-    return <StatusMessage>Project is completed for today</StatusMessage>;
-  }
-
-  // 3. Pending checkout from yesterday
-  if (hasPendingCheckout && pendingCheckoutDate !== todayApiDate) {
-    return (
-      <PrimaryBtn size="md" onClick={() => onAction({ type: "checkout_yesterday", activity })}>
-        <CheckCircle2 /> Checkout For Yesterday
-      </PrimaryBtn>
-    );
-  }
-
-  // 4. Checked in today → Show Complete / Continue Tomorrow
-  if (todayCheckedIn && !todayCheckedOut) {
-    return isPlannedEndToday ? (
-      <>
+  if (activity.todaysStatus === "Active") {
+     return( <>
         <SuccessBtn size="lg" onClick={() => onAction({ type: "complete", activity })}>
           <CheckCircle2 /> Completed
         </SuccessBtn>
@@ -551,38 +529,93 @@ const TodayActionButtons = ({
           <PauseCircle /> Continue Tomorrow
         </SecondaryBtn>
       </>
-    ) : (
-      <>
-        <SuccessBtn size="sm" onClick={() => onAction({ type: "continue", activity })}>
-          <PauseCircle /> Continue Tomorrow
-        </SuccessBtn>
-        <SecondaryBtn size="lg" onClick={() => onAction({ type: "complete", activity })}>
-          <CheckCircle2 /> Completed
-        </SecondaryBtn>
-      </>
-    );
+  )  
   }
 
-  // 5. Not checked in today
-  if (!todayCheckedIn) {
-    if (isActivityStart) {
-      return (
-        <PrimaryBtn size="md" onClick={() => onAction({ type: "resume", activity })}>
-          <PlayCircle /> Resume Activity
-        </PrimaryBtn>
-      );
-    }
-    return (
-      <PrimaryBtn size="md" onClick={() => onAction({ type: "start", activity })}>
-        <PlayCircle /> Start Activity
-      </PrimaryBtn>   
-    );
+    if (todayCheckedIn && todayCheckedOut) {
+    return <StatusMessage>Project is completed for today</StatusMessage>;
   }
 
-  // 6. Fallback: Awaiting start (future scheduled)
-  return (
-    <SecondaryBtn size="md" disabled>
-      <Clock /> Awaiting Start
-    </SecondaryBtn>
-  );
+  
 };
+// const TodayActionButtons = ({
+//   activity,
+//   todayCheckedIn,
+//   todayCheckedOut,
+//   isActivityStart,
+//   hasPendingCheckout,
+//   pendingCheckoutDate,
+//   complete,
+//   onAction,
+//   todayISO,
+//   getTodayApiDateStr,isManager
+// }) => {
+//   const todayApiDate = getTodayApiDateStr();
+//   const plannedEnd = activity.planned_end_date || activity.original_P?.planned_end_date;
+//   const isPlannedEndToday = plannedEnd === todayISO;
+
+//   // 1. Fully complete
+//   if (complete) {
+//     return <StatusMessage>Project is complete</StatusMessage>;
+//   }
+
+//   // 2. Completed for today
+//   if (todayCheckedIn && todayCheckedOut) {
+//     return <StatusMessage>Project is completed for today</StatusMessage>;
+//   }
+
+//   // 3. Pending checkout from yesterday
+//   if (hasPendingCheckout && pendingCheckoutDate !== todayApiDate) {
+//     return (
+//       <PrimaryBtn size="md" onClick={() => onAction({ type: "checkout_yesterday", activity })}>
+//         <CheckCircle2 /> Checkout For Yesterday
+//       </PrimaryBtn>
+//     );
+//   }
+
+//   // 4. Checked in today → Show Complete / Continue Tomorrow
+//   if (todayCheckedIn && !todayCheckedOut) {
+//     return isPlannedEndToday ? (
+//       <>
+//         <SuccessBtn size="lg" onClick={() => onAction({ type: "complete", activity })}>
+//           <CheckCircle2 /> Completed
+//         </SuccessBtn>
+//         <SecondaryBtn size="sm" onClick={() => onAction({ type: "continue", activity })}>
+//           <PauseCircle /> Continue Tomorrow
+//         </SecondaryBtn>
+//       </>
+//     ) : (
+//       <>
+//         <SuccessBtn size="sm" onClick={() => onAction({ type: "continue", activity })}>
+//           <PauseCircle /> Continue Tomorrow
+//         </SuccessBtn>
+//         <SecondaryBtn size="lg" onClick={() => onAction({ type: "complete", activity })}>
+//           <CheckCircle2 /> Completed
+//         </SecondaryBtn>
+//       </>
+//     );
+//   }
+
+//   // 5. Not checked in today
+//   if (!todayCheckedIn) {
+//     if (isActivityStart) {
+//       return (
+//         <PrimaryBtn size="md" onClick={() => onAction({ type: "resume", activity })}>
+//           <PlayCircle /> Resume Activity
+//         </PrimaryBtn>
+//       );
+//     }
+//     return (
+//       <PrimaryBtn size="md" onClick={() => onAction({ type: "start", activity })}>
+//         <PlayCircle /> Start Activity
+//       </PrimaryBtn>   
+//     );
+//   }
+
+//   // 6. Fallback: Awaiting start (future scheduled)
+//   return (
+//     <SecondaryBtn size="md" disabled>
+//       <Clock /> Awaiting Start
+//     </SecondaryBtn>
+//   );
+// };

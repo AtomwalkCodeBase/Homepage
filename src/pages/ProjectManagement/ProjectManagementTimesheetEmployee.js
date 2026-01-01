@@ -157,6 +157,28 @@ const CardTop = styled.div`
   align-items: center;
   }
 `;
+const TabContainer = styled.div`
+  display: flex;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+`
+
+const Tab = styled.button`
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid ${(props) => (props.active ? props.theme.colors.primary : "transparent")};
+  color: ${(props) => (props.active ? props.theme.colors.primary : props.theme.colors.text)};
+  font-weight: ${(props) => (props.active ? "600" : "400")};
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`
 
 const parseDateSafe = (dateStr) => {
   if (!dateStr) return null;
@@ -171,11 +193,15 @@ const hasOverlap = (projStart, projEnd, rangeStart, rangeEnd) => {
 };
 
 const ProjectManagementTimesheetEmployee = () => {
-  const [employeeActivity, setEmployeeActivity] = useState([]);
-  const [selectedStatus, setSelectedStatus] = useState("All");
+  const [employeeActivity, setEmployeeActivity] = useState({
+    all_A: [],
+    all_P: [],
+  });
+  // const [selectedStatus, setSelectedStatus] = useState("All");
   const [showCustomRange, setShowCustomRange] = useState(false);
   const [isFormModalOpen, setIsFromModalOpen] = useState(false);
   const [selectedProject, setSelectdeProject] = useState(null);
+  const [activeTab, setActiveTab] = useState("Planned")
   const { dayLogKey } = getCurrentDateTimeDefaults();
 
   const [confirmPopup, setConfirmPopup] = useState({
@@ -185,7 +211,7 @@ const ProjectManagementTimesheetEmployee = () => {
   onConfirm: null,
 });
 
-  // console.log(dayFilter)
+  console.log(employeeActivity)
 
   const [dateRange, setDateRange] = useState(() => {
     const { start, end } = getMonthRange("current")
@@ -227,7 +253,8 @@ const ProjectManagementTimesheetEmployee = () => {
 
     try {
       const response = await getEmpAllocationData(payload);
-      setEmployeeActivity(normalizeProjects(response.data))
+      const normalized = normalizeProjects(response.data);
+      setEmployeeActivity(normalized);
       console.log("normalizeProjects(response.data)", JSON.stringify(normalizeProjects(response.data)))
     } catch (error) {
       toast.error("No data found...")
@@ -416,79 +443,130 @@ const handleActivityAction = ({ type, activity }) => {
   }
 };
 
+// const getFilteredAndSortedActivities = () => {
+//   const today = new Date();
+//   today.setHours(0, 0, 0, 0);
+
+//   // Next 7 rolling days: tomorrow → +7 days
+//   const next7Start = new Date(today);
+//   next7Start.setDate(today.getDate() + 1);
+//   const next7End = new Date(today);
+//   next7End.setDate(today.getDate() + 7);
+
+//   return employeeActivity
+//     .filter(activity => {
+//       const startDate = parseDateSafe(activity.start_date);
+//       const endDate = parseDateSafe(activity.end_date);
+
+
+//       if (!startDate) return false;
+
+//       const isIncomplete = !activity.project_period_status === "In Progress";
+//       const isTodayComplete = activity.todaysStatus === "Complete";
+
+//       // if (selectedStatus !== "All" && activity.project_period_status !== selectedStatus) return false;
+
+//       // 2. Period Filter Rules
+//       // if (dayFilter === "today") {
+//       //   const isTodayInRange = startDate && endDate &&
+//       //     (isSameDay(today, startDate) || 
+//       //      isSameDay(today, endDate) || 
+//       //      (isAfter(today, startDate) && isBefore(today, endDate)));
+
+//       //   return isIncomplete || isTodayInRange;
+//       // }
+//       if (dayFilter === "today") {
+//         const isTodayInRange = isWithinInterval(today, { start: startDate, end: endDate });
+//         return isTodayInRange;
+//       }
+
+//       if (dayFilter === "next7") {
+//       // if (isIncomplete) return false; // Never show incomplete
+
+//         const hasOverlapWithNext7 = startDate && endDate && (
+//           (isAfter(startDate, today) && isBefore(startDate, next7End)) ||
+//           (isAfter(endDate, today) && isBefore(endDate, next7End)) ||
+//           (isBefore(startDate, next7Start) && isAfter(endDate, next7End))
+//         );
+//         return hasOverlapWithNext7;
+//       }
+
+//       if (dayFilter === "past7") {
+//         // Show past activities (you already handle logs separately)
+//         return isBefore(startDate, today) || isBefore(endDate, today);
+//       }
+
+//       if (dayFilter === "custom") {
+//         if (isIncomplete) return true;
+//         if (!startDate || !endDate) return false;
+
+//         const rangeStart = new Date(dateRange.start);
+//         const rangeEnd = new Date(dateRange.end);
+//         return hasOverlap(startDate, endDate, rangeStart, rangeEnd);
+//       }
+
+//       return true; // fallback
+//     })
+//     .sort((a, b) => {
+//       // Rule: In "Today" tab → Completed projects go to bottom
+//       if (dayFilter === "today") {
+//         const aCompleteToday = a.todaysStatus === "Complete";
+//         const bCompleteToday = b.todaysStatus === "Complete";
+
+//         if (aCompleteToday && !bCompleteToday) return 1;
+//         if (!aCompleteToday && bCompleteToday) return -1;
+//       }
+//       return 0;
+//     });
+// };
+
+const getTabBasedActivities = () => {
+  return activeTab === "actual"
+    ? employeeActivity.all_A
+    : employeeActivity.all_P;
+};
+
 const getFilteredAndSortedActivities = () => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  // Next 7 rolling days: tomorrow → +7 days
   const next7Start = new Date(today);
   next7Start.setDate(today.getDate() + 1);
+
   const next7End = new Date(today);
   next7End.setDate(today.getDate() + 7);
 
-  return employeeActivity
+  // 🔴 THIS LINE IS THE KEY
+  const sourceData = getTabBasedActivities();
+
+  return sourceData
     .filter(activity => {
-      const startDate = parseDateSafe(activity.planned_start_date);
-      const endDate = parseDateSafe(activity.planned_end_date);
+      const startDate = parseDateSafe(activity.start_date);
+      const endDate = parseDateSafe(activity.end_date);
 
-      if (!startDate) return false;
+      if (!startDate || !endDate) return false;
 
-      const isIncomplete = !activity.project_period_status === "In Progress";
-      const isTodayComplete = activity.todaysStatus === "Complete";
-
-      if (selectedStatus !== "All" && activity.project_period_status !== selectedStatus) return false;
-
-      // 2. Period Filter Rules
-      // if (dayFilter === "today") {
-      //   const isTodayInRange = startDate && endDate &&
-      //     (isSameDay(today, startDate) || 
-      //      isSameDay(today, endDate) || 
-      //      (isAfter(today, startDate) && isBefore(today, endDate)));
-
-      //   return isIncomplete || isTodayInRange;
-      // }
       if (dayFilter === "today") {
-        const isTodayInRange = isWithinInterval(today, { start: startDate, end: endDate });
-        return isTodayInRange;
+        return isWithinInterval(today, { start: startDate, end: endDate });
       }
 
       if (dayFilter === "next7") {
-      // if (isIncomplete) return false; // Never show incomplete
-
-        const hasOverlapWithNext7 = startDate && endDate && (
-          (isAfter(startDate, today) && isBefore(startDate, next7End)) ||
-          (isAfter(endDate, today) && isBefore(endDate, next7End)) ||
-          (isBefore(startDate, next7Start) && isAfter(endDate, next7End))
-        );
-        return hasOverlapWithNext7;
+        return hasOverlap(startDate, endDate, next7Start, next7End);
       }
 
       if (dayFilter === "past7") {
-        // Show past activities (you already handle logs separately)
-        return isBefore(startDate, today) || isBefore(endDate, today);
+        const past7Start = new Date(today);
+        past7Start.setDate(today.getDate() - 7);
+        return hasOverlap(startDate, endDate, past7Start, today);
       }
 
       if (dayFilter === "custom") {
-        if (isIncomplete) return true;
-        if (!startDate || !endDate) return false;
-
         const rangeStart = new Date(dateRange.start);
         const rangeEnd = new Date(dateRange.end);
         return hasOverlap(startDate, endDate, rangeStart, rangeEnd);
       }
 
-      return true; // fallback
-    })
-    .sort((a, b) => {
-      // Rule: In "Today" tab → Completed projects go to bottom
-      if (dayFilter === "today") {
-        const aCompleteToday = a.todaysStatus === "Complete";
-        const bCompleteToday = b.todaysStatus === "Complete";
-
-        if (aCompleteToday && !bCompleteToday) return 1;
-        if (!aCompleteToday && bCompleteToday) return -1;
-      }
-      return 0;
+      return true;
     });
 };
 
@@ -503,7 +581,15 @@ const filteredActivities = getFilteredAndSortedActivities();
             <FaUserCircle /> {empName}
           </Button>}
       </ClaimsHeader>
-    <Card hoverable={false} >      
+    <Card hoverable={false} > 
+              <TabContainer>
+          <Tab active={activeTab === "planned"} onClick={() => setActiveTab("planned")}>
+            Planned Activity
+          </Tab>
+          <Tab active={activeTab === "actual"} onClick={() => setActiveTab("actual")}>
+            Actual Activity
+          </Tab>
+          </TabContainer>     
      <Container>
       <CardTop>
             <TopDateInfo>
@@ -512,7 +598,7 @@ const filteredActivities = getFilteredAndSortedActivities();
         </TopDateInfo>
  <FilterContainer>
    <FilterRow>
-        <FilterSelect
+        {/* <FilterSelect
           name="selectedStatus"
           value={selectedStatus}
           onChange={(e) => setSelectedStatus(e.target.value)}
@@ -522,7 +608,7 @@ const filteredActivities = getFilteredAndSortedActivities();
           <option value="Planned">Planned</option>
           <option value="In Progress">In Progress</option>
           <option value="Completed">Complete</option>
-        </FilterSelect>
+        </FilterSelect> */}
         <FilterSelect
           name="dayFilter"
           value={dayFilter}
@@ -544,7 +630,7 @@ const filteredActivities = getFilteredAndSortedActivities();
 
         <Button variant="outline" size="sm" onClick={() => {
             setDayFilter("today");           
-            setSelectedStatus("All");        
+            // setSelectedStatus("All");        
             setShowCustomRange(false);       
             setDateRange({                  
               start: getMonthRange("current").start,
@@ -586,6 +672,7 @@ const filteredActivities = getFilteredAndSortedActivities();
               filterType={empidParam ? "custom" : dayFilter}
               onAction={handleActivityAction}
               isManager={empidParam}
+              activeTab={activeTab}
             />
           ))
         )}

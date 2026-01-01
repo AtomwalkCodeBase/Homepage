@@ -328,14 +328,14 @@ const SecondaryBtn = styled(Button)`
 
 
 
-export const ActivityCard = ({ activity, filterType, onAction, isManager }) => {
+export const ActivityCard = ({ activity, filterType, onAction, isManager, activityTab }) => {
 
   // console.log(activity)
   // console.log(isManager)
   const [isLogsOpen, setIsLogsOpen] = useState(false);
 
   const progress = activity.total_no_of_items || 0;
-  const totalEffort = activity.original_P.no_of_items || 0;
+  const totalEffort = activity.no_of_items || 0;
 
   const isActivityStart = !!activity.original_A;
 
@@ -358,18 +358,18 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager }) => {
 
           <Grid>
             <Item><Label><FileText size={14} />Audit Type</Label><DetailValue>{activity.audit_type}</DetailValue></Item>
-            <Item><Label><Package size={14} />Total No. of Item Audit</Label><DetailValue>{activity.original_P.no_of_items || 0}</DetailValue></Item>
-            <Item><Label>Project Status</Label><StatusBadge status={activity.project_period_status || activity.todaysStatus}>
+            <Item><Label><Package size={14} />Total No. of Item Audit</Label><DetailValue>{activity.no_of_items || 0}</DetailValue></Item>
+            {/* <Item><Label>Project Status</Label><StatusBadge status={activity.project_period_status || activity.todaysStatus}>
               <StatusIcon status={activity.project_period_status || activity.todaysStatus} />
               {activity.project_period_status || activity.todaysStatus}
-            </StatusBadge></Item>
+            </StatusBadge></Item> */}
 
-              <Item><Label><CalendarEvent size={14} />Planned Date</Label><DetailValue>{activity.planned_start_date} to {activity.planned_end_date}</DetailValue></Item>
-              {activity.original_P.store_name && <Item><Label><MapPin size={14} />Location</Label><DetailValue>{activity.original_P.store_name}</DetailValue></Item>}
+              <Item><Label><CalendarEvent size={14} />Planned Date</Label><DetailValue>{activity.start_date} to {activity.end_date}</DetailValue></Item>
+              {activity.store_name && <Item><Label><MapPin size={14} />Location</Label><DetailValue>{activity.store_name}</DetailValue></Item>}
           </Grid>
-              {activity.original_P.store_remarks && <Item><Label><PenBox size={14} />Remark</Label><DetailValue>{activity.original_P.store_remarks}</DetailValue></Item>}
+              {activity.store_remarks && <Item><Label><PenBox size={14} />Remark</Label><DetailValue>{activity.store_remarks}</DetailValue></Item>}
 
-         {!totalEffort === 0 && <ProgressBar completed={progress} total={totalEffort} label="Effort Progress" />}
+         {/* {!totalEffort === 0 && <ProgressBar completed={progress} total={totalEffort} label="Effort Progress" />} */}
 
          {(filterType === "past7" || isManager) && 
           <ActivityLogs
@@ -403,6 +403,7 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager }) => {
               todayISO={todayISO}
               getTodayApiDateStr={getTodayApiDateStr}
               isManager={isManager}
+              activeTab={activityTab}
             />
           )}
           </Actions>
@@ -507,71 +508,74 @@ const TodayActionButtons = ({
   complete,
   onAction,
   todayISO,
-  getTodayApiDateStr,isManager
+  getTodayApiDateStr,
+  isManager,
+  activeTab
 }) => {
   const todayApiDate = getTodayApiDateStr();
-  const plannedEnd = activity.planned_end_date || activity.original_P?.planned_end_date;
+  const plannedEnd = activity.planned_end_date || activity.end_date;
   const isPlannedEndToday = plannedEnd === todayISO;
 
-  // 1. Fully complete
-  if (complete) {
-    return <StatusMessage>Project is complete</StatusMessage>;
-  }
-
-  // 2. Completed for today
-  if (todayCheckedIn && todayCheckedOut) {
-    return <StatusMessage>Project is completed for today</StatusMessage>;
-  }
-
-  // 3. Pending checkout from yesterday
-  if (hasPendingCheckout && pendingCheckoutDate !== todayApiDate) {
+  // 🔒 PLANNED TAB → ONLY START
+  if (activeTab === "planned") {
     return (
-      <PrimaryBtn size="md" onClick={() => onAction({ type: "checkout_yesterday", activity })}>
-        <CheckCircle2 /> Checkout For Yesterday
+      <PrimaryBtn size="md" onClick={() => onAction({ type: "start", activity })}>
+        <PlayCircle /> Start Activity
       </PrimaryBtn>
     );
   }
 
-  // 4. Checked in today → Show Complete / Continue Tomorrow
-  if (todayCheckedIn && !todayCheckedOut) {
-    return isPlannedEndToday ? (
-      <>
-        <SuccessBtn size="lg" onClick={() => onAction({ type: "complete", activity })}>
-          <CheckCircle2 /> Completed
-        </SuccessBtn>
-        <SecondaryBtn size="sm" onClick={() => onAction({ type: "continue", activity })}>
-          <PauseCircle /> Continue Tomorrow
-        </SecondaryBtn>
-      </>
-    ) : (
-      <>
-        <SuccessBtn size="sm" onClick={() => onAction({ type: "continue", activity })}>
-          <PauseCircle /> Continue Tomorrow
-        </SuccessBtn>
-        <SecondaryBtn size="lg" onClick={() => onAction({ type: "complete", activity })}>
-          <CheckCircle2 /> Completed
-        </SecondaryBtn>
-      </>
-    );
-  }
+  // 🔓 ACTUAL TAB LOGIC
+  if (activeTab === "actual") {
 
-  // 5. Not checked in today
-  if (!todayCheckedIn) {
-    if (isActivityStart) {
-      return (
-        <PrimaryBtn size="md" onClick={() => onAction({ type: "resume", activity })}>
-          <PlayCircle /> Resume Activity
-        </PrimaryBtn>
+    // if (complete) {
+    //   return <StatusMessage>Project is complete</StatusMessage>;
+    // }
+
+    // if (todayCheckedIn && todayCheckedOut) {
+    //   return <StatusMessage>Project is completed for today</StatusMessage>;
+    // }
+
+    // if (hasPendingCheckout && pendingCheckoutDate !== todayApiDate) {
+    //   return (
+    //     <PrimaryBtn size="md" onClick={() => onAction({ type: "checkout_yesterday", activity })}>
+    //       <CheckCircle2 /> Checkout For Yesterday
+    //     </PrimaryBtn>
+    //   );
+    // }
+
+    if (todayCheckedIn && !todayCheckedOut) {
+      return isPlannedEndToday ? (
+        <>
+          <SuccessBtn size="lg" onClick={() => onAction({ type: "complete", activity })}>
+            <CheckCircle2 /> Completed
+          </SuccessBtn>
+          <SecondaryBtn size="sm" onClick={() => onAction({ type: "continue", activity })}>
+            <PauseCircle /> Continue Tomorrow
+          </SecondaryBtn>
+        </>
+      ) : (
+        <>
+          <SuccessBtn size="sm" onClick={() => onAction({ type: "continue", activity })}>
+            <PauseCircle /> Continue Tomorrow
+          </SuccessBtn>
+          <SecondaryBtn size="lg" onClick={() => onAction({ type: "complete", activity })}>
+            <CheckCircle2 /> Completed
+          </SecondaryBtn>
+        </>
       );
     }
-    return (
-      <PrimaryBtn size="md" onClick={() => onAction({ type: "start", activity })}>
-        <PlayCircle /> Start Activity
-      </PrimaryBtn>   
-    );
+
+    // if (!todayCheckedIn && isActivityStart) {
+    //   return (
+    //     <PrimaryBtn size="md" onClick={() => onAction({ type: "resume", activity })}>
+    //       <PlayCircle /> Resume Activity
+    //     </PrimaryBtn>
+    //   );
+    // }
   }
 
-  // 6. Fallback: Awaiting start (future scheduled)
+  // Fallback
   return (
     <SecondaryBtn size="md" disabled>
       <Clock /> Awaiting Start

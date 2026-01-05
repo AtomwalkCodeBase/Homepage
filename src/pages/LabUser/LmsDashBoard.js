@@ -99,7 +99,6 @@ const LmsDashBoard = () => {
     try {
       const res = await getActivityList();
       let fetchedActivities = res?.data?.a_list || [];
-      // console.log(JSON.stringify(res.data))
       setActivities(fetchedActivities);
     } catch (error) {
       console.error('Error fetching activities:', error);
@@ -110,7 +109,6 @@ const LmsDashBoard = () => {
     try {
       const res = await getGLPProjectList();
       let fetchedProjects = res?.data || [];
-      // console.log(JSON.stringify(res.data))
       setAllProject(fetchedProjects);
     } catch (error) {
       console.error('Error fetching activities:', error);
@@ -118,9 +116,6 @@ const LmsDashBoard = () => {
   };
 
   const userProject = mapProjectsWithActivities(allProject, activities);
-
-
-  console.log("userProject", userProject)
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -190,8 +185,6 @@ const getActivityCountsFromProjects = (projects = []) => {
 
     }
   }, [activities, userProject]);
-
-  console.log("projectCounts", projectCounts)
 
 
   const filteredData = useMemo(() => {
@@ -363,8 +356,6 @@ export function mapProjectsWithActivities(projectList = [], activityList = []) {
     return [];
   }
 
-  //   console.log("mapProjectsWithActivities, projectList ",projectList,)
-  //   console.log("mapProjectsWithActivities,  activityList", activityList)
 
   const activityMap = {};
   const refSet = new Set();

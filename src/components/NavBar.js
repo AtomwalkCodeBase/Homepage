@@ -97,7 +97,8 @@ export const NavBar = () => {
      "tasks",
      "customerList",
      "ticketList",
-     "activityList"
+     "activityList",
+     "samplestatus"
   ];
   
   useEffect(() => {
@@ -145,9 +146,13 @@ export const NavBar = () => {
     const loggedInValue = queryParams.get("called_url");
     const crmurl=queryParams.get("base_url");
     const data='https://crm.atomwalk.com/atomwalk';
+    const myofficeurl='http://myoffice.atomwalk.com/atomwalk';
     if(crmurl){
       if(crmurl===data){
         window.location.href = 'https://crm.atomwalk.com/login/';
+      }
+      else if(crmurl===myofficeurl){
+        window.location.href = 'http://myoffice.atomwalk.com/login/';
       }
       else{
         window.location.href = 'https://atomwalk.com/login/';
@@ -256,10 +261,10 @@ export const NavBar = () => {
                       <span role="img" aria-label="FMS" style={{ marginRight: 8 }}>👷🏼</span>
                       Login as FMS Manager
                     </LoginOption>
-                    <LoginOption onClick={handleLabUserLogin}>
+                    {/* <LoginOption onClick={handleLabUserLogin}>
                       <span role="img" aria-label="FMS" style={{ marginRight: 8 }}>👷🏼</span>
                       Login as Lab User
-                    </LoginOption>
+                    </LoginOption> */}
                   </LoginDropdownMenu>
                 </LoginDropdownWrapper>
               ) : (

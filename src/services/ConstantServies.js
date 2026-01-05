@@ -108,3 +108,4 @@ export const processAllocation = `${newhrendpoint}/process_emp_allocation/${db_n
 export const getActivities = `${hrendpoint}/get_user_activity/${db_name}/`;
 export const projectList = `${newhrendpoint}/get_project_list/${db_name}/`;
 export const getActivityQc = `${endpoint}/get_activity_data/${db_name}/`;
+export const getstatus=`${newlocalhost}/lab_api/get_sample_event_status/LEM_002/`;

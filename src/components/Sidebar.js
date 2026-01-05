@@ -35,6 +35,7 @@ import { useAuth } from "../context/AuthContext"
 import { useTheme } from "../context/ThemeContext"
 import { IoTicket } from "react-icons/io5"
 import { RiDashboardFill } from "react-icons/ri"
+import { GiProgression } from "react-icons/gi";
 const SidebarContainer = styled.div`
   width: ${(props) => {
     const { isOpen, uiPreferences } = props
@@ -498,6 +499,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
         icon: <FaUserCircle />,
         items: [
           { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
+          { path: "/samplestatus", name: "Sample Status", icon: <GiProgression /> },
           { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
           { path: "/appointments", name: "Book Appointments", icon: <FaStethoscope /> },
           { path: "/appointmentlist", name: "My Appointments", icon: <FaCalendarAlt /> },
@@ -662,6 +664,7 @@ const finalMenuGroups = shouldHideForAPM
   const menuItems = customerdata
     ? [
         { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
+        { path: "/samplestatus", name: "Sample Status", icon: <GiProgression /> },
         { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
         { path: "/appointments", name: "Book Appointments", icon: <FaStethoscope /> },
         { path: "/appointmentlist", name: "My Appointments", icon: <FaCalendarAlt /> },

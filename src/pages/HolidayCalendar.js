@@ -607,15 +607,7 @@ const handleSubmit = (formattedDate,type,id) => {
     }
   };
 
-  useEffect(() => {
-    const emp_id = localStorage.getItem('empNoId');
-    const currentYear = new Date().getFullYear();
-    const data = { 
-      year: currentYear, 
-      eId: emp_id
-    };
-    fetchAttendanceDetails(data);
-  }, [relode]);
+
 
   const holidaySaturdayList = holidayData?.holiday_saturday_list?.split('|')?.filter(Boolean) || [];
 
@@ -656,7 +648,15 @@ const handleSubmit = (formattedDate,type,id) => {
       setSelectedHolidays([...selectedHolidays, key]);
     }
   };
-
+  useEffect(() => {
+    const emp_id = localStorage.getItem('empNoId');
+    // const currentYear = new Date().getFullYear();
+    const data = { 
+      year: currentYear, 
+      eId: emp_id
+    };
+    fetchAttendanceDetails(data);
+  }, [relode,currentYear]);
   // Function to generate calendar days for the current month
   const generateCalendarDays = () => {
     if (loading) {

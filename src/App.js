@@ -113,6 +113,7 @@ import ProjectManagementTimesheet from "./pages/ProjectManagement/ProjectManagem
 import LmsActivityList from "./pages/LmsActivityList";
 import LabLoginScreen from "./pages/LabUser/LabLoginScreen";
 import LmsDashBoard from "./pages/LmsDashBoard";
+import CustomerStatus from "./pages/CustomerStatus";
 // import MyAppriaisal from "./pages/MyAppriaisal";
 
 function App() {
@@ -275,6 +276,7 @@ function App() {
                 <Route path="/payslip" element={<MyPaySlip />} />
                 <Route path="/wishes" element={<MyWishes />} />
                 <Route path="/invoices" element={<Invoices />} />
+                <Route path="samplestatus" element={<CustomerStatus />} />
                 <Route path="/tickets" element={<Tickets />} />
                 <Route path="/appointments" element={<MyAppointments />} />
                 <Route path="/shift-detail" element={<MyShiftDetail />} />

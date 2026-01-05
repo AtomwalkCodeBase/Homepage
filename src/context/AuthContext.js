@@ -140,13 +140,11 @@ export const AuthProvider = ({ children }) => {
       if (response.status === 200) {
         setError("");
         const { key } = response.data;
-        console.log(response.data)
         // Store token and emp_id in AsyncStorage
         localStorage.setItem('userToken', key);
         localStorage.setItem("labUser", JSON.stringify(payload));
         const db_name = payload.username.split("@")
         localStorage.setItem("dbName", db_name[1]);
-        console.log(db_name[1])
         setCurrentUser(userData);
         toast.success("Login successful!");
         window.location.href = "/lab/dashboard";
@@ -165,26 +163,6 @@ export const AuthProvider = ({ children }) => {
       }
       return false;
     }
-
-    //  try {
-    //         const res = await getCompanyInfo();
-    //         const companyInfo = res.data;
-    //         console.log("companyInfo", companyInfo)
-    //         const db_name = companyInfo.db_name.substr(3);
-    //         console.log("companyInfo", db_name)
-    //         localStorage.setItem('dbName', db_name);
-
-    //         // await AsyncStorage.multiSet([
-    //         //     ['companyInfo', JSON.stringify(companyInfo)],
-    //         //     ['dbName', db_name],
-    //         // ]);
-            
-    //         setCompanyInfo(companyInfo);
-    //         // setDbName(db_name);
-    //     } catch (error) {
-    //         console.log('Company Info Fetch Error:', error);
-    //     }
-
 
   }
  

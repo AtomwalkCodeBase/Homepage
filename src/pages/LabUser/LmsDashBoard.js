@@ -1,15 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { getActivityList, getGLPProjectList } from '../services/productServices';
-import Layout from '../components/Layout';
+import { getActivityList, getGLPProjectList } from '../../services/productServices';
+import Layout from '../../components/Layout';
 import styled from 'styled-components';
-import Badge from '../components/Badge';
-import Button from '../components/Button';
+import Badge from '../../components/Badge';
+import Button from '../../components/Button';
 import { FaListUl, FaProjectDiagram, FaRegCheckCircle} from 'react-icons/fa';
-import Card from '../components/Card';
+import Card from '../../components/Card';
 import { useNavigate } from 'react-router-dom';
-import StatsCard from '../components/StatsCard';
+import StatsCard from '../../components/StatsCard';
 import { TbClockExclamation } from 'react-icons/tb';
 import { PiWarningBold } from 'react-icons/pi';
+import { FiUploadCloud } from 'react-icons/fi';
 
 const StatsGrid = styled.div`
   display: grid;
@@ -119,7 +120,7 @@ const LmsDashBoard = () => {
   const userProject = mapProjectsWithActivities(allProject, activities);
 
 
-  // console.log("userProject", userProject)
+  console.log("userProject", userProject)
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -129,65 +130,68 @@ const LmsDashBoard = () => {
     }));
   };
 
-  const PROJECT_STATUS = {
-    IN_PROGRESS: "01",
-    OVER_DUE: "02",
-    PLANNED: "03",
-    COMPLETED: "04",
-  };
-
   // const PROJECT_STATUS = {
-  //   START: "01",
-  //   IN_PROGRESS: "02",
-  //   COMPLETED: "03",
+  //   IN_PROGRESS: "01",
+  //   OVER_DUE: "02",
+  //   PLANNED: "03",
+  //   COMPLETED: "04",
   // };
 
-  const getProjectCounts = (projects = []) => {
-    return projects.reduce(
-      (acc, project) => {
+const ACTIVITY_STATUS = {
+  START: "01",
+  IN_PROGRESS: "02",
+  COMPLETED: "03",
+};
+
+
+const getActivityCountsFromProjects = (projects = []) => {
+  return projects.reduce(
+    (acc, project) => {
+      const activities = project.activity_list || [];
+
+      activities.forEach((activity) => {
         acc.total += 1;
 
-        switch (project.project_status) {
-          case PROJECT_STATUS.PLANNED:
-            acc.pending += 1;
-            break;
-
-          case PROJECT_STATUS.COMPLETED:
-            acc.completed += 1;
-            break;
-
-          case PROJECT_STATUS.OVER_DUE:
-            acc.overdue += 1;
-            break;
-
-          case PROJECT_STATUS.IN_PROGRESS:
-            acc.inProgress += 1;
-            break;
-
-          default:
-            acc.unknown += 1;
+        // 1️⃣ Completed has highest priority
+        if (activity.activity_status === ACTIVITY_STATUS.COMPLETED) {
+          acc.completed += 1;
+          return;
         }
 
-        return acc;
-      },
-      {
-        total: 0,
-        pending: 0,
-        completed: 0,
-        overdue: 0,
-        inProgress: 0,
-        unknown: 0,
-      }
-    );
-  };
+        // 2️⃣ Overdue (only if not completed)
+        if (activity.is_over_due === true) {
+          acc.overdue += 1;
+        }
+
+        // 3️⃣ In Progress
+        if (activity.activity_status === ACTIVITY_STATUS.IN_PROGRESS) {
+          acc.inProgress += 1;
+        }
+      });
+
+      return acc;
+    },
+    {
+      total: 0,
+      completed: 0,
+      inProgress: 0,
+      overdue: 0,
+    }
+  );
+};
+
+
+
 
   const projectCounts = useMemo(() => {
     return {
       totalActivities: activities.length,
-      ...getProjectCounts(userProject)
+      ...getActivityCountsFromProjects(userProject)
 
     }
   }, [activities, userProject]);
+
+  console.log("projectCounts", projectCounts)
 
 
   const filteredData = useMemo(() => {
@@ -208,32 +212,45 @@ const LmsDashBoard = () => {
     });
   }, [userProject, filterValue]);
 
+  // const overDueActivityCount = (activityList) => {
+  //   const totalCount = activityList.reduce((acc, curr) => {
+  //     if(curr.is_over_due === true){
+  //       return acc + curr
+  //     }
+  //   },0)
+  // }
+
+  const overDueActivityCount = (activityList) => {
+    // Count activities where is_over_due is true
+    return activityList.filter(activity => activity.is_over_due === true).length;
+}
+
   const statsData = [
     {
       id: 1,
       label: 'Total Activities',
-      value: projectCounts.totalActivities,
+      value: projectCounts.totalActivities || 0,
       color: "primary",
       icon: <FaProjectDiagram />
     },
     {
       id: 2,
-      label: 'Total Complete',
-      value: projectCounts.completed,
+      label: 'Total Complete activity',
+      value: projectCounts.completed || 0,
       color: "success",
       icon: <FaRegCheckCircle />
     },
     {
       id: 3,
-      label: 'Total Pending ',
-      value: projectCounts.pending,
+      label: 'Total In progress activity ',
+      value: projectCounts.inProgress || 0,
       color: "warning",
       icon: <TbClockExclamation />
     },
     {
       id: 3,
-      label: 'Total Over due ',
-      value: projectCounts.overdue,
+      label: 'Total Over due activity',
+      value: projectCounts.overdue || 0,
       color: "error",
       icon: <PiWarningBold />
     },
@@ -282,10 +299,10 @@ const LmsDashBoard = () => {
             <thead>
               <tr>
                 <th>Activity Reference</th>
-                <th>Type</th>
+                {/* <th>Type</th> */}
                 <th>Start Date</th>
                 <th>End Date</th>
-                <th>Status</th>
+                <th>Activity overdue</th>
                 {/* <th>Over Due Date</th> */}
                 <th>Actions</th>
               </tr>
@@ -294,24 +311,29 @@ const LmsDashBoard = () => {
               {filteredData.length > 0 ? (
                 filteredData.map((request) => {
                   const statusInfo = getStatusDisplay(request.project_status);
+                  const totalOverDue = overDueActivityCount(request.activity_list)
                   return (
                     <tr key={request.id}>
                       <td>{request.project_code}</td>
-                      <td>
+                      {/* <td> */}
                         {/* <div style={{ display: "flex", alignItems: "center" }}> */}
                         {/* <span style={{ marginRight: "0.5rem" }}>{getRequestIcon(request.request_sub_type)}</span> */}
-                        {request.project_type}
+                        {/* {request.project_type} */}
                         {/* </div> */}
-                      </td>
+                      {/* </td> */}
                       <td>{request.start_date}</td>
                       <td>{request.end_date}</td>
                       <td>
-                        <Badge variant={statusInfo.variant}>{statusInfo.status_display}</Badge>
+                        {/* <Badge variant={statusInfo.variant}>{statusInfo.status_display}</Badge> */}
+                        {totalOverDue}
                       </td>
                       <td>
                       <ActionButtons>
-                        <Button variant="ghost" size="sm" title="View" onClick={() => Navigate(`/activityList/?project_code=${request.project_code}`)} >
+                        <Button variant="ghost" size="md" title="View" onClick={() => Navigate(`/activityList/?project_code=${request.project_code}`, { state: { activityList: request}})}>
                           <FaListUl /> View Activity
+                        </Button>
+                        <Button variant="ghost" size="md" title="Audit" onClick={() => Navigate(`/upload/?project_code=${request.project_code}`)}>
+                          <FiUploadCloud /> File Upload 
                         </Button>
                       </ActionButtons>
                       </td>

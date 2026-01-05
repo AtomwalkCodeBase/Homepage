@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { FaClock, FaCalendarAlt, FaUserMd, FaFilter } from "react-icons/fa"
 import Layout from "../components/Layout"
-import { getequipmentlistview } from "../services/productServices"
+import { getEquipmentListView } from "../services/productServices"
 import { useTheme } from "../context/ThemeContext"
 import { toast } from "react-toastify"
 import AppointmentDateTimeModal from "../components/modals/AppointmentDateTimeModal"
@@ -348,9 +348,10 @@ const MyAppointments = () => {
 
   useEffect(() => {
     setLoading(true)
-    getequipmentlistview()
+    getEquipmentListView()
       .then((res) => {
         setDoctorList(res.data || [])
+        console.log("setDoctorList", res.data)
         setLoading(false)
       })
       .catch((error) => {
@@ -367,6 +368,7 @@ const MyAppointments = () => {
         label: specialty,
         value: specialty,
       }))
+      console.log("unique",[{ label: "All", value: "All" }, ...specialtyOptions]);
       setSpecialties([{ label: "All", value: "All" }, ...specialtyOptions])
     }
   }, [doctorList])
@@ -375,6 +377,8 @@ const MyAppointments = () => {
     selectedSpecialty === "All"
       ? doctorList
       : doctorList.filter((doctor) => doctor.equipment_type === selectedSpecialty)
+
+      console.log(filteredDoctors)
 
   const handleDoctorSelect = (doctor) => {
     setSelectedDoctor(doctor)

@@ -144,15 +144,54 @@ const ConfirmButton = styled(Button)`
     background-color: ${({ theme, disabled }) => (disabled ? "#95a5a6" : theme.colors.secondaryDark || "#1e8449")};
   }
 `
+const TimeRangeContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
 
-const AppointmentDateTimeModal = ({ isOpen, onClose, doctor }) => {
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const TimeInput = styled.input`
+  padding: 0.75rem;
+  border: 1px solid ${({ theme, $hasError }) =>
+  $hasError ? theme.colors.error || "#ef4444" : theme.colors.border || "#d1d5db"};
+  border-radius: ${({ theme }) => theme.borderRadius || "6px"};
+  font-size: 1rem;
+  background: ${({ theme }) => theme.colors.background || "#ffffff"};
+  color: ${({ theme }) => theme.colors.text || "#374151"};
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.colors.primary || "#3b82f6"};
+    box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.primaryLight || "rgba(59, 130, 246, 0.1)"};
+  }
+
+  &:disabled {
+    background: ${({ theme }) => theme.colors.border || "#f9fafb"};
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+`;
+
+const AppointmentDateTimeModal = ({ isOpen, onClose, doctor, show=false }) => {
   const [selectedDate, setSelectedDate] = useState(null)
   const [selectedTime, setSelectedTime] = useState(null)
   const { theme } = useTheme()
 
+        const [formData, setFormData] = useState({
+          start_time: "",
+          end_time: "",
+        });
+
+  console.log("doctor", doctor)
+
   // Generate next 7 days for date selection
   const generateDates = () => {
-    const dates = []
+  const dates = []
     const today = new Date()
 
     for (let i = 0; i < 7; i++) {
@@ -171,30 +210,57 @@ const AppointmentDateTimeModal = ({ isOpen, onClose, doctor }) => {
     return dates
   }
 
+  const timeToMinutes = (timeStr) => {
+  const [h, m] = timeStr.split(":").map(Number)
+  return h * 60 + m
+}
+
+const minutesToTime = (minutes) => {
+  const h = Math.floor(minutes / 60)
+  const m = minutes % 60
+  return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`
+}
+
+
   // Generate time slots
-  const generateTimeSlots = () => {
-    // This would normally come from the doctor's availability
-    // For now, we'll generate some sample slots
-    const slots = []
-    const startHour = 9 // 9 AM
-    const endHour = 17 // 5 PM
+const generateTimeSlots = ( startTime, endTime, minUsagePeriod, maxUsersPerSlot ) => {
+  const slots = []
 
-    for (let hour = startHour; hour <= endHour; hour++) {
-      const time = `${hour}:00`
-      const time24h = `${hour.toString().padStart(2, "0")}:00`
+  const startMinutes = timeToMinutes(startTime)
+  const endMinutes = timeToMinutes(endTime)
 
-      slots.push({
-        time: time,
-        time24h: time24h,
-        available: Math.random() > 0.3, // Randomly make some slots unavailable
-      })
-    }
+  const intervalMinutes = minUsagePeriod * 60
 
-    return slots
+  let current = startMinutes
+
+  while (current + intervalMinutes <= endMinutes) {
+    const from = minutesToTime(current)
+    const to = minutesToTime(current + intervalMinutes)
+
+    slots.push({
+      time: `${from} - ${to}`,
+      time24h: from,
+      from,
+      to,
+      available: maxUsersPerSlot > 0,
+      maxUsers: maxUsersPerSlot,
+    })
+
+    current += intervalMinutes
   }
 
+  return slots
+}
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+  };
+
+
   const dates = generateDates()
-  const timeSlots = generateTimeSlots()
+const timeSlots = generateTimeSlots( doctor.booking_start_time, doctor.max_slot_time, parseFloat(doctor.min_usage_period), doctor.max_users_per_slot)
 
   const handleConfirm = () => {
     if (!selectedDate || !selectedTime) {
@@ -251,7 +317,7 @@ const AppointmentDateTimeModal = ({ isOpen, onClose, doctor }) => {
         <SectionTitle theme={theme}>
           <FaClock style={{ marginRight: "8px" }} /> Select Time
         </SectionTitle>
-        <TimeSelector>
+      {!show ?  <TimeSelector>
           {timeSlots.map((slot) => (
             <TimeOption
               key={slot.time24h}
@@ -265,7 +331,26 @@ const AppointmentDateTimeModal = ({ isOpen, onClose, doctor }) => {
             </TimeOption>
           ))}
         </TimeSelector>
-
+        : 
+              <TimeRangeContainer>
+      <TimeInput
+      type="time"
+      name="start_time"
+      value={formData.start_time}
+      onChange={handleInputChange}
+      // required={!formData.effort}
+      placeholder="Start Time"
+      />
+      <TimeInput
+      type="time"
+      name="end_time"
+      value={formData.end_time}
+      onChange={handleInputChange}
+      // required={!formData.effort}
+      placeholder="End Time"
+      />
+      </TimeRangeContainer>
+}
         <ButtonGroup>
           <CancelButton onClick={onClose}>Cancel</CancelButton>
           <ConfirmButton onClick={handleConfirm} disabled={!selectedDate || !selectedTime} theme={theme}>

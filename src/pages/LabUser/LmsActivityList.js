@@ -1,15 +1,17 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { useLocation } from 'react-router-dom';
-import Layout from '../components/Layout'
+import Layout from '../../components/Layout'
 import styled from 'styled-components';
-import { FaEdit, FaWarehouse, FaList, FaRegCheckCircle } from 'react-icons/fa';
-import { theme } from '../styles/Theme';
-import Button from '../components/Button';
-import Badge from '../components/Badge';
-import Card from '../components/Card';
-import { getStatusVariant } from './ProjectManagement/utils/utils';
-import { getActivitiQcData, getActivityList } from '../services/productServices';
-import Modal from '../components/modals/Modal';
+import { FaWarehouse, FaRegCheckCircle } from 'react-icons/fa';
+import { theme } from '../../styles/Theme';
+import Button from '../../components/Button';
+import Badge from '../../components/Badge';
+import Card from '../../components/Card';
+import { getStatusVariant } from '../ProjectManagement/utils/utils';
+import { getActivitiQcData, getActivityList, postActivtyInventory } from '../../services/productServices';
+import Modal from '../../components/modals/Modal';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import ConfirmPopup from '../../components/modals/ConfirmPopup';
 
 const Container = styled.div`
   padding: ${theme.spacing.xl};
@@ -44,6 +46,24 @@ const CardContainer = styled.div`
     box-shadow: ${theme.shadows.md};
   }
 `;
+const AnimatedCardContainer = styled(Card)`
+  background: ${({ theme }) => theme.colors?.card || '#fff'};
+  border: 1px solid ${({ theme }) => theme.colors?.border || '#e0e0e0'};
+  border-radius: ${({ theme }) => theme.cardStyle?.borderRadius || '12px'};
+  padding: ${({ theme }) => theme.spacing?.lg || '1rem'};
+  margin-bottom: ${({ theme }) => theme.spacing?.md || '1rem'};
+  box-shadow: ${({ theme }) => theme.shadows?.md || '0 4px 6px rgba(0, 0, 0, 0.1)'};
+  transition: ${({ theme }) => theme.transitions?.normal || 'all 0.3s ease'};
+  
+  &:hover {
+    border-color: ${({ theme }) => theme.colors?.primary || '#6C63FF'};
+    box-shadow: ${({ theme }) => 
+      theme.cardStyle?.shadow === 'heavy' ? '0 10px 20px rgba(108,99,255,0.2)' :
+      theme.shadows?.lg || '0 4px 12px rgba(108,99,255,0.15)'};
+    transform: ${({ theme }) => 
+      theme.cardStyle?.animation ? 'translateY(-2px)' : 'none'};
+  }
+`;
 
 const CardHeader = styled.div`
   display: flex;
@@ -65,6 +85,25 @@ const LeftSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${theme.spacing.xs};
+`;
+
+const ProjectCodeRowHeader = styled.div`
+  display: flex;
+  align-items: center;
+    justify-content: space-between;
+  gap: ${theme.spacing.md};
+  flex-wrap: wrap;
+  background-color: ${({ theme }) => theme.colors.primaryLight};
+  padding: ${({ theme }) => theme.spacing?.md || "12px 15px"};
+        color: ${({ theme }) => theme.colors.textLight};
+      font-weight: 600;
+      margin-bottom: ${theme.spacing.sm};
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: ${theme.spacing.xs};
+  }
 `;
 
 const ProjectCodeRow = styled.div`
@@ -172,75 +211,35 @@ const FilterSelect = styled.select`
   background: white;
 `
 
-// const Button = styled.button`
-//   display: inline-flex;
-//   align-items: center;
-//   gap: ${theme.spacing.sm};
-//   padding: ${theme.spacing.sm} ${theme.spacing.lg};
-//   border: none;
-//   border-radius: ${theme.borderRadius.sm};
-//   background: ${props => props.bg || theme.colors.textLight};
-//   color: white;
-//   font-family: ${theme.fonts.body};
-//   font-size: ${theme.fontSizes.sm};
-//   font-weight: 600;
-//   cursor: pointer;
-//   transition: all ${theme.transitions.fast};
-//   white-space: nowrap;
-
-//   &:hover {
-//     opacity: 0.9;
-//     transform: translateY(-1px);
-//     box-shadow: ${theme.shadows.sm};
-//   }
-
-//   &:active {
-//     transform: translateY(0);
-//   }
-
-//   svg {
-//     font-size: ${theme.fontSizes.md};
-//   }
-
-//   @media (max-width: 768px) {
-//     padding: ${theme.spacing.sm} ${theme.spacing.md};
-//     font-size: ${theme.fontSizes.xs};
-    
-//     svg {
-//       font-size: ${theme.fontSizes.sm};
-//     }
-//   }
-
-//   @media (max-width: 576px) {
-//     width: 100%;
-//     justify-content: center;
-//   }
-// `;
-
-
 const LmsActivityList = () => {
-  // const location = useLocation();
-  // const activityList = location.state?.activityList || [];
+  const location = useLocation();
+  const activityList = location.state?.activityList || [];
   const urlParams = new URLSearchParams(window.location.search);
   const project_code = urlParams.get("project_code");
+  const Navigate = useNavigate();
+  const [filterValue, setFilterValue] = useState({
+    project_code: project_code ? project_code : "", status: "", searchTerm: ""
+  });
+  
+  
+  const [qcData, setQcData] = useState([]);
+  const [activities, setActivities] = useState([]);
 
-    const [qcData, setQcData] = useState([]);
-      const [activities, setActivities] = useState([]);
-
-    const [selectedActivity, setSelectedActivity] = useState([]);
-      const [filterValue, setFilterValue] = useState({
-        project_code: project_code ? project_code : "", status: "", searchTerm: ""
-      });
-
+  const [selectedActivity, setSelectedActivity] = useState(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false)
-  // console.log("activityList", activityList)
+  const [showConfirm, setShowConfirm] = useState(false);
+  // console.log("activityList", filterValue)
 
     const filteredData = useMemo(() => {
       return activities.filter(item => {
         const matchesStatus =
-          !filterValue.status ||
-          item.project_status?.toString() === filterValue.status;
+      !filterValue.status ||
+      (filterValue.status === "OVER_DUE"
+        ? item.is_over_due === true
+        : item.activity_status?.toString() === filterValue.status);
+
+            console.log(filterValue.status)
   
         const matchesProject =
           !filterValue.project_code ||
@@ -254,33 +253,30 @@ const LmsActivityList = () => {
       });
     }, [activities, filterValue]);
 
-  const handleInventory = (id) => console.log("Inventory Procurement clicked", id);
-  const handleActivity = (id) => console.log("Activity Reading clicked", id);
-  const handleUpdate = (id) => console.log("Update clicked", id);
-
     const getUniqueValues = (data, key) => {
     if (!Array.isArray(data)) return [];
     return [...new Set(data.map(item => item[key]).filter(Boolean))];
   };
 
-    const getStatusDisplay = (statusNum) => {
+  //   const PROJECT_STATUS = {
+  //   START: "01",
+  //   IN_PROGRESS: "02",
+  //   COMPLETED: "03",
+  // };
+
+    const getStatusDisplay = (statusNum,) => {
     switch (statusNum) {
-      case "01":
+      case "02":
         return {
           status_display: "IN PROGRESS",
           variant: "info" // or "primary", "warning" - choose appropriate variant
         };
-      case "02":
-        return {
-          status_display: "OVER-DUE",
-          variant: "error" // or "error", "warning"
-        };
-      case "03":
+      case "01":
         return {
           status_display: "PLANNED",
-          variant: "secondary" // or "info", "default"
+          variant: "warning" // or "info", "default"
         };
-      case "04":
+      case "03":
         return {
           status_display: "COMPLETED",
           variant: "success"
@@ -317,44 +313,46 @@ const LmsActivityList = () => {
     };
 
 
-  const handleOpenModal =(activity) => {
-    selectedActivity(activity)
-    const data = {
-    activity_id: activity.id,
-    call_mode: 'QC_DATA',
-  };
-  fetchQcData(data);
-  handleMarkAsCompleted(data.activity_id)
-  setIsModalOpen(true);
-}
+const handleOpenModal = (activity) => {
+  setSelectedActivity(activity);
+  fetchQcData(activity.activity_id);
+};
 
-  const fetchQcData = async (data) => {
+  const fetchQcData = async (activity_id) => {
     try {
-      const response = await getActivitiQcData(data);
-      setQcData(response.data);
-      console.log(response.data)
+      const payload = {
+      activity_id,
+      call_mode: "QC_DATA",
+    };
+      const res = await getActivitiQcData(payload);
+       if (res.data?.length > 0) {
+    setQcData(res.data);
+    setIsModalOpen(true);   // OPEN HERE
+  } else {
+    setShowConfirm(true);
+  }
+
+      // console.log(response.data)
     } catch (error) {
       console.error('Error fetching QC data:', error);
     }
   };
 
-    const handleMarkAsCompleted = async (activity_id) => {
+    const handleMarkAsCompleted = async () => {
+        if (!selectedActivity) return;
 
     const payload = {
-      activity_id: activity_id,
-      call_mode: 'MARK_COMPLETE',
-    };
+    activity_id: selectedActivity.activity_id,
+    call_mode: "MARK_COMPLETE",
+  };
 
-    // try {
-    //   const res = await postActivtyInventory(payload);
-    //   Alert.alert('Success', `Activity Completed Successfully`);
-    //   handleBackPress();
-    // } catch (error) {
-    //   Alert.alert(
-    //     'Error',
-    //     `Failed to update Activity. ${error.response?.data?.message || 'Please try again later.'}`
-    //   );
-    // }
+    try {
+      const res = await postActivtyInventory(payload);
+       toast.success("Activity completed successfully");
+       fetchActivityDetails();
+    } catch (error) {
+      toast.error(`Failed to update Activity. ${error.response?.data?.message || 'Please try again later.'}`)
+    }
   };
 
   return (
@@ -380,34 +378,41 @@ const LmsActivityList = () => {
             onChange={handleFilterChange}
           >
             <option value="">All Statuses</option>
-            <option value="01">IN PROGRESS</option>
-            <option value="02">OVER-DUE</option>
-            <option value="03">PLANNED</option>
-            <option value="04">COMPLETED</option>
+            <option value="02">IN PROGRESS</option>
+            <option value="OVER_DUE">OVER-DUE</option>
+            <option value="01">PLANNED</option>
+            <option value="03">COMPLETED</option>
           </FilterSelect>
           {/* <Button variant="outline" size="sm" onClick={handleFilter}>
                 <FaFilter /> Filter
               </Button> */}
         </FilterContainer>
         {filteredData.map((activity) => {
-          const statusInfo = getStatusDisplay(activity.activity_status);
+          const statusInfo = getStatusDisplay(activity.activity_status, activity.is_over_due);
           return(
-          <Card key={activity.id}>
+          <AnimatedCardContainer key={activity.activity_id}>
             <CardHeader>
               <LeftSection>
+                <ProjectCodeRowHeader>
+                  <ActivityTitle>Activity name</ActivityTitle>
+                  <ActivityTitle>Is Activity Over Due</ActivityTitle>
+                  <ActivityTitle>Status</ActivityTitle>
+                </ProjectCodeRowHeader>
                 <ProjectCodeRow>
-                  <ProjectCode>
-                    {activity.ref_num}
-                    {/* <strong>({filteredData.title})</strong> */}
-                  </ProjectCode>
-                  <Badge variant={getStatusVariant(activity.status)}>
-                    {activity.status}
+                <ActivityTitle>{activity.activity_name}</ActivityTitle>
+                 
+                  {activity.is_over_due ? <Badge variant='error'>Yes</Badge> : <Badge variant='success'>No</Badge>}
+                  <Badge variant={statusInfo.variant}>
+                    {statusInfo.status_display}
                   </Badge>
                   {/* <Badge variant={statusInfo.variant}>
                     {statusInfo.status_display}
                   </Badge> */}
                 </ProjectCodeRow>
-                <ActivityTitle>{activity.activity_name}</ActivityTitle>
+                 <ProjectCode>
+                    {activity.ref_num}
+                    {/* <strong>({filteredData.title})</strong> */}
+                  </ProjectCode>
               </LeftSection>
 
             </CardHeader>
@@ -419,10 +424,16 @@ const LmsActivityList = () => {
               </InfoRow>
 
                 <ButtonGroup>
-                <Button variant='ghost' onClick={() => handleInventory(activity.id)}>
+                <Button variant='ghost' onClick={() => Navigate(`/InventoryUpdate`, {state: {id: activity.activity_id , call_type: "INV_IN"}} )}>
                   <FaWarehouse />
                   <span>Inventory Update</span>
                 </Button>
+
+                {( activity.inventory_activity === "P") && 
+                <Button variant='outline' onClick={() => Navigate(`/equipmentBooking/?id=${activityList.title}_${activityList.project_code}`)}>
+                  <FaWarehouse />
+                  <span>Inventory Procurement</span>
+                </Button>}
                 
                 {/* <Button 
                   onClick={() => handleActivity(activity.id)}
@@ -433,22 +444,44 @@ const LmsActivityList = () => {
                 </Button> */}
                 
                 {/* {activity.activity_status === "04" && */}
-                <SuccessBtn onClick={() => handleOpenModal(activity)}>
+               {activity.activity_status !== "03" &&  <SuccessBtn onClick={() => handleOpenModal(activity)}>
                   <FaRegCheckCircle />
                   <span>Mark as Complete</span>
-                </SuccessBtn>
+                </SuccessBtn>}
               </ButtonGroup>
             </CardBody>
-          </Card>
+          </AnimatedCardContainer>
         )})}
       </Card>
     {/* </Container> */}
 
-    {isModalOpen && <>
-    {qcData ? <></> : <Modal></Modal>}
-    
-    
-    </>}
+    {isModalOpen && (
+  <Modal onClose={() => setIsModalOpen(false)}>
+    <h3>QC Details</h3>
+
+    {qcData.map((qc, index) => (
+      <div key={index}>
+        <strong>{qc.qc_name}</strong>
+        <p>Permissible Value: {qc.qc_value}</p>
+      </div>
+    ))}
+
+    <Button onClick={handleMarkAsCompleted}>
+      Mark as Completed
+    </Button>
+  </Modal>
+)}
+{showConfirm && (
+  <ConfirmPopup
+    isOpen={showConfirm}
+    onClose={() => setShowConfirm(false)}
+    onConfirm={handleMarkAsCompleted}
+    title="Complete Activity"
+    message="Are you sure you want to complete this activity?"
+    confirmLabel="Yes"
+  />
+)}
+
 
     </Layout>
   )

@@ -519,20 +519,21 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
         ],
       },
   ]
-  : companyInfo.business_type === "LMS"? [
+  : (companyInfo.business_type === "LMS" || companyInfo.business_type === "GLP") ? [
     {
           name: "OverAll",
           icon: <FaHome />,
           items: [
             { path: "/lab/dashboard", name: "Activity Dashboard", icon: <FaHome /> },
             { path: "/activityList", name: "Activity List", icon: <FaList /> },
+            // { path: "/equipmentBooking", name: "Booking Item", icon: <FaStethoscope /> },
           ],
         }
   ] : [
         {
           name: "Dashboard",
           icon: <FaHome />,
-          items: [{ path: `${companyInfo.business_type === "LMS"? "/lab/dashboard": "/dashboard"}`, name: `${companyInfo.business_type === "LMS" ? "Activity Dashboard" : "Overview"}`, icon: <FaHome /> }],
+          items: [{ path:  "/dashboard", name:  "Overview", icon: <FaHome /> }],
         },
         {
           name: "Time Management",
@@ -623,7 +624,11 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
     "/shift-detail",
     "/projectmanagement",
     "/project-report",
-    "/wishes"
+    "/wishes",
+    "/activityList",
+    "/equipmentBooking",
+    "/lab/dashboard"
+
   ])
 
   const shouldHideForAPM = companyInfo?.business_type === "APM"
@@ -677,9 +682,10 @@ const finalMenuGroups = shouldHideForAPM
       // { path: "/customerList", name: "Customer List", icon: <FaUsers /> },
       ...(profile?.is_manager ? [{ path: "/customerList", name: "Customer List", icon: <FaUsers /> }] : [] )
     ]
-    : companyInfo.business_type === "LMS" ? [
+    : (companyInfo.business_type === "LMS" || companyInfo.business_type === "GLP") ? [
       { path: "/lab/dashboard", name: "Dashboard", icon: <FaHome /> },
       { path: "/activityList", name: "Activity List", icon: <FaList /> },
+      // { path: "/equipmentBooking", name: "Booking Item", icon: <FaStethoscope /> },
     ]
     : [
         { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },

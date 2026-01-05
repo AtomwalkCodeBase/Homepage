@@ -101,11 +101,14 @@ export const equipentTypeListURL = `${hrendpoint}/get_equipment_type_list/${db_n
 export const getAvailableRoomslistURL = `${hrendpoint}/get_available_eq_list/${db_name}/`;
 export const getActivitylistURL = `${hrendpoint}/get_project_activity_list/${db_name}/`;
 
+export const getBookingListURL = `${hrendpoint}/get_user_booking_list/${db_name}/`;
+
 
 export const employeeTaskAllocationData = `${newhrendpoint}/get_emp_allocation_data/${db_name}/`;
 export const processAllocation = `${newhrendpoint}/process_emp_allocation/${db_name}/`;
 
 export const getActivities = `${hrendpoint}/get_user_activity/${db_name}/`;
 export const projectList = `${newhrendpoint}/get_project_list/${db_name}/`;
-export const getActivityQc = `${endpoint}/get_activity_data/${db_name}/`;
+export const getActivityQc = `${newhrendpoint}/get_activity_data/${db_name}/`;
+export const processActivity = `${newhrendpoint}/process_activity_data/${db_name}/`;
 export const getstatus=`${newlocalhost}/lab_api/get_sample_event_status/LEM_002/`;

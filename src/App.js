@@ -48,7 +48,6 @@ import EmployeeManagement from "./pages/EmployeeManagement";
 import AttendanceTracking from "./pages/AttendanceTracking";
 import LeaveManagement from "./pages/LeaveManagement";
 import HolidayCalendar from "./pages/HolidayCalendar";
-import TimeSheetManagement from "./pages/TimeSheetManagement";
 import ShiftScheduling from "./pages/ShiftScheduling";
 import MyClaims from "./pages/MyClaims";
 import Appointees from "./pages/Appointees";
@@ -110,10 +109,14 @@ import AwardsPage from "./components/AwardsPage";
 import GlpHeroPage from "./components/glp/GlpHeroPage";
 import { TimesheetRouter } from "./components/TimesheetRouter";
 import ProjectManagementTimesheet from "./pages/ProjectManagement/ProjectManagementTimesheet";
-import LmsActivityList from "./pages/LmsActivityList";
 import LabLoginScreen from "./pages/LabUser/LabLoginScreen";
-import LmsDashBoard from "./pages/LmsDashBoard";
+import LmsDashBoard from "./pages/LabUser/LmsDashBoard";
+import LmsActivityList from "./pages/LabUser/LmsActivityList";
+import LabEquimentBookingScreen from "./pages/LabUser/LabEquimentBookingScreen";
+import FileAuditDashboard from "./pages/LabUser/FileAuditDashboard";
+import LmsInventoryUpdate from "./pages/LabUser/LmsInventoryUpdate";
 import CustomerStatus from "./pages/CustomerStatus";
+
 // import MyAppriaisal from "./pages/MyAppriaisal";
 
 function App() {
@@ -257,6 +260,9 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/lab/dashboard" element={<LmsDashBoard />} />
                 <Route path="/activityList" element={<LmsActivityList />} />
+                <Route path="/equipmentBooking" element={<LabEquimentBookingScreen />} />
+                <Route path="/inventoryUpdate" element={<LmsInventoryUpdate />} />
+                <Route path="/upload" element={<FileAuditDashboard />} />
                 <Route path="/employees" element={<EmployeeManagement />} />
                 <Route path="/attendance-tracking" element={<AttendanceTracking />} />
                 <Route path="/leave-management" element={<LeaveManagement />} />

@@ -98,7 +98,10 @@ export const NavBar = () => {
      "customerList",
      "ticketList",
      "activityList",
-     "samplestatus"
+      "samplestatus",
+     "/equipmentBooking",
+     "/upload",
+     "/inventoryUpdate"
   ];
   
   useEffect(() => {

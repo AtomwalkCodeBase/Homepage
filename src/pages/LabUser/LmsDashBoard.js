@@ -1,387 +1,690 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { getActivityList, getGLPProjectList } from '../../services/productServices';
-import Layout from '../../components/Layout';
-import styled from 'styled-components';
-import Badge from '../../components/Badge';
-import Button from '../../components/Button';
-import { FaListUl, FaProjectDiagram, FaRegCheckCircle} from 'react-icons/fa';
-import Card from '../../components/Card';
-import { useNavigate } from 'react-router-dom';
-import StatsCard from '../../components/StatsCard';
-import { TbClockExclamation } from 'react-icons/tb';
-import { PiWarningBold } from 'react-icons/pi';
-import { FiUploadCloud } from 'react-icons/fi';
+import { useState, useEffect } from "react"
+import styled from "styled-components"
+import { toast } from "react-toastify"
+import {
+  FaChevronDown,
+  FaChevronUp,
+  FaPlay,
+  FaCheckCircle,
+  FaTimesCircle,
+  FaBoxes,
+  FaClipboardList,
+} from "react-icons/fa"
+import { getusersampleevent, processsampleevt } from "../../services/productServices"
+import Layout from "../../components/Layout"
+import RemarksModal from "../../components/modals/RemarksModal"
 
-const StatsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: ${({ theme }) => theme.spacing.lg};
-  margin-bottom: ${({ theme }) => theme.spacing["2xl"]};
 
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: ${({ theme }) => theme.spacing.md};
-  }
-`;
-
-const TableContainer = styled.div`
-  overflow-x: auto;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `
+
+const SampleList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`
+
+const SampleCard = styled.div`
+  background: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+`
+
+const SampleHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: ${({ theme }) => theme.colors.cardBg};
+  border-bottom: ${(props) => (props.expanded ? `1px solid ${props.theme.colors.border}` : "none")};
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.cardHoverBg};
+  }
+`
+
+const SampleInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+`
+
+const SampleName = styled.h3`
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text};
+  margin: 0;
+`
+
+const SampleMeta = styled.div`
+  display: flex;
+  gap: 20px;
+  font-size: 0.85rem;
+  color: ${({ theme }) => theme.colors.text};
+`
+
+const StatusBadge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  background: ${(props) => {
+    switch (props.status?.toLowerCase()) {
+      case "completed":
+        return props.theme.colors.successBg
+      case "started":
+        return props.theme.colors.warningBg
+      case "not started":
+        return props.theme.colors.infoBg
+      default:
+        return props.theme.colors.mutedBg
+    }
+  }};
+  color: ${(props) => {
+    switch (props.status?.toLowerCase()) {
+      case "completed":
+        return props.theme.colors.success
+      case "in progress":
+        return props.theme.colors.warning
+      case "not started":
+        return props.theme.colors.info
+      default:
+        return props.theme.colors.text
+    }
+  }};
+`
+
+const ExpandIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: ${({ theme }) => theme.colors.primary};
+  transition: transform 0.3s ease;
+  transform: ${(props) => (props.expanded ? "rotate(0)" : "rotate(-90deg)")};
+`
+
+const SampleBody = styled.div`
+  padding: 20px;
+  background: ${({ theme }) => theme.colors.background};
+`
+
+const ActivitiesList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`
+
+const ActivityCard = styled.div`
+  background: ${({ theme }) => theme.colors.cardBg};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 10px;
+  padding: 16px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+`
+
+const ActivityHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+`
+
+const ActivityName = styled.h4`
+  font-size: 1rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text};
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`
+
+const ActivityStatus = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  background: ${(props) => {
+    switch (props.status?.toUpperCase()) {
+      case "COMPLETED":
+        return props.theme.colors.successBg
+      case "IN_PROGRESS":
+        return props.theme.colors.warningBg
+      case "NOT_STARTED":
+        return props.theme.colors.infoBg
+      case "FAILED":
+        return props.theme.colors.dangerBg
+      default:
+        return props.theme.colors.mutedBg
+    }
+  }};
+  color: ${(props) => {
+    switch (props.status?.toUpperCase()) {
+      case "COMPLETED":
+        return props.theme.colors.success
+      case "IN_PROGRESS":
+        return props.theme.colors.warning
+      case "NOT_STARTED":
+        return props.theme.colors.info
+      case "FAILED":
+        return props.theme.colors.error
+      default:
+        return props.theme.colors.warning
+    }
+  }};
+`
+
+const Section = styled.div`
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+
+  &:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+`
+
+const SectionTitle = styled.h5`
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.text};
+  margin: 0 0 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`
+
+const InventoryTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+
+  th {
+    background: ${({ theme }) => theme.colors.mutedBg};
+    padding: 8px;
+    text-align: left;
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.text};
+    border: 1px solid ${({ theme }) => theme.colors.border};
+  }
+
+  td {
+    padding: 8px;
+    border: 1px solid ${({ theme }) => theme.colors.border};
+    color: ${({ theme }) => theme.colors.text};
+  }
+
+  tr:nth-child(even) {
+    background: ${({ theme }) => theme.colors.background};
+  }
+`
+
+const QCCheckList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`
+
+const QCItem = styled.li`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: ${({ theme }) => theme.colors.text};
+`
+
+const QCCheckbox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  background: ${(props) => (props.checked ? props.theme.colors.success : props.theme.colors.mutedBg)};
+  color: ${(props) => (props.checked ? "white" : props.theme.colors.border)};
+  font-weight: bold;
+  font-size: 0.8rem;
+`
+
 const ActionButtons = styled.div`
   display: flex;
-  gap: 0.5rem;
-`
-const FilterContainer = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 10px;
+  margin-top: 15px;
   flex-wrap: wrap;
 `
 
-const FilterSelect = styled.select`
-  padding: 0.5rem 1rem;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 4px;
-  background: white;
+const ActionButton = styled.button`
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+`
+
+const StartButton = styled(ActionButton)`
+  background: ${({ theme }) => theme.colors.primary};
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: ${({ theme }) => theme.colors.primaryDark};
+    box-shadow: 0 4px 12px ${({ theme }) => theme.colors.primary}40;
+  }
+`
+
+const CompleteButton = styled(ActionButton)`
+  background: ${({ theme }) => theme.colors.success};
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: ${({ theme }) => theme.colors.successDark};
+    box-shadow: 0 4px 12px ${({ theme }) => theme.colors.success}40;
+  }
+`
+
+const FailButton = styled(ActionButton)`
+  background: ${({ theme }) => theme.colors.error};
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: ${({ theme }) => theme.colors.dangerDark};
+    box-shadow: 0 4px 12px ${({ theme }) => theme.colors.danger}40;
+  }
+`
+
+const LoadingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 1rem;
 `
 
 const LmsDashBoard = () => {
-  const [activities, setActivities] = useState([]);
-  const [allProject, setAllProject] = useState([]);
-  const [filterValue, setFilterValue] = useState({
-    project_code: "", status: "", searchTerm: ""
-  });
-  const Navigate = useNavigate();
+  const [samples, setSamples] = useState([])
+  const [expandedSamples, setExpandedSamples] = useState({})
+  const [loading, setLoading] = useState(true)
+  const [remarksModal, setRemarksModal] = useState({
+    isOpen: false,
+    title: "",
+    activity: null, // Changed from activityId to activity object
+    action: null,
+  })
 
   useEffect(() => {
-    fetchActivityDetails();
-    fetchProjectList();
+    fetchSamples()
   }, [])
 
-  const getUniqueValues = (data, key) => {
-    if (!Array.isArray(data)) return [];
-    return [...new Set(data.map(item => item[key]).filter(Boolean))];
-  };
-
-
-  const getStatusDisplay = (statusNum) => {
-    switch (statusNum) {
-      case "01":
-        return {
-          status_display: "IN PROGRESS",
-          variant: "info" 
-        };
-      case "02":
-        return {
-          status_display: "OVER-DUE",
-          variant: "error" 
-        };
-      case "03":
-        return {
-          status_display: "PLANNED",
-          variant: "secondary"
-        };
-      case "04":
-        return {
-          status_display: "COMPLETED",
-          variant: "success"
-        };
-      default:
-        return {
-          status_display: "Default",
-          variant: "default"
-        };
-    }
-  };
-
-
-  const fetchActivityDetails = async () => {
+  const fetchSamples = async () => {
     try {
-      const res = await getActivityList();
-      let fetchedActivities = res?.data?.a_list || [];
-      setActivities(fetchedActivities);
+      setLoading(true)
+      const response = await getusersampleevent()
+      if (response) {
+        // Transform the API data into the expected structure
+        const transformedData = transformApiData(response.data)
+        setSamples(transformedData)
+      }
     } catch (error) {
-      console.error('Error fetching activities:', error);
+      console.error("Error fetching samples:", error)
+      toast.error("Failed to load samples")
+    } finally {
+      setLoading(false)
     }
-  };
+  }
 
-  const fetchProjectList = async () => {
-    try {
-      const res = await getGLPProjectList();
-      let fetchedProjects = res?.data || [];
-      setAllProject(fetchedProjects);
-    } catch (error) {
-      console.error('Error fetching activities:', error);
+  // Transform API data to match component structure
+  const transformApiData = (apiData) => {
+    // Group activities by sample_item_id
+    const samplesMap = {}
+    
+    apiData.forEach((activity) => {
+      const sampleId = activity.sample_item_id
+      
+      if (!samplesMap[sampleId]) {
+        samplesMap[sampleId] = {
+          sample_id: sampleId,
+          sample_name: activity.sample_name,
+          collection_date: activity.start_date, // Using start_date as collection date
+          status: getSampleStatus(activity.status),
+          activities: []
+        }
+      }
+      
+      // Transform activity data - IMPORTANT: Preserve original QC structure for modal
+      const transformedActivity = {
+        activity_id: activity.id,
+        activity_name: activity.activity_name,
+        status: mapActivityStatus(activity.status),
+        status_display: activity.status_display,
+        event_items: activity.event_items?.map(item => ({
+          item_id: item.id,
+          item_name: item.item_name,
+          system_quantity: item.sys_quantity,
+          user_quantity: item.user_quantity,
+          available_quantity: item.available_qty
+        })) || [],
+        // Preserve original QC structure for modal usage
+        qc_checklist: activity.qc_check_list?.map(qc => ({
+          qc_name: qc.qc_name, // Keep original name
+          qc_type: qc.qc_type, // Keep original type
+          qc_value: qc.qc_value, // Keep original value
+          qc_actual: qc.qc_actual || "", // Keep original actual value
+          item: qc.qc_name, // For display in checklist
+          status: qc.qc_actual === "YES" // For checkbox display
+        })) || [],
+        remarks: activity.remarks,
+        start_date: activity.start_date,
+        end_date: activity.end_date,
+        actual_start_date: activity.a_start_date,
+        actual_end_date: activity.a_end_date,
+        planned_duration: activity.planned_duration,
+        srl_num: activity.srl_num,
+        util_sample_qty: activity.util_sample_qty
+      }
+      
+      samplesMap[sampleId].activities.push(transformedActivity)
+    })
+    
+    // Sort activities by srl_num (sequence number)
+    Object.values(samplesMap).forEach(sample => {
+      sample.activities.sort((a, b) => a.srl_nSTARTEDum - b.srl_num)
+    })
+    
+    return Object.values(samplesMap)
+  }
+
+  // Map API status to component status
+  const mapActivityStatus = (apiStatus) => {
+    const statusMap = {
+      'N': 'NOT_STARTED',
+      'Y': 'STARTED',
+      'I': 'IN_PROGRESS',
+      'C': 'COMPLETED',
+      'F': 'FAILED'
     }
-  };
+    return statusMap[apiStatus] || 'NOT_STARTED'
+  }
 
-  const userProject = mapProjectsWithActivities(allProject, activities);
+  // Determine sample status based on its activities
+  const getSampleStatus = (activityStatus) => {
+    const statusMap = {
+      'N': 'Not Started',
+      'Y': 'In Progress',
+      'C': 'Completed',
+      'F': 'Failed'
+    }
+    return statusMap[activityStatus] || 'Not Started'
+  }
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilterValue(prev => ({
+  const toggleSample = (sampleId) => {
+    setExpandedSamples((prev) => ({
       ...prev,
-      [name]: value
-    }));
-  };
+      [sampleId]: !prev[sampleId],
+    }))
+  }
 
-  // const PROJECT_STATUS = {
-  //   IN_PROGRESS: "01",
-  //   OVER_DUE: "02",
-  //   PLANNED: "03",
-  //   COMPLETED: "04",
-  // };
-
-const ACTIVITY_STATUS = {
-  START: "01",
-  IN_PROGRESS: "02",
-  COMPLETED: "03",
-};
-
-
-const getActivityCountsFromProjects = (projects = []) => {
-  return projects.reduce(
-    (acc, project) => {
-      const activities = project.activity_list || [];
-
-      activities.forEach((activity) => {
-        acc.total += 1;
-
-        // 1️⃣ Completed has highest priority
-        if (activity.activity_status === ACTIVITY_STATUS.COMPLETED) {
-          acc.completed += 1;
-          return;
-        }
-
-        // 2️⃣ Overdue (only if not completed)
-        if (activity.is_over_due === true) {
-          acc.overdue += 1;
-        }
-
-        // 3️⃣ In Progress
-        if (activity.activity_status === ACTIVITY_STATUS.IN_PROGRESS) {
-          acc.inProgress += 1;
-        }
-      });
-
-      return acc;
-    },
-    {
-      total: 0,
-      completed: 0,
-      inProgress: 0,
-      overdue: 0,
+  const handleActivityAction = (activity, action) => {
+    const actionTitles = {
+      START: "Start Activity",
+      COMPLETED: "Complete Activity",
+      FAILED: "Mark as Failed",
     }
-  );
-};
 
+    setRemarksModal({
+      isOpen: true,
+      title: actionTitles[action] || "Activity Action",
+      activity: activity, // Pass the entire activity object
+      action: action,
+    })
+  }
 
-
-
-  const projectCounts = useMemo(() => {
-    return {
-      totalActivities: activities.length,
-      ...getActivityCountsFromProjects(userProject)
-
+  const submitActivityAction = async (formData) => {
+    try {
+      // The formData already contains all necessary fields from the modal
+      // You might need to extract values or use it directly based on your API
+      const response = await processsampleevt(formData)
+      if (response.success) {
+        toast.success(`Activity ${remarksModal.action.toLowerCase()} successfully!`)
+        setRemarksModal({ 
+          isOpen: false, 
+          title: "", 
+          activity: null, 
+          action: null 
+        })
+        fetchSamples() // Refresh data
+      }
+    } catch (error) {
+      console.error("Error processing activity:", error)
+      toast.error(error.error || "Failed to process activity")
     }
-  }, [activities, userProject]);
+  }
 
-
-  const filteredData = useMemo(() => {
-    return userProject.filter(item => {
-      const matchesStatus =
-        !filterValue.status ||
-        item.project_status?.toString() === filterValue.status;
-
-      const matchesProject =
-        !filterValue.project_code ||
-        item.project_code === filterValue.project_code;
-
-      const matchesSearch =
-        !filterValue.searchTerm ||
-        item.customer?.name?.toLowerCase().includes(filterValue.searchTerm.toLowerCase());
-
-      return matchesStatus && matchesProject && matchesSearch;
-    });
-  }, [userProject, filterValue]);
-
-  // const overDueActivityCount = (activityList) => {
-  //   const totalCount = activityList.reduce((acc, curr) => {
-  //     if(curr.is_over_due === true){
-  //       return acc + curr
-  //     }
-  //   },0)
-  // }
-
-  const overDueActivityCount = (activityList) => {
-    // Count activities where is_over_due is true
-    return activityList.filter(activity => activity.is_over_due === true).length;
-}
-
-  const statsData = [
-    {
-      id: 1,
-      label: 'Total Activities',
-      value: projectCounts.totalActivities || 0,
-      color: "primary",
-      icon: <FaProjectDiagram />
-    },
-    {
-      id: 2,
-      label: 'Total Complete activity',
-      value: projectCounts.completed || 0,
-      color: "success",
-      icon: <FaRegCheckCircle />
-    },
-    {
-      id: 3,
-      label: 'Total In progress activity ',
-      value: projectCounts.inProgress || 0,
-      color: "warning",
-      icon: <TbClockExclamation />
-    },
-    {
-      id: 3,
-      label: 'Total Over due activity',
-      value: projectCounts.overdue || 0,
-      color: "error",
-      icon: <PiWarningBold />
-    },
-  ];
-
+  if (loading) {
+    return (
+      <Layout title="Sample Dashboard">
+        <LoadingContainer>Loading samples...</LoadingContainer>
+      </Layout>
+    )
+  }
 
   return (
-    <Layout title="Activity Dashboard">
-      <StatsGrid >
-        {statsData.map((stat) => (
-          <StatsCard icon={stat.icon} label={stat.label} value={stat.value} color={stat.color} />
-        ))}
-      </StatsGrid>
+    <Layout title="Sample Dashboard">
+      <Container>
+        <SampleList>
+          {samples.length === 0 ? (
+            <LoadingContainer>No samples available</LoadingContainer>
+          ) : (
+            samples.map((sample) => (
+              <SampleCard key={sample.sample_id}>
+                <SampleHeader
+                  onClick={() => toggleSample(sample.sample_id)}
+                  expanded={expandedSamples[sample.sample_id]}
+                >
+                  <SampleInfo>
+                    <SampleName>{sample.sample_name} <StatusBadge status={sample.status}>{sample.status}</StatusBadge></SampleName>
+                    <SampleMeta>
+                      <span>ID: {sample.sample_id}</span>
+                      <span>Collected: {sample.collection_date}</span>
+                    </SampleMeta>
+                  </SampleInfo>
+                  <ExpandIcon expanded={expandedSamples[sample.sample_id]}>
+                    {expandedSamples[sample.sample_id] ? <FaChevronUp /> : <FaChevronDown />}
+                  </ExpandIcon>
+                </SampleHeader>
 
-      <Card>
-        <FilterContainer>
-          <FilterSelect
-            name="project_code"
-            value={filterValue.project_code}
-            onChange={handleFilterChange}
-          >
-            <option value="">All Project</option>
-            {getUniqueValues(userProject, "project_code").map((code, index) => (
-              <option key={index} value={code}>{code}</option>
-            ))}
-          </FilterSelect>
+                {expandedSamples[sample.sample_id] && (
+                  <SampleBody>
+                    <ActivitiesList>
+                      {sample.activities.map((activity) => (
+                        <ActivityCard key={activity.activity_id}>
+                          <ActivityHeader>
+                            <ActivityName>{activity.activity_name}</ActivityName>
+                            <ActivityStatus status={activity.status}>
+                              {activity.status_display}
+                            </ActivityStatus>
+                            <div style={{ fontSize: '0.85rem', color: '#666', marginLeft: 'auto' }}>
+                              Seq: {activity.srl_num} | Duration: {activity.planned_duration} days
+                            </div>
+                          </ActivityHeader>
+                          
+                          <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '1rem' }}>
+                            <span>Planned: {activity.start_date} to {activity.end_date}</span>
+                            {activity.actual_start_date && (
+                              <span style={{ marginLeft: '1rem' }}>
+                                Actual: {activity.actual_start_date} 
+                                {activity.actual_end_date && ` to ${activity.actual_end_date}`}
+                              </span>
+                            )}
+                          </div>
 
-          <FilterSelect
-            name="status"
-            value={filterValue.status}
-            onChange={handleFilterChange}
-          >
-            <option value="">All Statuses</option>
-            <option value="01">IN PROGRESS</option>
-            <option value="02">OVER-DUE</option>
-            <option value="03">PLANNED</option>
-            <option value="04">COMPLETED</option>
-          </FilterSelect>
-          {/* <Button variant="outline" size="sm" onClick={handleFilter}>
-                <FaFilter /> Filter
-              </Button> */}
-        </FilterContainer>
+                          {activity.event_items && activity.event_items.length > 0 && (
+                            <Section>
+                              <SectionTitle>
+                                <FaBoxes /> Inventory Items
+                              </SectionTitle>
+                              <InventoryTable>
+                                <thead>
+                                  <tr>
+                                    <th>Item Name</th>
+                                    <th>System Qty</th>
+                                    <th>User Qty</th>
+                                    <th>Available Qty</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {activity.event_items.map((item) => (
+                                    <tr key={item.item_id}>
+                                      <td>{item.item_name}</td>
+                                      <td>{item.system_quantity}</td>
+                                      <td>{item.user_quantity}</td>
+                                      <td>{item.available_quantity}</td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </InventoryTable>
+                            </Section>
+                          )}
 
-        <TableContainer>
-          <table>
-            <thead>
-              <tr>
-                <th>Activity Reference</th>
-                {/* <th>Type</th> */}
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Activity overdue</th>
-                {/* <th>Over Due Date</th> */}
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredData.length > 0 ? (
-                filteredData.map((request) => {
-                  const statusInfo = getStatusDisplay(request.project_status);
-                  const totalOverDue = overDueActivityCount(request.activity_list)
-                  return (
-                    <tr key={request.id}>
-                      <td>{request.project_code}</td>
-                      {/* <td> */}
-                        {/* <div style={{ display: "flex", alignItems: "center" }}> */}
-                        {/* <span style={{ marginRight: "0.5rem" }}>{getRequestIcon(request.request_sub_type)}</span> */}
-                        {/* {request.project_type} */}
-                        {/* </div> */}
-                      {/* </td> */}
-                      <td>{request.start_date}</td>
-                      <td>{request.end_date}</td>
-                      <td>
-                        {/* <Badge variant={statusInfo.variant}>{statusInfo.status_display}</Badge> */}
-                        {totalOverDue}
-                      </td>
-                      <td>
-                      <ActionButtons>
-                        <Button variant="ghost" size="md" title="View" onClick={() => Navigate(`/activityList/?project_code=${request.project_code}`, { state: { activityList: request}})}>
-                          <FaListUl /> View Activity
-                        </Button>
-                        <Button variant="ghost" size="md" title="Audit" onClick={() => Navigate(`/upload/?project_code=${request.project_code}`)}>
-                          <FiUploadCloud /> File Upload 
-                        </Button>
-                      </ActionButtons>
-                      </td>
-                    </tr>
-                  )
-                })
-              ) : (
-                <tr>
-                  <td colSpan={7} style={{ textAlign: "center", padding: "1rem" }}>
-                    No project found for the selected filters
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </TableContainer>
-      </Card>
+                          {activity.qc_checklist && activity.qc_checklist.length > 0 && (
+                            <Section>
+                              <SectionTitle>
+                                <FaClipboardList /> QC Checklist
+                              </SectionTitle>
+                              <QCCheckList>
+                                {activity.qc_checklist.map((item, index) => (
+                                  <QCItem key={index}>
+                                    <QCCheckbox checked={item.status}>
+                                      {item.status ? "✓" : "-"}
+                                    </QCCheckbox>
+                                    <span>{item.item}</span>
+                                  </QCItem>
+                                ))}
+                              </QCCheckList>
+                            </Section>
+                          )}
+
+                          {activity.remarks && activity.remarks.trim() && (
+                            <Section>
+                              <SectionTitle>Remarks</SectionTitle>
+                              <div style={{ fontSize: "0.9rem", color: "#666", fontStyle: "italic" }}>
+                                {activity.remarks}
+                              </div>
+                            </Section>
+                          )}
+
+                          {activity.util_sample_qty && parseFloat(activity.util_sample_qty) > 0 && (
+                            <Section>
+                              <SectionTitle>Sample Usage</SectionTitle>
+                              <div style={{ fontSize: "0.9rem", color: "#666" }}>
+                                Utilized Sample Quantity: {activity.util_sample_qty}
+                              </div>
+                            </Section>
+                          )}
+
+                          <ActionButtons>
+                            {activity.status === "NOT_STARTED" && (
+                              <StartButton onClick={() => handleActivityAction(activity, "START")}>
+                                <FaPlay /> Start Activity
+                              </StartButton>
+                            )}
+
+                            {(activity.status === "IN_PROGRESS" || activity.status === "STARTED") && (
+                              <>
+                                <CompleteButton onClick={() => handleActivityAction(activity, "COMPLETED")}>
+                                  <FaCheckCircle /> Complete Activity
+                                </CompleteButton>
+                                <FailButton onClick={() => handleActivityAction(activity, "FAILED")}>
+                                  <FaTimesCircle /> Mark as Failed
+                                </FailButton>
+                              </>
+                            )}
+
+                            {activity.status === "COMPLETED" && (
+                              <span style={{ color: "#22c55e", fontWeight: 600 }}>
+                                <FaCheckCircle /> Completed
+                              </span>
+                            )}
+
+                            {activity.status === "FAILED" && (
+                              <span style={{ color: "#ef4444", fontWeight: 600 }}>
+                                <FaTimesCircle /> Failed
+                              </span>
+                            )}
+                          </ActionButtons>
+                        </ActivityCard>
+                      ))}
+                    </ActivitiesList>
+                  </SampleBody>
+                )}
+              </SampleCard>
+            ))
+          )}
+        </SampleList>
+      </Container>
+
+      <RemarksModal
+        isOpen={remarksModal.isOpen}
+        title={remarksModal.title}
+        actionType={remarksModal.action}
+        activity={remarksModal.activity}
+        onSubmit={submitActivityAction} // or use submitActivityActionAlternative
+        onClose={() => setRemarksModal({ 
+          isOpen: false, 
+          title: "", 
+          activity: null, 
+          action: null 
+        })}
+      />
     </Layout>
   )
 }
 
 export default LmsDashBoard
 
-export function mapProjectsWithActivities(projectList = [], activityList = []) {
-  if (!Array.isArray(projectList) || !Array.isArray(activityList)) {
-    console.error("Invalid input:", { projectList, activityList });
-    return [];
-  }
 
-
-  const activityMap = {};
-  const refSet = new Set();
-
-  activityList.forEach(activity => {
-    const ref = activity?.ref_num?.trim();
-    if (!ref) return;
-
-    refSet.add(ref);
-
-    if (!activityMap[ref]) {
-      activityMap[ref] = [];
-    }
-
-    activityMap[ref].push(activity);
-  });
-
-  const result = projectList
-    .filter(project => {
-      const code = project?.project_code?.trim();
-      return refSet.has(code);
-    })
-    .map(project => ({
-      ...project,
-      activity_list: activityMap[project.project_code.trim()]
-    }));
-
-  return result;
-}

@@ -264,10 +264,10 @@ export const NavBar = () => {
                       <span role="img" aria-label="FMS" style={{ marginRight: 8 }}>👷🏼</span>
                       Login as FMS Manager
                     </LoginOption>
-                    {/* <LoginOption onClick={handleLabUserLogin}>
-                      <span role="img" aria-label="FMS" style={{ marginRight: 8 }}>👷🏼</span>
+                    <LoginOption onClick={handleLabUserLogin}>
+                      <span role="img" aria-label="FMS" style={{ marginRight: 8 }}>🥼</span>
                       Login as Lab User
-                    </LoginOption> */}
+                    </LoginOption>
                   </LoginDropdownMenu>
                 </LoginDropdownWrapper>
               ) : (

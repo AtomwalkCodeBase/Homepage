@@ -70,7 +70,7 @@ const SidebarContainer = styled.div`
     } else if (shadowIntensity === "heavy") {
       return "3px 0 15px rgba(0, 0, 0, 0.2)"
     } else {
-      return "2px 0 10px rgba(0, 0, 0, 0.1)" // medium
+      return "2px 0 10px rgba(0, 0, 0, 0.1)"
     }
   }};
   overflow-x: hidden;
@@ -525,7 +525,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
           icon: <FaHome />,
           items: [
             { path: "/lab/dashboard", name: "Activity Dashboard", icon: <FaHome /> },
-            { path: "/activityList", name: "Activity List", icon: <FaList /> },
+            // { path: "/activityList", name: "Activity List", icon: <FaList /> },
             // { path: "/equipmentBooking", name: "Booking Item", icon: <FaStethoscope /> },
           ],
         }
@@ -684,7 +684,7 @@ const finalMenuGroups = shouldHideForAPM
     ]
     : (companyInfo.business_type === "LMS" || companyInfo.business_type === "GLP") ? [
       { path: "/lab/dashboard", name: "Dashboard", icon: <FaHome /> },
-      { path: "/activityList", name: "Activity List", icon: <FaList /> },
+      // { path: "/activityList", name: "Activity List", icon: <FaList /> },
       // { path: "/equipmentBooking", name: "Booking Item", icon: <FaStethoscope /> },
     ]
     : [

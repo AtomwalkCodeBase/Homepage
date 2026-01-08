@@ -112,3 +112,5 @@ export const projectList = `${newhrendpoint}/get_project_list/${db_name}/`;
 export const getActivityQc = `${newhrendpoint}/get_activity_data/${db_name}/`;
 export const processActivity = `${newhrendpoint}/process_activity_data/${db_name}/`;
 export const getstatus=`${newlocalhost}/lab_api/get_sample_event_status/LEM_002/`;
+export const getSampleEventLists=`${newlocalhost}/lab_api/get_user_sample_events/${db_name}/`;
+export const processSampleEvents=`${newlocalhost}/lab_api/process_user_sample_events/${db_name}/`;

@@ -51,7 +51,7 @@ const CloseButton = styled.button`
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: ${({ theme }) => theme.colors.textSecondary};
+  color: ${({ theme }) => theme.colors.text};
   cursor: pointer;
   padding: 0;
   width: 30px;
@@ -181,7 +181,7 @@ const QuantityInput = styled.input`
 
 const SystemQuantity = styled.div`
   font-size: 0.9rem;
-  color: ${({ theme }) => theme.colors.textSecondary};
+  color: ${({ theme }) => theme.colors.text};
   text-align: center;
 `
 
@@ -244,10 +244,12 @@ const QCOption = styled.label`
   gap: 5px;
   cursor: pointer;
   font-size: 0.9rem;
+   color: ${({ theme }) => theme.colors.text};
 `
 
 const RadioInput = styled.input`
   margin: 0;
+ color: ${({ theme }) => theme.colors.text};
 `
 
 const QCValueInput = styled(Input)`
@@ -357,9 +359,9 @@ const RemarksModal = ({ isOpen, title, actionType, activity, onSubmit, onClose }
 
     if (actionType === "START") {
       itemList.forEach((item, index) => {
-        if (item.user_quantity <= 0) {
-          newErrors[`item_${index}`] = "Quantity must be greater than 0"
-        }
+        // if (item.user_quantity <= 0) {
+        //   newErrors[`item_${index}`] = "Quantity must be greater than 0"
+        // }
         if (item.user_quantity > item.system_quantity) {
           newErrors[`item_${index}`] = "Cannot exceed system quantity"
         }

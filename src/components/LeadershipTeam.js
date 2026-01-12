@@ -1,7 +1,7 @@
 import React, { useState} from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import Team from './../assets/img/TemIcon.jpg';
-import Lipika from './../assets/img/lipika.png';
+import Lipika from './../assets/img/Lipika.JPG';
 import Sk from './../assets/img/Sk.svg';
 import Jaganath from './../assets/img/sk2.svg';
 import Satish from './../assets/img/Satish (1).jpg';

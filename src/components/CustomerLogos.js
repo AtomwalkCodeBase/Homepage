@@ -134,6 +134,10 @@ const logos = [
   "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/CL3.jpg",
   "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/CL4.png",
   "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/CL5.png",
+  "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/CL6.jpg",
+  "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/CL7.png",
+  "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/CL8.png",
+  "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/CL9.jpg",
 ];
 
 

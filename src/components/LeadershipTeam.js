@@ -592,7 +592,7 @@ const LeadershipAdvisors = () => {
     {
       id: 3,
       name: "Dr. Lipika Sahoo",
-      role: "Co-Founder , Director Innovation",
+      role: "Co-Founder, Director Innovation",
       image: `${Lipika}`,
       shortDesc: "Dr. Lipika Sahoo, Co-Founder and Director of Atomwalk, brings 24 years of experience in academia and industry, specializing in technology, innovation, and intellectual property.",
       fullDesc: [

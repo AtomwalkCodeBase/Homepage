@@ -21,6 +21,7 @@ import {
 import { getusersampleevent, processsampleevt } from "../../services/productServices"
 import Layout from "../../components/Layout"
 import RemarksModal from "../../components/modals/RemarksModal"
+import { use } from "react"
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -542,11 +543,28 @@ const LmsDashBoard = () => {
     activity: null,
     action: null,
   })
+  const [counter, setCounter] = useState([]);
+  const [sampleCounter, setSampleCounter] = useState([]);
+  console.log(samples, "sample data")
+  console.log(sampleCounter, "counter data")
 
   useEffect(() => {
-    fetchSamples(statusFilter=="completed"?true:false)
+    fetchSamples(statusFilter == "completed" || statusFilter == "failed" ? true : false)
   }, [statusFilter])
-
+  useEffect(() => {
+    getusersampleevent(true).then((response) => {
+      if (response) {
+        const transformedData = transformApiData(response.data)
+        setCounter(transformedData)
+      }
+    })
+    getusersampleevent(false).then((response) => {
+      if (response) {
+        const transformedDatas = response.data
+        setSampleCounter(transformedDatas)
+      }
+    })
+  }, []);
   const fetchSamples = async (complitedata) => {
     try {
       setLoading(true)
@@ -573,6 +591,7 @@ const LmsDashBoard = () => {
         samplesMap[sampleId] = {
           sample_id: sampleId,
           sample_name: activity.sample_name,
+          customer_name: activity.customer_name,
           collection_date: activity.start_date,
           status: getSampleStatus(activity.status),
           activities: [],
@@ -599,7 +618,7 @@ const LmsDashBoard = () => {
             qc_value: qc.qc_value,
             qc_actual: qc.qc_actual || "",
             item: qc.qc_name,
-            status: qc.qc_actual === "YES",
+            status: qc.qc_actual,
           })) || [],
         remarks: activity.remarks,
         start_date: activity.start_date,
@@ -645,7 +664,7 @@ const LmsDashBoard = () => {
   const filteredSamples = samples.filter((sample) => {
     const matchesSearch =
       sample.sample_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      sample.sample_id.toString().includes(searchQuery)
+      sample.sample_id.toString().includes(searchQuery) || sample.customer_name.toLowerCase().includes(searchQuery.toLowerCase())
 
     const matchesStatus = statusFilter === "all" || sample.status.toLowerCase() === statusFilter.toLowerCase()
 
@@ -653,10 +672,10 @@ const LmsDashBoard = () => {
   })
 
   const stats = {
-    total: samples.length,
-    active: samples.filter((s) => ["In Progress", "Not Started"].includes(s.status)).length,
-    completed: samples.filter((s) => s.status === "Completed").length,
-    failed: samples.filter((s) => s.status === "Failed").length,
+    total: sampleCounter.length + counter.length,
+    active: sampleCounter.length,
+    completed: counter.filter((s) => s.status === "Completed").length,
+    failed: counter.filter((s) => s.status === "Failed").length,
   }
 
   const toggleSample = (sampleId) => {
@@ -727,7 +746,7 @@ const LmsDashBoard = () => {
               <FaClock />
             </StatIcon>
             <StatContent>
-              <StatLabel>Active</StatLabel>
+              <StatLabel>In Progress</StatLabel>
               <StatValue>{stats.active}</StatValue>
             </StatContent>
           </StatCard>
@@ -758,14 +777,14 @@ const LmsDashBoard = () => {
             <FaSearch />
             <input
               type="text"
-              placeholder="Search by sample name or ID..."
+              placeholder="Search by sample name or ID or Customer name..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </SearchBox>
 
           <FilterButton active={statusFilter === "all"} onClick={() => setStatusFilter("all")}>
-            <FaFilter /> All
+            <FaFilter /> Open Activity
           </FilterButton>
 
           <FilterButton active={statusFilter === "not started"} onClick={() => setStatusFilter("not started")}>
@@ -773,7 +792,7 @@ const LmsDashBoard = () => {
           </FilterButton>
 
           <FilterButton active={statusFilter === "in progress"} onClick={() => setStatusFilter("in progress")}>
-            Active
+            In Progress
           </FilterButton>
 
           <FilterButton active={statusFilter === "completed"} onClick={() => setStatusFilter("completed")}>
@@ -801,14 +820,14 @@ const LmsDashBoard = () => {
                   >
                     <SampleInfo>
                       <SampleName>
-                        <FaFlask /> {sample.sample_name}{" "}
-                        <StatusBadge status={sample.status}>{sample.status}</StatusBadge>
+                        <FaFlask /> {sample.sample_name}{" "} <span>ID: {sample.sample_id}</span>
                       </SampleName>
                       <SampleMeta>
-                        <span>ID: {sample.sample_id}</span>
-                        <span>Collected: {sample.collection_date}</span>
+                        <span>Customer : {sample.customer_name}</span>
+                        <span>Start date: {sample.collection_date}</span>
                       </SampleMeta>
                     </SampleInfo>
+                    <StatusBadge status={sample.status}>{sample.status}</StatusBadge>
                     <ExpandIcon expanded={expandedSamples[sample.sample_id]}>
                       {expandedSamples[sample.sample_id] ? <FaChevronUp /> : <FaChevronDown />}
                     </ExpandIcon>
@@ -829,7 +848,7 @@ const LmsDashBoard = () => {
                                   marginLeft: "auto",
                                 }}
                               >
-                           
+
                                 Duration: {activity.planned_duration} days
                               </div>
                             </ActivityHeader>
@@ -841,14 +860,14 @@ const LmsDashBoard = () => {
                                 marginBottom: "1rem",
                               }}
                             >
-                              <span>
-                                Planned: {activity.start_date} to {activity.end_date}
-                              </span>
+                              <div>
+                                <strong>Planned:</strong>  {activity.start_date} to {activity.end_date}
+                              </div>
                               {activity.actual_start_date && (
-                                <span style={{ marginLeft: "1rem" }}>
-                                  Actual: {activity.actual_start_date}
+                                <div>
+                                  <strong>Actual:</strong> {activity.actual_start_date}
                                   {activity.actual_end_date && ` to ${activity.actual_end_date}`}
-                                </span>
+                                </div>
                               )}
                             </div>
 
@@ -889,7 +908,7 @@ const LmsDashBoard = () => {
                                   {activity.qc_checklist.map((item, index) => (
                                     <QCItem key={index}>
                                       <QCCheckbox checked={item.status}>{item.status ? "✓" : "-"}</QCCheckbox>
-                                      <span>{item.item}</span>
+                                      <span>{item.item}</span> {item.qc_actual && <span>({item.qc_actual})</span>}
                                     </QCItem>
                                   ))}
                                 </QCCheckList>
@@ -943,13 +962,13 @@ const LmsDashBoard = () => {
                                 </>
                               )}
 
-                              {activity.status === "COMPLETED" && (
+                              {/* {activity.status === "COMPLETED" && (
                                 <span style={{ color: "#22c55e", fontWeight: 600 }}>✓ Completed</span>
                               )}
 
                               {activity.status === "FAILED" && (
                                 <span style={{ color: "#ef4444", fontWeight: 600 }}>✗ Failed</span>
-                              )}
+                              )} */}
                             </ActionButtons>
                           </ActivityCard>
                         ))}
@@ -963,21 +982,20 @@ const LmsDashBoard = () => {
         </SamplesSection>
 
         <RemarksModal
-        isOpen={remarksModal.isOpen}
-        title={remarksModal.title}
-        actionType={remarksModal.action}
-        activity={remarksModal.activity}
-        onSubmit={submitActivityAction} // or use submitActivityActionAlternative
-        onClose={() => setRemarksModal({ 
-          isOpen: false, 
-          title: "", 
-          activity: null, 
-          action: null 
-        })}
-      />
+          isOpen={remarksModal.isOpen}
+          title={remarksModal.title}
+          actionType={remarksModal.action}
+          activity={remarksModal.activity}
+          onSubmit={submitActivityAction} // or use submitActivityActionAlternative
+          onClose={() => setRemarksModal({
+            isOpen: false,
+            title: "",
+            activity: null,
+            action: null
+          })}
+        />
       </DashboardContainer>
     </Layout>
   )
 }
-
 export default LmsDashBoard

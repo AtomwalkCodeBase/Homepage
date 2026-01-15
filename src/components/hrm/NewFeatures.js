@@ -6,10 +6,11 @@ import { useLocation } from 'react-router-dom';
 // Placeholder for feature images - replace with actual images
 import HrHeadBG from '../../assets/img/hrm_hero_img.png';
 import LetsConnect from '../LetsConnect';
+import { Helmet } from "react-helmet-async";
 
 const NewFeatures = () => {
     const location = useLocation();
-    
+
     // Determine which content to render based on the pathname
     const isEventPage = location.pathname === '/empevent.html';
     const isLiteAppPage = location.pathname === '/empliteapp.html';
@@ -181,14 +182,20 @@ const NewFeatures = () => {
 
     return (
         <PageWrapper>
-            <LetsConnect 
-                title={content.title} 
-                description={content.description} 
+            <Helmet>
+                <title>HRM APP | Atomwalk Technologies</title>
+                <meta name="description" content="Simplifies core HR tasks on mobile for employees and managers." />
+                <meta name="keywords" content="Attendance management app, Leave management mobile app, Expense and claim management app, Holiday tracking system, HR helpdesk and request desk app, Employee event and appointment management, Digital employee ID card app" />
+                <link rel="canonical" href="https://home.atomwalk.com/empliteapp.html" />
+            </Helmet>
+            <LetsConnect
+                title={content.title}
+                description={content.description}
                 background={"#eae3ff"}
-                lead={true} 
+                lead={true}
                 img={content.image}
             />
-          
+
             <FeaturesSection>
                 <Container>
                     <SectionHeader>
@@ -198,7 +205,7 @@ const NewFeatures = () => {
                         <Subtitle>{content.subtitle}</Subtitle>
                         <Divider />
                     </SectionHeader>
-                    
+
                     {features.map((feature, index) => (
                         <FeatureItem key={index} reverse={index % 2 !== 0}>
                             <FeatureCard>
@@ -222,7 +229,7 @@ const NewFeatures = () => {
                                                 <h3>{feature.title}</h3>
                                             </FeatureHeader>
                                             <Description>{feature.description}</Description>
-                                            
+
                                             <KeyPoints>
                                                 <KeyPointsTitle>Key Benefits</KeyPointsTitle>
                                                 <KeyPointsList>

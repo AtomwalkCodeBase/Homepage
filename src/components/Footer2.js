@@ -212,8 +212,8 @@ const SupportLink = styled.a`
 
 
 export default function Footer2() {
- const[opennavbar,setOpennavbar]=useState(true);
-  const[openpop,setopenpop]=useState(false);
+  const [opennavbar, setOpennavbar] = useState(true);
+  const [openpop, setopenpop] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const pathsToHideNavbar = [
@@ -247,33 +247,33 @@ export default function Footer2() {
     "projectmanagement",
     "project-report",
     "DoctorDashboard",
-   "IPDappointments",
-   "patient-admission",
+    "IPDappointments",
+    "patient-admission",
     "my-training",
     // FMSROUTES
     "fmsdashboard",
     "tasks",
     "customerList",
     "ticketList",
-    "activityList",
+    "sampledashboard",
     "samplestatus"
   ];
-  
+
   useEffect(() => {
     const checkPath = () => {
       const currentPath = window.location.pathname;
       const shouldHideNavbar = pathsToHideNavbar.some(path => currentPath.includes(path));
       setOpennavbar(!shouldHideNavbar);
     };
-  
+
     checkPath();
-  
+
     const handlePopState = () => {
       checkPath();
     };
-  
+
     window.addEventListener('popstate', handlePopState);
-    
+
     return () => {
       window.removeEventListener('popstate', handlePopState);
     };
@@ -294,120 +294,120 @@ export default function Footer2() {
 
   return (
     <>
-    {opennavbar&&<div>
-    <FooterContainer>
-      <FooterLeft>
-      <NewsletterContainer>
-      <LogoContainer>
-        <img src={logo} alt="AtomWalk Logo" />
-      </LogoContainer>
-      
-      <TextContainer>
-      Connect with  Atomwalk Technologies 
-      </TextContainer>
-      
+      {opennavbar && <div>
+        <FooterContainer>
+          <FooterLeft>
+            <NewsletterContainer>
+              <LogoContainer>
+                <img src={logo} alt="AtomWalk Logo" />
+              </LogoContainer>
 
-    </NewsletterContainer>
-    <ContactInfo>
-  <div>
-    <a href="mailto:info@atomwalk.com">
-      <img src={Email} alt="AtomWalk Logo" />
-      info@atomwalk.com
-    </a>
-  </div>
-  <div>
-    <a href="tel:+917259555003">
-      <img src={Phone} alt="AtomWalk Logo" />
-      +91-7259555003
-    </a>
-  </div>
-</ContactInfo>
-      </FooterLeft>
+              <TextContainer>
+                Connect with  Atomwalk Technologies
+              </TextContainer>
 
 
+            </NewsletterContainer>
+            <ContactInfo>
+              <div>
+                <a href="mailto:info@atomwalk.com">
+                  <img src={Email} alt="AtomWalk Logo" />
+                  info@atomwalk.com
+                </a>
+              </div>
+              <div>
+                <a href="tel:+917259555003">
+                  <img src={Phone} alt="AtomWalk Logo" />
+                  +91-7259555003
+                </a>
+              </div>
+            </ContactInfo>
+          </FooterLeft>
 
-      <FooterLinksContainer>
-        <FooterLinks>
-          <h3>Quick Links</h3>
-          <ul>
-            <li>
-              <a href="/">Home</a>
-            </li>
-            <li>
-              <a href="/aboutUs.html">About Us</a>
-            </li>
-            <li>
-              <a href="/Product.html">Products</a>
-            </li>
-            <li>
-              <a href="/contactUs.html">Contact Us</a>
-            </li>
-          </ul>
-        </FooterLinks>
 
-        <FooterLinks>
-          <h3>Products</h3>
-          <ul>
-            <li>
-              <a href="/crm.html">Customer Relationship Management</a>
-            </li>
-            <li>
-              <a href="/hrm.html">Human Resource Management</a>
-            </li>
-            <li>
-              <a href="/lms.html">Lab Management System</a>
-            </li>
-            <li>
-              <a href="/Product.html">Enterprise Resource Planning</a>
-            </li>
-          </ul>
-        </FooterLinks>
-        <FooterLinks>
-          <h3>Resources</h3>
-          <ul>
-            <li>
-              <a href="/Blog.html">Blog</a>
-            </li>
-            <li>
+
+          <FooterLinksContainer>
+            <FooterLinks>
+              <h3>Quick Links</h3>
+              <ul>
+                <li>
+                  <a href="/">Home</a>
+                </li>
+                <li>
+                  <a href="/aboutUs.html">About Us</a>
+                </li>
+                <li>
+                  <a href="/Product.html">Products</a>
+                </li>
+                <li>
+                  <a href="/contactUs.html">Contact Us</a>
+                </li>
+              </ul>
+            </FooterLinks>
+
+            <FooterLinks>
+              <h3>Products</h3>
+              <ul>
+                <li>
+                  <a href="/crm.html">Customer Relationship Management</a>
+                </li>
+                <li>
+                  <a href="/hrm.html">Human Resource Management</a>
+                </li>
+                <li>
+                  <a href="/lms.html">Lab Management System</a>
+                </li>
+                <li>
+                  <a href="/Product.html">Enterprise Resource Planning</a>
+                </li>
+              </ul>
+            </FooterLinks>
+            <FooterLinks>
+              <h3>Resources</h3>
+              <ul>
+                <li>
+                  <a href="/Blog.html">Blog</a>
+                </li>
+                <li>
                   <DropdownContainer>
                     <SupportLink href="/manual.html">
                       Manual
                     </SupportLink>
                   </DropdownContainer>
                 </li>
-            <li>
-            </li>
-            <li>
-              <a  href="/faq.html">FAQs</a>
-            </li>
-            <li>
-              <a href="/Careers.html">Career</a>
-            </li>
-             <li>
-              <a href="/news-events.html">News and Event</a>
-            </li>
-          </ul>
-        </FooterLinks>
-      </FooterLinksContainer>
-    </FooterContainer>
-    <FooterBottom>
-      <div style={{padding:"25px"}}>
-        <p>© 2024 Atomwalk. All Rights Reserved.</p>
-        <p>
-      <a href="/privacy-policy.html" style={{ color: "white", textDecoration: "none" }}>Privacy Policy</a> |  
-      <a href="/terms-and-conditions.html" style={{ color: "white", textDecoration: "none" }}> Terms & Conditions</a> |  
-      <a href="/disclaimer.html" style={{ color: "white", textDecoration: "none" }}> Disclaimer</a> |  
-      Made with <span>♥</span> Atomwalk
-    </p>
-        <div style={{marginTop:"5px"}} className="social-icon">
+                <li>
+                </li>
+                <li>
+                  <a href="/faq.html">FAQs</a>
+                </li>
+                <li>
+                  <a href="/Careers.html">Career</a>
+                </li>
+                <li>
+                  <a href="/news-events.html">News and Event</a>
+                </li>
+              </ul>
+            </FooterLinks>
+          </FooterLinksContainer>
+        </FooterContainer>
+        <FooterBottom>
+          <div style={{ padding: "25px" }}>
+            <p>© 2024 Atomwalk. All Rights Reserved.</p>
+            <p>
+              <a href="/privacy-policy.html" style={{ color: "white", textDecoration: "none" }}>Privacy Policy</a> |
+              <a href="/terms-and-conditions.html" style={{ color: "white", textDecoration: "none" }}> Terms & Conditions</a> |
+              <a href="/disclaimer.html" style={{ color: "white", textDecoration: "none" }}> Disclaimer</a> |
+              Made with <span>♥</span> Atomwalk
+            </p>
+            <div style={{ marginTop: "5px" }} className="social-icon">
               <a href="https://www.linkedin.com/company/atomwalk-technologies"><img src={navIcon1} alt="linkedin" /></a>
               <a href="https://www.facebook.com/profile.php?id=61572466203683"><img src={navIcon2} alt="facebook" /></a>
               <a href="https://www.instagram.com/atomwalktechnologies"><img src={navIcon3} alt="instagram" /></a>
               <a href="https://www.youtube.com/@AtomwalkTechnologies"><img src={navIcon4} alt="youtube" /></a>
-              <a href="https://x.com/Atomwalk_Tech?t=JhtnhZPBgFhB3kGmcL58mw&s=08"><img src="https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/new-twitter-logo.png" alt="twiter"  style={{ width: "20px", height: "20px" }}/></a>
+              <a href="https://x.com/Atomwalk_Tech?t=JhtnhZPBgFhB3kGmcL58mw&s=08"><img src="https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/new-twitter-logo.png" alt="twiter" style={{ width: "20px", height: "20px" }} /></a>
             </div>
-            </div>
-      </FooterBottom>
+          </div>
+        </FooterBottom>
       </div>}
       {/* </div>:<FooterBottom>
       <div style={{padding:"25px"}}>
@@ -418,6 +418,6 @@ export default function Footer2() {
             </div>
       </FooterBottom>} */}
       <UnderConstructionPopup visible={openpop} setvisible={setopenpop}></UnderConstructionPopup>
-      </>
+    </>
   );
 }

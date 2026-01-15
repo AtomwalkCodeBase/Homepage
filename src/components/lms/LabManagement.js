@@ -5,6 +5,7 @@ import abstractShape from "../../assets/img/Logo placeholder.png"; // Abstract s
 import FeatureBenifits from "../FeatureBenifits";
 import KeyFetureLms from "./KeyFetureLms";
 import NewFAQSection from "../hrm/NewFAQSection";
+import { Helmet } from "react-helmet-async";
 // import labApparatus from "./../assets/img/machine.png"; // The lab apparatus image
 
 // Styled Components
@@ -102,27 +103,33 @@ const AbstractShape = styled.img`
 const LabManagement = () => {
   return (
     <>
-    <Section>
-      <AbstractShape src={abstractShape} alt="Abstract Shape" />
-      <TextContainer>
-        <Title>Lab Management System</Title>
-        <Description>
-        Atomwalk Laboratory Management System (LMS) is a sophisticated software
-solution designed to tackle the multifaceted challenges faced by laboratories. LMS
-efficiently manages entire spectrum of lab processes. You can manage your
-laboratory experimental designs and their associated data, streamlining operations
-by automating workflows, managing tests/ experiments/ protocols, handling reporting
-procedures and maintaining efficient data storage and retrieval.
-        </Description>
-        <Button onClick={()=>{window.location.href="/userManagement.html"}}>Learn more</Button>
-      </TextContainer>
-      <ImageContainer>
-        <Image src={mainImage} alt="Laboratory Technician" />
-      </ImageContainer>
-    </Section>
-    <FeatureBenifits data={'LMS'}></FeatureBenifits>
-    <KeyFetureLms></KeyFetureLms>
-    <NewFAQSection data={"equipment"}></NewFAQSection>
+      <Helmet>
+        <title>Lab Management System | Atomwalk Technologies</title>
+        <meta name="description" content="Manage lab operations and equipment effortlessly in one platform. From sample tracking to inventory control, We keep your lab running smoothly and efficiently." />
+        <meta name="keywords" content="lab management software, lab manager software, lab software, lab management software free , LIMS system, best LIMS software" />
+        <link rel="canonical" href="https://home.atomwalk.com/labmanagement.html" />
+      </Helmet>
+      <Section>
+        <AbstractShape src={abstractShape} alt="Abstract Shape" />
+        <TextContainer>
+          <Title>Lab Management System</Title>
+          <Description>
+            Atomwalk Laboratory Management System (LMS) is a sophisticated software
+            solution designed to tackle the multifaceted challenges faced by laboratories. LMS
+            efficiently manages entire spectrum of lab processes. You can manage your
+            laboratory experimental designs and their associated data, streamlining operations
+            by automating workflows, managing tests/ experiments/ protocols, handling reporting
+            procedures and maintaining efficient data storage and retrieval.
+          </Description>
+          <Button onClick={() => { window.location.href = "/userManagement.html" }}>Learn more</Button>
+        </TextContainer>
+        <ImageContainer>
+          <Image src={mainImage} alt="Laboratory Technician" />
+        </ImageContainer>
+      </Section>
+      <FeatureBenifits data={'LMS'}></FeatureBenifits>
+      <KeyFetureLms></KeyFetureLms>
+      <NewFAQSection data={"equipment"}></NewFAQSection>
     </>
   );
 };

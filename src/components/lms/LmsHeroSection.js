@@ -6,6 +6,7 @@ import Hr from '../../assets/img/laboratory.png';
 import CrmApp from '../../assets/img/labmagement.png';
 import HrAPP from '../../assets/img/equpment.png';
 import UnderConstructionPopup from '../UnderConstructionPopup';
+import { Helmet } from 'react-helmet-async';
 
 // Styled Components
 const Container = styled.div`
@@ -135,7 +136,7 @@ const ProfileImage = styled.img`
 const LmsHeroSection = () => {
   const [background, setBackground] = useState('linear-gradient(180deg, #d2f5fa, rgb(255 246 247))');
   const [profileImg, setProfileImg] = useState(TagImag);
-  const[openpop,setopenpop]=useState(false);
+  const [openpop, setopenpop] = useState(false);
 
   const handleMouseEnter = (bgColor, imgSrc) => {
     setBackground(bgColor);
@@ -149,18 +150,24 @@ const LmsHeroSection = () => {
 
   return (
     <Container background={background}>
+      <Helmet>
+        <title>Lab Management | Atomwalk Technologies</title>
+        <meta name="description" content="Manage lab operations and equipment effortlessly in one platform. From sample tracking to inventory control, We keep your lab running smoothly and efficiently." />
+        <meta name="keywords" content="Laboratory Management Software, Lab Operations Management, Lab Equipment Management System, Sample Tracking Software, Laboratory Inventory Management, Cloud-based Lab Management System" />
+        <link rel="canonical" href="https://home.atomwalk.com/lms.html" />
+      </Helmet>
       <LeftSection>
         <Heading>Streamline Your Lab Operations with Ease</Heading>
         <SubHeading>
-        Manage lab operations and equipment effortlessly in one platform. From sample tracking to inventory control, We keep your lab running smoothly and efficiently.
+          Manage lab operations and equipment effortlessly in one platform. From sample tracking to inventory control, We keep your lab running smoothly and efficiently.
         </SubHeading>
-        <CTAButton onClick={()=>{window.location.href='https://www.atomwalk.com/login/'}}>Get started</CTAButton>
+        <CTAButton onClick={() => { window.location.href = 'https://www.atomwalk.com/login/' }}>Get started</CTAButton>
         <Features>
           <FeatureItem
             background={background}
             onMouseEnter={() => handleMouseEnter('linear-gradient(180deg, #bbfcc0, rgb(255 246 247))', HrAPP)}
             onMouseLeave={handleMouseLeave}
-            onClick={()=>{window.location.href='/labequipmentmangement.html'}}
+            onClick={() => { window.location.href = '/labequipmentmangement.html' }}
           >
             <FeatureIcon src={Hr} alt="HR" />
             <FeatureText>Lab Equipment Management System: Precision Tracking for Lab Equipment Efficiency.</FeatureText>
@@ -169,7 +176,7 @@ const LmsHeroSection = () => {
             background={background}
             onMouseEnter={() => handleMouseEnter('linear-gradient(180deg, #edd4fc, rgb(255 246 247))', CrmApp)}
             onMouseLeave={handleMouseLeave}
-            onClick={()=>{window.location.href='/labmanagement.html'}}
+            onClick={() => { window.location.href = '/labmanagement.html' }}
           >
             <FeatureIcon src={Crm} alt="CRM" />
             <FeatureText>Lab Management System: Streamlined Solutions for Modern Lab Operations.</FeatureText>

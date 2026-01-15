@@ -1,4 +1,4 @@
-import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext,  processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip, processbarthdaywish, getResponseList, forgetPin, getCustomerDetailListURL, userTaskListURL, addCustomerTicketURL, getTaskCategoryURL, getOrderListURL, getEmpShiftData, getAppointeeList, getbookedlist, doctorbooking, getactivityList, getProjectLists, addTimesheet, getTimesheetList, profileDtlURL, processProjectLists, getprojectTimesheetList, getCustomerListURL, getProcessListURL, processProjectList, createaddressURL, equipentTypeListURL, getAvailableRoomslistURL, getActivitylistURL, validateApproveLimit, getMyenrollmentlist, getenrollmentlist, processenrollments, getTravelRequest, getTravelModeList, postTravelRequest, employeeTaskAllocationData, processAllocation, getActivities, projectList, getActivityQc, getBookingListURL, processActivity, getstatus, getSampleEventLists, processSampleEvents } from "../services/ConstantServies";
+import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext, processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip, processbarthdaywish, getResponseList, forgetPin, getCustomerDetailListURL, userTaskListURL, addCustomerTicketURL, getTaskCategoryURL, getOrderListURL, getEmpShiftData, getAppointeeList, getbookedlist, doctorbooking, getactivityList, getProjectLists, addTimesheet, getTimesheetList, profileDtlURL, processProjectLists, getprojectTimesheetList, getCustomerListURL, getProcessListURL, processProjectList, createaddressURL, equipentTypeListURL, getAvailableRoomslistURL, getActivitylistURL, validateApproveLimit, getMyenrollmentlist, getenrollmentlist, processenrollments, getTravelRequest, getTravelModeList, postTravelRequest, employeeTaskAllocationData, processAllocation, getActivities, projectList, getActivityQc, getBookingListURL, processActivity, getstatus, getSampleEventLists, processSampleEvents, getlabprocess, getlabsample, processsample, getProductCategoryListURL, getUserListURL } from "../services/ConstantServies";
 import { authAxios, authAxiosFilePost, authAxiosget, authAxiosPost } from "./HttpMethod";
 
 export function getEmpLeave(leave_type, emp_id) {
@@ -54,7 +54,7 @@ export function getClaimApprover() {
   return authAxios(getClaimApproverList)
 }
 export function getemployeeList() {
-  return authAxios (profileDtlURL)
+  return authAxios(profileDtlURL)
 }
 export function getEmpClaim(call_type, emp_id) {
   let data = {};
@@ -78,7 +78,7 @@ export function getExpenseProjectList() {
 
 export function getEmpAttendance(res) {
   let data = {
-    'emp_id':res.empId?res.empId: localStorage.getItem('empNoId'),
+    'emp_id': res.empId ? res.empId : localStorage.getItem('empNoId'),
     'month': res.month,
     'year': res.year,
     'start_date': res.startdate,
@@ -87,9 +87,9 @@ export function getEmpAttendance(res) {
   // console.log('Final response data', data)
   return authAxios(getEmpAttendanceData, data)
 }
-export function getTimesheetData(start_date, end_date,empid) {
+export function getTimesheetData(start_date, end_date, empid) {
   let data = {
-    'start_date':start_date,
+    'start_date': start_date,
     'end_date': end_date,
     'emp_id': empid
   };
@@ -98,7 +98,7 @@ export function getTimesheetData(start_date, end_date,empid) {
 }
 export function getprojectreport(start_date, end_date) {
   let data = {
-    'start_date':start_date,
+    'start_date': start_date,
     'end_date': end_date,
   };
 
@@ -121,7 +121,7 @@ export function getEventLists(datas) {
 }
 export function getCompanyName(isFms) {
   let data = {
-    'mobile_app_type': isFms ? 'FMS_E' :'HRM_E',
+    'mobile_app_type': isFms ? 'FMS_E' : 'HRM_E',
   };
   return authAxiosget(getCompany, data)
 }
@@ -148,16 +148,16 @@ export function postCheckIn(checkin_data) {
   return authAxiosPost(empCheckData, data)
 }
 export function empshiftData(empdat) {
-  let data={
+  let data = {
     'emp_id': localStorage.getItem('empId'),
-    "w_start":empdat
- }
+    "w_start": empdat
+  }
   return authAxiosPost(getEmpShiftData, data)
 }
 export function empshiftDatas(empdat) {
-  let data={
-    "w_start":empdat
- }
+  let data = {
+    "w_start": empdat
+  }
   return authAxiosPost(getEmpShiftData, data)
 }
 
@@ -197,7 +197,7 @@ export function postProject2(res) {
 
 export function getEmployeeRequest(empId) {
   let data = {
-    'emp_id':empId,
+    'emp_id': empId,
     // 'request_sub_type':"Technical Support",
     // 'request_type': "R"
   };
@@ -234,7 +234,7 @@ export function getTasksList(task_type, emp_id, customer_id) {
   if (task_type) {
     data['task_type'] = task_type;
   }
-    if (emp_id) {
+  if (emp_id) {
     data['emp_id'] = emp_id;
   }
   if (customer_id) {
@@ -262,7 +262,7 @@ export async function setuserpinview(o_pin, n_pin) {
 
     const response = await authAxiosPost(setuserpin, data);
     if (response.status === 200) {
-    // console.log("Pin updated successfully")
+      // console.log("Pin updated successfully")
     }
     return response;
   } catch (error) {
@@ -281,7 +281,7 @@ export async function getActivitylist() {
   return authAxios(getactivityList)
 }
 export async function getProjectlist(data) {
-  return authAxios(getProjectLists,data)
+  return authAxios(getProjectLists, data)
 }
 export function getequipmentlistview() {
   return authAxios(equipentTypeListURL)
@@ -326,11 +326,11 @@ export function getAvailableRoomslistView(equipment_type, no_of_days) {
 }
 
 export function getmyenrollmentLists() {
-  const emp_id= localStorage.getItem('empId');
+  const emp_id = localStorage.getItem('empId');
   const data = {
-    'emp_id': emp_id, 
+    'emp_id': emp_id,
   }
-  return authAxios(getMyenrollmentlist,data)
+  return authAxios(getMyenrollmentlist, data)
 }
 export function getenrollmentList() {
   return authAxios(getenrollmentlist)
@@ -349,19 +349,19 @@ export function doctorBookingView(booking_data) {
 }
 
 export async function validateClaimItem(res) {
-    let data = {
-      'a_emp_id': res.emp_id,
-      'm_claim_id': res.m_claim_id,
-    };
-    return authAxios(validateApproveLimit, data);
-  }
+  let data = {
+    'a_emp_id': res.emp_id,
+    'm_claim_id': res.m_claim_id,
+  };
+  return authAxios(validateApproveLimit, data);
+}
 
 export function getTravelRequestList() {
-    const emp_id= localStorage.getItem('empId');
+  const emp_id = localStorage.getItem('empId');
   const data = {
-    'emp_id': emp_id, 
+    'emp_id': emp_id,
   }
-  return authAxios(getTravelRequest,data)
+  return authAxios(getTravelRequest, data)
 }
 
 export function getTravelMode() {
@@ -386,10 +386,10 @@ export function createAddressPost(res) {
   return authAxiosPost(createaddressURL, data)
 }
 
-export function getEmpAllocationData({emp_id, start_date, end_date}) {
+export function getEmpAllocationData({ emp_id, start_date, end_date }) {
   let data = {
     'emp_id': emp_id,
-    'start_date':start_date,
+    'start_date': start_date,
     'end_date': end_date,
   };
 
@@ -398,46 +398,68 @@ export function getEmpAllocationData({emp_id, start_date, end_date}) {
 
 
 export function postAllocationData(activity_data) {
-    return authAxiosFilePost(processAllocation, activity_data);
-  }
+  return authAxiosFilePost(processAllocation, activity_data);
+}
 
-export function getActivityList() { 
-    return authAxios(getActivities)
-  }
+export function getActivityList() {
+  return authAxios(getActivities)
+}
 
-export function getGLPProjectList(){
+export function getGLPProjectList() {
   return authAxios(projectList)
 }
-export function getusersampleevent(datas){
-     let data = {
-      'only_completed':datas,
-    };
-  return authAxios(getSampleEventLists,data)
+export function getusersampleevent(datas) {
+  let data = {
+    'only_completed': datas,
+  };
+  return authAxios(getSampleEventLists, data)
 }
 
 
-export function getActivitiQcData(res){
-      let data = {
-      'activity_id':res.activity_id,
-      'call_mode': res.call_mode 
+export function getActivitiQcData(res) {
+  let data = {
+    'activity_id': res.activity_id,
+    'call_mode': res.call_mode
 
-    };
-  return authAxios(getActivityQc,data)
+  };
+  return authAxios(getActivityQc, data)
 }
 export const getcustomerstatus = (datetime) => {
-   let data = {};
-    if ( datetime) {
+  let data = {};
+  if (datetime) {
     data['updated_from'] = datetime;
   }
-  return authAxios(getstatus,data )
+  return authAxios(getstatus, data)
 }
 
-  export function postActivtyInventory(activity_invt_process) {
-    let data = {};
-    if (activity_invt_process) {
-      data['activity_data'] = activity_invt_process;
-    }
-    // console.log('Data to be sent:', data);s
-    return authAxiosPost(processActivity, data)
-  
+export function postActivtyInventory(activity_invt_process) {
+  let data = {};
+  if (activity_invt_process) {
+    data['activity_data'] = activity_invt_process;
   }
+  // console.log('Data to be sent:', data);s
+  return authAxiosPost(processActivity, data)
+
+}
+export function getProcessList(data) {
+  let payload = {};
+  if (data) {
+    payload = {
+      "category": data
+    }
+  }
+
+  return authAxios(getlabprocess, payload)
+}
+export function getSampleData() {
+  return authAxios(getlabsample)
+}
+export function getCategoryList() {
+  return authAxios(getProductCategoryListURL)
+}
+export function getUserList() {
+  return authAxios(getUserListURL)
+}
+export function processSampleData(data) {
+  return authAxiosFilePost(processsample, data)
+}

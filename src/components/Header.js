@@ -21,6 +21,7 @@ import {
 import { useAuth } from "../context/AuthContext"
 import { theme } from "../styles/Theme"
 import { IoTicket } from "react-icons/io5"
+import ConfirmPopup from "./modals/ConfirmPopup"
 
 
 const HeaderContainer = styled.header`
@@ -204,42 +205,43 @@ const LogoutButton = styled(ActionButton)`
 //   width: 80px;
 
 const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
-  const { logout,profile,companyInfo } = useAuth()
+  const { logout, profile, companyInfo } = useAuth()
   const [searchExpanded, setSearchExpanded] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [searchResults, setSearchResults] = useState([])
   const [showResults, setShowResults] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate()
   const fmsdata = localStorage.getItem("fmsUser")
 
   // Menu items for search
-  const menuItems = fmsdata? 
-  [
-    { path: "/fmsdashboard", name: "Overall", icon: <FaHome /> },
-    { path: "/tasks", name: "Task List", icon: <FaTasks /> },
-    { path: "/ticketList", name: "Ticket List", icon: <IoTicket /> },
-    { path: "/customerList", name: "Customer List", icon: <FaUsers /> }
-  ]:
-  [
-    { path: "/dashboard", name: "Dashboard", icon: <FaUser /> },
-    { path: "/employees", name: "Employees", icon: <FaUser /> },
-    { path: "/attendance-tracking", name: "Attendance", icon: <FaUser /> },
-    { path: "/leave-management", name: "Leave Management", icon: <FaUser /> },
-    { path: "/holidays", name: "Holiday Calendar", icon: <FaUser /> },
-    { path: "/timesheet", name: "Timesheet", icon: <FaUser /> },
-    { path: "/shifts", name: "Shift Scheduling", icon: <FaUser /> },
-    { path: "/claims", name: "My Claims", icon: <FaUser /> },
-    { path: "/appointees", name: "Appointees", icon: <FaUser /> },
-    { path: "/analytics", name: "Analytics", icon: <FaUser /> },
-    { path: "/helpdesk", name: "Help Desk", icon: <FaQuestion /> },
-    { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
-    // { path: "/appraisal", name: "Appraisal", icon: <BsGraphUpArrow /> },
-    { path: "/resolvedesk", name: "Resolve Desk", icon: <FaKey /> },
-    { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
-    { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
-    { path: "/attendance-tracking", name: "check in", icon: <FaUser /> },
-    { path: "/profile", name: "profile", icon: <FaUserCircle /> },
-  ]
+  const menuItems = fmsdata ?
+    [
+      { path: "/fmsdashboard", name: "Overall", icon: <FaHome /> },
+      { path: "/tasks", name: "Task List", icon: <FaTasks /> },
+      { path: "/ticketList", name: "Ticket List", icon: <IoTicket /> },
+      { path: "/customerList", name: "Customer List", icon: <FaUsers /> }
+    ] :
+    [
+      { path: "/dashboard", name: "Dashboard", icon: <FaUser /> },
+      { path: "/employees", name: "Employees", icon: <FaUser /> },
+      { path: "/attendance-tracking", name: "Attendance", icon: <FaUser /> },
+      { path: "/leave-management", name: "Leave Management", icon: <FaUser /> },
+      { path: "/holidays", name: "Holiday Calendar", icon: <FaUser /> },
+      { path: "/timesheet", name: "Timesheet", icon: <FaUser /> },
+      { path: "/shifts", name: "Shift Scheduling", icon: <FaUser /> },
+      { path: "/claims", name: "My Claims", icon: <FaUser /> },
+      { path: "/appointees", name: "Appointees", icon: <FaUser /> },
+      { path: "/analytics", name: "Analytics", icon: <FaUser /> },
+      { path: "/helpdesk", name: "Help Desk", icon: <FaQuestion /> },
+      { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
+      // { path: "/appraisal", name: "Appraisal", icon: <BsGraphUpArrow /> },
+      { path: "/resolvedesk", name: "Resolve Desk", icon: <FaKey /> },
+      { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
+      { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
+      { path: "/attendance-tracking", name: "check in", icon: <FaUser /> },
+      { path: "/profile", name: "profile", icon: <FaUserCircle /> },
+    ]
 
   const handleSearchClick = () => {
     setSearchExpanded(!searchExpanded)
@@ -326,7 +328,12 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
       document.removeEventListener("click", handleClickOutside)
     }
   }, [])
-
+  const onClose = () => {
+    setIsOpen(false)
+  }
+  const handleLogoutConfirm = () => {
+    setIsOpen(true)
+  }
   return (
     <HeaderContainer sidebarWidth={sidebarWidth}>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -335,7 +342,7 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
         </MobileMenuButton>
         <img src={companyInfo.image} alt="Company Logo" style={{ width: "80px", borderRadius: "10px", marginRight: "10px", border: "0.2px solid #000" }} />
         <SearchBar expanded={searchExpanded}>
-            <FaSearch onClick={handleSearchClick} style={{ cursor: "pointer", color:`${theme.colors.textLight}` }} />
+          <FaSearch onClick={handleSearchClick} style={{ cursor: "pointer", color: `${theme.colors.textLight}` }} />
           <SearchInput
             placeholder="Search..."
             value={searchQuery}
@@ -385,10 +392,10 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
           <UserAvatar>{profile?.name?.charAt(0) || <FaUser />}</UserAvatar>
           <UserName>{profile?.name || "User"}</UserName>
         </UserProfile> */}
-        
+
         <UserProfile onClick={handleprofile}>
           {profile?.image ? (
-            <img src={profile.image} alt="Profile" style={{width: "50px",height:"50px", marginRight: "1rem",borderRadius:"50%", border:"2px solid rgb(245, 247, 214)"}} />
+            <img src={profile.image} alt="Profile" style={{ width: "50px", height: "50px", marginRight: "1rem", borderRadius: "50%", border: "2px solid rgb(245, 247, 214)" }} />
           ) : (
             <UserAvatar>
               {profile?.name?.charAt(0) || <FaUser />}
@@ -397,10 +404,18 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
           <UserName>{profile?.name || "User"}</UserName>
         </UserProfile>
 
-        <LogoutButton onClick={handleLogout} title="Logout">
+        <LogoutButton onClick={handleLogoutConfirm} title="Logout">
           <FaSignOutAlt />
         </LogoutButton>
       </HeaderActions>
+      <ConfirmPopup
+        isOpen={isOpen}
+        onClose={onClose}
+        onConfirm={() => handleLogout()}
+        title="Logout"
+        message="Are you sure you want to logout?"
+        confirmLabel="Logout"
+      />
     </HeaderContainer>
   )
 }

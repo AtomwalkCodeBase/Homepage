@@ -59,7 +59,7 @@ export const NavBar = () => {
   const [showLoginDropdown, setShowLoginDropdown] = useState(false);
   const [opennavbar, setOpennavbar] = useState(true);
   const loginButtonRef = useRef(null);
-  
+
   const pathsToHideNavbar = [
     'assessment',
     'wishes',
@@ -86,24 +86,24 @@ export const NavBar = () => {
     "doctordashboard",
     "OPDappointments",
     "projectmanagement",
-     "project-report",
-     "DoctorDashboard",
-   "IPDappointments",
-   "patient-admission",
-     "my-training",
+    "project-report",
+    "DoctorDashboard",
+    "IPDappointments",
+    "patient-admission",
+    "my-training",
     //  "appraisal",
-     //FMS ROUTES
-     "fmsdashboard",
-     "tasks",
-     "customerList",
-     "ticketList",
-     "activityList",
-      "samplestatus",
-     "/equipmentBooking",
-     "/upload",
-     "/inventoryUpdate"
+    //FMS ROUTES
+    "fmsdashboard",
+    "tasks",
+    "customerList",
+    "ticketList",
+    "sampledashboard",
+    "samplestatus",
+    "/equipmentBooking",
+    "/upload",
+    "/inventoryUpdate"
   ];
-  
+
   useEffect(() => {
     const checkPath = () => {
       const currentPath = window.location.pathname;
@@ -147,23 +147,23 @@ export const NavBar = () => {
   const handleERPLogin = () => {
     const queryParams = new URLSearchParams(location.search);
     const loggedInValue = queryParams.get("called_url");
-    const crmurl=queryParams.get("base_url");
-    const data='https://crm.atomwalk.com/atomwalk';
-    const myofficeurl='http://myoffice.atomwalk.com/atomwalk';
-    if(crmurl){
-      if(crmurl===data){
+    const crmurl = queryParams.get("base_url");
+    const data = 'https://crm.atomwalk.com/atomwalk';
+    const myofficeurl = 'http://myoffice.atomwalk.com/atomwalk';
+    if (crmurl) {
+      if (crmurl === data) {
         window.location.href = 'https://crm.atomwalk.com/login/';
       }
-      else if(crmurl===myofficeurl){
+      else if (crmurl === myofficeurl) {
         window.location.href = 'http://myoffice.atomwalk.com/login/';
       }
-      else{
+      else {
         window.location.href = 'https://atomwalk.com/login/';
       };
     }
-      else if (showLogin) {
+    else if (showLogin) {
       window.location.href = "https://www.atomwalk.com/login/";
-      } else if(loggedInValue){ 
+    } else if (loggedInValue) {
       window.location.href = loggedInValue;
     }
     else {
@@ -176,10 +176,10 @@ export const NavBar = () => {
   const handleFMSLogin = () => {
     window.location.href = "https://home.atomwalk.com/login/#fms";
   };
- const handlecustomerLogin = () => {
+  const handlecustomerLogin = () => {
     window.location.href = "https://home.atomwalk.com/customer/login.html";
   };
- const handleLabUserLogin = () => {
+  const handleLabUserLogin = () => {
     window.location.href = "https://home.atomwalk.com/LabUser/login.html";
   };
   const handleLoginClick = () => {
@@ -235,15 +235,15 @@ export const NavBar = () => {
             <span className="navbar-text">
               {showLogin ? (
                 <LoginDropdownWrapper ref={loginButtonRef}>
-                  <button 
-                    className="vvd" 
+                  <button
+                    className="vvd"
                     onClick={handleLoginClick}
                     onMouseEnter={() => window.innerWidth >= 768 && setShowLoginDropdown(true)}
                     onMouseLeave={() => window.innerWidth >= 768 && setShowLoginDropdown(false)}
                   >
                     <span>Login</span>
                   </button>
-                  <LoginDropdownMenu 
+                  <LoginDropdownMenu
                     show={showLoginDropdown}
                     onMouseEnter={() => window.innerWidth >= 768 && setShowLoginDropdown(true)}
                     onMouseLeave={() => window.innerWidth >= 768 && setShowLoginDropdown(false)}

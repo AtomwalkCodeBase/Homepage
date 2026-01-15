@@ -153,10 +153,10 @@ const ToggleButton = styled.button`
   
   &:hover {
     transform: ${(props) => {
-      const { uiPreferences } = props
-      const animations = uiPreferences?.components?.animations !== false
-      return animations ? "scale(1.1)" : "none"
-    }};
+    const { uiPreferences } = props
+    const animations = uiPreferences?.components?.animations !== false
+    return animations ? "scale(1.1)" : "none"
+  }};
   }
 `
 
@@ -265,17 +265,17 @@ const SidebarLink = styled(Link)`
   svg {
     margin-right: ${(props) => (props.isOpen ? "10px" : "0")};
     font-size: ${(props) => {
-      const { uiPreferences } = props
-      const iconSize = uiPreferences?.components?.iconSize || "medium"
+    const { uiPreferences } = props
+    const iconSize = uiPreferences?.components?.iconSize || "medium"
 
-      if (iconSize === "small") {
-        return "1rem"
-      } else if (iconSize === "large") {
-        return "1.4rem"
-      } else {
-        return "1.2rem" // medium
-      }
-    }};
+    if (iconSize === "small") {
+      return "1rem"
+    } else if (iconSize === "large") {
+      return "1.4rem"
+    } else {
+      return "1.2rem" // medium
+    }
+  }};
   }
   
   span {
@@ -366,25 +366,25 @@ const LogoutButton = styled.button`
   &:hover {
     color: ${({ theme }) => theme.colors.secondary};
     transform: ${(props) => {
-      const { uiPreferences } = props
-      const animations = uiPreferences?.components?.animations !== false
-      return animations ? "scale(1.1)" : "none"
-    }};
+    const { uiPreferences } = props
+    const animations = uiPreferences?.components?.animations !== false
+    return animations ? "scale(1.1)" : "none"
+  }};
   }
   
   svg {
     font-size: ${(props) => {
-      const { uiPreferences } = props
-      const iconSize = uiPreferences?.components?.iconSize || "medium"
+    const { uiPreferences } = props
+    const iconSize = uiPreferences?.components?.iconSize || "medium"
 
-      if (iconSize === "small") {
-        return "1rem"
-      } else if (iconSize === "large") {
-        return "1.4rem"
-      } else {
-        return "1.2rem" // medium
-      }
-    }};
+    if (iconSize === "small") {
+      return "1rem"
+    } else if (iconSize === "large") {
+      return "1.4rem"
+    } else {
+      return "1.2rem" // medium
+    }
+  }};
   }
 `
 // Add new styled components for grouped menu items
@@ -419,12 +419,12 @@ const MenuGroupHeader = styled.div`
   svg {
     margin-right: 10px;
     font-size: ${(props) => {
-      const { uiPreferences } = props
-      const iconSize = uiPreferences?.components?.iconSize || "medium"
-      if (iconSize === "small") return "1rem"
-      if (iconSize === "large") return "1.4rem"
-      return "1.2rem" // medium
-    }};
+    const { uiPreferences } = props
+    const iconSize = uiPreferences?.components?.iconSize || "medium"
+    if (iconSize === "small") return "1rem"
+    if (iconSize === "large") return "1.4rem"
+    return "1.2rem" // medium
+  }};
   }
   
   span {
@@ -486,14 +486,14 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
   const [isOpen, setIsOpen] = useState(initialOpen)
   const [expandedGroups, setExpandedGroups] = useState({})
   const location = useLocation()
-  const { companyInfo, logout, profile,  iscoustomerLogin } = useAuth()
+  const { companyInfo, logout, profile, iscoustomerLogin } = useAuth()
   const { theme, uiPreferences } = useTheme()
   const customerdata = localStorage.getItem("customerUser")
   const fmsdata = localStorage.getItem("fmsUser")
   const sidebarStyle = uiPreferences?.layout?.sidebarStyle || "standard"
   // Grouped menu items structure
   const menuGroups = customerdata
-  ? [
+    ? [
       {
         name: "Customer Portal",
         icon: <FaUserCircle />,
@@ -506,34 +506,34 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
         ],
       },
     ]
-  : fmsdata
-  ? [
-    {
-        name: "Facility Management Portal",
-        icon: <FaUserCircle />,
-        items: [
-          { path: "/fmsdashboard", name: "Overall", icon: <FaHome /> },
-          { path: "/tasks", name: "Task List", icon: <FaTasks /> },
-          { path: "/ticketList", name: "Ticket List", icon: <IoTicket /> },
-          ...(profile?.is_manager ? [{ path: "/customerList", name: "Customer List", icon: <FaUsers /> }] : [] )
-        ],
-      },
-  ]
-  : (companyInfo.business_type === "LMS" || companyInfo.business_type === "GLP") ? [
-    {
+    : fmsdata
+      ? [
+        {
+          name: "Facility Management Portal",
+          icon: <FaUserCircle />,
+          items: [
+            { path: "/fmsdashboard", name: "Overall", icon: <FaHome /> },
+            { path: "/tasks", name: "Task List", icon: <FaTasks /> },
+            { path: "/ticketList", name: "Ticket List", icon: <IoTicket /> },
+            ...(profile?.is_manager ? [{ path: "/customerList", name: "Customer List", icon: <FaUsers /> }] : [])
+          ],
+        },
+      ]
+      : (companyInfo.business_type === "LMS" || companyInfo.business_type === "GLP") ? [
+        {
           name: "OverAll",
           icon: <FaHome />,
           items: [
             { path: "/lab/dashboard", name: "Activity Dashboard", icon: <FaHome /> },
-            // { path: "/activityList", name: "Activity List", icon: <FaList /> },
+            { path: "/sampledashboard", name: "Activity List", icon: <FaList /> },
             // { path: "/equipmentBooking", name: "Booking Item", icon: <FaStethoscope /> },
           ],
         }
-  ] : [
+      ] : [
         {
           name: "Dashboard",
           icon: <FaHome />,
-          items: [{ path:  "/dashboard", name:  "Overview", icon: <FaHome /> }],
+          items: [{ path: "/dashboard", name: "Overview", icon: <FaHome /> }],
         },
         {
           name: "Time Management",
@@ -577,9 +577,9 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
           icon: <PiListPlusFill />,
           items: profile?.is_manager
             ? [
-                { path: "/projectmanagement", name: "Project List", icon: <PiListPlusFill /> },
-                { path: "/project-report", name: "Project Report", icon: <FaFileInvoice /> },
-              ]
+              { path: "/projectmanagement", name: "Project List", icon: <PiListPlusFill /> },
+              { path: "/project-report", name: "Project Report", icon: <FaFileInvoice /> },
+            ]
             : [],
         },
         {
@@ -610,7 +610,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
         },
       ]
 
-        // If company is APM, hide specific paths
+  // If company is APM, hide specific paths
   const apmBlockedPaths = new Set([
     "/dashboard",
     "/attendance-tracking",
@@ -625,18 +625,18 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
     "/projectmanagement",
     "/project-report",
     "/wishes",
-    "/activityList",
+    "/sampledashboard",
     "/equipmentBooking",
     "/lab/dashboard"
 
   ])
 
   const shouldHideForAPM = companyInfo?.business_type === "APM"
-const finalMenuGroups = shouldHideForAPM
-  ? menuGroups
+  const finalMenuGroups = shouldHideForAPM
+    ? menuGroups
       .map(g => ({ ...g, items: g.items.filter(i => !apmBlockedPaths.has(i.path)) }))
       .filter(g => g.items && g.items.length > 0)
-  : menuGroups
+    : menuGroups
 
   useEffect(() => {
     setIsOpen(initialOpen)
@@ -668,61 +668,61 @@ const finalMenuGroups = shouldHideForAPM
   }
   const menuItems = customerdata
     ? [
-        { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
-        { path: "/samplestatus", name: "Sample Status", icon: <GiProgression /> },
-        { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
-        { path: "/appointments", name: "Book Appointments", icon: <FaStethoscope /> },
-        { path: "/appointmentlist", name: "My Appointments", icon: <FaCalendarAlt /> },
-      ]
+      { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
+      { path: "/samplestatus", name: "Sample Status", icon: <GiProgression /> },
+      { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
+      { path: "/appointments", name: "Book Appointments", icon: <FaStethoscope /> },
+      { path: "/appointmentlist", name: "My Appointments", icon: <FaCalendarAlt /> },
+    ]
     : fmsdata
-    ? [
-      { path: "/fmsdashboard", name: "Overall", icon: <FaHome /> },
-      { path: "/tasks", name: "Task List", icon: <FaTasks /> },
-      { path: "/ticketList", name: "Ticket List", icon: <IoTicket /> },
-      // { path: "/customerList", name: "Customer List", icon: <FaUsers /> },
-      ...(profile?.is_manager ? [{ path: "/customerList", name: "Customer List", icon: <FaUsers /> }] : [] )
-    ]
-    : (companyInfo.business_type === "LMS" || companyInfo.business_type === "GLP") ? [
-      { path: "/lab/dashboard", name: "Dashboard", icon: <FaHome /> },
-      // { path: "/activityList", name: "Activity List", icon: <FaList /> },
-      // { path: "/equipmentBooking", name: "Booking Item", icon: <FaStethoscope /> },
-    ]
-    : [
-        { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },
-        ...(companyInfo.business_type === "APM" && profile?.is_manager ? [{ path: "/managers/timesheet/dashboard", name: "Manager Dashboard", icon: <RiDashboardFill /> }] : []),
-        ...(profile?.is_manager ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : []),
-        { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
-        { path: "/timesheet", name: `${companyInfo.business_type === "APM" ? (profile?.is_manager) ? "Timesheet" : "Dashboard" : "Timesheet"}`, icon: <FaChartBar /> },
-        { path: "/leave-management", name: "Leave Management", icon: <FaCalendarAlt /> },
-        { path: "/holidays", name: "Holiday Calendar", icon: <FaCalendarCheck /> },
-        { path: "/my-training", name: "My Training", icon: <FaGraduationCap /> },
-        // { path: "/appraisal", name: "Appraisal", icon: <BsGraphUpArrow /> },
-        ...(profile?.is_manager ? [{ path: "/shifts", name: "Shift Scheduling", icon: <SiGooglecalendar /> }] : []),
-        ...(profile?.is_manager
-          ? [{ path: "/claims", name: "Claims Management", icon: <FaMoneyBillWave /> }]
-          : [{ path: "/claims", name: "My Claims", icon: <FaMoneyBillWave /> }]),
-        // { path: "/appointees", name: "Appointees", icon: <FaUserPlus /> },
-        // { path: "/analytics", name: "Analytics", icon: <FaChartBar /> },
-        { path: "/helpdesk", name: "Help Desk", icon: <FaComments /> },
-        { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
-        { path: "/resolvedesk", name: "Resolve Desk", icon: <FaKey /> },
-        { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
-        ...(profile?.is_shift_applicable
-          ? [{ path: "/shift-detail", name: "My Shifts", icon: <FaExchangeAlt /> }]
-          : []),
-        ...(profile?.is_manager
-          ? [
+      ? [
+        { path: "/fmsdashboard", name: "Overall", icon: <FaHome /> },
+        { path: "/tasks", name: "Task List", icon: <FaTasks /> },
+        { path: "/ticketList", name: "Ticket List", icon: <IoTicket /> },
+        // { path: "/customerList", name: "Customer List", icon: <FaUsers /> },
+        ...(profile?.is_manager ? [{ path: "/customerList", name: "Customer List", icon: <FaUsers /> }] : [])
+      ]
+      : (companyInfo.business_type === "LMS" || companyInfo.business_type === "GLP") ? [
+        { path: "/lab/dashboard", name: "Dashboard", icon: <FaHome /> },
+        { path: "/sampledashboard", name: "Sample List", icon: <FaList /> },
+        // { path: "/equipmentBooking", name: "Booking Item", icon: <FaStethoscope /> },
+      ]
+        : [
+          { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },
+          ...(companyInfo.business_type === "APM" && profile?.is_manager ? [{ path: "/managers/timesheet/dashboard", name: "Manager Dashboard", icon: <RiDashboardFill /> }] : []),
+          ...(profile?.is_manager ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : []),
+          { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
+          { path: "/timesheet", name: `${companyInfo.business_type === "APM" ? (profile?.is_manager) ? "Timesheet" : "Dashboard" : "Timesheet"}`, icon: <FaChartBar /> },
+          { path: "/leave-management", name: "Leave Management", icon: <FaCalendarAlt /> },
+          { path: "/holidays", name: "Holiday Calendar", icon: <FaCalendarCheck /> },
+          { path: "/my-training", name: "My Training", icon: <FaGraduationCap /> },
+          // { path: "/appraisal", name: "Appraisal", icon: <BsGraphUpArrow /> },
+          ...(profile?.is_manager ? [{ path: "/shifts", name: "Shift Scheduling", icon: <SiGooglecalendar /> }] : []),
+          ...(profile?.is_manager
+            ? [{ path: "/claims", name: "Claims Management", icon: <FaMoneyBillWave /> }]
+            : [{ path: "/claims", name: "My Claims", icon: <FaMoneyBillWave /> }]),
+          // { path: "/appointees", name: "Appointees", icon: <FaUserPlus /> },
+          // { path: "/analytics", name: "Analytics", icon: <FaChartBar /> },
+          { path: "/helpdesk", name: "Help Desk", icon: <FaComments /> },
+          { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
+          { path: "/resolvedesk", name: "Resolve Desk", icon: <FaKey /> },
+          { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
+          ...(profile?.is_shift_applicable
+            ? [{ path: "/shift-detail", name: "My Shifts", icon: <FaExchangeAlt /> }]
+            : []),
+          ...(profile?.is_manager
+            ? [
               { path: "/projectmanagement", name: "Project List", icon: <PiListPlusFill /> },
               { path: "/project-report", name: "Project Report", icon: <FaFileInvoice /> },
             ]
-          : []),
-        { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
-        { path: "/profile", name: "My Profile", icon: <FaUserCircle />, section: "Account" },
-      ]
+            : []),
+          { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
+          { path: "/profile", name: "My Profile", icon: <FaUserCircle />, section: "Account" },
+        ]
 
-const finalMenuItems = shouldHideForAPM
-  ? menuItems.filter(i => !apmBlockedPaths.has(i.path))
-  : menuItems
+  const finalMenuItems = shouldHideForAPM
+    ? menuItems.filter(i => !apmBlockedPaths.has(i.path))
+    : menuItems
 
   return (
     <SidebarContainer isOpen={isOpen} theme={theme} uiPreferences={uiPreferences}>
@@ -742,7 +742,7 @@ const finalMenuItems = shouldHideForAPM
               alt="Company Logo"
               style={{ width: "80px", marginRight: "1rem", borderRadius: "10px" }}
             />{" "}
-           {companyInfo.business_type === "APM" ? "PMT" : fmsdata? "FMS": "HRMS"}
+            {companyInfo.business_type === "APM" ? "PMT" : fmsdata ? "FMS" : "HRMS"}
           </Logo>
         )}
         <ToggleButton onClick={toggleSidebar} uiPreferences={uiPreferences}>

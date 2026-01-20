@@ -30,7 +30,7 @@ const HrmFeaturesManagement = () => {
       keywords: "leave management system, HR leave tracking software",
       canonical: "https://home.atomwalk.com/leave.html",
       title: "Streamlined Leave and Holiday Management System",
-      description: "Digitally track holidays, manage leave requests, and ensure transparency with streamlined workflows.",
+      description: "Digitally track holidays, manage leave requests, and ensure transparency with streamlined workflows for employees and managers.",
       image: LeaveHeadBG,
       data: "Leave"
     },
@@ -52,7 +52,7 @@ const HrmFeaturesManagement = () => {
       keywords: "Attendance management software, Employee attendance tracking system, HR attendance software, Attendance tracking HRM, Performance tracking software, Attendance with geo-location, Real-time check-in and check-out, Manager review and approval system, Task and attendance integration, Transparent employee performance scores, Weekly task management software, Mobile and web attendance solution",
       canonical: "https://home.atomwalk.com/attendance.html",
       title: "Smart Attendance Management",
-      description: "Seamlessly track attendance and monitor productivity with real-time insights.",
+      description: "Seamlessly track attendance and monitor productivity with real-time insights and dynamic tools.",
       image: HrHeadBG,
       data: "Attendance"
     },
@@ -63,7 +63,7 @@ const HrmFeaturesManagement = () => {
       keywords: "Payroll setup and salary control, Employee salary parameter management, Monthly salary processing software, Automated salary posting system, API-based payroll entries, Cloud-based payroll system India, Payroll tax calculation software, PF ESI payroll management, Statutory payroll compliance software, Payroll management software, Employee payroll processing system, HR payroll software",
       canonical: "https://home.atomwalk.com/payroll.html",
       title: "Accurate and Automated Payroll Solutions",
-      description: "Simplify payroll with automated salary, tax, and deduction handling.",
+      description: "Simplify payroll with Atomwalk HRM's automated system, handling salaries, deductions, and taxes with accuracy. Real-time integration ensures seamless reporting and easy payslip access for employees",
       image: HrHeadBG,
       data: "Payroll"
     },
@@ -74,7 +74,7 @@ const HrmFeaturesManagement = () => {
       keywords: "Self appraisal process software, Manager appraisal workflow, Employee performance reviews, KPI-based appraisal system, Customizable appraisal structure, Performance management software for SMEs, HR appraisal software India",
       canonical: "https://home.atomwalk.com/appraisal.html",
       title: "Dynamic and Transparent Appraisal System",
-      description: "KPI-based evaluations with fair and transparent performance reviews.",
+      description: "The appraisal system supporting KPI-based evaluations, with self-assessment, manager scoring, and grade normalization for fair, transparent performance reviews and structured reporting.",
       image: HrHeadBG,
       data: "Appraisal"
     },
@@ -85,7 +85,7 @@ const HrmFeaturesManagement = () => {
       keywords: "HR service request desk, Employee ticket management system, Helpdesk ticket creation software, Ticket assignment and resolution, HR helpdesk dashboard, HRMS desktop and mobile app, Employee self-service helpdesk",
       canonical: "https://home.atomwalk.com/emphelp.html",
       title: "Help & Request Desk",
-      description: "Intelligent ticketing system for employee support with real-time updates.",
+      description: "Intelligent ticketing system for employee support with automated routing, SLA tracking, and knowledge base integration. Real-time status updates and analytics for HR service management.",
       image: HrHeadBG,
       data: "Help & Request"
     },
@@ -96,7 +96,7 @@ const HrmFeaturesManagement = () => {
       keywords: "Company event creation software, Employee engagement event management, Birthday and anniversary reminders, Promotion and milestone events, Employee event notifications, HRMS web and mobile app, Employee events mobile app",
       canonical: "https://home.atomwalk.com/empevent.html",
       title: "Employee Engagement & Events",
-      description: "Company announcements, birthdays, anniversaries, and engagement programs.",
+      description: "Keep your workforce informed and connected with real-time company announcements, personalized birthday and work anniversary recognitions, and interactive features that promote team bonding and employee participation.",
       image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/HRM-Events.png",
       data: "Event Updates"
     }

@@ -125,56 +125,56 @@ const Arrow = styled.div`
 export const ProcessFlow = ({ data, bgcolors }) => {
   const flows = {
     Claim: [
-      { step: 'Expense Item Setup'},
+      { step: 'Expense Item Setup' },
       { step: 'Expense Advance for Employee' },
-      { step: 'Claim Expense'},
-      { step: 'Approval Of Claim'},
-      { step: 'Settlement of Claims'},
-      { step: 'Reports & Dashboards'},
+      { step: 'Claim Expense' },
+      { step: 'Approval Of Claim' },
+      { step: 'Settlement of Claims' },
+      { step: 'Reports & Dashboards' },
     ],
     Leave: [
-      { step: 'Setup Holiday Calendar'},
-      { step: 'Leave Dashboard'},
-      { step: 'Manage Leave by Employee'},
-      { step: 'Manage Leave by Manager'},
-      { step: 'Reports & Analysis'},
+      { step: 'Setup Holiday Calendar' },
+      { step: 'Leave Dashboard' },
+      { step: 'Manage Leave by Employee' },
+      { step: 'Manage Leave by Manager' },
+      { step: 'Reports & Analysis' },
     ],
     Payroll: [
-      { step: 'Payroll Setup & Controls'},
-      { step: 'Employee Salary Parameter'},
-      { step: 'Generate Monthly Salary'},
-      { step: 'Post Salary'},
+      { step: 'Payroll Setup & Controls' },
+      { step: 'Employee Salary Parameter' },
+      { step: 'Generate Monthly Salary' },
+      { step: 'Post Salary' },
     ],
     Attendance: [
-      { step: 'Check-in'},
-      { step: 'Attendance Dashboard'},
-      { step: 'Manage Attendance'},
-      { step: 'Weekly Score'},
+      { step: 'Check-in' },
+      { step: 'Attendance Dashboard' },
+      { step: 'Manage Attendance' },
+      { step: 'Weekly Score' },
     ],
     Appraisal: [
-      { step: 'Performance Mangement System'},
-      { step: 'Self Appraisal Process '},
-      { step: 'Manager Appriasl Process '},
-      { step: 'Appriasl Rivew Process and Reports '},
+      { step: 'Performance Mangement System' },
+      { step: 'Self Appraisal Process ' },
+      { step: 'Manager Appriasl Process ' },
+      { step: 'Appriasl Rivew Process and Reports ' },
     ],
     HR: [
-        
-        { step: 'On-Boarding'},
-        { step: 'Employee Data'},
-        { step: 'Asset Management'},
-        { step: 'Exit Process'},
+
+      { step: 'On-Boarding' },
+      { step: 'Employee Data' },
+      { step: 'Asset Management' },
+      { step: 'Exit Process' },
     ],
-    "Help & Request":[
-      { step: 'Request Category Setup'},
-      { step: 'Add New Help/ Request Ticket'},
-      { step: 'Assign to a Employee'},
-      { step: 'Resolve Help/ Request'},
-      { step: 'Help/ Request Dashboard'},
+    "Help & Request": [
+      { step: 'Request Category Setup' },
+      { step: 'Add New Help/ Request Ticket' },
+      { step: 'Assign to a Employee' },
+      { step: 'Resolve Help/ Request' },
+      { step: 'Help/ Request Dashboard' },
     ],
-    "Event Updates":[
-      { step: 'Company Event Creation'},
-      { step: 'Employee Event Creation'},
-      { step: 'Employee Response'},
+    "Event Updates": [
+      { step: 'Company Event Creation' },
+      { step: 'Employee Event Creation' },
+      { step: 'Employee Response' },
     ],
     Lead: [
       { step: 'Lead Capture', color: '#4A90E2' },
@@ -188,63 +188,63 @@ export const ProcessFlow = ({ data, bgcolors }) => {
       { step: 'Custom and Default Campaign Template', color: '#4A90E2' },
       { step: 'Response interface', color: '#4A90E2' },
     ],
-    Partner : [
+    Partner: [
       { step: ' Add Partner', color: '#4A90E2' },
       { step: 'Order Information Tracking', color: '#4A90E2' },
       // { step: 'Commission Management', color: '#4A90E2' },
       { step: 'Multi-Report Generation', color: '#4A90E2' },
     ],
-    Customer : [
+    Customer: [
       { step: 'Customer Data Management', color: '#4A90E2' },
       { step: 'Customer Task & TDS Management', color: '#4A90E2' },
       { step: 'Invoice, Payment & Product Interests', color: '#4A90E2' },
       { step: 'Ticket Tracking (AMC Tracking)', color: '#4A90E2' },
       { step: 'Reports and Dashboards', color: '#4A90E2' }
     ],
-    UserManagement:[
+    UserManagement: [
       { step: 'User Group Setup', color: '#4A90E2' },
       { step: 'User Profile Creation', color: '#4A90E2' },
       { step: 'Update/ Delete Profile', color: '#4A90E2' },
 
     ]
     ,
-    EquipmentManagement:[
+    EquipmentManagement: [
       { step: 'Equipment Setup', color: '#4A90E2' },
       { step: 'Booking', color: '#4A90E2' },
       { step: ' Cancellation', color: '#4A90E2' },
     ],
-    EquipmentMaintenance:[
+    EquipmentMaintenance: [
       { step: 'preventive Maintenance', color: '#4A90E2' },
       { step: 'Emergency maintenance', color: '#4A90E2' },
     ],
-    ReportandDashboard:[
+    ReportandDashboard: [
       { step: ' Usage Trends', color: '#4A90E2' },
       { step: 'Audit ready records', color: '#4A90E2' },
       { step: 'Data purge ', color: '#4A90E2' },
       { step: 'Analytics', color: '#4A90E2' },
     ],
-    UserManagements:[
+    UserManagements: [
       { step: 'Admin', color: '#4A90E2' },
       { step: 'Manager', color: '#4A90E2' },
       { step: 'User', color: '#4A90E2' },
     ],
-    LabProcess:[
+    LabProcess: [
       { step: 'Add Equipment & Inventory Items', color: '#4A90E2' },
       { step: 'Document Setup', color: '#4A90E2' },
       { step: 'Experiment Workflow (Activity) Creation', color: '#4A90E2' },
       { step: 'Quality Management', color: '#4A90E2' },
     ],
-    LabExperiment:[
+    LabExperiment: [
       { step: 'Creation of Lab Experiment Project ', color: '#4A90E2' },
       { step: 'Lab Project Objective Defination', color: '#4A90E2' },
       { step: 'Experiment Steps (Activity) Management', color: '#4A90E2' },
     ],
-    SalesLifecycleService:[
+    SalesLifecycleService: [
       { step: 'Quotation/Sales Order', color: '#4A90E2' },
       { step: 'Sales Invoice', color: '#4A90E2' },
       { step: 'Payment Management', color: '#4A90E2' },
     ],
-    Sales:[
+    Sales: [
       { step: 'Quotation/Sales Order', color: '#4A90E2' },
       { step: 'Work Order Creation (Project)', color: '#4A90E2' },
       { step: 'Sales Invoice', color: '#4A90E2' },
@@ -253,27 +253,27 @@ export const ProcessFlow = ({ data, bgcolors }) => {
       { step: 'Shipment Details', color: '#4A90E2' },
       { step: 'Payment Management', color: '#4A90E2' },
     ],
-    Procurement:[
+    Procurement: [
       { step: 'Supplier(Vendor) Identification', color: '#4A90E2' },
       { step: 'Purchase Order Creation', color: '#4A90E2' },
       { step: 'Order-In (GRN)', color: '#4A90E2' },
       { step: 'Return Handling', color: '#4A90E2' },
       { step: 'Payment Tracking (Payables)', color: '#4A90E2' },
     ],
-    Compliance:[
+    Compliance: [
       { step: 'E-Way Bill', color: '#4A90E2' },
       { step: 'TDS', color: '#4A90E2' },
       { step: 'GST', color: '#4A90E2' },
     ],
-    Report:[
+    Report: [
       { step: 'Sales Report', color: '#4A90E2' },
       { step: 'Procurement Report', color: '#4A90E2' },
       { step: 'GST', color: '#4A90E2' },
       { step: 'TDS', color: '#4A90E2' },
     ],
-    AnnualMaintenance:[ { step: 'Add and Update AMC Details', color: '#4A90E2' },
-      { step: 'View All AMC Records', color: '#4A90E2' },],
-    "Work Order":[
+    AnnualMaintenance: [{ step: 'Add and Update AMC Details', color: '#4A90E2' },
+    { step: 'View All AMC Records', color: '#4A90E2' },],
+    "Work Order": [
       { step: 'Product Category', color: '#4A90E2' },
       { step: 'Inventory Setup', color: '#4A90E2' },
       { step: 'Equipment Setup', color: '#4A90E2' },
@@ -281,17 +281,17 @@ export const ProcessFlow = ({ data, bgcolors }) => {
       { step: 'Activity Creation', color: '#4A90E2' },
       { step: 'Creation of Process', color: '#4A90E2' },
     ],
-    "Project Management":[
+    "Project Management": [
       { step: 'Project/Work Order Creation', color: '#4A90E2' },
       { step: 'User Activity Management', color: '#4A90E2' },
       { step: 'Project Management', color: '#4A90E2' },
     ],
-    "Report & Dashboard":[
+    "Report & Dashboard": [
       { step: 'Activity Dashboard', color: '#4A90E2' },
       { step: 'Project Dashboard', color: '#4A90E2' },
       { step: 'Resource Utilisation', color: '#4A90E2' },
     ],
-    "Inventory Operation":[
+    "Inventory Operation": [
       { step: 'Inventory Item Category', color: '#4A90E2' },
       { step: 'Inventory Item', color: '#4A90E2' },
       // { step: 'Stock Management', color: '#4A90E2' },
@@ -299,7 +299,7 @@ export const ProcessFlow = ({ data, bgcolors }) => {
       { step: 'Physical Inspection', color: '#4A90E2' },
       { step: 'Consumption of Inventory', color: '#4A90E2' },
     ],
-    "Inventory Report & Dashboard":[
+    "Inventory Report & Dashboard": [
       { step: 'Stock Item Report', color: '#4A90E2' },
       { step: 'Valuation Report', color: '#4A90E2' },
       { step: 'Expiry Report', color: '#4A90E2' },

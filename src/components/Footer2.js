@@ -256,7 +256,8 @@ export default function Footer2() {
     "customerList",
     "ticketList",
     "sampledashboard",
-    "samplestatus"
+    "samplestatus",
+    "supervisordashboard"
   ];
 
   useEffect(() => {

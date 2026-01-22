@@ -98,6 +98,7 @@ export const NavBar = () => {
     "customerList",
     "ticketList",
     "sampledashboard",
+    "supervisordashboard",
     "samplestatus",
     "/equipmentBooking",
     "/upload",
@@ -264,10 +265,10 @@ export const NavBar = () => {
                       <span role="img" aria-label="FMS" style={{ marginRight: 8 }}>👷🏼</span>
                       Login as FMS Manager
                     </LoginOption>
-                    <LoginOption onClick={handleLabUserLogin}>
+                    {/* <LoginOption onClick={handleLabUserLogin}>
                       <span role="img" aria-label="FMS" style={{ marginRight: 8 }}>🥼</span>
                       Login as Lab User
-                    </LoginOption>
+                    </LoginOption> */}
                   </LoginDropdownMenu>
                 </LoginDropdownWrapper>
               ) : (

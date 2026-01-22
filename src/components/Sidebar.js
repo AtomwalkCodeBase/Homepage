@@ -526,7 +526,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
           items: [
             { path: "/lab/dashboard", name: "Activity Dashboard", icon: <FaHome /> },
             { path: "/sampledashboard", name: "Activity List", icon: <FaList /> },
-            // { path: "/equipmentBooking", name: "Booking Item", icon: <FaStethoscope /> },
+            // { path: "/supervisordashboard", name: "My Dashboard", icon: <FaStethoscope /> },
           ],
         }
       ] : [
@@ -626,7 +626,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
     "/project-report",
     "/wishes",
     "/sampledashboard",
-    "/equipmentBooking",
+    "/supervisordashboard",
     "/lab/dashboard"
 
   ])
@@ -685,7 +685,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
       : (companyInfo.business_type === "LMS" || companyInfo.business_type === "GLP") ? [
         { path: "/lab/dashboard", name: "Dashboard", icon: <FaHome /> },
         { path: "/sampledashboard", name: "Sample List", icon: <FaList /> },
-        // { path: "/equipmentBooking", name: "Booking Item", icon: <FaStethoscope /> },
+        // { path: "/supervisordashboard", name: "My Dashboard", icon: <FaStethoscope /> },
       ]
         : [
           { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },

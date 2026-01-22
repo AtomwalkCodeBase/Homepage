@@ -340,7 +340,7 @@ const Header = ({ sidebarWidth = "250px", onMobileMenuClick }) => {
         <MobileMenuButton onClick={onMobileMenuClick}>
           <FaBars />
         </MobileMenuButton>
-        <img src={companyInfo.image} alt="Company Logo" style={{ width: "80px", borderRadius: "10px", marginRight: "10px", border: "0.2px solid #000" }} />
+        <img src={companyInfo.image} alt="Company Logo" style={{ width: "80px", height: "50px", borderRadius: "10px", marginRight: "10px", border: "0.2px solid #000" }} />
         <SearchBar expanded={searchExpanded}>
           <FaSearch onClick={handleSearchClick} style={{ cursor: "pointer", color: `${theme.colors.textLight}` }} />
           <SearchInput

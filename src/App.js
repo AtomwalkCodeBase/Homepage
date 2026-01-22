@@ -114,6 +114,7 @@ import LmsDashBoard from "./pages/LabUser/LmsDashBoard";
 import CustomerStatus from "./pages/CustomerStatus";
 import { HelmetProvider } from 'react-helmet-async';
 import SampleDashboard from "./pages/LabUser/SampleDashboard";
+import SupervisorDashboard from "./pages/fishIndurstry/SupervisorDashboard";
 // import MyAppriaisal from "./pages/MyAppriaisal";
 
 function App() {
@@ -258,7 +259,8 @@ function App() {
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/lab/dashboard" element={<LmsDashBoard />} />
                   <Route path="/sampledashboard" element={<SampleDashboard />} />
-                  {/* <Route path="/activityList" element={<LmsActivityList />} /> */}
+                  <Route path="/supervisordashboard" element={<SupervisorDashboard />} />
+
                   {/* <Route path="/equipmentBooking" element={<LabEquimentBookingScreen />} /> */}
                   {/* <Route path="/inventoryUpdate" element={<LmsInventoryUpdate />} /> */}
                   {/* <Route path="/upload" element={<FileAuditDashboard />} /> */}

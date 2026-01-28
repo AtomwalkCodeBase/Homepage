@@ -662,7 +662,7 @@ const ProjectManagementTimesheetEmployee = () => {
   const tabs = [
     { key: 'myActivity', label: `My Activity(${filteredActivities?.length})`, },
     ...(totalRetainerCount !== 0 && !empidParam ? [{ key: 'retainer', label: `Assigned retainer(${totalRetainerCount})`, }] : []),
-    { key: 'emp_attend', label: `Employee Work status`, }
+    // { key: 'emp_attend', label: `Employee Work status`, }
   ].filter(Boolean);
 
   return (
@@ -774,7 +774,7 @@ const ProjectManagementTimesheetEmployee = () => {
               ))
             )
           ) :
-            activeTab === "emp_attend" ? <EmployeeLogStatusCard /> :
+            // activeTab === "emp_attend" ? <EmployeeLogStatusCard /> :
 
               (
                 <>

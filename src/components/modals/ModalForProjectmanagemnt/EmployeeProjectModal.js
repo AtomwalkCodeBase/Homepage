@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Modal from "../Modal";
-import { FaCalendarAlt, FaChevronDown, FaChevronUp, FaIdCard, FaProjectDiagram, FaTasks, FaUser } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaIdCard, FaProjectDiagram, FaTasks, FaUser } from "react-icons/fa";
 import { useMemo, useState } from "react";
 import Badge from "../../Badge";
 import { getStatusVariant } from "../../../pages/ProjectManagement/utils/utils";
@@ -35,19 +35,6 @@ import { getStatusVariant } from "../../../pages/ProjectManagement/utils/utils";
     })
   };
 };
-
-const getStatus = (status) => {
-  const Status = status.toLowerCase();
-  if (Status==="completed"){
-    return "success";
-  }else if(Status === "in progress"){
-    return "back";
-  }else if(Status === "planned"){
-    return "notPlanned"
-  }
-
-}
-
 
 const EmployeeProjectModal = ({ EmployeeData, onClose }) => {
   const [openAccordion, setOpenAccordion] = useState(null);
@@ -166,7 +153,6 @@ const EmployeeProjectModal = ({ EmployeeData, onClose }) => {
         );
       })}
     </Modal>
-    // <p>{JSON.stringify(employeeData)}</p>
   );
 };
 

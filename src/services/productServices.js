@@ -386,12 +386,18 @@ export function createAddressPost(res) {
   return authAxiosPost(createaddressURL, data)
 }
 
-export function getEmpAllocationData({ emp_id, start_date, end_date }) {
-  let data = {
-    'emp_id': emp_id,
-    'start_date': start_date,
-    'end_date': end_date,
-  };
+export function getEmpAllocationData(data) {
+  // let data = {
+  //   'emp_id': emp_id,
+  //   'start_date':start_date,
+  //   'end_date': end_date,
+  // };
+  // if(is_team_lead){
+  //   data['is_team_lead'] = is_team_lead
+  // }
+  // if(order_item_id){
+  //   data['order_item_id'] = order_item_id
+  // }
 
   return authAxios(employeeTaskAllocationData, data)
 }
@@ -463,3 +469,7 @@ export function getUserList() {
 export function processSampleData(data) {
   return authAxiosFilePost(processsample, data)
 }
+// export function processTimesheetApproval(data) {
+//   // console.log('Data to be sent for timesheet approval:', data);
+//   return authAxiosPost(addTimesheet, data);
+// }

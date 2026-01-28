@@ -625,6 +625,8 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
     "/projectmanagement",
     "/project-report",
     "/wishes",
+    "/shifts",
+    "/claims",
     "/sampledashboard",
     "/supervisordashboard",
     "/lab/dashboard"

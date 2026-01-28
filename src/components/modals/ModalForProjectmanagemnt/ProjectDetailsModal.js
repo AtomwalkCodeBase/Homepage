@@ -679,7 +679,7 @@ const filteredTasks = employeeWorkLogs.filter(emp =>
         <ModalHeader>
               <TitleRow>
                 <TitleSection>
-                  <Title>{project.project_name} - {project.order_item_key}</Title>
+                  <Title>{project.customer_name} ({project.order_item_key})</Title>
                   <Badge variant={getStatusVariant(project.project_period_status)}>{project.project_period_status}</Badge>
                 </TitleSection>
               </TitleRow>
@@ -690,11 +690,11 @@ const filteredTasks = employeeWorkLogs.filter(emp =>
 
         <ModalBody>
           <Container>
-            <StatsGrid>
+            {/* <StatsGrid>
               {StatCardContent.map((item, index) => (
                         <StatsCard key={index} icon={item.icon} label={item.name} value={item.total} color={item.color} />
                       ))}
-            </StatsGrid>
+            </StatsGrid> */}
 
             <ContentGrid>
              <Card>
@@ -796,12 +796,12 @@ const EmployeeWorkLog = ({ workLogs }) => {
                   {employee.status ? "Complete" : employee.rawProject.project_period_status}
                   </Badge>
               </div>
-              <EmployeeHeaderRight>
+              {/* <EmployeeHeaderRight>
                 <TotalHoursBadge>
                   <TotalHoursValue>{employee.totalEffort}h</TotalHoursValue>
                   <TotalHoursLabel>Total Hours</TotalHoursLabel>
                 </TotalHoursBadge>
-              </EmployeeHeaderRight>
+              </EmployeeHeaderRight> */}
             </EmployeeHeader>
               <TeamMember  style={{paddingTop: 0, paddingLeft: 20}}>
                 <MemberHours>Start Date:</MemberHours> <MemberRole style={{fontSize: 14}}> {employee.actual_start_date || "Activity not Started"}</MemberRole>

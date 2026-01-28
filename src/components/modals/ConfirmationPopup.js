@@ -82,7 +82,7 @@ const SubmitButton = styled(Button)`
 `;
 
 // Confirmation Popup Component
-const ConfirmationPopup = ({ isOpen, onClose, onConfirm, approve, timesheet }) => {
+const ConfirmationPopup = ({ isOpen, onClose, onConfirm, approve, timesheet, date }) => {
   const [remark, setRemark] = useState('');
 
   useEffect(()=> {
@@ -136,7 +136,7 @@ const ConfirmationPopup = ({ isOpen, onClose, onConfirm, approve, timesheet }) =
 
         {/* Message */}
         {timesheet ? (
-          <Message>Are you sure you want to {actionLabel}?</Message>
+          <Message>Are you sure you want to {actionLabel} {date && `for session ${date}`}?</Message>
         ) : (
           <Message>Do you want to {actionLabel} your leave?</Message>
         )}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
   Building2,
@@ -16,13 +16,14 @@ import {
   PenBox,
   MapPin,
 } from 'lucide-react';
-import { getCurrentDateTimeDefaults, getTodayApiDateStr } from './utils/utils';
+import { getCurrentDateTimeDefaults, getTodayApiDateStr, formatToDDMMYYYY, getMonthRange, normalizeProjects, formatDate } from './utils/utils';
 import Button from '../../components/Button';
 import { CalendarEvent } from 'react-bootstrap-icons';
-import { FaBan, FaCheck } from 'react-icons/fa';
+import { FaBan, FaCheck, FaRegFile, FaUsers } from 'react-icons/fa';
 import Badge from '../../components/Badge';
-
-// ====================== Styled Components with Theme ======================
+import RetainerCard from '../../components/modals/ModalForProjectmanagemnt/RetainerCard';
+import { getEmpAllocationData } from '../../services/productServices';
+import { FiEye, FiUsers } from 'react-icons/fi';
 
 const CardHover = styled.div`
   background: ${({ theme }) => theme.colors?.card || '#fff'};
@@ -35,17 +36,17 @@ const CardHover = styled.div`
   
   &:hover {
     border-color: ${({ theme }) => theme.colors?.primary || '#6C63FF'};
-    box-shadow: ${({ theme }) => 
-      theme.cardStyle?.shadow === 'heavy' ? '0 10px 20px rgba(108,99,255,0.2)' :
+    box-shadow: ${({ theme }) =>
+    theme.cardStyle?.shadow === 'heavy' ? '0 10px 20px rgba(108,99,255,0.2)' :
       theme.shadows?.lg || '0 4px 12px rgba(108,99,255,0.15)'};
-    transform: ${({ theme }) => 
-      theme.cardStyle?.animation ? 'translateY(-2px)' : 'none'};
+    transform: ${({ theme }) =>
+    theme.cardStyle?.animation ? 'translateY(-2px)' : 'none'};
   }
 `;
 
 const Flex = styled.div`
   display: grid;
- grid-template-columns: ${({ filterType }) => filterType === 'today'|| "custom" ? '5fr 1fr' : '1fr'};
+ grid-template-columns: ${({ filterType }) => filterType === 'today' || "custom" ? '5fr 1fr' : '1fr'};
   gap: ${({ theme }) => theme.spacing?.xl || '3rem'};
   
   @media (max-width: 968px) {
@@ -316,7 +317,7 @@ const SecondaryBtn = styled(Button)`
   background: ${({ theme }) => theme.colors?.card || '#fff'};
   color: ${({ theme }) => theme.colors?.text || '#333'};
   border: 1px solid ${({ theme }) => theme.colors?.border || '#ddd'};
-  font-size: 11px;
+  font-size: 16px;
   
   &:hover:not(:disabled) {
     background: ${({ theme }) => theme.colors?.backgroundAlt || '#f5f5f5'};
@@ -328,14 +329,16 @@ const SecondaryBtn = styled(Button)`
 
 
 
-export const ActivityCard = ({ activity, filterType, onAction, isManager, activityTab }) => {
-
-  // console.log(activity)
-  // console.log(isManager)
+export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavigateToRetainer }) => {
   const [isLogsOpen, setIsLogsOpen] = useState(false);
-
+  const [isRetainerOpen, setIsRetainerOpen] = useState(false);
+  const [retainerDataCache, setRetainerDataCache] = useState({});
+  const [dateRange, setDateRange] = useState(() => {
+    const { start, end } = getMonthRange("current")
+    return { start, end }
+  })
   const progress = activity.total_no_of_items || 0;
-  const totalEffort = activity.no_of_items || 0;
+  const totalEffort = activity.original_P.no_of_items || 0;
 
   const isActivityStart = !!activity.original_A;
 
@@ -344,7 +347,61 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, activi
   const todayCheckedIn = !!todayLog.check_in;
   const todayCheckedOut = !!todayLog.check_out;
 
-  const {todayISO} = getCurrentDateTimeDefaults();
+  const { todayISO } = getCurrentDateTimeDefaults();
+
+  const fetchEmpAllocationDataForRetainer = async (retainer) => {
+    const payload = {
+      emp_id: retainer.emp_id,
+      start_date: formatToDDMMYYYY(dateRange.start),
+      end_date: formatToDDMMYYYY(dateRange.end),
+    };
+
+    try {
+      const response = await getEmpAllocationData(payload);
+      const normalizedAllocation = normalizeProjects(response.data);
+      const matchRetainer = normalizedAllocation.find((allocation) => allocation.p_id === retainer.a_id)
+      setRetainerDataCache(prev => ({ ...prev, [retainer.emp_id]: { retainer, allocation: matchRetainer } }));
+    } catch (error) {
+      console.error("Failed to fetch retainer data", error);
+    }
+  };
+
+  const fetchAllRetainerData = () => {
+    const retainers = activity.original_P.retainer_list.filter(r => r.a_type === "P");
+    retainers.forEach(retainer => {
+      if (!retainerDataCache[retainer.emp_id]) {
+        fetchEmpAllocationDataForRetainer(retainer);
+      } else {
+        // Always refetch to update data
+        fetchEmpAllocationDataForRetainer(retainer);
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (isRetainerOpen) {
+      fetchAllRetainerData();
+    }
+  }, [isRetainerOpen, activity.original_P.retainer_list]);
+
+  const isImageFile = (url = "") => /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(url);
+
+  const getFileNameFromUrl = (url = "") => decodeURIComponent(url.split("/").pop().split("?")[0]);
+
+  const handleFileClick = (url) => {
+  if (isImageFile(url)) {
+    // Open image in new tab
+    window.open(url, "_blank", "noopener,noreferrer");
+  } else {
+    // Force download for non-image files
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = getFileNameFromUrl(url);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+};
 
 
   return (
@@ -352,45 +409,81 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, activi
       <Flex filterType={filterType}>
         <Info>
           <div>
-            <Company><Building2 size={18} />{activity.customer_name}</Company>
-            <Order><FileText size={14} />{activity.project_code || activity.order_item_key}</Order>
+            <Company><Building2 size={18} />{activity.customer_name} <StatusBadge status={activity.project_period_status || activity.todaysStatus}>
+              <StatusIcon status={activity.project_period_status || activity.todaysStatus} />
+              {activity.project_period_status || activity.todaysStatus}
+            </StatusBadge>
+{activity.original_P.retainer_list.filter(r => r.a_type === "P").length !== 0   &&      <Badge variant='info' style={{cursor:"pointer"}} onClick={onNavigateToRetainer} ><FiUsers size={14} style={{marginRight: "0.4rem"}} />Retainer assigned: {activity.original_P.retainer_list.filter(r => r.a_type === "P").length}</Badge>}
+</Company>            
+<Order>
+              <FileText size={14} />{activity.project_code || activity.order_item_key}
+            </Order>
           </div>
 
           <Grid>
             <Item><Label><FileText size={14} />Audit Type</Label><DetailValue>{activity.audit_type}</DetailValue></Item>
-            <Item><Label><Package size={14} />Total No. of Item Audit</Label><DetailValue>{activity.no_of_items || 0}</DetailValue></Item>
-            {/* <Item><Label>Project Status</Label><StatusBadge status={activity.project_period_status || activity.todaysStatus}>
-              <StatusIcon status={activity.project_period_status || activity.todaysStatus} />
-              {activity.project_period_status || activity.todaysStatus}
-            </StatusBadge></Item> */}
+            <Item><Label><Package size={14} />Total No. of Item Audit</Label><DetailValue>{activity.original_P.no_of_items || 0}</DetailValue></Item>
+      
 
-              <Item><Label><CalendarEvent size={14} />Planned Date</Label><DetailValue>{activity.start_date} to {activity.end_date}</DetailValue></Item>
-              {activity.store_name && <Item><Label><MapPin size={14} />Location</Label><DetailValue>{activity.store_name}</DetailValue></Item>}
+            <Item><Label><CalendarEvent size={14} />Planned Date</Label><DetailValue>{formatDate(activity.planned_start_date)} to {(activity.planned_end_date)}</DetailValue></Item>
+              <Item><Label><CalendarEvent size={14} />Actual Date</Label><DetailValue>{ activity.actual_start_date  ?  `${activity.actual_start_date} to ${activity.actual_end_date}` : "Not started"}</DetailValue></Item>
+          {activity.original_P.store_name && <Item><Label><MapPin size={14} />Location</Label><DetailValue>{activity.original_P.store_name}</DetailValue></Item>}
+            {activity?.original_A?.is_file_applicable === true &&
+              <Item>
+                <Label><FaRegFile size={14} /> File Uploaded</Label>
+                {activity?.original_A?.submitted_file ?
+                  <DetailValue
+                    style={{ cursor: "pointer" }}
+                    onClick={() => handleFileClick(activity?.original_A.submitted_file)}
+                  >
+                    ✅ <FiEye /> View
+                  </DetailValue> :
+                  <DetailValue>
+                    ❌
+                  </DetailValue>
+                }
+              </Item>
+          }
+        {/* {activity?.original_A?.submitted_file ? 
+          <Item>
+            <Label>
+              <FaRegFile size={14} /> File Uploaded
+            </Label>
+            <DetailValue
+              style={{ cursor: "pointer" }}
+              onClick={() => handleFileClick(activity?.original_A.submitted_file)}
+            >
+              ✅ <FiEye /> View 
+            </DetailValue>
+          </Item> : 
+          <Item>
+            <Label>
+              <FaRegFile size={14} /> File Uploaded
+            </Label>
+            <DetailValue>
+             ❌
+            </DetailValue>
+          </Item>
+        } */}
           </Grid>
-              {activity.store_remarks && <Item><Label><PenBox size={14} />Remark</Label><DetailValue>{activity.store_remarks}</DetailValue></Item>}
+          {activity.original_P.store_remarks && <Item><Label><PenBox size={14} />Remark</Label><DetailValue>{activity.original_P.store_remarks}</DetailValue></Item>}
 
-         {/* {!totalEffort === 0 && <ProgressBar completed={progress} total={totalEffort} label="Effort Progress" />} */}
+          {!totalEffort === 0 && <ProgressBar completed={progress} total={totalEffort} label="Effort Progress" />}
 
-         {(filterType === "past7" || isManager) && 
-          <ActivityLogs
-            logs={activity.day_logs}
-            isOpen={isLogsOpen}
-            onToggle={() => setIsLogsOpen(!isLogsOpen)}
-          />}
         </Info>
 
-          <Actions>
-            {isManager && (
+        <Actions>
+          {isManager && (
             <>
-                  <Button variant="primary" size="sm" title="Approve" disabled={!activity.complete}>
-                    <FaCheck /> Approve
-                  </Button>
-                  <Button  variant="outlines" size="sm" title="Reject" disabled={!activity.complete}>
-                    <FaBan /> Reject
-                  </Button>
-                </>
-            )}
-        {!isManager && (filterType === "today") && (
+              <Button variant="primary" size="sm" title="Approve" disabled={!activity.complete}>
+                <FaCheck /> Approve
+              </Button>
+              <Button variant="outlines" size="sm" title="Reject" disabled={!activity.complete}>
+                <FaBan /> Reject
+              </Button>
+            </>
+          )}
+          {!isManager && (
             <TodayActionButtons
               activity={activity}
               todayCheckedIn={todayCheckedIn}
@@ -402,14 +495,35 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, activi
               onAction={onAction}
               todayISO={todayISO}
               getTodayApiDateStr={getTodayApiDateStr}
+              retainerPage={false}
               isManager={isManager}
-              activeTab={activityTab}
             />
           )}
-          </Actions>
+        </Actions>
       </Flex>
       {(isManager && !activity.complete) &&
-      <Label style={{marginTop: 5, color: "red"}}>Note*:- Employee did not complete the activity so you can't approve or reject the activity</Label>}
+        <Label style={{ marginTop: 5, color: "red" }}>Note*:- Employee did not complete the activity so you can't approve or reject the activity</Label>}
+
+
+      {/* {(filterType === "past7" || isManager) &&  */}
+      <ActivityLogs
+        logs={activity.day_logs}
+        isOpen={isLogsOpen}
+        onToggle={() => setIsLogsOpen(!isLogsOpen)}
+      />
+      {/* } */}
+
+      {/* {activity.original_P.retainer_list.length !== 0 &&
+        <RetainerList
+          retainerList={activity.original_P.retainer_list}
+          isOpen={isRetainerOpen}
+          onToggle={() => setIsRetainerOpen(!isRetainerOpen)}
+          onAction={onAction}
+          retainerDataCache={retainerDataCache}
+          onRetainerUpdate={fetchAllRetainerData}
+        />
+
+      } */}
     </CardHover>
   );
 };
@@ -432,14 +546,13 @@ const StatusIcon = ({ status }) => {
   }
 };
 
-
 //ProgressBar for audit Items
 const ProgressBar = ({ completed, total, label = 'Progress' }) => {
   const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
   return (
     <Progress>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px', fontSize: '0.8rem' }}>
-        <span style={{color: "#666"}}>{label}</span>
+        <span style={{ color: "#666" }}>{label}</span>
         {/* <strong style={{color: "#666"}}>{percentage}%</strong> */}
       </div>
       <Bar><Fill p={percentage} /></Bar>
@@ -453,8 +566,7 @@ const ProgressBar = ({ completed, total, label = 'Progress' }) => {
   );
 };
 
-//Yesterday Activity 
-const ActivityLogs = ({ logs, isOpen, onToggle }) => {
+export const ActivityLogs = ({ retainer, logs, isOpen, onToggle }) => {
   const logEntries = Object.values(logs || {});
 
   return (
@@ -470,19 +582,23 @@ const ActivityLogs = ({ logs, isOpen, onToggle }) => {
           <NoLogsMessage>No activity recorded yet</NoLogsMessage>
         ) : (
           <LogsGrid>
-            {logEntries.map((log, i) => (
-              <LogRow key={i}>
-                <LogDate><Calendar size={14} />{log.date}</LogDate>
-                <LogTime><Clock size={14} />{log.check_in?.time || "Not Check in"} - {log.check_out?.time || 'Not Check Out'}</LogTime>
-                <LogStats>
-                  <LogBadge><Timer size={12} />Effort : {log.effort}h</LogBadge>
-                  <LogBadge><Package size={12} />No of item audit: {log.no_of_items}</LogBadge>
-                </LogStats>
-                {log.remarks && (
-                  <LogRemark><FileText size={14} />{log.remarks || "No Remarks found"}</LogRemark>
-                )}
-              </LogRow>
-            ))}
+            {logEntries.map((log, i) => {
+              return (
+                <LogRow key={i}>
+                  <LogDate><Calendar size={14} />{log.section}</LogDate>
+                 {!retainer && <LogTime><Clock size={14} />{log.check_in?.time || "Not Check in"} - {log.check_out?.time || 'Not Check Out'}</LogTime>}
+                  <LogStats>
+                    {/* <LogBadge><Timer size={12} />Effort : {log.effort}h</LogBadge> */}
+                    <LogBadge><Package size={12} />No of item audit: {log.no_of_items}</LogBadge>
+                    {retainer && 
+                    <LogBadge><FaUsers size={12} />No of resources: {log?.effort}</LogBadge>}
+                  </LogStats>
+                  {log.remarks && (
+                    <LogRemark><FileText size={14} />{log.remarks || "No Remarks found"}</LogRemark>
+                  )}
+                </LogRow>
+              )
+            })}
           </LogsGrid>
         )}
       </LogsContent>
@@ -496,9 +612,7 @@ const StatusMessage = ({ children }) => (
   </div>
 );
 
-// Dedicated Today Action Buttons — Clean, Readable, No Nesting Hell
-
-const TodayActionButtons = ({
+export const TodayActionButtons = ({
   activity,
   todayCheckedIn,
   todayCheckedOut,
@@ -508,77 +622,127 @@ const TodayActionButtons = ({
   complete,
   onAction,
   todayISO,
-  getTodayApiDateStr,
-  isManager,
-  activeTab
+  getTodayApiDateStr, isManager,
+  retainerPage=false,
+  retainer,
+  onRetainerUpdate
 }) => {
   const todayApiDate = getTodayApiDateStr();
-  const plannedEnd = activity.planned_end_date || activity.end_date;
+  const plannedEnd = activity.planned_end_date || activity.original_P?.planned_end_date;
   const isPlannedEndToday = plannedEnd === todayISO;
 
-  // 🔒 PLANNED TAB → ONLY START
-  if (activeTab === "planned") {
+  const todayLogs = Object.entries(activity.day_logs || {})
+    .filter(([key]) => key.startsWith(todayApiDate))
+    .map(([, log]) => log);
+
+    const hasOngoingSessionToday = todayLogs.some(
+    (log) => log.check_in && !log.check_out
+  );
+
+  // for Retainer flow
+  if (retainer) {
+    if(isManager){
+      return(
+        <> </>
+      );
+    }
+    if(complete){
+      return(
+        <StatusMessage>Activity is completed for today</StatusMessage>
+      );
+    }
+
+    const { ui } = activity;
+    if (ui?.showCompleteBtn) {
+      return (
+        <SuccessBtn
+          size="md"
+          onClick={() => onAction({ type: "complete", activity, retainerPage, retainer, onRetainerUpdate })}
+        >
+          <CheckCircle2 /> Complete
+        </SuccessBtn>
+      );
+    }
+
+    if(ui?.showStartBtn){
+      return (
+        <PrimaryBtn
+          size="md"
+          onClick={() => onAction({ type: "start", activity, retainerPage, retainer, onRetainerUpdate })}
+        >
+          <PlayCircle /> Start Activity
+        </PrimaryBtn>
+      );
+    }
+
+    return <></>;
+  }
+
+    // 1. Fully complete
+  if (complete) {
+    return <StatusMessage>Activity is completed</StatusMessage>;
+  }
+
+  // 2. Completed for today
+  // if (todayCheckedIn && todayCheckedOut ) {
+  //   return <StatusMessage>Activity is completed for today</StatusMessage>;
+  // }
+
+  // 3. Pending checkout from yesterday
+  if (hasPendingCheckout && pendingCheckoutDate !== todayApiDate) {
     return (
-      <PrimaryBtn size="md" onClick={() => onAction({ type: "start", activity })}>
+      <PrimaryBtn size="md" onClick={() => onAction({ type: "checkout_yesterday", activity, retainerPage, retainer, onRetainerUpdate })}>
+        <CheckCircle2 /> Checkout For Yesterday
+      </PrimaryBtn>
+    );
+  }
+
+  // 4. Checked in today → Show Complete / Pause Activity
+  if (hasOngoingSessionToday) {
+    return isPlannedEndToday ? (
+      <>
+        <SuccessBtn size="lg" onClick={() => onAction({ type: "complete", activity, retainerPage, retainer, onRetainerUpdate })}>
+          <CheckCircle2 /> Completed
+        </SuccessBtn>
+        <SecondaryBtn size="sm" onClick={() => onAction({ type: "continue", activity, retainerPage, retainer, onRetainerUpdate })}>
+          <PauseCircle /> Pause Activity
+        </SecondaryBtn>
+      </>
+    ) : (
+      <>
+        <SuccessBtn size="sm" onClick={() => onAction({ type: "continue", activity, retainerPage, retainer, onRetainerUpdate })}>
+          <PauseCircle /> Pause Activity
+        </SuccessBtn>
+        <SecondaryBtn size="lg" onClick={() => onAction({ type: "complete", activity, retainerPage, retainer, onRetainerUpdate })}>
+          <CheckCircle2 /> Completed
+        </SecondaryBtn>
+      </>
+    );
+  }
+
+  // 5. Not checked in today
+  if (!todayCheckedIn) {
+    if (isActivityStart) {
+      return (
+        <PrimaryBtn size="md" onClick={() => onAction({ type: "resume", activity , retainerPage, retainer, onRetainerUpdate })}>
+          <PlayCircle /> Resume Activity
+        </PrimaryBtn>
+      );
+    }
+    return (
+      <PrimaryBtn size="md" onClick={() => onAction({ type: "start", activity, retainerPage, retainer })}>
         <PlayCircle /> Start Activity
       </PrimaryBtn>
     );
   }
 
-  // 🔓 ACTUAL TAB LOGIC
-  if (activeTab === "actual") {
-
-    // if (complete) {
-    //   return <StatusMessage>Project is complete</StatusMessage>;
-    // }
-
-    // if (todayCheckedIn && todayCheckedOut) {
-    //   return <StatusMessage>Project is completed for today</StatusMessage>;
-    // }
-
-    // if (hasPendingCheckout && pendingCheckoutDate !== todayApiDate) {
-    //   return (
-    //     <PrimaryBtn size="md" onClick={() => onAction({ type: "checkout_yesterday", activity })}>
-    //       <CheckCircle2 /> Checkout For Yesterday
-    //     </PrimaryBtn>
-    //   );
-    // }
-
-    if (todayCheckedIn && !todayCheckedOut) {
-      return isPlannedEndToday ? (
-        <>
-          <SuccessBtn size="lg" onClick={() => onAction({ type: "complete", activity })}>
-            <CheckCircle2 /> Completed
-          </SuccessBtn>
-          <SecondaryBtn size="sm" onClick={() => onAction({ type: "continue", activity })}>
-            <PauseCircle /> Continue Tomorrow
-          </SecondaryBtn>
-        </>
-      ) : (
-        <>
-          <SuccessBtn size="sm" onClick={() => onAction({ type: "continue", activity })}>
-            <PauseCircle /> Continue Tomorrow
-          </SuccessBtn>
-          <SecondaryBtn size="lg" onClick={() => onAction({ type: "complete", activity })}>
-            <CheckCircle2 /> Completed
-          </SecondaryBtn>
-        </>
-      );
-    }
-
-    // if (!todayCheckedIn && isActivityStart) {
-    //   return (
-    //     <PrimaryBtn size="md" onClick={() => onAction({ type: "resume", activity })}>
-    //       <PlayCircle /> Resume Activity
-    //     </PrimaryBtn>
-    //   );
-    // }
-  }
-
-  // Fallback
+  // 6. Fallback: Awaiting start (future scheduled)
   return (
-    <SecondaryBtn size="md" disabled>
-      <Clock /> Awaiting Start
-    </SecondaryBtn>
+    // <SecondaryBtn size="md" disabled>
+    //   <Clock /> Awaiting Start
+    // </SecondaryBtn>
+    <PrimaryBtn size="md" onClick={() => onAction({ type: "resume", activity, retainerPage, retainer, onRetainerUpdate })}>
+      <PlayCircle /> Resume Activity
+    </PrimaryBtn>
   );
 };

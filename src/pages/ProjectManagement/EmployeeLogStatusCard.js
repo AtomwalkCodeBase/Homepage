@@ -369,6 +369,7 @@ const EmployeeLogStatusCard = () => {
         setInitialLoading(true);
 
         const data = await fetchAllocation({
+          emp_id: localStorage.getItem("empId"),
           start_date: typeof dateRange.start === 'string' ? dateRange.start : formatToDDMMYYYY(dateRange.start),
           end_date: typeof dateRange.end === 'string' ? dateRange.end : formatToDDMMYYYY(dateRange.end),
         });
@@ -576,7 +577,7 @@ const EmployeeLogStatusCard = () => {
       setShowCustomRange(true);
       // Keep current range or reset? Usually clear or keep.
       // Let's set to month range as default for custom
-      const { start, end } = getMonthRange("current");
+      const { start, end } = getMonthRange();
       setDateRange({ start, end });
     }
   };

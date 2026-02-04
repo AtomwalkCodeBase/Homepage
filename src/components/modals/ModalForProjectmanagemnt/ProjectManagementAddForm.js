@@ -156,6 +156,12 @@ const TextArea = styled.textarea`
   font-family: inherit;
   font-size: 0.95rem;
 
+    &:disabled {
+     opacity: 0.5;
+     cursor: not-allowed;
+     transform: none;
+   }
+
   &:focus {
     outline: none;
     border-color: ${props => props.theme.colors.primary};
@@ -281,6 +287,12 @@ const FileUploadHint = styled.div`
 
 const FileInput = styled.input`
   display: none;
+
+    &:disabled {
+     opacity: 0.5;
+     cursor: not-allowed;
+     transform: none;
+   }
 `;
 
 const UploadedFile = styled.div`
@@ -422,7 +434,7 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
 
   // console.log("formData", formData)
   // console.log("allRetainers", allRetainers)
-  // console.log("activity", activity)
+  console.log("activity", activity)
   // console.log("retainerCache", retainerCache)
 
   const yesterday = getYesterday()
@@ -436,6 +448,10 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
   const forcedDate = modalContext?.forcedDate;
   const isExecutive = profile.grade_level < 100;
 
+  const isRetainerUpdate = modalContext?.type === "update_retainer";
+
+  // console.log("profile.grade_level", profile.grade_level > 100)
+
   // const getIncompleteEmployees = (data = {}) =>
   // Object.entries(data)
   //   .filter(([_, value]) => value?.allocation?.complete === false)
@@ -444,22 +460,55 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
   //     employee_name: value?.allocation?.original_P?.employee_name || ""
   //   }));
 
-  const getIncompleteEmployees = (data = {}) =>
-  Object.entries(data)
-    .filter(([_, value]) => value?.allocations?.some(allocation => allocation.complete === false))
-    .map(([empId, value]) => {
-      const firstIncomplete = value.allocations.find( a => a.complete === false);
+  // const getIncompleteEmployees = (data = {}) =>
+  // Object.entries(data)
+  //   .filter(([_, value]) => value?.allocations?.some(allocation => allocation.complete === false))
+  //   .map(([empId, value]) => {
+  //     const firstIncomplete = value.allocations.find( a => a.complete === false);
+  //     return {
+  //       emp_id: empId,
+  //       employee_name: firstIncomplete?.original_P?.employee_name || ""
+  //     };
+  //   });
+
+  const getIncompleteEmployees = (data = {}, activity = {}) => {
+  if (!activity || !activity.original_P) return [];
+
+  // 1️⃣ Get all retainer P a_ids from activity
+  const retainerPIds = (activity.original_P.retainer_list || []).filter(r => r.a_type === "P").map(r => r.a_id);
+
+  if (retainerPIds.length === 0) return [];
+
+  const activityOrderItemId = activity.order_item_id;
+
+  // 2️⃣ Loop employees in data
+  return Object.entries(data).map(([empId, empData]) => {
+      const allocations = empData.allocations || [];
+
+      // 3️⃣ Find matching incomplete allocation
+      const matchedAllocation = allocations.find(a =>
+        a.order_item_id === activityOrderItemId &&
+        retainerPIds.includes(a.p_id) &&
+        a.complete === false
+      );
+
+      if (!matchedAllocation) return null;
+
+      // 4️⃣ Return employee info
       return {
         emp_id: empId,
-        employee_name: firstIncomplete?.original_P?.employee_name || ""
+        employee_name: matchedAllocation.original_P?.employee_name || "",
+        matchedAllocation: matchedAllocation,
       };
-    });
+    })
+    .filter(Boolean); // remove nulls
+};
 
+  const incompleteEmployees = getIncompleteEmployees(retainerCache, activity);
 
-  const incompleteEmployees = getIncompleteEmployees(retainerCache);
-
-  console.log("incompleteEmployees",incompleteEmployees);
-  console.log("retainerCache",JSON.stringify(retainerCache));
+  // console.log("incompleteEmployees",incompleteEmployees);
+  // console.log("retainerCache",retainerCache);
+  // console.log("retainerCache",JSON.stringify(retainerCache));
 
   const activeDate = forcedDate
     ? forcedDate
@@ -496,7 +545,7 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
         date: activeDate,
         endTime: currentTime,
         noOfResources: activity?.retainerData?.no_resource,
-        noOfItems: activity?.original_P?.no_of_items ? activity?.original_P?.no_of_items : 0,
+        noOfItems: 0,
         remarks: "",
       })
     }
@@ -539,18 +588,34 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
       extraFields.no_of_resources = Number(formData.noOfResources)
     }
 
-    const success = await onActivitySubmit({
+    let success;
+    if(isRetainerUpdate){
+      success = await onActivitySubmit({
       project: activity,
-      mode: "UPDATE",
+      mode: "DATA_CORRECT",
       data: {
         activityDate: activeAPIDate,
-        endTime: formData.endTime,
+        // endTime: formData.endTime,
         noOfItems: isZeroItems ? 0 : Number(formData.noOfItems),
-        remarks: formData.remarks.trim() || "",
-        file: formData.file
+        // remarks: formData.remarks.trim() || "",
+        // file: formData.file
       },
       extraFields
     })
+    }else{
+      success = await onActivitySubmit({
+        project: activity,
+        mode: "UPDATE",
+        data: {
+          activityDate: activeAPIDate,
+          endTime: formData.endTime,
+          noOfItems: isZeroItems ? 0 : Number(formData.noOfItems),
+          remarks: formData.remarks.trim() || "",
+          file: formData.file
+        },
+        extraFields
+      })
+    }
 
     if (success) {
       onSubmit?.();
@@ -632,7 +697,7 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
                 type="date" 
                 value={formData.date} 
                 onChange={(e) => handleChange("date", e.target.value)} 
-                disabled={isExecutive} 
+                disabled={isExecutive || isRetainerUpdate} 
               />
             </FormGroup>
 
@@ -641,7 +706,7 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
               <Input
                 type="time"
                 value={formData.endTime}
-                disabled={isExecutive}
+                disabled={isExecutive || isRetainerUpdate}
                 onChange={(e) => handleChange("endTime", e.target.value)}
               />
             </FormGroup>
@@ -681,6 +746,7 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
               value={formData.remarks}
               onChange={e => handleChange('remarks', e.target.value)}
               placeholder="Add any notes..."
+              disabled={isRetainerUpdate}
             />
           </FormGroup>
 
@@ -698,6 +764,7 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
           onChange={handleFileChange} 
           accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.ppt,.pptx" 
           required={activity.original_P.is_file_applicable} 
+          disabled={isRetainerUpdate}
         />
         <FileUploadContent>
           <FileUploadIcon>

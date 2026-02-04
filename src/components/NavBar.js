@@ -102,7 +102,8 @@ export const NavBar = () => {
     "samplestatus",
     "/equipmentBooking",
     "/upload",
-    "/inventoryUpdate"
+    "/inventoryUpdate",
+    "/expense-list",
   ];
 
   useEffect(() => {

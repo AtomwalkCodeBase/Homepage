@@ -223,15 +223,9 @@ const RetainerCard = ({ retainer, onAction, retainerCache, onRetainerUpdate }) =
 
   const employeeData = retainerCache?.[retainer.emp_id];
 
-// const allocation = useMemo(() => {
-//   return employeeData?.allocations?.find(a => a.p_id === retainer.a_id);
-// }, [employeeData, retainer.a_id]);
-
-  const allocation = useMemo(() => {
-    return employeeData?.allocations?.find(
-      a => a.p_id === retainer.a_id
-    );
-  }, [employeeData, retainer.a_id]);
+const allocation = useMemo(() => {
+  return employeeData?.allocations?.find(a => a.p_id === retainer.a_id);
+}, [employeeData, retainer.a_id]);
 
   // Get initials for avatar
   const getInitials = (name) => {

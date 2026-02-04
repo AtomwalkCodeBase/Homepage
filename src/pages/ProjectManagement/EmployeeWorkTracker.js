@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FaChevronDown, FaChevronRight, FaEye, FaCheck, FaTimes } from 'react-icons/fa';
+import { FaChevronDown, FaChevronRight, FaEye, FaCheck, FaTimes, FaFileExport } from 'react-icons/fa';
 import Badge from '../../components/Badge';
 import Button from '../../components/Button';
 import { formatAPITime, getStatusLabelVariant } from './utils/utils';
@@ -8,6 +8,7 @@ import ConfirmationPopup from '../../components/modals/ConfirmationPopup';
 import { processTimesheetApproval } from '../../services/productServices';
 import { toast } from 'react-toastify';
 import { useTheme } from '../../context/ThemeContext';
+import { useExport } from '../../context/ExportContext';
 
 const Header = styled.h1`
   color: ${({ theme }) => theme.colors.text};
@@ -196,100 +197,68 @@ const ResponsiveCell = styled(TableCell)`
   }
 `;
 
-// Dummy Data
-const dummyData = [
-  {
-    emp_id: "E001",
-    employee_name: "Rahul Kumar",
-    customers: [
-      {
-        customer_name: "TCS",
-        order_items: [
-          {
-            order_item_id: 101,
-            order_item_key: "OI-101",
-            audit_type: "Statutory Audit",
-            location: "Warehouse B, Zone 4",
-            planned_start_date: "Oct 24, 2023",
-            planned_end_date: "Oct 26, 2023",
-            planned_start_time: "09:00 AM",
-            planned_end_time: "05:00 PM",
-            actual_start_date: "Oct 24, 2023",
-            actual_end_date: "Oct 26, 2023",
-            status: "PENDING"
-          },
-          {
-            order_item_id: 102,
-            order_item_key: "OI-102",
-            audit_type: "Tax Audit",
-            location: "Delhi Office",
-            planned_start_date: "Oct 20, 2023",
-            planned_end_date: "Oct 28, 2023",
-            planned_start_time: "09:00 AM",
-            planned_end_time: "05:00 PM",
-            actual_start_date: "Oct 20, 2023",
-            actual_end_date: "Oct 27, 2023",
-            status: "APPROVED"
-          }
-        ]
-      },
-      {
-        customer_name: "Infosys",
-        order_items: [
-          {
-            order_item_id: 103,
-            order_item_key: "OI-103",
-            audit_type: "Internal Audit",
-            location: "Bangalore Office",
-            planned_start_date: "Oct 15, 2023",
-            planned_end_date: "Oct 25, 2023",
-            planned_start_time: "10:00 AM",
-            planned_end_time: "06:00 PM",
-            actual_start_date: "Oct 15, 2023",
-            actual_end_date: "Oct 24, 2023",
-            status: "PENDING"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    emp_id: "E002",
-    employee_name: "Priya Sharma",
-    customers: [
-      {
-        customer_name: "Wipro",
-        order_items: [
-          {
-            order_item_id: 104,
-            order_item_key: "OI-104",
-            audit_type: "Compliance Audit",
-            location: "Pune Office",
-            planned_start_date: "Oct 18, 2023",
-            planned_end_date: "Oct 27, 2023",
-            planned_start_time: "09:30 AM",
-            planned_end_time: "05:30 PM",
-            actual_start_date: "Oct 18, 2023",
-            actual_end_date: "Oct 26, 2023",
-            status: "PENDING"
-          }
-        ]
-      }
-    ]
-  }
-];
+const FilterSelect = styled.select`
+  padding: 0.5rem 1rem;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 4px;
+  background: white;
+`
+const FilterContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  color: ${({ theme }) => theme.colors.text};
+`
 
 // Main Component
 const EmployeeWorkTracker = ({ data, onViewItem, handleApproveWeekly }) => {
   const {theme} = useTheme();
+   const { exportEmployeeAuditData } = useExport()
   const [expandedEmployees, setExpandedEmployees] = useState({});
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [confirmType, setConfirmType] = useState(null); // 'APPROVE' or 'REJECT'
   const [isLoading, setIsLoading] = useState(false);
-  const demo = data || dummyData;
 
-  console.log("demo", demo)
+   // --- Filtering State ---
+    const [filterCustomer, setFilterCustomer] = useState("");
+    const [filterEmployee, setFilterEmployee] = useState("");
+  
+    // Derived Options for Filters
+    const uniqueCustomers = Array.from(new Set(
+      data.flatMap(emp => emp.customers.map(c => c.customer_name))
+    )).sort();
+  
+    const uniqueEmployees = Array.from(new Set(
+      data.map(emp => JSON.stringify({ name: emp.employee_name, id: emp.emp_id }))
+    )).map(s => JSON.parse(s)).sort((a, b) => a.name.localeCompare(b.name));
+  
+    // Filtered Data Logic
+    const filteredDemoData = data.filter(employee => {
+      // 1. Employee Filter
+      if (filterEmployee && employee.emp_id !== filterEmployee) return false;
+  
+      // 2. Customer Filter (Primary Validations)
+      // If a customer is selected, the employee MUST have that customer.
+      if (filterCustomer) {
+        const hasCustomer = employee.customers.some(c => c.customer_name === filterCustomer);
+        if (!hasCustomer) return false;
+      }
+      return true;
+    }).map(employee => {
+      // 3. Deep Filter: If a customer is selected, only show THAT customer's data for this employee.
+      if (filterCustomer) {
+        return {
+          ...employee,
+          customers: employee.customers.filter(c => c.customer_name === filterCustomer)
+        };
+      }
+      return employee;
+    });
+  
+
+  console.log("demo", data)
 
   const toggleEmployee = (empId) => {
     setExpandedEmployees(prev => ({
@@ -360,11 +329,79 @@ const EmployeeWorkTracker = ({ data, onViewItem, handleApproveWeekly }) => {
   //   }
   // };
 
+  const buildAuditExportData = (employees = []) => {
+  const rows = [];
+
+  employees.forEach((employee) => {
+    const { emp_id, employee_name, customers = [] } = employee;
+
+    customers.forEach((customer) => {
+      const { order_items = [] } = customer;
+
+      order_items.forEach((item) => {
+        rows.push({
+          customer_name: item.customer_name || "",
+          audit_type: item.audit_type || "",
+          order_item_key: item.order_item_key || "",
+          employee_name,
+          employee_id: emp_id,
+          planned_start_date: item.planned_start_date || "",
+          planned_end_date: item.planned_end_date || "",
+          planned_start_time: item.planned_start_time || "",
+          planned_end_time: item.planned_end_time || "",
+          actual_start_date: item.actual_start_date || "",
+          actual_end_date: item.actual_end_date || "",
+          planned_no_of_items: item.audit_item_no_planned ?? "",
+          actual_no_of_items: item.audit_item_no_actual ?? "",
+          remarks: item.remarks || "",
+        });
+      });
+    });
+  });
+
+  return rows;
+};
+
+
+  const handleAuditExport = (flattenedData) => {
+    const transformData = buildAuditExportData(flattenedData)
+  const result = exportEmployeeAuditData(transformData, "Audit_Report");
+
+  if (result.success) {
+    toast.success("Exported successfully");
+  } else {
+    toast.error("Export failed: " + result.message);
+  }
+};
 
 
   return (
     <>
       <Header>Employee Tracker</Header>
+              {/* <> */}
+                <FilterContainer>
+                <FilterSelect
+                  value={filterCustomer}
+                  onChange={(e) => setFilterCustomer(e.target.value)}
+                >
+                  <option value="">All Customers</option>
+                  {uniqueCustomers.map(c => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </FilterSelect>
+
+                <FilterSelect
+                  value={filterEmployee}
+                  onChange={(e) => setFilterEmployee(e.target.value)}
+                >
+                  <option value="">All Employees</option>
+                  {uniqueEmployees.map(e => (
+                    <option key={e.id} value={e.id}>{e.name}</option>
+                  ))}
+                </FilterSelect>
+                </FilterContainer>
+              {/* </>
+            } */}
 
       <TableContainer>
         <Table>
@@ -378,7 +415,11 @@ const EmployeeWorkTracker = ({ data, onViewItem, handleApproveWeekly }) => {
             </TableRow>
           </TableHead>
           <tbody>
-            {demo.map((employee) => {
+           {filteredDemoData.length === 0 ? 
+           <tr>
+             <td colSpan={5} style={{ textAlign: "center", padding: "1rem" }}>No data found</td> 
+           </tr> :
+           (filteredDemoData.map((employee) => {
               const isExpanded = expandedEmployees[employee.emp_id];
 
               return (
@@ -510,10 +551,17 @@ const EmployeeWorkTracker = ({ data, onViewItem, handleApproveWeekly }) => {
                   )}
                 </React.Fragment>
               );
-            })}
+            }))}
           </tbody>
         </Table>
       </TableContainer>
+       {filteredDemoData.length !== 0 &&
+                                <div style={{ marginTop: "1rem", textAlign: "right" }}>
+                                  <Button variant="primary" size="sm" onClick={() => handleAuditExport(filteredDemoData)}>
+                                    <FaFileExport /> Export
+                                  </Button>
+                                </div>
+                              }
 {/* 
       <ConfirmationPopup
         isOpen={confirmModalOpen}

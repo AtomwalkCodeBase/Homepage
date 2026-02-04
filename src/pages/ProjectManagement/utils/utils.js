@@ -56,27 +56,32 @@ const parseISO = (iso) => {
 }
 
 //this below function formate date in this way 👉 "18 Jan – 24 Jan, 2026"
-export const formatWeekLabel = (startISO, endISO) => {
-  const start = parseISO(startISO)
-  const end = parseISO(endISO)
-  if (!start || !end) return ""
+// export const formatWeekLabel = (startISO, endISO) => {
+//   const start = parseISO(startISO)
+//   const end = parseISO(endISO)
+//   if (!start || !end) return ""
 
-  const startDay = start.getDate()
-  const endDay = end.getDate()
-  const month = MONTH_SHORT_NAMES[start.getMonth()]
-  const year = start.getFullYear()
+//   const startDay = start.getDate()
+//   const endDay = end.getDate()
+//   const month = MONTH_SHORT_NAMES[start.getMonth()]
+//   const year = start.getFullYear()
 
-  return `${startDay} ${month} – ${endDay} ${month}, ${year}`
-}
+//   return `${startDay} ${month} – ${endDay} ${month}, ${year}`
+// }
+
+export const formatWeekLabel = (start, end) => {
+  const s = new Date(start);
+  const e = new Date(end);
+  return `${s.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} – ${e.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`;
+  // → "26 Jan – 1 Feb"
+};
 
 //this below function formate date in this way 👉 "January 2026"
-export const formatMonthLabel = (startISO) => {
-  if (!startISO) return ""
-  const d = parseISO(startISO)
-  if (!d) return ""
-
-  return `${d.toLocaleString("en-US", { month: "long" })} ${d.getFullYear()}`
-}
+export const formatMonthLabel = (start) => {
+  const d = new Date(start);
+  return d.toLocaleString('default', { month: 'long', year: 'numeric' });
+  // → "January 2026"
+};
 
 const isDateInRange = (apiDateStr, startApi, endApi) => {
     const d = parseApiDate(apiDateStr);
@@ -718,53 +723,99 @@ export const getStatusVariant = (status) => {
     return statusMap[key] || "secondary";
 };
 
-export const getMonthRange = ({ type = "current", mode = "month", offset = 0, weekStartsOn = 0 } = {}) => {
-    const today = new Date()
+// export const getMonthRange = ({ type = "current", mode = "month", offset = 0, weekStartsOn = 0 } = {}) => {
+//     const today = new Date()
 
-    let finalOffset = offset
+//     let finalOffset = offset
 
-    if (type === "previous") finalOffset = -1
-    if (type === "next") finalOffset = 1
-    if (type === "current") finalOffset = 0
+//     if (type === "previous") finalOffset = -1
+//     if (type === "next") finalOffset = 1
+//     if (type === "current") finalOffset = 0
 
-    let start, end
+//     let start, end
 
-    // MONTH MODE
-    if (mode === "month") {
-        const year = today.getFullYear()
-        const month = today.getMonth() + finalOffset
+//     // MONTH MODE
+//     if (mode === "month") {
+//         const year = today.getFullYear()
+//         const month = today.getMonth() + finalOffset
 
-        start = new Date(year, month, 1)
-        end = new Date(year, month + 1, 0)
-    }
+//         start = new Date(year, month, 1)
+//         end = new Date(year, month + 1, 0)
+//     }
 
-    // WEEK MODE (Sun–Sat)
-    if (mode === "week") {
-        const currentDay = today.getDay()
-        const diffToStart =
-            (currentDay - offset + 7) % 7
+//     // WEEK MODE (Sun–Sat)
+//     if (mode === "week") {
+//         const currentDay = today.getDay()
+//         const diffToStart =
+//             (currentDay - offset + 7) % 7
 
-        start = new Date(today)
-        start.setDate(
-            today.getDate() - diffToStart + finalOffset * 7
-        )
+//         start = new Date(today)
+//         start.setDate(
+//             today.getDate() - diffToStart + finalOffset * 7
+//         )
 
-        end = new Date(start)
-        end.setDate(start.getDate() + 6)
-    }
+//         end = new Date(start)
+//         end.setDate(start.getDate() + 6)
+//     }
 
-    const formatLocal = (d) => {
-        const yyyy = d.getFullYear()
-        const mm = String(d.getMonth() + 1).padStart(2, "0")
-        const dd = String(d.getDate()).padStart(2, "0")
-        return `${yyyy}-${mm}-${dd}`
-    }
+//     const formatLocal = (d) => {
+//         const yyyy = d.getFullYear()
+//         const mm = String(d.getMonth() + 1).padStart(2, "0")
+//         const dd = String(d.getDate()).padStart(2, "0")
+//         return `${yyyy}-${mm}-${dd}`
+//     }
 
-    return {
-        start: formatLocal(start),
-        end: formatLocal(end)
-    }
-}
+//     return {
+//         start: formatLocal(start),
+//         end: formatLocal(end)
+//     }
+// }
+
+export const getMonthRange = ({ type = "current", mode = "month", offset = 0, weekStartsOn = 0,} = {}) => {
+  const today = new Date();
+
+  let direction = 0;
+  if (type === "previous") direction = -1;
+  if (type === "next") direction = 1;
+  if (type === "current") direction = 0;
+
+  const finalOffset = direction + offset;
+
+  let start = new Date(today);
+  let end = new Date(today);
+
+  if (mode === "month") {
+    // Move to target month
+    start.setMonth(today.getMonth() + finalOffset, 1);
+    end.setMonth(today.getMonth() + finalOffset + 1, 0); // last day of that month
+  } 
+  else if (mode === "week") {
+    const currentDay = today.getDay();
+    // How many days to subtract to reach the start of the week
+    const diffToWeekStart = (currentDay - weekStartsOn + 7) % 7;
+
+    // Go to start of current week, then apply offset
+    start.setDate(today.getDate() - diffToWeekStart + finalOffset * 7);
+    
+    end = new Date(start);
+    end.setDate(start.getDate() + 6);
+  } 
+  else {
+    throw new Error(`Unsupported mode: "${mode}". Use "month" or "week".`);
+  }
+
+  const format = (date) => {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  };
+
+  return {
+    start: format(start),
+    end: format(end),
+  };
+};
 
 export const getCurrentDateTimeDefaults = () => {
   const now = new Date()

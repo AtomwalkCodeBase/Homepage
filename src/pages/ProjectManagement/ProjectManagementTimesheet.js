@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import Card from '../../components/Card';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/Button';
-import { FaChevronDown, FaChevronRight, FaEye, FaFilter, FaProjectDiagram, FaUsers, FaCheck, FaTimes, FaFileAlt, FaCheckCircle, FaClock, FaChevronLeft } from 'react-icons/fa';
-import { MdAccessTime } from "react-icons/md";
+import { FaChevronDown, FaChevronRight, FaEye, FaFilter, FaProjectDiagram, FaUsers, FaCheck, FaTimes, FaFileAlt, FaCheckCircle, FaClock, FaChevronLeft, FaFileExport } from 'react-icons/fa';
+import { MdAccessTime, MdFilterAltOff } from "react-icons/md";
 import ProjectDetailsModal from '../../components/modals/ModalForProjectmanagemnt/ProjectDetailsModal';
 import ProjectModal from '../../components/modals/ProjectModal';
 import AssignUserModal from '../../components/modals/AssignUserModal';
@@ -20,6 +20,7 @@ import EmployeeWorkTracker from './EmployeeWorkTracker';
 import EmployeeWiseTSView from '../../components/modals/ModalForProjectmanagemnt/EmployeeWiseTSView';
 import ConfirmationPopup from '../../components/modals/ConfirmationPopup';
 import ConfirmPopup from '../../components/modals/ConfirmPopup';
+import { useExport } from '../../context/ExportContext';
 
 const DashboardContainer = styled.div`
   padding: ${({ theme }) => theme.spacing.xs};
@@ -351,6 +352,7 @@ const MonthText = styled.h3`
 
 const ProjectManagementTimesheet = () => {
   const { theme } = useTheme();
+  const { exportEmployeeAuditData } = useExport()
   const { profile, companyInfo } = useAuth();
   const isAPMManager = profile?.is_manager && companyInfo?.business_type === 'APM';
   const [activeTab, setActiveTab] = useState("activeProject");
@@ -362,9 +364,7 @@ const ProjectManagementTimesheet = () => {
   const [showEmployeeDetailsModal, setShowEmployeeDetailsModal] = useState(false)
   const [timePeriod, setTimePeriod] = useState("week")
   const [offset, setOffset] = useState(0)
-  const [dateRange, setDateRange] = useState(() =>
-    getMonthRange({ mode: "week", offset: 0 })
-  )
+const [dateRange, setDateRange] = useState(() => getMonthRange());
   const [showModal, setShowModal] = useState(true);
 
   const [originalData, setOriginalData] = useState([]);
@@ -424,6 +424,7 @@ const ProjectManagementTimesheet = () => {
     return employee;
   });
 
+  // console.log("filteredDemoData", JSON.stringify(filteredDemoData[0]))
   // --- Modal State ---
   const [selectedSessionItem, setSelectedSessionItem] = useState(null);
   const [sessionDayLogStatuses, setSessionDayLogStatuses] = useState({});
@@ -533,6 +534,7 @@ const ProjectManagementTimesheet = () => {
       start_date: formatToDDMMYYYY(start),
       end_date: formatToDDMMYYYY(end),
     }
+    setIsLoading(true)
     try {
       const res = await getEmpAllocationData(payload);
 
@@ -556,8 +558,8 @@ const ProjectManagementTimesheet = () => {
         });
         // console.log("projectsData", (projectsData))
         // console.log("employeeData", (employeeData))
-        console.log("rawNormalizedData", JSON.stringify(res?.data))
-        console.log("mapEmployeeCustomerOrderItemData", (data))
+        // console.log("rawNormalizedData", JSON.stringify(res?.data))
+        console.log("mapEmployeeCustomerOrderItemData", data)
         setDemo(data)
         setProjectsData(projectsData)
         setEmployeeData(employeeData)
@@ -570,6 +572,8 @@ const ProjectManagementTimesheet = () => {
       console.error("Error fetching allocation data:", error);
       setProjectsData([]);
       setEmployeeData([]);
+    }finally{
+      setIsLoading(false)
     }
   };
 
@@ -593,8 +597,10 @@ const ProjectManagementTimesheet = () => {
     try {
       const payload = {
         emp_id: selectedItem.employee.emp_id,
-        start_date: selectedItem.orderItem.planned_start_date, // Assuming format matches or is handled by backend
-        end_date: selectedItem.orderItem.planned_end_date,
+        start_date: selectedItem.orderItem.actual_start_date, // Assuming format matches or is handled by backend
+        // start_date: dateRange.start, // Assuming format matches or is handled by backend
+        end_date: selectedItem.orderItem.actual_end_date,
+        // end_date: dateRange.end,
         call_mode: confirmType,
         a_emp_id: approverId,
       };
@@ -669,34 +675,86 @@ const ProjectManagementTimesheet = () => {
     ]
     : [];
 
-  const resolveRange = (period, offset) => {
+  const getRangeParams = (period, off) => {
+    if (period === "custom") return null;
+
     if (period === "week") {
-      return getMonthRange({ mode: "week", offset })
+      return { mode: "week", offset: off };
     }
 
     if (period === "month") {
-      return getMonthRange({ mode: "month", offset })
+      let type = "current";
+      if (off > 0) type = "next";
+      if (off < 0) type = "previous";
+      // we ignore fractional offset for month – just use direction
+      return { type, mode: "month", offset: 0 };
     }
 
-    return null
-  }
+    return null;
+  };
 
 
   const handlePeriodChange = (value) => {
-    setTimePeriod(value)
-    setOffset(0)
-  }
+    setTimePeriod(value);
+    setOffset(0);           // ← reset to current when changing mode (recommended UX)
+  };
 
   useEffect(() => {
-    if (timePeriod === "custom") return
+    if (timePeriod === "custom") return;
 
-    const range = resolveRange(timePeriod, offset)
-    if (!range) return
+    const params = getRangeParams(timePeriod, offset);
+    if (!params) return;
 
-    setDateRange(range)
-    fetchEmpAllocation(range.start, range.end)
+    const range = getMonthRange(params);
+    setDateRange(range);
+    fetchEmpAllocation(range.start, range.end);
+  }, [timePeriod, offset]);
 
-  }, [timePeriod, offset])
+  const buildAuditExportData = (employees = []) => {
+  const rows = [];
+
+  employees.forEach((employee) => {
+    const { emp_id, employee_name, customers = [] } = employee;
+
+    customers.forEach((customer) => {
+      const { order_items = [] } = customer;
+
+      order_items.forEach((item) => {
+        rows.push({
+          customer_name: item.customer_name || "",
+          audit_type: item.audit_type || "",
+          order_item_key: item.order_item_key || "",
+          employee_name,
+          employee_id: emp_id,
+          planned_start_date: item.planned_start_date || "",
+          planned_end_date: item.planned_end_date || "",
+          planned_start_time: item.planned_start_time || "",
+          planned_end_time: item.planned_end_time || "",
+          actual_start_date: item.actual_start_date || "",
+          actual_end_date: item.actual_end_date || "",
+          planned_no_of_items: item.audit_item_no_planned ?? "",
+          actual_no_of_items: item.audit_item_no_actual ?? "",
+          remarks: item.remarks || "",
+        });
+      });
+    });
+  });
+
+  return rows;
+};
+
+
+  const handleAuditExport = (flattenedData) => {
+    const transformData = buildAuditExportData(flattenedData)
+  const result = exportEmployeeAuditData(transformData, "Audit_Report");
+
+  if (result.success) {
+    toast.success("Exported successfully");
+  } else {
+    toast.error("Export failed: " + result.message);
+  }
+};
+
 
   return (
     <Layout title="Project Management Timesheet">
@@ -735,9 +793,9 @@ const ProjectManagementTimesheet = () => {
           </TabContainer>
 
           <FilterContainer>
-            {activeTab === "demo" &&
+            {/* {activeTab === "demo" &&
               <>
-                {/* <FilterContainer> */}
+                <FilterContainer>
                 <FilterSelect
                   value={filterCustomer}
                   onChange={(e) => setFilterCustomer(e.target.value)}
@@ -757,11 +815,11 @@ const ProjectManagementTimesheet = () => {
                     <option key={e.id} value={e.id}>{e.name}</option>
                   ))}
                 </FilterSelect>
-                {/* </FilterContainer> */}
+                </FilterContainer>
               </>
-            }
+            } */}
 
-            <FilterSelect name="timePeriod" value={timePeriod} onChange={(e) => { handlePeriodChange(e.target.value) }}>
+            <FilterSelect name="timePeriod" value={timePeriod} onChange={(e) => handlePeriodChange(e.target.value) }>
               {/* <option value="current_month">Current Month</option>
               <option value="previous_month">Previous Month</option>
               <option value="next_month">Next Month</option> */}
@@ -787,6 +845,14 @@ const ProjectManagementTimesheet = () => {
                 </Button>
               </>
             }
+            <Button variant="outline" size="sm" onClick={() => {
+                                setTimePeriod("week");
+                                setOffset(0);
+                                setDateRange(getMonthRange());
+                                fetchEmpAllocation()
+                              }}>
+                                <MdFilterAltOff /> Clear Filter
+                              </Button>
 
           </FilterContainer>
 
@@ -897,10 +963,21 @@ const ProjectManagementTimesheet = () => {
                   ))}
                 </FilterSelect>
               </FilterContainer> */}
-              <>
-                <EmployeeWorkTracker data={filteredDemoData} onViewItem={handleViewSession} handleApproveWeekly={handleApproveWeekly} />
+              {/* <> */}
+                {isLoading ? <EmptyState>Loading Data...</EmptyState> :  
+                      <>
+                        <EmployeeWorkTracker data={demo} onViewItem={handleViewSession} handleApproveWeekly={handleApproveWeekly} />
+                        {/* {filteredDemoData.length !== 0 &&
+                          <div style={{ marginTop: "1rem", textAlign: "right" }}>
+                            <Button variant="primary" size="sm" onClick={() => handleAuditExport(filteredDemoData)}>
+                              <FaFileExport /> Export
+                            </Button>
+                          </div>
+                        } */}
+                      </>
+                    }
               </>
-            </>
+            // </>
 
           )
           }

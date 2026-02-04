@@ -217,10 +217,7 @@ const ProjectManagementTimesheetEmployee = () => {
 
   // console.log(dayFilter)
 
-  const [dateRange, setDateRange] = useState(() => {
-    const { start, end } = getMonthRange("current")
-    return { start, end }
-  })
+const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current" }));
 
   const emp_id = localStorage.getItem('empId');
   const urlParams = new URLSearchParams(window.location.search)
@@ -277,14 +274,14 @@ const ProjectManagementTimesheetEmployee = () => {
     }
 
     if (isAddMode && !project?.original_P?.id) {
-      toast.error("Unable to start this activity")
+      toast.error("Unable to start this activity. Something went wrong try again later !!! ")
       return false
     }
 
-    if (!isAddMode && !project?.original_A?.id) {
-      toast.error("Unable to complete this activity")
-      return false
-    }
+    // if (!isAddMode && !project?.original_A?.id) {
+    //   toast.error("Unable to complete this activity. Activity did not start yet !!!")
+    //   return false
+    // }
 
     // if (!isAddMode && !data.endTime) {
     //   toast.error("End time is required")
@@ -304,6 +301,11 @@ const ProjectManagementTimesheetEmployee = () => {
       formData.append("remarks", data.remarks ?? (isAddMode ? "Project Started from Web" : ""))
       formData.append("longitude_id", "")
       formData.append("latitude_id", "")
+
+      if(mode === "DATA_CORRECT"){
+        formData.append("no_of_items", Number(data.noOfItems || 0));
+        formData.append("geo_type", "O");
+      }
 
       if (data.file) {
         formData.append("submitted_file", data.file)
@@ -418,6 +420,10 @@ const ProjectManagementTimesheetEmployee = () => {
       modal: true,
       modalContext: { type: "continue" }
     },
+    update_retainer: {
+      modal: true,
+      modalContext: { type: "update_retainer" }
+    },
 
     complete: {
       modal: true,
@@ -461,12 +467,9 @@ const ProjectManagementTimesheetEmployee = () => {
           if (success) {
             await refreshActivities(); // This does everything
           }
-          // if (onRetainerUpdate && retainer) {
-          //   onRetainerUpdate(retainer);
-          // }
           if (onRetainerUpdate && retainer) {
-  await onRetainerUpdate(retainer.emp_id);
-}
+            onRetainerUpdate(retainer);
+          }
           setConfirmPopup(prev => ({ ...prev, isOpen: false }));
         }
       });
@@ -585,76 +588,42 @@ const ProjectManagementTimesheetEmployee = () => {
     return [...new Set(allRetainers.map(r => r.emp_id))];
   }, [allRetainers]);
 
-  // const fetchAllRetainerAllocationData = async () => {
-  //   if (uniqueEmpIds.length === 0) return;
+  const fetchAllRetainerAllocationData = async () => {
+    if (uniqueEmpIds.length === 0) return;
 
-  //   const missingEmpIds = uniqueEmpIds.filter(empId => !globalRetainerCache[empId]);
+    const missingEmpIds = uniqueEmpIds.filter(empId => !globalRetainerCache[empId]);
 
-  //   if (missingEmpIds.length === 0) return;
+    if (missingEmpIds.length === 0) return;
 
-  //   setIsGlobalRetainerLoading(true);
-  //   const promises = missingEmpIds.map(async (empId) => {
-  //     // if (globalRetainerCache[empId]) return;
+    setIsGlobalRetainerLoading(true);
+    const promises = missingEmpIds.map(async (empId) => {
+      // if (globalRetainerCache[empId]) return;
 
-  //     const payload = {
-  //       emp_id: empId,
-  //       start_date: formatToDDMMYYYY(dateRange.start),
-  //       end_date: formatToDDMMYYYY(dateRange.end),
-  //     };
-  //     try {
-  //       const response = await getEmpAllocationData(payload);
-  //       const normalized = formatRetainerActivities(response.data);
-  //       setGlobalRetainerCache(prev => ({
-  //         ...prev,
-  //         [empId]: { allocations: normalized }
-  //       }));
-  //     } catch (err) {
-  //       console.error(`Failed to load retainer data for emp ${empId}`, err);
-  //     }
-  //   });
-
-  //   await Promise.all(promises);
-  //   setIsGlobalRetainerLoading(false);
-  // };
-  // console.log("GlobalRetainerCache", globalRetainerCache)
-
-  const fetchAllRetainerAllocationData = async (forceEmpId) => {
-  if (uniqueEmpIds.length === 0) return;
-
-  const empIdsToFetch = forceEmpId
-    ? [forceEmpId]
-    : uniqueEmpIds.filter(empId => !globalRetainerCache[empId]);
-
-  if (empIdsToFetch.length === 0) return;
-
-  setIsGlobalRetainerLoading(true);
-
-  await Promise.all(
-    empIdsToFetch.map(async (empId) => {
       const payload = {
         emp_id: empId,
         start_date: formatToDDMMYYYY(dateRange.start),
         end_date: formatToDDMMYYYY(dateRange.end),
       };
+      try {
+        const response = await getEmpAllocationData(payload);
+        const normalized = formatRetainerActivities(response.data);
+        setGlobalRetainerCache(prev => ({
+          ...prev,
+          [empId]: { allocations: normalized }
+        }));
+      } catch (err) {
+        console.error(`Failed to load retainer data for emp ${empId}`, err);
+      }
+    });
 
-      const response = await getEmpAllocationData(payload);
-      const normalized = formatRetainerActivities(response.data);
-
-      setGlobalRetainerCache(prev => ({
-        ...prev,
-        [empId]: {
-          allocations: [...normalized] // 🔥 new reference
-        }
-      }));
-    })
-  );
-
-  setIsGlobalRetainerLoading(false);
-};
+    await Promise.all(promises);
+    setIsGlobalRetainerLoading(false);
+  };
+  // console.log("GlobalRetainerCache", globalRetainerCache)
 
   useEffect(() => {
     // if (activeTab === "retainer") {
-    // if (activeTab !== "retainer") return;
+    if (activeTab !== "retainer") return;
     fetchAllRetainerAllocationData();
     // }
   }, [activeTab, uniqueEmpIds, dateRange]);
@@ -662,7 +631,7 @@ const ProjectManagementTimesheetEmployee = () => {
   const tabs = [
     { key: 'myActivity', label: `My Activity(${filteredActivities?.length})`, },
     ...(totalRetainerCount !== 0 && !empidParam ? [{ key: 'retainer', label: `Assigned retainer(${totalRetainerCount})`, }] : []),
-    // { key: 'emp_attend', label: `Employee Work status`, }
+    { key: 'emp_attend', label: `Employee Work status`, }
   ].filter(Boolean);
 
   return (
@@ -726,10 +695,7 @@ const ProjectManagementTimesheetEmployee = () => {
                     setDayFilter("today");
                     setSelectedStatus("All");
                     setShowCustomRange(false);
-                    setDateRange({
-                      start: getMonthRange("current").start,
-                      end: getMonthRange("current").end
-                    });
+                    setDateRange(getMonthRange({ type: "current" }));
                     fetchEmpAllocationData()
                   }}>
                     <MdFilterAltOff /> Clear Filter
@@ -774,7 +740,7 @@ const ProjectManagementTimesheetEmployee = () => {
               ))
             )
           ) :
-            // activeTab === "emp_attend" ? <EmployeeLogStatusCard /> :
+            activeTab === "emp_attend" ? <EmployeeLogStatusCard /> :
 
               (
                 <>

@@ -257,7 +257,8 @@ export default function Footer2() {
     "ticketList",
     "sampledashboard",
     "samplestatus",
-    "supervisordashboard"
+    "supervisordashboard",
+    "/expense-list",
   ];
 
   useEffect(() => {

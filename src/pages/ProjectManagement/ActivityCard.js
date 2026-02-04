@@ -24,6 +24,7 @@ import Badge from '../../components/Badge';
 import RetainerCard from '../../components/modals/ModalForProjectmanagemnt/RetainerCard';
 import { getEmpAllocationData } from '../../services/productServices';
 import { FiEye, FiUsers } from 'react-icons/fi';
+import { FaRegPenToSquare } from 'react-icons/fa6';
 
 const CardHover = styled.div`
   background: ${({ theme }) => theme.colors?.card || '#fff'};
@@ -331,12 +332,12 @@ const SecondaryBtn = styled(Button)`
 
 export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavigateToRetainer }) => {
   const [isLogsOpen, setIsLogsOpen] = useState(false);
-  const [isRetainerOpen, setIsRetainerOpen] = useState(false);
-  const [retainerDataCache, setRetainerDataCache] = useState({});
-  const [dateRange, setDateRange] = useState(() => {
-    const { start, end } = getMonthRange("current")
-    return { start, end }
-  })
+  // const [isRetainerOpen, setIsRetainerOpen] = useState(false);
+  // const [retainerDataCache, setRetainerDataCache] = useState({});
+  // const [dateRange, setDateRange] = useState(() => {
+  //   const { start, end } = getMonthRange("current")
+  //   return { start, end }
+  // })
   const progress = activity.total_no_of_items || 0;
   const totalEffort = activity.original_P.no_of_items || 0;
 
@@ -349,40 +350,40 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavi
 
   const { todayISO } = getCurrentDateTimeDefaults();
 
-  const fetchEmpAllocationDataForRetainer = async (retainer) => {
-    const payload = {
-      emp_id: retainer.emp_id,
-      start_date: formatToDDMMYYYY(dateRange.start),
-      end_date: formatToDDMMYYYY(dateRange.end),
-    };
+  // const fetchEmpAllocationDataForRetainer = async (retainer) => {
+  //   const payload = {
+  //     emp_id: retainer.emp_id,
+  //     start_date: formatToDDMMYYYY(dateRange.start),
+  //     end_date: formatToDDMMYYYY(dateRange.end),
+  //   };
 
-    try {
-      const response = await getEmpAllocationData(payload);
-      const normalizedAllocation = normalizeProjects(response.data);
-      const matchRetainer = normalizedAllocation.find((allocation) => allocation.p_id === retainer.a_id)
-      setRetainerDataCache(prev => ({ ...prev, [retainer.emp_id]: { retainer, allocation: matchRetainer } }));
-    } catch (error) {
-      console.error("Failed to fetch retainer data", error);
-    }
-  };
+  //   try {
+  //     const response = await getEmpAllocationData(payload);
+  //     const normalizedAllocation = normalizeProjects(response.data);
+  //     const matchRetainer = normalizedAllocation.find((allocation) => allocation.p_id === retainer.a_id)
+  //     setRetainerDataCache(prev => ({ ...prev, [retainer.emp_id]: { retainer, allocation: matchRetainer } }));
+  //   } catch (error) {
+  //     console.error("Failed to fetch retainer data", error);
+  //   }
+  // };
 
-  const fetchAllRetainerData = () => {
-    const retainers = activity.original_P.retainer_list.filter(r => r.a_type === "P");
-    retainers.forEach(retainer => {
-      if (!retainerDataCache[retainer.emp_id]) {
-        fetchEmpAllocationDataForRetainer(retainer);
-      } else {
-        // Always refetch to update data
-        fetchEmpAllocationDataForRetainer(retainer);
-      }
-    });
-  };
+  // const fetchAllRetainerData = () => {
+  //   const retainers = activity.original_P.retainer_list.filter(r => r.a_type === "P");
+  //   retainers.forEach(retainer => {
+  //     if (!retainerDataCache[retainer.emp_id]) {
+  //       fetchEmpAllocationDataForRetainer(retainer);
+  //     } else {
+  //       // Always refetch to update data
+  //       fetchEmpAllocationDataForRetainer(retainer);
+  //     }
+  //   });
+  // };
 
-  useEffect(() => {
-    if (isRetainerOpen) {
-      fetchAllRetainerData();
-    }
-  }, [isRetainerOpen, activity.original_P.retainer_list]);
+  // useEffect(() => {
+  //   if (isRetainerOpen) {
+  //     fetchAllRetainerData();
+  //   }
+  // }, [isRetainerOpen, activity.original_P.retainer_list]);
 
   const isImageFile = (url = "") => /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(url);
 
@@ -468,7 +469,8 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavi
           </Grid>
           {activity.original_P.store_remarks && <Item><Label><PenBox size={14} />Remark</Label><DetailValue>{activity.original_P.store_remarks}</DetailValue></Item>}
 
-          {!totalEffort === 0 && <ProgressBar completed={progress} total={totalEffort} label="Effort Progress" />}
+          {/* {!totalEffort === 0 && <ProgressBar completed={progress} total={totalEffort} label="Effort Progress" />} */}
+          {/* {activity?.original_P?.no_of_items !== 0 && <ProgressBar completed={activity?.original_P?.no_of_items} total={activity?.original_A?.no_of_items || 0} label="Total Item Audited" />} */}
 
         </Info>
 
@@ -648,7 +650,15 @@ export const TodayActionButtons = ({
     }
     if(complete){
       return(
+        <>
         <StatusMessage>Activity is completed for today</StatusMessage>
+        <PrimaryBtn
+          size="md"
+          onClick={() => onAction({ type: "update_retainer", activity, retainerPage, retainer, onRetainerUpdate })}
+        >
+          <FaRegPenToSquare /> Update
+        </PrimaryBtn>
+        </>
       );
     }
 
@@ -672,6 +682,12 @@ export const TodayActionButtons = ({
         >
           <PlayCircle /> Start Activity
         </PrimaryBtn>
+        //  <PrimaryBtn
+        //   size="md"
+        //   onClick={() => onAction({ type: "update_retainer", activity, retainerPage, retainer, onRetainerUpdate })}
+        // >
+        //   <FaRegPenToSquare /> Update
+        // </PrimaryBtn>
       );
     }
 
@@ -681,6 +697,16 @@ export const TodayActionButtons = ({
     // 1. Fully complete
   if (complete) {
     return <StatusMessage>Activity is completed</StatusMessage>;
+    // return (
+    //   <>
+    //     <SuccessBtn size="lg" onClick={() => onAction({ type: "complete", activity, retainerPage, retainer, onRetainerUpdate })}>
+    //       <CheckCircle2 /> Completed
+    //     </SuccessBtn>
+    //     <SecondaryBtn size="sm" onClick={() => onAction({ type: "continue", activity, retainerPage, retainer, onRetainerUpdate })}>
+    //       <PauseCircle /> Pause Activity
+    //     </SecondaryBtn>
+    //   </>
+    // )
   }
 
   // 2. Completed for today
@@ -733,6 +759,14 @@ export const TodayActionButtons = ({
       <PrimaryBtn size="md" onClick={() => onAction({ type: "start", activity, retainerPage, retainer })}>
         <PlayCircle /> Start Activity
       </PrimaryBtn>
+      //  <>
+      //   <SuccessBtn size="sm" onClick={() => onAction({ type: "continue", activity, retainerPage, retainer, onRetainerUpdate })}>
+      //     <PauseCircle /> Pause Activity
+      //   </SuccessBtn>
+      //   <SecondaryBtn size="lg" onClick={() => onAction({ type: "complete", activity, retainerPage, retainer, onRetainerUpdate })}>
+      //     <CheckCircle2 /> Completed
+      //   </SecondaryBtn>
+      // </>
     );
   }
 

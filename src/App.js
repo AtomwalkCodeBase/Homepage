@@ -114,6 +114,7 @@ import LmsDashBoard from "./pages/LabUser/LmsDashBoard";
 import CustomerStatus from "./pages/CustomerStatus";
 import { HelmetProvider } from 'react-helmet-async';
 import SampleDashboard from "./pages/LabUser/SampleDashboard";
+import ExpenseTrackingScreen from "./pages/ProjectManagement/ExpenseTrackingScreen";
 // import SupervisorDashboard from "./pages/fishIndurstry/SupervisorDashboard";
 // import MyAppriaisal from "./pages/MyAppriaisal";
 
@@ -271,7 +272,7 @@ function App() {
                   {/* <Route path="/timesheet" element={<TimeSheetManagement />} /> */}
                   <Route path="/timesheet" element={<TimesheetRouter />} />
                   <Route path="/managers/timesheet/dashboard" element={<ProjectManagementTimesheet />} />
-                  {/* <Route path="/project-management-timesheet" element={<ProjectManagementTimesheet />} /> */}
+                  <Route path="/expense-list" element={<ExpenseTrackingScreen />} />
                   <Route path="/shifts" element={<ShiftScheduling />} />
                   <Route path="/claims" element={<MyClaims />} />
                   <Route path="/appointees" element={<Appointees />} />

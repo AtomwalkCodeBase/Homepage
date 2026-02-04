@@ -541,6 +541,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
           items: [
             { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
             { path: "/timesheet", name: `${companyInfo.business_type === "APM" ? "Dashboard" : "Timesheet"}`, icon: <FaChartBar /> },
+            ...(companyInfo.business_type === "APM" && profile.grade_level > 100 ? [{ path: "/expense-list", name: "Expense Item List", icon: <FaMoneyBillWave /> }] : []),
             ...(companyInfo.business_type === "APM" && profile?.is_manager ? [{ path: "/managers/timesheet/dashboard", name: "Manager Dashboard", icon: <RiDashboardFill /> }] : []),
 
             ...(profile?.is_shift_applicable
@@ -695,6 +696,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
           ...(profile?.is_manager ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : []),
           { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
           { path: "/timesheet", name: `${companyInfo.business_type === "APM" ? (profile?.is_manager) ? "Timesheet" : "Dashboard" : "Timesheet"}`, icon: <FaChartBar /> },
+          ...(companyInfo.business_type === "APM" && profile.grade_level > 100 ? [{ path: "/expense-list", name: "Expense Item List", icon: <FaMoneyBillWave /> }] : []),
           { path: "/leave-management", name: "Leave Management", icon: <FaCalendarAlt /> },
           { path: "/holidays", name: "Holiday Calendar", icon: <FaCalendarCheck /> },
           { path: "/my-training", name: "My Training", icon: <FaGraduationCap /> },

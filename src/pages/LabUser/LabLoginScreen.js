@@ -377,15 +377,14 @@ function App() {
     }));
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
-    console.log('Login attempt:', formData);
+
 
     try {
-      
-      if(formData.userId && formData.password){
+
+      if (formData.userId && formData.password) {
         const userData = {
           username: formData.userId,
           password: formData.password
@@ -394,13 +393,13 @@ function App() {
       }
     } catch (error) {
       toast.error("Invalid credentials. Please try again.")
-      
-    }finally{
+
+    } finally {
       setLoading(false)
     }
 
 
-    
+
     // setTimeout(() => {
     //   alert(`Login attempt with User ID: ${formData.userId}`);
     //   setLoading(false);
@@ -483,8 +482,8 @@ function App() {
 
                 <ForgotPassword>Forgot Password?</ForgotPassword>
 
-                <SubmitButton 
-                  type="button" 
+                <SubmitButton
+                  type="button"
                   onClick={handleSubmit}
                   disabled={loading}
                 >
@@ -492,7 +491,7 @@ function App() {
                 </SubmitButton>
 
                 <FormFooter>
-                  © 2025 Lab Management System. All rights reserved.
+                  © 2026 Lab Management System. All rights reserved.
                 </FormFooter>
               </div>
             </FormContainer>

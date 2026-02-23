@@ -274,7 +274,6 @@ const AllocationModal = ({ sample, isOpen, onClose, onSuccess }) => {
                 setCategories(response.data)
             }
         } catch (error) {
-            console.error("[v0] Error loading categories:", error)
             toast.error("Failed to load categories")
         }
     }
@@ -287,7 +286,6 @@ const AllocationModal = ({ sample, isOpen, onClose, onSuccess }) => {
                 setSelectedProcesses([])
             }
         } catch (error) {
-            console.error("[v0] Error loading processes:", error)
             toast.error("Failed to load processes")
         }
     }
@@ -299,7 +297,6 @@ const AllocationModal = ({ sample, isOpen, onClose, onSuccess }) => {
                 setUsers(response.data)
             }
         } catch (error) {
-            console.error("[v0] Error loading users:", error)
             toast.error("Failed to load users")
         }
     }
@@ -312,6 +309,17 @@ const AllocationModal = ({ sample, isOpen, onClose, onSuccess }) => {
         )
     }
 
+    const validateCurrentProcess = () => {
+        if (!currentProcess) return true
+
+        const allocation = processAllocations[currentProcess.process_id]
+        if (!allocation?.userId || !allocation?.startDate) {
+            toast.error("Please select both user and start date for the current process")
+            return false
+        }
+        return true
+    }
+
     const handleNext = async () => {
         if (step === 1) {
             if (!selectedCategory) {
@@ -319,7 +327,8 @@ const AllocationModal = ({ sample, isOpen, onClose, onSuccess }) => {
                 return
             }
             setStep(2)
-        } else if (step === 2) {
+        }
+        else if (step === 2) {
             if (selectedProcesses.length === 0) {
                 toast.error("Please select at least one process")
                 return
@@ -328,26 +337,24 @@ const AllocationModal = ({ sample, isOpen, onClose, onSuccess }) => {
             setCurrentProcessIndex(0)
             setStep(3)
         }
-    }
+        else if (step === 3) {
+            // Validate current process before moving
+            if (!validateCurrentProcess()) {
+                return
+            }
 
-    const handleProcessAllocation = (processId, userId, startDate) => {
-        if (!userId || !startDate) {
-            toast.error("Please select both user and start date")
-            return
-        }
-        setProcessAllocations((prev) => ({
-            ...prev,
-            [processId]: { userId, startDate },
-        }))
-
-        if (currentProcessIndex < selectedProcesses.length - 1) {
-            setCurrentProcessIndex((prev) => prev + 1)
-        } else {
-            setStep(4)
+            if (currentProcessIndex < selectedProcesses.length - 1) {
+                // Move to next process
+                setCurrentProcessIndex((prev) => prev + 1)
+            } else {
+                // All processes allocated, move to review
+                setStep(4)
+            }
         }
     }
 
     const handleSubmit = async () => {
+        // Validate all allocations before submitting
         if (Object.keys(processAllocations).length !== selectedProcesses.length) {
             toast.error("Please allocate all selected processes")
             return
@@ -384,7 +391,6 @@ const AllocationModal = ({ sample, isOpen, onClose, onSuccess }) => {
                 onSuccess()
             }
         } catch (error) {
-            console.error("[v0] Error allocating sample:", error)
             toast.error("Failed to allocate sample")
         } finally {
             setLoading(false)
@@ -535,20 +541,9 @@ const AllocationModal = ({ sample, isOpen, onClose, onSuccess }) => {
                                 />
                             </FormGroup>
 
-                            <div style={{ marginTop: "16px" }}>
-                                <PrimaryButton
-                                    onClick={() =>
-                                        handleProcessAllocation(
-                                            currentProcess.process_id,
-                                            currentAllocation?.userId,
-                                            currentAllocation?.startDate,
-                                        )
-                                    }
-                                    disabled={!currentAllocation?.userId || !currentAllocation?.startDate}
-                                >
-                                    {currentProcessIndex < selectedProcesses.length - 1 ? "Next Process" : "Review Allocation"}
-                                    <FaChevronRight />
-                                </PrimaryButton>
+                            {/* Progress indicator */}
+                            <div style={{ marginTop: "16px", textAlign: "center", color: "#666", fontSize: "14px" }}>
+                                {currentProcessIndex + 1} of {selectedProcesses.length} processes allocated
                             </div>
                         </FormSection>
                     )}
@@ -594,9 +589,16 @@ const AllocationModal = ({ sample, isOpen, onClose, onSuccess }) => {
                             <FaChevronLeft /> Back
                         </SecondaryButton>
                     )}
+
                     {step < 4 ? (
                         <PrimaryButton onClick={handleNext}>
-                            Next <FaChevronRight />
+                            Next
+                            {step === 3 && currentProcessIndex === selectedProcesses.length - 1
+                                ? " (Review)"
+                                : step === 3
+                                    ? ` (Process ${currentProcessIndex + 1}/${selectedProcesses.length})`
+                                    : ""}
+                            <FaChevronRight />
                         </PrimaryButton>
                     ) : (
                         <PrimaryButton onClick={handleSubmit} disabled={loading}>

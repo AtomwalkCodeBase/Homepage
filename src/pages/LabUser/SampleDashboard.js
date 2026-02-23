@@ -315,26 +315,25 @@ const SampleDashboard = () => {
   const [showViewDetailsModal, setShowViewDetailsModal] = useState(false)
   const [viewDetailsSample, setViewDetailsSample] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [allocate, setAllocate] = useState(false)
   const itemsPerPage = 10
-
-  useEffect(() => {
-    const fetchSamples = async () => {
-      try {
-        setLoading(true)
-        const response = await getSampleData()
-        if (response) {
-          setSamples(response.data)
-          setFilteredSamples(response.data)
-        }
-      } catch (error) {
-        console.error("[v0] Error fetching samples:", error)
-        toast.error("Failed to load samples")
-      } finally {
-        setLoading(false)
+  const fetchSamples = async () => {
+    try {
+      setLoading(true)
+      const response = await getSampleData(allocate)
+      if (response) {
+        setSamples(response.data)
+        setFilteredSamples(response.data)
       }
+    } catch (error) {
+      toast.error("Failed to load samples")
+    } finally {
+      setLoading(false)
     }
+  }
+  useEffect(() => {
     fetchSamples()
-  }, [])
+  }, [allocate])
 
   useEffect(() => {
     let filtered = samples
@@ -351,9 +350,9 @@ const SampleDashboard = () => {
     if (searchTerm) {
       filtered = filtered.filter(
         (sample) =>
-          sample.s_item_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          sample.customer_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          sample.batch_no.toLowerCase().includes(searchTerm.toLowerCase()),
+          sample.s_item_id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          sample.customer_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          sample.batch_no?.toLowerCase().includes(searchTerm.toLowerCase()),
       )
     }
 
@@ -376,6 +375,7 @@ const SampleDashboard = () => {
       setAllocatedSamples((prev) => new Set([...prev, selectedSample.id]))
     }
     setShowAllocationModal(false)
+    fetchSamples()
     toast.success("Sample allocated successfully!")
   }
 
@@ -395,7 +395,7 @@ const SampleDashboard = () => {
     <Layout>
       <DashboardContainer>
         <div>
-          <PageTitle>Activity Dashboard</PageTitle>
+          <PageTitle>Sample Dashboard</PageTitle>
           <PageSubtitle>Manage and allocate samples to lab processes</PageSubtitle>
         </div>
 
@@ -419,26 +419,27 @@ const SampleDashboard = () => {
               <StatValue>{stats.active}</StatValue>
             </StatContent>
           </StatCard>
+          {!allocate && <>
+            <StatCard>
+              <StatIconBox color="linear-gradient(135deg, #FFD600, #FFEA00)">
+                <FaExclamationCircle />
+              </StatIconBox>
+              <StatContent>
+                <StatLabel>Priority Samples</StatLabel>
+                <StatValue>{stats.priority}</StatValue>
+              </StatContent>
+            </StatCard>
 
-          <StatCard>
-            <StatIconBox color="linear-gradient(135deg, #FFD600, #FFEA00)">
-              <FaExclamationCircle />
-            </StatIconBox>
-            <StatContent>
-              <StatLabel>Priority Samples</StatLabel>
-              <StatValue>{stats.priority}</StatValue>
-            </StatContent>
-          </StatCard>
-
-          <StatCard>
-            <StatIconBox color="linear-gradient(135deg, #FF6584, #FF7597)">
-              <FaClock />
-            </StatIconBox>
-            <StatContent>
-              <StatLabel>Pending Allocation</StatLabel>
-              <StatValue>{stats.pending}</StatValue>
-            </StatContent>
-          </StatCard>
+            <StatCard>
+              <StatIconBox color="linear-gradient(135deg, #FF6584, #FF7597)">
+                <FaClock />
+              </StatIconBox>
+              <StatContent>
+                <StatLabel>Pending Allocation</StatLabel>
+                <StatValue>{stats.pending}</StatValue>
+              </StatContent>
+            </StatCard>
+          </>}
         </StatsGridContainer>
 
         <FilterSection>
@@ -449,14 +450,11 @@ const SampleDashboard = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <FilterButton active={activeFilter === "all"} onClick={() => setActiveFilter("all")}>
-            <FaFilter /> All
+          <FilterButton active={!allocate} onClick={() => setAllocate(false)}>
+            <FaFilter /> Unallocated
           </FilterButton>
-          <FilterButton active={activeFilter === "active"} onClick={() => setActiveFilter("active")}>
-            Active
-          </FilterButton>
-          <FilterButton active={activeFilter === "priority"} onClick={() => setActiveFilter("priority")}>
-            Priority
+          <FilterButton active={allocate} onClick={() => setAllocate(true)}>
+            Allocated
           </FilterButton>
         </FilterSection>
 
@@ -494,7 +492,7 @@ const SampleDashboard = () => {
                     return (
                       <tr key={sample.id}>
                         <td>{sample.s_item_id}</td>
-                        <td>{sample.customer_name.substring(0, 20)}...</td>
+                        <td>{sample?.customer_name?.substring(0, 20)}...</td>
                         {/* <td>{sample.batch_no}</td> */}
                         <td>{sample.sample_type}</td>
                         <td>{sample.no_of_qty}</td>
@@ -508,10 +506,11 @@ const SampleDashboard = () => {
                         </td>
                         <td>
                           {sample.is_active && (
-                            sample.sample_status === "A" ? (
-                              <Button size="sm" variant="primary" onClick={() => handleAllocateClick(sample)}><MdAssignmentInd /> Allocate</Button>
-                            ) : (
+                            sample.sample_status === "D" ? (
                               <Button size="sm" variant="outline" onClick={() => handleViewDetails(sample)}><Eye></Eye> Details</Button>
+                            ) : (
+                              <Button size="sm" variant="primary" onClick={() => handleAllocateClick(sample)}><MdAssignmentInd /> Allocate</Button>
+
                             )
                           )}
                         </td>
@@ -521,7 +520,6 @@ const SampleDashboard = () => {
                 </tbody>
               </Table>
             </TableContainer>
-
             <PaginationContainer>
               <PaginationButton onClick={() => setCurrentPage((p) => Math.max(1, p - 1))} disabled={currentPage === 1}>
                 Previous

@@ -262,14 +262,14 @@ export const NavBar = () => {
                       <span role="img" aria-label="HRMS" style={{ marginRight: 8 }}>🛃</span>
                       Login as Customer
                     </LoginOption>
-                    <LoginOption onClick={handleFMSLogin}>
+                    {/* <LoginOption onClick={handleFMSLogin}>
                       <span role="img" aria-label="FMS" style={{ marginRight: 8 }}>👷🏼</span>
                       Login as FMS Manager
-                    </LoginOption>
-                    {/* <LoginOption onClick={handleLabUserLogin}>
+                    </LoginOption> */}
+                    <LoginOption onClick={handleLabUserLogin}>
                       <span role="img" aria-label="FMS" style={{ marginRight: 8 }}>🥼</span>
                       Login as Lab User
-                    </LoginOption> */}
+                    </LoginOption>
                   </LoginDropdownMenu>
                 </LoginDropdownWrapper>
               ) : (

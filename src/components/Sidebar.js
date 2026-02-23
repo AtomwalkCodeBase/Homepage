@@ -746,7 +746,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
               alt="Company Logo"
               style={{ width: "80px", marginRight: "1rem", borderRadius: "10px" }}
             />{" "}
-            {companyInfo.business_type === "APM" ? "PMT" : fmsdata ? "FMS" : "HRMS"}
+            {companyInfo.business_type === "APM" ? "PMT" : fmsdata ? "FMS" : companyInfo.business_type === "LMS" ? "LMS" : "HRMS"}
           </Logo>
         )}
         <ToggleButton onClick={toggleSidebar} uiPreferences={uiPreferences}>

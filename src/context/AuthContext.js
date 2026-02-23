@@ -13,12 +13,12 @@ export const useAuth = () => useContext(AuthContext)
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null)
   const [loading, setLoading] = useState(true)
-  const[profile, setProfile] = useState([])
-  const [companyInfo, setCompanyInfo] = useState([]) 
-   const [error, setError] = useState("")  
-   const iscoustomerLogin = localStorage.getItem("customerUser") ? true : false
-   const usertoake = localStorage.getItem("userToken") 
-   const [taskResponse, setTaskResponse] = useState([]);
+  const [profile, setProfile] = useState([])
+  const [companyInfo, setCompanyInfo] = useState([])
+  const [error, setError] = useState("")
+  const iscoustomerLogin = localStorage.getItem("customerUser") ? true : false
+  const usertoake = localStorage.getItem("userToken")
+  const [taskResponse, setTaskResponse] = useState([]);
   // const navigate = useNavigate()
   useEffect(() => {
     const fetchProfile = async () => {
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
         console.log('Failed to fetch company info:', error);
       }
     };
-     const fetchcustomerProfile = async () => {
+    const fetchcustomerProfile = async () => {
       const custId = localStorage.getItem("custId");
       try {
         const res = await getCustomerDetailList(custId);
@@ -46,16 +46,16 @@ export const AuthProvider = ({ children }) => {
         console.error('Failed to fetch profile:', error);
       }
     };
-    if(iscoustomerLogin){
-     fetchcustomerProfile();
+    if (iscoustomerLogin) {
+      fetchcustomerProfile();
     }
-    else{
-      if(usertoake){
+    else {
+      if (usertoake) {
         fetchProfile();
       }
-      
+
     }
-    
+
     // Check if user is logged in from localStorage
     const user = localStorage.getItem("hrmsUser") || localStorage.getItem("fmsUser") || localStorage.getItem("customerUser") || localStorage.getItem("labUser");
     if (user) {
@@ -69,22 +69,22 @@ export const AuthProvider = ({ children }) => {
       // Determine if the input is a mobile number or emp_id
       const isMobileNumber = /^\d{10}$/.test(userData.mobile); // Assuming mobile numbers are 10 digits
       // const isEmpId = !isMobileNumber; // If it's not a mobile number, treat it as emp_id
-  
+
       const payload = isMobileNumber
         ? {
-            mobile_number: userData.mobile,
-            pin: userData.password,
-          }
+          mobile_number: userData.mobile,
+          pin: userData.password,
+        }
         : {
-            emp_id: userData.mobile, // Using the same field but as emp_id
-            pin: userData.password,
-          };
-  
-      const response = await publicAxiosRequest.post(empLoginURL+`${userData.company}/`, payload, {
+          emp_id: userData.mobile, // Using the same field but as emp_id
+          pin: userData.password,
+        };
+
+      const response = await publicAxiosRequest.post(empLoginURL + `${userData.company}/`, payload, {
         headers: { 'Content-Type': 'application/json' },
       });
-  
-  
+
+
       if (response.status === 200) {
         setError("");
         const { token, emp_id, e_id } = response.data;
@@ -99,7 +99,7 @@ export const AuthProvider = ({ children }) => {
           try {
             const params = new URLSearchParams(window.location.search);
             const product = params.get('product');
-            const hash = (window.location.hash || '').replace('#','');
+            const hash = (window.location.hash || '').replace('#', '');
             return product === 'fms' || hash === 'fms';
           } catch (_) {
             return false;
@@ -129,14 +129,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const labLogin = async (userData) => {
-     try {
+    try {
       const payload = {
         username: userData.username,
         password: userData.password
       }
       const response = await publicAxiosRequest.post(loginURL, payload);
-  
-  
       if (response.status === 200) {
         setError("");
         const { key } = response.data;
@@ -151,34 +149,24 @@ export const AuthProvider = ({ children }) => {
         return true;
       }
     } catch (error) {
-      console.log("Login error:", error.response.data.error);
-      setError(error.response.data.error);
-      toast.error(error.response.data.error);
-      if (error.response && error.response.status === 401) {
-        console.log("Invalid credentials");
-        return false;
-      } else if (error.response && error.response.status === 500) {
-        console.log("Server error");
-        return false;
-      }
-      return false;
+      toast.error("Login failed. Please check your credentials.");
     }
 
   }
- 
+
 
   const logout = () => {
-    if(iscoustomerLogin){
+    if (iscoustomerLogin) {
       localStorage.removeItem("customerToken")
       localStorage.removeItem("custId")
       localStorage.removeItem("customerUser")
       toast.success("Logout successful!");
       window.location.href = "/customer/login.html";
     }
-    if(localStorage.getItem("fmsUser")){
+    if (localStorage.getItem("fmsUser")) {
       window.location.href = "/login/#fms";
     }
-    if(localStorage.getItem("labUser")){
+    if (localStorage.getItem("labUser")) {
       window.location.href = "/LabUser/login.html";
     }
     localStorage.removeItem("labUser")
@@ -190,36 +178,36 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("empNoId")
     setCurrentUser(null)
   }
-const customerlogin = async(userData) => {
-  try{ 
-    const payload = {
-            mobile_number: userData.mobile,
-            pin: userData.password,
-          }
-  
-      const response = await publicAxiosRequest.post(customerslogin +`${userData.company}/`, payload, {
+  const customerlogin = async (userData) => {
+    try {
+      const payload = {
+        mobile_number: userData.mobile,
+        pin: userData.password,
+      }
+
+      const response = await publicAxiosRequest.post(customerslogin + `${userData.company}/`, payload, {
         headers: { 'Content-Type': 'application/json' },
       });
-       if (response.status === 200) {
+      if (response.status === 200) {
         const { token, customer_id } = response.data;
         localStorage.setItem('customerToken', token);
         localStorage.setItem('custId', String(customer_id));
         localStorage.setItem('customerUser', JSON.stringify(userData));
         toast.success("Login successful!");
         window.location.href = "/invoices";
-       }
-   }
-  catch (error) {
+      }
+    }
+    catch (error) {
       console.log("Login error:", error.response.data.error);
       toast.error(error.response.data.error);
-  }
+    }
   }
 
   // this is for FMS Dashboard
-  useEffect(()=>{
-  const fetchTasks = async () => {
-    const emp_id= localStorage.getItem('empId');
-    const manager = profile?.is_manager
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const emp_id = localStorage.getItem('empId');
+      const manager = profile?.is_manager
       try {
         setLoading(true)
         const res = await getTasksList(`${manager ? "ALL_FMS" : "ALL"}`, `${manager ? '' : emp_id}`, '');
@@ -234,11 +222,11 @@ const customerlogin = async(userData) => {
     };
     const userToken = localStorage.getItem('userToken');
     const isFmsUser = localStorage.getItem('fmsUser');
-      
-      if (isFmsUser && profile?.is_manager !== undefined) {
-        fetchTasks();
-      }
-    },[profile?.is_manager])
+
+    if (isFmsUser && profile?.is_manager !== undefined) {
+      fetchTasks();
+    }
+  }, [profile?.is_manager])
   const value = {
     currentUser,
     login,

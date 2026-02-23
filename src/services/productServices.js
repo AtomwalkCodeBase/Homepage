@@ -457,8 +457,14 @@ export function getProcessList(data) {
 
   return authAxios(getlabprocess, payload)
 }
-export function getSampleData() {
-  return authAxios(getlabsample)
+export function getSampleData(allocate) {
+  let data = {};
+  if (allocate) {
+    data = {
+      "status": "D"
+    };
+  }
+  return authAxios(getlabsample, data)
 }
 export function getCategoryList() {
   return authAxios(getProductCategoryListURL)

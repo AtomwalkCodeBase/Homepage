@@ -311,7 +311,7 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
         const res = await postAllocationData(formData);
 
         if (res?.status === 200) {
-          toast.success("Activity force completed");
+          toast.success("Activity completed");
           await fetchEmpAllocationData();
           return true;
         }

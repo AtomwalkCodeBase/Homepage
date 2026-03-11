@@ -1,4 +1,4 @@
-import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext, processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip, processbarthdaywish, getResponseList, forgetPin, getCustomerDetailListURL, userTaskListURL, addCustomerTicketURL, getTaskCategoryURL, getOrderListURL, getEmpShiftData, getAppointeeList, getbookedlist, doctorbooking, getactivityList, getProjectLists, addTimesheet, getTimesheetList, profileDtlURL, processProjectLists, getprojectTimesheetList, getCustomerListURL, getProcessListURL, processProjectList, createaddressURL, equipentTypeListURL, getAvailableRoomslistURL, getActivitylistURL, validateApproveLimit, getMyenrollmentlist, getenrollmentlist, processenrollments, getTravelRequest, getTravelModeList, postTravelRequest, employeeTaskAllocationData, processAllocation, getActivities, projectList, getActivityQc, getBookingListURL, processActivity, getstatus, getSampleEventLists, processSampleEvents, getlabprocess, getlabsample, processsample, getProductCategoryListURL, getUserListURL, getExpensePlannedItemList, processExpensePlannedItemList } from "../services/ConstantServies";
+import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext, processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip, processbarthdaywish, getResponseList, forgetPin, getCustomerDetailListURL, userTaskListURL, addCustomerTicketURL, getTaskCategoryURL, getOrderListURL, getEmpShiftData, getAppointeeList, getbookedlist, doctorbooking, getactivityList, getProjectLists, addTimesheet, getTimesheetList, profileDtlURL, processProjectLists, getprojectTimesheetList, getCustomerListURL, getProcessListURL, processProjectList, createaddressURL, equipentTypeListURL, getAvailableRoomslistURL, getActivitylistURL, validateApproveLimit, getMyenrollmentlist, getenrollmentlist, processenrollments, getTravelRequest, getTravelModeList, postTravelRequest, employeeTaskAllocationData, processAllocation, getActivities, projectList, getActivityQc, getBookingListURL, processActivity, getstatus, getSampleEventLists, processSampleEvents, getlabprocess, getlabsample, processsample, getProductCategoryListURL, getUserListURL, getExpensePlannedItemList, processExpensePlannedItemList, getPoItemList, getInventoryItemList, processPoRequest } from "../services/ConstantServies";
 import { authAxios, authAxiosFilePost, authAxiosget, authAxiosPost } from "./HttpMethod";
 
 export function getEmpLeave(leave_type, emp_id) {
@@ -290,8 +290,8 @@ export function getbookedlistview() {
   return authAxios(getbookedlist)
 }
 
-export function getCustomerListView() {
-  return authAxios(getCustomerListURL)
+export function getCustomerListView(params) {
+  return authAxios(getCustomerListURL, params)
 }
 
 export function getProcessListView() {
@@ -483,7 +483,19 @@ export function postExpensePlannedItem(res) {
   // console.log('Data to be sent:', res);
   return authAxiosPost(processExpensePlannedItemList, res)
 }
-// export function processTimesheetApproval(data) {
-//   // console.log('Data to be sent for timesheet approval:', data);
-//   return authAxiosPost(addTimesheet, data);
-// }
+export function processTimesheetApproval(data) {
+  // console.log('Data to be sent for timesheet approval:', data);
+  return authAxiosPost(addTimesheet, data);
+}
+
+//seaFood Api
+export function getPoItem() {
+  return authAxios(getPoItemList);
+}
+export function getInventoryItem(data) {
+  return authAxios(getInventoryItemList, data);
+}
+export function postProcessPoRequest(res) {
+  // console.log('Data to be sent:', res);
+  return authAxiosPost(processPoRequest, res)
+}

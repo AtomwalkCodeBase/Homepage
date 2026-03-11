@@ -108,13 +108,13 @@ import PatentPage from "./components/PatentPage";
 import AwardsPage from "./components/AwardsPage";
 import GlpHeroPage from "./components/glp/GlpHeroPage";
 import { TimesheetRouter } from "./components/TimesheetRouter";
-import ProjectManagementTimesheet from "./pages/ProjectManagement/ProjectManagementTimesheet";
 import LabLoginScreen from "./pages/LabUser/LabLoginScreen";
 import LmsDashBoard from "./pages/LabUser/LmsDashBoard";
 import CustomerStatus from "./pages/CustomerStatus";
 import { HelmetProvider } from 'react-helmet-async';
 import SampleDashboard from "./pages/LabUser/SampleDashboard";
 import ExpenseTrackingScreen from "./pages/ProjectManagement/ExpenseTrackingScreen";
+import ManagerDashboard from "./pages/ProjectManagement/ManagerDashboard";
 // import SupervisorDashboard from "./pages/fishIndurstry/SupervisorDashboard";
 // import MyAppriaisal from "./pages/MyAppriaisal";
 
@@ -271,7 +271,7 @@ function App() {
                   <Route path="/holidays" element={<HolidayCalendar />} />
                   {/* <Route path="/timesheet" element={<TimeSheetManagement />} /> */}
                   <Route path="/timesheet" element={<TimesheetRouter />} />
-                  <Route path="/managers/timesheet/dashboard" element={<ProjectManagementTimesheet />} />
+                  <Route path="/managers/timesheet/dashboard" element={<ManagerDashboard />} />
                   <Route path="/expense-list" element={<ExpenseTrackingScreen />} />
                   <Route path="/shifts" element={<ShiftScheduling />} />
                   <Route path="/claims" element={<MyClaims />} />

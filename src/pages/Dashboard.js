@@ -699,11 +699,11 @@ const Dashboard = () => {
   const emp_id = localStorage.getItem("empNoId")
   const empId = localStorage.getItem("empId")
   const navigation= useNavigate()
-  const { companyInfo } = useAuth();
+  const { companyInfo, profile } = useAuth();
   // Fetch data from various services
   useEffect(()=>{
     if(companyInfo.business_type === "APM"){
-      navigation("/timesheet")
+      navigation(profile?.is_manager ? "/managers/timesheet/dashboard" : "/timesheet")
     }
   },[companyInfo])
   useEffect(() => {

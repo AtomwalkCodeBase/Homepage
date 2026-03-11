@@ -490,9 +490,16 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
   const { theme, uiPreferences } = useTheme()
   const customerdata = localStorage.getItem("customerUser")
   const fmsdata = localStorage.getItem("fmsUser")
+  const seadata = localStorage.getItem("seaUser")
   const sidebarStyle = uiPreferences?.layout?.sidebarStyle || "standard"
   // Grouped menu items structure
-  const menuGroups = customerdata
+  const menuGroups = seadata ? [
+          {
+          name: "Dashboard",
+          icon: <FaHome />,
+          items: [{ path: "/seaFood/home", name: "Overview", icon: <FaHome /> }],
+        },
+  ] : customerdata
     ? [
       {
         name: "Customer Portal",
@@ -503,6 +510,7 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
           { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
           { path: "/appointments", name: "Book Appointments", icon: <FaStethoscope /> },
           { path: "/appointmentlist", name: "My Appointments", icon: <FaCalendarAlt /> },
+          { path: "/supplierDashboard", name: "Supplier/Vender Dashboard", icon: <FaHome /> },
         ],
       },
     ]
@@ -540,9 +548,9 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
           icon: <FaClock />,
           items: [
             { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
+            ...(companyInfo.business_type === "APM" && profile?.is_manager ? [{ path: "/managers/timesheet/dashboard", name: "Manager Dashboard", icon: <RiDashboardFill /> }] : []),
             { path: "/timesheet", name: `${companyInfo.business_type === "APM" ? "Dashboard" : "Timesheet"}`, icon: <FaChartBar /> },
             ...(companyInfo.business_type === "APM" && profile.grade_level > 100 ? [{ path: "/expense-list", name: "Expense Item List", icon: <FaMoneyBillWave /> }] : []),
-            ...(companyInfo.business_type === "APM" && profile?.is_manager ? [{ path: "/managers/timesheet/dashboard", name: "Manager Dashboard", icon: <RiDashboardFill /> }] : []),
 
             ...(profile?.is_shift_applicable
               ? [{ path: "/shift-detail", name: "My Shifts", icon: <FaExchangeAlt /> }]
@@ -669,13 +677,19 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
       }))
     }, 100)
   }
-  const menuItems = customerdata
+  const menuItems = seadata ? 
+   [
+     { path: "/seaFood/home", name: "Home", icon:  <FaHome /> },
+
+   ] :
+  customerdata
     ? [
       { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
       { path: "/samplestatus", name: "Sample Status", icon: <GiProgression /> },
       { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
       { path: "/appointments", name: "Book Appointments", icon: <FaStethoscope /> },
       { path: "/appointmentlist", name: "My Appointments", icon: <FaCalendarAlt /> },
+      { path: "/supplierDashboard", name: "Supplier/Vender Dashboard", icon: <FaHome /> },
     ]
     : fmsdata
       ? [

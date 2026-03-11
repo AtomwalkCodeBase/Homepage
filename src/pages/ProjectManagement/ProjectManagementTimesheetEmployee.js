@@ -18,6 +18,8 @@ import ProjectManagementAddForm from '../../components/modals/ModalForProjectman
 import { MdFilterAltOff } from 'react-icons/md'
 import { GroupedRetainerAccordion } from '../../components/modals/ModalForProjectmanagemnt/GroupedRetainerAccordion'
 import EmployeeLogStatusCard from './EmployeeLogStatusCard'
+import { useAuth } from '../../context/AuthContext'
+import OPEActual from './OPEActual'
 
 const Tagline = styled.p`
  color: ${({ theme }) => theme.colors.textLight};
@@ -195,6 +197,7 @@ const hasOverlap = (projStart, projEnd, rangeStart, rangeEnd) => {
 };
 
 const ProjectManagementTimesheetEmployee = () => {
+  const {profile} = useAuth();
   const [employeeActivity, setEmployeeActivity] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [showCustomRange, setShowCustomRange] = useState(false);
@@ -204,7 +207,6 @@ const ProjectManagementTimesheetEmployee = () => {
   const [activeRetainerParentId, setActiveRetainerParentId] = useState(null);
   const [globalRetainerCache, setGlobalRetainerCache] = useState({});
   const [isGlobalRetainerLoading, setIsGlobalRetainerLoading] = useState(false);
-
 
   const { dayLogKey } = getCurrentDateTimeDefaults();
 
@@ -245,7 +247,7 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
 
     if (endDateObj < startDateObj) {
       toast.info("End date cannot be earlier than start date")
-      return
+      return false;
     }
     const payload = {
       emp_id: empidParam ? empidParam : emp_id,
@@ -256,7 +258,7 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
     try {
       const response = await getEmpAllocationData(payload);
       setEmployeeActivity(normalizeProjects(response.data))
-      // console.log("normalizeProjects(response.data)", JSON.stringify(normalizeProjects(response.data)))
+      // console.log("normalizeProjects(response.data)", normalizeProjects(response.data))
     } catch (error) {
       toast.error("No data found...")
     }
@@ -278,15 +280,48 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
       return false
     }
 
-    // if (!isAddMode && !project?.original_A?.id) {
-    //   toast.error("Unable to complete this activity. Activity did not start yet !!!")
-    //   return false
-    // }
+    if (!isAddMode && !project?.original_A?.id) {
+      toast.error("Unable to complete this activity. Activity did not start yet !!!")
+      return false
+    }
 
-    // if (!isAddMode && !data.endTime) {
-    //   toast.error("End time is required")
-    //   return false
-    // }
+    // SPECIAL MODE
+    if (mode === "FORCE_COMPLETE") {
+      const formData = new FormData();
+
+      if (!project?.original_A?.id) {
+        toast.error("Activity not found");
+        return false;
+      }
+
+      formData.append("emp_id", empIdentifier);
+      formData.append("a_id", project.original_A.id);
+      formData.append("call_mode", "FORCE_COMPLETE");
+      formData.append("remarks", data.remarks || "");
+      
+      if (data.file) {
+        formData.append("submitted_file", data.file);
+      }
+
+      try {
+      //      for (let [key, value] of formData.entries()) {
+      //   console.log(key, value);
+      // }
+      // const res ={status: 200};
+        const res = await postAllocationData(formData);
+
+        if (res?.status === 200) {
+          toast.success("Activity force completed");
+          await fetchEmpAllocationData();
+          return true;
+        }
+
+        return false;
+      } catch (error) {
+        toast.error("Unable to force complete activity");
+        return false;
+      }
+    }
 
     try {
       const { apiDate: defaultApiDate, currentTime } = getCurrentDateTimeDefaults()
@@ -342,11 +377,12 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
           formData.append(key, value)
         }
       })
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
+      // for (let [key, value] of formData.entries()) {
+      //   console.log(key, value);
+      // }
 
       const res = await postAllocationData(formData)
+      // const res = {status : 200}
 
       if (res?.status === 200) {
         toast.success(isAddMode ? "Check-in Successful" : "Activity Completed")
@@ -356,6 +392,7 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
     } catch (error) {
       const backendMessage = error?.response?.data?.error || error?.response?.data?.message || "";
       toast.error(backendMessage || "Unable to submit activity. Try again later..")
+      await fetchEmpAllocationData();
       // toast.error("Something went wrong")
       return false
     }
@@ -385,7 +422,7 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
       handler: async (activity, submit, refresh, retainerPage) => {
         if (!retainerPage) {
           const hasActivityStart = employeeActivity.some((p) => p.todaysStatus === "Active" || p.hasPendingCheckout === true);
-          console.log("hasActivityStart", employeeActivity.filter((p) => p.todaysStatus === "Active" || p.hasPendingCheckout === true))
+          // console.log("hasActivityStart", employeeActivity.filter((p) => p.todaysStatus === "Active" || p.hasPendingCheckout === true))
           if (hasActivityStart) {
             toast.info("Complete pending activity first.");
             return false;
@@ -401,7 +438,7 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
       handler: async (activity, submit, refresh, retainerPage) => {
         if (!retainerPage) {
           const hasActivityStart = employeeActivity.some((p) => p.todaysStatus === "Active" || p.hasPendingCheckout === true);
-          console.log("hasActivityStart", hasActivityStart)
+          // console.log("hasActivityStart", hasActivityStart)
           if (hasActivityStart) {
             toast.info("Complete pending activity first.");
             return false;
@@ -415,10 +452,23 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
         });
       },
     },
-
+//     force_complete: {
+//   title: "Force Complete",
+//   message: "Are you sure you want to complete this activity?",
+//   handler: async (activity, submit) => {
+//     return submit({
+//       project: activity,
+//       mode: "FORCE_COMPLETE"
+//     });
+//   }
+// },
     continue: {
       modal: true,
       modalContext: { type: "continue" }
+    },
+    force_complete: {
+      modal: true,
+      modalContext: { type: "force_complete" }
     },
     update_retainer: {
       modal: true,
@@ -428,6 +478,10 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
     complete: {
       modal: true,
       modalContext: { type: "complete" }
+    },
+    complete_y: {
+      modal: true,
+      modalContext: { type: "complete_y" }
     },
 
     checkout_yesterday: {
@@ -468,7 +522,7 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
             await refreshActivities(); // This does everything
           }
           if (onRetainerUpdate && retainer) {
-            onRetainerUpdate(retainer);
+            onRetainerUpdate(retainer.emp_id);
           }
           setConfirmPopup(prev => ({ ...prev, isOpen: false }));
         }
@@ -588,25 +642,34 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
     return [...new Set(allRetainers.map(r => r.emp_id))];
   }, [allRetainers]);
 
-  const fetchAllRetainerAllocationData = async () => {
+  const fetchAllRetainerAllocationData = async (forceEmpId = null) => {
     if (uniqueEmpIds.length === 0) return;
 
-    const missingEmpIds = uniqueEmpIds.filter(empId => !globalRetainerCache[empId]);
+    let empIdsToFetch = [];
 
-    if (missingEmpIds.length === 0) return;
+    if (forceEmpId) {
+      empIdsToFetch = [forceEmpId];
+    } else {
+      empIdsToFetch = uniqueEmpIds.filter(
+        empId => !globalRetainerCache[empId]
+      );
+    }
+
+    if (empIdsToFetch.length === 0) return;
 
     setIsGlobalRetainerLoading(true);
-    const promises = missingEmpIds.map(async (empId) => {
-      // if (globalRetainerCache[empId]) return;
 
+    const promises = empIdsToFetch.map(async (empId) => {
       const payload = {
         emp_id: empId,
         start_date: formatToDDMMYYYY(dateRange.start),
         end_date: formatToDDMMYYYY(dateRange.end),
       };
+
       try {
         const response = await getEmpAllocationData(payload);
         const normalized = formatRetainerActivities(response.data);
+
         setGlobalRetainerCache(prev => ({
           ...prev,
           [empId]: { allocations: normalized }
@@ -619,6 +682,7 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
     await Promise.all(promises);
     setIsGlobalRetainerLoading(false);
   };
+
   // console.log("GlobalRetainerCache", globalRetainerCache)
 
   useEffect(() => {
@@ -628,11 +692,18 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
     // }
   }, [activeTab, uniqueEmpIds, dateRange]);
 
+  const isOPE = filteredActivities.filter((item) => item.is_ope_actual === true);
+
+  // console.log("isOPE", isOPE)
+
   const tabs = [
     { key: 'myActivity', label: `My Activity(${filteredActivities?.length})`, },
+    ...(isOPE)? [{ key: 'ope_actual', label: `OPE Actual(${isOPE.length})`, }] : [],
     ...(totalRetainerCount !== 0 && !empidParam ? [{ key: 'retainer', label: `Assigned retainer(${totalRetainerCount})`, }] : []),
-    { key: 'emp_attend', label: `Employee Work status`, }
+    ...((profile.grade_level < 100) ? [] : [{ key: 'emp_attend', label: `Employee Work status`, }] ),
   ].filter(Boolean);
+
+  // console.log("filteredActivities", filteredActivities)
 
   return (
     <Layout title="My Audit Activities">
@@ -661,7 +732,7 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
             {activeTab !== "emp_attend" &&
               <FilterContainer>
                 <FilterRow>
-                  <FilterSelect
+                  {activeTab !== "ope_actual" && <FilterSelect
                     name="selectedStatus"
                     value={selectedStatus}
                     onChange={(e) => setSelectedStatus(e.target.value)}
@@ -671,7 +742,7 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
                     <option value="Planned">Planned</option>
                     <option value="In Progress">In Progress</option>
                     <option value="Completed">Complete</option>
-                  </FilterSelect>
+                  </FilterSelect>}
                   <FilterSelect
                     name="dayFilter"
                     value={dayFilter}
@@ -685,7 +756,7 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
                       }
                     }}
                   >
-                    <option value="past7">Past Activity Logs</option>
+                    <option value="past7">Past Activity</option>
                     <option value="today">Today</option>
                     <option value="next7">Upcoming 7 Days Activity</option>
                     <option value="custom">Custom Range</option>
@@ -736,12 +807,13 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
                   onAction={handleActivityAction}
                   isManager={empidParam}
                   onNavigateToRetainer={() => { setActiveTab('retainer'); setActiveRetainerParentId(activity.id || activity.p_id) }}
+                  onNavigateToOpe={() => { setActiveTab('ope_actual')}}
                 />
               ))
             )
           ) :
-            activeTab === "emp_attend" ? <EmployeeLogStatusCard /> :
-
+            activeTab === "emp_attend" ? <EmployeeLogStatusCard /> : 
+            activeTab === "ope_actual" ?  <OPEActual data={filteredActivities} refreshActivities={fetchEmpAllocationData} /> :
               (
                 <>
                   {isGlobalRetainerLoading ? (

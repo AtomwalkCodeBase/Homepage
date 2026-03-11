@@ -1,17 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { FiUser, FiHash, FiUsers, FiPackage, FiClock, FiCheckCircle, FiXCircle } from 'react-icons/fi';
-import { FaFilter } from 'react-icons/fa';
+import { FiHash, FiUsers, FiPackage, FiXCircle } from 'react-icons/fi';
 import { getEmpAllocationData } from '../../services/productServices';
-import { buildActivityGroupMap, formatToDDMMYYYY, getMonthRange, normalizeProjects } from './utils/utils';
-import { empCheckData } from '../../services/ConstantServies';
+import { formatToDDMMYYYY, getMonthRange } from './utils/utils';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 import { MdFilterAltOff } from 'react-icons/md';
-import { PiArrowsCounterClockwiseFill } from 'react-icons/pi';
-import { ActivityLogs } from './ActivityCard';
-
 import { theme } from '../../styles/Theme';
+import { IoLogInOutline, IoLogOutOutline } from 'react-icons/io5';
+import { toast } from 'react-toastify';
 
 // --- NEW STYLED COMPONENTS FOR GROUPING ---
 
@@ -20,6 +17,7 @@ const GroupContainer = styled.div`
   border: 1px solid ${theme.colors.border};
   border-radius: ${theme.borderRadius.lg};
   margin-bottom: ${theme.spacing.xl};
+  margin-top: ${theme.spacing.md};
   overflow: hidden;
   box-shadow: ${theme.shadows.sm};
 `;
@@ -264,79 +262,6 @@ const SessionTitle = styled.span`
   color: ${({ theme }) => theme.colors?.textLight || '#666'};
 `;
 
-
-// Reusable Info Row Component
-const InfoRowComponent = ({ icon: Icon, label, value }) => (
-  <InfoRow>
-    <IconWrapper>
-      <Icon size={16} />
-    </IconWrapper>
-    <Label>{label}:</Label>
-    <Value>{value}</Value>
-  </InfoRow>
-);
-
-// Reusable Time Block Component
-const TimeBlockComponent = ({ label, value, highlight }) => (
-  <TimeBlock highlight={highlight}>
-    <TimeLabel>{label}</TimeLabel>
-    <TimeValue>{value || '--:--'}</TimeValue>
-  </TimeBlock>
-);
-
-// Employee Status Card Component
-const EmployeeStatusCard = ({ employee }) => {
-  const { employee_name, emp_id, customer_name, order_item_id, order_item_key, day_logs = {}, todayStatus = {}, } = employee;
-  const { checkedIn = false, checkedOut = false, activeSession = null, } = todayStatus;
-
-  return (
-    <Card>
-      <CardHeader>
-        <EmployeeName>{employee_name}</EmployeeName>
-        <StatusBadge>
-          {!activeSession ? (
-            <>
-              <FiXCircle size={14} /> Not checked in yet
-            </>
-          ) : checkedIn && !checkedOut ? (
-            <>
-              <FiCheckCircle size={14} /> Checked In
-            </>
-          ) : (
-            <>
-              <FiXCircle size={14} /> Checked Out
-            </>
-          )}
-        </StatusBadge>
-
-      </CardHeader>
-
-      <InfoRowComponent icon={FiHash} label="Employee ID" value={emp_id} />
-      <InfoRowComponent icon={FiUsers} label="Customer" value={customer_name} />
-      <InfoRowComponent icon={FiPackage} label="Order Key" value={order_item_key} />
-
-      {activeSession && (
-        <TimeInfo>
-          <SessionTitle>
-            {activeSession.session}
-          </SessionTitle>
-
-          <TimeBlockComponent
-            label="Check In"
-            value={activeSession.check_in?.time || "--"}
-            highlight
-          />
-
-          <TimeBlockComponent
-            label="Check Out"
-            value={activeSession.check_out?.time || "In Progress"}
-          />
-        </TimeInfo>
-      )}
-    </Card>
-  );
-};
-
 // Main App Component
 const EmployeeLogStatusCard = () => {
   const [employeesLoginData, setEmployeesLoginData] = useState([]);
@@ -349,9 +274,6 @@ const EmployeeLogStatusCard = () => {
   const [dayFilter, setDayFilter] = useState("today");
   const [showCustomRange, setShowCustomRange] = useState(false);
   const [dateRange, setDateRange] = useState(() => {
-    // Default to Today for "today" filter, or Month for general? 
-    // The original code used month range. To match "Today" filter default, we should probably set it to Today.
-    // However, user asked for "Same dayfilter should work". In ProjectTimesheet it defaults to "Today" usually.
     const today = new Date();
     return { start: formatToDDMMYYYY(today), end: formatToDDMMYYYY(today) };
   });
@@ -394,16 +316,15 @@ const EmployeeLogStatusCard = () => {
 
           return Array.from(map.values());
         };
-        // console.log("exam", getUniqueOrderItems(data))
 
         setUniqueData({ order_item_id: getUniqueOrderItems(data) });
       } catch (err) {
-        console.error(err);
+        toast.error("Failed to fetch order item key")
       } finally {
         setInitialLoading(false);
       }
     })();
-  }, [dateRange]); // Only Refetch unique items if date range changes significantly? Yes.
+  }, [dateRange]);
 
   // 2nd api call to get the employee according to selected order item id
   function buildDayLogs(ts_data_list = []) {
@@ -453,9 +374,6 @@ const EmployeeLogStatusCard = () => {
   }
 
   const getLatestStatus = (day_logs) => {
-    // Find the most recent log based on date string comparison (DD-MM-YYYY needs parsing or special handling)
-    // Actually, since we get a list of logs, we can just find the one that matches today, or the latest one.
-
     const logs = Object.values(day_logs);
     if (logs.length === 0) {
       return {
@@ -465,13 +383,6 @@ const EmployeeLogStatusCard = () => {
       };
     }
 
-    // Sort logs by date (descending) and then time? 
-    // Format is DD-MM-YYYY. 
-    // Let's just grab the last one inserted? Or sort properly.
-    // Simpler: If "Today" filter, prioritize today.
-    // If range, prioritize latest date.
-
-    // Helper to parse DD-MM-YYYY
     const parseDate = (dStr) => {
       const parts = dStr.split('-');
       // new Date(year, monthIndex, day)
@@ -494,10 +405,6 @@ const EmployeeLogStatusCard = () => {
     };
   };
 
-  const getExcludedEmployeeIds = (retainerList = []) => {
-    return [...new Set(retainerList.map(r => Number(r.emp_id)).filter(Boolean)),];
-  };
-
   useEffect(() => {
     if (!filters.order_item_id) return;
 
@@ -512,33 +419,33 @@ const EmployeeLogStatusCard = () => {
           is_team_lead: 1,
         });
 
-        const loggedInUser = localStorage.getItem("emp_id");
+        const loggedInEmpId = localStorage.getItem("empId");
 
-        const excludedEmpIds = getExcludedEmployeeIds(
-          loggedInUser?.retainer_list || []
-        );
+        const loggedInEmployee = data.find(emp => emp.emp_id === loggedInEmpId);
 
-        excludedEmpIds.push(loggedInUser);
+        const retainerEmpIds = new Set((loggedInEmployee?.retainer_list || [])
+          .filter(r => r.a_type === "P")
+          .map(r => r.emp_id)
+      );
 
-        const filteredData = data.filter(emp =>
-          !excludedEmpIds.includes(emp.emp_id)
-        );
-
-
-        const formattedEmployees = filteredData.map(emp => {
+      const formattedEmployees = data
+        .filter(emp => emp.emp_id !== loggedInEmpId)
+        .map(emp => {
           const { day_logs } = buildDayLogs(emp.ts_data_list || []);
           const todayStatus = getLatestStatus(day_logs);
 
           return {
             ...emp,
             day_logs,
-            todayStatus, // ✅ true / false
+            todayStatus,
+            isRetainer: retainerEmpIds.has(emp.emp_id),
           };
         });
 
+
         setEmployeesLoginData(formattedEmployees);
       } catch (err) {
-        console.error(err);
+        toast.error("Failed to fetch employee check in data")
       } finally {
         setEmployeeLoading(false);
       }
@@ -609,7 +516,7 @@ const EmployeeLogStatusCard = () => {
   const hasGroups = Object.keys(groupedEmployees).length > 0;
 
   return (
-    <Card hoverable={false}>
+    <>
       <FilterContainer>
         <FilterRow>
           <FilterSelect
@@ -633,12 +540,13 @@ const EmployeeLogStatusCard = () => {
               }))
             }
           >
-            <option value="">Select Order Item</option>
-            {uniqueData.order_item_id.map((item) => (
+            <option value="">Select Order Item ID</option>
+            {uniqueData.order_item_id.length === 0 ? <option disabled={true}>No order item found</option> : 
+            (uniqueData.order_item_id.map((item) => (
               <option key={item.order_item_id} value={item.order_item_id}>
                 {item.order_item_key}
               </option>
-            ))}
+            )))}
           </FilterSelect>
 
           <Button
@@ -667,15 +575,6 @@ const EmployeeLogStatusCard = () => {
             <DateInput type="date" value={dateRange.start} onChange={(e) => setDateRange((prev) => ({ ...prev, start: e.target.value }))} />
             <span>to</span>
             <DateInput type="date" value={dateRange.end} onChange={(e) => setDateRange((prev) => ({ ...prev, end: e.target.value }))} />
-
-            {/* Note: In this component, changing dateRange triggers effect immediately, so explicit Filter button might be redundant 
-                    unless we want to prevent auto-fetch. The Timesheet component uses auto-fetch or explicit?
-                    Timesheet uses Explicit filter button for custom range in some logic, but here we added dateRange to useEffect. 
-                    Let's Add the button but maybe make it just force refresh or do nothing if useEffect handles it.
-                    Actually, making it trigger 'fetch' is safer if we remove dateRange from dependency. 
-                    But React philosophy suggests dependency.
-                    Let's keep it simple: dateRange change triggers fetch. Button is visual or for 'Refetch'.
-                */}
           </CustomRangeRow>
         )}
       </FilterContainer>
@@ -717,7 +616,7 @@ const EmployeeLogStatusCard = () => {
               <CardGrid style={{ margin: 0 }}>
                 {group.employees.map((employee) => (
                   <EmployeeStatusCard
-                    key={employee.p_id || employee.emp_id} // Fallback to emp_id if p_id is missing
+                    key={employee.p_id || employee.emp_id}
                     employee={employee}
                   />
                 ))}
@@ -727,9 +626,78 @@ const EmployeeLogStatusCard = () => {
         ))}
       </div>
 
-    </Card>
+    </>
   );
 };
 
 
 export default EmployeeLogStatusCard;
+
+const InfoRowComponent = ({ icon: Icon, label, value }) => (
+  <InfoRow>
+    <IconWrapper>
+      <Icon size={16} />
+    </IconWrapper>
+    <Label>{label}:</Label>
+    <Value>{value}</Value>
+  </InfoRow>
+);
+
+const TimeBlockComponent = ({ label, value, highlight }) => (
+  <TimeBlock highlight={highlight}>
+    <TimeLabel>{label}</TimeLabel>
+    <TimeValue>{value || '--:--'}</TimeValue>
+  </TimeBlock>
+);
+
+const EmployeeStatusCard = ({ employee }) => {
+  const { employee_name, emp_id, customer_name, order_item_key, day_logs = {}, todayStatus = {}, } = employee;
+  const { checkedIn = false, checkedOut = false, activeSession = null, } = todayStatus;
+
+  return (
+    <Card>
+      <CardHeader>
+        <EmployeeName>{employee_name}</EmployeeName>
+        <StatusBadge>
+          {!activeSession ? (
+            <>
+              <FiXCircle size={14} /> Not checked in yet
+            </>
+          ) : checkedIn && !checkedOut ? (
+            <>
+              <IoLogInOutline size={14} /> Checked In
+            </>
+          ) : (
+            <>
+              <IoLogOutOutline size={14} /> Checked Out
+            </>
+          )}
+        </StatusBadge>
+
+      </CardHeader>
+
+      <InfoRowComponent icon={FiHash} label="Employee ID" value={emp_id} />
+      <InfoRowComponent icon={FiUsers} label="Customer" value={customer_name} />
+      <InfoRowComponent icon={FiPackage} label="Order Key" value={order_item_key} />
+
+      {activeSession && (
+        <TimeInfo>
+          <SessionTitle>
+            {activeSession.session}
+          </SessionTitle>
+
+          <TimeBlockComponent
+            label="Check In"
+            value={activeSession.check_in?.time || "--"}
+            highlight
+          />
+
+          <TimeBlockComponent
+            label="Check Out"
+            value={activeSession.check_out?.time || "In Progress"}
+          />
+        </TimeInfo>
+      )}
+    </Card>
+  );
+};

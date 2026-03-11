@@ -1,5 +1,6 @@
 const MONTH_SHORT_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+//formatDate("2026-02-25")  ->  "Feb 25, 2026"
 export const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
     try {
@@ -14,19 +15,45 @@ const MONTH_MAP = MONTH_SHORT_NAMES.reduce((acc, m, i) => {
     return acc;
 }, {});
 
-const parseApiDate = (apiDateStr) => {
-    if (!apiDateStr || typeof apiDateStr !== "string") return null;
-    const parts = apiDateStr.split("-");
-    if (parts.length !== 3) return null;
-    const dd = parseInt(parts[0], 10);
-    const mon = parts[1];
-    const yyyy = parseInt(parts[2], 10);
-    const monthIndex = MONTH_MAP[mon.toLowerCase()];
-    if (isNaN(dd) || isNaN(monthIndex) || isNaN(yyyy)) return null;
-    // Create date in local timezone
-    return new Date(yyyy, monthIndex, dd, 0, 0, 0, 0);
+export const normalizeToDDMMYYYY = (dateStr) => {
+  if (!dateStr) return "";
+
+  if (/^\d{2}-\d{2}-\d{4}$/.test(dateStr)) {
+    return dateStr;
+  }
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    const [y, m, d] = dateStr.split("-");
+    return `${d}-${m}-${y}`;
+  }
+
+  const parsed = new Date(dateStr);
+  if (!isNaN(parsed)) {
+    const day = String(parsed.getDate()).padStart(2, "0");
+    const month = String(parsed.getMonth() + 1).padStart(2, "0");
+    const year = parsed.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
+
+  return dateStr;
 };
 
+//parseApiDate("25-Feb-2026")      -> Date object: 2026-02-25 00:00:00 local
+  export const parseApiDate = (apiDateStr) => {
+      if (!apiDateStr || typeof apiDateStr !== "string") return null;
+      const parts = apiDateStr.split("-");
+      if (parts.length !== 3) return null;
+      const dd = parseInt(parts[0], 10);
+      const mon = parts[1];
+      const yyyy = parseInt(parts[2], 10);
+      const monthIndex = MONTH_MAP[mon.toLowerCase()];
+      if (isNaN(dd) || isNaN(monthIndex) || isNaN(yyyy)) return null;
+      // Create date in local timezone
+      return new Date(yyyy, monthIndex, dd, 0, 0, 0, 0);
+  };
+
+// const date1 = new Date(2026, 1, 25)  // Feb 25, 2026
+// formatToApiDate(date1)               // "25-Feb-2026"
 export const formatToApiDate = (d) => {
     if (!(d instanceof Date)) return null;
     const dd = String(d.getDate()).padStart(2, "0");
@@ -35,6 +62,7 @@ export const formatToApiDate = (d) => {
     return `${dd}-${mon}-${yyyy}`;
 };
 
+//24hr → 12hr {formatAPITime("18:30") ->"06:30 PM"}
 export const formatAPITime = (time24) => {
   if (!time24) return ""
   const [h, m] = time24.split(":")
@@ -44,12 +72,32 @@ export const formatAPITime = (time24) => {
   return `${hours.toString().padStart(2, "0")}:${m} ${ampm}`
 }
 
+// 12hr → 24hr {convert12To24Hour("06:10 PM") -> "18:10"}
+export const convert12To24Hour = (time12h) => {
+  if (!time12h) return '';
+
+  const [time, modifier] = time12h.split(' ');
+  let [hours, minutes] = time.split(':');
+
+  hours = parseInt(hours, 10);
+
+  if (modifier.toUpperCase() === 'AM') {
+    if (hours === 12) hours = 0;
+  } else if (modifier.toUpperCase() === 'PM') {
+    if (hours !== 12) hours += 12;
+  }
+
+  return `${String(hours).padStart(2, '0')}:${minutes}`;
+};
+
+
 export const getTodayApiDateStr = () => {
     const d = new Date();
     return formatToApiDate(d);
 };
 
-const parseISO = (iso) => {
+// parseISO("2026-02-25") -> Date object: 2026-02-25 00:00:00 local
+export const parseISO = (iso) => {
   if (!iso) return null
   const [y, m, d] = iso.split("-").map(Number)
   return new Date(y, m - 1, d)
@@ -98,7 +146,7 @@ const parseGeoData = (geoString) => {
     }
 
     // Split by 'O|' to get all pieces. First piece contains the "I|" info.
-    const parts = geoString.split("O|");
+    const parts = geoString.split("^O|");
     const checkInPart = parts[0] || "";
     const checkOutPart = parts.slice(1).pop() || ""; // take last O|... part (latest checkout if many)
 
@@ -148,7 +196,7 @@ const buildDayLogsFromAEntries = (aEntries = []) => {
   sortedA.forEach(aEntry => {
     const tsList = Array.isArray(aEntry.ts_data_list) ? aEntry.ts_data_list : [];
 
-    const aEffort = typeof aEntry.effort === "number" ? aEntry.effort : 0;
+    // const aEffort = typeof aEntry.effort === "number" ? aEntry.effort : 0;
 
     const aRemarks = typeof aEntry.remarks === "string" ? aEntry.remarks : "";
 
@@ -167,6 +215,7 @@ const buildDayLogsFromAEntries = (aEntries = []) => {
 
       const tsNoOfItems = typeof ts.no_of_items === "number" ? ts.no_of_items : Number(ts.no_of_items || 0);
       const tsStatus = ts.status;
+      const tsEffort = ts.effort
 
       const belongsToThisA = isDateInRange(
         date,
@@ -180,7 +229,7 @@ const buildDayLogsFromAEntries = (aEntries = []) => {
         check_in: check_in || "",
         check_out: check_out || "",
         remarks: ts?.remarks || aRemarks || "",
-        effort: belongsToThisA ? aEffort : 0,
+        effort: tsEffort || 0,
         no_of_items: belongsToThisA ? tsNoOfItems : 0,
         timeSheetStatus: tsStatus ? tsStatus : "",
       };
@@ -213,7 +262,7 @@ export const buildActivityGroupMap = (apiData = []) => {
   // STEP 2: Attach A records to matching P
   apiData.forEach(item => {
     if (item.activity_type === "A") {
-      const freeCodeId = Number(item.free_code); // string → number
+      const freeCodeId = Number(item.ref_p_id); // string → number
       if (!freeCodeId) return;
 
       const key = `${freeCodeId}_${item.order_item_id}`;
@@ -269,6 +318,9 @@ export const normalizeProjects = (apiData = []) => {
         const order_item_id = (P?.order_item_id) || (A?.order_item_id) || null;
         const project_name = (P?.project_name) || (A?.project_name) || null;
         const activity_name = (P?.activity_name) || (A?.activity_name) || null;
+        const is_ope_actual = (P?.is_ope_actual) || (A?.is_ope_actual) ;
+        const order_item_status = (P?.order_item_status) || (A?.order_item_status) ;
+        const ope_amt = (A?.ope_amt) ;
 
         // Build combined day_logs from ALL A entries (merging by date, latest geo wins)
         const day_logs = buildDayLogsFromAEntries(allA);
@@ -294,15 +346,8 @@ export const normalizeProjects = (apiData = []) => {
         const effort_unit = (A && A.effort_unit) ? A.effort_unit :
             (allA.length > 0 && allA.find(a => a.effort_unit)?.effort_unit) || null;
 
-        // Determine 'complete' as per rule: true only if original_A (highest id) has status === "S"
-        // const complete = !!(A && A.status === "S");
         const complete = A?.status && A.status !== "N";
 
-        // Determine project_period_status as per RULE 6
-        // - "Completed" → if complete === true OR any A has status === "C" or status_display === "COMPLETED"
-        // - "In Progress" → has at least one A, not completed
-        // - "Pending" → only P exists AND planned_end_date < today
-        // - "Planned" → only P exists AND within/future dates
         let project_period_status = "Planned";
         const anyAHasCompleted = allA.some(x => x && (x.status === "S" || (x.status_display && x.status_display.toUpperCase() === "SUBMITTED")));
         if (complete || anyAHasCompleted) {
@@ -326,10 +371,6 @@ export const normalizeProjects = (apiData = []) => {
             project_period_status = "Pending";
         }
 
-        // Today's status (for todayApiStr) as per RULE 6 (todaysStatus)
-        // - "Complete" → has check-in + check-out today
-        // - "Active" → has check-in today but no check-out
-        // - "Planned" → no activity today
         const todayLog = day_logs[todayApiStr] || null;
         let todaysStatus = "Planned";
         if (todayLog && todayLog.check_in && todayLog.check_out) {
@@ -340,32 +381,6 @@ export const normalizeProjects = (apiData = []) => {
             todaysStatus = "Planned";
         }
 
-        // Pending checkout detection: any date with check_in but no check_out
-        // const pendingDates = Object.keys(day_logs)
-        //     .filter(d => {
-        //         const l = day_logs[d];
-        //         return !!(l && l.check_in && !l.check_out);
-        //     })
-        //     // sort dates ascending (by parsed date)
-        //     .sort((a, b) => {
-        //         const pa = parseApiDate(a);
-        //         const pb = parseApiDate(b);
-        //         if (!pa || !pb) return 0;
-        //         return pa.getTime() - pb.getTime();
-        //     });
-
-        // const hasPendingCheckout = pendingDates.length > 0;
-        // // pendingCheckoutDate: choose the earliest pending date (makes sense for UX). If none -> null
-        // const pendingCheckoutDate = hasPendingCheckout ? pendingDates[0] : null;
-
-        // Buttons logic as per RULE 7:
-        // - If any date has check_in but no check_out -> hasPendingCheckout = true, show_end_button = true
-        // - Else if today has no check_in -> show_start_button = true
-        // - Else if today has check_in but no check_out -> show_end_button = true
-
-        // ---- CORRECT PENDING CHECKOUT LOGIC ----
-
-// Convert today's API date to real Date object
 const todayObj = parseApiDate(todayApiStr);
 
 // Find ANY previous date with check-in but NO check-out
@@ -420,13 +435,10 @@ const pendingCheckoutDate = hasPendingCheckout
             show_start_button = false;
             show_end_button = false;
         }
-
-        // id should be latest A.id or P.id
+        
         const a_id = (A && A.id) ? A.id : null;
         const p_id = (P && P.id) ? P.id : null;
 
-        // original_P: full original P object or null
-        // original_A: full original A object (the highest id) or null
         const original_P = P || null;
         const original_A = A || null;
 
@@ -449,11 +461,12 @@ const pendingCheckoutDate = hasPendingCheckout
 
             actual_start_date: actual_start_date || null,
             actual_end_date: actual_end_date || null,
+            is_ope_actual: is_ope_actual || false,
+            order_item_status: order_item_status,
+            ope_amt: ope_amt,
 
             complete: Boolean(complete),
 
-            // todaysStatus must be one of "Active" | "Complete" | "Planned" | "Pending"
-            // We already set "Complete", "Active", "Planned". Map "Pending" only if project_period_status === "Pending" AND no activity today
             todaysStatus: (todaysStatus === "Planned" && project_period_status === "Pending") ? "Planned" : todaysStatus,
             project_period_status,
 
@@ -723,54 +736,6 @@ export const getStatusVariant = (status) => {
     return statusMap[key] || "secondary";
 };
 
-// export const getMonthRange = ({ type = "current", mode = "month", offset = 0, weekStartsOn = 0 } = {}) => {
-//     const today = new Date()
-
-//     let finalOffset = offset
-
-//     if (type === "previous") finalOffset = -1
-//     if (type === "next") finalOffset = 1
-//     if (type === "current") finalOffset = 0
-
-//     let start, end
-
-//     // MONTH MODE
-//     if (mode === "month") {
-//         const year = today.getFullYear()
-//         const month = today.getMonth() + finalOffset
-
-//         start = new Date(year, month, 1)
-//         end = new Date(year, month + 1, 0)
-//     }
-
-//     // WEEK MODE (Sun–Sat)
-//     if (mode === "week") {
-//         const currentDay = today.getDay()
-//         const diffToStart =
-//             (currentDay - offset + 7) % 7
-
-//         start = new Date(today)
-//         start.setDate(
-//             today.getDate() - diffToStart + finalOffset * 7
-//         )
-
-//         end = new Date(start)
-//         end.setDate(start.getDate() + 6)
-//     }
-
-//     const formatLocal = (d) => {
-//         const yyyy = d.getFullYear()
-//         const mm = String(d.getMonth() + 1).padStart(2, "0")
-//         const dd = String(d.getDate()).padStart(2, "0")
-//         return `${yyyy}-${mm}-${dd}`
-//     }
-
-//     return {
-//         start: formatLocal(start),
-//         end: formatLocal(end)
-//     }
-// }
-
 export const getMonthRange = ({ type = "current", mode = "month", offset = 0, weekStartsOn = 0,} = {}) => {
   const today = new Date();
 
@@ -788,8 +753,7 @@ export const getMonthRange = ({ type = "current", mode = "month", offset = 0, we
     // Move to target month
     start.setMonth(today.getMonth() + finalOffset, 1);
     end.setMonth(today.getMonth() + finalOffset + 1, 0); // last day of that month
-  } 
-  else if (mode === "week") {
+  } else if (mode === "week") {
     const currentDay = today.getDay();
     // How many days to subtract to reach the start of the week
     const diffToWeekStart = (currentDay - weekStartsOn + 7) % 7;
@@ -799,6 +763,9 @@ export const getMonthRange = ({ type = "current", mode = "month", offset = 0, we
     
     end = new Date(start);
     end.setDate(start.getDate() + 6);
+  }  else if (mode === "today") {
+    start.setDate(today.getDate() + finalOffset);
+    end = new Date(start);
   } 
   else {
     throw new Error(`Unsupported mode: "${mode}". Use "month" or "week".`);
@@ -847,181 +814,7 @@ export const getYesterday = () => {
   }
 }
 
-// export const mapAllocationData = (apiData = []) => {
-
-//     if (!Array.isArray(apiData) || apiData.length === 0) {
-//         return {
-//             projectsData: [],
-//             employeeData: []
-//         };
-//     }
-
-//     const projectMap = {}
-//     const employeeMap = {}
-
-//     /*
-//       Step 1: Group by
-//       activity_id + order_item_key + emp_id
-//       Prefer A over P
-//     */
-//     const grouped = {}
-
-//     apiData.forEach(item => {
-//         const key = `${item.activity_id}_${item.order_item_key}_${item.emp_id}`
-
-//         if (!grouped[key]) {
-//             grouped[key] = { P: null, A: null }
-//         }
-
-//         if (item.activity_type === "P") {
-//             grouped[key].P = item
-//         }
-
-//         if (item.activity_type === "A") {
-//             if (!grouped[key].A) {
-//                 grouped[key].A = item
-//             } else {
-//                 grouped[key].A.ts_data_list = [
-//                     ...(grouped[key].A.ts_data_list || []),
-//                     ...(item.ts_data_list || [])
-//                 ]
-//             }
-//         }
-//     })
-
-//     /*
-//       Step 2: Build projectMap + employeeMap
-//     */
-// normalized.forEach(project => {
-//     const {
-//         activity_id,
-//         project_code,
-//         project_name,
-//         planned_start_date,
-//         planned_end_date,
-//         actual_start_date,
-//         actual_end_date,
-//         effort,
-//         effort_unit,
-//         day_logs,
-//         original_A,
-//         original_P,
-//         complete,
-//         project_period_status
-//     } = project;
-
-//     const order_item_key = project_code;
-
-//     const emp_id = original_A?.emp_id || original_P?.emp_id;
-//     const employee_name = original_A?.employee_name || original_P?.employee_name;
-
-//     if (!emp_id) return;
-
-//         /* =================== EMPLOYEE MAP =================== */
-//         if (!employeeMap[emp_id]) {
-//             employeeMap[emp_id] = {
-//                 emp_id,
-//                 employee_name,
-//                 color: getRandomColor(),   // ✅ Unique color per employee
-//                 projects: []
-//             }
-//         }
-
-//         const employeeColor = employeeMap[emp_id].color
-
-//         /* =================== PROJECT DATA =================== */
-//         if (!projectMap[projectKey]) {
-//             projectMap[projectKey] = {
-//                 activity_id,
-//                 order_item_key,
-//                 project_name,
-
-//                 planned_start_date,
-//                 planned_end_date,
-
-//                 total_assigned_employees: 0,
-//                 total_working_employees: 0,
-
-//                 project_status: "planned",
-//                 project_period_status: "Planned",
-
-//                 teamMembers: []
-//             }
-//         }
-
-//         // ✅ Count assigned & working
-//         projectMap[projectKey].total_assigned_employees += 1
-//         if (isWorking) {
-//             projectMap[projectKey].total_working_employees += 1
-//         }
-
-//         // ✅ Update project status if ANY employee is working
-//         if (isWorking) {
-//             projectMap[projectKey].project_status = "active"
-//             projectMap[projectKey].project_period_status = "IN Progress"
-//         }
-
-//         projectMap[projectKey].teamMembers.push({
-//             emp_id,
-//             employee_name,
-//             color: employeeColor,      // ✅ same color everywhere
-
-//             type: isWorking ? "A" : "P",
-
-//             activity_id,
-//             order_item_key,
-//             project_name,
-
-//             planned_start_date,
-//             planned_end_date,
-
-//             actual_start_date,
-//             actual_end_date,
-
-//             effort,
-//             effort_unit,
-
-//             day_logs
-//         })
-
-
-//         /* =================== EMPLOYEE PROJECTS =================== */
-//         const alreadyAdded = employeeMap[emp_id].projects.some(
-//             p => p.activity_id === activity_id && p.order_item_key === order_item_key
-//         )
-
-//         if (!alreadyAdded) {
-//             employeeMap[emp_id].projects.push({
-//                 activity_id,
-//                 order_item_key,
-//                 project_name,
-
-//                 planned_start_date,
-//                 planned_end_date,
-
-//                 actual_start_date,
-//                 actual_end_date,
-
-//                 effort,
-//                 effort_unit,
-
-//                 project_status: isWorking ? "active" : "planned",
-//                 project_period_status: isWorking ? "IN Progress" : "Planned",
-
-//                 day_logs
-//             })
-//         }
-
-//     })
-
-
-//     return {
-//         projectsData: Object.values(projectMap),
-//         employeeData: Object.values(employeeMap)
-//     }
-// }
-
-const normalizeDate = (d) => {
+export const normalizeDate = (d) => {
   const date =
     d instanceof Date ? d : parseApiDate(d);
 
@@ -1047,7 +840,10 @@ const getTodayActionFlags = ({ allAEntries }) => {
   if (!todayA) {
     return {
       showStartBtn: true,
-      showCompleteBtn: false
+      showCompleteBtn: false,
+      showUpdateBtn: false,
+      isCompleted: false
+
     };
   }
 
@@ -1055,14 +851,18 @@ const getTodayActionFlags = ({ allAEntries }) => {
   if (todayA.status === "N") {
     return {
       showStartBtn: false,
-      showCompleteBtn: true
+      showCompleteBtn: true,
+      showUpdateBtn: false,
+      isCompleted: false
     };
   }
 
   // 3️⃣ A exists & completed → Nothing
   return {
     showStartBtn: false,
-    showCompleteBtn: false
+    showCompleteBtn: false,
+    showUpdateBtn: true,
+    isCompleted: true
   };
 };
 
@@ -1084,7 +884,8 @@ const buildDayLogsFromAEntriesForRetainer = (allAEntries = []) => {
         section: dayKey,
         remarks: entry.remarks || "",
         effort: 0,
-        no_of_items: 0
+        no_of_items: 0,
+        resourceList: entry.resource_list,
       };
     }
 
@@ -1100,8 +901,9 @@ export const formatRetainerActivities = (apiData = []) => {
 
   return grouped.map(group => {
     const { original_P, original_A, allAEntries, key } = group;
+    const completed = original_A?.status && original_A.status !== "N" ? "In Progress" : "Completed"
 
-    const ui = getTodayActionFlags({ allAEntries });
+    const ui = getTodayActionFlags({ allAEntries});
     const day_logs = buildDayLogsFromAEntriesForRetainer(allAEntries);
 
     return {
@@ -1119,12 +921,21 @@ export const formatRetainerActivities = (apiData = []) => {
       order_item_id: original_P?.order_item_id ?? "",
       order_item_key: original_P?.order_item_key ?? "",
 
+      planned_start_date: original_P?.start_date || null,
+      planned_end_date: original_P?.end_date || null,
+      planned_start_time: original_P?.start_time || null,
+      planned_end_time: original_P?.end_time || null,
+
+      actual_start_date: original_A?.start_date || null,
+      actual_end_date: original_A?.end_date || null,
+
       is_file_applicable: original_P?.is_file_applicable ?? false,
       audit_type: original_P?.audit_type ?? "",
       store_name: original_P?.store_name ?? "",
       store_remarks: original_P?.store_remarks ?? "",
 
-      complete: original_A?.status && original_A.status !== "N",
+      complete: completed,
+      is_complete: completed === "Completed" ? true : false,
 
       original_P,
       original_A,
@@ -1165,7 +976,7 @@ export const mapEmployeeCustomerOrderItemData = (apiData = []) => {
     }
 
     if (item.activity_type === "A") {
-      const pId = String(item.free_code || "");
+      const pId = String(item.ref_p_id || "");
       if (!actualMap[pId]) actualMap[pId] = [];
       actualMap[pId].push(item);
     }
@@ -1215,6 +1026,8 @@ export const mapEmployeeCustomerOrderItemData = (apiData = []) => {
         activity_id: P.activity_id,
 
         project_name: P.project_name,
+        employee_name: P.employee_name,
+        emp_id: P.emp_id,
         customer_name: P.customer_name,
         audit_type: P.product_name || A?.product_name || "",
         audit_item_no_planned: P.no_of_items || 0,
@@ -1309,3 +1122,358 @@ export const getStatusLabelVariant = (status) => {
     }
   );
 };
+
+const getDayActualTimes = (dayLogs, selectedDate) => {
+  const log = dayLogs[selectedDate];
+  if (!log) return {};
+
+  return {
+    firstCheckIn: log.check_in || "",
+    lastCheckOut: log.check_out || "",
+  };
+};
+
+const getTimeStatus = ({ plannedStart, actualStart, actualDate, bufferMinutes = 0, isDateOnly }) => {
+
+  if (!actualStart) return null;
+
+  // Date-only scenario
+  if (isDateOnly) {
+    return actualStart.date === plannedStart.date ? "ON_TIME" : "DELAYED";
+  }
+
+  const bufferMs = bufferMinutes * 60 * 1000;
+
+  const plannedWithBuffer =
+    new Date(plannedStart.getTime() + bufferMs);
+
+  return actualStart <= plannedWithBuffer ? "ON_TIME" : "DELAYED";
+};
+
+const getCheckoutStatus = ({ plannedEnd, actualCheckout, bufferMinutes = 0, isDateOnly }) => {
+
+  if (!plannedEnd || !actualCheckout) return null;
+  
+  if (isDateOnly) {
+    return actualCheckout.toDateString() <= plannedEnd.toDateString() ? "ON_BEFORE_TIME" : "DELAYED";
+  }
+
+  const bufferMs = bufferMinutes * 60 * 1000;
+  const plannedTime = new Date(0);
+  plannedTime.setHours( plannedEnd.getHours(),plannedEnd.getMinutes(),0,0);
+
+  const actualTime = new Date(0);
+  actualTime.setHours(actualCheckout.getHours(),actualCheckout.getMinutes(),0,0);
+
+  const plannedWithBuffer = new Date(plannedTime.getTime() + bufferMs);
+
+  return actualTime <= plannedWithBuffer ? "ON_BEFORE_TIME" : "DELAYED";
+};
+
+export const buildActualDateTime = (dateStr, timeStr) => {
+  if (!dateStr || !timeStr) return null;
+
+  const date = new Date(dateStr);
+
+  // "09:07 AM"
+  const [time, modifier] = timeStr.split(" ");
+  let [hours, minutes] = time.split(":");
+
+  hours = Number(hours);
+
+  if (modifier === "PM" && hours !== 12) hours += 12;
+  if (modifier === "AM" && hours === 12) hours = 0;
+
+  date.setHours(hours);
+  date.setMinutes(Number(minutes));
+  date.setSeconds(0);
+  date.setMilliseconds(0);
+
+  return date;
+};
+
+
+export const buildDateTime = (dateStr, timeStr) => {
+  if (!dateStr) return null;
+
+  // Convert "10-Feb-2026" → Date
+  const date = new Date(dateStr);
+
+  // If time not available → date only
+  if (!timeStr) {
+    return {
+      dateObj: date,
+      isDateOnly: true
+    };
+  }
+
+  // time format "09:00"
+  const [hours, minutes] = timeStr.split(":");
+
+  date.setHours(Number(hours));
+  date.setMinutes(Number(minutes));
+  date.setSeconds(0);
+  date.setMilliseconds(0);
+
+  return {
+    dateObj: date,
+    isDateOnly: false
+  };
+};
+
+const buildAggregatedActualForDate = (dayLogs, selectedDate) => {
+  const logs = Object.values(dayLogs).filter(l => l?.date === selectedDate);
+
+    if (!logs || logs.length === 0) {
+    return {
+      CheckInDate: selectedDate,
+      firstCheckIn: "",
+      lastCheckOut: "",
+      totalItems: 0,
+      totalEffort: 0,
+      status: "",
+      sessions: []
+    };
+  }
+
+  const firstCheckIn = logs?.filter(l => l.check_in).map(l => l.check_in).sort()[0] || "";
+  const lastCheckOut = logs?.filter(l => l.check_out).map(l => l.check_out).sort().reverse()[0] || "";
+
+  const totalItems = logs?.reduce((sum, l) => sum + (Number(l.no_of_items) || 0),0);
+
+  const totalEffort = logs?.reduce((sum, l) => sum + (Number(l.effort) || 0),0);
+  const status = logs[0]?.timeSheetStatus;
+
+  return {
+    CheckInDate: selectedDate,
+    firstCheckIn,
+    lastCheckOut,
+    totalItems,
+    totalEffort,
+    status,
+    sessions: logs
+  };
+};
+
+
+export const deriveActivityStatusForDate = ( groupedActivities, selectedDate, currentDateTime) => {
+  
+  return groupedActivities
+  .filter(group => {
+    
+    const dayLogs = buildDayLogsFromAEntries(group.allAEntries);
+    if (dayLogs[selectedDate]) return true;
+    
+    const P = group.original_P || {};
+
+    if (!P.start_date || !P.end_date) return false;
+
+    const plannedStart = parseApiDate(P.start_date);
+    const plannedEnd = parseApiDate(P.end_date);
+    const selected = parseApiDate(selectedDate);
+
+    if (!plannedStart || !plannedEnd || !selected) return false;
+
+    return (
+      selected.getTime() >= plannedStart.getTime() &&
+      selected.getTime() <= plannedEnd.getTime()
+    );
+  })
+  .map(group => {
+
+    const P = group.original_P || {};
+    const A = group?.original_A || {};
+    const planned = {
+      startDate: P.start_date || "",
+      endDate: P.end_date || "",
+      startTime: P.start_time || "",
+      endTime: P.end_time || ""
+    };
+
+  const dayLogs = buildDayLogsFromAEntries(group.allAEntries);
+  const actual = buildAggregatedActualForDate(dayLogs, selectedDate);
+
+  const plannedStartData = buildDateTime(P.start_date, P.start_time);
+  const plannedStart = plannedStartData?.dateObj;
+  const isDateOnly = plannedStartData?.isDateOnly;
+
+  const plannedEndData = buildDateTime(P.end_date, P.end_time);
+  const plannedEnd = plannedEndData?.dateObj;
+  // const isEndDateOnly = plannedEndData?.isDateOnly;
+
+  const ActualStartData = buildDateTime(actual.CheckInDate, convert12To24Hour(actual.firstCheckIn.time));
+  const actualStart = ActualStartData?.dateObj;
+  // const isDateOnlyA = ActualStartData?.isDateOnly;
+
+  const ActualEndData = buildDateTime(actual.CheckInDate, convert12To24Hour(actual.lastCheckOut.time));
+  // const actualEnd = ActualEndData?.dateObj;
+  const isEndDateOnlyA = ActualEndData?.isDateOnly;
+
+
+    const actualTimes = getDayActualTimes(dayLogs, selectedDate);
+
+    const complete = A?.status && A.status !== "N";
+
+        let project_period_status = "Planned";
+        const anyAHasCompleted = group?.allAEntries.some(x => x && (x.status === "S" || (x.status_display && x.status_display.toUpperCase() === "SUBMITTED")));
+        if (complete || anyAHasCompleted) {
+            project_period_status = "Completed";
+        } else if (group?.allAEntries && group?.allAEntries.length > 0) {
+            project_period_status = "In Progress";
+        } else if (P) {
+            if (planned.endDate) {
+                const end = parseApiDate(planned.endDate);
+                const today = parseApiDate(selectedDate);
+                if (end && today && end.getTime() < today.getTime()) {
+                    project_period_status = "Pending";
+                } else {
+                    project_period_status = "Planned";
+                }
+            } else {
+                project_period_status = "Planned";
+            }
+        } else {
+            project_period_status = "Pending";
+        }
+
+    const baseActivity = {
+    key: group.key,
+
+    customer_name: P.customer_name || "",
+    employee_name: P.employee_name || "",
+    emp_id: P.emp_id || "",
+    store_name: P.store_name || "",
+    order_item_key: P.order_item_key || "",
+    audit_type: P.audit_type || "",
+    emp_grade: P.grade_level || 0,
+
+    original_P: P,
+    original_A: group.original_A,
+    allAEntries: group.allAEntries,
+    project_period_status,
+
+    planned,
+    actual,
+    dayLogs,
+    // todayLog
+  };
+
+  const actualCheckoutDateTime = buildActualDateTime(actual.CheckInDate,actual.lastCheckOut.time);
+// ---- CHECK OUT ----
+  if (actual.firstCheckIn && actual.lastCheckOut) {
+    return {
+      ...baseActivity,
+      status: {
+        main: "CHECK_OUT",
+        sub: getCheckoutStatus({
+          plannedEnd,
+          actualCheckout: actualCheckoutDateTime,
+          // bufferMinutes,
+          isDateOnly: isEndDateOnlyA
+        })
+      },
+      // todayLog
+    };
+  }
+
+    // ---- STARTED ----
+    if (actualTimes.firstCheckIn) {
+      return {
+        ...baseActivity,
+        status: {
+          main: "STARTED",
+          sub: getTimeStatus({
+            plannedStart,
+            actualStart: actualStart,
+            // actualDate: actual.CheckInDate,
+            // bufferMinutes,
+            isDateOnly
+          })
+        },
+        // todayLog
+      };
+    }
+
+    // ---- NOT STARTED ----
+    const now = currentDateTime;
+
+    const selected = parseApiDate(selectedDate);
+    const today = new Date( now.getFullYear(), now.getMonth(), now.getDate());
+    let sub = "PLANNED";
+
+    if (selected) {
+
+      const selectedMidnight = new Date( selected.getFullYear(), selected.getMonth(), selected.getDate());
+
+      if (selectedMidnight > today) {
+        sub = "PLANNED";
+
+      } else if (selectedMidnight < today) {
+        sub = "OVERDUE";
+
+      } else {
+        if (plannedStart && plannedStart < now) {
+          sub = "OVERDUE";
+        } else {
+          sub = "PLANNED";
+        }
+      }
+    }
+
+    return {
+      ...baseActivity,
+      status: {
+        main: "NOT_STARTED",
+        sub
+      },
+      // todayLog
+    };
+  });
+};
+
+export const buildStatsSummary = (activities) => {
+  const stats = {
+    STARTED: { ON_TIME: 0, DELAYED: 0, total: 0 },
+    NOT_STARTED: { PLANNED: 0, OVERDUE: 0, total: 0 },
+    CHECK_OUT: { ON_BEFORE_TIME: 0, DELAYED: 0, total: 0 }
+  };
+
+  activities.forEach(a => {
+    stats[a.status.main][a.status.sub]++;
+    stats[a.status.main].total++;
+  });
+
+  return stats;
+};
+
+export const filterActivities = ( activities, statusFilter, customer, employee, searchText) => {
+
+  return activities.filter(a => {
+
+    if (statusFilter) {
+      if (a.status.main !== statusFilter.main) return false;
+      if (statusFilter.sub && a.status.sub !== statusFilter.sub) return false;
+    }
+
+    if (customer && a.customer_name !== customer)
+      return false;
+
+    if (employee && a.emp_id !== employee)
+      return false;
+
+    if (searchText) {
+      const text = searchText.toLowerCase();
+
+      return (
+        a.customer_name?.toLowerCase().includes(text) ||
+        a.employee_name?.toLowerCase().includes(text) ||
+        a.emp_id?.toLowerCase().includes(text) ||
+        a.store_name?.toLowerCase().includes(text) ||
+        a.order_item_key?.toLowerCase().includes(text)
+      );
+    }
+
+    return true;
+  });
+};
+

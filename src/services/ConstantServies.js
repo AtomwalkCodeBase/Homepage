@@ -120,5 +120,10 @@ export const getlabprocess = `${newlocalhost}/lab_api/get_lab_process_list/${db_
 export const getlabsample = `${newlocalhost}/lab_api/get_lab_sample_list/${db_name}/`;
 export const processsample = `${newlocalhost}/lab_api/process_sample_user_allocation/${db_name}/`;
 
+//seaFood api
+export const getPoItemList = `${hrendpoint}/get_po_list/${db_name}/`;
+export const getInventoryItemList = `${hrendpoint}/inventory_item_list/${db_name}/`;
+export const processPoRequest = `${hrendpoint}/process_po_request/${db_name}/`;
+
 
 

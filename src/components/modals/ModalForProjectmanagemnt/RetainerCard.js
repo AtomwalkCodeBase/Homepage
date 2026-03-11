@@ -152,53 +152,6 @@ const DetailValue = styled.span`
   }
 `;
 
-// const AdditionalInfo = styled.div`
-//   background: ${({ theme }) => theme.colors.backgroundAlt};
-//   border-radius: ${({ theme }) => theme.borderRadius.md};
-//   padding: ${({ theme }) => theme.spacing.md};
-//   margin-bottom: ${({ theme }) => theme.spacing.lg};
-// `;
-
-// const AdditionalInfoTitle = styled.h4`
-//   margin: 0 0 ${({ theme }) => theme.spacing.sm} 0;
-//   font-size: ${({ theme }) => theme.fontSizes.sm};
-//   font-weight: 600;
-//   color: ${({ theme }) => theme.colors.text};
-// `;
-
-// const AdditionalGrid = styled.div`
-//   display: grid;
-//   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-//   gap: ${({ theme }) => theme.spacing.sm};
-
-//   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-//     grid-template-columns: 1fr;
-//   }
-// `;
-
-// const AdditionalItem = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   padding: ${({ theme }) => theme.spacing.xs} 0;
-//   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-
-//   &:last-child {
-//     border-bottom: none;
-//   }
-// `;
-
-// const AdditionalLabel = styled.span`
-//   font-size: ${({ theme }) => theme.fontSizes.sm};
-//   color: ${({ theme }) => theme.colors.textLight};
-// `;
-
-// const AdditionalValue = styled.span`
-//   font-size: ${({ theme }) => theme.fontSizes.sm};
-//   font-weight: 500;
-//   color: ${({ theme }) => theme.colors.text};
-// `;
-
 const ActionsContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -247,8 +200,6 @@ const allocation = useMemo(() => {
 
   const todayCheckedIn = !!todayLog.check_in;
   const todayCheckedOut = !!todayLog.check_out;
-  console.log("retainer", retainer)
-  console.log("retainerData", allocation)
 
   return (
     <>
@@ -327,23 +278,7 @@ const allocation = useMemo(() => {
                     </DetailContent>
                   </DetailItem>
                 </DetailsGrid>
-
-                {/* {Object.keys(defaultAdditionalInfo).length > 0 && (
-                  <AdditionalInfo theme={theme}>
-                    <AdditionalInfoTitle theme={theme}>
-                      Additional Information
-                    </AdditionalInfoTitle>
-                    <AdditionalGrid theme={theme}>
-                      {Object.entries(defaultAdditionalInfo).map(([key, value]) => (
-                        <AdditionalItem key={key} theme={theme}>
-                          <AdditionalLabel theme={theme}>{key}</AdditionalLabel>
-                          <AdditionalValue theme={theme}>{value}</AdditionalValue>
-                        </AdditionalItem>
-                      ))}
-                    </AdditionalGrid>
-                  </AdditionalInfo>
-                )} */}
-                <ActivityLogs retainer={retainer} logs={allocation?.day_logs} isOpen={isLogsOpen} onToggle={() => setIsLogsOpen(!isLogsOpen)} />
+                <ActivityLogs retainer={retainer} resourceList={allocation?.original_A?.resource_list} logs={allocation?.day_logs} isOpen={isLogsOpen} onToggle={() => setIsLogsOpen(!isLogsOpen)} />
 
           {!retainer?.parentActivity?.complete && retainer?.parentActivity?.todaysStatus === "Active" &&
             <ActionsContainer theme={theme}>
@@ -355,7 +290,7 @@ const allocation = useMemo(() => {
                   isActivityStart={isActivityStart}
                   hasPendingCheckout={allocation.hasPendingCheckout}
                   pendingCheckoutDate={allocation.pendingCheckoutDate}
-                  complete={allocation.complete}
+                  complete={allocation.is_complete}
                   onAction={onAction}
                   todayISO={todayISO}
                   getTodayApiDateStr={getTodayApiDateStr}
@@ -366,12 +301,11 @@ const allocation = useMemo(() => {
                 />
               )}
             </ActionsContainer>
-            } 
+          }
           </Card>
         )}
       </div>
     </>
-    // <h1>hello</h1>
   );
 };
 

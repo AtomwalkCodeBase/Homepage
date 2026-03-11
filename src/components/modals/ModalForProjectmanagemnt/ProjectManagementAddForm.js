@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import {  FiFileText, FiCheck, FiUser, FiAlertTriangle } from 'react-icons/fi';
-import { FaFileAlt, FaTimes, FaUpload } from 'react-icons/fa';
+import React, { useEffect, useMemo, useState } from 'react';
+import {  FiFileText, FiCheck, FiX, FiUsers } from 'react-icons/fi';
+import { FaFileAlt, FaMinus, FaPlus, FaTimes, FaUpload } from 'react-icons/fa';
 import styled from 'styled-components';
 import { useTheme } from '../../../context/ThemeContext';
 import Button from '../../Button';
 import Badge from '../../Badge';
-import {
-  getStatusVariant,
-  getCurrentDateTimeDefaults,
-  getYesterday
-} from '../../../pages/ProjectManagement/utils/utils';
+import { getStatusVariant, getCurrentDateTimeDefaults, getYesterday, convert12To24Hour, formatToDDMMYYYY, normalizeToDDMMYYYY} from '../../../pages/ProjectManagement/utils/utils';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../../context/AuthContext';
+import Modal from '../Modal';
+import { FaRegPenToSquare } from 'react-icons/fa6';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -22,6 +20,7 @@ const ModalOverlay = styled.div`
   justify-content: center;
   z-index: 1000;
   padding: 1rem;
+  backdrop-filter: blur(4px);
 `
 
 const ModalContainer = styled.div`
@@ -332,26 +331,6 @@ const UploadedFile = styled.div`
   }
 `;
 
-const FilePreview = styled.div`
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  overflow: hidden;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${({ theme }) => theme.colors.primaryLight};
-  color: ${({ theme }) => theme.colors.primary};
-  font-size: 1rem;
-  
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-`;
-
 const WarningBox = styled.div`
   background: #fdecea;
   padding: 0.75rem;
@@ -376,31 +355,6 @@ const WarningBox2 = styled.div`
   box-shadow: 0 2px 8px rgba(255, 61, 0, 0.12);
 `;
 
-const WarningIconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: ${({ theme }) => theme.colors.error};
-  border-radius: 50%;
-  color: white;
-  font-size: 1.1rem;
-  flex-shrink: 0;
-  animation: pulse 2s ease-in-out infinite;
-
-  @keyframes pulse {
-    0%, 100% {
-      transform: scale(1);
-      box-shadow: 0 0 0 0 rgba(255, 61, 0, 0.4);
-    }
-    50% {
-      transform: scale(1.08);
-      box-shadow: 0 0 0 6px rgba(255, 61, 0, 0);
-    }
-  }
-`;
-
 const WarningContent = styled.div`
   flex: 1;
   font-size: 0.85rem;
@@ -419,6 +373,121 @@ const EmployeeNames = styled.span`
   color: ${({ theme }) => theme.colors.text};
 `;
 
+const ResourceCard = styled.div`
+  background: ${({ theme }) => theme.colors.card};
+  border: 2px dashed ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.xl};
+  padding: ${({ theme }) => theme.spacing.md};
+  margin: ${({ theme }) => theme.spacing.lg} 0;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, ${({ theme }) => theme.colors.primaryLight} 0%, ${({ theme }) => theme.colors.accentLight} 100%);
+    border-radius: ${({ theme }) => theme.borderRadius.xl};
+    z-index: -1;
+    opacity: 0.3;
+  }
+`;
+
+const CardHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.sm};
+  margin-bottom: ${({ theme }) => theme.spacing.lg};
+  color: ${({ theme }) => theme.colors.text};
+  font-family: ${({ theme }) => theme.fonts.heading};
+  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-weight: 600;
+
+  svg {
+    color: ${({ theme }) => theme.colors.primary};
+    font-size: ${({ theme }) => theme.fontSizes.xl};
+  }
+`;
+
+const TagsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${({ theme }) => theme.spacing.sm};
+  padding: ${({ theme }) => theme.spacing.md};
+  background: ${({ theme }) => theme.colors.background};
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  min-height: 60px;
+  align-items: center;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+`;
+
+const Tag = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.sm};
+  background: ${({ theme }) => theme.colors.primary};
+  color: white;
+  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  font-family: ${({ theme }) => theme.fonts.body};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-weight: 500;
+  animation: slideIn 0.3s ease;
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+`;
+
+const RemoveButton = styled.button`
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: ${({ theme }) => theme.spacing.xs};
+  border-radius: 50%;
+  transition: all ${({ theme }) => theme.transitions.fast};
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  svg {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+  }
+`;
+
+const ResourceCount = styled.span`
+  background: ${({ theme }) => theme.colors.primaryLight};
+  color: ${({ theme }) => theme.colors.primary};
+  padding: ${({ theme }) => theme.spacing.xs} ${({ theme }) => theme.spacing.md};
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  font-size: ${({ theme }) => theme.fontSizes.xs};
+  font-weight: 600;
+  margin-left: auto;
+`;
+
+const EmptyState = styled.div`
+  color: ${({ theme }) => theme.colors.textLight};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-style: italic;
+  text-align: center;
+  padding: ${({ theme }) => theme.spacing.md};
+`;
+
 const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActivitySubmit, modalContext, forceMode, retainerCache, retainerPage }) => {
   const theme = useTheme();
   const { profile } = useAuth();
@@ -429,18 +498,22 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
     noOfItems: "",
     noOfResources: "",
     remarks: "",
+    retainerNames: "",
+    is_completed: false,
     file: null
   })
+  const [isRetainerModalOpen, setIsRetainerModalOpen] = useState(false);
+  const [retainerInputs, setRetainerInputs] = useState([]);
 
   // console.log("formData", formData)
   // console.log("allRetainers", allRetainers)
-  console.log("activity", activity)
+  // console.log("activity", activity)
   // console.log("retainerCache", retainerCache)
 
   const yesterday = getYesterday()
   const dayLogToday = activity?.day_logs?.[todayDayLogKey]
   const dayLogYesterday = activity?.day_logs?.[yesterday.dayLogKey]
-  const isTodayPlannedEnd = activity.planned_end_date === todayISO;
+  const isTodayPlannedEnd = activity.planned_end_date === todayISO || activity.planned_end_date < todayISO;
   const isActivityCompleted = activity?.status_display === "COMPLETED" || activity?.project_period_status === "COMPLETED"
   const forcedUpdateYesterday = !!dayLogYesterday?.check_in && !dayLogYesterday?.check_out
   const derivedUpdateMode = !isActivityCompleted && (forcedUpdateYesterday || (dayLogToday?.check_in && !dayLogToday?.check_out))
@@ -450,106 +523,93 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
 
   const isRetainerUpdate = modalContext?.type === "update_retainer";
 
-  // console.log("profile.grade_level", profile.grade_level > 100)
+const incompleteEmployees = useMemo(() => {
+    if (!activity?.original_P || !retainerCache) return [];
 
-  // const getIncompleteEmployees = (data = {}) =>
-  // Object.entries(data)
-  //   .filter(([_, value]) => value?.allocation?.complete === false)
-  //   .map(([empId, value]) => ({
-  //     emp_id: empId,
-  //     employee_name: value?.allocation?.original_P?.employee_name || ""
-  //   }));
+    const retainerPIds = (activity.original_P.retainer_list || []).filter(r => r.a_type === "P").map(r => r.a_id);
 
-  // const getIncompleteEmployees = (data = {}) =>
-  // Object.entries(data)
-  //   .filter(([_, value]) => value?.allocations?.some(allocation => allocation.complete === false))
-  //   .map(([empId, value]) => {
-  //     const firstIncomplete = value.allocations.find( a => a.complete === false);
-  //     return {
-  //       emp_id: empId,
-  //       employee_name: firstIncomplete?.original_P?.employee_name || ""
-  //     };
-  //   });
+    if (retainerPIds.length === 0) return [];
 
-  const getIncompleteEmployees = (data = {}, activity = {}) => {
-  if (!activity || !activity.original_P) return [];
+    const activityOrderItemId = activity.order_item_id;
 
-  // 1️⃣ Get all retainer P a_ids from activity
-  const retainerPIds = (activity.original_P.retainer_list || []).filter(r => r.a_type === "P").map(r => r.a_id);
+    return Object.entries(retainerCache).map(([empId, empData]) => {
+        const matched = (empData.allocations || []).find(a =>
+          a.order_item_id === activityOrderItemId &&
+          retainerPIds.includes(a.p_id) &&
+          !a.complete
+        );
 
-  if (retainerPIds.length === 0) return [];
+        if (!matched) return null;
 
-  const activityOrderItemId = activity.order_item_id;
-
-  // 2️⃣ Loop employees in data
-  return Object.entries(data).map(([empId, empData]) => {
-      const allocations = empData.allocations || [];
-
-      // 3️⃣ Find matching incomplete allocation
-      const matchedAllocation = allocations.find(a =>
-        a.order_item_id === activityOrderItemId &&
-        retainerPIds.includes(a.p_id) &&
-        a.complete === false
-      );
-
-      if (!matchedAllocation) return null;
-
-      // 4️⃣ Return employee info
-      return {
-        emp_id: empId,
-        employee_name: matchedAllocation.original_P?.employee_name || "",
-        matchedAllocation: matchedAllocation,
-      };
-    })
-    .filter(Boolean); // remove nulls
-};
-
-  const incompleteEmployees = getIncompleteEmployees(retainerCache, activity);
-
-  // console.log("incompleteEmployees",incompleteEmployees);
-  // console.log("retainerCache",retainerCache);
-  // console.log("retainerCache",JSON.stringify(retainerCache));
-
-  const activeDate = forcedDate
-    ? forcedDate
-    : forcedUpdateYesterday
-      ? yesterday.input
-      : todayISO;
-
-  const activeAPIDate = forcedDate
-    ? forcedDate
-    : forcedUpdateYesterday
-      ? yesterday.apiDate
-      : todayApiDate;
+        return {
+          emp_id: empId,
+          employee_name: matched.original_P?.employee_name || "",
+          matchedAllocation: matched,
+        };
+      })
+      .filter(Boolean);
+  }, [retainerCache, activity]);
 
   const totalAssignedItems = Number(activity?.original_P?.no_of_items || 0);
   const enteredItems = Number(formData.noOfItems || 0);
 
-    const isContinueAction = modalContext?.type === "continue";
+  const isContinueAction = modalContext?.type === "continue";
   const isLessThanAssigned = enteredItems > 0 && enteredItems < totalAssignedItems;
   const isZeroItems = totalAssignedItems === 0;
 
   const isRemarksRequired = (isContinueAction && isTodayPlannedEnd) || (isUpdateMode && isLessThanAssigned);
+  const isFileRequired = isTodayPlannedEnd && activity?.original_P?.is_file_applicable && !formData?.file;
+  // const fileUploadRequired = activity?.original_P?.is_file_applicable && activity?.original_A?.sub
 
   const hasRemarks = formData.remarks.trim().length > 0;
 
-  const isDisabled =
-    !formData.endTime ||
-    (!isZeroItems && !formData.noOfItems) ||
-    (isRemarksRequired && !hasRemarks) || (activity?.original_P?.is_file_applicable && !formData?.file);
+  const isNoOfItemsEmpty = formData.noOfItems === "" || formData.noOfItems === null;
+
+  const isForceCom = modalContext?.type === "force_complete";
+  const isDisabled = (
+    isForceCom 
+      ? (incompleteEmployees.length !== 0 && !retainerPage)
+      : (!formData.date || !formData.endTime ||(!isZeroItems && isNoOfItemsEmpty) ||
+        (isRemarksRequired && !hasRemarks) || isFileRequired || (incompleteEmployees.length !== 0 && !retainerPage))
+  );
 
 
-  useEffect(() => {
-    if (!isActivityCompleted && isOpen) {
-      setFormData({
-        date: activeDate,
-        endTime: currentTime,
-        noOfResources: activity?.retainerData?.no_resource,
-        noOfItems: 0,
-        remarks: "",
-      })
+  const pendingCheckoutDate = activity?.pendingCheckoutDate;
+  const dayLog = activity?.day_logs?.[pendingCheckoutDate];
+  const selectedDate = formData.date;
+
+  const activeDate = pendingCheckoutDate ? "" : todayISO
+
+useEffect(() => {
+  if (!isActivityCompleted && isOpen) {
+
+    const existingResources =
+      activity?.original_A?.resource_list || [];
+
+    setFormData({
+      date: activeDate,
+      endTime: currentTime,
+      noOfResources: activity?.retainerData?.no_resource,
+      noOfItems: 0,
+      is_completed: false,
+      retainerNames: existingResources.join("|"),
+      remarks: "",
+    });
+
+    if (Array.isArray(existingResources) && existingResources.length > 0) {
+      setRetainerInputs(existingResources);
+    } else {
+      setRetainerInputs([]);
     }
-  }, [isOpen])
+  }
+}, [isOpen, activity]);
+
+if (
+  (modalContext?.type === "continue" || modalContext?.type === "complete") && activity?.hasPendingCheckout) {
+  toast.error("Session started on a previous day. Please reload the page.");
+  return;
+}
+
 
   if (!isOpen || !activity) return null;
 
@@ -569,32 +629,125 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
     handleChange("file", file);
   };
 
-  const removeFile = () => {
-    setFormData((prev) => ({
-      ...prev,
-      file: null,
-    }))
-  }
+  const removeFile = () => {setFormData((prev) => ({...prev,file: null,}))}
+
+  const getJoinedRetainerNames = () => retainerInputs.map(v => v.trim()).filter(Boolean).join("|");
 
   const handleSubmit = async () => {
     if (isDisabled || !onActivitySubmit) return;
 
-    const extraFields = {}
-    if (modalContext?.type === "complete") {
-      extraFields.is_completed = 1
+    if (totalAssignedItems > 0 && isNoOfItemsEmpty) {
+      toast.error("Please enter the number of items completed");
+      return;
     }
+  const formattedSelectedDate = formatToDDMMYYYY(selectedDate); // ALWAYS DD-MM-YYYY
+  let activityDateToSend = formattedSelectedDate;
+  const extraFields = {};
 
-    if(retainerCache){
-      extraFields.no_of_resources = Number(formData.noOfResources)
+  const mode = modalContext?.type;
+
+  if (mode === "continue") {
+    activityDateToSend = formattedSelectedDate;
+  }
+
+    else if (mode === "checkout_yesterday") {
+
+    if (!pendingCheckoutDate) {
+      activityDateToSend = formattedSelectedDate;
+    } else {
+
+      const pendingFormatted =  normalizeToDDMMYYYY(pendingCheckoutDate);
+
+      if (formattedSelectedDate === pendingFormatted) {
+        activityDateToSend = pendingFormatted;
+      } else {
+        activityDateToSend = pendingFormatted;
+        extraFields.end_date = formattedSelectedDate;
+      }
     }
+  }
 
+    else if (mode === "complete" || mode === "complete_y") {
+
+    // always send is_completed
+    extraFields.is_completed = 1;
+
+    if (!pendingCheckoutDate) {
+      activityDateToSend = formattedSelectedDate;
+    } else {
+
+      const pendingFormatted = normalizeToDDMMYYYY(pendingCheckoutDate);
+
+      if (formattedSelectedDate === pendingFormatted) {
+        activityDateToSend = pendingFormatted;
+      } else {
+        activityDateToSend = pendingFormatted;
+        extraFields.end_date = formattedSelectedDate;
+      }
+    }
+  }
+    const normalizedPending = normalizeToDDMMYYYY(pendingCheckoutDate);
+
+if (
+  normalizedPending &&
+  formattedSelectedDate === normalizedPending &&
+  dayLog?.check_in?.time &&
+  formData.endTime
+  ) {
+    const checkIn24 = convert12To24Hour(dayLog.check_in.time);
+
+    const checkInDate = new Date(`1970-01-01T${checkIn24}:00`);
+    const checkOutDate = new Date(`1970-01-01T${formData.endTime}:00`);
+
+    if (checkOutDate <= checkInDate) {
+      toast.error("Check-out time must be strictly greater than check-in time");
+      return;
+    }
+  }
+
+    if (retainerCache && formData.noOfResources !== "") {
+    const resourceCount = Number(formData.noOfResources);
+
+    if (Number.isFinite(resourceCount) && resourceCount > 0) {
+      extraFields.no_of_resources = resourceCount;
+    }
+  }
+
+
+    const resourceList = getJoinedRetainerNames() || "";
+      if (resourceList && String(resourceList).trim()) {
+        extraFields.resource_list = resourceList;
+      }
+
+    if (retainerPage) {
+    const expectedResources = Number(formData.noOfResources || 0);
+    const enteredResourceCount = retainerInputs.filter(name => name.trim()).length;
+
+    if (expectedResources !== enteredResourceCount) {
+      toast.error(
+        `Number of resources (${expectedResources}) must match entered resource names (${enteredResourceCount})`
+      );
+      return;
+    }
+  }
+    
+//  console.log({
+//           activityDate: activityDateToSend,
+//           endTime: formData.endTime,
+//           noOfItems: isZeroItems ? 0 : Number(formData.noOfItems),
+//           remarks: formData.remarks.trim() || "",
+//           // resource_list: getJoinedRetainerNames() || "",
+//           file: formData.file
+//         },
+//         extraFields
+//       );
     let success;
     if(isRetainerUpdate){
       success = await onActivitySubmit({
       project: activity,
       mode: "DATA_CORRECT",
       data: {
-        activityDate: activeAPIDate,
+        activityDate: activityDateToSend,
         // endTime: formData.endTime,
         noOfItems: isZeroItems ? 0 : Number(formData.noOfItems),
         // remarks: formData.remarks.trim() || "",
@@ -602,12 +755,22 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
       },
       extraFields
     })
+    }else if(mode === "force_complete"){
+      success = await onActivitySubmit({
+        project: activity,
+        mode: "FORCE_COMPLETE",
+        data: {
+          remarks: formData.remarks.trim() || "",
+          file: formData.file
+        },
+        extraFields
+      })
     }else{
       success = await onActivitySubmit({
         project: activity,
         mode: "UPDATE",
         data: {
-          activityDate: activeAPIDate,
+          activityDate: activityDateToSend,
           endTime: formData.endTime,
           noOfItems: isZeroItems ? 0 : Number(formData.noOfItems),
           remarks: formData.remarks.trim() || "",
@@ -623,12 +786,48 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
     }
   }
 
+  const handleRetainerNameChange = (index, value) => {
+  setRetainerInputs(prev => {
+    const updated = [...prev];
+    updated[index] = value;
+    return updated;
+  });
+};
+
+  const handleRetainerModalSubmit = () => {
+    const formatted = retainerInputs.map(v => v.trim()).filter(Boolean).join("| ");
+    setFormData(prev => ({...prev,retainerNames: formatted}));
+    setIsRetainerModalOpen(false);
+  };
+
+  const handleAddOrUpdateResources = () => {
+    const count = Number(formData.noOfResources || 0);
+    if (count <= 0) {
+      toast.error("Please enter number of resources first");
+      return;
+    }
+
+    setRetainerInputs(prev => {
+      const arr = [...prev];
+      while (arr.length < count) arr.push("");
+      return arr.slice(0, count);
+    });
+
+    setIsRetainerModalOpen(true);
+  };
+
+ const handleRemoveRetainer = (indexToRemove) => {
+    setRetainerInputs(prev => prev.filter((_, index) => index !== indexToRemove));
+  };
+
+
   return (
+    <>
     <ModalOverlay onClick={onClose}>
       <ModalContainer onClick={e => e.stopPropagation()}>
         <ModalHeader>
           <ModalTitle>
-            {activity.modalContext.type === "continue" ? "End Today's Activity" : "Complete Activity"}
+            {activity.modalContext.type === "continue" ? "End Today's Activity" : activity.modalContext.type === "force_complete" ? "Mark as Complete" : "Complete Activity"}
           </ModalTitle>
           <CloseButton onClick={onClose}>
             <FaTimes />
@@ -642,101 +841,99 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
             </WarningBox>
           )}
 
-          {/* Compact Activity Info Card */}
           <ActivityInfoCard>
             <ActivityTitle>📋 Activity Details</ActivityTitle>
             <InfoGrid>
-              <InfoItem>
-                <InfoLabel>Company:</InfoLabel>
-                <InfoValue title={activity.original_P.customer_name}>
-                  {activity.original_P.customer_name || "Company Name"}
-                </InfoValue>
-              </InfoItem>
 
-              <InfoItem>
-                <InfoLabel>Activity:</InfoLabel>
-                <InfoValue title={activity.original_P.product_name}>
-                  {activity.original_P.product_name}
-                </InfoValue>
-              </InfoItem>
+              <InfoDetails label="Customer" value={activity.original_P.customer_name || "Customer Name"} />
 
-              <InfoItem>
-                <InfoLabel>Code:</InfoLabel>
-                <InfoValue>{activity.original_P.order_item_key || '-'}</InfoValue>
-              </InfoItem>
+              <InfoDetails label="Audit type" value={activity.original_P.product_name || ""} />
 
-              <InfoItem>
-                <InfoLabel>Status:</InfoLabel>
-                <Badge variant={getStatusVariant(activity.project_period_status)}>
-                  {activity.project_period_status}
-                </Badge>
-              </InfoItem>
+              <InfoDetails label="Order Item" value={activity.original_P.order_item_key || '-'} />
 
-              <InfoItem>
-                <InfoLabel>Period:</InfoLabel>
-                <InfoValue title={`${activity.planned_start_date} → ${activity.planned_end_date}`}>
-                  {activity.planned_start_date} → {activity.planned_end_date}
-                </InfoValue>
-              </InfoItem>
+              <InfoDetails label="Status" value={<Badge variant={getStatusVariant(!retainerPage ? activity.project_period_status : activity.complete)}>
+                  {!retainerPage ? activity.project_period_status : activity.complete}
+              </Badge>} />
 
-              <InfoItem>
-                <InfoLabel>Total number of items assigned:</InfoLabel>
-                <InfoValue>{activity.original_P?.no_of_items || 0}</InfoValue>
-              </InfoItem>
+              <InfoDetails label="Planned Date" value={`${activity.planned_start_date} → ${activity.planned_end_date}`} />
+
+              <InfoDetails label="Total number of items assigned" value={activity.original_P?.no_of_items || 0} />
+          
             </InfoGrid>
           </ActivityInfoCard>
 
          {incompleteEmployees.length !== 0 && !retainerPage && (
           <RetainerWarning incompleteEmployees={incompleteEmployees} />
         )}
-          {/* Compact Form Fields in Row */}
-          <CompactRow>
-            <FormGroup>
-              <Label>Date <Required>*</Required></Label>
-              <Input 
-                type="date" 
-                value={formData.date} 
-                onChange={(e) => handleChange("date", e.target.value)} 
-                disabled={isExecutive || isRetainerUpdate} 
-              />
-            </FormGroup>
 
-            <FormGroup>
+          <CompactRow>
+           {modalContext?.type !== "force_complete" && <FormGroup>
+              <Label>End Date <Required>*</Required></Label>
+              <Input type="date" value={formData.date} onChange={(e) => handleChange("date", e.target.value)} disabled={(modalContext?.type === "continue" || modalContext?.type === "complete")  && (isExecutive || isRetainerUpdate)} />
+            </FormGroup>}
+
+            {modalContext?.type !== "force_complete" && <FormGroup>
               <Label>End Time <Required>*</Required></Label>
-              <Input
-                type="time"
-                value={formData.endTime}
-                disabled={isExecutive || isRetainerUpdate}
-                onChange={(e) => handleChange("endTime", e.target.value)}
-              />
-            </FormGroup>
+              {/* <Input type="time" value={formData.endTime} disabled={isExecutive || isRetainerUpdate} onChange={(e) => handleChange("endTime", e.target.value)} /> */}
+              <Input type="time" value={formData.endTime}  onChange={(e) => handleChange("endTime", e.target.value)} />
+            </FormGroup>}
+           
+           {modalContext?.type !== "force_complete" && totalAssignedItems > 0 && (
+              <FormGroup>
+                <Label>Number of Items <Required>*</Required></Label>
+                <Input type="number" min={0} value={formData.noOfItems} onChange={(e) => handleChange("noOfItems", e.target.value)} placeholder="Enter completed items" />
+              </FormGroup>
+            )}
 
            {retainerPage &&
            <FormGroup>
                 <Label>Number of Resources <Required>*</Required></Label>
-                <Input
-                  type="number"
-                  min={0}
-                  value={formData.noOfResources}
-                  onChange={(e) => handleChange("noOfResources", e.target.value)}
-                  placeholder="Enter no of resources"
-                />
+                <Input type="number" min={0} value={formData.noOfResources} onChange={(e) => handleChange("noOfResources", e.target.value)} placeholder="Enter no of resources" />
               </FormGroup>
              } 
-           
-           { totalAssignedItems > 0 && (
-              <FormGroup>
-                <Label>Number of Items <Required>*</Required></Label>
-                <Input
-                  type="number"
-                  min={0}
-                  value={formData.noOfItems}
-                  onChange={(e) => handleChange("noOfItems", e.target.value)}
-                  placeholder="Enter completed items"
-                />
-              </FormGroup>
-            )}
+
           </CompactRow>
+
+             {retainerPage && (
+            <ResourceCard>
+              <CardHeader>
+                <FiUsers />Resource List
+              </CardHeader>
+
+              <FormGroup>
+                <div style={{display: "flex", justifyContent: "space-between"}}>
+                  <Label>
+                    <FiFileText />Add Resources (Enter Names)<Required>*</Required>
+                  </Label>
+                 <Button size='sm' onClick={handleAddOrUpdateResources}>{retainerInputs.length !== 0 ? <FaRegPenToSquare /> : <FaPlus />} {retainerInputs.length !== 0 ? "Update" : "Add"}</Button>
+                </div>
+
+                <TagsContainer>
+                  {retainerInputs.length > 0 ? (
+                    <>
+                      {retainerInputs.map((name, index) => (
+                        name && (
+                          <Tag key={index}>
+                            {name}
+                             <RemoveButton type="button" onClick={() => handleRemoveRetainer(index)} aria-label={`Remove ${name}`}>
+                              <FiX />
+                            </RemoveButton>
+                          </Tag>
+                        )
+                      ))}
+                      {retainerInputs.filter(name => name).length > 0 && (
+                        <ResourceCount>
+                          {retainerInputs.filter(name => name).length} of {formData.noOfResources || 0} resources added
+                        </ResourceCount>
+                      )}
+                    </>
+                  ) : (
+                    <EmptyState>No retainer added</EmptyState>
+                  )}
+                </TagsContainer>
+              </FormGroup>
+            </ResourceCard>
+          )}
 
           <FormGroup>
             <Label>
@@ -800,34 +997,43 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
 
         <ModalFooter>
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button
-            variant="primary"
-            onClick={handleSubmit}
-            disabled={isDisabled}
-          >
+          <Button variant="primary" onClick={handleSubmit} disabled={isDisabled}>
             <FiCheck style={{ marginRight: 6 }} />
-            Submit 
+            {modalContext?.type === "force_complete" ? "Mark as Complete" : "Submit"}
           </Button>
         </ModalFooter>
       </ModalContainer>
     </ModalOverlay>
+
+    {isRetainerModalOpen && 
+    <RetainerListNameModal 
+      retainerInputs={retainerInputs}  
+      setRetainerInputs={setRetainerInputs}  
+      handleRetainerNameChange={handleRetainerNameChange} 
+      handleRetainerModalSubmit={handleRetainerModalSubmit} handleClose={() => {setIsRetainerModalOpen(false); }}
+      />}
+    </>
   );
 };
 
 export default ProjectManagementAddForm;
 
+export const InfoDetails = ({ label, value }) => {
+  return (
+    <InfoItem>
+      <InfoLabel>{label}: </InfoLabel>
+      <InfoValue title={value}>{value}</InfoValue>
+    </InfoItem>
+  );
+}
+
 export const RetainerWarning = ({ incompleteEmployees }) => {
   if (!incompleteEmployees || incompleteEmployees.length === 0) return null;
 
-  const employeeText = incompleteEmployees
-    .map(emp => `${emp.employee_name} (${emp.emp_id})`)
-    .join(", ");
+  const employeeText = incompleteEmployees.map(emp => `${emp.employee_name} (${emp.emp_id})`).join(", ");
 
   return (
     <WarningBox2>
-      {/* <WarningIconWrapper>
-        <FiAlertTriangle />
-      </WarningIconWrapper> */}
       <WarningContent>
         <WarningTitle>⚠️ Incomplete Retainer Activities:</WarningTitle>
         <EmployeeNames>{employeeText}</EmployeeNames>
@@ -835,3 +1041,28 @@ export const RetainerWarning = ({ incompleteEmployees }) => {
     </WarningBox2>
   );
 };
+
+const RetainerListNameModal = ({ retainerInputs, setFormData, setRetainerInputs, handleRetainerNameChange, handleRetainerModalSubmit, handleClose }) => {
+  return (
+    <Modal onClose={handleClose}>
+      {retainerInputs.map((name, index) => (
+        <FormGroup key={index}>
+          <Label>Resource {index + 1}</Label>
+          <Input value={name} onChange={(e) =>   handleRetainerNameChange(index, e.target.value) } placeholder="Enter retainer name" />
+        </FormGroup>
+      ))}
+      <ModalFooter>
+        <Button variant="outline" onClick={handleClose}>Cancel</Button>
+        <Button variant="outline" onClick={() => { handleClose(); setRetainerInputs([]) }}>Clear</Button>
+        <Button
+          variant="primary"
+          onClick={handleRetainerModalSubmit}
+        // disabled={isDisabled}
+        >
+          <FiCheck style={{ marginRight: 6 }} />
+          Submit
+        </Button>
+      </ModalFooter>
+    </Modal>
+  )
+}

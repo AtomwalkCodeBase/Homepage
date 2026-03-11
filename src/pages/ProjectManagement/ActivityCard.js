@@ -16,15 +16,14 @@ import {
   PenBox,
   MapPin,
 } from 'lucide-react';
-import { getCurrentDateTimeDefaults, getTodayApiDateStr, formatToDDMMYYYY, getMonthRange, normalizeProjects, formatDate } from './utils/utils';
+import { getCurrentDateTimeDefaults, getTodayApiDateStr, formatDate, formatAPITime } from './utils/utils';
 import Button from '../../components/Button';
 import { CalendarEvent } from 'react-bootstrap-icons';
-import { FaBan, FaCheck, FaRegFile, FaUsers } from 'react-icons/fa';
+import {  FaRegFile, FaUsers } from 'react-icons/fa';
 import Badge from '../../components/Badge';
-import RetainerCard from '../../components/modals/ModalForProjectmanagemnt/RetainerCard';
-import { getEmpAllocationData } from '../../services/productServices';
-import { FiEye, FiUsers } from 'react-icons/fi';
+import { FiEye, FiInfo, FiUsers } from 'react-icons/fi';
 import { FaRegPenToSquare } from 'react-icons/fa6';
+import { LuClipboardPen, LuIndianRupee } from "react-icons/lu";
 
 const CardHover = styled.div`
   background: ${({ theme }) => theme.colors?.card || '#fff'};
@@ -43,6 +42,19 @@ const CardHover = styled.div`
     transform: ${({ theme }) =>
     theme.cardStyle?.animation ? 'translateY(-2px)' : 'none'};
   }
+`;
+
+const MainContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing?.md || '1rem'};
+`;
+
+const HeaderSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing?.xs || '0.25rem'};
+  margin-bottom: ${({ theme }) => theme.spacing?.sm || '0.5rem'};
 `;
 
 const Flex = styled.div`
@@ -328,16 +340,101 @@ const SecondaryBtn = styled(Button)`
   }
 `;
 
+const AccordionSection = styled.div`
+  border: 1px solid ${({ theme }) => theme.colors?.border || '#e0e0e0'};
+  border-radius: ${({ theme }) => theme.borderRadius?.md || '8px'};
+  overflow: hidden;
+  margin-top: ${({ theme }) => theme.spacing?.sm || '0.5rem'};
+`;
 
+const AccordionHeader = styled.div`
+  background: ${({ theme }) => theme.colors?.backgroundAlt || '#f8f9fc'};
+  padding: ${({ theme }) => theme.spacing?.sm || '0.75rem'} ${({ theme }) => theme.spacing?.lg || '1rem'};
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: ${({ theme }) => theme.transitions?.fast || '0.2s ease'};
+  
+  &:hover {
+    background: ${({ theme }) => theme.colors?.primaryLight || '#E8E6FF'};
+  }
+`;
 
-export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavigateToRetainer }) => {
+const AccordionTitle = styled.div`
+  font-weight: 600;
+  font-size: ${({ theme }) => theme.fontSizes?.sm || '0.875rem'};
+  color: ${({ theme }) => theme.colors?.text || '#333'};
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing?.xs || '0.5rem'};
+`;
+
+const AccordionToggle = styled.div`
+  color: ${({ theme }) => theme.colors?.textLight || '#666'};
+  transition: ${({ theme }) => theme.transitions?.normal || 'transform 0.3s ease'};
+  transform: ${({ isOpen }) => (isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
+  display: flex;
+  align-items: center;
+`;
+
+const AccordionContent = styled.div`
+  max-height: ${({ isOpen }) => (isOpen ? '500px' : '0')};
+  overflow: hidden;
+  transition: ${({ theme }) => theme.transitions?.normal || 'max-height 0.3s ease'};
+  background: ${({ theme }) => theme.colors?.card || '#fff'};
+`;
+
+const ActionsRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: ${({ theme }) => theme.spacing?.sm || '0.5rem'};
+  align-items: center;
+  flex-wrap: wrap;
+  padding: ${({ theme }) => theme.spacing?.sm || '0.5rem'} 0;
+  border-top: 1px solid ${({ theme }) => theme.colors?.border || '#e0e0e0'};
+  border-bottom: 1px solid ${({ theme }) => theme.colors?.border || '#e0e0e0'};
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+`;
+
+const MainGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: ${({ theme }) => theme.spacing?.md || '0.75rem'};
+  padding: ${({ theme }) => theme.spacing?.md || '1rem'} 0;
+`;
+
+const DetailsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: ${({ theme }) => theme.spacing?.md || '0.75rem'};
+  padding: ${({ theme }) => theme.spacing?.lg || '1rem'};
+`;
+const RemarkItem = styled.div`
+  grid-column: 1 / -1;
+  font-size: ${({ theme }) => theme.fontSizes?.sm || '0.85rem'};
+  color: ${({ theme }) => theme.colors?.text || '#000'};
+`;
+const ButtonGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: ${({ theme }) => theme.spacing?.sm || '0.5rem'};
+  align-items: center;
+  width: 100%;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavigateToRetainer, onNavigateToOpe }) => {
   const [isLogsOpen, setIsLogsOpen] = useState(false);
-  // const [isRetainerOpen, setIsRetainerOpen] = useState(false);
-  // const [retainerDataCache, setRetainerDataCache] = useState({});
-  // const [dateRange, setDateRange] = useState(() => {
-  //   const { start, end } = getMonthRange("current")
-  //   return { start, end }
-  // })
+   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const progress = activity.total_no_of_items || 0;
   const totalEffort = activity.original_P.no_of_items || 0;
 
@@ -349,41 +446,6 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavi
   const todayCheckedOut = !!todayLog.check_out;
 
   const { todayISO } = getCurrentDateTimeDefaults();
-
-  // const fetchEmpAllocationDataForRetainer = async (retainer) => {
-  //   const payload = {
-  //     emp_id: retainer.emp_id,
-  //     start_date: formatToDDMMYYYY(dateRange.start),
-  //     end_date: formatToDDMMYYYY(dateRange.end),
-  //   };
-
-  //   try {
-  //     const response = await getEmpAllocationData(payload);
-  //     const normalizedAllocation = normalizeProjects(response.data);
-  //     const matchRetainer = normalizedAllocation.find((allocation) => allocation.p_id === retainer.a_id)
-  //     setRetainerDataCache(prev => ({ ...prev, [retainer.emp_id]: { retainer, allocation: matchRetainer } }));
-  //   } catch (error) {
-  //     console.error("Failed to fetch retainer data", error);
-  //   }
-  // };
-
-  // const fetchAllRetainerData = () => {
-  //   const retainers = activity.original_P.retainer_list.filter(r => r.a_type === "P");
-  //   retainers.forEach(retainer => {
-  //     if (!retainerDataCache[retainer.emp_id]) {
-  //       fetchEmpAllocationDataForRetainer(retainer);
-  //     } else {
-  //       // Always refetch to update data
-  //       fetchEmpAllocationDataForRetainer(retainer);
-  //     }
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   if (isRetainerOpen) {
-  //     fetchAllRetainerData();
-  //   }
-  // }, [isRetainerOpen, activity.original_P.retainer_list]);
 
   const isImageFile = (url = "") => /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(url);
 
@@ -404,78 +466,72 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavi
   }
 };
 
+const opeAmount = activity?.original_A?.ope_amt || activity?.original_P?.ope_amt || "0.00";
+      const hasOPEAmount = opeAmount && opeAmount !== "0.00";
 
-  return (
+// console.log("Activity", activity)
+
+
+ return (
     <CardHover>
-      <Flex filterType={filterType}>
-        <Info>
-          <div>
-            <Company><Building2 size={18} />{activity.customer_name} <StatusBadge status={activity.project_period_status || activity.todaysStatus}>
+      <MainContent>
+        <HeaderSection>
+          <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+
+          <Company>
+            <Building2 size={18} />
+            {activity.customer_name}
+            {(activity.original_P.retainer_list.filter(r => r.a_type === "P").length !== 0) && (
+              <Badge variant='info' style={{cursor:"pointer"}} onClick={onNavigateToRetainer}>
+                <FiUsers size={14} style={{marginRight: "0.4rem"}} />
+                Retainer assigned: {activity.original_P.retainer_list.filter(r => r.a_type === "P").length}
+              </Badge>
+            )}
+            {activity.is_ope_actual && (
+              <Badge variant={hasOPEAmount ? 'info' :'warning'} style={{cursor:"pointer"}} onClick={onNavigateToOpe}>
+                <LuIndianRupee size={14} style={{marginRight: "0.4rem"}} />
+                {hasOPEAmount ? "OPE Given" : "OPE Pending"}
+              </Badge>
+            )}
+          </Company>
+            <StatusBadge status={activity.project_period_status || activity.todaysStatus}>
               <StatusIcon status={activity.project_period_status || activity.todaysStatus} />
               {activity.project_period_status || activity.todaysStatus}
             </StatusBadge>
-{activity.original_P.retainer_list.filter(r => r.a_type === "P").length !== 0   &&      <Badge variant='info' style={{cursor:"pointer"}} onClick={onNavigateToRetainer} ><FiUsers size={14} style={{marginRight: "0.4rem"}} />Retainer assigned: {activity.original_P.retainer_list.filter(r => r.a_type === "P").length}</Badge>}
-</Company>            
-<Order>
-              <FileText size={14} />{activity.project_code || activity.order_item_key}
-            </Order>
           </div>
+          <Order>
+            <FileText size={14} />
+            {activity.project_code || activity.order_item_key}
+          </Order>
+        </HeaderSection>
 
-          <Grid>
-            <Item><Label><FileText size={14} />Audit Type</Label><DetailValue>{activity.audit_type}</DetailValue></Item>
-            <Item><Label><Package size={14} />Total No. of Item Audit</Label><DetailValue>{activity.original_P.no_of_items || 0}</DetailValue></Item>
-      
-
-            <Item><Label><CalendarEvent size={14} />Planned Date</Label><DetailValue>{formatDate(activity.planned_start_date)} to {(activity.planned_end_date)}</DetailValue></Item>
-              <Item><Label><CalendarEvent size={14} />Actual Date</Label><DetailValue>{ activity.actual_start_date  ?  `${activity.actual_start_date} to ${activity.actual_end_date}` : "Not started"}</DetailValue></Item>
-          {activity.original_P.store_name && <Item><Label><MapPin size={14} />Location</Label><DetailValue>{activity.original_P.store_name}</DetailValue></Item>}
-            {activity?.original_A?.is_file_applicable === true &&
-              <Item>
-                <Label><FaRegFile size={14} /> File Uploaded</Label>
-                {activity?.original_A?.submitted_file ?
-                  <DetailValue
-                    style={{ cursor: "pointer" }}
-                    onClick={() => handleFileClick(activity?.original_A.submitted_file)}
-                  >
-                    ✅ <FiEye /> View
-                  </DetailValue> :
-                  <DetailValue>
-                    ❌
-                  </DetailValue>
-                }
-              </Item>
-          }
-        {/* {activity?.original_A?.submitted_file ? 
+        <MainGrid>
           <Item>
-            <Label>
-              <FaRegFile size={14} /> File Uploaded
-            </Label>
-            <DetailValue
-              style={{ cursor: "pointer" }}
-              onClick={() => handleFileClick(activity?.original_A.submitted_file)}
-            >
-              ✅ <FiEye /> View 
-            </DetailValue>
-          </Item> : 
-          <Item>
-            <Label>
-              <FaRegFile size={14} /> File Uploaded
-            </Label>
-            <DetailValue>
-             ❌
-            </DetailValue>
+            <Label><FileText size={14} />Audit Type</Label>
+            <DetailValue>{activity.audit_type}</DetailValue>
           </Item>
-        } */}
-          </Grid>
-          {activity.original_P.store_remarks && <Item><Label><PenBox size={14} />Remark</Label><DetailValue>{activity.original_P.store_remarks}</DetailValue></Item>}
+          <Item>
+            <Label><Package size={14} />Total No. of Item Audit</Label>
+            <DetailValue>{activity.original_P.no_of_items || 0}</DetailValue>
+          </Item>
+          <Item>
+            <Label><CalendarEvent size={14} />Planned Date and Time</Label>
+            <DetailValue>{formatDate(activity.planned_start_date)} to {formatDate(activity.planned_end_date)}<br/> {activity.planned_start_time ? `${formatAPITime(activity.planned_start_time)} to ${formatAPITime(activity.planned_end_time)}` : "" }</DetailValue>
+          </Item>
+          <Item>
+            <Label><CalendarEvent size={14} />Actual Date</Label>
+            <DetailValue>{activity.actual_start_date ? `${formatDate(activity.actual_start_date)} to ${formatDate(activity.actual_end_date)}` : "Not started"}</DetailValue>
+          </Item>
+          {activity.original_P.store_name && (
+            <Item>
+              <Label><MapPin size={14} />Location</Label>
+              <DetailValue>{activity.original_P.store_name}</DetailValue>
+            </Item>
+          )}
+        </MainGrid>
 
-          {/* {!totalEffort === 0 && <ProgressBar completed={progress} total={totalEffort} label="Effort Progress" />} */}
-          {/* {activity?.original_P?.no_of_items !== 0 && <ProgressBar completed={activity?.original_P?.no_of_items} total={activity?.original_A?.no_of_items || 0} label="Total Item Audited" />} */}
-
-        </Info>
-
-        <Actions>
-          {isManager && (
+        <ActionsRow>
+          {/* {isManager && (
             <>
               <Button variant="primary" size="sm" title="Approve" disabled={!activity.complete}>
                 <FaCheck /> Approve
@@ -484,7 +540,7 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavi
                 <FaBan /> Reject
               </Button>
             </>
-          )}
+          )} */}
           {!isManager && (
             <TodayActionButtons
               activity={activity}
@@ -501,31 +557,64 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavi
               isManager={isManager}
             />
           )}
-        </Actions>
-      </Flex>
-      {(isManager && !activity.complete) &&
-        <Label style={{ marginTop: 5, color: "red" }}>Note*:- Employee did not complete the activity so you can't approve or reject the activity</Label>}
+        </ActionsRow>
 
+        {/* {(isManager && !activity.complete) && (
+          <Label style={{ marginTop: 5, color: "red" }}>
+            Note*:- Employee did not complete the activity so you can't approve or reject the activity
+          </Label>
+        )} */}
 
-      {/* {(filterType === "past7" || isManager) &&  */}
-      <ActivityLogs
+        {/* More Details Accordion */}
+        <AccordionSection>
+          <AccordionHeader onClick={() => setIsDetailsOpen(!isDetailsOpen)}>
+            <AccordionTitle>
+              <FiInfo size={16} /> More Details
+            </AccordionTitle>
+            <AccordionToggle isOpen={isDetailsOpen}>
+              <ChevronDown size={20} />
+            </AccordionToggle>
+          </AccordionHeader>
+          <AccordionContent isOpen={isDetailsOpen}>
+            <DetailsGrid>
+              {activity?.original_P?.is_file_applicable === true && (
+                <Item>
+                  <Label><FaRegFile size={14} /> Document Uploaded</Label>
+                  {activity?.original_A?.submitted_file ? (
+                    <DetailValue
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleFileClick(activity?.original_A.submitted_file)}
+                    >
+                      ✅ <FiEye /> View
+                    </DetailValue>
+                  ) : (
+                    <DetailValue>❌ No</DetailValue>
+                  )}
+                </Item>
+              )}
+              {/* {activity.original_P.store_name && (
+                <Item>
+                  <Label><MapPin size={14} />Location</Label>
+                  <DetailValue>{activity.original_P.store_name}</DetailValue>
+                </Item>
+              )} */}
+              {activity.original_P.store_remarks && (
+                <RemarkItem>
+                  <Label><PenBox size={14} />Remark</Label>
+                  <DetailValue>{activity.original_P.store_remarks}</DetailValue>
+                </RemarkItem>
+              )}
+            </DetailsGrid>
+          </AccordionContent>
+        </AccordionSection>
+      </MainContent>
+
+      {Object.keys(activity.day_logs || {}).length > 0 && <ActivityLogs
+        activity={activity}
         logs={activity.day_logs}
         isOpen={isLogsOpen}
         onToggle={() => setIsLogsOpen(!isLogsOpen)}
-      />
-      {/* } */}
-
-      {/* {activity.original_P.retainer_list.length !== 0 &&
-        <RetainerList
-          retainerList={activity.original_P.retainer_list}
-          isOpen={isRetainerOpen}
-          onToggle={() => setIsRetainerOpen(!isRetainerOpen)}
-          onAction={onAction}
-          retainerDataCache={retainerDataCache}
-          onRetainerUpdate={fetchAllRetainerData}
-        />
-
-      } */}
+      />}
     </CardHover>
   );
 };
@@ -568,7 +657,7 @@ const ProgressBar = ({ completed, total, label = 'Progress' }) => {
   );
 };
 
-export const ActivityLogs = ({ retainer, logs, isOpen, onToggle }) => {
+export const ActivityLogs = ({ activity, retainer, resourceList,  logs, isOpen, onToggle }) => {
   const logEntries = Object.values(logs || {});
 
   return (
@@ -585,22 +674,29 @@ export const ActivityLogs = ({ retainer, logs, isOpen, onToggle }) => {
         ) : (
           <LogsGrid>
             {logEntries.map((log, i) => {
-              return (
+                return (
                 <LogRow key={i}>
                   <LogDate><Calendar size={14} />{log.section}</LogDate>
                  {!retainer && <LogTime><Clock size={14} />{log.check_in?.time || "Not Check in"} - {log.check_out?.time || 'Not Check Out'}</LogTime>}
                   <LogStats>
-                    {/* <LogBadge><Timer size={12} />Effort : {log.effort}h</LogBadge> */}
-                    <LogBadge><Package size={12} />No of item audit: {log.no_of_items}</LogBadge>
-                    {retainer && 
-                    <LogBadge><FaUsers size={12} />No of resources: {log?.effort}</LogBadge>}
+                  {/* <LogBadge><Timer size={12} />Effort : {log.effort}h</LogBadge> */}
+                  <LogBadge><Package size={12} />No of item audit: {log.no_of_items}</LogBadge>
+                  {retainer && 
+                  <LogBadge><FaUsers size={12} />No of resources: {log?.effort}</LogBadge>}
                   </LogStats>
-                  {log.remarks && (
-                    <LogRemark><FileText size={14} />{log.remarks || "No Remarks found"}</LogRemark>
+
+                  {log?.resourceList?.length !== 0 && retainer && (
+                  <LogRemark><LogDate>Resource Name: </LogDate>{log.resourceList?.map((name, index) => `${name}${index !== resourceList.length - 1 ? ', ' : ''}`)}</LogRemark>
                   )}
                 </LogRow>
-              )
-            })}
+                )
+              })}
+              {activity?.emp_remarks && (
+              <div style={{display: "flex", alignItems: "center", padding: "0.5rem 0.9rem", gap: "0.5rem"}}>
+                <LuClipboardPen size={16} color='#666' />
+                <LogRemark>{activity?.emp_remarks || "No Remarks found"}</LogRemark>
+              </div>
+              )}
           </LogsGrid>
         )}
       </LogsContent>
@@ -648,7 +744,9 @@ export const TodayActionButtons = ({
         <> </>
       );
     }
-    if(complete){
+
+    const { ui } = activity;
+       if(ui?.isCompleted){
       return(
         <>
         <StatusMessage>Activity is completed for today</StatusMessage>
@@ -662,7 +760,6 @@ export const TodayActionButtons = ({
       );
     }
 
-    const { ui } = activity;
     if (ui?.showCompleteBtn) {
       return (
         <SuccessBtn
@@ -682,12 +779,6 @@ export const TodayActionButtons = ({
         >
           <PlayCircle /> Start Activity
         </PrimaryBtn>
-        //  <PrimaryBtn
-        //   size="md"
-        //   onClick={() => onAction({ type: "update_retainer", activity, retainerPage, retainer, onRetainerUpdate })}
-        // >
-        //   <FaRegPenToSquare /> Update
-        // </PrimaryBtn>
       );
     }
 
@@ -696,17 +787,7 @@ export const TodayActionButtons = ({
 
     // 1. Fully complete
   if (complete) {
-    return <StatusMessage>Activity is completed</StatusMessage>;
-    // return (
-    //   <>
-    //     <SuccessBtn size="lg" onClick={() => onAction({ type: "complete", activity, retainerPage, retainer, onRetainerUpdate })}>
-    //       <CheckCircle2 /> Completed
-    //     </SuccessBtn>
-    //     <SecondaryBtn size="sm" onClick={() => onAction({ type: "continue", activity, retainerPage, retainer, onRetainerUpdate })}>
-    //       <PauseCircle /> Pause Activity
-    //     </SecondaryBtn>
-    //   </>
-    // )
+    return (<ButtonGroup><StatusMessage>Activity is completed</StatusMessage> </ButtonGroup>);
   }
 
   // 2. Completed for today
@@ -717,32 +798,37 @@ export const TodayActionButtons = ({
   // 3. Pending checkout from yesterday
   if (hasPendingCheckout && pendingCheckoutDate !== todayApiDate) {
     return (
+      <ButtonGroup>
       <PrimaryBtn size="md" onClick={() => onAction({ type: "checkout_yesterday", activity, retainerPage, retainer, onRetainerUpdate })}>
         <CheckCircle2 /> Checkout For Yesterday
       </PrimaryBtn>
+      <SecondaryBtn size="lg" onClick={() => onAction({ type: "complete_y", activity, retainerPage, retainer, onRetainerUpdate })}>
+        <CheckCircle2 /> Completed
+      </SecondaryBtn>
+      </ButtonGroup>
     );
   }
 
   // 4. Checked in today → Show Complete / Pause Activity
   if (hasOngoingSessionToday) {
     return isPlannedEndToday ? (
-      <>
+      <ButtonGroup>
         <SuccessBtn size="lg" onClick={() => onAction({ type: "complete", activity, retainerPage, retainer, onRetainerUpdate })}>
           <CheckCircle2 /> Completed
         </SuccessBtn>
         <SecondaryBtn size="sm" onClick={() => onAction({ type: "continue", activity, retainerPage, retainer, onRetainerUpdate })}>
           <PauseCircle /> Pause Activity
         </SecondaryBtn>
-      </>
+      </ButtonGroup>
     ) : (
-      <>
+      <ButtonGroup>
         <SuccessBtn size="sm" onClick={() => onAction({ type: "continue", activity, retainerPage, retainer, onRetainerUpdate })}>
           <PauseCircle /> Pause Activity
         </SuccessBtn>
         <SecondaryBtn size="lg" onClick={() => onAction({ type: "complete", activity, retainerPage, retainer, onRetainerUpdate })}>
           <CheckCircle2 /> Completed
         </SecondaryBtn>
-      </>
+      </ButtonGroup>
     );
   }
 
@@ -750,33 +836,34 @@ export const TodayActionButtons = ({
   if (!todayCheckedIn) {
     if (isActivityStart) {
       return (
+        <ButtonGroup>
         <PrimaryBtn size="md" onClick={() => onAction({ type: "resume", activity , retainerPage, retainer, onRetainerUpdate })}>
           <PlayCircle /> Resume Activity
         </PrimaryBtn>
+        <SecondaryBtn size="md" onClick={() => onAction({ type: "force_complete", activity, retainerPage, retainer, onRetainerUpdate })}>
+          <CheckCircle2 /> Mark as complete
+        </SecondaryBtn>
+        </ButtonGroup>
       );
     }
     return (
+      <ButtonGroup>
       <PrimaryBtn size="md" onClick={() => onAction({ type: "start", activity, retainerPage, retainer })}>
         <PlayCircle /> Start Activity
       </PrimaryBtn>
-      //  <>
-      //   <SuccessBtn size="sm" onClick={() => onAction({ type: "continue", activity, retainerPage, retainer, onRetainerUpdate })}>
-      //     <PauseCircle /> Pause Activity
-      //   </SuccessBtn>
-      //   <SecondaryBtn size="lg" onClick={() => onAction({ type: "complete", activity, retainerPage, retainer, onRetainerUpdate })}>
-      //     <CheckCircle2 /> Completed
-      //   </SecondaryBtn>
-      // </>
+      </ButtonGroup>
     );
   }
 
   // 6. Fallback: Awaiting start (future scheduled)
   return (
-    // <SecondaryBtn size="md" disabled>
-    //   <Clock /> Awaiting Start
-    // </SecondaryBtn>
+    <ButtonGroup>
     <PrimaryBtn size="md" onClick={() => onAction({ type: "resume", activity, retainerPage, retainer, onRetainerUpdate })}>
       <PlayCircle /> Resume Activity
     </PrimaryBtn>
+    <SecondaryBtn size="md" onClick={() => onAction({ type: "force_complete", activity, retainerPage, retainer, onRetainerUpdate })}>
+      <CheckCircle2 /> Mark as complete
+    </SecondaryBtn>
+    </ButtonGroup>
   );
 };

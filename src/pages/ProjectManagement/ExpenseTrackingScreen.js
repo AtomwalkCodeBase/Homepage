@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../../components/Layout'
 import styled from 'styled-components'
-import { FaBoxes, FaCalendarAlt, FaClipboardList, FaEdit, FaTimes } from 'react-icons/fa'
+import { FaBoxes, FaCalendarAlt, FaClipboardList, FaEdit, FaPlus, FaTimes } from 'react-icons/fa'
 import { IoClose } from 'react-icons/io5'
 import Card from '../../components/Card'
 import { formatToDDMMYYYY, getMonthRange, normalizeProjects } from './utils/utils'
@@ -36,17 +36,6 @@ const Container = styled.div`
   }
 `;
 
-// const Card = styled.div`
-//   background: ${({ theme }) =>theme.colors.card};
-//   border-radius: ${({ theme }) =>theme.borderRadius.xl};
-//   padding: ${({ theme }) =>theme.spacing.xl};
-//   box-shadow: 0 2px 8px ${({ theme }) =>theme.colors.shadow};
-
-//   @media (max-width: 768px) {
-//     padding: ${({ theme }) =>theme.spacing.lg};
-//   }
-// `;
-
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
@@ -66,27 +55,6 @@ const Title = styled.h1`
   }
 `;
 
-const Select = styled.select`
-  padding: ${({ theme }) => theme.spacing.md} ${({ theme }) => theme.spacing.lg};
-  border: 2px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.lg};
-  font-size: 1rem;
-  color: ${({ theme }) => theme.colors.text};
-  background: ${({ theme }) => theme.colors.card};
-  cursor: pointer;
-  transition: all ${({ theme }) => theme.transitions.fast};
-  min-width: 250px;
-  
-  &:focus {
-    outline: none;
-    border-color: ${({ theme }) => theme.colors.primary};
-  }
-  
-  @media (max-width: 768px) {
-    min-width: 100%;
-  }
-`;
-
 const TableContainer = styled.div`
   background: ${({ theme }) => theme.colors.card};
   border-radius: ${({ theme }) => theme.borderRadius.lg};
@@ -100,57 +68,6 @@ const Table = styled.table`
   border-collapse: collapse;
   min-width: 800px;
 `;
-
-// const TableHeader = styled.div`
-//   display: grid;
-//   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-//   gap: ${({ theme }) => theme.spacing.md};
-//   padding: ${({ theme }) => theme.spacing.md} ${({ theme }) => theme.spacing.lg};
-//   background: ${({ theme }) => theme.colors.primaryLight};
-//   border-radius: ${({ theme }) => theme.borderRadius.lg};
-//   font-weight: 600;
-//   color: ${({ theme }) => theme.colors.text};
-//   font-size: 0.9rem;
-  
-//   @media (max-width: 1024px) {
-//     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-//     font-size: 0.85rem;
-//   }
-// `;
-
-// const TableRow = styled.div`
-//   display: grid;
-//   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-//   gap: ${({ theme }) => theme.spacing.md};
-//   padding: ${({ theme }) => theme.spacing.lg};
-//   border: 1px solid ${({ theme }) => theme.colors.border};
-//   border-radius: ${({ theme }) => theme.borderRadius.lg};
-//   margin-top: ${({ theme }) => theme.spacing.sm};
-//   align-items: center;
-//   transition: all ${({ theme }) => theme.transitions.fast};
-  
-//   &:hover {
-//     background: ${({ theme }) => theme.colors.background};
-//     border-color: ${({ theme }) => theme.colors.primary};
-//   }
-  
-//   @media (max-width: 1024px) {
-//     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-//   }
-// `;
-
-// const TableCell = styled.div`
-//   color: ${({ theme }) => theme.colors.text};
-//   font-size: 0.9rem;
-  
-//   &.bold {
-//     font-weight: 600;
-//   }
-  
-//   &.muted {
-//     color: ${({ theme }) => theme.colors.textLight};
-//   }
-// `;
 
 const EmptyState = styled.div`
   text-align: center;
@@ -292,16 +209,6 @@ const InfoSection = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.xl};
 `;
 
-const InfoRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: ${({ theme }) => theme.spacing.sm} 0;
-  
-  &:not(:last-child) {
-    border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  }
-`;
-
 const InfoLabel = styled.span`
   color: ${({ theme }) => theme.colors.textLight};
   font-size: 0.9rem;
@@ -409,28 +316,28 @@ const TableCell = styled.td`
   vertical-align: top;
 `;
 
-
 const ExpenseTrackingScreen = () => {
-  //test in both site actual is coming and what is comming in selectedOrderItemId and selectedItem
   const [allCustomer, setAllCustomer] = useState([]);
-  const [expenseItems, setExpenseItems] = useState([]);
-  const [selectedOrderItemId, setSelectedOrderItemId] = useState(null);
+  const [plannedItems, setPlannedItems] = useState([]);
+  const [actualItems, setActualItems] = useState([]);
+
   const [activeTab, setActiveTab] = useState("plannedItem");
-  const [orderItemId, setOrderItemId] = useState(null);
-  const [selectedItem, setSelectedItem] = useState(null);
   const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current" }));
+
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [orderItemId, setOrderItemId] = useState(null);
+  const [selectedOrderItemId, setSelectedOrderItemId] = useState(null);
 
   useEffect(() => {
     fetchEmpAllocationData();
   }, [])
+
   useEffect(() => {
-    if (orderItemId) {
-      getExpenseItem(orderItemId);
-    } else {
-      setExpenseItems([]);
+    if (selectedOrderItemId) {
+      fetchPlannedAndActual(selectedOrderItemId);
     }
-  }, [orderItemId, activeTab]);
+  }, [selectedOrderItemId]);
 
 
   const fetchEmpAllocationData = async (startOverride, endOverride) => {
@@ -452,24 +359,31 @@ const ExpenseTrackingScreen = () => {
     }
 
     setIsLoading(true);
-    
+
     try {
       const response = await getEmpAllocationData(payload);
       const normalizedData = normalizeProjects(response.data)
       setAllCustomer(groupCustomersWithOrderItems(normalizedData))
     } catch (error) {
-      toast.error("No data found...")
-    }finally{
+      toast.error("No order item found...")
+    } finally {
       setIsLoading(false);
     }
   }
+
+  const extractNumericId = (value) => {
+    if (!value) return null;
+    return Number(String(value).replace(/\D/g, ""));
+  };
 
   const groupCustomersWithOrderItems = (data) => {
     const map = new Map();
 
     data.forEach((entry) => {
       const { customer_name, order_item_id, project_code } = entry;
-      if (!customer_name) return;
+      if (!customer_name || !order_item_id) return;
+
+      const numericOrderItemId = extractNumericId(order_item_id);
 
       if (!map.has(customer_name)) {
         map.set(customer_name, {
@@ -479,16 +393,20 @@ const ExpenseTrackingScreen = () => {
       }
 
       map.get(customer_name).order_items.push({
-        order_item_id,
-        project_code,
+        order_item_id: numericOrderItemId,
+        order_item_key: project_code,
       });
     });
 
     return Array.from(map.values());
   };
 
-  // console.log("expenseItems", expenseItems)
-  // console.log("orderItemId", orderItemId)
+  const flatCustomerOptions = allCustomer.flatMap(c =>
+    c.order_items.map(oi => ({
+      label: `${c.customer_name} [${oi.order_item_key}]`,
+      value: oi.order_item_id,
+    }))
+  );
 
   const handleCustomerChange = (e) => {
     const orderItemKey = e.target.value;
@@ -498,10 +416,6 @@ const ExpenseTrackingScreen = () => {
       setOrderItemId(null);
       return;
     }
-
-    const orderItemId = parseInt(orderItemKey.split("_")[1], 10);
-
-    setOrderItemId(orderItemId);
   };
 
   const handleEditClick = (item) => {
@@ -510,6 +424,24 @@ const ExpenseTrackingScreen = () => {
 
   const handleModalClose = () => {
     setSelectedItem(null);
+  };
+
+  const fetchPlannedAndActual = async (orderItemId) => {
+    setIsLoading(true);
+
+    try {
+      const [plannedRes, actualRes] = await Promise.all([
+        getExpensePlannedItem({ expense_type: "P", o_item_id: orderItemId }),
+        getExpensePlannedItem({ expense_type: "A", o_item_id: orderItemId }),
+      ]);
+
+      setPlannedItems(plannedRes.data || []);
+      setActualItems(actualRes.data || []);
+    } catch (err) {
+      toast.error("Something went wrong. Try again later!",);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleFormSubmit = async (formData) => {
@@ -532,55 +464,26 @@ const ExpenseTrackingScreen = () => {
           ]
         }
       };
-      console.log('Form submitted:', payload);
+      // console.log('Form submitted:', payload);
       setIsLoading(true);
 
-    const res =  await postExpensePlannedItem(payload);
+      const res = await postExpensePlannedItem(payload);
 
-    if (res?.status === 200) {
-      toast.success( activeTab === "plannedItem" ? `${formData?.item?.item_name} Successfully added` : `${formData?.item?.item_name} Successfully updated`)
-       await getExpenseItem(orderItemId);
+      if (res?.status === 200) {
+        toast.success(activeTab === "plannedItem" ? `${formData?.item?.item_name} Successfully added` : `${formData?.item?.item_name} Successfully updated`)
+        await fetchPlannedAndActual(orderItemId);
         setSelectedItem(null);
-      return true
-    }
+        return true
+      }
 
-  } catch (error) {
-    console.error("Something went wrong. Please try again later!!!");
-     setSelectedItem(null);
-  }finally{
-    setIsLoading(false)
-     setSelectedItem(null);
-  }
-  };
-
-  const currentItems = expenseItems;
-
-  const flatCustomerOptions = allCustomer.flatMap(c =>
-    c.order_items.map(oi => ({
-      label: `${c.customer_name} [${oi.project_code}]`,
-      value: oi.order_item_id,
-    }))
-  );
-
-
-  const getExpenseItem = async (id) => {
-    try {
-      const response = await getExpensePlannedItem({
-        expense_type: activeTab === "plannedItem" ? "P" : "A",
-        // o_item_id: activeTab === "plannedItem" ? id : 162,
-        o_item_id: id,
-      });
-      setExpenseItems(response.data || []);
-    } catch {
-      toast.error("Something went wrong. Try again later!");
+    } catch (error) {
+      console.error("Something went wrong. Please try again later!!!");
+      setSelectedItem(null);
+    } finally {
+      setIsLoading(false)
+      setSelectedItem(null);
     }
   };
-
-  const tabs = [
-    { key: 'plannedItem', label: `Planned Item`, },
-    { key: 'actualItem', label: `Actual Item`, }
-  ].filter(Boolean);
-
 
   return (
     <Layout title="Expense Tracking Screen">
@@ -592,22 +495,22 @@ const ExpenseTrackingScreen = () => {
       <Container>
         <Card hoverable={false}>
           <TabContainer>
-            {tabs.map(t => (
-              <Tab key={t.key} active={activeTab === t.key} onClick={() => { setActiveTab(t.key); setSelectedOrderItemId(null); setExpenseItems([]); setOrderItemId(null) }}>
-                {t.label}
+            {["plannedItem", "actualItem"].map((tab) => (
+              <Tab key={tab} active={activeTab === tab} onClick={() => { setActiveTab(tab) }}>
+                {tab === "plannedItem" ? "Planned Item" : "Actual Item"}
               </Tab>
             ))}
           </TabContainer>
           <Header>
             <Title>Expense Management</Title>
             <FilterSelect value={selectedOrderItemId ?? ""} onChange={handleCustomerChange}>
+              <option value="">Select order item</option>
               {isLoading ? (
                 <option disabled>Loading...</option>
               ) : flatCustomerOptions.length === 0 ? (
-                <option disabled>No customer Found</option>
+                <option disabled>No order item Found</option>
               ) : (
                 <>
-                  <option value="">Select Customer</option>
                   {flatCustomerOptions.map(opt => (
                     <option key={opt.value} value={opt.value}>
                       {opt.label}
@@ -620,46 +523,20 @@ const ExpenseTrackingScreen = () => {
           </Header>
 
           {selectedOrderItemId ? (
-            currentItems.length > 0 ? (
-            <TableContainer>  
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableHeader>Item Name</TableHeader>
-                    <TableHeader>Order Item Key</TableHeader>
-                    <TableHeader>Quantity</TableHeader>
-                    <TableHeader>Date</TableHeader>
-                    <TableHeader>No of Days allocated</TableHeader>
-                    <TableHeader>Action</TableHeader>
-                  </TableRow>
-                </TableHead>
-                <tbody>
-                  {isLoading ? 
-                  <TableRow><TableCell colSpan="6"><EmptyState>Loading...</EmptyState></TableCell></TableRow>
-                  :
-                  currentItems.map(item => (
-                    <TableRow key={item.id}>
-                      <TableCell>{item.item_name}</TableCell>
-                      <TableCell>{item.order_item_key}</TableCell>
-                      <TableCell>{item.quantity}</TableCell>
-                      <TableCell>{item.expense_date}</TableCell>
-                      <TableCell>{item.allocation_days}</TableCell>
-                      <TableCell>
-                        <Button variant="primary" onClick={() => handleEditClick(item)}>
-                          <FaEdit /> {activeTab === "plannedItem" ? "Add" : "Update"}
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                  }
-                </tbody>
-              </Table>
-            </TableContainer>  
+            isLoading ? (
+              <EmptyState>Loading...</EmptyState>
+            ) : activeTab === "plannedItem" ? (
+              <>
+                <h4>Planned Expense Item</h4>
+                <OrderItemsTable items={plannedItems} type="P" onAction={handleEditClick} />
+                <h4 style={{marginTop: "20px"}}>Actual Expense Item</h4>
+                <OrderItemsTable items={actualItems} type="A" onAction={handleEditClick} />
+              </>
             ) : (
-              <EmptyState>No expense items found for this customer</EmptyState>
+              <OrderItemsTable items={actualItems} type="A" onAction={handleEditClick} />
             )
           ) : (
-            <EmptyState>Please select a customer to view expense items</EmptyState>
+            <EmptyState>Please select a order item to view expense items</EmptyState>
           )}
         </Card>
 
@@ -676,7 +553,7 @@ const ExpenseTrackingScreen = () => {
   )
 }
 
-export default ExpenseTrackingScreen
+export default ExpenseTrackingScreen;
 
 const ExpenseModal = ({ item, onClose, onSubmit, activeTab }) => {
   const [formData, setFormData] = useState({
@@ -691,7 +568,7 @@ const ExpenseModal = ({ item, onClose, onSubmit, activeTab }) => {
   };
 
   const handleSubmit = () => {
-    onSubmit({...formData, item});
+    onSubmit({ ...formData, item });
   };
 
   if (!item) return null;
@@ -729,88 +606,23 @@ const ExpenseModal = ({ item, onClose, onSubmit, activeTab }) => {
           <CompactRow>
             <FormGroup>
               <Label><FaCalendarAlt /> Number of days</Label>
-              <Input
-                type="days"
-                min={0}
-                value={formData.days}
-                onChange={(e) => handleChange("days", e.target.value)}
-                placeholder="Enter no of Days"
-              />
+              <Input type="days" min={0} value={formData.days} onChange={(e) => handleChange("days", e.target.value)} placeholder="Enter no of Days" />
             </FormGroup>
             <FormGroup>
               <Label><FaBoxes /> Quantity</Label>
-              <Input
-                type="quantity"
-                min={0}
-                value={formData.quantity}
-                onChange={(e) => handleChange("quantity", e.target.value)}
-                placeholder="Quantity"
-              />
+              <Input type="quantity" min={0} value={formData.quantity} onChange={(e) => handleChange("quantity", e.target.value)} placeholder="Quantity" />
             </FormGroup>
             <FormGroup>
               <Label><FaCalendarAlt /> Date</Label>
-              <Input
-                type="date"
-                value={formData.date}
-                onChange={(e) => handleChange("date", e.target.value)}
-
-              />
+              <Input type="date" value={formData.date} onChange={(e) => handleChange("date", e.target.value)} />
             </FormGroup>
-
           </CompactRow>
-
-          {/* <FormGroup>
-            <Label>
-              <FaBoxes />
-              Quantity
-            </Label>
-            <Input
-              type="number"
-              name="quantity"
-              value={formData.quantity}
-              onChange={handleChange}
-              placeholder="Enter quantity"
-            />
-          </FormGroup> */}
-
-          {/* <FormGroup>
-            <Label>
-              <FaCalendarAlt />
-              Number of Days
-            </Label>
-            <Input
-              type="number"
-              name="days"
-              value={formData.days}
-              onChange={handleChange}
-              placeholder="Enter number of days"
-            />
-          </FormGroup> */}
-
-          {/* <FormGroup>
-            <Label>
-              <FaCalendarAlt />
-              Expense Date
-            </Label>
-            <Input
-              type="date"
-              name="date"
-              value={formData.date}
-              onChange={handleChange}
-            />
-          </FormGroup> */}
-
           <FormGroup>
             <Label>
               <FaClipboardList />
               Remark
             </Label>
-            <TextArea
-              name="remark"
-              value={formData.remark}
-              onChange={(e) => handleChange("remark", e.target.value)}
-              placeholder="Enter any remarks..."
-            />
+            <TextArea name="remark" value={formData.remark} onChange={(e) => handleChange("remark", e.target.value)} placeholder="Enter any remarks..." />
           </FormGroup>
         </ModalBody>
 
@@ -824,5 +636,57 @@ const ExpenseModal = ({ item, onClose, onSubmit, activeTab }) => {
         </ModalFooter>
       </ModalContainer>
     </Overlay>
+  );
+};
+
+export const OrderItemsTable = ({ items = [], type, onAction, }) => {
+
+  if (!items.length) {
+    return <EmptyState>No items found</EmptyState>;
+  }
+
+  return (
+    <TableContainer>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeader>Item Name</TableHeader>
+            <TableHeader>Order Item Key</TableHeader>
+            <TableHeader>Quantity</TableHeader>
+            <TableHeader>Date</TableHeader>
+            <TableHeader>No of Days</TableHeader>
+            <TableHeader>Action</TableHeader>
+          </TableRow>
+        </TableHead>
+
+        <tbody>
+          {items.map((item) => (
+            <React.Fragment key={item.order_item_id}>
+              <TableRow>
+                <TableCell>{item.item_name}</TableCell>
+                <TableCell>{item.order_item_key}</TableCell>
+                <TableCell>{item.quantity}</TableCell>
+                <TableCell>{item.expense_date}</TableCell>
+                <TableCell>{item.allocation_days}</TableCell>
+
+                <TableCell>
+                  {type === "P" && (
+                    <Button size="sm" onClick={() => onAction(item)}>
+                      <FaPlus /> Add
+                    </Button>
+                  )}
+
+                  {type === "A" && (
+                    <Button size="sm" onClick={() => onAction(item)}>
+                     <FaEdit /> Update
+                    </Button>
+                  )}
+                </TableCell>
+              </TableRow>
+            </React.Fragment>
+          ))}
+        </tbody>
+      </Table>
+    </TableContainer>
   );
 };

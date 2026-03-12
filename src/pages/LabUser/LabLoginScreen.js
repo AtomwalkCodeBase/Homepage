@@ -480,7 +480,7 @@ function App() {
                   </InputContainer>
                 </FormGroup>
 
-                <ForgotPassword>Forgot Password?</ForgotPassword>
+                <ForgotPassword onClick={() => { window.location.href = "https://atomwalk.com/password_reset/"; }}>Forgot Password?</ForgotPassword>
 
                 <SubmitButton
                   type="button"

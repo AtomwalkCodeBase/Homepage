@@ -818,7 +818,7 @@ const LmsDashBoard = () => {
               <FaClock />
             </StatIcon>
             <StatContent>
-              <StatLabel>Pending</StatLabel>
+              <StatLabel>In Progress</StatLabel>
               <StatValue>{stats.active}</StatValue>
             </StatContent>
           </StatCard>
@@ -886,7 +886,7 @@ const LmsDashBoard = () => {
           {/* Status Filter Buttons */}
           <FilterButtonsRow>
             <FilterButton active={statusFilter === "all"} onClick={() => setStatusFilter("all")}>
-              <FaFilter /> All Activities
+              <FaFilter /> Uncomplete
             </FilterButton>
 
             <FilterButton active={statusFilter === "not started"} onClick={() => setStatusFilter("not started")}>

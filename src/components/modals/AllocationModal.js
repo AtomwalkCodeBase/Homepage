@@ -67,22 +67,39 @@ const ModalBody = styled.div`
 
 const StepIndicator = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 16px;
   margin-bottom: 24px;
   justify-content: center;
+  align-items: center;
 `
 
 const Step = styled.div`
-  width: 12px;
-  height: 12px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 500;
   background: ${({ active, completed, theme }) => {
         if (completed) return theme.colors.success
         if (active) return theme.colors.primary
         return theme.colors.border
     }};
+  color: white;
   transition: all ${({ theme }) => theme.transitions.fast};
 `
+
+const StepConnector = styled.div`
+  width: 40px;
+  height: 2px;
+  background: ${({ completed, theme }) =>
+        completed ? theme.colors.success : theme.colors.border
+    };
+  transition: all ${({ theme }) => theme.transitions.fast};
+`
+
 
 const FormSection = styled.div`
   display: flex;
@@ -431,11 +448,18 @@ const AllocationModal = ({ sample, isOpen, onClose, onSuccess }) => {
                     <SampleInfo>
                         <strong>Sample:</strong> {sample.s_item_id} | <strong>Customer:</strong> {sample.customer_name}
                     </SampleInfo>
-
                     <StepIndicator>
-                        <Step active={step === 1} completed={step > 1} />
-                        <Step active={step === 2} completed={step > 2} />
-                        <Step active={step === 3 || step === 4} completed={false} />
+                        <Step active={step === 1} completed={step > 1}>
+                            {step > 1 ? '✓' : '1'}
+                        </Step>
+                        <StepConnector completed={step > 1} />
+                        <Step active={step === 2} completed={step > 2}>
+                            {step > 2 ? '✓' : '2'}
+                        </Step>
+                        <StepConnector completed={step > 2} />
+                        <Step active={step === 3 || step === 4} completed={step > 3}>
+                            {step > 3 ? '✓' : '3'}
+                        </Step>
                     </StepIndicator>
 
                     {step === 1 && (

@@ -362,6 +362,9 @@ export default function Footer2() {
                 <li>
                   <a href="/Product.html">Enterprise Resource Planning</a>
                 </li>
+                <li>
+                  <a href="https://atomwalk.netlify.app" target="_blank" rel="noopener noreferrer">Atomwalk Folder</a>
+                </li>
               </ul>
             </FooterLinks>
             <FooterLinks>

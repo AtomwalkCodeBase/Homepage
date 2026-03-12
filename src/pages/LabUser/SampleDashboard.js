@@ -11,6 +11,7 @@ import ViewDetailsModal from "../../components/modals/ViewDetailsModal"
 import Button from "../../components/Button"
 import { Eye } from "lucide-react"
 import { MdAssignmentInd } from "react-icons/md";
+import Badge from "../../components/Badge"
 
 
 const DashboardContainer = styled.div`
@@ -245,27 +246,6 @@ const PaginationButton = styled.button`
     cursor: not-allowed;
   }
 `
-
-
-
-const StatusBadge = styled.span`
-  background: ${({ status, theme }) => {
-    switch (status) {
-      case "Active":
-        return theme.colors.success
-      case "Inactive":
-        return "#E0E0E0"
-      default:
-        return theme.colors.info
-    }
-  }};
-  color: white;
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: ${({ theme }) => theme.fontSizes.xs};
-  font-weight: 600;
-`
-
 const PriorityBadge = styled.span`
   background: ${({ priority, theme }) => {
     switch (priority) {
@@ -308,6 +288,7 @@ const SampleDashboard = () => {
   const [filteredSamples, setFilteredSamples] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
   const [activeFilter, setActiveFilter] = useState("all")
+  const [statusFilter, setStatusFilter] = useState("all")
   const [loading, setLoading] = useState(true)
   const [showAllocationModal, setShowAllocationModal] = useState(false)
   const [selectedSample, setSelectedSample] = useState(null)
@@ -355,10 +336,14 @@ const SampleDashboard = () => {
           sample.batch_no?.toLowerCase().includes(searchTerm.toLowerCase()),
       )
     }
-
+    if (statusFilter !== "all") {
+      filtered = filtered.filter(
+        (sample) => sample.status_display === statusFilter
+      )
+    }
     setFilteredSamples(filtered)
     setCurrentPage(1)
-  }, [activeFilter, searchTerm, samples])
+  }, [activeFilter, searchTerm, samples, statusFilter])
 
   const handleAllocateClick = (sample) => {
     setSelectedSample(sample)
@@ -390,7 +375,29 @@ const SampleDashboard = () => {
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
   const currentSamples = filteredSamples.slice(startIndex, endIndex)
+  const statusOptions = [
+    "all",
+    ...new Set(samples.map((s) => s.status_display).filter(Boolean)),
+  ]
+  const getStatusInfo = (status) => {
+    if (status === "RECEIVED") {
+      return { text: "Approved", variant: "info" }
+    }
+    if (status === "ACCEPTED") {
+      return { text: "ACCEPTED", variant: "success" }
+    }
+    if (status === "PROCESS COMPLETED") {
+      return { text: "PROCESS COMPLETED", variant: "success" }
+    }
+    if (status === "IN PROCESS") {
+      return { text: "IN PROCESS", variant: "warning" }
+    }
+    if (status === "REJECTED") {
+      return { text: "Rejected", variant: "error" }
+    }
 
+    return { text: "Submitted", variant: "warning" }
+  }
   return (
     <Layout>
       <DashboardContainer>
@@ -450,6 +457,23 @@ const SampleDashboard = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            style={{
+              padding: "8px 12px",
+              borderRadius: "6px",
+              border: "1px solid #ddd",
+              outline: "none",
+              cursor: "pointer",
+            }}
+          >
+            {statusOptions.map((status) => (
+              <option key={status} value={status}>
+                {status === "all" ? "All Status" : status}
+              </option>
+            ))}
+          </select>
           <FilterButton active={!allocate} onClick={() => setAllocate(false)}>
             <FaFilter /> Unallocated
           </FilterButton>
@@ -487,7 +511,7 @@ const SampleDashboard = () => {
                 </thead>
                 <tbody>
                   {currentSamples.map((sample) => {
-                    const isAllocated = allocatedSamples.has(sample.id)
+                    const statusInfo = getStatusInfo(sample.status_display)
 
                     return (
                       <tr key={sample.id}>
@@ -497,9 +521,9 @@ const SampleDashboard = () => {
                         <td>{sample.sample_type}</td>
                         <td>{sample.no_of_qty}</td>
                         <td>
-                          <StatusBadge status={sample.is_active ? "Active" : "Inactive"}>
-                            {sample.is_active ? "Active" : "Inactive"}
-                          </StatusBadge>
+                          <Badge variant={statusInfo.variant}>
+                            {sample.status_display}
+                          </Badge>
                         </td>
                         <td>
                           <PriorityBadge priority={sample.priority}>P{sample.priority}</PriorityBadge>
@@ -540,23 +564,27 @@ const SampleDashboard = () => {
         )}
       </DashboardContainer>
 
-      {showAllocationModal && (
-        <AllocationModal
-          sample={selectedSample}
-          isOpen={showAllocationModal}
-          onClose={() => setShowAllocationModal(false)}
-          onSuccess={handleAllocationSuccess}
-        />
-      )}
+      {
+        showAllocationModal && (
+          <AllocationModal
+            sample={selectedSample}
+            isOpen={showAllocationModal}
+            onClose={() => setShowAllocationModal(false)}
+            onSuccess={handleAllocationSuccess}
+          />
+        )
+      }
 
-      {showViewDetailsModal && (
-        <ViewDetailsModal
-          sample={viewDetailsSample}
-          isOpen={showViewDetailsModal}
-          onClose={() => setShowViewDetailsModal(false)}
-        />
-      )}
-    </Layout>
+      {
+        showViewDetailsModal && (
+          <ViewDetailsModal
+            sample={viewDetailsSample}
+            isOpen={showViewDetailsModal}
+            onClose={() => setShowViewDetailsModal(false)}
+          />
+        )
+      }
+    </Layout >
   )
 }
 

@@ -345,9 +345,9 @@ const OPEMODLE = ({data, isOpen, opeMode, onClose, refreshActivities }) => {
       }
 
       
-      for (let [key, value] of payload.entries()) {
-        console.log(key, value);
-      }
+      // for (let [key, value] of payload.entries()) {
+      //   console.log(key, value);
+      // }
 
       const res = await postAllocationData(payload);
 

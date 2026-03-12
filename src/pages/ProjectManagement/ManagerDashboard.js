@@ -603,7 +603,7 @@ const ManagerDashboard = () => {
   
         const response = await processTimesheetApproval(payload);
   
-        console.log(payload)
+        // console.log(payload)
   
         // const response = { status: 200 }
   

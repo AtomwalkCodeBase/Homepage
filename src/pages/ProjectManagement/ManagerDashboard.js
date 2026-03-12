@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import Layout from '../../components/Layout'
 import styled from 'styled-components';
-import { FiChevronLeft, FiChevronRight, FiZap, FiClock, FiCheckCircle, } from 'react-icons/fi';
+import { FiZap, FiClock, FiCheckCircle, } from 'react-icons/fi';
 import { theme } from '../../styles/Theme';
 import StatsCard from '../../components/StatsCard';
 import { buildActivityGroupMap, buildStatsSummary, deriveActivityStatusForDate, filterActivities, formatAPITime, formatDate, formatMonthLabel, formatToApiDate, formatToDDMMYYYY, formatWeekLabel, getMonthRange, getStatusLabelVariant, getTodayApiDateStr, mapEmployeeCustomerOrderItemData, parseApiDate } from './utils/utils';
@@ -115,45 +115,6 @@ const Select = styled.select`
     outline: none;
     border-color: ${theme.colors.primary};
   }
-`;
-
-const DateToggle = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  background: ${theme.colors.backgroundAlt};
-  padding: ${theme.spacing.xs} ${theme.spacing.sm};
-  border-radius: ${theme.borderRadius.md};
-`;
-
-const DateButton = styled.button`
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: ${theme.spacing.xs};
-  border-radius: ${theme.borderRadius.sm};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${theme.colors.text};
-  transition: ${theme.transitions.fast};
-  
-  &:hover {
-    background: ${theme.colors.card};
-  }
-  
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;
-
-const DateDisplay = styled.span`
-  font-size: ${theme.fontSizes.sm};
-  font-weight: 500;
-  color: ${theme.colors.text};
-  min-width: 120px;
-  text-align: center;
 `;
 
 const TableScroll = styled.div`
@@ -751,21 +712,23 @@ const ManagerDashboard = () => {
           const { order_items = [] } = customer;
 
           order_items.forEach((item) => {
+            const planned = item.planned || {};
+            const actual = item.original_A || {};
             rows.push({
               customer_name: item.customer_name || "",
               audit_type: item.audit_type || "",
               order_item_key: item.order_item_key || "",
               employee_name,
               employee_id: emp_id,
-              planned_start_date: item.planned_start_date || "",
-              planned_end_date: item.planned_end_date || "",
-              planned_start_time: item.planned_start_time || "",
-              planned_end_time: item.planned_end_time || "",
-              actual_start_date: item.actual_start_date || "",
-              actual_end_date: item.actual_end_date || "",
-              planned_no_of_items: item.audit_item_no_planned ?? "",
-              actual_no_of_items: item.audit_item_no_actual ?? "",
-              remarks: item.remarks || "",
+              planned_start_date: item.planned_start_date || planned.startDate || "",
+              planned_end_date: item.planned_end_date || planned.endDate || "",
+              planned_start_time: item.planned_start_time || planned.startTime || "",
+              planned_end_time: item.planned_end_time || planned.endTime || "",
+              actual_start_date: item.actual_start_date || actual.start_date || "",
+              actual_end_date: item.actual_end_date || actual.end_date || "",
+              planned_no_of_items: planned.no_of_items || "",
+              actual_no_of_items: actual.no_of_items || "",
+              remarks: item.store_remarks || "",
             });
           });
         });
@@ -791,7 +754,7 @@ const ManagerDashboard = () => {
           actual_end_date: item.actual_end_date || actual.end_date || "",
           planned_no_of_items: item.planned_no_of_items ?? item.audit_item_no_planned ?? "",
           actual_no_of_items: item.actual_no_of_items ?? item.audit_item_no_actual ?? "",
-          remarks: item.remarks || "",
+          remarks: item.store_remarks || "",
         });
       });
     }
@@ -1001,7 +964,7 @@ const ManagerDashboard = () => {
                 />
                           <TableActions>
                             <Button variant="outline" size="sm" onClick={() => handleAuditExport(paginatedActivities)}>
-                              <FaFileExport /> Export
+                              <FaFileExport /> Export XLS
                             </Button>
                           </TableActions>
               </TableScroll> :

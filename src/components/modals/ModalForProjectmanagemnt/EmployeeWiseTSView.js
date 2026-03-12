@@ -5,6 +5,7 @@ import { IoClose } from 'react-icons/io5';
 import Button from '../../Button';
 import Badge from '../../Badge';
 import { formatAPITime } from '../../../pages/ProjectManagement/utils/utils';
+import { LuBox } from 'react-icons/lu';
 
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -485,6 +486,8 @@ const CustomerAccordion = ({ orderItem, index, defaultOpen, employee, onApproveA
   const planned_end_time   = orderItem?.original_P?.end_time   || orderItem?.planned_end_time;
   const actual_start_date  = orderItem?.original_A?.start_date || orderItem?.actual_start_date;
   const actual_end_date    = orderItem?.original_A?.end_date   || orderItem?.actual_end_date;
+  const planned_no_of_items    = orderItem?.original_P?.no_of_items;
+  const actual_no_of_items    = orderItem?.original_A?.no_of_items;
 
   const calculateDaysBetween = (startDate, endDate) => {
     if (!startDate || !endDate) return 0 ;
@@ -553,6 +556,7 @@ const CustomerAccordion = ({ orderItem, index, defaultOpen, employee, onApproveA
               <InfoField icon={FaCalendarAlt} label="End Date"    value={planned_end_date} />
               <InfoField icon={FaClock}       label="Start Time"  value={formatAPITime(planned_start_time)} />
               <InfoField icon={FaClock}       label="End Time"    value={formatAPITime(planned_end_time)} />
+              <InfoField icon={LuBox}       label="Planned no of items"    value={planned_no_of_items} />
               <InfoField icon={FaCalendarAlt} label="Duration" highlight color="primary"
                 value={calculateDaysBetween(planned_start_date, planned_end_date) + ' days'} />
             </InfoGrid>
@@ -563,7 +567,8 @@ const CustomerAccordion = ({ orderItem, index, defaultOpen, employee, onApproveA
             <InfoGrid>
               <InfoField icon={FaCalendarAlt} label="Start Date" value={actual_start_date} />
               <InfoField icon={FaCalendarAlt} label="End Date"   value={actual_end_date} />
-              <InfoField icon={FaCalendarAlt} label="Duration" highlight color="success"
+              <InfoField icon={FaCalendarAlt} label="Actual no of items"   value={actual_no_of_items} />
+              <InfoField icon={LuBox} label="Duration" highlight color="success"
                 value={calculateDaysBetween(actual_start_date, actual_end_date) + ' days'} />
             </InfoGrid>
           </Section>

@@ -418,8 +418,8 @@ const ExpenseTrackingScreen = () => {
     }
   };
 
-  const handleEditClick = (item) => {
-    setSelectedItem(item);
+  const handleEditClick = (item, mode) => {
+    setSelectedItem({ ...item, mode });
   };
 
   const handleModalClose = () => {
@@ -446,11 +446,12 @@ const ExpenseTrackingScreen = () => {
 
   const handleFormSubmit = async (formData) => {
     // console.log('Form submitted:', formData);
+    const callMode = selectedItem?.mode || "ADD"; 
     try {
       const payload = {
         "exp_data": {
           "order_item_id": formData.item.order_item_id,
-          "call_mode": activeTab === "plannedItem" ? "ADD" : "UPDATE",
+          "call_mode": callMode,
           "exp_allocation_list": [
             {
               "project_id": formData?.item?.project_id,
@@ -470,8 +471,8 @@ const ExpenseTrackingScreen = () => {
       const res = await postExpensePlannedItem(payload);
 
       if (res?.status === 200) {
-        toast.success(activeTab === "plannedItem" ? `${formData?.item?.item_name} Successfully added` : `${formData?.item?.item_name} Successfully updated`)
-        await fetchPlannedAndActual(orderItemId);
+        toast.success(callMode === "ADD" ? `${formData?.item?.item_name} Successfully added` : `${formData?.item?.item_name} Successfully updated`)
+        await fetchPlannedAndActual(formData.item.order_item_id);
         setSelectedItem(null);
         return true
       }
@@ -484,6 +485,8 @@ const ExpenseTrackingScreen = () => {
       setSelectedItem(null);
     }
   };
+
+   const actualItemIds = new Set((actualItems || []).map(item => item.item_id));
 
   return (
     <Layout title="Expense Tracking Screen">
@@ -528,7 +531,7 @@ const ExpenseTrackingScreen = () => {
             ) : activeTab === "plannedItem" ? (
               <>
                 <h4>Planned Expense Item</h4>
-                <OrderItemsTable items={plannedItems} type="P" onAction={handleEditClick} />
+                <OrderItemsTable items={plannedItems} type="P" onAction={handleEditClick} actualItemIds={actualItemIds}/>
                 <h4 style={{marginTop: "20px"}}>Actual Expense Item</h4>
                 <OrderItemsTable items={actualItems} type="A" onAction={handleEditClick} />
               </>
@@ -612,10 +615,10 @@ const ExpenseModal = ({ item, onClose, onSubmit, activeTab }) => {
               <Label><FaBoxes /> Quantity</Label>
               <Input type="quantity" min={0} value={formData.quantity} onChange={(e) => handleChange("quantity", e.target.value)} placeholder="Quantity" />
             </FormGroup>
-            <FormGroup>
+            {/* <FormGroup>
               <Label><FaCalendarAlt /> Date</Label>
               <Input type="date" value={formData.date} onChange={(e) => handleChange("date", e.target.value)} />
-            </FormGroup>
+            </FormGroup> */}
           </CompactRow>
           <FormGroup>
             <Label>
@@ -639,7 +642,7 @@ const ExpenseModal = ({ item, onClose, onSubmit, activeTab }) => {
   );
 };
 
-export const OrderItemsTable = ({ items = [], type, onAction, }) => {
+export const OrderItemsTable = ({ items = [], type, onAction, actualItemIds}) => {
 
   if (!items.length) {
     return <EmptyState>No items found</EmptyState>;
@@ -654,37 +657,48 @@ export const OrderItemsTable = ({ items = [], type, onAction, }) => {
             <TableHeader>Order Item Key</TableHeader>
             <TableHeader>Quantity</TableHeader>
             <TableHeader>Date</TableHeader>
-            <TableHeader>No of Days</TableHeader>
+            {type !== "P" && <TableHeader>No of Days</TableHeader>}
             <TableHeader>Action</TableHeader>
           </TableRow>
         </TableHead>
 
         <tbody>
-          {items.map((item) => (
+          {items.map((item) => {
+            // Check if this item is already in actual items
+            const isAlreadyInActual = actualItemIds?.has(item.item_id);
+            
+            return (
             <React.Fragment key={item.order_item_id}>
               <TableRow>
                 <TableCell>{item.item_name}</TableCell>
                 <TableCell>{item.order_item_key}</TableCell>
                 <TableCell>{item.quantity}</TableCell>
                 <TableCell>{item.expense_date}</TableCell>
-                <TableCell>{item.allocation_days}</TableCell>
+                {type !== "P" && <TableCell>{item.allocation_days}</TableCell>}
 
                 <TableCell>
-                  {type === "P" && (
-                    <Button size="sm" onClick={() => onAction(item)}>
+                  {type === "P" && !isAlreadyInActual && (
+                    <Button size="sm" onClick={() => onAction(item, "ADD")}>
                       <FaPlus /> Add
                     </Button>
                   )}
 
+                   {type === "P" && isAlreadyInActual && (
+                      <Button size="sm" disabled variant="outline">
+                        Already Added
+                      </Button>
+                    )}
+
                   {type === "A" && (
-                    <Button size="sm" onClick={() => onAction(item)}>
+                    <Button size="sm" onClick={() => onAction(item, "UPDATE")}>
                      <FaEdit /> Update
                     </Button>
                   )}
                 </TableCell>
               </TableRow>
             </React.Fragment>
-          ))}
+            );
+          })}
         </tbody>
       </Table>
     </TableContainer>

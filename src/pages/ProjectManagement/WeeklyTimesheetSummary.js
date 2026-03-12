@@ -1,20 +1,13 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { FaFileExport, FaCheckCircle, FaPaperPlane, FaEye } from 'react-icons/fa';
+import { FaFileExport, FaEye } from 'react-icons/fa';
 import Card from '../../components/Card';
-import { formatToApiDate, formatWeekLabel, mapEmployeeCustomerOrderItemData, normalizeDate, parseApiDate } from './utils/utils';
+import { formatWeekLabel, parseApiDate } from './utils/utils';
 import { createPortal } from 'react-dom';
 import EmployeeWiseTSView from '../../components/modals/ModalForProjectmanagemnt/EmployeeWiseTSView';
 import { theme } from '../../styles/Theme';
 
 // Styled Components
-
-const CardTitle = styled.h2`
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 1.5rem;
-`;
 
 const TableContainer = styled.div`
   overflow-x: auto;
@@ -162,11 +155,6 @@ const WeekSelectorContainer = styled.div`
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
-`;
-
-const WeekLabel = styled.strong`
-  font-weight: 600;
-  color: #333;
 `;
 
 const HoverCell = styled.td`
@@ -551,12 +539,20 @@ const getWeeksOfMonth = (monthDate, weekStart = "monday") => {
             const effort = Number(log.effort || 0);
             if (effort <= 0) return;
 
+            const planned = orderItem.planned || {};
             const detail = {
               customer: customer.customer_name,
               orderItem: orderItem.order_item_key,
               key: orderItem.activity_id,
               location: orderItem.location,
               efforts: effort,
+              audit_type: orderItem.audit_type,
+              planned_start_date: orderItem.planned_start_date || planned.startDate,
+              planned_end_date: orderItem.planned_end_date || planned.endDate,
+              planned_start_time: orderItem.planned_start_time || planned.startTime,
+              planned_end_time: orderItem.planned_end_time || planned.endTime,
+              planned_no_of_items: orderItem.planned_no_of_items ?? orderItem.audit_item_no_planned,
+              actual_no_of_items: orderItem.actual_no_of_items ?? orderItem.audit_item_no_actual,
 
               // 🔥 attach session directly
               check_in: log.check_in,
@@ -711,7 +707,14 @@ logs.forEach(({ employee, detail, effort }) => {
       orderItem: detail.orderItem,
       location: detail.location,
       efforts: effort,
-      sessions: [session]
+      sessions: [session],
+      audit_type: detail.audit_type,
+      planned_start_date: detail.planned_start_date,
+      planned_end_date: detail.planned_end_date,
+      planned_start_time: detail.planned_start_time,
+      planned_end_time: detail.planned_end_time,
+      planned_no_of_items: detail.planned_no_of_items,
+      actual_no_of_items: detail.actual_no_of_items
     });
   }
 
@@ -738,18 +741,18 @@ const employeeCount = Object.keys(employeeGroups).length;
         dayData.details.forEach((detail) => {
           rows.push({
             customer_name: detail.customer || "",
-            audit_type: "",
+            audit_type: detail.audit_type || "",
             order_item_key: detail.orderItem || "",
             employee_name: name || "",
             employee_id: empId || "",
-            planned_start_date: "",
-            planned_end_date: "",
-            planned_start_time: "",
-            planned_end_time: "",
+            planned_start_date: detail.planned_start_date || "",
+            planned_end_date: detail.planned_end_date || "",
+            planned_start_time: detail.planned_start_time || "",
+            planned_end_time: detail.planned_end_time || "",
             actual_start_date: dateStr,
             actual_end_date: dateStr,
-            planned_no_of_items: "",
-            actual_no_of_items: "",
+            planned_no_of_items: detail.planned_no_of_items ?? "",
+            actual_no_of_items: detail.actual_no_of_items ?? "",
             remarks: "",
           });
         });
@@ -834,7 +837,7 @@ const handleViewItem = (employee, orderItem) => {
         planned_end_time: item.planned_end_time,
         actual_start_date: item.actual?.start_date,
         actual_end_date: item.actual?.end_date,
-        remark: item.remarks,
+        remark: item.store_remarks,
         day_logs: dayLogsArray
       });
     });
@@ -979,7 +982,7 @@ const handleViewItem = (employee, orderItem) => {
                 return onExport ? onExport(weekExportRows) : null;
               }}
             >
-              <FaFileExport /> Export Week
+              <FaFileExport /> Export XLS Week
             </Button>
             <Button
               variant="outline"
@@ -989,7 +992,7 @@ const handleViewItem = (employee, orderItem) => {
                 return onExport ? onExport(structuredData) : null;
               }}
             >
-              <FaFileExport /> Export Month
+              <FaFileExport /> Export XLS Month
             </Button>
           </TableActions>
         </TableContainer>
@@ -1024,8 +1027,8 @@ const getTotalColour = (value, type) => {
 
   if (type === 'percentage') {
     if (numeric > 100) return '#FFD600';  // Yellow
-    if (numeric > 90) return '#00C853';   // Green
-    if (numeric < 90) return '#FF9800';   // Orange
+    if (numeric > 80) return '#00C853';   // Green
+    if (numeric < 80) return '#FF9800';   // Orange
   }
 
   return '#FF9800'; // Default Orange

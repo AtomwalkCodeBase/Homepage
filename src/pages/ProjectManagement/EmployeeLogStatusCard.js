@@ -9,6 +9,7 @@ import { MdFilterAltOff } from 'react-icons/md';
 import { theme } from '../../styles/Theme';
 import { IoLogInOutline, IoLogOutOutline } from 'react-icons/io5';
 import { toast } from 'react-toastify';
+import Badge from '../../components/Badge';
 
 // --- NEW STYLED COMPONENTS FOR GROUPING ---
 
@@ -74,9 +75,8 @@ const Container = styled.div`
 
 const CardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   gap: ${theme.spacing.lg};
-  max-width: 1400px;
   margin: 0 auto;
 `;
 
@@ -84,25 +84,14 @@ const CardHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: ${theme.spacing.md};
+ /*  margin-bottom: ${theme.spacing.md}; */
   padding-bottom: ${theme.spacing.md};
-  border-bottom: 2px solid ${theme.colors.backgroundAlt};
+  /* border-bottom: 2px solid ${theme.colors.backgroundAlt}; */
 `;
 
-const StatusBadge = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${theme.spacing.xs};
-  padding: ${theme.spacing.xs} ${theme.spacing.sm};
-  border-radius: ${theme.borderRadius.full};
-  font-size: ${theme.fontSizes.xs};
-  font-weight: 600;
-  background: ${props => props.checkedIn ? theme.colors.accentLight : theme.colors.secondaryLight};
-  color: ${props => props.checkedIn ? theme.colors.success : theme.colors.error};
-`;
 
 const InfoRow = styled.div`
-  display: flex;
+  /* display: flex; */
   align-items: center;
   gap: ${theme.spacing.sm};
   margin-bottom: ${theme.spacing.sm};
@@ -120,17 +109,19 @@ const IconWrapper = styled.div`
 const Label = styled.span`
   color: ${theme.colors.textLight};
   font-weight: 500;
-  min-width: 80px;
+ /* min-width: 80px; */
 `;
 
 const Value = styled.span`
-  color: ${theme.colors.text};
+  color: ${theme.colors.textLight};
+  font-size: ${theme.fontSizes.sm};
   font-weight: 600;
+  margin-left: ${theme.spacing.sm}
 `;
 
 const EmployeeName = styled.h3`
   margin: 0;
-  font-size: ${theme.fontSizes.lg};
+  font-size: ${theme.fontSizes.sm};
   color: ${theme.colors.text};
   font-weight: 700;
 `;
@@ -138,8 +129,8 @@ const EmployeeName = styled.h3`
 const TimeInfo = styled.div`
   display: flex;
   gap: ${theme.spacing.md};
-  margin-top: ${theme.spacing.md};
-  padding-top: ${theme.spacing.md};
+  /* margin-top: ${theme.spacing.md}; */
+ padding-top: ${theme.spacing.md}; 
   border-top: 1px solid ${theme.colors.border};
 `;
 
@@ -636,7 +627,7 @@ export default EmployeeLogStatusCard;
 const InfoRowComponent = ({ icon: Icon, label, value }) => (
   <InfoRow>
     <IconWrapper>
-      <Icon size={16} />
+    {Icon && <Icon size={16} />}
     </IconWrapper>
     <Label>{label}:</Label>
     <Value>{value}</Value>
@@ -657,28 +648,32 @@ const EmployeeStatusCard = ({ employee }) => {
   return (
     <Card>
       <CardHeader>
+        <div style={{display: "flex", flexDirection: "column", gap: "10px", justifyContent: "flex-start", }}>
         <EmployeeName>{employee_name}</EmployeeName>
-        <StatusBadge>
+        <InfoRowComponent  label="ID" value={emp_id} />
+        </div>
+        {/* <Badge checkedIn={checkedIn && !checkedOut}> */}
+        <Badge variant={!activeSession ? "notPlanned" : checkedIn && !checkedOut ? "success" : "error"}>
           {!activeSession ? (
             <>
               <FiXCircle size={14} /> Not checked in yet
             </>
           ) : checkedIn && !checkedOut ? (
             <>
-              <IoLogInOutline size={14} /> Checked In
+              <IoLogInOutline size={14} /> Check In
             </>
           ) : (
             <>
-              <IoLogOutOutline size={14} /> Checked Out
+              <IoLogOutOutline size={14} /> Check Out
             </>
           )}
-        </StatusBadge>
+        </Badge>
 
       </CardHeader>
 
-      <InfoRowComponent icon={FiHash} label="Employee ID" value={emp_id} />
-      <InfoRowComponent icon={FiUsers} label="Customer" value={customer_name} />
-      <InfoRowComponent icon={FiPackage} label="Order Key" value={order_item_key} />
+      {/* <InfoRowComponent icon={FiHash} label="Employee ID" value={emp_id} /> */}
+      {/* <InfoRowComponent icon={FiUsers} label="Customer" value={customer_name} /> */}
+      {/* <InfoRowComponent icon={FiPackage} label="Order Key" value={order_item_key} /> */}
 
       {activeSession && (
         <TimeInfo>

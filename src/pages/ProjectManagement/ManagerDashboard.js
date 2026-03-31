@@ -18,6 +18,7 @@ import { toast } from 'react-toastify';
 import { MdFilterAltOff } from 'react-icons/md';
 import ConfirmPopup from '../../components/modals/ConfirmPopup';
 import { useExport } from '../../context/ExportContext';
+import CustomerSelectionModal from '../../components/modals/ModalForProjectmanagemnt/CustomerSelectionModal';
 
 // Styled Components
 const Container = styled.div`
@@ -101,21 +102,28 @@ const SearchBox = styled.input`
   }
 `;
 
-const Select = styled.select`
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border: 1px solid ${theme.colors.border};
-  border-radius: ${theme.borderRadius.md};
-  font-family: ${theme.fonts.body};
-  font-size: ${theme.fontSizes.sm};
-  background: white;
-  cursor: pointer;
-  min-width: 150px;
+// const Select = styled.select`
+//   padding: ${theme.spacing.sm} ${theme.spacing.md};
+//   border: 1px solid ${theme.colors.border};
+//   border-radius: ${theme.borderRadius.md};
+//   font-family: ${theme.fonts.body};
+//   font-size: ${theme.fontSizes.sm};
+//   background: white;
+//   cursor: pointer;
+//   min-width: 150px;
   
-  &:focus {
-    outline: none;
-    border-color: ${theme.colors.primary};
-  }
-`;
+//   &:focus {
+//     outline: none;
+//     border-color: ${theme.colors.primary};
+//   }
+// `;
+
+const FilterSelect = styled.select`
+  padding: 0.5rem 1rem;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 4px;
+  background: white;
+`
 
 const TableScroll = styled.div`
   width: 100%;
@@ -327,6 +335,7 @@ const ManagerDashboard = () => {
   const { profile } = useAuth();
   const { exportEmployeeAuditData } = useExport();
   const [activeTab, setActiveTab] = useState("daily");
+  const [activeDashboard, setActiveDashboard] = useState("MD");
   const [employees, setEmployees] = useState([])
   const [m_employee_id, setM_Employee_id] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -354,10 +363,11 @@ const ManagerDashboard = () => {
   const [selectedSessionItem, setSelectedSessionItem] = useState(null);
   const [sessionDayLogStatuses, setSessionDayLogStatuses] = useState({});
   const [employeeDayLogsModal, setEmployeeDayLogsModal] = useState(false)
+  const [customerSelectionModal, setCustomerSelectionModal] = useState(false)
   const m_emp_id = localStorage.getItem("empId")
-    const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [confirmType, setConfirmType] = useState(null);
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [confirmType, setConfirmType] = useState(null);
 
   const groupedActivities = useMemo(() => {
     return buildActivityGroupMap(allEmployeeAllocationData);
@@ -447,7 +457,7 @@ const ManagerDashboard = () => {
 
   useEffect(() => {
     fetchEmpAllocation(currentDate.start, currentDate.end);
-  }, [currentDate.start, currentDate.end, m_employee_id]);
+  }, [currentDate.start, currentDate.end, m_employee_id, activeDashboard]);
 
   const fetchEmpAllocation = async (startOverride, endOverride) => {
 
@@ -459,6 +469,11 @@ const ManagerDashboard = () => {
       start_date: formatToDDMMYYYY(start),
       end_date: formatToDDMMYYYY(end),
     }
+
+    if (activeDashboard === "AD") {
+      payload.manager_type = "A";
+    }
+
     setIsLoading(true)
     try {
       const res = await getEmpAllocationData(payload);
@@ -472,7 +487,13 @@ const ManagerDashboard = () => {
 
     } catch (error) {
       // console.error("Error fetching allocation data:", error);
-      toast.error("Something went wrong. Try again later!!!")
+      if (activeDashboard === "AD" && error?.response?.data?.status_code === 403) {
+        toast.error(error.response.data.detail);
+        setCustomerSelectionModal(false);
+        setActiveDashboard("MD");
+      } else {
+        toast.error("Something went wrong. Try again later!!!");
+      }
       setAllEmployeeAllocationData([])
     } finally {
       setIsLoading(false)
@@ -624,7 +645,6 @@ const ManagerDashboard = () => {
         setConfirmType(null);
       }
     };
-
   const STATUS_META = {
     NOT_STARTED: {
       PLANNED: {
@@ -689,11 +709,13 @@ const ManagerDashboard = () => {
     { key: 'daily', label: `Daily Status`, },
     { key: 'weekly', label: `Weekly Timesheet`, }
   ].filter(Boolean);
+  const tabs1 = [
+    { key: 'MD', label: `Manager Dashboard`, },
+    { key: 'AD', label: `Account Manager Dashboard`, }
+  ].filter(Boolean);
 
-    const buildAuditExportData = (data = []) => {
+  const buildAuditExportData = (data = []) => {
     const rows = [];
-
-    console.log("data", data)
 
     if (!Array.isArray(data) || data.length === 0) return rows;
 
@@ -704,7 +726,6 @@ const ManagerDashboard = () => {
     const isEmployeeStructured = Boolean(first?.customers);
 
     if (isEmployeeStructured) {
-      console.log("come block 1")
       data.forEach((employee) => {
         const { emp_id, employee_name, customers = [] } = employee;
 
@@ -736,9 +757,9 @@ const ManagerDashboard = () => {
     } else {
       // Flat list (derived activities / filtered rows)
       data.forEach((item) => {
-              console.log("come block 2")
+        console.log("come block 2")
         const planned = item.planned || {};
-        const actual = item.original_A|| {};
+        const actual = item.original_A || {};
 
         rows.push({
           customer_name: item.customer_name || "",
@@ -761,7 +782,6 @@ const ManagerDashboard = () => {
 
     return rows;
   };
-  
   
     const handleAuditExport = (data = null) => {
       // If no data is passed, choose based on the active tab
@@ -790,6 +810,15 @@ const ManagerDashboard = () => {
         <Paragraphdata>See all employee allocation data </Paragraphdata>
         <h4>Today: {formatDate(todayDate)}</h4>
       </PageSubtitle>
+      {/* <Card> */}
+      <TabContainer>
+        {tabs1.map(t => (
+          <Tab key={t.key} active={activeDashboard === t.key} onClick={() => { setActiveDashboard(t.key); t.key === "AD" && setCustomerSelectionModal(true) }}>
+            {t.label}
+          </Tab>
+        ))}
+      </TabContainer>
+      {/* </Card> */}
       <Container>
         <Main>
           <StatsGrid>
@@ -806,29 +835,29 @@ const ManagerDashboard = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <Select value={customerFilter} onChange={(e) => setCustomerFilter(e.target.value)}>
+              <FilterSelect value={customerFilter} onChange={(e) => setCustomerFilter(e.target.value)}>
                 <option value="">All Customers</option>
                 {uniqueCustomers.map(c => (
                   <option key={c} value={c}>{c}</option>
                 ))}
-              </Select>
-              <Select value={employeeFilter} onChange={(e) => setEmployeeFilter(e.target.value)}>
+              </FilterSelect>
+              <FilterSelect value={employeeFilter} onChange={(e) => setEmployeeFilter(e.target.value)}>
                 <option value="">All Employees</option>
                 {uniqueEmployees.map(e => (
                   <option key={e.id} value={e.id}>{e.name}</option>
                 ))}
 
-              </Select>
+              </FilterSelect>
             </FilterRow>
-            <div style={{ display: "flex", justifyContent: "space-between",flexWrap: "wrap", alignItems: "center", marginTop: "1rem" }}>
-          {profile.grade_level > 500 && 
-          <Select value={m_employee_id} onChange={(e) => setM_Employee_id(e.target.value)}>
-                <option value="">All Manager</option>
-                {employees.map(e => (
-                  <option key={e.emp_id} value={e.emp_id}>{e.name}({e.emp_id})</option>
-                ))}
+            <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", alignItems: "center", marginTop: "1rem" }}>
+              {profile.grade_level > 500 &&
+                <FilterSelect value={m_employee_id} onChange={(e) => setM_Employee_id(e.target.value)}>
+                  <option value="">All Manager</option>
+                  {employees.map(e => (
+                    <option key={e.emp_id} value={e.emp_id}>{e.name}({e.emp_id})</option>
+                  ))}
 
-              </Select>}
+                </FilterSelect>}
               {/* {activeTab === "daily" ?
                 <DateToggle>
                   <DateButton onClick={handlePreviousDay}>
@@ -849,24 +878,24 @@ const ManagerDashboard = () => {
                   </DateToggle>
                   } */}
 
-              <Button style={{marginLeft: "auto"}} onClick={() => { setStatusFilter(null); setCustomerFilter(''); setEmployeeFilter(''); setSearchTerm(''); setCurrentPage(1); setM_Employee_id(""); }}><MdFilterAltOff /> Clear All</Button>
+              <Button style={{ marginLeft: "auto" }} onClick={() => { setStatusFilter(null); setCustomerFilter(''); setEmployeeFilter(''); setSearchTerm(''); setCurrentPage(1); setM_Employee_id(""); }}><MdFilterAltOff /> Clear All</Button>
             </div>
           </FilterSection>
-           }
+          }
           <Card hoverable={false}>
-            
-                        <div style={{width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                      <CalendarContainer>
-                        <Button size='sm' variant="primary" iconOnly={true} onClick={handlePreviousDay}>
-                          <FaChevronLeft />
-                        </Button>
-                        <MonthText>{activeTab === "daily" ? selectedDate : formatMonthLabel(currentDate.start)}</MonthText>
-                        <Button size="sm" variant="primary" iconOnly={true} onClick={handleNextDay}>
-                          <FaChevronRight />
-                        </Button>
-                      </CalendarContainer>
-                        <Button onClick={() => {setSelectedDate(todayDate)}}><MdFilterAltOff /> Clear filter</Button>
-                        </div>
+
+            <div style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <CalendarContainer>
+                <Button size='sm' variant="primary" iconOnly={true} onClick={handlePreviousDay}>
+                  <FaChevronLeft />
+                </Button>
+                <MonthText>{activeTab === "daily" ? selectedDate : formatMonthLabel(currentDate.start)}</MonthText>
+                <Button size="sm" variant="primary" iconOnly={true} onClick={handleNextDay}>
+                  <FaChevronRight />
+                </Button>
+              </CalendarContainer>
+              <Button onClick={() => { setSelectedDate(todayDate) }}><MdFilterAltOff /> Clear filter</Button>
+            </div>
             <TabContainer>
               {tabs.map(t => (
                 <Tab key={t.key} active={activeTab === t.key} onClick={() => setActiveTab(t.key)}>
@@ -885,7 +914,7 @@ const ManagerDashboard = () => {
                     <HeaderCell>Planned Schedule</HeaderCell>
                     <HeaderCell>Actual</HeaderCell>
                     <HeaderCell>Audit Progress</HeaderCell>
-                    <HeaderCell>Status<br/>Today's status</HeaderCell>
+                    <HeaderCell>Status<br />Today's status</HeaderCell>
                     <HeaderCell>Actions</HeaderCell>
                   </HeaderRow>
                   {isLoading ?
@@ -906,7 +935,7 @@ const ManagerDashboard = () => {
                           <Cell>
                             <AuditorInfo>
                               <div className="name">{audit.employee_name}</div>
-                              <div className="id">ID: {audit.emp_id} <Badge variant={audit.emp_grade > 100 ? "settle" : "forward"} style={{marginLeft: "0.5rem"}}>{audit.emp_grade > 100 ? "Team Lead" : "Executive"}</Badge></div>
+                              <div className="id">ID: {audit.emp_id} <Badge variant={audit.emp_grade < 20 ? "back" :  audit.emp_grade > 100 ? "settle" : "forward"} style={{ marginLeft: "0.5rem" }}>{audit.emp_grade < 20 ? "Retainer"  : audit.emp_grade > 100 ? "Team Lead" : "Executive"}</Badge></div>
                               <div className="type">{audit.original_P.audit_type}</div>
                               <div className="key">{audit.order_item_key}</div>
                             </AuditorInfo>
@@ -962,11 +991,11 @@ const ManagerDashboard = () => {
                   onPageChange={handlePageChange}
                   siblingCount={2}
                 />
-                          <TableActions>
-                            <Button variant="outline" size="sm" onClick={() => handleAuditExport(paginatedActivities)}>
-                              <FaFileExport /> Export XLS
-                            </Button>
-                          </TableActions>
+                <TableActions>
+                  <Button variant="outline" size="sm" onClick={() => handleAuditExport(paginatedActivities)}>
+                    <FaFileExport /> Export XLS
+                  </Button>
+                </TableActions>
               </TableScroll> :
 
               <WeeklyTimesheetSummary
@@ -993,17 +1022,22 @@ const ManagerDashboard = () => {
           onRejectSession={(date) => console.log('Rejected:', date)}
         />}
 
-        
-              <ConfirmPopup
-                isOpen={confirmModalOpen}
-                onClose={() => setConfirmModalOpen(false)}
-                onConfirm={handleConfirm}
-                approve={confirmType === 'WEEKLY_APPROVE' ? "APPROVE" : "REJECT"}
-                isLoading={isLoading}
-                title="Weekly Approve Activity"
-                message="Are you sure you want to Approve this activity"
-                confirmLabel="Approve"
-              />
+
+      <ConfirmPopup
+        isOpen={confirmModalOpen}
+        onClose={() => setConfirmModalOpen(false)}
+        onConfirm={handleConfirm}
+        approve={confirmType === 'WEEKLY_APPROVE' ? "APPROVE" : "REJECT"}
+        isLoading={isLoading}
+        title="Weekly Approve Activity"
+        message="Are you sure you want to Approve this activity"
+        confirmLabel="Approve"
+      />
+      {(activeDashboard === "AD" && customerSelectionModal) && <CustomerSelectionModal
+        isOpen={customerSelectionModal}
+        onClose={() => setCustomerSelectionModal(false)}
+        onSelectCustomer={(customer) => setCustomerFilter(customer.name)}
+      />}
     </Layout>
   )
 }

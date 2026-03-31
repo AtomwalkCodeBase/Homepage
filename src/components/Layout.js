@@ -49,7 +49,7 @@ const Overlay = styled.div`
 `
 
 const Layout = ({ children, title }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
   // Check if mobile on mount and when window resizes
@@ -59,7 +59,7 @@ const Layout = ({ children, title }) => {
       if (window.innerWidth <= 768) {
         setSidebarOpen(false)
       } else {
-        setSidebarOpen(true)
+        setSidebarOpen(false)
       }
     }
 

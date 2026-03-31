@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import {  FiFileText, FiCheck, FiX, FiUsers } from 'react-icons/fi';
-import { FaFileAlt, FaMinus, FaPlus, FaTimes, FaUpload } from 'react-icons/fa';
+import { FiFileText, FiCheck, FiX, FiUsers } from 'react-icons/fi';
+import { FaFileAlt, FaPlus, FaTimes, FaUpload } from 'react-icons/fa';
 import styled from 'styled-components';
 import { useTheme } from '../../../context/ThemeContext';
 import Button from '../../Button';
 import Badge from '../../Badge';
-import { getStatusVariant, getCurrentDateTimeDefaults, getYesterday, convert12To24Hour, formatToDDMMYYYY, normalizeToDDMMYYYY} from '../../../pages/ProjectManagement/utils/utils';
+import { getStatusVariant, getCurrentDateTimeDefaults, getYesterday, convert12To24Hour, formatToDDMMYYYY, normalizeToDDMMYYYY } from '../../../pages/ProjectManagement/utils/utils';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../../context/AuthContext';
 import Modal from '../Modal';
@@ -229,6 +229,16 @@ const InfoValue = styled.span`
 const CompactRow = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const Grid2 = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.75rem;
   
   @media (max-width: 640px) {
@@ -488,6 +498,20 @@ const EmptyState = styled.div`
   padding: ${({ theme }) => theme.spacing.md};
 `;
 
+const FilterSelect = styled.select`
+  padding: 10px 12px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 10px;
+  background: white;
+  margin-top: 10px;
+
+      &:disabled {
+     opacity: 0.5;
+     cursor: not-allowed;
+     transform: none;
+   }
+`
+
 const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActivitySubmit, modalContext, forceMode, retainerCache, retainerPage }) => {
   const theme = useTheme();
   const { profile } = useAuth();
@@ -505,10 +529,6 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
   const [isRetainerModalOpen, setIsRetainerModalOpen] = useState(false);
   const [retainerInputs, setRetainerInputs] = useState([]);
 
-  // console.log("formData", formData)
-  // console.log("allRetainers", allRetainers)
-  // console.log("activity", activity)
-  // console.log("retainerCache", retainerCache)
 
   const yesterday = getYesterday()
   const dayLogToday = activity?.day_logs?.[todayDayLogKey]
@@ -523,7 +543,7 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
 
   const isRetainerUpdate = modalContext?.type === "update_retainer";
 
-const incompleteEmployees = useMemo(() => {
+  const incompleteEmployees = useMemo(() => {
     if (!activity?.original_P || !retainerCache) return [];
 
     const retainerPIds = (activity.original_P.retainer_list || []).filter(r => r.a_type === "P").map(r => r.a_id);
@@ -567,9 +587,9 @@ const incompleteEmployees = useMemo(() => {
 
   const isForceCom = modalContext?.type === "force_complete";
   const isDisabled = (
-    isForceCom 
+    isForceCom
       ? (incompleteEmployees.length !== 0 && !retainerPage)
-      : (!formData.date || !formData.endTime ||(!isZeroItems && isNoOfItemsEmpty) ||
+      : (!formData.date || !formData.endTime || (!isZeroItems && isNoOfItemsEmpty) ||
         (isRemarksRequired && !hasRemarks) || isFileRequired || (incompleteEmployees.length !== 0 && !retainerPage))
   );
 
@@ -583,32 +603,38 @@ const incompleteEmployees = useMemo(() => {
 useEffect(() => {
   if (!isActivityCompleted && isOpen) {
 
-    const existingResources =
-      activity?.original_A?.resource_list || [];
+      const rawResources = activity?.original_A?.resource_list || [];
+      const existingResources = Array.isArray(rawResources) ? rawResources : typeof rawResources === 'string' ? rawResources.split('|') : [];
 
-    setFormData({
-      date: activeDate,
-      endTime: currentTime,
-      noOfResources: activity?.retainerData?.no_resource,
-      noOfItems: 0,
-      is_completed: false,
-      retainerNames: existingResources.join("|"),
-      remarks: "",
-    });
+      const formattedResources = existingResources.map(res => {
+        const [name = "", items = "", resourceType = ""] = res.split("^");
 
-    if (Array.isArray(existingResources) && existingResources.length > 0) {
-      setRetainerInputs(existingResources);
-    } else {
-      setRetainerInputs([]);
+        return {
+          name: name.trim(),
+          items: items.trim(),
+          resourceType: resourceType.trim(),
+        };
+      });
+
+      setFormData({
+        date: activeDate,
+        endTime: currentTime,
+        noOfResources: formattedResources.length || 0,
+        noOfItems: 0,
+        is_completed: false,
+        retainerNames: formattedResources.map(r => `${r.name}^${r.items}^${r.resourceType}`).join("|"),
+        remarks: "",
+      });
+
+      setRetainerInputs(formattedResources);
     }
-  }
-}, [isOpen, activity]);
+  }, [isOpen, activity]);
 
-if (
-  (modalContext?.type === "continue" || modalContext?.type === "complete") && activity?.hasPendingCheckout) {
-  toast.error("Session started on a previous day. Please reload the page.");
-  return;
-}
+  if (
+    (modalContext?.type === "continue" || modalContext?.type === "complete") && activity?.hasPendingCheckout) {
+    toast.error("Session started on a previous day. Please reload the page.");
+    return;
+  }
 
 
   if (!isOpen || !activity) return null;
@@ -629,10 +655,24 @@ if (
     handleChange("file", file);
   };
 
-  const removeFile = () => {setFormData((prev) => ({...prev,file: null,}))}
+  const removeFile = () => { setFormData((prev) => ({ ...prev, file: null, })) }
 
-  const getJoinedRetainerNames = () => retainerInputs.map(v => v.trim()).filter(Boolean).join("|");
+  const getJoinedRetainerNames = () => retainerInputs.filter(r => String(r.name || "").trim() && r.items !== "" && r.resourceType !== "").map(r => `${String(r.name).trim()}^${r.items}^${r.resourceType}`).join("|");
 
+  const getResourceTypeCounts = () => {
+    let tl = 0;
+    let ex = 0;
+
+    retainerInputs.forEach(r => {
+      if (!r.name?.trim() || !r.items || !r.resourceType) return;
+
+      if (r.resourceType === "TL") tl++;
+      if (r.resourceType === "EX") ex++;
+    });
+
+    return { tl_count: tl, ex_count: ex };
+  };
+  
   const handleSubmit = async () => {
     if (isDisabled || !onActivitySubmit) return;
 
@@ -705,14 +745,13 @@ if (
     }
   }
 
-    if (retainerCache && formData.noOfResources !== "") {
-    const resourceCount = Number(formData.noOfResources);
+  //   if (retainerCache && formData.noOfResources !== "") {
+  //   const resourceCount = Number(formData.noOfResources);
 
-    if (Number.isFinite(resourceCount) && resourceCount > 0) {
-      extraFields.no_of_resources = resourceCount;
-    }
-  }
-
+  //   if (Number.isFinite(resourceCount) && resourceCount > 0) {
+  //     extraFields.no_of_resources = resourceCount;
+  //   }
+  // }
 
     const resourceList = getJoinedRetainerNames() || "";
       if (resourceList && String(resourceList).trim()) {
@@ -721,41 +760,63 @@ if (
 
     if (retainerPage) {
     const expectedResources = Number(formData.noOfResources || 0);
-    const enteredResourceCount = retainerInputs.filter(name => name.trim()).length;
 
-    if (expectedResources !== enteredResourceCount) {
-      toast.error(
-        `Number of resources (${expectedResources}) must match entered resource names (${enteredResourceCount})`
-      );
+     for (let i = 0; i < retainerInputs.length; i++) {
+    const item = retainerInputs[i];
+
+    if (!item.name?.trim()) {
+      toast.error(`Please enter name for Resource ${i + 1}`)
+      return;
+    }
+
+    if (!item.items?.toString().trim()) {
+      toast.error(`Please enter ${activity?.original_P?.product_unit? `${activity?.original_P?.product_unit} Audited` : "Number of Items Audited"} for Resource ${i + 1}`)
+      return;
+    }
+
+    if (!item.resourceType?.toString().trim()) {
+      toast.error(`Please select Resource Type (TL/EX) for Resource ${i + 1}`)
       return;
     }
   }
-    
-//  console.log({
-//           activityDate: activityDateToSend,
-//           endTime: formData.endTime,
-//           noOfItems: isZeroItems ? 0 : Number(formData.noOfItems),
-//           remarks: formData.remarks.trim() || "",
-//           // resource_list: getJoinedRetainerNames() || "",
-//           file: formData.file
-//         },
-//         extraFields
-//       );
+   const enteredResourceCount = retainerInputs.filter(r => r.name?.trim() && r.items && r.resourceType?.toString().trim()).length;
+
+    if (expectedResources !== enteredResourceCount) {
+      toast.error(`Number of resources (${expectedResources}) must match entered resource names (${enteredResourceCount})`);
+      return;
+    }
+  }
+
+  const { tl_count, ex_count } = getResourceTypeCounts();
+
+  if (tl_count > 0) extraFields.tl_count = tl_count;
+  if (ex_count > 0) extraFields.ex_count = ex_count;
+
+    // console.log({
+    //   activityDate: activityDateToSend,
+    //   endTime: formData.endTime,
+    //   noOfItems: isZeroItems ? 0 : Number(formData.noOfItems),
+    //   remarks: formData.remarks.trim() || "",
+    //   // resource_list: getJoinedRetainerNames() || "",
+    //   file: formData.file
+    // },
+    //   extraFields
+    // );
     let success;
-    if(isRetainerUpdate){
+    if (isRetainerUpdate) {
       success = await onActivitySubmit({
-      project: activity,
-      mode: "DATA_CORRECT",
-      data: {
-        activityDate: activityDateToSend,
-        // endTime: formData.endTime,
-        noOfItems: isZeroItems ? 0 : Number(formData.noOfItems),
-        // remarks: formData.remarks.trim() || "",
-        // file: formData.file
-      },
-      extraFields
-    })
-    }else if(mode === "force_complete"){
+        project: activity,
+        mode: "DATA_CORRECT",
+        data: {
+          activityDate: activityDateToSend,
+          // endTime: formData.endTime,
+          noOfItems: isZeroItems ? 0 : Number(formData.noOfItems),
+          // remarks: formData.remarks.trim() || "",
+          // file: formData.file
+        },
+        extraFields
+      })
+    } else if (mode === "force_complete") {
       success = await onActivitySubmit({
         project: activity,
         mode: "FORCE_COMPLETE",
@@ -765,7 +826,7 @@ if (
         },
         extraFields
       })
-    }else{
+    } else {
       success = await onActivitySubmit({
         project: activity,
         mode: "UPDATE",
@@ -786,17 +847,16 @@ if (
     }
   }
 
-  const handleRetainerNameChange = (index, value) => {
-  setRetainerInputs(prev => {
-    const updated = [...prev];
-    updated[index] = value;
-    return updated;
-  });
-};
-
+  const handleRetainerChange = (index, field, value) => {
+    setRetainerInputs(prev => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], [field]: value };
+      return updated;
+    });
+  };
   const handleRetainerModalSubmit = () => {
-    const formatted = retainerInputs.map(v => v.trim()).filter(Boolean).join("| ");
-    setFormData(prev => ({...prev,retainerNames: formatted}));
+    const formatted = getJoinedRetainerNames();
+    setFormData(prev => ({ ...prev, retainerNames: formatted }));
     setIsRetainerModalOpen(false);
   };
 
@@ -809,14 +869,14 @@ if (
 
     setRetainerInputs(prev => {
       const arr = [...prev];
-      while (arr.length < count) arr.push("");
+      while (arr.length < count) { arr.push({ name: "", items: "", resourceType: "" }); }
       return arr.slice(0, count);
     });
 
     setIsRetainerModalOpen(true);
   };
 
- const handleRemoveRetainer = (indexToRemove) => {
+  const handleRemoveRetainer = (indexToRemove) => {
     setRetainerInputs(prev => prev.filter((_, index) => index !== indexToRemove));
   };
 
@@ -858,7 +918,6 @@ if (
               <InfoDetails label="Planned Date" value={`${activity.planned_start_date} → ${activity.planned_end_date}`} />
 
               <InfoDetails label="Total number of items assigned" value={activity.original_P?.no_of_items || 0} />
-          
             </InfoGrid>
           </ActivityInfoCard>
 
@@ -869,19 +928,19 @@ if (
           <CompactRow>
            {modalContext?.type !== "force_complete" && <FormGroup>
               <Label>End Date <Required>*</Required></Label>
-              <Input type="date" value={formData.date} onChange={(e) => handleChange("date", e.target.value)} disabled={(modalContext?.type === "continue" || modalContext?.type === "complete")  && (isExecutive || isRetainerUpdate)} />
+              <Input type="date" value={formData.date} onChange={(e) => handleChange("date", e.target.value)} disabled={(modalContext?.type === "continue" || modalContext?.type === "complete") && (isExecutive || isRetainerUpdate)} />
             </FormGroup>}
 
             {modalContext?.type !== "force_complete" && <FormGroup>
               <Label>End Time <Required>*</Required></Label>
               {/* <Input type="time" value={formData.endTime} disabled={isExecutive || isRetainerUpdate} onChange={(e) => handleChange("endTime", e.target.value)} /> */}
-              <Input type="time" value={formData.endTime}  onChange={(e) => handleChange("endTime", e.target.value)} />
+              <Input type="time" value={formData.endTime} onChange={(e) => handleChange("endTime", e.target.value)} />
             </FormGroup>}
-           
+
            {modalContext?.type !== "force_complete" && totalAssignedItems > 0 && (
               <FormGroup>
-                <Label>Number of Items <Required>*</Required></Label>
-                <Input type="number" min={0} value={formData.noOfItems} onChange={(e) => handleChange("noOfItems", e.target.value)} placeholder="Enter completed items" />
+                <Label>{!!activity.original_P.product_unit ? activity.original_P.product_unit : "Number of Items"} Audited <Required>*</Required></Label>
+                <Input type="number" min={0} value={formData.noOfItems} onChange={(e) => handleChange("noOfItems", e.target.value)} placeholder={!!activity.original_P.product_unit ? `Enter ${activity.original_P.product_unit} items Audited` : "Enter completed items"} />
               </FormGroup>
             )}
 
@@ -890,40 +949,42 @@ if (
                 <Label>Number of Resources <Required>*</Required></Label>
                 <Input type="number" min={0} value={formData.noOfResources} onChange={(e) => handleChange("noOfResources", e.target.value)} placeholder="Enter no of resources" />
               </FormGroup>
-             } 
+             }
 
           </CompactRow>
 
-             {retainerPage && (
+            {retainerPage && (
             <ResourceCard>
               <CardHeader>
                 <FiUsers />Resource List
               </CardHeader>
 
               <FormGroup>
-                <div style={{display: "flex", justifyContent: "space-between"}}>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
                   <Label>
                     <FiFileText />Add Resources (Enter Names)<Required>*</Required>
                   </Label>
-                 <Button size='sm' onClick={handleAddOrUpdateResources}>{retainerInputs.length !== 0 ? <FaRegPenToSquare /> : <FaPlus />} {retainerInputs.length !== 0 ? "Update" : "Add"}</Button>
+                <Button size='sm' onClick={handleAddOrUpdateResources}>{retainerInputs.length !== 0 ? <FaRegPenToSquare /> : <FaPlus />} {retainerInputs.length !== 0 ? "Update" : "Add"}</Button>
                 </div>
 
                 <TagsContainer>
                   {retainerInputs.length > 0 ? (
                     <>
-                      {retainerInputs.map((name, index) => (
-                        name && (
+                      {retainerInputs.filter(r => String(r.name || "").trim() && String(r.items || "").trim() && String(r.resourceType || "").trim())
+                        .map((item, index) => (
                           <Tag key={index}>
-                            {name}
-                             <RemoveButton type="button" onClick={() => handleRemoveRetainer(index)} aria-label={`Remove ${name}`}>
+                            {item.name} ({item.items}) ({item.resourceType})
+                            <RemoveButton
+                              type="button"
+                              onClick={() => handleRemoveRetainer(index)}
+                            >
                               <FiX />
                             </RemoveButton>
                           </Tag>
-                        )
                       ))}
-                      {retainerInputs.filter(name => name).length > 0 && (
+                      {retainerInputs.filter(r => r.name?.trim() && r.items &&  r.resourceType?.toString().trim()).length > 0 && (
                         <ResourceCount>
-                          {retainerInputs.filter(name => name).length} of {formData.noOfResources || 0} resources added
+                          {retainerInputs.filter(r => r.name?.trim() && r.items && r.resourceType?.toString().trim()).length} of {formData.noOfResources || 0} resources added
                         </ResourceCount>
                       )}
                     </>
@@ -947,20 +1008,20 @@ if (
             />
           </FormGroup>
 
-          {activity.original_P.is_file_applicable && 
+          {activity.original_P.is_file_applicable &&
             <FormGroup>
               <Label>
                 Receipts/Attachments
                 {activity.original_P.is_file_applicable && <Required>*</Required>}
               </Label>
-                  <FileUploadContainer onClick={() => document.getElementById("file-upload").click()}>
-        <FileInput 
-          id="file-upload" 
-          name="file" 
-          type="file" 
-          onChange={handleFileChange} 
-          accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.ppt,.pptx" 
-          required={activity.original_P.is_file_applicable} 
+                <FileUploadContainer onClick={() => document.getElementById("file-upload").click()}>
+        <FileInput
+          id="file-upload"
+          name="file"
+          type="file"
+          onChange={handleFileChange}
+          accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.ppt,.pptx"
+          required={activity.original_P.is_file_applicable}
           disabled={isRetainerUpdate}
         />
         <FileUploadContent>
@@ -983,7 +1044,7 @@ if (
                       style={{ width: 40, height: 40, objectFit: "cover", borderRadius: 6 }}
                     />
                   ) : (
-                    <FaFileAlt color={(theme) => theme.color.text}/>
+                    <FaFileAlt color={(theme) => theme.color.text} />
                   )}
                   <span title={formData.file.name}>{formData.file.name}</span>
                   <button type="button" onClick={() => removeFile(1)}>
@@ -1005,12 +1066,12 @@ if (
       </ModalContainer>
     </ModalOverlay>
 
-    {isRetainerModalOpen && 
-    <RetainerListNameModal 
-      retainerInputs={retainerInputs}  
-      setRetainerInputs={setRetainerInputs}  
-      handleRetainerNameChange={handleRetainerNameChange} 
-      handleRetainerModalSubmit={handleRetainerModalSubmit} handleClose={() => {setIsRetainerModalOpen(false); }}
+    {isRetainerModalOpen &&
+    <RetainerListNameModal
+      retainerInputs={retainerInputs}
+      setRetainerInputs={setRetainerInputs}
+      handleRetainerNameChange={handleRetainerChange}
+      handleRetainerModalSubmit={handleRetainerModalSubmit} handleClose={() => { setIsRetainerModalOpen(false); }}
       />}
     </>
   );
@@ -1045,10 +1106,18 @@ export const RetainerWarning = ({ incompleteEmployees }) => {
 const RetainerListNameModal = ({ retainerInputs, setFormData, setRetainerInputs, handleRetainerNameChange, handleRetainerModalSubmit, handleClose }) => {
   return (
     <Modal onClose={handleClose}>
-      {retainerInputs.map((name, index) => (
+      {retainerInputs.map((item, index) => (
         <FormGroup key={index}>
           <Label>Resource {index + 1}</Label>
-          <Input value={name} onChange={(e) =>   handleRetainerNameChange(index, e.target.value) } placeholder="Enter retainer name" />
+          <Input value={item.name} onChange={(e) => handleRetainerNameChange(index, "name", e.target.value)} placeholder="Enter retainer name" />
+          <Grid2>
+          <Input type="number" value={item.items} onChange={(e) => handleRetainerNameChange(index, "items", e.target.value)} placeholder="Enter completed items" style={{ marginTop: "10px" }} />
+           <FilterSelect value={item.resourceType || ""} onChange={(e) => handleRetainerNameChange(index, "resourceType", e.target.value)}>
+              <option value="" disabled hidden>Select Resource Type</option>
+              <option value="TL">Team Lead</option>
+              <option value="EX">Executive</option>
+          </FilterSelect>
+          </Grid2>
         </FormGroup>
       ))}
       <ModalFooter>

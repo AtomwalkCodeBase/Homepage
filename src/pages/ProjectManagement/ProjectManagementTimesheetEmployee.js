@@ -20,6 +20,7 @@ import { GroupedRetainerAccordion } from '../../components/modals/ModalForProjec
 import EmployeeLogStatusCard from './EmployeeLogStatusCard'
 import { useAuth } from '../../context/AuthContext'
 import OPEActual from './OPEActual'
+import Modal from '../../components/modals/Modal'
 
 const Tagline = styled.p`
  color: ${({ theme }) => theme.colors.textLight};
@@ -183,6 +184,39 @@ const Tab = styled.button`
     color: ${({ theme }) => theme.colors.primary};
   }
 `
+const FormGroup = styled.div`
+  margin-bottom: 1rem;
+`;
+
+const Label = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+  color: ${props => props.theme.colors.text};
+`;
+const Input = styled.input`
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid ${props => props.theme.colors.border};
+  border-radius: 10px;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+
+  &:disabled {
+     opacity: 0.5;
+     cursor: not-allowed;
+     transform: none;
+   }
+
+  &:focus {
+    outline: none;
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.primaryLight};
+  }
+`;
 
 const parseDateSafe = (dateStr) => {
   if (!dateStr) return null;
@@ -197,7 +231,7 @@ const hasOverlap = (projStart, projEnd, rangeStart, rangeEnd) => {
 };
 
 const ProjectManagementTimesheetEmployee = () => {
-  const {profile} = useAuth();
+  const { profile } = useAuth();
   const [employeeActivity, setEmployeeActivity] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [showCustomRange, setShowCustomRange] = useState(false);
@@ -207,6 +241,11 @@ const ProjectManagementTimesheetEmployee = () => {
   const [activeRetainerParentId, setActiveRetainerParentId] = useState(null);
   const [globalRetainerCache, setGlobalRetainerCache] = useState({});
   const [isGlobalRetainerLoading, setIsGlobalRetainerLoading] = useState(false);
+  const [isPincodeModalOpen, setIsPincodeModalOpen] = useState(false);
+  const [pincode, setPincode] = useState("");
+  const [pincodeProject, setPincodeProject] = useState(null);
+
+
 
   const { dayLogKey } = getCurrentDateTimeDefaults();
 
@@ -219,7 +258,7 @@ const ProjectManagementTimesheetEmployee = () => {
 
   // console.log(dayFilter)
 
-const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current" }));
+  const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current" }));
 
   const emp_id = localStorage.getItem('empId');
   const urlParams = new URLSearchParams(window.location.search)
@@ -298,16 +337,16 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
       formData.append("a_id", project.original_A.id);
       formData.append("call_mode", "FORCE_COMPLETE");
       formData.append("remarks", data.remarks || "");
-      
+
       if (data.file) {
         formData.append("submitted_file", data.file);
       }
 
       try {
-      //      for (let [key, value] of formData.entries()) {
-      //   console.log(key, value);
-      // }
-      // const res ={status: 200};
+        // for (let [key, value] of formData.entries()) {
+        //   console.log(key, value);
+        // }
+        // const res = { status: 200 };
         const res = await postAllocationData(formData);
 
         if (res?.status === 200) {
@@ -382,7 +421,7 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
       // }
 
       const res = await postAllocationData(formData)
-      // const res = {status : 200}
+      // const res = { status: 200 }
 
       if (res?.status === 200) {
         toast.success(isAddMode ? "Check-in Successful" : "Activity Completed")
@@ -398,31 +437,76 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
     }
   }
 
+  const handlePincodeSubmit = async () => {
+    if (!pincode) {
+      toast.error("Please enter pincode");
+      return;
+    }
+
+    if (!/^\d{6}$/.test(pincode)) {
+      toast.error("Pincode must be exactly 6 digits");
+      return;
+    }
+    if (pincode === "000000") {
+      toast.error("Pincode cannot be all zeros");
+      return;
+    }
+    try {
+      const formData = new FormData();
+
+      const aId = pincodeProject?.original_A?.id;
+      const empIdentifier = pincodeProject.original_P?.emp_id || pincodeProject.original_A?.emp_id || empidParam || emp_id
+      const { apiDate: defaultApiDate } = getCurrentDateTimeDefaults();
+      const activityDate = defaultApiDate;
+
+      if (!aId) {
+        toast.error("Please start the activity to add pin code.");
+        return;
+      }
+
+      formData.append("emp_id", empIdentifier);
+      formData.append("a_id", String(aId));
+      formData.append("activity_date", activityDate);
+      formData.append("call_mode", "DATA_CORRECT");
+      formData.append("geo_type", "O");
+      formData.append("pin_code", pincode);
+
+      // for (let [key, value] of formData.entries()) {
+      //   console.log(key, value);
+      // }
+
+      const res = await postAllocationData(formData);
+
+      // const res = { status: 200 }
+
+      if (res?.status === 200) {
+        setIsPincodeModalOpen(false);
+        setPincode("");
+        setPincodeProject(null);
+        await fetchEmpAllocationData();
+      } else {
+        const apiMsg = res?.data?.error || res?.data?.message || "Failed to add pincode.";
+        toast.error(apiMsg);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Failed to add pincode.");
+    }
+  };
+
   const refreshActivities = async () => {
     await fetchEmpAllocationData();
     setIsFromModalOpen(false);
     setConfirmPopup(prev => ({ ...prev, isOpen: false }));
   };
 
-
-  const getActivityContextLabel = (activity) => {
-    if (activity.todaysStatus === "Pending") return "pending activity";
-    if (activity.todaysStatus === "Not Started") return "planned activity";
-    if (activity.hasPendingCheckout) return "previously started activity";
-    return "activity";
-  };
-
-
   const ACTIVITY_ACTIONS = {
 
     start: {
       title: "Start Activity",
       message: "Are you sure you want to start this activity?",
-      // message: null,
       handler: async (activity, submit, refresh, retainerPage) => {
         if (!retainerPage) {
           const hasActivityStart = employeeActivity.some((p) => p.todaysStatus === "Active" || p.hasPendingCheckout === true);
-          // console.log("hasActivityStart", employeeActivity.filter((p) => p.todaysStatus === "Active" || p.hasPendingCheckout === true))
           if (hasActivityStart) {
             toast.info("Complete pending activity first.");
             return false;
@@ -438,7 +522,6 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
       handler: async (activity, submit, refresh, retainerPage) => {
         if (!retainerPage) {
           const hasActivityStart = employeeActivity.some((p) => p.todaysStatus === "Active" || p.hasPendingCheckout === true);
-          // console.log("hasActivityStart", hasActivityStart)
           if (hasActivityStart) {
             toast.info("Complete pending activity first.");
             return false;
@@ -452,16 +535,7 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
         });
       },
     },
-//     force_complete: {
-//   title: "Force Complete",
-//   message: "Are you sure you want to complete this activity?",
-//   handler: async (activity, submit) => {
-//     return submit({
-//       project: activity,
-//       mode: "FORCE_COMPLETE"
-//     });
-//   }
-// },
+
     continue: {
       modal: true,
       modalContext: { type: "continue" }
@@ -496,8 +570,14 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
   };
 
   // In your component — SUPER CLEAN
-  const handleActivityAction = ({ type, activity, retainerPage, retainer, onRetainerUpdate }) => {
+  const handleActivityAction = ({ type, activity, retainerPage, retainer, onRetainerUpdate, isMaxAuditEndDatePass }) => {
     const action = ACTIVITY_ACTIONS[type];
+    const overrideMessages = {
+      start: `Audit end date has passed.${'\n\n'} Are you sure you want to start this activity?`,
+      resume: `Audit end date has passed.${'\n\n'} Are you sure you want to resume this activity?`,
+    };
+
+    const finalMessage = isMaxAuditEndDatePass ? overrideMessages[type] : action.message;
 
     if (action?.modal) {
       setSelectdeProject({
@@ -515,7 +595,7 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
       setConfirmPopup({
         isOpen: true,
         title: action.title,
-        message: action.message,
+        message: finalMessage,
         onConfirm: async () => {
           const success = await action.handler(activity, handleActivitySubmit, refreshActivities, retainerPage);
           if (success) {
@@ -807,7 +887,11 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
                   onAction={handleActivityAction}
                   isManager={empidParam}
                   onNavigateToRetainer={() => { setActiveTab('retainer'); setActiveRetainerParentId(activity.id || activity.p_id) }}
-                  onNavigateToOpe={() => { setActiveTab('ope_actual')}}
+                  onNavigateToOpe={() => { setActiveTab('ope_actual') }}
+                  onAddPincode={(activity) => {
+                    setPincodeProject(activity);
+                    setIsPincodeModalOpen(true);
+                  }}
                 />
               ))
             )
@@ -866,8 +950,17 @@ const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current"
           setConfirmPopup(prev => ({ ...prev, isOpen: false }))
         }
       />
-
-
+      {isPincodeModalOpen && <Modal onClose={() => { setIsPincodeModalOpen(false); setPincode("") }}>
+        <FormGroup>
+          <Label>Pincode</Label>
+          <Input type="number" min={100000} max={999999} value={pincode} onChange={(e) => setPincode(e.target.value)} placeholder="Enter Pincode" />
+        </FormGroup>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Button variant="primary" onClick={handlePincodeSubmit}>
+            Submit
+          </Button>
+        </div>
+      </Modal>}
 
     </Layout>
   )

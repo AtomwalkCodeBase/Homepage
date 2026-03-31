@@ -17,10 +17,7 @@ import {
   FaUserCircle,
   FaComments,
   FaGift,
-  FaFileInvoiceDollar,
-  FaLifeRing,
   FaExchangeAlt,
-  FaStethoscope,
   FaChartBar,
   FaUsers,
   FaFileInvoice,
@@ -35,7 +32,6 @@ import { useAuth } from "../context/AuthContext"
 import { useTheme } from "../context/ThemeContext"
 import { IoTicket } from "react-icons/io5"
 import { RiDashboardFill } from "react-icons/ri"
-import { GiProgression } from "react-icons/gi";
 const SidebarContainer = styled.div`
   width: ${(props) => {
     const { isOpen, uiPreferences } = props
@@ -482,7 +478,7 @@ const SubMenuLink = styled(Link)`
     font-size: 1rem;
   }
 `
-const Sidebar = ({ onToggle, initialOpen = true }) => {
+const Sidebar = ({ onToggle, initialOpen = false }) => {
   const [isOpen, setIsOpen] = useState(initialOpen)
   const [expandedGroups, setExpandedGroups] = useState({})
   const location = useLocation()
@@ -490,27 +486,20 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
   const { theme, uiPreferences } = useTheme()
   const customerdata = localStorage.getItem("customerUser")
   const fmsdata = localStorage.getItem("fmsUser")
-  const seadata = localStorage.getItem("seaUser")
   const sidebarStyle = uiPreferences?.layout?.sidebarStyle || "standard"
   // Grouped menu items structure
-  const menuGroups = seadata ? [
-    {
-      name: "Dashboard",
-      icon: <FaHome />,
-      items: [{ path: "/seaFood/home", name: "Overview", icon: <FaHome /> }],
-    },
-  ] : customerdata
+  const menuGroups = customerdata
     ? [
       {
         name: "Customer Portal",
         icon: <FaUserCircle />,
         items: [
-          { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
-          { path: "/samplestatus", name: "Sample Status", icon: <GiProgression /> },
-          { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
-          { path: "/appointments", name: "Book Appointments", icon: <FaStethoscope /> },
-          { path: "/appointmentlist", name: "My Appointments", icon: <FaCalendarAlt /> },
-          { path: "/supplierDashboard", name: "Supplier/Vender Dashboard", icon: <FaHome /> },
+          // { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
+          // { path: "/samplestatus", name: "Sample Status", icon: <GiProgression /> },
+          // { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
+          // { path: "/appointments", name: "Book Appointments", icon: <FaStethoscope /> },
+          // { path: "/appointmentlist", name: "My Appointments", icon: <FaCalendarAlt /> },
+          { path: "/supplierDashboard", name: "Vender Dashboard", icon: <FaHome /> },
         ],
       },
     ]
@@ -677,66 +666,62 @@ const Sidebar = ({ onToggle, initialOpen = true }) => {
       }))
     }, 100)
   }
-  const menuItems = seadata ?
-    [
-      { path: "/seaFood/home", name: "Home", icon: <FaHome /> },
-
-    ] :
-    customerdata
+  const menuItems = customerdata
+    ? [
+      // { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
+      // { path: "/samplestatus", name: "Sample Status", icon: <GiProgression /> },
+      // { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
+      // { path: "/appointments", name: "Book Appointments", icon: <FaStethoscope /> },
+      // { path: "/appointmentlist", name: "My Appointments", icon: <FaCalendarAlt /> },
+      { path: "/supplierDashboard", name: "Supplier/Vender Dashboard", icon: <FaHome /> },
+    ]
+    : fmsdata
       ? [
-        { path: "/invoices", name: "Invoices", icon: <FaFileInvoiceDollar /> },
-        { path: "/samplestatus", name: "Sample Status", icon: <GiProgression /> },
-        { path: "/tickets", name: "Support Tickets", icon: <FaLifeRing /> },
-        { path: "/appointments", name: "Book Appointments", icon: <FaStethoscope /> },
-        { path: "/appointmentlist", name: "My Appointments", icon: <FaCalendarAlt /> },
-        { path: "/supplierDashboard", name: "Supplier/Vender Dashboard", icon: <FaHome /> },
+        { path: "/fmsdashboard", name: "Overall", icon: <FaHome /> },
+        { path: "/tasks", name: "Task List", icon: <FaTasks /> },
+        { path: "/ticketList", name: "Ticket List", icon: <IoTicket /> },
+        // { path: "/customerList", name: "Customer List", icon: <FaUsers /> },
+        ...(profile?.is_manager ? [{ path: "/customerList", name: "Customer List", icon: <FaUsers /> }] : [])
       ]
-      : fmsdata
-        ? [
-          { path: "/fmsdashboard", name: "Overall", icon: <FaHome /> },
-          { path: "/tasks", name: "Task List", icon: <FaTasks /> },
-          { path: "/ticketList", name: "Ticket List", icon: <IoTicket /> },
-          // { path: "/customerList", name: "Customer List", icon: <FaUsers /> },
-          ...(profile?.is_manager ? [{ path: "/customerList", name: "Customer List", icon: <FaUsers /> }] : [])
+      : (companyInfo.business_type === "LMS" || companyInfo.business_type === "GLP") ? [
+        { path: "/lab/dashboard", name: "Activity Dashboard", icon: <FaHome /> },
+        { path: "/sampledashboard", name: "Sample Dashboard", icon: <FaList /> },
+        // { path: "/supervisordashboard", name: "My Dashboard", icon: <FaStethoscope /> },
+      ]
+        : [
+          { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },
+          ...(companyInfo.business_type === "APM" && profile?.is_manager ? [{ path: "/managers/timesheet/dashboard", name: "Manager Dashboard", icon: <RiDashboardFill /> }] : []),
+          // ...(companyInfo.business_type === "APM" ? [{ path: "/retainer-dashboard", name: "Retainer Dashboard", icon: <RiDashboardFill /> }] : []),
+          ...(profile?.is_manager ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : []),
+          { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
+          { path: "/timesheet", name: `${companyInfo.business_type === "APM" ? "Dashboard" : "Timesheet"}`, icon: <FaChartBar /> },
+          ...(companyInfo.business_type === "APM" && profile.grade_level > 100 ? [{ path: "/expense-list", name: "Expense Item List", icon: <FaMoneyBillWave /> }] : []),
+          { path: "/leave-management", name: "Leave Management", icon: <FaCalendarAlt /> },
+          { path: "/holidays", name: "Holiday Calendar", icon: <FaCalendarCheck /> },
+          { path: "/my-training", name: "My Training", icon: <FaGraduationCap /> },
+          // { path: "/appraisal", name: "Appraisal", icon: <BsGraphUpArrow /> },
+          ...(profile?.is_manager ? [{ path: "/shifts", name: "Shift Scheduling", icon: <SiGooglecalendar /> }] : []),
+          ...(profile?.is_manager
+            ? [{ path: "/claims", name: "Claims Management", icon: <FaMoneyBillWave /> }]
+            : [{ path: "/claims", name: "My Claims", icon: <FaMoneyBillWave /> }]),
+          // { path: "/appointees", name: "Appointees", icon: <FaUserPlus /> },
+          // { path: "/analytics", name: "Analytics", icon: <FaChartBar /> },
+          { path: "/helpdesk", name: "Help Desk", icon: <FaComments /> },
+          { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
+          { path: "/resolvedesk", name: "Resolve Desk", icon: <FaKey /> },
+          { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
+          ...(profile?.is_shift_applicable
+            ? [{ path: "/shift-detail", name: "My Shifts", icon: <FaExchangeAlt /> }]
+            : []),
+          ...(profile?.is_manager
+            ? [
+              { path: "/projectmanagement", name: "Project List", icon: <PiListPlusFill /> },
+              { path: "/project-report", name: "Project Report", icon: <FaFileInvoice /> },
+            ]
+            : []),
+          { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
+          { path: "/profile", name: "My Profile", icon: <FaUserCircle />, section: "Account" },
         ]
-        : (companyInfo.business_type === "LMS" || companyInfo.business_type === "GLP") ? [
-          { path: "/lab/dashboard", name: "Activity Dashboard", icon: <FaHome /> },
-          { path: "/sampledashboard", name: "Sample Dashboard", icon: <FaList /> },
-          // { path: "/supervisordashboard", name: "My Dashboard", icon: <FaStethoscope /> },
-        ]
-          : [
-            { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },
-            ...(companyInfo.business_type === "APM" && profile?.is_manager ? [{ path: "/managers/timesheet/dashboard", name: "Manager Dashboard", icon: <RiDashboardFill /> }] : []),
-            ...(profile?.is_manager ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : []),
-            { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
-            { path: "/timesheet", name: `${companyInfo.business_type === "APM" ? (profile?.is_manager) ? "Timesheet" : "Dashboard" : "Timesheet"}`, icon: <FaChartBar /> },
-            ...(companyInfo.business_type === "APM" && profile.grade_level > 100 ? [{ path: "/expense-list", name: "Expense Item List", icon: <FaMoneyBillWave /> }] : []),
-            { path: "/leave-management", name: "Leave Management", icon: <FaCalendarAlt /> },
-            { path: "/holidays", name: "Holiday Calendar", icon: <FaCalendarCheck /> },
-            { path: "/my-training", name: "My Training", icon: <FaGraduationCap /> },
-            // { path: "/appraisal", name: "Appraisal", icon: <BsGraphUpArrow /> },
-            ...(profile?.is_manager ? [{ path: "/shifts", name: "Shift Scheduling", icon: <SiGooglecalendar /> }] : []),
-            ...(profile?.is_manager
-              ? [{ path: "/claims", name: "Claims Management", icon: <FaMoneyBillWave /> }]
-              : [{ path: "/claims", name: "My Claims", icon: <FaMoneyBillWave /> }]),
-            // { path: "/appointees", name: "Appointees", icon: <FaUserPlus /> },
-            // { path: "/analytics", name: "Analytics", icon: <FaChartBar /> },
-            { path: "/helpdesk", name: "Help Desk", icon: <FaComments /> },
-            { path: "/requestdesk", name: "Request Desk", icon: <FaTicketAlt /> },
-            { path: "/resolvedesk", name: "Resolve Desk", icon: <FaKey /> },
-            { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
-            ...(profile?.is_shift_applicable
-              ? [{ path: "/shift-detail", name: "My Shifts", icon: <FaExchangeAlt /> }]
-              : []),
-            ...(profile?.is_manager
-              ? [
-                { path: "/projectmanagement", name: "Project List", icon: <PiListPlusFill /> },
-                { path: "/project-report", name: "Project Report", icon: <FaFileInvoice /> },
-              ]
-              : []),
-            { path: "/wishes", name: "My Wishes", icon: <FaGift /> },
-            { path: "/profile", name: "My Profile", icon: <FaUserCircle />, section: "Account" },
-          ]
 
   const finalMenuItems = shouldHideForAPM
     ? menuItems.filter(i => !apmBlockedPaths.has(i.path))

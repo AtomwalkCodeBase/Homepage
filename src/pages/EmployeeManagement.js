@@ -9,6 +9,7 @@ import { getemployeeList } from "../services/productServices"
 import { useNavigate } from "react-router-dom"
 import { useExport } from "../context/ExportContext"
 import { toast } from "react-toastify"
+import { useAuth } from "../context/AuthContext"
 
 const SearchContainer = styled.div`
   display: flex;
@@ -133,6 +134,7 @@ padding: 1rem;
 color: ${({ theme }) => theme.colors.text};
 `
 const EmployeeManagement = () => {
+  const { companyInfo } = useAuth()
   const [searchTerm, setSearchTerm] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
   const [employees, setEmployees] = useState([])
@@ -247,7 +249,7 @@ const EmployeeManagement = () => {
                 <th>Position</th>
                 <th>Status</th>
                 <th>Join Date</th>
-                <th>Actions</th>
+                {companyInfo.business_type !== "APM" && <th>Actions</th>}
               </tr>
             </thead>
             <tbody>
@@ -275,7 +277,7 @@ const EmployeeManagement = () => {
                     </Badge>
                   </td>
                   <td>{employee.date_of_join}</td>
-                  <td>
+                 {companyInfo.business_type !== "APM" && <td>
                     <ActionButtons>
                       <Button
                         variant="ghost"
@@ -294,7 +296,7 @@ const EmployeeManagement = () => {
                         <FaChartBar />
                       </Button>
                     </ActionButtons>
-                  </td>
+                  </td>}
                 </tr>
               ))}
             </tbody>

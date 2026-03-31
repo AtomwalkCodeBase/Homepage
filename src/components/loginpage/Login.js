@@ -207,17 +207,41 @@ const Logins = () => {
   // const [company, setCompany] = useState("")
   const [loading, setLoading] = useState(false)
   const [companies, setCompanies] = useState([])
-  const [placeholderdatas,setPlaceholderdatas] = useState("Employee ID");
+  const [placeholderdatas, setPlaceholderdatas] = useState("Employee ID");
   const { customerlogin } = useAuth()
+  const path = window.location.pathname;
   useEffect(() => {
     const fetchCompanyName = async () => {
       const company = await getCompanyName()
       if (company.status === 200) {
-        setCompanies(company.data)
+        if (path === "/customer/login.html") {
+
+          const filter = company.data?.filter(
+            (data) => data.ref_cust_name === "DEMO Area"
+          );
+
+          setCompanies(filter);
+
+          // auto select demo area
+          if (filter.length > 0) {
+            setFormData((prev) => ({
+              ...prev,
+              company: filter[0].name,
+            }));
+
+            localStorage.setItem(
+              "dbName",
+              filter[0].name.split("_").slice(1).join("_")
+            );
+          }
+        } else {
+          setCompanies(company.data)
+        }
       }
     }
     fetchCompanyName()
   }, [])
+
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({
@@ -234,7 +258,7 @@ const Logins = () => {
     localStorage.setItem("dbName", e.target.value.split("_").slice(1).join("_"))
   }
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
 
@@ -334,7 +358,7 @@ const Logins = () => {
           <LoginButton type="submit" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </LoginButton>
-           { placeholderdatas==="Employee ID" ?
+          { placeholderdatas==="Employee ID" ?
 
           <FormFooter onClick={() => setPlaceholderdatas("Mobile Number")}>
             <Link>Login With Mobile Number</Link>

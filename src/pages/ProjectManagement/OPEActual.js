@@ -204,7 +204,6 @@ const OPEActual = ({ data, refreshActivities }) => {
     const [opeData, setOpeData] = useState(null);
     const [opeMode, setOpeMode] = useState("");
     const actualData = data?.filter(activity => activity.is_ope_actual === true);
-    console.log(!!actualData)
 
   const getStatusLabelVariant = (status, hasOPEAmount) => {
   if (!status) {

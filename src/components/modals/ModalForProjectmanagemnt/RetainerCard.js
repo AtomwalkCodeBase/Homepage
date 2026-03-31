@@ -169,16 +169,16 @@ const ActionsContainer = styled.div`
 
 
 const RetainerCard = ({ retainer, onAction, retainerCache, onRetainerUpdate }) => {
-   const { profile } = useAuth()
+  const { profile } = useAuth()
   const { theme } = useTheme();
   const { todayISO } = getCurrentDateTimeDefaults();
   const [isLogsOpen, setIsLogsOpen] = useState(false);
 
   const employeeData = retainerCache?.[retainer.emp_id];
 
-const allocation = useMemo(() => {
-  return employeeData?.allocations?.find(a => a.p_id === retainer.a_id);
-}, [employeeData, retainer.a_id]);
+  const allocation = useMemo(() => {
+    return employeeData?.allocations?.find(a => a.p_id === retainer.a_id);
+  }, [employeeData, retainer.a_id]);
 
   // Get initials for avatar
   const getInitials = (name) => {
@@ -237,7 +237,7 @@ const allocation = useMemo(() => {
                 <DetailContent>
                   <DetailLabel theme={theme}>Resources</DetailLabel>
                   <DetailValue theme={theme}>
-                    {retainer?.no_resource || 0} {retainer?.no_resource === 1 ? 'person' : 'people'}
+                    TL:- {retainer.tl_count || 0}, EX:- {retainer.ex_count || 0}
                   </DetailValue>
                 </DetailContent>
               </DetailItem>
@@ -266,42 +266,42 @@ const allocation = useMemo(() => {
                 </DetailContent>
               </DetailItem>
 
-                  <DetailItem>
-                    <IconWrapper color="accent" theme={theme}>
-                      <FaClipboardList />
-                    </IconWrapper>
-                    <DetailContent>
-                      <DetailLabel theme={theme}>Audit Items</DetailLabel>
-                      <DetailValue theme={theme}>
-                        {retainer?.no_of_items || 0} items
-                      </DetailValue>
-                    </DetailContent>
-                  </DetailItem>
-                </DetailsGrid>
-                <ActivityLogs retainer={retainer} resourceList={allocation?.original_A?.resource_list} logs={allocation?.day_logs} isOpen={isLogsOpen} onToggle={() => setIsLogsOpen(!isLogsOpen)} />
+              <DetailItem>
+                <IconWrapper color="accent" theme={theme}>
+                  <FaClipboardList />
+                </IconWrapper>
+                <DetailContent>
+                  <DetailLabel theme={theme}>Audit Items</DetailLabel>
+                  <DetailValue theme={theme}>
+                    {retainer?.no_of_items || 0} items
+                  </DetailValue>
+                </DetailContent>
+              </DetailItem>
+            </DetailsGrid>
+            <ActivityLogs retainer={retainer} resourceList={allocation?.original_A?.resource_list} logs={allocation?.day_logs} isOpen={isLogsOpen} onToggle={() => setIsLogsOpen(!isLogsOpen)} />
 
-          {!retainer?.parentActivity?.complete && retainer?.parentActivity?.todaysStatus === "Active" &&
-            <ActionsContainer theme={theme}>
-              {allocation && (
-                <TodayActionButtons
-                  activity={allocation}
-                  todayCheckedIn={todayCheckedIn}
-                  todayCheckedOut={todayCheckedOut}
-                  isActivityStart={isActivityStart}
-                  hasPendingCheckout={allocation.hasPendingCheckout}
-                  pendingCheckoutDate={allocation.pendingCheckoutDate}
-                  complete={allocation.is_complete}
-                  onAction={onAction}
-                  todayISO={todayISO}
-                  getTodayApiDateStr={getTodayApiDateStr}
-                  retainerPage={true}
-                  retainer={retainer}
-                  onRetainerUpdate={onRetainerUpdate}
-                  isManager={profile?.is_manager}
-                />
-              )}
-            </ActionsContainer>
-          }
+            {!retainer?.parentActivity?.complete &&
+              <ActionsContainer theme={theme}>
+                {allocation && (
+                  <TodayActionButtons
+                    activity={allocation}
+                    todayCheckedIn={todayCheckedIn}
+                    todayCheckedOut={todayCheckedOut}
+                    isActivityStart={isActivityStart}
+                    hasPendingCheckout={allocation.hasPendingCheckout}
+                    pendingCheckoutDate={allocation.pendingCheckoutDate}
+                    complete={allocation.is_complete}
+                    onAction={onAction}
+                    todayISO={todayISO}
+                    getTodayApiDateStr={getTodayApiDateStr}
+                    retainerPage={true}
+                    retainer={retainer}
+                    onRetainerUpdate={onRetainerUpdate}
+                    isManager={profile?.is_manager}
+                  />
+                )}
+              </ActionsContainer>
+            }
           </Card>
         )}
       </div>

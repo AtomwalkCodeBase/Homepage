@@ -272,6 +272,7 @@ function App() {
                   {/* <Route path="/timesheet" element={<TimeSheetManagement />} /> */}
                   <Route path="/timesheet" element={<TimesheetRouter />} />
                   <Route path="/managers/timesheet/dashboard" element={<ManagerDashboard />} />
+                  <Route path="/admin-dashboard" element={<ManagerDashboard />} />
                   <Route path="/expense-list" element={<ExpenseTrackingScreen />} />
                   <Route path="/shifts" element={<ShiftScheduling />} />
                   <Route path="/claims" element={<MyClaims />} />

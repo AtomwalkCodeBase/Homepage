@@ -460,7 +460,14 @@ useEffect(() => {
                 ))}
               </FilterSelect> */}
 
-              <MultiSelectDropdown customers={uniqueData.customers || []} selectedCustomers={selectedCustomers} setSelectedCustomers={setSelectedCustomers}/>
+              <MultiSelectDropdown 
+                options={uniqueData.customers || []} 
+                selectedValues={selectedCustomers} 
+                onChange={setSelectedCustomers}
+                placeholder="Select customers"
+                searchPlaceholder="Search customers..."
+                noOptionsText="No customers found"
+              />
 
 
               <FilterSelect name="category" value={filters.category} onChange={handleFilterChange}>

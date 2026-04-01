@@ -28,6 +28,7 @@ import {
 } from "react-icons/fa"
 import { SiGooglecalendar } from "react-icons/si"
 import { PiListPlusFill } from "react-icons/pi"
+import { ImUserTie } from "react-icons/im";
 import { useAuth } from "../context/AuthContext"
 import { useTheme } from "../context/ThemeContext"
 import { IoTicket } from "react-icons/io5"
@@ -487,6 +488,7 @@ const Sidebar = ({ onToggle, initialOpen = false }) => {
   const customerdata = localStorage.getItem("customerUser")
   const fmsdata = localStorage.getItem("fmsUser")
   const sidebarStyle = uiPreferences?.layout?.sidebarStyle || "standard"
+
   // Grouped menu items structure
   const menuGroups = customerdata
     ? [
@@ -537,6 +539,7 @@ const Sidebar = ({ onToggle, initialOpen = false }) => {
           icon: <FaClock />,
           items: [
             { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
+            ...(companyInfo.business_type === "APM" && profile.grade_level >= 500 ? [{ path: "/admin-dashboard", name: "Admin Dashboard", icon: <ImUserTie /> }] : []),
             ...(companyInfo.business_type === "APM" && profile?.is_manager ? [{ path: "/managers/timesheet/dashboard", name: "Manager Dashboard", icon: <RiDashboardFill /> }] : []),
             { path: "/timesheet", name: `${companyInfo.business_type === "APM" ? "Dashboard" : "Timesheet"}`, icon: <FaChartBar /> },
             ...(companyInfo.business_type === "APM" && profile.grade_level > 100 ? [{ path: "/expense-list", name: "Expense Item List", icon: <FaMoneyBillWave /> }] : []),
@@ -583,7 +586,7 @@ const Sidebar = ({ onToggle, initialOpen = false }) => {
         {
           name: "Employee Management",
           icon: <FaUsers />,
-          items: profile?.is_manager ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : [],
+          items: (profile?.is_manager && (companyInfo?.business_type === "APM" ? profile?.grade_level > 300 : true)) ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : [],
         },
         {
           name: "Support",
@@ -691,8 +694,9 @@ const Sidebar = ({ onToggle, initialOpen = false }) => {
         : [
           { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },
           ...(companyInfo.business_type === "APM" && profile?.is_manager ? [{ path: "/managers/timesheet/dashboard", name: "Manager Dashboard", icon: <RiDashboardFill /> }] : []),
+          ...(companyInfo.business_type === "APM" && profile.grade_level >= 500 ? [{ path: "/admin-dashboard", name: "Admin Dashboard", icon: <ImUserTie /> }] : []),
           // ...(companyInfo.business_type === "APM" ? [{ path: "/retainer-dashboard", name: "Retainer Dashboard", icon: <RiDashboardFill /> }] : []),
-          ...(profile?.is_manager ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : []),
+          ...(profile?.is_manager && (companyInfo.business_type === "APM" ? profile?.grade_level > 300 : true) ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : []),
           { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
           { path: "/timesheet", name: `${companyInfo.business_type === "APM" ? "Dashboard" : "Timesheet"}`, icon: <FaChartBar /> },
           ...(companyInfo.business_type === "APM" && profile.grade_level > 100 ? [{ path: "/expense-list", name: "Expense Item List", icon: <FaMoneyBillWave /> }] : []),

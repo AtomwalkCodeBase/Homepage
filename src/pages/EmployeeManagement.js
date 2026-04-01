@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom"
 import { useExport } from "../context/ExportContext"
 import { toast } from "react-toastify"
 import { useAuth } from "../context/AuthContext"
+import PaginationComponent from "../components/Pagination"
 
 const SearchContainer = styled.div`
   display: flex;
@@ -134,13 +135,14 @@ padding: 1rem;
 color: ${({ theme }) => theme.colors.text};
 `
 const EmployeeManagement = () => {
-  const { companyInfo } = useAuth()
+  const { companyInfo } = useAuth();
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("")
-  const [currentPage, setCurrentPage] = useState(1)
   const [employees, setEmployees] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const Navigate= useNavigate()
+  const Navigate = useNavigate()
   const { exportEmployeeData } = useExport()
 
   useEffect(() => {
@@ -173,11 +175,19 @@ const EmployeeManagement = () => {
   )
 
   // Pagination
-  const itemsPerPage = 5
+  // const itemsPerPage = 5
   const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage)
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = filteredEmployees.slice(indexOfFirstItem, indexOfLastItem)
+
+  const handlePageChange = (page, perPage = itemsPerPage) => {
+    setCurrentPage(page);
+    if (perPage !== itemsPerPage) {
+      setItemsPerPage(perPage);
+      setCurrentPage(1); // Reset to first page when changing items per page
+    }
+  };
 
   const handleViewAttendance = (employeeId,names,id,grade_name,image,department_name) => {
     const empid=localStorage.getItem("empId")
@@ -304,31 +314,38 @@ const EmployeeManagement = () => {
         </TableContainer>
 
         {filteredEmployees.length > 0 ? (
-          <Pagination>
-            <PaginationInfo>
-              Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredEmployees.length)} of{" "}
-              {filteredEmployees.length} entries
-            </PaginationInfo>
+          // <Pagination>
+          //   <PaginationInfo>
+          //     Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredEmployees.length)} of{" "}
+          //     {filteredEmployees.length} entries
+          //   </PaginationInfo>
 
-            <PaginationButtons>
-              <PageButton onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
-                &lt;
-              </PageButton>
+          //   <PaginationButtons>
+          //     <PageButton onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
+          //       &lt;
+          //     </PageButton>
 
-              {[...Array(totalPages)].map((_, index) => (
-                <PageButton key={index} active={currentPage === index + 1} onClick={() => setCurrentPage(index + 1)}>
-                  {index + 1}
-                </PageButton>
-              ))}
+          //     {[...Array(totalPages)].map((_, index) => (
+          //       <PageButton key={index} active={currentPage === index + 1} onClick={() => setCurrentPage(index + 1)}>
+          //         {index + 1}
+          //       </PageButton>
+          //     ))}
 
-              <PageButton
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                disabled={currentPage === totalPages}
-              >
-                &gt;
-              </PageButton>
-            </PaginationButtons>
-          </Pagination>
+          //     <PageButton
+          //       onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          //       disabled={currentPage === totalPages}
+          //     >
+          //       &gt;
+          //     </PageButton>
+          //   </PaginationButtons>
+          <PaginationComponent
+            totalItems={filteredEmployees.length}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+            siblingCount={2}
+          />
+          // </Pagination>
         ) : (
           <EmployeeDetailsContainer >No employees found</EmployeeDetailsContainer>
         )}

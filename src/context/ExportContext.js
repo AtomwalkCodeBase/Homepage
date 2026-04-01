@@ -154,7 +154,7 @@ export const ExportProvider = ({ children }) => {
     return exportToExcel(appointments, filename, "Appointments", customHeaders)
   }
   //help desk data export
-    const exportHelpdeskdat = (appointments, filename = "appointment_data") => {
+  const exportHelpdeskdat = (appointments, filename = "appointment_data") => {
     const customHeaders = [
       { key: "request_id", label: "Request ID" },
       { key: "request_sub_type", label: "Type" },
@@ -167,26 +167,58 @@ export const ExportProvider = ({ children }) => {
     return exportToExcel(appointments, filename, "Appointments", customHeaders)
   }
 
-  const exportEmployeeAuditData = (data, filename = "Audit_Data") => {
-  const auditExportHeaders = [
-    { key: "customer_name", label: "Customer Name" },
-    { key: "audit_type", label: "Audit Type" },
-    { key: "order_item_key", label: "Order Item Key" },
-    { key: "employee_name", label: "Employee Name" },
-    { key: "employee_id", label: "Employee ID" },
-    { key: "planned_start_date", label: "Planned Start Date" },
-    { key: "planned_end_date", label: "Planned End Date" },
-    { key: "planned_start_time", label: "Planned Start Time" },
-    { key: "planned_end_time", label: "Planned End Time" },
-    { key: "actual_start_date", label: "Actual Start Date" },
-    { key: "actual_end_date", label: "Actual End Date" },
-    { key: "planned_no_of_items", label: "Planned No Of Items" },
-    { key: "actual_no_of_items", label: "Actual No Of Items" },
-    { key: "remarks", label: "Remarks" },
-  ];
+  const exportEmployeeAuditData = (data, filename = "Audit_Data", pathname) => {
+    const baseHeaders = [
+      { key: "customer_name", label: "Customer Name" },
+      { key: "audit_type", label: "Audit Type" },
+      { key: "order_item_key", label: "Order Item Key" },
+      { key: "employee_name", label: "Employee Name" },
+      { key: "employee_id", label: "Employee ID" },
+      { key: "planned_start_date", label: "Planned Start Date" },
+      { key: "planned_end_date", label: "Planned End Date" },
+      { key: "planned_start_time", label: "Planned Start Time" },
+      { key: "planned_end_time", label: "Planned End Time" },
+      { key: "actual_start_date", label: "Actual Start Date" },
+      { key: "actual_end_date", label: "Actual End Date" },
+      { key: "planned_no_of_items", label: "Planned No Of Items" },
+      { key: "actual_no_of_items", label: "Actual No Of Items" },
+      { key: "remarks", label: "Remarks" },
+    ];
+    if (pathname === "/admin-dashboard") {
+      baseHeaders.splice(10, 0,
+        { key: "status", label: "Status" },
+        { key: "today_status", label: "Today Status" },
+        { key: "actual_start_time", label: "Actual Start Time" },
+        { key: "actual_end_time", label: "Actual End Time" },
+        { key: "chek_in_location", label: "Check In Location" },
+        { key: "chek_out_location", label: "Check Out Location" }
+      );
+    }
 
-  return exportToExcel(data,filename,"Audit Report",auditExportHeaders);
-};
+    return exportToExcel(data, filename, "Audit Report", baseHeaders);
+  };
+  // const exportEmployeeAuditDataAdmin = (data, filename = "Audit_Data") => {
+  //   const auditExportHeaders = [
+  //     { key: "customer_name", label: "Customer Name" },
+  //     { key: "audit_type", label: "Audit Type" },
+  //     { key: "order_item_key", label: "Order Item Key" },
+  //     { key: "employee_name", label: "Employee Name" },
+  //     { key: "employee_id", label: "Employee ID" },
+  //     { key: "planned_start_date", label: "Planned Start Date" },
+  //     { key: "planned_end_date", label: "Planned End Date" },
+  //     { key: "planned_start_time", label: "Planned Start Time" },
+  //     { key: "planned_end_time", label: "Planned End Time" },
+  //     { key: "actual_start_date", label: "Actual Start Date" },
+  //     { key: "actual_end_date", label: "Actual End Date" },
+  //     { key: "actual_start_time", label: "Actual Start Time" },
+  //     { key: "actual_end_time", label: "Actual End Time" },
+  //     { key: "planned_no_of_items", label: "Planned No Of Items" },
+  //     { key: "actual_no_of_items", label: "Actual No Of Items" },
+  //     { key: "remarks", label: "Remarks" },
+  //   ];
+
+  //   return exportToExcel(data, filename, "Audit Report", auditExportHeaders);
+  // };
 
 
   // Function to export multiple sheets in one workbook
@@ -256,7 +288,8 @@ export const ExportProvider = ({ children }) => {
     exportAppointmentData,
     exportMultipleSheets,
     exportHelpdeskdat,
-    exportEmployeeAuditData
+    exportEmployeeAuditData,
+    // exportEmployeeAuditDataAdmin
   }
 
   return <ExportContext.Provider value={value}>{children}</ExportContext.Provider>

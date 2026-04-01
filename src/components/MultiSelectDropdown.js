@@ -1,9 +1,19 @@
 import { useState, useRef, useEffect } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { theme } from "../styles/Theme";
 
-export const MultiSelectDropdown = ({ customers = [], selectedCustomers, setSelectedCustomers }) => {
+export const MultiSelectDropdown = ({
+  options = [],
+  selectedValues = [],
+  onChange,
+  placeholder = "Select items",
+  searchPlaceholder = "Search...",
+  noOptionsText = "No items found",
+  width = "280px",
+  singleSelect = false
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchCustomer, setSearchCustomer] = useState("");
+  const [searchValue, setSearchValue] = useState("");
   const dropdownRef = useRef(null);
 
   // Close dropdown on outside click
@@ -17,22 +27,37 @@ export const MultiSelectDropdown = ({ customers = [], selectedCustomers, setSele
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Format options to always be an array of objects { label, value }
+  const formattedOptions = options.map(opt => {
+    if (typeof opt === 'string' || typeof opt === 'number') {
+      return { label: String(opt), value: opt };
+    }
+    return opt; // assuming { label, value } structure
+  });
+
   // Toggle selection
-  const handleCustomerToggle = (customer) => {
-    setSelectedCustomers((prev) =>
-      prev.includes(customer)
-        ? prev.filter((c) => c !== customer) // remove
-        : [...prev, customer] // add
-    );
+  const handleToggle = (optionValue) => {
+    let newSelected;
+    if (singleSelect) {
+      newSelected = selectedValues.includes(optionValue) ? [] : [optionValue];
+      setIsOpen(false);
+    } else {
+      if (selectedValues.includes(optionValue)) {
+        newSelected = selectedValues.filter((v) => v !== optionValue);
+      } else {
+        newSelected = [...selectedValues, optionValue];
+      }
+    }
+    onChange && onChange(newSelected);
   };
 
-  // Filter customers by search
-  const filteredCustomers = customers.filter((customer) =>
-    customer.toLowerCase().includes(searchCustomer.toLowerCase())
+  // Filter options by search
+  const filteredOptions = formattedOptions.filter((opt) =>
+    opt.label.toLowerCase().includes(searchValue.toLowerCase())
   );
 
   return (
-    <div style={{ position: "relative", width: "280px" }} ref={dropdownRef}>
+    <div style={{ position: "relative", width: width }} ref={dropdownRef}>
       {/* Field (like <select>) */}
       <div
         onClick={() => setIsOpen(!isOpen)}
@@ -42,15 +67,18 @@ export const MultiSelectDropdown = ({ customers = [], selectedCustomers, setSele
           padding: "0.5rem",
           cursor: "pointer",
           background: "white",
+          color: theme.colors.text,
         }}
       >
-		<span style={{display: "flex",justifyContent: "space-between", alignItems: "center"}}>
-			{selectedCustomers.length > 0
-			? `${selectedCustomers.length} customer(s) selected`
-			: "Select customers"}
+        <span style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          {singleSelect && selectedValues.length > 0
+            ? (formattedOptions.find(o => o.value === selectedValues[0])?.label || placeholder)
+            : !singleSelect && selectedValues.length > 0
+            ? `${selectedValues.length} item(s) selected`
+            : placeholder}
 
-			{isOpen ? <IoIosArrowUp /> : <IoIosArrowDown/>}
-		</span>
+          {isOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
+        </span>
       </div>
 
       {/* Dropdown */}
@@ -71,9 +99,9 @@ export const MultiSelectDropdown = ({ customers = [], selectedCustomers, setSele
           {/* Search box */}
           <input
             type="text"
-            placeholder="Search customers..."
-            value={searchCustomer}
-            onChange={(e) => setSearchCustomer(e.target.value)}
+            placeholder={searchPlaceholder}
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
             style={{
               width: "100%",
               padding: "0.5rem",
@@ -85,19 +113,20 @@ export const MultiSelectDropdown = ({ customers = [], selectedCustomers, setSele
 
           {/* Checkbox list */}
           <div style={{ maxHeight: "250px", overflowY: "auto", padding: "0.5rem" }}>
-            {filteredCustomers.length > 0 ? (
-              filteredCustomers.map((customer, index) => (
-                <label key={index} style={{ display: "block", marginBottom: "0.3rem" }}>
+            {filteredOptions.length > 0 ? (
+              filteredOptions.map((opt, index) => (
+                <label key={index} style={{ display: "block", marginBottom: "0.3rem", color: theme.colors.text, cursor: "pointer" }}>
                   <input
                     type="checkbox"
-                    checked={selectedCustomers.includes(customer)}
-                    onChange={() => handleCustomerToggle(customer)}
+                    checked={selectedValues.includes(opt.value)}
+                    onChange={() => handleToggle(opt.value)}
+                    style={{ display: singleSelect ? "none" : "inline-block" }}
                   />{" "}
-                  {customer}
+                  {opt.label}
                 </label>
               ))
             ) : (
-              <div style={{ color: "#777" }}>No customers found</div>
+              <div style={{ color: "#777" }}>{noOptionsText}</div>
             )}
           </div>
         </div>

@@ -9,9 +9,10 @@ import Badge from '../../components/Badge';
 import { getEmpAllocationData, getemployeeList, processTimesheetApproval } from '../../services/productServices';
 import PaginationComponent from '../../components/Pagination';
 import Button from '../../components/Button';
-import { FaChevronLeft, FaChevronRight, FaEye, FaFileExport } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaEye, FaFileExport, FaFilter, FaRegCalendarAlt, FaRegCalendarCheck } from 'react-icons/fa';
 import EmployeeWiseTSView from '../../components/modals/ModalForProjectmanagemnt/EmployeeWiseTSView';
 import WeeklyTimesheetSummary from './WeeklyTimesheetSummary';
+import { MultiSelectDropdown } from '../../components/MultiSelectDropdown';
 import Card from '../../components/Card';
 import { useAuth } from '../../context/AuthContext';
 import { toast } from 'react-toastify';
@@ -19,6 +20,7 @@ import { MdFilterAltOff } from 'react-icons/md';
 import ConfirmPopup from '../../components/modals/ConfirmPopup';
 import { useExport } from '../../context/ExportContext';
 import CustomerSelectionModal from '../../components/modals/ModalForProjectmanagemnt/CustomerSelectionModal';
+import { useLocation } from 'react-router-dom';
 
 // Styled Components
 const Container = styled.div`
@@ -111,7 +113,7 @@ const SearchBox = styled.input`
 //   background: white;
 //   cursor: pointer;
 //   min-width: 150px;
-  
+
 //   &:focus {
 //     outline: none;
 //     border-color: ${theme.colors.primary};
@@ -333,11 +335,13 @@ const TableActions = styled.div`
 
 const ManagerDashboard = () => {
   const { profile } = useAuth();
+  const { pathname } = useLocation();
   const { exportEmployeeAuditData } = useExport();
   const [activeTab, setActiveTab] = useState("daily");
   const [activeDashboard, setActiveDashboard] = useState("MD");
+  const [emp_grade, setEmp_grade] = useState("E");
   const [employees, setEmployees] = useState([])
-  const [m_employee_id, setM_Employee_id] = useState(null)
+  const [m_employee_id, setM_Employee_id] = useState([])
   const [loading, setLoading] = useState(true)
   const [allEmployeeAllocationData, setAllEmployeeAllocationData] = useState([]);
   const [WeeklyTimesheetSummaryData, setWeeklyTimesheetSummaryData] = useState([]);
@@ -374,20 +378,69 @@ const ManagerDashboard = () => {
   }, [allEmployeeAllocationData]);
 
   const derivedActivities = useMemo(() => {
-    return deriveActivityStatusForDate(
+    let derived = deriveActivityStatusForDate(
       groupedActivities,
       selectedDate,
       // currentDate.start,
       new Date()
     );
-  }, [groupedActivities, selectedDate]);
+
+    if (pathname === "/admin-dashboard") {
+      if (emp_grade === "R") {
+        derived = derived.filter(a => Number(a.emp_grade) < 2);
+      } else if (emp_grade === "E") {
+        derived = derived.filter(a => Number(a.emp_grade) >= 2);
+      }
+    }
+
+    return derived;
+  }, [groupedActivities, selectedDate, pathname, emp_grade]);
+
+  // console.log("derivedActivities", derivedActivities)
 
   const statsSummary = useMemo(() => {
     return buildStatsSummary(derivedActivities);
   }, [derivedActivities]);
 
+  const auditSummary = allEmployeeAllocationData.reduce(
+    (acc, item) => {
+      if (pathname === "/admin-dashboard") {
+        // Handle undefined or null grade_level safely, assuming undefined means employee
+        const grade = item.grade_level !== undefined ? Number(item.grade_level) : Number(item.emp_grade || 2);
+        if (emp_grade === "R" && grade >= 2) return acc;
+        if (emp_grade === "E" && grade < 2) return acc;
+      }
+
+      const { order_item_key, activity_type } = item;
+
+      if (!order_item_key) return acc;
+
+      if (activity_type === "P") {
+        acc.Planned.add(order_item_key);
+      }
+
+      if (activity_type === "A") {
+        acc.Actual.add(order_item_key);
+      }
+
+      return acc;
+    },
+    {
+      Planned: new Set(),
+      Actual: new Set(),
+    }
+  );
+
+  const finalStatsSummary = {
+    PLANNED: { total: auditSummary.Planned.size },
+    ACTUAL: { total: auditSummary.Actual.size },
+  };
+
+  // console.log("finalStatsSummary", finalStatsSummary)
+
   const filteredActivities = useMemo(() => {
-    return filterActivities(derivedActivities, statusFilter, customerFilter, employeeFilter, searchTerm);
+    let filtered = filterActivities(derivedActivities, statusFilter, customerFilter, employeeFilter, searchTerm);
+    return filtered;
   }, [derivedActivities, statusFilter, customerFilter, employeeFilter, searchTerm]);
 
   // Calculate paginated data
@@ -457,26 +510,31 @@ const ManagerDashboard = () => {
 
   useEffect(() => {
     fetchEmpAllocation(currentDate.start, currentDate.end);
-  }, [currentDate.start, currentDate.end, m_employee_id, activeDashboard]);
+  }, [currentDate.start, currentDate.end, m_employee_id, activeDashboard, pathname]);
 
   const fetchEmpAllocation = async (startOverride, endOverride) => {
 
     const start = startOverride || currentDate.start
     const end = endOverride || currentDate.end
 
-    const payload = {
-      m_emp_id: m_employee_id ? m_employee_id : m_emp_id,
+    const m_payload = {
+      m_emp_id: (m_employee_id && m_employee_id.length > 0) ? m_employee_id[0] : m_emp_id,
+      start_date: formatToDDMMYYYY(start),
+      end_date: formatToDDMMYYYY(end),
+    }
+
+    const a_payload = {
       start_date: formatToDDMMYYYY(start),
       end_date: formatToDDMMYYYY(end),
     }
 
     if (activeDashboard === "AD") {
-      payload.manager_type = "A";
+      m_payload.manager_type = "A";
     }
 
     setIsLoading(true)
     try {
-      const res = await getEmpAllocationData(payload);
+      const res = await getEmpAllocationData(pathname === "/admin-dashboard" ? a_payload : m_payload);
       const WeeklyTimesheetSummary = mapEmployeeCustomerOrderItemData(res.data);
 
       setWeeklyTimesheetSummaryData(WeeklyTimesheetSummary)
@@ -563,6 +621,20 @@ const ManagerDashboard = () => {
       ],
       onClick: () => setStatusFilter({ main: "CHECK_OUT", sub: null }),
       onItemClick: (item) => setStatusFilter({ main: "CHECK_OUT", sub: item.subStatus })
+    },
+  ]
+  const statsData1 = [
+    {
+      icon: <FaRegCalendarAlt />,
+      label: "Audit Item Planned",
+      value: finalStatsSummary.PLANNED.total,
+      color: "primary",
+    },
+    {
+      icon: <FaRegCalendarCheck />,
+      label: "Actual Audit Items",
+      value: finalStatsSummary.ACTUAL.total,
+      color: "success",
     },
   ]
 
@@ -713,6 +785,10 @@ const ManagerDashboard = () => {
     { key: 'MD', label: `Manager Dashboard`, },
     { key: 'AD', label: `Account Manager Dashboard`, }
   ].filter(Boolean);
+  const tabs2 = [
+    { key: 'E', label: `Employee`, },
+    { key: 'R', label: `Retainer`, }
+  ].filter(Boolean);
 
   const buildAuditExportData = (data = []) => {
     const rows = [];
@@ -741,6 +817,8 @@ const ManagerDashboard = () => {
               order_item_key: item.order_item_key || "",
               employee_name,
               employee_id: emp_id,
+              status: item.project_period_status || "",
+              today_status: `${item.status.main}-${item.status.sub}` || "",
               planned_start_date: item.planned_start_date || planned.startDate || "",
               planned_end_date: item.planned_end_date || planned.endDate || "",
               planned_start_time: item.planned_start_time || planned.startTime || "",
@@ -759,6 +837,7 @@ const ManagerDashboard = () => {
       data.forEach((item) => {
         console.log("come block 2")
         const planned = item.planned || {};
+        const actualTime = item.actual || {};
         const actual = item.original_A || {};
 
         rows.push({
@@ -767,14 +846,20 @@ const ManagerDashboard = () => {
           order_item_key: item.order_item_key || item.project_code || "",
           employee_name: item.employee_name || "",
           employee_id: item.emp_id || item.employee_id || "",
+          status: item.project_period_status || "",
+          today_status: `${item.status.main}(${item.status.sub})` || "",
           planned_start_date: item.planned_start_date || planned.startDate || "",
           planned_end_date: item.planned_end_date || planned.endDate || "",
           planned_start_time: item.planned_start_time || planned.startTime || "",
           planned_end_time: item.planned_end_time || planned.endTime || "",
           actual_start_date: item.actual_start_date || actual.start_date || "",
           actual_end_date: item.actual_end_date || actual.end_date || "",
-          planned_no_of_items: item.planned_no_of_items ?? item.audit_item_no_planned ?? "",
-          actual_no_of_items: item.actual_no_of_items ?? item.audit_item_no_actual ?? "",
+          actual_start_time: item.actual_start_time || actualTime.firstCheckIn?.time || "",
+          actual_end_time: item.actual_end_time || actualTime.lastCheckOut?.time || "",
+          planned_no_of_items: item?.original_P?.no_of_items ?? item?.original_P?.no_of_items ?? "",
+          actual_no_of_items: item?.original_A?.no_of_items ?? item?.original_A?.no_of_items ?? "",
+          chek_in_location: actualTime.firstCheckIn?.lat + "," + actualTime.firstCheckIn?.lng || "",
+          chek_out_location: actualTime.lastCheckOut?.lat + "," + actualTime.lastCheckOut?.lng || "",
           remarks: item.store_remarks || "",
         });
       });
@@ -793,7 +878,7 @@ const ManagerDashboard = () => {
 
       const transformData = buildAuditExportData(toExport);
 
-      const result = exportEmployeeAuditData(transformData, "Audit_Report");
+      const result = exportEmployeeAuditData(transformData, "Audit_Report", pathname);
 
       if (result.success) {
         toast.success("Exported successfully");
@@ -811,13 +896,31 @@ const ManagerDashboard = () => {
         <h4>Today: {formatDate(todayDate)}</h4>
       </PageSubtitle>
       {/* <Card> */}
-      <TabContainer>
+      {pathname !== "/admin-dashboard" && <TabContainer>
         {tabs1.map(t => (
           <Tab key={t.key} active={activeDashboard === t.key} onClick={() => { setActiveDashboard(t.key); t.key === "AD" && setCustomerSelectionModal(true) }}>
             {t.label}
           </Tab>
         ))}
-      </TabContainer>
+      </TabContainer>}
+
+      {pathname === "/admin-dashboard" && <TabContainer>
+        {tabs2.map(t => (
+          <Tab key={t.key} active={emp_grade === t.key} onClick={() => { setEmp_grade(t.key); t.key === "R" && setCustomerSelectionModal(true) }}>
+            {t.label}
+          </Tab>
+        ))}
+      </TabContainer>}
+      {pathname === "/admin-dashboard" &&
+        <h4>Audit item Data</h4>
+      }
+      {pathname === "/admin-dashboard" && <StatsGrid>
+        {statsData1.map((stats) => <StatsCard icon={stats.icon} label={stats.label} value={stats.value} color={stats.color} />)}
+      </StatsGrid>}
+
+      {pathname === "/admin-dashboard" &&
+        <h4>Employee Allocation Data</h4>
+      }
       {/* </Card> */}
       <Container>
         <Main>
@@ -827,37 +930,47 @@ const ManagerDashboard = () => {
             />)}
           </StatsGrid>
 
-           {activeTab === "daily" && <FilterSection>
-             <FilterRow>
+          {activeTab === "daily" && <FilterSection>
+            <FilterRow>
               <SearchBox
                 type="text"
                 placeholder="Search audits, customers, or items..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <FilterSelect value={customerFilter} onChange={(e) => setCustomerFilter(e.target.value)}>
-                <option value="">All Customers</option>
-                {uniqueCustomers.map(c => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </FilterSelect>
-              <FilterSelect value={employeeFilter} onChange={(e) => setEmployeeFilter(e.target.value)}>
-                <option value="">All Employees</option>
-                {uniqueEmployees.map(e => (
-                  <option key={e.id} value={e.id}>{e.name}</option>
-                ))}
-
-              </FilterSelect>
+              <MultiSelectDropdown
+                options={uniqueCustomers.map(c => ({ label: c, value: c }))}
+                selectedValues={customerFilter ? [customerFilter] : []}
+                onChange={(val) => setCustomerFilter(val.length > 0 ? val[0] : '')}
+                placeholder="All Customers"
+                searchPlaceholder="Search customers..."
+                noOptionsText="No customers found"
+                width='350px'
+                singleSelect={true}
+              />
+              <MultiSelectDropdown
+                options={uniqueEmployees.map(e => ({ label: e.name, value: e.id }))}
+                selectedValues={employeeFilter ? [employeeFilter] : []}
+                onChange={(val) => setEmployeeFilter(val.length > 0 ? val[0] : '')}
+                placeholder="All Employees"
+                searchPlaceholder="Search employees..."
+                noOptionsText="No employees found"
+                width='350px'
+                singleSelect={true}
+              />
             </FilterRow>
             <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", alignItems: "center", marginTop: "1rem" }}>
-              {profile.grade_level > 500 &&
-                <FilterSelect value={m_employee_id} onChange={(e) => setM_Employee_id(e.target.value)}>
-                  <option value="">All Manager</option>
-                  {employees.map(e => (
-                    <option key={e.emp_id} value={e.emp_id}>{e.name}({e.emp_id})</option>
-                  ))}
-
-                </FilterSelect>}
+              {pathname !== "/admin-dashboard" && profile.grade_level >= 500 &&
+                <MultiSelectDropdown
+                  options={employees.map(e => ({ label: `${e.name}(${e.emp_id})`, value: e.emp_id }))}
+                  selectedValues={m_employee_id || []}
+                  onChange={setM_Employee_id}
+                  placeholder="All Manager"
+                  searchPlaceholder="Search manager..."
+                  noOptionsText="No managers found"
+                  width='500px'
+                  singleSelect={true}
+                />}
               {/* {activeTab === "daily" ?
                 <DateToggle>
                   <DateButton onClick={handlePreviousDay}>
@@ -877,8 +990,8 @@ const ManagerDashboard = () => {
                   </DateButton>
                   </DateToggle>
                   } */}
+              <Button style={{ marginLeft: "auto" }} onClick={() => { setStatusFilter(null); setCustomerFilter(''); setEmployeeFilter(''); setSearchTerm(''); setCurrentPage(1); setM_Employee_id([]); }}><MdFilterAltOff /> Clear All</Button>
 
-              <Button style={{ marginLeft: "auto" }} onClick={() => { setStatusFilter(null); setCustomerFilter(''); setEmployeeFilter(''); setSearchTerm(''); setCurrentPage(1); setM_Employee_id(""); }}><MdFilterAltOff /> Clear All</Button>
             </div>
           </FilterSection>
           }
@@ -896,13 +1009,14 @@ const ManagerDashboard = () => {
               </CalendarContainer>
               <Button onClick={() => { setSelectedDate(todayDate) }}><MdFilterAltOff /> Clear filter</Button>
             </div>
-            <TabContainer>
+
+            {pathname !== "/admin-dashboard" && <TabContainer>
               {tabs.map(t => (
                 <Tab key={t.key} active={activeTab === t.key} onClick={() => setActiveTab(t.key)}>
                   {t.label}
                 </Tab>
               ))}
-            </TabContainer>
+            </TabContainer>}
 
             {activeTab === "daily" ?
 
@@ -935,7 +1049,7 @@ const ManagerDashboard = () => {
                           <Cell>
                             <AuditorInfo>
                               <div className="name">{audit.employee_name}</div>
-                              <div className="id">ID: {audit.emp_id} <Badge variant={audit.emp_grade < 20 ? "back" :  audit.emp_grade > 100 ? "settle" : "forward"} style={{ marginLeft: "0.5rem" }}>{audit.emp_grade < 20 ? "Retainer"  : audit.emp_grade > 100 ? "Team Lead" : "Executive"}</Badge></div>
+                              <div className="id">ID: {audit.emp_id} <Badge variant={audit.emp_grade < 2 ? "back" : audit.emp_grade > 100 ? "settle" : "forward"} style={{ marginLeft: "0.5rem" }}>{audit.emp_grade < 2 ? "Retainer" : audit.emp_grade > 100 ? "Team Lead" : "Executive"}</Badge></div>
                               <div className="type">{audit.original_P.audit_type}</div>
                               <div className="key">{audit.order_item_key}</div>
                             </AuditorInfo>
@@ -992,7 +1106,7 @@ const ManagerDashboard = () => {
                   siblingCount={2}
                 />
                 <TableActions>
-                  <Button variant="outline" size="sm" onClick={() => handleAuditExport(paginatedActivities)}>
+                  <Button variant="outline" size="sm" onClick={() => handleAuditExport(filteredActivities)}>
                     <FaFileExport /> Export XLS
                   </Button>
                 </TableActions>

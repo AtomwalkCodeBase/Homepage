@@ -17,7 +17,7 @@ import {
   MapPin,
 } from 'lucide-react';
 import { GiCancel } from "react-icons/gi";
-import { getCurrentDateTimeDefaults, getTodayApiDateStr, formatDate, formatAPITime } from './utils/utils';
+import { getCurrentDateTimeDefaults, getTodayApiDateStr, formatDate, formatAPITime, parseApiDate } from './utils/utils';
 import Button from '../../components/Button';
 import { CalendarEvent } from 'react-bootstrap-icons';
 import { FaPlus, FaRegFile, FaUsers } from 'react-icons/fa';
@@ -29,8 +29,8 @@ import { theme } from '../../styles/Theme';
 import { IoPinOutline } from 'react-icons/io5';
 
 const CardHover = styled.div`
-  background: ${({ theme }) => theme.colors?.card || '#fff'};
-  border: 1px solid ${({ theme }) => theme.colors?.border || '#e0e0e0'};
+  background: ${({ theme, shouldHidePrimaryButton }) => shouldHidePrimaryButton ?  `${theme.colors?.error}30` : theme.colors?.card || '#fff'};
+  border: 1px solid ${({ theme, shouldHidePrimaryButton }) => shouldHidePrimaryButton ? theme.colors?.error : theme.colors?.border || '#e0e0e0'};
   border-radius: ${({ theme }) => theme.cardStyle?.borderRadius || '12px'};
   padding: ${({ theme }) => theme.spacing?.lg || '1rem'};
   margin-bottom: ${({ theme }) => theme.spacing?.md || '1rem'};
@@ -38,7 +38,7 @@ const CardHover = styled.div`
   transition: ${({ theme }) => theme.transitions?.normal || 'all 0.3s ease'};
   
   &:hover {
-    border-color: ${({ theme }) => theme.colors?.primary || '#6C63FF'};
+    border-color: ${({ theme, shouldHidePrimaryButton }) => shouldHidePrimaryButton ? theme.colors?.error : theme.colors?.primary || '#6C63FF'};
     box-shadow: ${({ theme }) =>
     theme.cardStyle?.shadow === 'heavy' ? '0 10px 20px rgba(108,99,255,0.2)' :
       theme.shadows?.lg || '0 4px 12px rgba(108,99,255,0.15)'};
@@ -411,6 +411,12 @@ const MainGrid = styled.div`
   padding: ${({ theme }) => theme.spacing?.md || '1rem'} 0;
 `;
 
+const Grid2 = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.75rem;
+`;
+
 const DetailsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -444,16 +450,26 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavi
 
   const isActivityStart = !!activity.original_A;
 
-  const isAuditEndDatePass = activity?.original_P?.max_audit_end_date < todayApiDateStr;
+  const isAuditEndDatePass = parseApiDate(activity?.original_P?.max_audit_end_date) < parseApiDate(todayApiDateStr);
   const isNonNegotiable = activity?.original_P?.is_non_negotiable_date;
-  const shouldHidePrimaryButton = isNonNegotiable && isAuditEndDatePass;
-
-  const showAuditExceededMessage = isAuditEndDatePass;
 
   // today's log (safe)
   const todayLog = activity.day_logs?.[getTodayApiDateStr()] || {};
   const todayCheckedIn = !!todayLog.check_in;
   const todayCheckedOut = !!todayLog.check_out;
+
+  // Determine if there's an open session that needs to be closed
+  // This includes: checked in today but not checked out, OR pending checkout from yesterday
+  const hasOpenSession = (todayCheckedIn && !todayCheckedOut) || activity.hasPendingCheckout;
+
+  // Hide buttons only when:
+  // - Audit date is passed AND is non-negotiable AND there's NO open session
+  // When is_non_negotiable_date is false, buttons always show (even after deadline)
+  // When is_non_negotiable_date is true, buttons only hide if no session to close
+  const shouldHidePrimaryButton = isAuditEndDatePass && isNonNegotiable && !hasOpenSession;
+
+  // Show error message whenever the audit date exists and has passed
+  const showAuditExceededMessage = isAuditEndDatePass;
 
   const { todayISO } = getCurrentDateTimeDefaults();
 
@@ -480,7 +496,7 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavi
   const hasOPEAmount = opeAmount && opeAmount !== "0.00";
 
   return (
-    <CardHover>
+    <CardHover shouldHidePrimaryButton={shouldHidePrimaryButton}>
       <MainContent>
         <HeaderSection>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -536,18 +552,27 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavi
             </Item>
           )}
         </MainGrid>
-        <MainGrid>
+        <Grid2>
           <Item>
             <Label><IoPinOutline size={14} />Pin code</Label>
             {!activity?.original_P?.pin_code ?
               <Button size='sm' onClick={() => onAddPincode(activity)}><FaPlus />Add Pin code</Button> : <DetailValue>{activity.original_P.pin_code}</DetailValue>}
           </Item>
-        </MainGrid>
+          {activity?.original_P?.is_non_negotiable_date && <Item>
+            <Label><CalendarEvent size={14} />Is audit date negotiable ?</Label>
+            <Badge variant={activity?.original_P?.is_non_negotiable_date ? "error" : "success"}>{activity?.original_P?.is_non_negotiable_date ? "No" : "Yes"}</Badge><br />
+            <DetailValue>{(activity?.original_P?.audit_date || activity?.original_P?.max_audit_end_date) ? `${formatDate(activity?.original_P?.audit_date)} to ${formatDate(activity?.original_P?.max_audit_end_date)}` : ""}</DetailValue>
+          </Item>}
+        </Grid2>
 
         <ActionsRow>
           {showAuditExceededMessage && (
             <ButtonGroup>
-              <StatusMessage type="error">Audit max end date has been exceeded</StatusMessage>
+              <StatusMessage type="error">
+                {shouldHidePrimaryButton 
+                  ? "Audit max end date has been exceeded. You can't start the activity" 
+                  : "Audit max end date has been exceeded"}
+              </StatusMessage>
             </ButtonGroup>
           )}
 

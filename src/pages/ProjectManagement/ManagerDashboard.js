@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useRef } from 'react'
+import React, { useEffect, useMemo, useState} from 'react'
 import Layout from '../../components/Layout'
 import styled from 'styled-components';
 import { FiZap, FiClock, FiCheckCircle, } from 'react-icons/fi';
@@ -318,7 +318,6 @@ const ManagerDashboard = () => {
   const [activeDashboard, setActiveDashboard] = useState("MD");
   const [emp_grade, setEmp_grade] = useState("E");
   const [employees, setEmployees] = useState([])
-  const [intialEmployees, setInitialEmployees] = useState([])
   const [m_employee_id, setM_Employee_id] = useState(null)
   const [loading, setLoading] = useState(true)
   const [allEmployeeAllocationData, setAllEmployeeAllocationData] = useState([]);
@@ -464,6 +463,17 @@ const ManagerDashboard = () => {
     }
   };
 
+    useEffect(() => {
+    if (pathname === "/admin-dashboard") {
+      setStatusFilter(null);
+      setCustomerFilter(null);
+      setEmployeeFilter(null);
+      setSearchTerm('');
+      setCurrentPage(1);
+      setM_Employee_id(null);
+    }
+  }, [pathname]);
+
   // Reset pagination when filters change
   useEffect(() => {
     setCurrentPage(1);
@@ -489,18 +499,6 @@ const ManagerDashboard = () => {
   useEffect(() => {
     fetchEmpAllocation(currentDate.start, currentDate.end);
   }, [currentDate.start, currentDate.end, m_employee_id, activeDashboard, pathname]);
-
-  // Clear all filters when navigating to admin-dashboard
-  useEffect(() => {
-    if (pathname === "/admin-dashboard") {
-      setStatusFilter(null);
-      setCustomerFilter(null);
-      setEmployeeFilter(null);
-      setSearchTerm('');
-      setCurrentPage(1);
-      setM_Employee_id(null);
-    }
-  }, [pathname]);
 
   const fetchEmpAllocation = async (startOverride, endOverride) => {
 
@@ -531,8 +529,7 @@ const ManagerDashboard = () => {
 
       const allocationData = res?.data || [];
 
-      setAllEmployeeAllocationData(allocationData);
-      setInitialEmployees(allocationData);
+      setAllEmployeeAllocationData(allocationData)
 
     } catch (error) {
       // console.error("Error fetching allocation data:", error);
@@ -955,7 +952,6 @@ const ManagerDashboard = () => {
                 <MultiSelectDropdown
                   options={employees.map(e => ({ label: `${e.name}(${e.emp_id})`, value: e.emp_id }))}
                   selectedValues= {m_employee_id ? [m_employee_id] : []}
-                  // onChange={setM_Employee_id}
                   onChange={(val) => setM_Employee_id(val.length > 0 ? val[0] : '')}
                   placeholder="All Manager"
                   searchPlaceholder="Search manager..."

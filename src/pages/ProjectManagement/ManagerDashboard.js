@@ -9,7 +9,7 @@ import Badge from '../../components/Badge';
 import { getEmpAllocationData, getemployeeList, processTimesheetApproval } from '../../services/productServices';
 import PaginationComponent from '../../components/Pagination';
 import Button from '../../components/Button';
-import { FaChevronLeft, FaChevronRight, FaEye, FaFileExport, FaFilter, FaRegCalendarAlt, FaRegCalendarCheck } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaEye, FaFileExport, FaRegCalendarAlt, FaRegCalendarCheck } from 'react-icons/fa';
 import EmployeeWiseTSView from '../../components/modals/ModalForProjectmanagemnt/EmployeeWiseTSView';
 import WeeklyTimesheetSummary from './WeeklyTimesheetSummary';
 import { MultiSelectDropdown } from '../../components/MultiSelectDropdown';
@@ -103,29 +103,6 @@ const SearchBox = styled.input`
     color: ${theme.colors.textLight};
   }
 `;
-
-// const Select = styled.select`
-//   padding: ${theme.spacing.sm} ${theme.spacing.md};
-//   border: 1px solid ${theme.colors.border};
-//   border-radius: ${theme.borderRadius.md};
-//   font-family: ${theme.fonts.body};
-//   font-size: ${theme.fontSizes.sm};
-//   background: white;
-//   cursor: pointer;
-//   min-width: 150px;
-
-//   &:focus {
-//     outline: none;
-//     border-color: ${theme.colors.primary};
-//   }
-// `;
-
-const FilterSelect = styled.select`
-  padding: 0.5rem 1rem;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 4px;
-  background: white;
-`
 
 const TableScroll = styled.div`
   width: 100%;
@@ -402,7 +379,7 @@ const ManagerDashboard = () => {
     return buildStatsSummary(derivedActivities);
   }, [derivedActivities]);
 
-  const auditSummary = allEmployeeAllocationData.reduce(
+  const auditSummary = derivedActivities.reduce(
     (acc, item) => {
       if (pathname === "/admin-dashboard") {
         // Handle undefined or null grade_level safely, assuming undefined means employee
@@ -410,25 +387,25 @@ const ManagerDashboard = () => {
         if (emp_grade === "R" && grade >= 2) return acc;
         if (emp_grade === "E" && grade < 2) return acc;
       }
+      const key = item.order_item_key;
+      if (!key) return acc;
 
-      const { order_item_key, activity_type } = item;
+      // Always add to Planned (unique)
+      acc.Planned.add(key);
 
-      if (!order_item_key) return acc;
+      // Check actual condition
+      const firstCheckIn = item?.actual?.firstCheckIn;
 
-      if (activity_type === "P") {
-        acc.Planned.add(order_item_key);
-      }
-
-      if (activity_type === "A") {
-        acc.Actual.add(order_item_key);
+      if (firstCheckIn && firstCheckIn !== "") {
+        acc.Actual.add(key);
       }
 
       return acc;
-    },
-    {
-      Planned: new Set(),
-      Actual: new Set(),
-    }
+      },
+      {
+        Planned: new Set(),
+        Actual: new Set(),
+      }
   );
 
   const finalStatsSummary = {
@@ -509,6 +486,10 @@ const ManagerDashboard = () => {
     }, [])
 
   useEffect(() => {
+    setStatusFilter(null);
+    setCustomerFilter(null);
+    setEmployeeFilter(null);
+    setSearchTerm('');
     fetchEmpAllocation(currentDate.start, currentDate.end);
   }, [currentDate.start, currentDate.end, m_employee_id, activeDashboard, pathname]);
 
@@ -970,6 +951,8 @@ const ManagerDashboard = () => {
                   noOptionsText="No managers found"
                   width='500px'
                   singleSelect={true}
+                  loading={loading}
+                  loadingText='Loading...'
                 />}
               {/* {activeTab === "daily" ?
                 <DateToggle>

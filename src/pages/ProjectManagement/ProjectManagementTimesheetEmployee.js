@@ -325,7 +325,7 @@ const ProjectManagementTimesheetEmployee = () => {
     }
 
     // SPECIAL MODE
-    if (mode === "FORCE_COMPLETE") {
+    if (mode === "FORCE_COMPLETE" || mode === "REVERSE_COMPLETE") {
       const formData = new FormData();
 
       if (!project?.original_A?.id) {
@@ -335,8 +335,13 @@ const ProjectManagementTimesheetEmployee = () => {
 
       formData.append("emp_id", empIdentifier);
       formData.append("a_id", project.original_A.id);
-      formData.append("call_mode", "FORCE_COMPLETE");
-      formData.append("remarks", data.remarks || "");
+      formData.append("call_mode",  mode === "REVERSE_COMPLETE" ? "REVERSE_COMPLETE" :"FORCE_COMPLETE");
+      if(mode === "REVERSE_COMPLETE"){
+        formData.append("geo_type", "O")
+      }
+      if(data.remarks){
+        formData.append("remarks", data.remarks || "");
+      }
 
       if (data.file) {
         formData.append("submitted_file", data.file);
@@ -350,7 +355,7 @@ const ProjectManagementTimesheetEmployee = () => {
         const res = await postAllocationData(formData);
 
         if (res?.status === 200) {
-          toast.success("Activity completed");
+          toast.success(mode === "REVERSE_COMPLETE" ? "Status update successfully" : "Activity completed");
           await fetchEmpAllocationData();
           return true;
         }
@@ -531,6 +536,19 @@ const ProjectManagementTimesheetEmployee = () => {
         return submit({
           project: activity,
           mode: "UPDATE",
+          data: { startTime: currentTime }
+        });
+      },
+    },
+
+    reverse: {
+      title: "Reverse Audit status",
+      message: `⚠️ You are about to undo the completed audit. The status will be changed to In Progress.\n\nDo you want to continue?`,
+      handler: async (activity, submit, refresh, retainerPage) => {
+        const { currentTime } = getCurrentDateTimeDefaults();
+        return submit({
+          project: activity,
+          mode: "REVERSE_COMPLETE",
           data: { startTime: currentTime }
         });
       },

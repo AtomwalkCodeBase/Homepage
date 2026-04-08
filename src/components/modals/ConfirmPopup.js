@@ -27,6 +27,7 @@ const Title = styled.h2`
 const Message = styled.p`
   margin: 16px 0;
   color: #555;
+  white-space: pre-line
 `;
 
 const ButtonGroup = styled.div`
@@ -115,7 +116,7 @@ const ConfirmPopup = ({ isOpen, onClose, onConfirm, approve, timesheet, isLoadin
         </div>
 
         <Message>
-          {resolvedMessage}
+          {typeof resolvedMessage === 'string' ? resolvedMessage : resolvedMessage.join('\n')}
         </Message>
 
         <ButtonGroup>

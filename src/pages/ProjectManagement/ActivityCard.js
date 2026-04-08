@@ -16,7 +16,7 @@ import {
   PenBox,
   MapPin,
 } from 'lucide-react';
-import { GiCancel } from "react-icons/gi";
+import { GiBackwardTime, GiCancel } from "react-icons/gi";
 import { getCurrentDateTimeDefaults, getTodayApiDateStr, formatDate, formatAPITime, parseApiDate } from './utils/utils';
 import Button from '../../components/Button';
 import { CalendarEvent } from 'react-bootstrap-icons';
@@ -123,6 +123,14 @@ const Item = styled.div`
 
 const Label = styled.div`
   color: ${({ theme }) => theme.colors?.textLight || '#666'};
+  font-size: ${({ theme }) => theme.fontSizes?.xs || '0.75rem'};
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing?.xs || '0.25rem'};
+  margin-bottom: ${({ theme }) => theme.spacing?.xs || '0.2rem'};
+`;
+const Label2 = styled.div`
+  color: ${({ theme }) => theme.colors?.card || '#666'};
   font-size: ${({ theme }) => theme.fontSizes?.xs || '0.75rem'};
   display: flex;
   align-items: center;
@@ -303,6 +311,11 @@ const DetailValue = styled.span`
   color: ${({ theme }) => theme.colors?.text || '#333333'};
   font-weight: 500;
 `;
+const DetailValue2 = styled.span`
+  font-size: ${({ theme }) => theme.fontSizes?.sm || '0.875rem'};
+  color: ${({ theme }) => theme.colors?.card || '#333333'};
+  font-weight: 500;
+`;
 
 const PrimaryBtn = styled(Button)`
   background: ${({ theme }) => theme.colors?.primary || '#6C63FF'};
@@ -450,26 +463,51 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavi
 
   const isActivityStart = !!activity.original_A;
 
-  const isAuditEndDatePass = parseApiDate(activity?.original_P?.max_audit_end_date) < parseApiDate(todayApiDateStr);
+    // Check if max_audit_end_date exists
+  const hasMaxAuditEndDate = !!activity?.original_P?.max_audit_end_date;
+  
+  // Check if audit end date has passed (only if date exists)
+  const isAuditEndDatePass = hasMaxAuditEndDate &&  parseApiDate(activity?.original_P?.max_audit_end_date) < parseApiDate(todayApiDateStr);
+  
   const isNonNegotiable = activity?.original_P?.is_non_negotiable_date;
+  const isCompleted = activity.project_period_status === "Completed";
 
-  // today's log (safe)
   const todayLog = activity.day_logs?.[getTodayApiDateStr()] || {};
   const todayCheckedIn = !!todayLog.check_in;
   const todayCheckedOut = !!todayLog.check_out;
 
-  // Determine if there's an open session that needs to be closed
-  // This includes: checked in today but not checked out, OR pending checkout from yesterday
   const hasOpenSession = (todayCheckedIn && !todayCheckedOut) || activity.hasPendingCheckout;
+  const hasPendingCheckoutOnly = activity.hasPendingCheckout && !todayCheckedIn;
+
+    const shouldShowRedBackground = 
+    isNonNegotiable &&           // Must be non-negotiable
+    hasMaxAuditEndDate &&        // Must have max_audit_end_date
+    isAuditEndDatePass &&        // Date must be passed
+    !isCompleted &&              // Not completed
+    (hasOpenSession || !hasOpenSession); 
+
+      const shouldShowExceedMessage = 
+    hasMaxAuditEndDate &&        // Must have max_audit_end_date
+    isAuditEndDatePass &&        // Date must be passed
+    !isCompleted;
+
+      const shouldHidePrimaryButton = 
+    isNonNegotiable &&           // Must be non-negotiable
+    hasMaxAuditEndDate &&        // Must have max_audit_end_date
+    isAuditEndDatePass &&        // Date must be passed
+    !isCompleted &&              // Not completed
+    !hasOpenSession; 
+
+    const finalHideButtons = isCompleted || shouldHidePrimaryButton;
 
   // Hide buttons only when:
   // - Audit date is passed AND is non-negotiable AND there's NO open session
   // When is_non_negotiable_date is false, buttons always show (even after deadline)
   // When is_non_negotiable_date is true, buttons only hide if no session to close
-  const shouldHidePrimaryButton = isAuditEndDatePass && isNonNegotiable && !hasOpenSession;
+  // const shouldHidePrimaryButton = isAuditEndDatePass && isNonNegotiable && !hasOpenSession;
 
   // Show error message whenever the audit date exists and has passed
-  const showAuditExceededMessage = isAuditEndDatePass;
+  // const showAuditExceededMessage = isAuditEndDatePass;
 
   const { todayISO } = getCurrentDateTimeDefaults();
 
@@ -496,7 +534,7 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavi
   const hasOPEAmount = opeAmount && opeAmount !== "0.00";
 
   return (
-    <CardHover shouldHidePrimaryButton={shouldHidePrimaryButton}>
+    <CardHover shouldHidePrimaryButton={shouldShowRedBackground}>
       <MainContent>
         <HeaderSection>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -558,25 +596,32 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavi
             {!activity?.original_P?.pin_code ?
               <Button size='sm' onClick={() => onAddPincode(activity)}><FaPlus />Add Pin code</Button> : <DetailValue>{activity.original_P.pin_code}</DetailValue>}
           </Item>
-          {activity?.original_P?.is_non_negotiable_date && <Item>
+          {/* {activity?.original_P?.is_non_negotiable_date && <Item>
             <Label><CalendarEvent size={14} />Is audit date negotiable ?</Label>
             <Badge variant={activity?.original_P?.is_non_negotiable_date ? "error" : "success"}>{activity?.original_P?.is_non_negotiable_date ? "No" : "Yes"}</Badge><br />
             <DetailValue>{(activity?.original_P?.audit_date || activity?.original_P?.max_audit_end_date) ? `${formatDate(activity?.original_P?.audit_date)} to ${formatDate(activity?.original_P?.max_audit_end_date)}` : ""}</DetailValue>
-          </Item>}
+          </Item>} */}
+          {activity?.original_P?.is_non_negotiable_date &&  activity?.original_P?.max_audit_end_date &&
+          <div style={{background: theme.colors.error, padding: "0.5rem", borderRadius: theme.borderRadius.lg}}>
+            <Label2><CalendarEvent size={14} />Non negotiable date</Label2>
+            <DetailValue2>{(activity?.original_P?.audit_date || activity?.original_P?.max_audit_end_date) ? `${formatDate(activity?.original_P?.audit_date)} to ${formatDate(activity?.original_P?.max_audit_end_date)}` : ""}</DetailValue2>
+          </div>
+          
+          }
         </Grid2>
 
         <ActionsRow>
-          {showAuditExceededMessage && (
+          {shouldShowExceedMessage && activity.project_period_status !== "Completed" && (
             <ButtonGroup>
               <StatusMessage type="error">
-                {shouldHidePrimaryButton 
+                {shouldHidePrimaryButton
                   ? "Audit max end date has been exceeded. You can't start the activity" 
                   : "Audit max end date has been exceeded"}
               </StatusMessage>
             </ButtonGroup>
           )}
 
-          {!shouldHidePrimaryButton && (
+          {!finalHideButtons && (
             <TodayActionButtons
               activity={activity}
               todayCheckedIn={todayCheckedIn}
@@ -590,7 +635,7 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavi
               getTodayApiDateStr={getTodayApiDateStr}
               retainerPage={false}
               isManager={isManager}
-              showAuditExceededMessage={showAuditExceededMessage}
+              showAuditExceededMessage={shouldShowExceedMessage}
             />
           )}
         </ActionsRow>
@@ -846,7 +891,12 @@ export const TodayActionButtons = ({
 
   // 1. Fully complete
   if (complete) {
-    return (<ButtonGroup><StatusMessage type="success">Activity is completed</StatusMessage></ButtonGroup>);
+    return (<ButtonGroup>
+      <StatusMessage type="success">Activity is completed</StatusMessage>
+    {activity?.original_A?.status !== "A" && <PrimaryBtn size="md" onClick={() => onAction({ type: 'reverse', activity, retainerPage, retainer, onRetainerUpdate })}>
+          <GiBackwardTime /> Reverse Audit Status
+        </PrimaryBtn>}
+    </ButtonGroup>);
   }
 
   // 3. Pending checkout from yesterday

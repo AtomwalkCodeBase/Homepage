@@ -5,11 +5,12 @@ import styled from 'styled-components';
 import { useTheme } from '../../../context/ThemeContext';
 import Button from '../../Button';
 import Badge from '../../Badge';
-import { getStatusVariant, getCurrentDateTimeDefaults, getYesterday, convert12To24Hour, formatToDDMMYYYY, normalizeToDDMMYYYY } from '../../../pages/ProjectManagement/utils/utils';
+import { getStatusVariant, getCurrentDateTimeDefaults, getYesterday, convert12To24Hour, formatToDDMMYYYY, normalizeToDDMMYYYY, DateForApiFormate } from '../../../pages/ProjectManagement/utils/utils';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../../context/AuthContext';
 import Modal from '../Modal';
 import { FaRegPenToSquare } from 'react-icons/fa6';
+import ConfirmPopup from '../ConfirmPopup';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -528,6 +529,12 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
   })
   const [isRetainerModalOpen, setIsRetainerModalOpen] = useState(false);
   const [retainerInputs, setRetainerInputs] = useState([]);
+  const [confirmPopup, setConfirmPopup] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    onConfirm: null,
+  });
 
 
   const yesterday = getYesterday()
@@ -540,6 +547,7 @@ const ProjectManagementAddForm = ({ isOpen, onClose, activity, onSubmit, onActiv
   const isUpdateMode = forceMode ? forceMode === "UPDATE" : derivedUpdateMode
   const forcedDate = modalContext?.forcedDate;
   const isExecutive = profile.grade_level < 100;
+  const isPlannedEndExceed = DateForApiFormate(activity?.planned_end_date, true) <= DateForApiFormate(todayApiDate, true);
 
   const isRetainerUpdate = modalContext?.type === "update_retainer";
 
@@ -672,7 +680,6 @@ useEffect(() => {
 
     return { tl_count: tl, ex_count: ex };
   };
-  
   const handleSubmit = async () => {
     if (isDisabled || !onActivitySubmit) return;
 
@@ -680,117 +687,133 @@ useEffect(() => {
       toast.error("Please enter the number of items completed");
       return;
     }
-  const formattedSelectedDate = formatToDDMMYYYY(selectedDate); // ALWAYS DD-MM-YYYY
-  let activityDateToSend = formattedSelectedDate;
-  const extraFields = {};
 
-  const mode = modalContext?.type;
+    const formattedSelectedDate = formatToDDMMYYYY(selectedDate);
+    const normalizedPending = normalizeToDDMMYYYY(pendingCheckoutDate);
 
-  if (mode === "continue") {
-    activityDateToSend = formattedSelectedDate;
-  }
+    if (
+      normalizedPending &&
+      formattedSelectedDate === normalizedPending &&
+      dayLog?.check_in?.time &&
+      formData.endTime
+    ) {
+      const checkIn24 = convert12To24Hour(dayLog.check_in.time);
+      const checkInDate = new Date(`1970-01-01T${checkIn24}:00`);
+      const checkOutDate = new Date(`1970-01-01T${formData.endTime}:00`);
+
+      if (checkOutDate <= checkInDate) {
+        toast.error("Check-out time must be strictly greater than check-in time");
+        return;
+      }
+    }
+
+    if (retainerPage) {
+      const expectedResources = Number(formData.noOfResources || 0);
+
+      for (let i = 0; i < retainerInputs.length; i++) {
+        const item = retainerInputs[i];
+
+        if (!item.name?.trim()) {
+          toast.error(`Please enter name for Resource ${i + 1}`);
+          return;
+        }
+
+        if (!item.items?.toString().trim()) {
+          toast.error(`Please enter ${activity?.original_P?.product_unit ? `${activity?.original_P?.product_unit} Audited` : "Number of Items Audited"} for Resource ${i + 1}`);
+          return;
+        }
+
+        if (!item.resourceType?.toString().trim()) {
+          toast.error(`Please select Resource Type (TL/EX) for Resource ${i + 1}`);
+          return;
+        }
+      }
+      const enteredResourceCount = retainerInputs.filter(r => r.name?.trim() && r.items && r.resourceType?.toString().trim()).length;
+
+      if (expectedResources !== enteredResourceCount) {
+        toast.error(`Number of resources (${expectedResources}) must match entered resource names (${enteredResourceCount})`);
+        return;
+      }
+    }
+
+    if (modalContext?.type?.includes("complete")) {
+      const message = retainerPage
+        ? `Are you sure you want to mark today’s activity as complete for this retainer?`
+        : !isPlannedEndExceed
+          ? `Are you sure you want to complete this audit item?\n\nThis audit is planned till ${activity?.planned_end_date}.\n\n After this you won't able to perform any activity for this audit item`
+          : "Are you sure you want to complete this activity";
+
+      setConfirmPopup({
+        isOpen: true,
+        title: "Confirm Completion",
+        message: message,
+        onConfirm: () => {
+          setConfirmPopup(prev => ({ ...prev, isOpen: false }));
+          processSubmit();
+        }
+      });
+      return;
+    }
+
+    processSubmit();
+  };
+
+  const processSubmit = async () => {
+    const formattedSelectedDate = formatToDDMMYYYY(selectedDate); // ALWAYS DD-MM-YYYY
+    let activityDateToSend = formattedSelectedDate;
+    const extraFields = {};
+
+    const mode = modalContext?.type;
+
+    if (mode === "continue") {
+      activityDateToSend = formattedSelectedDate;
+    }
 
     else if (mode === "checkout_yesterday") {
 
-    if (!pendingCheckoutDate) {
-      activityDateToSend = formattedSelectedDate;
-    } else {
-
-      const pendingFormatted =  normalizeToDDMMYYYY(pendingCheckoutDate);
-
-      if (formattedSelectedDate === pendingFormatted) {
-        activityDateToSend = pendingFormatted;
+      if (!pendingCheckoutDate) {
+        activityDateToSend = formattedSelectedDate;
       } else {
-        activityDateToSend = pendingFormatted;
-        extraFields.end_date = formattedSelectedDate;
+
+        const pendingFormatted = normalizeToDDMMYYYY(pendingCheckoutDate);
+
+        if (formattedSelectedDate === pendingFormatted) {
+          activityDateToSend = pendingFormatted;
+        } else {
+          activityDateToSend = pendingFormatted;
+          extraFields.end_date = formattedSelectedDate;
+        }
       }
     }
-  }
 
     else if (mode === "complete" || mode === "complete_y") {
 
-    // always send is_completed
-    extraFields.is_completed = 1;
+      // always send is_completed
+      extraFields.is_completed = 1;
 
-    if (!pendingCheckoutDate) {
-      activityDateToSend = formattedSelectedDate;
-    } else {
-
-      const pendingFormatted = normalizeToDDMMYYYY(pendingCheckoutDate);
-
-      if (formattedSelectedDate === pendingFormatted) {
-        activityDateToSend = pendingFormatted;
+      if (!pendingCheckoutDate) {
+        activityDateToSend = formattedSelectedDate;
       } else {
-        activityDateToSend = pendingFormatted;
-        extraFields.end_date = formattedSelectedDate;
+
+        const pendingFormatted = normalizeToDDMMYYYY(pendingCheckoutDate);
+
+        if (formattedSelectedDate === pendingFormatted) {
+          activityDateToSend = pendingFormatted;
+        } else {
+          activityDateToSend = pendingFormatted;
+          extraFields.end_date = formattedSelectedDate;
+        }
       }
     }
-  }
-    const normalizedPending = normalizeToDDMMYYYY(pendingCheckoutDate);
-
-if (
-  normalizedPending &&
-  formattedSelectedDate === normalizedPending &&
-  dayLog?.check_in?.time &&
-  formData.endTime
-  ) {
-    const checkIn24 = convert12To24Hour(dayLog.check_in.time);
-
-    const checkInDate = new Date(`1970-01-01T${checkIn24}:00`);
-    const checkOutDate = new Date(`1970-01-01T${formData.endTime}:00`);
-
-    if (checkOutDate <= checkInDate) {
-      toast.error("Check-out time must be strictly greater than check-in time");
-      return;
-    }
-  }
-
-  //   if (retainerCache && formData.noOfResources !== "") {
-  //   const resourceCount = Number(formData.noOfResources);
-
-  //   if (Number.isFinite(resourceCount) && resourceCount > 0) {
-  //     extraFields.no_of_resources = resourceCount;
-  //   }
-  // }
-
     const resourceList = getJoinedRetainerNames() || "";
-      if (resourceList && String(resourceList).trim()) {
-        extraFields.resource_list = resourceList;
-      }
-
-    if (retainerPage) {
-    const expectedResources = Number(formData.noOfResources || 0);
-
-     for (let i = 0; i < retainerInputs.length; i++) {
-    const item = retainerInputs[i];
-
-    if (!item.name?.trim()) {
-      toast.error(`Please enter name for Resource ${i + 1}`)
-      return;
+    if (resourceList && String(resourceList).trim()) {
+      extraFields.resource_list = resourceList;
     }
 
-    if (!item.items?.toString().trim()) {
-      toast.error(`Please enter ${activity?.original_P?.product_unit? `${activity?.original_P?.product_unit} Audited` : "Number of Items Audited"} for Resource ${i + 1}`)
-      return;
-    }
+    const { tl_count, ex_count } = getResourceTypeCounts();
 
-    if (!item.resourceType?.toString().trim()) {
-      toast.error(`Please select Resource Type (TL/EX) for Resource ${i + 1}`)
-      return;
-    }
-  }
-   const enteredResourceCount = retainerInputs.filter(r => r.name?.trim() && r.items && r.resourceType?.toString().trim()).length;
-
-    if (expectedResources !== enteredResourceCount) {
-      toast.error(`Number of resources (${expectedResources}) must match entered resource names (${enteredResourceCount})`);
-      return;
-    }
-  }
-
-  const { tl_count, ex_count } = getResourceTypeCounts();
-
-  if (tl_count > 0) extraFields.tl_count = tl_count;
-  if (ex_count > 0) extraFields.ex_count = ex_count;
+    if (tl_count > 0) extraFields.tl_count = tl_count;
+    if (ex_count > 0) extraFields.ex_count = ex_count;
 
     // console.log({
     //   activityDate: activityDateToSend,
@@ -1073,6 +1096,17 @@ if (
       handleRetainerNameChange={handleRetainerChange}
       handleRetainerModalSubmit={handleRetainerModalSubmit} handleClose={() => { setIsRetainerModalOpen(false); }}
       />}
+
+      <ConfirmPopup
+        isOpen={confirmPopup.isOpen}
+        title={confirmPopup.title}
+        message={confirmPopup.message}
+        onConfirm={confirmPopup.onConfirm}
+        confirmLabel="Yes"
+        onClose={() =>
+          setConfirmPopup(prev => ({ ...prev, isOpen: false }))
+        }
+      />
     </>
   );
 };
@@ -1111,12 +1145,12 @@ const RetainerListNameModal = ({ retainerInputs, setFormData, setRetainerInputs,
           <Label>Resource {index + 1}</Label>
           <Input value={item.name} onChange={(e) => handleRetainerNameChange(index, "name", e.target.value)} placeholder="Enter retainer name" />
           <Grid2>
-          <Input type="number" value={item.items} onChange={(e) => handleRetainerNameChange(index, "items", e.target.value)} placeholder="Enter completed items" style={{ marginTop: "10px" }} />
-           <FilterSelect value={item.resourceType || ""} onChange={(e) => handleRetainerNameChange(index, "resourceType", e.target.value)}>
+            <Input type="number" value={item.items} onChange={(e) => handleRetainerNameChange(index, "items", e.target.value)} placeholder="Enter completed items" style={{ marginTop: "10px" }} />
+            <FilterSelect value={item.resourceType || ""} onChange={(e) => handleRetainerNameChange(index, "resourceType", e.target.value)}>
               <option value="" disabled hidden>Select Resource Type</option>
               <option value="TL">Team Lead</option>
               <option value="EX">Executive</option>
-          </FilterSelect>
+            </FilterSelect>
           </Grid2>
         </FormGroup>
       ))}

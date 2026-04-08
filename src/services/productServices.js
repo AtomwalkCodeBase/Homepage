@@ -56,13 +56,16 @@ export function getClaimApprover() {
 export function getemployeeList() {
   return authAxios(profileDtlURL)
 }
-export function getEmpClaim(call_type, emp_id) {
+export function getEmpClaim(call_type, emp_id, period) {
   let data = {};
   if (call_type) {
     data['call_mode'] = call_type;
   }
   if (emp_id) {
     data['emp_id'] = emp_id;
+  }
+  if (period){
+    data['period'] = period;
   }
   return authAxios(getEmpClaimdata, data)
 }
@@ -498,4 +501,8 @@ export function getInventoryItem(data) {
 export function postProcessPoRequest(res) {
   // console.log('Data to be sent:', res);
   return authAxiosPost(processPoRequest, res)
+}
+
+export function getemployeeLists(data) {
+  return authAxios(profileDtlURL, data)
 }

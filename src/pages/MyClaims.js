@@ -312,7 +312,7 @@ const MyClaims = () => {
   const [selectedClaim, setSelectedClaim] = useState(null)
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
   const [typeFilter, setTypeFilter] = useState("All Types")
-  const [timeFilter, setTimeFilter] = useState("All Time")
+  const [timeFilter, setTimeFilter] = useState("CY")
   const [filteredClaims, setFilteredClaims] = useState([])
   const [expandedClaims, setExpandedClaims] = useState(new Set())
   const { profile } = useAuth()
@@ -403,7 +403,7 @@ const MyClaims = () => {
   }
  
   const fetchClaimDetails = () => {
-    getEmpClaim("GET", empId)
+    getEmpClaim("GET", empId, timeFilter)
       .then((res) => {
         // Filter out claims with empty claim_items
         const validClaims = res.data.filter((claim) => claim.claim_items && claim.claim_items.length > 0)
@@ -415,7 +415,7 @@ const MyClaims = () => {
   }
 
   const fetchClaimDetailsofemp = () => {
-    getEmpClaim("APPROVE", empId)
+    getEmpClaim("APPROVE", empId, timeFilter)
       .then((res) => {
         if (!res.data) return;
 
@@ -466,7 +466,7 @@ const MyClaims = () => {
     if(activeTab === "empdata"){
       validApproveClaim()
     }
-  }, [isLoadings])
+  }, [isLoadings, timeFilter])
 
   useEffect(() => {
     if (claims.length > 0) {
@@ -793,11 +793,13 @@ const MyClaims = () => {
 
         <FilterContainer>
           <FilterSelect value={timeFilter} onChange={(e) => setTimeFilter(e.target.value)}>
-            <option>All Time</option>
-            <option>This Month</option>
+            <option value="CY">Current Financial Year</option>
+            <option value="LY">Upto Last Financial Year</option>
+            <option value="ALL">All Time</option>
+            {/* <option>This Month</option>
             <option>Last Month</option>
-            <option>Last 3 Months</option>
-            <option>This Year</option>
+            <option>Last 3 Months</option> */}
+
           </FilterSelect>
 
           <Button variant="outline" size="sm" onClick={handleFilter}>

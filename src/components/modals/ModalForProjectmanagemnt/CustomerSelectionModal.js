@@ -52,6 +52,7 @@ const ModalTitle = styled.h2`
   margin: 0;
   font-size: ${({ theme }) => theme.fontSizes.xl};
   font-weight: 600;
+  color: white;
 
   @media (max-width: 768px) {
     font-size: ${({ theme }) => theme.fontSizes.lg};

@@ -29,9 +29,9 @@ export const MultiSelectDropdown = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Format options to always be an array of objects { label, value }
-  const formattedOptions = options.map(opt => {
-    if (typeof opt === 'string' || typeof opt === 'number') {
+  // Format options
+  const formattedOptions = options.map((opt) => {
+    if (typeof opt === "string" || typeof opt === "number") {
       return { label: String(opt), value: opt };
     }
     return opt;
@@ -53,17 +53,25 @@ export const MultiSelectDropdown = ({
     onChange && onChange(newSelected);
   };
 
-  // Filter options by search
-  const filteredOptions = formattedOptions.filter((opt) =>
-    opt.label.toLowerCase().includes(searchValue.toLowerCase())
-  );
+  const filteredOptions = formattedOptions
+    .filter((opt) =>
+      opt.label.toLowerCase().includes(searchValue.toLowerCase())
+    )
+    .sort((a, b) => {
+      const aSelected = selectedValues.includes(a.value);
+      const bSelected = selectedValues.includes(b.value);
 
-  // Disable dropdown interaction while loading
+      if (aSelected && !bSelected) return -1;
+      if (!aSelected && bSelected) return 1;
+
+      return 0;
+    });
+
   const isDisabled = loading;
 
   return (
-    <div style={{ position: "relative", width: width }} ref={dropdownRef}>
-      {/* Field (like <select>) */}
+    <div style={{ position: "relative", width }} ref={dropdownRef}>
+      {/* Input field */}
       <div
         onClick={() => !isDisabled && setIsOpen(!isOpen)}
         style={{
@@ -73,14 +81,14 @@ export const MultiSelectDropdown = ({
           cursor: isDisabled ? "not-allowed" : "pointer",
           background: isDisabled ? "#f5f5f5" : "white",
           color: theme.colors.text,
-          opacity: isDisabled ? 0.7 : 1,
+          opacity: isDisabled ? 0.7 : 1
         }}
       >
         <span style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           {loading ? (
             loadingText
           ) : singleSelect && selectedValues.length > 0 ? (
-            formattedOptions.find(o => o.value === selectedValues[0])?.label || placeholder
+            formattedOptions.find((o) => o.value === selectedValues[0])?.label || placeholder
           ) : !singleSelect && selectedValues.length > 0 ? (
             `${selectedValues.length} item(s) selected`
           ) : (
@@ -106,7 +114,7 @@ export const MultiSelectDropdown = ({
             zIndex: 1000,
           }}
         >
-          {/* Search box */}
+          {/* Search */}
           <input
             type="text"
             placeholder={searchPlaceholder}
@@ -117,28 +125,56 @@ export const MultiSelectDropdown = ({
               padding: "0.5rem",
               border: "none",
               borderBottom: "1px solid #eee",
-              outline: "none",
+              outline: "none"
             }}
           />
 
-          {/* Options list with loading state */}
+          {/* Options */}
           <div style={{ maxHeight: "250px", overflowY: "auto", padding: "0.5rem" }}>
             {loading ? (
               <div style={{ color: "#777", textAlign: "center", padding: "1rem" }}>
                 {loadingText}
               </div>
             ) : filteredOptions.length > 0 ? (
-              filteredOptions.map((opt, index) => (
-                <label key={index} style={{ display: "block", marginBottom: "0.3rem", color: theme.colors.text, cursor: "pointer" }}>
-                  <input
-                    type={singleSelect ? "radio" : "checkbox"}
-                    checked={selectedValues.includes(opt.value)}
-                    onChange={() => handleToggle(opt.value)}
-                    style={{ marginRight: "0.5rem" }}
-                  />{" "}
-                  {opt.label}
-                </label>
-              ))
+              filteredOptions.map((opt, index) => {
+                const isSelected = selectedValues.includes(opt.value);
+
+                return singleSelect ? (
+                  <div
+                    key={index}
+                    onClick={() => handleToggle(opt.value)}
+                    style={{
+                      padding: "0.4rem 0.5rem",
+                      marginBottom: "0.3rem",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                      background: isSelected ? "#e6f0ff" : "transparent",
+                      fontWeight: isSelected ? "600" : "400",
+                      color: theme.colors.text
+                    }}
+                  >
+                    {opt.label}
+                  </div>
+                ) : (
+                  <label
+                    key={index}
+                    style={{
+                      display: "block",
+                      marginBottom: "0.3rem",
+                      color: theme.colors.text,
+                      cursor: "pointer"
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={() => handleToggle(opt.value)}
+                      style={{ marginRight: "0.5rem" }}
+                    />
+                    {opt.label}
+                  </label>
+                );
+              })
             ) : (
               <div style={{ color: "#777" }}>{noOptionsText}</div>
             )}

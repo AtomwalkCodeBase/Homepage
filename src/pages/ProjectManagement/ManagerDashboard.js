@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState, useRef } from 'react'
 import Layout from '../../components/Layout'
 import styled from 'styled-components';
 import { FiZap, FiClock, FiCheckCircle, } from 'react-icons/fi';
@@ -318,7 +318,8 @@ const ManagerDashboard = () => {
   const [activeDashboard, setActiveDashboard] = useState("MD");
   const [emp_grade, setEmp_grade] = useState("E");
   const [employees, setEmployees] = useState([])
-  const [m_employee_id, setM_Employee_id] = useState([])
+  const [intialEmployees, setInitialEmployees] = useState([])
+  const [m_employee_id, setM_Employee_id] = useState(null)
   const [loading, setLoading] = useState(true)
   const [allEmployeeAllocationData, setAllEmployeeAllocationData] = useState([]);
   const [WeeklyTimesheetSummaryData, setWeeklyTimesheetSummaryData] = useState([]);
@@ -486,12 +487,20 @@ const ManagerDashboard = () => {
     }, [])
 
   useEffect(() => {
-    setStatusFilter(null);
-    setCustomerFilter(null);
-    setEmployeeFilter(null);
-    setSearchTerm('');
     fetchEmpAllocation(currentDate.start, currentDate.end);
   }, [currentDate.start, currentDate.end, m_employee_id, activeDashboard, pathname]);
+
+  // Clear all filters when navigating to admin-dashboard
+  useEffect(() => {
+    if (pathname === "/admin-dashboard") {
+      setStatusFilter(null);
+      setCustomerFilter(null);
+      setEmployeeFilter(null);
+      setSearchTerm('');
+      setCurrentPage(1);
+      setM_Employee_id(null);
+    }
+  }, [pathname]);
 
   const fetchEmpAllocation = async (startOverride, endOverride) => {
 
@@ -499,7 +508,7 @@ const ManagerDashboard = () => {
     const end = endOverride || currentDate.end
 
     const m_payload = {
-      m_emp_id: (m_employee_id && m_employee_id.length > 0) ? m_employee_id[0] : m_emp_id,
+      m_emp_id: (m_employee_id && m_employee_id.length > 0) ? m_employee_id : m_emp_id,
       start_date: formatToDDMMYYYY(start),
       end_date: formatToDDMMYYYY(end),
     }
@@ -522,7 +531,8 @@ const ManagerDashboard = () => {
 
       const allocationData = res?.data || [];
 
-      setAllEmployeeAllocationData(allocationData)
+      setAllEmployeeAllocationData(allocationData);
+      setInitialEmployees(allocationData);
 
     } catch (error) {
       // console.error("Error fetching allocation data:", error);
@@ -539,7 +549,7 @@ const ManagerDashboard = () => {
     }
   };
 
-  const uniqueCustomers = Array.from(new Set(derivedActivities.map(a => a.customer_name).filter(Boolean))).sort();
+  const uniqueCustomers = Array.from(new Set([...derivedActivities.map(a => a.customer_name).filter(Boolean), ...(customerFilter ? [customerFilter] : [])])).sort();
 
   const employeeMap = new Map();
 
@@ -816,7 +826,7 @@ const ManagerDashboard = () => {
     } else {
       // Flat list (derived activities / filtered rows)
       data.forEach((item) => {
-        console.log("come block 2")
+        // console.log("come block 2")
         const planned = item.planned || {};
         const actualTime = item.actual || {};
         const actual = item.original_A || {};
@@ -887,7 +897,7 @@ const ManagerDashboard = () => {
 
       {pathname === "/admin-dashboard" && <TabContainer>
         {tabs2.map(t => (
-          <Tab key={t.key} active={emp_grade === t.key} onClick={() => { setEmp_grade(t.key); t.key === "R" && setCustomerSelectionModal(true) }}>
+          <Tab key={t.key} active={emp_grade === t.key} onClick={() => { setEmp_grade(t.key); t.key === "R" && setCustomerSelectionModal(false) }}>
             {t.label}
           </Tab>
         ))}
@@ -944,8 +954,9 @@ const ManagerDashboard = () => {
               {pathname !== "/admin-dashboard" && profile.grade_level >= 500 &&
                 <MultiSelectDropdown
                   options={employees.map(e => ({ label: `${e.name}(${e.emp_id})`, value: e.emp_id }))}
-                  selectedValues={m_employee_id || []}
-                  onChange={setM_Employee_id}
+                  selectedValues= {m_employee_id ? [m_employee_id] : []}
+                  // onChange={setM_Employee_id}
+                  onChange={(val) => setM_Employee_id(val.length > 0 ? val[0] : '')}
                   placeholder="All Manager"
                   searchPlaceholder="Search manager..."
                   noOptionsText="No managers found"
@@ -973,7 +984,7 @@ const ManagerDashboard = () => {
                   </DateButton>
                   </DateToggle>
                   } */}
-              <Button style={{ marginLeft: "auto" }} onClick={() => { setStatusFilter(null); setCustomerFilter(''); setEmployeeFilter(''); setSearchTerm(''); setCurrentPage(1); setM_Employee_id([]); }}><MdFilterAltOff /> Clear All</Button>
+              <Button style={{ marginLeft: "auto" }} onClick={() => { setStatusFilter(null); setCustomerFilter(null); setEmployeeFilter(null); setSearchTerm(''); setCurrentPage(1); setM_Employee_id(null); }}><MdFilterAltOff /> Clear All</Button>
 
             </div>
           </FilterSection>

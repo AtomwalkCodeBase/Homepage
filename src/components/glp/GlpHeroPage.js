@@ -17,8 +17,8 @@ const GlpHeroPage = () => {
         <link rel="canonical" href="https://home.atomwalk.com/glp.html" />
       </Helmet>
       <LetsConnect title={"Effortless compliance. Unwavering data"} description={"Enables structured study and protocol management aligned with GLP and ISO standards, ensuring compliance, traceability, and consistent research execution."} background={"#fec55cff"} lead={true} img="https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/GLP_Hero_Img-1.png" />
-      <FeatureBenifits data={"GLP"} />
       <KeyFeaturesWaste title={"GLP Unlocked for R&D, Clinical & Beyond"} description={"Unifying GLP standards to ensure data integrity from research bench to final report."}></KeyFeaturesWaste>
+      <FeatureBenifits data={"GLP"} />
       <GlpDetails />
 
     </>

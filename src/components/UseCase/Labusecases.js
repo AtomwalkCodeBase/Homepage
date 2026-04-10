@@ -15,7 +15,7 @@ export default function Labusecases() {
             title: "End-to-End Sample Lifecycle Management",
             subtitle: "From collection to final analysis and reporting.",
             mainImage: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/samplework2.png",
-            descriptionsheader: "Streamline your lab operations with comprehensive sample lifecycle management",
+            descriptionsheader: "Simplify Lab Operations with Smart Sample Managemen",
             descriptions: [
                 {
                     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/samplelife.png",
@@ -45,7 +45,7 @@ export default function Labusecases() {
             title: "Lab Operations Management",
             subtitle: "Streamline daily lab activities with centralized control and operational efficiency",
             mainImage: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/LabOperations.png",
-            descriptionsheader: "Optimize day-to-day lab operations with better visibility, coordination, and control",
+            descriptionsheader: "Optimize Lab Operations with Better Visibility & Control",
             descriptions: [
                 {
                     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/TAT2.png",
@@ -104,8 +104,8 @@ export default function Labusecases() {
             slug: "intelligent-test-batching-throughput-optimization",
             title: "Intelligent Test Batching & Lab Throughput Optimization",
             subtitle: "Optimizes test batching with real-time reporting to improve lab throughput, efficiency, and turnaround times",
-            mainImage: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Batching.png",
-            descriptionsheader: "Optimize sample processing with intelligent batching and real-time throughput insights",
+            mainImage: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/IntelligentTestBat.png",
+            descriptionsheader: "Optimize Sample Processing with Smart Batching",
             descriptions: [
                 {
                     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/priority.png",
@@ -135,7 +135,7 @@ export default function Labusecases() {
             title: "Compliance, Audit Trail & Regulatory Readiness",
             subtitle: "Ensure full compliance with complete traceability, audit transparency, and regulatory confidence",
             mainImage: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Audit.png",
-            descriptionsheader: "Maintain regulatory compliance with secure audit trails and complete operational transparency",
+            descriptionsheader: "Ensure Compliance with Secure Audit Trails",
             descriptions: [
                 {
                     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/auditrecord.png",
@@ -165,7 +165,7 @@ export default function Labusecases() {
             title: "Laboratory to Research analytics and insights",
             subtitle: "Make smarter decisions with real-time insights and predictive analytics",
             mainImage: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/LaboratorytoResear.png",
-            descriptionsheader: "Transform lab data into actionable insights for performance optimization and future planning",
+            descriptionsheader: "Turn Lab Data into Actionable Insights",
             descriptions: [
                 {
                     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/samplelife2.png",
@@ -194,8 +194,8 @@ export default function Labusecases() {
             slug: "batch-traceability-data-integrity-management",
             title: "Batch Traceability & Data Integrity Management",
             subtitle: "Ensure complete batch visibility with accurate, secure, and reliable data control",
-            mainImage: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/BatchTrace.png",
-            descriptionsheader: "Maintain full traceability and data integrity across every batch and process",
+            mainImage: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/BatchTraceabilit.png",
+            descriptionsheader: "Ensure Complete Traceability & Data Integrity",
             descriptions: [
                 {
                     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/inventory.png",
@@ -224,8 +224,8 @@ export default function Labusecases() {
             slug: "gmp-workflows-release-testing",
             title: "GMP Workflows & Release Testing",
             subtitle: "Standardize quality processes with compliant workflows and controlled release management",
-            mainImage: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/GMP.png",
-            descriptionsheader: "Ensure consistent quality and regulatory compliance with GMP-driven workflows and release control",
+            mainImage: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/GMPCompliance.png",
+            descriptionsheader: "Ensure Quality & Compliance with GMP Workflows",
             descriptions: [
                 {
                     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/samplelife.png",
@@ -256,7 +256,7 @@ export default function Labusecases() {
             title: "Study-Driven Sample Tracking & Reporting",
             subtitle: "Manage study-based samples with complete visibility and real-time sponsor reporting",
             mainImage: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Exportable.png",
-            descriptionsheader: "Streamline clinical and research workflows with study-centric tracking and transparent reporting",
+            descriptionsheader: "Streamline Research with Study-Centric Tracking",
             descriptions: [
                 {
                     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/protocal.png",
@@ -315,8 +315,8 @@ export default function Labusecases() {
             slug: "approved-vendor-lifecycle-management",
             title: "Vendor Lifecycle Management",
             subtitle: "Manages the complete vendor lifecycle from onboarding to performance monitoring, ensuring compliance, reliability, and efficient collaboration",
-            mainImage: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Vendor.png",
-            descriptionsheader: "Ensure reliable vendor management with structured workflows and lifecycle tracking.",
+            mainImage: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/VendorLifecycle.png",
+            descriptionsheader: "Ensure Reliable Vendor Management with Smart Workflows",
             descriptions: [
                 {
                     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/vendordashboard.png",
@@ -376,7 +376,7 @@ export default function Labusecases() {
             title: "Equipment Utilization & Preventive Maintenance",
             subtitle: "AW360 EMS ensures timely calibration with proactive and predictive maintenance for reliable, compliant, and uninterrupted lab operations—so unexpected breakdowns don’t slow you down, with LIMS alerts for maintenance",
             mainImage: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/EquipmentUtilizatio.png",
-            descriptionsheader: "Maximize equipment uptime and reliability with proactive maintenance and real-time utilization insights",
+            descriptionsheader: "Optimize Equipment Performance with Proactive Maintenance",
             descriptions: [
                 {
                     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/equpmentmantan.png",
@@ -406,7 +406,7 @@ export default function Labusecases() {
             title: "Equipment Calibration & Maintenance Calendar",
             subtitle: "A centralized calibration calendar designed for GLP, GMP, and CRO environments to ensure timely calibration, regulatory compliance, and audit readiness.",
             mainImage: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/maincalender.png",
-            descriptionsheader: "Ensure timely equipment calibration and maintenance with a centralized calendar for GLP, GMP, and CRO compliance",
+            descriptionsheader: "Ensure Compliance with Smart Calibration Scheduling",
             descriptions: [
                 {
                     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/calender.png",

@@ -18,10 +18,10 @@ import { MdOutlinePrecisionManufacturing, MdHealthAndSafety } from 'react-icons/
 
 const Section = styled.section`
   padding: 100px 20px;
-  background: linear-gradient(135deg, #f9f9ff 0%, #f0f2ff 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
   position: relative;
   overflow: hidden;
-  
+    
   &::before {
     content: '';
     position: absolute;
@@ -411,7 +411,7 @@ const FeatureBenefits = ({ data }) => {
   const getTitle = () => {
     switch (data) {
       case 'Solar': return 'Solar Intelligence Optimize, Control, and Grow.';
-      case 'Facility': return 'All-in-One Facility Management, Streamlined and Smarter.';
+      case 'Facility': return 'Total Facility Control, One Platform';
       case 'AI': return 'AI-Powered Insights for Smarter Operations';
       case 'GLP': return 'Get your lab in order, and your data in line';
       case 'Customer': return 'Unified CRM. One Powerful Platform';
@@ -438,7 +438,7 @@ const FeatureBenefits = ({ data }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          {getTitle().split(',')[0]}, <span>{getTitle().split(',')[1]}</span>
+          {getTitle().split(',')[0]} <span>{getTitle().split(',')[1]}</span>
         </Title>
 
         <Subtitle

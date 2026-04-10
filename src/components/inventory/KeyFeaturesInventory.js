@@ -111,10 +111,10 @@ const KeyFeaturesInventory = () => {
       <MainTitle>
         Key Modules of Atomwalk Inventory Management
       </MainTitle>
-      <Subtitle>
+      {/* <Subtitle>
         Atomwalk Office is more than just an ERP; it’s a comprehensive solution that streamlines and optimizes your entire inventory.
         Our platform offers:
-      </Subtitle>
+      </Subtitle> */}
       <FeaturesContainer>
         <FeatureBox onClick={() => handelNvigation('inventoryop.html')}>
           <IconContainer bgColor="#D8F5E3">

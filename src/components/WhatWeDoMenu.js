@@ -332,7 +332,6 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
         {
             id: 1,
             name: "Atomwalk AW360™ Lab Management",
-            icon: "🔬",
             link: "https://home.atomwalk.com/lms.html",
             industries: [
                 { name: "Pharmaceutical QC & R&D Labs", },
@@ -368,7 +367,7 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
         {
             id: 2,
             name: "Atomwalk Office CRM",
-            icon: "🔬",
+
             link: "https://home.atomwalk.com/crm.html",
             industries: [
                 { name: "Manufacturing" },
@@ -395,7 +394,7 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
         {
             id: 3,
             name: "Atomwalk HRMS",
-            icon: "🔬",
+
             link: "https://home.atomwalk.com/hrm.html",
             industries: [
                 { name: "Manufacturing Workforce Management" },
@@ -425,7 +424,7 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
         {
             id: 4,
             name: "Atomwalk ERP — Manufacturing & Process Industries",
-            icon: "🔬",
+
             link: "https://home.atomwalk.com/product.html",
             industries: [
                 { name: "Pharma Manufacturing" },
@@ -450,30 +449,30 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
                 { name: "Dispatch & Delivery Monitoring", link: "https://home.atomwalk.com/activityreport.html" }
             ]
         },
-        {
-            id: 5,
-            name: "Atomwalk ERP — Seafood Industry",
-            icon: "🔬",
-            link: "https://home.atomwalk.com/product.html",
-            industries: [
-                { name: "Seafood & Fish Processing Plants" },
-                { name: "Shrimp & Aquaculture Processing" },
-                { name: "Frozen Food Manufacturing" },
-                { name: "Marine Export Processing Units" },
-                { name: "Cold Chain & Seafood Distribution" },
-                { name: "Ready-to-Cook Seafood Production" }
-            ],
-            useCases: [
-                { name: "Catch-Based Production Planning", },
-                { name: "Yield Variance & Wastage Control", },
-                { name: "Cold Storage & Shelf-Life Optimization", },
-                { name: "Export Batch Traceability", },
-                { name: "Multi-Stage Processing Workflow Tracking", },
-                { name: "Demand-Driven Production Scheduling", },
-                { name: "Container & Dispatch Planning", },
-                { name: "Quality & Certification Compliance", }
-            ]
-        },
+        // {
+        //     id: 5,
+        //     name: "Atomwalk ERP — Seafood Industry",
+
+        //     link: "https://home.atomwalk.com/product.html",
+        //     industries: [
+        //         { name: "Seafood & Fish Processing Plants" },
+        //         { name: "Shrimp & Aquaculture Processing" },
+        //         { name: "Frozen Food Manufacturing" },
+        //         { name: "Marine Export Processing Units" },
+        //         { name: "Cold Chain & Seafood Distribution" },
+        //         { name: "Ready-to-Cook Seafood Production" }
+        //     ],
+        //     useCases: [
+        //         { name: "Catch-Based Production Planning", },
+        //         { name: "Yield Variance & Wastage Control", },
+        //         { name: "Cold Storage & Shelf-Life Optimization", },
+        //         { name: "Export Batch Traceability", },
+        //         { name: "Multi-Stage Processing Workflow Tracking", },
+        //         { name: "Demand-Driven Production Scheduling", },
+        //         { name: "Container & Dispatch Planning", },
+        //         { name: "Quality & Certification Compliance", }
+        //     ]
+        // },
         {
             id: 6,
             name: "Atomwalk ERP — Facility & Waste Operations Platform",
@@ -692,7 +691,7 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
                                     onMouseEnter={() => handleProductHover(product)}
                                 >
                                     <ProductTitle>
-                                        <span className="icon">{product.icon}</span>
+                                        {/* <span className="icon">{product.icon}</span> */}
                                         {product.name}
                                     </ProductTitle>
                                     <ProductLink

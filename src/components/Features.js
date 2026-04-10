@@ -117,21 +117,21 @@ const CardDescription = styled.p`
 const contentData = [
   {
     type: "BLOG",
-    title: "Revolutionizing Research with Atomwalk",
+    title: "Reimagining Research Efficiency with Lab Management Systems",
     description: "Transform labs with automation, compliance, real-time tracking",
     link: "https://home.atomwalk.com/Blog.html/EHotZtZe69QIVF4Lbstn",
     image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800&q=70"
   },
   {
     type: "BLOG",
-    title: "Rise of AI Agents",
+    title: "AI at Work: The Emergence of Virtual Employees",
     description: "AI collaborators improving productivity and decision-making",
     link: "https://home.atomwalk.com/Blog.html/Fc33QjobXeXTCNY1N0lO",
     image: "https://sathkenya.com/wp-content/uploads/2025/04/blog-banner.png"
   },
   {
     type: "BLOG",
-    title: "IoT Meets ERP Ecosystems",
+    title: "Unified Intelligence: Integrating IoT with ERP Systems",
     description: "Connect systems for smarter operations and real-time insights",
     link: "https://home.atomwalk.com/Blog.html/kZdSnlWH89YNh4y2oyjD",
     image: "https://media.licdn.com/dms/image/v2/D4D12AQGhM_nrorcVbw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1666070608292?e=2147483647&v=beta&t=RO-W52emOOVw9DidFifT-Ed5iEFsBL2gf6bN8AXT568"
@@ -172,7 +172,7 @@ const LatestThinking = () => {
       <Header>
         <Title>Latest Thinking</Title>
         <Description>
-          Perspectives and research on how AI-driven enterprise platforms are transforming operations across industries from manufacturing and research laboratories to customer facing systems.
+          Perspectives and research on how AI-driven enterprise platforms are transforming operations across industries from manufacturing and research laboratories to customer systems.
         </Description>
       </Header>
 

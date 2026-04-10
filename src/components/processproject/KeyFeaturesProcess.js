@@ -106,9 +106,6 @@ const KeyFeaturesProcess = () => {
       <MainTitle>
         Key Modules of Atomwalk Process & Project Management
       </MainTitle>
-      <Subtitle>
-        Atomwalk Office is more than just an ERP; it’s a comprehensive solution that streamlines and optimizes your entire process and project management. Our platform offers:
-      </Subtitle>
       <FeaturesContainer>
         <FeatureBox onClick={() => handelNvigation('process.html')}>
           <IconContainer bgColor="#D8F5E3">

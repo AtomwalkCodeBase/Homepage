@@ -48,7 +48,7 @@ const HomePage = () => {
         <link rel="canonical" href="https://atomwalk.com/" />
       </Helmet>
       {showsuccess && <Success message="We have successfully recorded your information."></Success>}
-      {/* <HeroSection /> */}
+      <HeroSection />
       <TechMahindraSection />
       <RocketSteps></RocketSteps>
       <Features></Features>

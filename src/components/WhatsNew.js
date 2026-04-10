@@ -5,7 +5,7 @@ import styled from "styled-components";
 const data = [
   {
     id: 1,
-    tag: "News | January 11, 2026",
+    tag: "Lab | January 11, 2026",
     title: "Smarter Instrument Maintenance for Modern Laboratories",
     desc: "Moving beyond fixed schedules to intelligent, risk-based equipment management.",
     img: "https://www.chitkara.edu.in/blogs/wp-content/uploads/2024/08/Laboratory-Science.jpg", // lab equipment / maintenance
@@ -13,21 +13,21 @@ const data = [
 
   {
     id: 2,
-    tag: "Press Release | January 29, 2026",
+    tag: " Seafood | January 29, 2026",
     title: "Digitizing Seafood Operations with End-to-End ERP",
     desc: "Bringing traceability, quality control, and operational efficiency into a unified seafood management platform.",
     img: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=800&q=70", // seafood industry
   },
   {
     id: 3,
-    tag: "News | February 01, 2026",
+    tag: "HMS | February 01, 2026",
     title: "Intelligent Healthcare Operations with Smart HMS",
     desc: "Enhancing patient care and hospital efficiency through connected, AI-enabled workflows.",
     img: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=70", // healthcare / hospital
   },
   {
     id: 4,
-    tag: "News | February 04, 2026",
+    tag: "Lab | March 04, 2026",
     title: "Instant Report Drafting for Laboratories",
     desc: "Streamlining the reporting process with AI-powered tools.",
     img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=70", // analytics / reports / dashboard

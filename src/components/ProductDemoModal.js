@@ -66,7 +66,7 @@ const ImageContainer = styled.div`
 // Title styling
 const Title = styled.h2`
   font-size: 2.1em;
-  color:#ea5c49;
+  color:#e41c39;
   margin-bottom: 10px;
   font-weight: 800;
   line-height: 1.25;
@@ -91,7 +91,7 @@ const Input = styled.input`
 const Button = styled.button`
   width: 100%;
   padding: 10px;
-  background-color: #ea5c49;
+  background-color: #e41c39;
   color: white;
   border: none;
   border-radius: 20px;
@@ -120,13 +120,13 @@ const CloseButton = styled.button`
   }
 `;
 
-const ProductDemoModal = ({ isOpen, onRequestClose,setShowsuccess }) => {
+const ProductDemoModal = ({ isOpen, onRequestClose, setShowsuccess }) => {
   let currentDate = new Date();
-let day = ("0" + currentDate.getDate()).slice(-2);  // Get current day
-let month = ("0" + (currentDate.getMonth() + 1)).slice(-2);  // Get current month
-let year = currentDate.getFullYear();
-// Format as DD-MM-YYYY
-let formattedDate = `${day}-${month}-${year}`;
+  let day = ("0" + currentDate.getDate()).slice(-2);  // Get current day
+  let month = ("0" + (currentDate.getMonth() + 1)).slice(-2);  // Get current month
+  let year = currentDate.getFullYear();
+  // Format as DD-MM-YYYY
+  let formattedDate = `${day}-${month}-${year}`;
   const formInitialDetails = {
     name: "",
     company_name: "",
@@ -136,46 +136,46 @@ let formattedDate = `${day}-${month}-${year}`;
     add_task: "N",
     task_type: "Book My Demo",
     task_date: formattedDate,
-    remarks:"Book My Demo"
-}
-const [formDetails, setFormDetails] = useState(formInitialDetails);
-const onFormUpdate = (category, value) => {
-  setFormDetails({
-    ...formDetails,
-    [category]: value
-  })
-}
-const endpoint = 'https://www.atomwalk.com/api';
-const addLead =(e)=> {
- e.preventDefault();
- return authAxiosPost(`https://www.atomwalk.com/api/add_lead/PMA_00001/`,{ 'lead_data':formDetails});
-}
-const authAxiosPost = async (url, data) => {
- try {
-   let token = localStorage.getItem('apiResponse');
-   let parsedToken = JSON.parse(token);
-   if (!token) {
-     throw new Error('Token not found, please login.');
-   }
-   const axiosInstance = axios.create({
-     baseURL: endpoint,
-     headers: {
-       Authorization: `Token ${parsedToken.key}`,
-     },
-   });
-   const response = await axiosInstance.post(url, data);
-   if (response.status === 200) {
-     setShowsuccess(true);
-     localStorage.setItem('datacheck',true);
-     setFormDetails(formInitialDetails);
-     onRequestClose()
-    
-   }
- } catch (error) {
-   console.log('Error making authenticated API call:', error);
-   setFormDetails(formInitialDetails);
- }
-};
+    remarks: "Book My Demo"
+  }
+  const [formDetails, setFormDetails] = useState(formInitialDetails);
+  const onFormUpdate = (category, value) => {
+    setFormDetails({
+      ...formDetails,
+      [category]: value
+    })
+  }
+  const endpoint = 'https://www.atomwalk.com/api';
+  const addLead = (e) => {
+    e.preventDefault();
+    return authAxiosPost(`https://www.atomwalk.com/api/add_lead/PMA_00001/`, { 'lead_data': formDetails });
+  }
+  const authAxiosPost = async (url, data) => {
+    try {
+      let token = localStorage.getItem('apiResponse');
+      let parsedToken = JSON.parse(token);
+      if (!token) {
+        throw new Error('Token not found, please login.');
+      }
+      const axiosInstance = axios.create({
+        baseURL: endpoint,
+        headers: {
+          Authorization: `Token ${parsedToken.key}`,
+        },
+      });
+      const response = await axiosInstance.post(url, data);
+      if (response.status === 200) {
+        setShowsuccess(true);
+        localStorage.setItem('datacheck', true);
+        setFormDetails(formInitialDetails);
+        onRequestClose()
+
+      }
+    } catch (error) {
+      console.log('Error making authenticated API call:', error);
+      setFormDetails(formInitialDetails);
+    }
+  };
   return (
     <Modal
       isOpen={isOpen}

@@ -359,7 +359,7 @@ const data = [
     name: "Shalini Srivastava",
     role: "Founder, Vizion Beyond",
     image:
-      "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/salini.png",
+      "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/salinisri.png",
     video:
       "https://youtu.be/c63g5G_aMT8?si=S_BHRN8RWEWSzRy6",
   },
@@ -383,10 +383,10 @@ const data = [
   },
   {
     title: "Purpose in Practice: Leadership driving data success",
-    name: "Helen Mets",
-    role: "CEO, Ahlstrom",
+    name: "Dr. Prashanthi K",
+    role: "Associate Professor,Ramaiah University of Applied Sciences",
     image:
-      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&h=600&fit=crop",
+      "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Prashanthi.png",
     video:
       "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/website-vedio/purpose.mp4",
   },

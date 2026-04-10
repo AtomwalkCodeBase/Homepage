@@ -149,245 +149,276 @@ const TextSection = styled.div`
 `;
 
 
-const ProcessFeatures = ({data}) => {
+const ProcessFeatures = ({ data }) => {
   const isClaim = data;
-    const getFeatureContent = (feature) => (
-      <Features>
-        {feature.imgPosition === 'left' ? (
-          <>
-            <ImageSection>
-              <img src={feature.imageSrc} alt={feature.imageAlt} />
-            </ImageSection>
-            <TextSection>
-              <h1>{feature.title}</h1>
-              <h2>{feature.subtitle}</h2>
-              <p style={{color:"#666"}}>{feature.description}</p>
-              <BenefitsContainer>
-                {/* <p>Key Benefits</p> */}
-                <ul>
-                  {feature.benefits.map((benefit, index) => (
-                    <li key={index}>
-                      <img src={CheckMark} alt="Check mark" />
-                      <span>{benefit}</span>
-                    </li>
-                  ))}
-                </ul>
-              </BenefitsContainer>
-            </TextSection>
-          </>
-        ) : (
-          <>
-            <TextSection>
-              <h1>{feature.title}</h1>
-              <h2>{feature.subtitle}</h2>
-              <p style={{color:"#666"}}>{feature.description}</p>
-              <BenefitsContainer>
-                {/* <p>Key Benefits</p> */}
-                <ul>
-                  {feature.benefits.map((benefit, index) => (
-                    <li key={index}>
-                      <img src={CheckMark} alt="Check mark" />
-                      <span>{benefit}</span>
-                    </li>
-                  ))}
-                </ul>
-              </BenefitsContainer>
-            </TextSection>
-            <ImageSection>
-              <img src={feature.imageSrc} alt={feature.imageAlt} />
-            </ImageSection>
-          </>
-        )}
-      </Features>
-    );
-  
-    const features = isClaim ==='process'
-      ?[
-        {
-          title: 'Product Management with Category Setup',
-          subtitle: 'Organize Products for Better Process Integration',
-          description:
-            `Atomwalk makes managing product categories effortless, ensuring that every product is aligned with your business's financial and operational needs. This structured categorization ensures seamless product segregation for streamlined operations. Atomwalk ensures you’re ready for seamless operations and compliance.`,
-          benefits: ['Segregate products effectively for better management', 'It Helps to filter the product.'],
-          imageSrc: img1,  // Replace with your relevant image variable
-          imageAlt: 'Product Category',
-          imgPosition: 'right',
-        },
-        {
-          title: 'Comprehensive Inventory Management with Atomwalk',
-          subtitle: 'Structured Setup and Categorization for Smarter Control',
-          description:
-            `Atomwalk enables precise inventory management, ensuring every item is categorized to align with your business’s operational needs. Begin with the Inventory Item Category Setup to establish structured categorization. Organize inventory location-wise and efficiently handle multiple inventories. With Atomwalk, you can create and manage inventory items by filling in detailed information and linking them category-wise. Atomwalk ensures you’re ready for seamless operations and compliance.`,
-          benefits: ['Establish structured categories for inventory items.', 'Organize inventory by specific locations.', 'Multiple Inventory Management, Create and organize inventory items with complete details.','Associate items with categories for better tracking.'],
-          imageSrc: img2,  // Replace with your relevant image variable
-          imageAlt: 'Inventory Setup',
-          imgPosition: 'left',
-        },
-        {
-          title: 'Robust Equipment Management with Atomwalk',
-          subtitle: 'Streamlined Equipment Setup and Usage Tracking',
-          description:
-            `Atomwalk equips administrators to manage multiple equipment with precision. Navigate to the 'Equipment Setup' under 'Office Setup' to add and configure equipment as needed. By entering details like equipment type, usage unit, booking schedules, and cost data, Atomwalk ensures efficient load management and accurate tracking. This structured approach aligns your equipment utilization with operational needs while ensuring seamless integration into your workflows.`,
-          benefits: ['Able to manage multiple equipment, Add equipment with detailed configurations, including type and usage parameters.', 'Define schedules with booking times, slots, and restrictions.', 'Automatically track and manage equipment load efficiently.'],
-          imageSrc: img3,  // Replace with your relevant image variable
-          imageAlt: 'Equipment Setup',
-          imgPosition: 'right',
-        },
-        {
-            title: 'Manage Document Setup and Configuration',
-            subtitle: 'Capture Output Documents for Manufacturing Process',
-            description:
-              'Atomwalk’s document configuration feature empowers admins to tailor reports and documentation according to the manufacturing industry specific requirements. Detailed reports based on equipment output results can be stored in the form of documents. The system supports real-time data visualization, making it easier to analyze experiment results and make informed decisions.',
-            benefits: ['Customizable document setup', 'Real-time data visualization'],
-            imageSrc: img4,  // Replace with your relevant image variable
-            imageAlt: 'Document Setup',
-            imgPosition: 'left',
-          },
-          {
-            title: 'Comprehensive Management for Activity Essentials',
-            subtitle: 'Integrate items, equipment, and resources effortlessly into activities.',
-            description:
-              'Atomwalk enables organizations to create, customize, and manage process activities with precision and flexibility. Configure activity specifics like categories, types, and user groups, ensuring seamless alignment with existing workflows. Features like planned durations, open-ended activities, and visual customizations empower businesses to enhance workflow clarity and efficiency. Atomwalk also simplifies resource allocation by allowing users to add required items, link equipment with precise work durations, and manage critical details such as documents, reviews, and costs. With customizable fields and robust tools, Atomwalk ensures every activity is defined, equipped, and executed efficiently, driving operational success.'
-              ,benefits: ['Add items from inventory or create new ones to align with activity needs.', 'Select or add equipment, with options to book it for specific durations.', 'Add custom fields to activities based on unique requirements.','Manage documents, reviews, and cost details for each activity.','Ensure equipment availability with defined work durations.'],
-            imageSrc: img5,  // Replace with your relevant image variable
-            imageAlt: 'Activity Creation',
-            imgPosition: 'right',
-          }, 
-          {
-            title: 'Optimize Manufacturing Processes with Activity-Based Templates',
-            subtitle: 'Create, Manage, and Analyze for efficient process execution.',
-            description:
-              'Easily create a sequence of activities for projects in the manufacturing industry with our intuitive process management system. Define processes by filling essential details, add activities with customizable fields like planned duration and allocation percentage, and manage dependencies. Gain insights through an interactive Gantt chart, track item details (BOM, WIP materials, and output), and evaluate efficiency with detailed cost analysis, including equipment requirements.',
-            benefits: ['Define process details: name, category, ID, type, manufacturing, sale price, description.', 'Add activities: duration (planned days), allocation %, dependencies.','Link dependent activities for seamless workflow management.','View Activity Gantt Chart and dependency graphs.',' Monitor BOM, WIP materials, and output details with images and costs.','Analyze equipment requirements and associated costs.','Evaluate process and activity efficiency.'],
-            imageSrc: img6,  // Replace with your relevant image variable
-            imageAlt: 'Creation of Process',
-            imgPosition: 'left',
-          },
-          
-      ]:isClaim ==='project'?[
-        {
-          title: 'Efficient Work Order Management Made Simple',
-          subtitle: 'Streamline project creation and link seamlessly with sales orders.',
-          description:
-            `Atomwalk enables businesses to create projects seamlessly after confirming sales orders, ensuring smooth transition into work orders. Users can generate detailed projects by linking them to specific sales orders, ensuring all relevant details auto-populate while offering flexibility for customization. From assigning a project manager to selecting a suitable project setup template, Atomwalk simplifies the workflow, making project creation both efficient and adaptable.`,
-          benefits: ['Unique codes ensure streamlined tracking.',
-                      "Auto-populates order items and templates linked to sales orders",
-                      "Edit fields like project title, revenue, start date, and description as needed.",
-                      "Automatically suggests templates, with options for customization.",     ],
-          imageSrc: img7,  // Replace with relevant image variable for campaign management
-          imageAlt: 'Project/Work Order Creation',
-          imgPosition: 'right',
-        },
-        {
-          title: 'Empower Your Projects with Advanced Activity Management',
-          subtitle: 'Customizable, collaborative, and detailed project activity tracking.',
-          description:
-            `Atomwalk empowers project teams with seamless activity tracking and inventory management. Once the project manager starts a project, allocated users receive job cards with detailed activity instructions and work order references. The structured job card minimizes data input errors, ensuring accuracy. Users can begin activities by clicking the 'Start Project' button in their 'Project Activities' list, with dependencies automatically validated. As activities progress, users can update in-process and output inventory details, track activity completion metrics, and finalize tasks with remarks. Atomwalk also allows the allocation and reallocation of inventory items, with provisions to return unused items, helping businesses reduce waste and optimize inventory tracking.`,
-          benefits: ["Activities reflect for assigned users after project initiation.",
-                     "Access detailed job cards with work order references and structured fields for updates.",
-                     "Activities can only start once dependent tasks are completed.",
-                    " Update in-process and output inventory details during project execution.",
-                    "Allocate, reallocate, or return unused items to prevent losses and ensure efficient inventory usage.",
-                    "Updated details reflect on the final job card for streamlined reporting."
-                ],
-          imageSrc: img8,  // Replace with relevant image variable for campaign execution
-          imageAlt: 'User Activity Management',
-          imgPosition: 'left',
-        },
-        {
-          title: 'Streamlined Project Management Tailored for Manufacturing',
-          subtitle: 'Efficient Activity Coordination and Resource Tracking',
-          description:
-            `Atomwalk provides manufacturing-focused project management, integrating activity planning, dependency setup, and resource tracking. Activities auto-populate from process templates, with options to add or customize tasks and dependencies using a Gantt Chart view. Users can manage project inventory, equipment requirements, and critical documents essential for execution. The cost analysis module offers insights into activity costs, inventory expenses, and equipment usage, with detailed revenue and margin tracking. Atomwalk ensures precise planning, resource optimization, and improved project efficiency for manufacturing operations.`,
-          benefits: ['Auto-populated tasks with dependency and sub-activity options.', ' Visualize and manage critical and other paths for streamlined workflows.', 'Manage inventory, equipment, and required documents effectively.','Track activity costs, equipment usage, and project margins.','Tools designed for the specific demands of manufacturing projects.'],
-          imageSrc: img9,  // Replace with relevant image variable for campaign execution
-          imageAlt: 'Project Management',
-          imgPosition: 'right',
-        }               
-         
-        ]:isClaim ==='activityreport'?[
-          {
+  const getFeatureContent = (feature) => (
+    <Features>
+      {feature.imgPosition === 'left' ? (
+        <>
+          <ImageSection>
+            <img src={feature.imageSrc} alt={feature.imageAlt} />
+          </ImageSection>
+          <TextSection>
+            <h1>{feature.title}</h1>
+            <h2>{feature.subtitle}</h2>
+            <p style={{ color: "#666" }}>{feature.description}</p>
+            <BenefitsContainer>
+              {/* <p>Key Benefits</p> */}
+              <ul>
+                {feature.benefits.map((benefit, index) => (
+                  <li key={index}>
+                    <img src={CheckMark} alt="Check mark" />
+                    <span>{benefit}</span>
+                  </li>
+                ))}
+              </ul>
+            </BenefitsContainer>
+          </TextSection>
+        </>
+      ) : (
+        <>
+          <TextSection>
+            <h1>{feature.title}</h1>
+            <h2>{feature.subtitle}</h2>
+            <p style={{ color: "#666" }}>{feature.description}</p>
+            <BenefitsContainer>
+              {/* <p>Key Benefits</p> */}
+              <ul>
+                {feature.benefits.map((benefit, index) => (
+                  <li key={index}>
+                    <img src={CheckMark} alt="Check mark" />
+                    <span>{benefit}</span>
+                  </li>
+                ))}
+              </ul>
+            </BenefitsContainer>
+          </TextSection>
+          <ImageSection>
+            <img src={feature.imageSrc} alt={feature.imageAlt} />
+          </ImageSection>
+        </>
+      )}
+    </Features>
+  );
 
-            title: 'Activity Dashboards for Efficient Manufacturing Projects',
-            subtitle: 'Track Activities and Ensure Operational Precision',
-            description:
-              'Atomwalk’s Activity Dashboard helps manufacturing teams efficiently track and manage tasks. Users can view assigned activities, track progress, and address overdue or pending tasks. Key metrics include overdue activities, upcoming deadlines, and completed milestones, with dynamic filters for quick sorting by date, type, or status. Designed to optimize workflows, the dashboard provides real-time access to activity details, ensuring seamless task execution and improved project efficiency in manufacturing operations.',
-            benefits: ['Track personal activities, including ongoing, overdue, and completed tasks.', 'Access critical data like deadlines and completion statuses.', ' Access detailed project overviews, including overdue and future activities.','Sort activities by date, type, status, or assigned user for customized tracking.','Monitor progress, identify delays, and optimize task management.',' Use dashboard insights to allocate resources effectively and meet deadlines.'],
-            imageSrc: img10,  // Replace with relevant image variable for campaign execution
-            imageAlt: 'User Activity Dashboard',
-            imgPosition: 'right',
-          },
-          {
-            title: `Optimize Profitability with Atomwalk's Project Margin Dashboard`,
-            subtitle: 'Customizable, collaborative, and detailed project activity tracking.',
-            description:
-              `Atomwalk’s Project Margin Dashboard provides manufacturing teams with a clear comparison of planned vs. actual margins through graphical views. Users can review project lists with details like assigned managers, project status, and margins. The dashboard also enables quick access to critical data, including project revenue, cost breakdowns, activity dependencies, inventory, and equipment requirements, ensuring better margin control and operational efficiency.`,
-            benefits: ["Visualize planned vs. actual margins for each project.",
-                       "Review assigned managers, project status, and key metrics.",
-                       "Access revenue and cost breakdowns for users, items, and equipment.",
-                      " Tools tailored for profit tracking and resource efficiency.",
-                      "Dynamic Filter & Sorting of List."
-                  ],
-            imageSrc: img11,  // Replace with relevant image variable for campaign execution
-            imageAlt: 'Project Dashboard',
-            imgPosition: 'left',
-          },
-          {
-            title: `Optimize Resource Allocation with Atomwalk's Utilization Dashboard`,
-            subtitle: 'Track Effort Utilization for Better Resource Planning',
-            description:
-              `Atomwalk’s Resource Utilization Dashboard provides a clear view of planned vs. actual effort utilization through dynamic graphical insights. Manufacturing teams can analyze month-wise utilization, compare planned and actual capacities, and filter data by manager, project, user, or date. The dashboard also offers detailed User Effort Utilization Data to monitor resource-specific performance, ensuring effective allocation and efficient workload distribution across projects.`,
-            benefits: ['Graphical view of planned vs. actual resource usage.', ' Sort by manager, project, user, or date for precise insights.', 'Analyze planned and actual monthly effort capacities.','Monitor individual user effort utilization.','Tools to enhance resource efficiency and project alignment.'],
-            imageSrc: img12,  // Replace with relevant image variable for campaign execution
-            imageAlt: 'Resource Utilisation',
-            imgPosition: 'right',
-          }  
-        ]:[
-          {
+  const features = isClaim === 'process'
+    ? [
+      {
+        title: "Product Category Management",
+        subtitle: "Organize Products with Ease",
+        description:
+          "Structure product categories to align operations and improve filtering and control.",
+        benefits: [
+          "Better product segmentation",
+          "Easy product filtering",
+          "Improved process alignment"
+        ],
+        imageSrc: img1,
+        imageAlt: "Product Category",
+        imgPosition: "right",
+      },
+      {
+        title: "Smart Inventory Management",
+        subtitle: "Structured Setup for Control",
+        description:
+          "Manage inventory with categorized items, location tracking, and centralized control.",
+        benefits: [
+          "Structured item categories",
+          "Location-based tracking",
+          "Centralized inventory control"
+        ],
+        imageSrc: img2,
+        imageAlt: "Inventory Setup",
+        imgPosition: "left",
+      },
+      {
+        title: "Equipment Management",
+        subtitle: "Track Usage and Availability",
+        description:
+          "Configure and manage equipment with scheduling, usage tracking, and load optimization.",
+        benefits: [
+          "Multi-equipment management",
+          "Schedule and booking control",
+          "Efficient load tracking"
+        ],
+        imageSrc: img3,
+        imageAlt: "Equipment Setup",
+        imgPosition: "right",
+      },
+      {
+        title: "Document Configuration",
+        subtitle: "Customize Reports with Ease",
+        description:
+          "Create and manage documents with real-time data insights for better decision-making.",
+        benefits: [
+          "Custom document setup",
+          "Real-time data insights",
+          "Improved reporting"
+        ],
+        imageSrc: img4,
+        imageAlt: "Document Setup",
+        imgPosition: "left",
+      },
+      {
+        title: "Activity Management",
+        subtitle: "Plan and Execute Efficiently",
+        description:
+          "Manage activities with resource allocation, equipment linking, and workflow customization.",
+        benefits: [
+          "Resource and item allocation",
+          "Equipment integration",
+          "Custom workflow setup"
+        ],
+        imageSrc: img5,
+        imageAlt: "Activity Creation",
+        imgPosition: "right",
+      },
+      {
+        title: "Process Optimization",
+        subtitle: "Streamline Manufacturing Workflows",
+        description:
+          "Create and manage processes with activity tracking, dependencies, and cost insights.",
+        benefits: [
+          "Define and track processes",
+          "Manage activity dependencies",
+          "Analyze costs and efficiency"
+        ],
+        imageSrc: img6,
+        imageAlt: "Creation of Process",
+        imgPosition: "left",
+      }
+    ] : isClaim === 'project' ? [
+      {
+        title: "Smart Work Order Management",
+        subtitle: "From Sales to Execution",
+        description:
+          "Create projects directly from sales orders with auto-filled details and flexible customization.",
+        benefits: [
+          "Auto-linked sales orders",
+          "Quick project setup",
+          "Flexible customization"
+        ],
+        imageSrc: img7,
+        imageAlt: "Project/Work Order Creation",
+        imgPosition: "right",
+      },
+      {
+        title: "Advanced Activity Tracking",
+        subtitle: "Execute with Precision",
+        description:
+          "Manage activities with structured job cards, dependency tracking, and real-time inventory updates.",
+        benefits: [
+          "Structured job cards",
+          "Dependency-based execution",
+          "Real-time inventory tracking"
+        ],
+        imageSrc: img8,
+        imageAlt: "User Activity Management",
+        imgPosition: "left",
+      },
+      {
+        title: "Manufacturing Project Management",
+        subtitle: "Plan, Track, Optimize",
+        description:
+          "Streamline projects with activity planning, resource tracking, and cost analysis for better efficiency.",
+        benefits: [
+          "Auto task & dependency setup",
+          "Resource and inventory tracking",
+          "Cost and margin insights"
+        ],
+        imageSrc: img9,
+        imageAlt: "Project Management",
+        imgPosition: "right",
+      }
+    ] : isClaim === 'activityreport' ? [
+      {
+        title: "Activity Dashboard",
+        subtitle: "Track Tasks with Clarity",
+        description:
+          "Monitor activities, deadlines, and progress in real-time to keep projects on track and efficient.",
+        benefits: [
+          "Track ongoing & overdue tasks",
+          "Real-time activity insights",
+          "Smart filtering & sorting"
+        ],
+        imageSrc: img10,
+        imageAlt: "User Activity Dashboard",
+        imgPosition: "right",
+      },
+      {
+        title: "Project Margin Dashboard",
+        subtitle: "Maximize Profitability",
+        description:
+          "Compare planned vs actual margins with detailed cost and revenue insights for better decisions.",
+        benefits: [
+          "Margin comparison insights",
+          "Revenue & cost breakdown",
+          "Better profit control"
+        ],
+        imageSrc: img11,
+        imageAlt: "Project Dashboard",
+        imgPosition: "left",
+      },
+      {
+        title: "Resource Utilization Dashboard",
+        subtitle: "Optimize Resource Planning",
+        description:
+          "Analyze planned vs actual resource usage with detailed insights for efficient workload management.",
+        benefits: [
+          "Planned vs actual utilization",
+          "User-level performance tracking",
+          "Improved resource allocation"
+        ],
+        imageSrc: img12,
+        imageAlt: "Resource Utilisation",
+        imgPosition: "right",
+      }
+    ] : [
+      {
 
-            title: 'Activity Dashboards for Efficient Manufacturing Projects',
-            subtitle: 'Track Activities and Ensure Operational Precision',
-            description:
-              'Atomwalk’s Activity Dashboard helps manufacturing teams efficiently track and manage tasks. Users can view assigned activities, track progress, and address overdue or pending tasks. Key metrics include overdue activities, upcoming deadlines, and completed milestones, with dynamic filters for quick sorting by date, type, or status. Designed to optimize workflows, the dashboard provides real-time access to activity details, ensuring seamless task execution and improved project efficiency in manufacturing operations.',
-            benefits: ['Track personal activities, including ongoing, overdue, and completed tasks.', 'Access critical data like deadlines and completion statuses.', ' Access detailed project overviews, including overdue and future activities.','Sort activities by date, type, status, or assigned user for customized tracking.','Monitor progress, identify delays, and optimize task management.',' Use dashboard insights to allocate resources effectively and meet deadlines.'],
-            imageSrc: img10,  // Replace with relevant image variable for campaign execution
-            imageAlt: 'User Activity Dashboard',
-            imgPosition: 'right',
-          },];
-     
-      const location = useLocation(); // Get the current URL
-      useEffect(() => {
-        // Get the query string (e.g., "?5")
-        const queryString = location.search;
-      
-        // Extract the step manually if no key exists
-        const stepMatch = queryString.match(/\?(\d+)/);
-        const step = stepMatch ? parseInt(stepMatch[1], 10) : NaN;
-      
-        // Define base scroll offset values for each claim type
-        const scrollOffsetMap = {
-          process: 780,
-          project: 800,
-          activityreport: 870,
-        };
-      
-        // Get the base offset value based on isClaim
-        const baseScrollOffset = scrollOffsetMap[isClaim] || 0;
-      
-        // Calculate scroll offset
-        const scrollOffset = !isNaN(step) ? baseScrollOffset + (step - 1) * baseScrollOffset : 0;
-      
-        // Scroll the page
-        if (scrollOffset > 0) {
-          window.scrollTo({
-            top: scrollOffset,
-            behavior: "smooth",
-          });
-        }
-      }, [location.search, isClaim]); // Re-run when URL query changes
+        title: 'Activity Dashboards for Efficient Manufacturing Projects',
+        subtitle: 'Track Activities and Ensure Operational Precision',
+        description:
+          'Atomwalk’s Activity Dashboard helps manufacturing teams efficiently track and manage tasks. Users can view assigned activities, track progress, and address overdue or pending tasks. Key metrics include overdue activities, upcoming deadlines, and completed milestones, with dynamic filters for quick sorting by date, type, or status. Designed to optimize workflows, the dashboard provides real-time access to activity details, ensuring seamless task execution and improved project efficiency in manufacturing operations.',
+        benefits: ['Track personal activities, including ongoing, overdue, and completed tasks.', 'Access critical data like deadlines and completion statuses.', ' Access detailed project overviews, including overdue and future activities.', 'Sort activities by date, type, status, or assigned user for customized tracking.', 'Monitor progress, identify delays, and optimize task management.', ' Use dashboard insights to allocate resources effectively and meet deadlines.'],
+        imageSrc: img10,  // Replace with relevant image variable for campaign execution
+        imageAlt: 'User Activity Dashboard',
+        imgPosition: 'right',
+      },];
+
+  const location = useLocation(); // Get the current URL
+  useEffect(() => {
+    // Get the query string (e.g., "?5")
+    const queryString = location.search;
+
+    // Extract the step manually if no key exists
+    const stepMatch = queryString.match(/\?(\d+)/);
+    const step = stepMatch ? parseInt(stepMatch[1], 10) : NaN;
+
+    // Define base scroll offset values for each claim type
+    const scrollOffsetMap = {
+      process: 780,
+      project: 800,
+      activityreport: 870,
+    };
+
+    // Get the base offset value based on isClaim
+    const baseScrollOffset = scrollOffsetMap[isClaim] || 0;
+
+    // Calculate scroll offset
+    const scrollOffset = !isNaN(step) ? baseScrollOffset + (step - 1) * baseScrollOffset : 0;
+
+    // Scroll the page
+    if (scrollOffset > 0) {
+      window.scrollTo({
+        top: scrollOffset,
+        behavior: "smooth",
+      });
+    }
+  }, [location.search, isClaim]); // Re-run when URL query changes
 
 
-    return <Container>{features.map(getFeatureContent)}</Container>
+  return <Container>{features.map(getFeatureContent)}</Container>
 }
 
 export default ProcessFeatures

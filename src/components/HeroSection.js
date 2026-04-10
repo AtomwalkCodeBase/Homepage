@@ -608,6 +608,26 @@ function Scene5() {
   );
 }
 
+// function Scene6() {
+
+//   return (
+//     <>
+//       <Particles />
+//       <video
+//         width="100%"
+//         height="auto"
+//         autoPlay
+//         muted
+//         loop
+
+//       >
+//         <source src="https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/website-vedio/atomwalklanding.mp4" type="video/mp4" />
+//       </video>
+//       <LogoTagline style={{ marginTop: '24px' }}>Watch Our Innovation</LogoTagline>
+//     </>
+//   );
+// }
+
 function Scene6() {
   return (
     <>
@@ -617,6 +637,7 @@ function Scene6() {
     </>
   );
 }
+
 function Scene7() {
   return (
     <>

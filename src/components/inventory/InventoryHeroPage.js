@@ -13,11 +13,15 @@ const InventoryHeroPage = () => {
 
   return (
     <>
-       <LetsConnect title={"Inventory Management"} description={"Streamline your workflows, track progress, and ensure seamless project execution with Atomwalk’s comprehensive work order and project management solution. Optimize your team’s performance, manage resources, and stay on top of deadlines with complete visibility."} background={"#9DF9F0"} lead={true} img={TagImg}></LetsConnect>
+      <LetsConnect
+        title={"Smart Inventory Management"}
+        description={"Track stock, optimize workflows, and gain real-time visibility to keep operations smooth and efficient."}
+        background={"#9DF9F0"}
+        lead={true}
+        img={TagImg}
+      />
+      <KeyFeaturesInventory />
       <FeatureBenifits data={"Inventory"} />
-      <KeyFeaturesInventory/>
-      
-
       <NewFAQSection data={"Inventory"} />
     </>
   );

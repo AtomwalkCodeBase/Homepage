@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Rocket from '../assets/img/rocket4.png';
+import Rocket from '../assets/img/rocket6.png';
 const Container = styled.section`
   position: relative;
   min-height: 600px;
@@ -105,6 +105,7 @@ const Image = styled.img`
   width: 100%;
   /* height: 100%; */
   object-fit: cover;
+  padding: 60px;
 `;
 
 /* LOGO */

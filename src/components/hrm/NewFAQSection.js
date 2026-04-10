@@ -8,7 +8,7 @@ const Container = styled.div`
   align-items: center;
   padding: 20px;
   width: 100%;
-  background-color: aliceblue;
+  background-color: #ffffff;
 
   @media (min-width: 768px) {
     padding: 40px 20px;
@@ -18,7 +18,7 @@ const Container = styled.div`
 const Heading = styled.h1`
   font-size: 1.8rem;
   font-weight: bold;
-  color: #663399;
+  color: #454545;
   margin-bottom: 40px;
 
   @media (min-width: 768px) {
@@ -33,7 +33,7 @@ const FAQList = styled.div`
 
 const Category = styled.div`
   margin-bottom: 15px;
-  background-color: #f8f5ff;
+  background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -44,7 +44,7 @@ const CategoryHeader = styled.div`
   font-size: 1.2rem;
   font-weight: bold;
   color: #fff;
-  background-color: #7b1fa2;
+  background-color: #e41c39;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -52,7 +52,7 @@ const CategoryHeader = styled.div`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color:rgb(140, 64, 172);
+    background-color: #87081b;
   }
 
   span {
@@ -82,11 +82,11 @@ const QuestionHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  background-color: #eae3ff;
+  background-color: #ffffff;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #ddd1ff;
+    background-color: #fad9d9;
   }
 
   span {
@@ -138,7 +138,7 @@ const CTAText = styled.p`
 
 const CTAButton = styled.a`
   padding: 10px 20px;
-  background-color: #663399;
+  background-color: #e41c39;
   color: white;
   cursor: pointer;
   border-radius: 6px;
@@ -147,7 +147,7 @@ const CTAButton = styled.a`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #552288;
+    background-color: #87081b;
   }
 `;
 

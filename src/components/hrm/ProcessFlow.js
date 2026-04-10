@@ -306,7 +306,11 @@ export const ProcessFlow = ({ data, bgcolors }) => {
       { step: 'Safety Stock Report', color: '#4A90E2' },
       { step: 'Stock Aging Report ', color: '#4A90E2' },
     ],
-
+    ManagerPerformance: [
+      { step: 'Set Performance Targets', color: '#4A90E2' },
+      { step: 'Track Team Performance', color: '#4A90E2' },
+      { step: 'Generate Performance Reports', color: '#4A90E2' },
+    ],
   };
 
   const processSteps = flows[data] || flows["Work Order"] || flows["Project Management"] || flows["Report & Dashboard"] || flows["Inventory Operation"] || [];

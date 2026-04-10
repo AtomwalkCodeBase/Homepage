@@ -13,9 +13,9 @@ const HerosectionCrm = () => {
         <meta name="keywords" content="All-in-One CRM Software, Smart Sales & Customer CRM, CRM with AMC management, CRM with channel partner management, Affordable CRM software India, Business operations CRM, Custom CRM solution" />
         <link rel="canonical" href="https://home.atomwalk.com/crm.html" />
       </Helmet>
-      <LetsConnect title={"Comprehensive CRM platform"} description={"Atomwalk CRM is a comprehensive Customer Relationship Management (CRM) system that streamlines and manages various business operations, focusing on lead, customer, and channel partner management. Atomwalk also supports critical business functionalities like AMC management, campaign management, sales manager performance dashboard and task management."} background={"#d6e7ff"} crm={true}></LetsConnect>
-      <FeatureBenifits data={'Customer'}></FeatureBenifits>
+      <LetsConnect title={"Comprehensive CRM platform"} description={"Smart CRM for Lead & Client Management Atomwalk CRM streamlines lead tracking, client engagement, and opportunity management in a unified platform, enabling teams to close deals faster with complete visibility and control"} background={"#d6e7ff"} crm={true}></LetsConnect>
       <KeyFeatureCrm></KeyFeatureCrm>
+      <FeatureBenifits data={'Customer'}></FeatureBenifits>
       <NewFAQSection data={"CRM"}></NewFAQSection>
     </div>
   )

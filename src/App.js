@@ -115,6 +115,9 @@ import { HelmetProvider } from 'react-helmet-async';
 import SampleDashboard from "./pages/LabUser/SampleDashboard";
 import ExpenseTrackingScreen from "./pages/ProjectManagement/ExpenseTrackingScreen";
 import ManagerDashboard from "./pages/ProjectManagement/ManagerDashboard";
+import NewsDetail from "./components/NewsDetail";
+import Labusecases from "./components/UseCase/Labusecases";
+import Facilityusecase from "./components/UseCase/Facilityusecase";
 // import SupervisorDashboard from "./pages/fishIndurstry/SupervisorDashboard";
 // import MyAppriaisal from "./pages/MyAppriaisal";
 
@@ -156,6 +159,8 @@ function App() {
               <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<HomePage />} />
+                <Route path="/labusecase" element={<Labusecases />} />
+                <Route path="/facilityusecase" element={<Facilityusecase />} />
                 <Route path="/Product.html" element={<Product />} />
                 <Route path="/contactUs.html" element={<ContactUs />} />
                 <Route path="/aboutUs.html" element={<AbotUs />} />
@@ -170,6 +175,7 @@ function App() {
                 <Route path="/privacy-policy.html" element={<PrivacyPolicy />} />
                 <Route path="/disclaimer.html" element={<Disclaimer />} />
                 <Route path="/faq.html" element={<Commonfnadq />} />
+                <Route path="/news" element={<NewsDetail />} />
                 {/* Domain Specific Routes */}
                 <Route path="/crm.html" element={<HerosectionCrm />} />
                 <Route path="/lms.html" element={<LmsHeroSection />} />
@@ -188,6 +194,7 @@ function App() {
                 <Route path="/Channelpartner.html" element={<LeadManagement />} />
                 <Route path="/aMCTracking.html" element={<LeadManagement />} />
                 <Route path="/campaignManagement.html" element={<LeadManagement />} />
+                <Route path="/managerPerformanceDashboard.html" element={<LeadManagement />} />
                 <Route path="/userManagement.html" element={<LmsSytem />} />
                 <Route path="/equipmentManagement.html" element={<LmsSytem />} />
                 <Route path="/equipmentMaintenance.html" element={<LmsSytem />} />

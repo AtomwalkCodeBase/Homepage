@@ -27,37 +27,24 @@ const gradientShift = keyframes`
 const Section = styled.section`
   text-align: center;
   padding: 50px 20px;
-  background-color:#eaf4ff;
+  background: linear-gradient(to bottom, #F0FCFF, #FFFFFF);
   overflow: hidden;
 `;
 
 
 
 const SectionTitle = styled.h2`
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: 800;
   text-align: center;
   margin-bottom: 60px;
-  background: linear-gradient(270deg, #1f2937, #ea580c, #1f2937, #ea580c);
+  background: #454545;
   background-size: 300% 300%;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: ${gradientShift} 8s ease infinite;
   position: relative;
-  
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 4px;
-    background: linear-gradient(to right, #1f2937, #ea580c);
-    border-radius: 2px;
-  }
-  
   @media (max-width: 768px) {
     font-size: 2.5rem;
     margin-bottom: 40px;

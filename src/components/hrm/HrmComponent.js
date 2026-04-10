@@ -34,8 +34,8 @@ const HrmComponent = () => {
         <LetsConnect title={"Streamline Your Workforce with Atomwalk HRM On-The-Go"} description={"Manage the entire employee lifecycle from onboarding to exit, anytime-anywhere. Atomwalk HRM encompasses various functions like recruitment, performance management, payroll, exit process, and compliances. Access our powerful HRM features on the web or through our mobile app for convenient leave, claims, attendance, and holiday management. We help to maximize employee performance and their contribute to achieving organizational goals."} background={"#eae3ff"} lead={true} img={HRMHeadBG}></LetsConnect>
         {/* </Header> */}
       </Page>
-      <FeatureBenifits data={`HR`} />
       <KeyFeatureHrm />
+      <FeatureBenifits data={`HR`} />
       <HRMAccessMedium userRole="Employee" />
 
       <NewFAQSection data={`HR`} />

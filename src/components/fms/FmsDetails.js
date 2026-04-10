@@ -523,7 +523,7 @@ const FmsDetails = () => {
         <ConclusionSection>
           <ConclusionTitle>Transforming Facilities with Smart ERP </ConclusionTitle>
           <ConclusionText>
-          Atomwalk Facility ERP addresses operational inefficiencies with intelligent workflows and automation, empowering teams to do more with less.
+            Atomwalk Facility ERP addresses operational inefficiencies with intelligent workflows and automation, empowering teams to do more with less.
           </ConclusionText>
           <ConclusionList>
             <ConclusionItem><strong>Efficient Task Scheduling:</strong> Automate preventive routines and technician dispatch</ConclusionItem>

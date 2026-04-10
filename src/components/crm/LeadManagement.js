@@ -80,6 +80,19 @@ const LeadManagement = () => {
       description: "Efficiently manage, update, and view Annual Maintenance Contracts with Atomwalk CRM.",
       background: "#d6e7ff",
       img: AMC
+    },
+    {
+      path: "managerPerformanceDashboard",
+      heding: "Manager Performance Dashboard",
+      title: "Manager Performance Dashboard | Atomwalk Technologies",
+      metaDescription: "Track and analyze team performance with real-time insights using Atomwalk CRM.",
+      keywords: "manager performance dashboard, team performance tracking, CRM analytics dashboard",
+      canonical: "https://home.atomwalk.com/managerPerformanceDashboard.html",
+      pageTitle: "Manager Performance Dashboard",
+      titles: "ManagerPerformance",
+      description: "Monitor, analyze, and optimize team performance with a comprehensive manager dashboard in Atomwalk CRM.",
+      background: "#e6f7f1",
+      img: "https://cdni.iconscout.com/illustration/premium/thumb/business-analysis-data-reporting-dashboard-management-performance-illustration-svg-download-png-14025242.png"
     }
   ];
 
@@ -97,6 +110,12 @@ const LeadManagement = () => {
     }
     else if (location.pathname.includes('aMCTracking')) {
       setShowData('aMCTracking')
+    }
+    else if (location.pathname.includes('aMCTracking')) {
+      setShowData('aMCTracking')
+    }
+    else if (location.pathname.includes('managerPerformanceDashboard')) {
+      setShowData('managerPerformanceDashboard')
     }
     else {
       setShowData('campaignManagement')

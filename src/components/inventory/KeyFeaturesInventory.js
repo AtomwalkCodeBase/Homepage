@@ -100,43 +100,43 @@ const FeatureDescription = styled.p`
 `;
 
 const KeyFeaturesInventory = () => {
-  
-  const[openpop,setopenpop]=useState(false);
 
-  const handelNvigation=(data)=>{
-    window.location.href=`/${data}`
+  const [openpop, setopenpop] = useState(false);
+
+  const handelNvigation = (data) => {
+    window.location.href = `/${data}`
   }
   return (
     <SectionContainer>
-    <MainTitle>
-    Key Features
-    </MainTitle>
-    <Subtitle>
-    Atomwalk Office is more than just an ERP; it’s a comprehensive solution that streamlines and optimizes your entire inventory. 
-    Our platform offers:
-    </Subtitle>
-    <FeaturesContainer>
-      <FeatureBox onClick={()=>handelNvigation('inventoryop.html')}> 
-        <IconContainer bgColor="#D8F5E3">
-          <img src={Compliance} alt="Process" />
-        </IconContainer>
-        <FeatureTitle>Inventory Operation:</FeatureTitle>
-        <FeatureDescription>
-        Streamline workflows with customizable process templates for consistent and efficient project execution.
-        </FeatureDescription>
-      </FeatureBox>
-      <FeatureBox 
-      // onClick={()=>handelNvigation('warehouse.html')}
-        onClick={()=>{setopenpop(!openpop)}}>
-        <IconContainer bgColor="#F0E7FF">
-          <img src={Proj} alt="Project"/>
-        </IconContainer>
-        <FeatureTitle>Warehouse Management:</FeatureTitle>
-        <FeatureDescription>
-        Efficiently plan, track, and manage projects with real-time progress monitoring, task allocation, and performance insights.
-        </FeatureDescription>
-      </FeatureBox>
-      {/* <FeatureBox onClick={()=>handelNvigation('useractivities.html')}>
+      <MainTitle>
+        Key Modules of Atomwalk Inventory Management
+      </MainTitle>
+      <Subtitle>
+        Atomwalk Office is more than just an ERP; it’s a comprehensive solution that streamlines and optimizes your entire inventory.
+        Our platform offers:
+      </Subtitle>
+      <FeaturesContainer>
+        <FeatureBox onClick={() => handelNvigation('inventoryop.html')}>
+          <IconContainer bgColor="#D8F5E3">
+            <img src={Compliance} alt="Process" />
+          </IconContainer>
+          <FeatureTitle>Inventory Operation:</FeatureTitle>
+          <FeatureDescription>
+            Streamline workflows with customizable process templates for consistent and efficient project execution.
+          </FeatureDescription>
+        </FeatureBox>
+        <FeatureBox
+          // onClick={()=>handelNvigation('warehouse.html')}
+          onClick={() => { setopenpop(!openpop) }}>
+          <IconContainer bgColor="#F0E7FF">
+            <img src={Proj} alt="Project" />
+          </IconContainer>
+          <FeatureTitle>Warehouse Management:</FeatureTitle>
+          <FeatureDescription>
+            Efficiently plan, track, and manage projects with real-time progress monitoring, task allocation, and performance insights.
+          </FeatureDescription>
+        </FeatureBox>
+        {/* <FeatureBox onClick={()=>handelNvigation('useractivities.html')}>
         <IconContainer bgColor="#F0E7FF">
           <img src={UserA} alt="User Activities"/>
         </IconContainer>
@@ -145,20 +145,20 @@ const KeyFeaturesInventory = () => {
         Track and manage user activities, assign tasks, monitor progress, and ensure alignment with organizational goals for better efficiency.
         </FeatureDescription>
       </FeatureBox> */}
-      <FeatureBox onClick={()=>handelNvigation('inventoryreport.html')}>
-        <IconContainer bgColor="#F0E7FF">
-          <img src={Report} alt="Activity Report"/>
-        </IconContainer>
-        <FeatureTitle>Report & Dashboard:</FeatureTitle>
-        <FeatureDescription>
-        Gain actionable insights with comprehensive reports and interactive dashboards, enabling data-driven decision-making and performance tracking.
-        </FeatureDescription>
-      </FeatureBox>
-      
-    </FeaturesContainer>
-    
-    <UnderConstructionPopup visible={openpop} setvisible={setopenpop}></UnderConstructionPopup>
-  </SectionContainer>
+        <FeatureBox onClick={() => handelNvigation('inventoryreport.html')}>
+          <IconContainer bgColor="#F0E7FF">
+            <img src={Report} alt="Activity Report" />
+          </IconContainer>
+          <FeatureTitle>Report & Dashboard:</FeatureTitle>
+          <FeatureDescription>
+            Gain actionable insights with comprehensive reports and interactive dashboards, enabling data-driven decision-making and performance tracking.
+          </FeatureDescription>
+        </FeatureBox>
+
+      </FeaturesContainer>
+
+      <UnderConstructionPopup visible={openpop} setvisible={setopenpop}></UnderConstructionPopup>
+    </SectionContainer>
   )
 }
 

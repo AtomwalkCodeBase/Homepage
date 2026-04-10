@@ -99,62 +99,62 @@ const FeatureDescription = styled.p`
 `;
 
 const KeyFeatureSales = () => {
-  
-  const[openpop,setopenpop]=useState(false);
-  const handelNvigation=(data)=>{
-    window.location.href=`/${data}`
+
+  const [openpop, setopenpop] = useState(false);
+  const handelNvigation = (data) => {
+    window.location.href = `/${data}`
   }
   return (
     <SectionContainer>
-    <MainTitle>
-    Key Features of Sales and Procurement
-    </MainTitle>
-    <Subtitle>
-    Atomwalk Office is more than just an ERP; it’s a comprehensive solution that automates and 
-    optimizes your entire business operation. Our platform offers:
-    </Subtitle>
-    <FeaturesContainer>
-      <FeatureBox onClick={()=>handelNvigation('saleslifecycle.html')}> 
-        <IconContainer bgColor="#D8F5E3">
-          <img src={Compliance} alt="Speed" />
-        </IconContainer>
-        <FeatureTitle>Empowering Every Step of Your Sales Journey</FeatureTitle>
-        <FeatureDescription>
-        Streamline and optimize your sales process with tools that manage everything from lead generation to order fulfillment, ensuring a smooth and efficient sales journey.
-        </FeatureDescription>
-      </FeatureBox>
-      <FeatureBox onClick={()=>handelNvigation('procurement.html')}>
-        <IconContainer bgColor="#F0E7FF">
-          <img src={Excellence} alt="Trust"/>
-        </IconContainer>
-        <FeatureTitle>Optimizing Every Stage of Your Procurement Process</FeatureTitle>
-        <FeatureDescription>
-        Streamline and automate your procurement workflow, from purchase orders to inventory management, ensuring efficiency, accuracy, and cost savings at every step.
-        </FeatureDescription>
-      </FeatureBox>
-      <FeatureBox onClick={()=>handelNvigation('compliance.html')}>
-        <IconContainer bgColor="#E0F7FC">
-          <img src={Grow} alt="Accuracy" />
-        </IconContainer>
-        <FeatureTitle>Ensuring Accuracy and Confidence in Every Compliance Step</FeatureTitle>
-        <FeatureDescription>
-        Streamline compliance management with precise tracking, automated updates, and real-time monitoring, ensuring complete accuracy and adherence to regulations at every stage.
-        </FeatureDescription>
-      </FeatureBox>
-      <FeatureBox 
-      // onClick={()=>handelNvigation('salesreport.html')}
-        onClick={()=>{setopenpop(!openpop)}}>
-        <IconContainer bgColor="#FFF2E0">
-          <img src={Payroll} alt="Reliability" />
-        </IconContainer>
-        <FeatureTitle>Sales Report & Dashboard</FeatureTitle>
-        <FeatureDescription>
-        Track and analyze sales performance with detailed reports and dynamic dashboards, helping you monitor revenue, trends, and key metrics at a glance.</FeatureDescription>
-      </FeatureBox>
-    </FeaturesContainer>
-    
-    <UnderConstructionPopup visible={openpop} setvisible={setopenpop}></UnderConstructionPopup>
-  </SectionContainer>
+      <MainTitle>
+        Key Modules of Sales and Procurement
+      </MainTitle>
+      <Subtitle>
+        Atomwalk Office is more than just an ERP; it’s a comprehensive solution that automates and
+        optimizes your entire business operation. Our platform offers:
+      </Subtitle>
+      <FeaturesContainer>
+        <FeatureBox onClick={() => handelNvigation('saleslifecycle.html')}>
+          <IconContainer bgColor="#D8F5E3">
+            <img src={Compliance} alt="Speed" />
+          </IconContainer>
+          <FeatureTitle>Empowering Every Step of Your Sales Journey</FeatureTitle>
+          <FeatureDescription>
+            Streamline and optimize your sales process with tools that manage everything from lead generation to order fulfillment, ensuring a smooth and efficient sales journey.
+          </FeatureDescription>
+        </FeatureBox>
+        <FeatureBox onClick={() => handelNvigation('procurement.html')}>
+          <IconContainer bgColor="#F0E7FF">
+            <img src={Excellence} alt="Trust" />
+          </IconContainer>
+          <FeatureTitle>Optimizing Every Stage of Your Procurement Process</FeatureTitle>
+          <FeatureDescription>
+            Streamline and automate your procurement workflow, from purchase orders to inventory management, ensuring efficiency, accuracy, and cost savings at every step.
+          </FeatureDescription>
+        </FeatureBox>
+        <FeatureBox onClick={() => handelNvigation('compliance.html')}>
+          <IconContainer bgColor="#E0F7FC">
+            <img src={Grow} alt="Accuracy" />
+          </IconContainer>
+          <FeatureTitle>Ensuring Accuracy and Confidence in Every Compliance Step</FeatureTitle>
+          <FeatureDescription>
+            Streamline compliance management with precise tracking, automated updates, and real-time monitoring, ensuring complete accuracy and adherence to regulations at every stage.
+          </FeatureDescription>
+        </FeatureBox>
+        <FeatureBox
+          // onClick={()=>handelNvigation('salesreport.html')}
+          onClick={() => { setopenpop(!openpop) }}>
+          <IconContainer bgColor="#FFF2E0">
+            <img src={Payroll} alt="Reliability" />
+          </IconContainer>
+          <FeatureTitle>Sales Report & Dashboard</FeatureTitle>
+          <FeatureDescription>
+            Track and analyze sales performance with detailed reports and dynamic dashboards, helping you monitor revenue, trends, and key metrics at a glance.</FeatureDescription>
+        </FeatureBox>
+      </FeaturesContainer>
+
+      <UnderConstructionPopup visible={openpop} setvisible={setopenpop}></UnderConstructionPopup>
+    </SectionContainer>
   )
 }
 

@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { Skills } from './Skills'
+import TechMahindraSection, { Skills } from './Skills'
 import Features from './Features'
-import { Contact } from './Contact'
 import Testimonial from './Testimonial'
 import ProductDemoModal from './ProductDemoModal'
 import Success from './SuccessBanner'
 import CustomerLogos from './CustomerLogos'
 import HeroSection from './HeroSection'
-import Askme from './loginpage/Askme'
-import PatentAndPublications from './PatentAndPublications'
+import Contact from './Contact'
 import { Helmet } from 'react-helmet-async';
+import WhatsNew from './WhatsNew'
+import AppsHero from './AppsHero'
+import CTASection from './CTASection'
+import RocketSteps from './RocketSteps'
+import CustomerStoriesVideo from './CustomerStoriesVideo'
+import ProcessFlowmap from './ProcessFlowmap'
 const HomePage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [showsuccess, setShowsuccess] = useState(false);
-  const [openslide, setOpenslide] = useState(false);
   const token = localStorage.getItem('datacheck');
   const openModal = () => {
     setModalIsOpen(true);
@@ -45,15 +48,20 @@ const HomePage = () => {
         <link rel="canonical" href="https://atomwalk.com/" />
       </Helmet>
       {showsuccess && <Success message="We have successfully recorded your information."></Success>}
-      <HeroSection />
-      <Skills></Skills>
+      {/* <HeroSection /> */}
+      <TechMahindraSection />
+      <RocketSteps></RocketSteps>
       <Features></Features>
-      <PatentAndPublications pageType="HOME_PAGE" />
-      <Testimonial></Testimonial>
+      <WhatsNew></WhatsNew>
+      <CTASection></CTASection>
+      <ProcessFlowmap />
+      <CustomerStoriesVideo></CustomerStoriesVideo>
       <CustomerLogos />
-      <Contact setShowsuccess={setShowsuccess}></Contact>
+      <Testimonial></Testimonial>
+
+      <AppsHero></AppsHero>
+      <Contact></Contact>
       <ProductDemoModal isOpen={modalIsOpen} onRequestClose={closeModal} setShowsuccess={setShowsuccess} />
-      {openslide && <Askme setOpenslide={setOpenslide} />}
     </div>
   )
 }

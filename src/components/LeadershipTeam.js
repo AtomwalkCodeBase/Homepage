@@ -1,6 +1,6 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import styled, { keyframes, css } from 'styled-components';
-import Team from './../assets/img/TemIcon.jpg';
+import Team from './../assets/img/manoj.png';
 import Lipika from './../assets/img/Lipika.JPG';
 import Sk from './../assets/img/Sk.svg';
 import Jaganath from './../assets/img/sk2.svg';
@@ -418,7 +418,7 @@ const ReadMoreButton = styled.button`
   bottom: -24px;
   background: transparent;
   border: none;
-  color: #ea580c;
+  color: #e41c39;
   font-weight: 600;
   cursor: pointer;
   padding: 0;
@@ -600,21 +600,27 @@ const LeadershipAdvisors = () => {
         "Dr. Sahoo’s strategic vision and expertise have been instrumental in shaping Atomwalk’s growth, enabling the company to effectively support deep-tech innovators in protecting and commercializing their intellectual property."
       ],
       linkedin: null,
-      isExecutive: true
+      isExecutive: true,
+      linkedin: "https://www.linkedin.com/in/dr-lipika-sahoo-atomwalk/",
     },
     {
       id: 4,
       name: "Mr. SK Patnaik",
       role: "Business, Product and Sales Strategy",
-      image: `${Sk}`,
-      shortDesc: "SK Patnaik is a seasoned business strategist with over 25 years of experience in product innovation, revenue growth, and business management.",
+      image: Sk,
+      shortDesc: "SK Patnaik is a seasoned business strategist with over 25years of experience in sales & market entry strategy, revenue growth, product innovation, and business management.",
       fullDesc: [
-        "SK holds an MBA in Marketing and Systems from the Xavier Institute of Management, Bhubaneswar, India. His diverse career has spanned across global markets, including the US, UK, South-East Asia, and India, where he has held key leadership roles within the IT Services industry, successfully setting up and scaling new business divisions.",
-        "At Infosys, he played a pivotal role in establishing operations for the Manufacturing Vertical across Asia-Pacific and India, driving the adoption of Digital & Cloud technologies, IoT, Smart Manufacturing, Automation, and AI among several Fortune 500 clients. His extensive experience in ERP systems, including SAP and Oracle, as well as platforms like Salesforce and other SaaS solutions, has enabled him to lead transformative initiatives across industries. Patnaik is also the co-founder of a deep-tech telecom start-up.",
-        "SK’s strategic vision is integral to shaping Atomwalk’s business, product, and sales strategy, driving sustainable growth."
+        "SK holds an MBA in Marketing and Systems from the Xavier Institute of Management, Bhubaneswar.",
+
+        "His diverse career has spanned global markets – the US, UK, Europe, South-East Asia, and India, holding key leadership roles in the IT Services industry, while successfully setting-up and scaling new business divisions.",
+
+        "At Infosys, he played a pivotal role in establishing the operations for Manufacturing Vertical in Asia-Pacific and India regions, driving early-stage adoption of solutions around emerging technologies in IoT, Smart Manufacturing, Automation & AI, Digital & Cloud for several Fortune 500 Clients. He has extensive experiences in ERP systems like SAP, Oracle as well as Platforms like Salesforce and other SaaS solutions.",
+
+        "SK joined Atomwalk’s Board in 2021 after his foray into start-ups co-founding one into deep-tech Wireless products. At Atomwalk, his strategic vision is integral to shaping the business, product, and sales strategy - driving sustainable growth."
       ],
       linkedin: null,
-      isExecutive: true
+      isExecutive: true,
+      linkedin: "https://www.linkedin.com/in/sk-patnaik-/",
     },
     {
       id: 5,
@@ -628,7 +634,8 @@ const LeadershipAdvisors = () => {
         "Dr. Manohar’s leadership in advancing innovations and technological assessment positions her to effectively lead product and technology strategy in the power and renewable energy sector."
       ],
       linkedin: null,
-      isExecutive: true
+      isExecutive: true,
+      linkedin: "https://www.linkedin.com/in/dr-premila-manohar-a1824a284/?skipRedirect=true"
     },
     {
       id: 6,
@@ -667,7 +674,7 @@ const LeadershipAdvisors = () => {
         <BackgroundElement />
         <BackgroundElement />
         <BackgroundElement />
-        
+
         {/* Floating Particles */}
         {particles.map((particle) => (
           <Particle
@@ -678,7 +685,7 @@ const LeadershipAdvisors = () => {
             duration={particle.duration}
           />
         ))}
-        
+
         {/* Sparkle Effects */}
         {sparkles.map((sparkle) => (
           <SparkleEffect
@@ -706,7 +713,7 @@ const LeadershipAdvisors = () => {
             {executiveMembers.map((member, index) => {
               const isExpanded = expandedDescriptions[member.id];
               const hasMultipleParagraphs = member.fullDesc.length > 1;
-              
+
               return (
                 <MemberContainer key={member.id} index={index}>
                   <ImageContainer>
@@ -719,38 +726,38 @@ const LeadershipAdvisors = () => {
                     </MemberRole>
                     <ShortDescription>{member.shortDesc}</ShortDescription>
                     <DescriptionContainer>
-                    <FullDescription isExpanded={isExpanded}>
-                      {isExpanded ? (
-                        member.fullDesc.map((paragraph, i) => (
-                          <p key={i}>{paragraph}</p>
-                        ))
-                      ) : (
-                        <p>{member.fullDesc[0]}</p>
+                      <FullDescription isExpanded={isExpanded}>
+                        {isExpanded ? (
+                          member.fullDesc.map((paragraph, i) => (
+                            <p key={i}>{paragraph}</p>
+                          ))
+                        ) : (
+                          <p>{member.fullDesc[0]}</p>
+                        )}
+                      </FullDescription>
+
+                      {hasMultipleParagraphs && (
+                        <ReadMoreButton onClick={() => toggleDescription(member.id)}>
+                          {isExpanded ? 'Read Less' : 'Read More'}
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            {isExpanded ? (
+                              <path d="M18 15l-6-6-6 6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            ) : (
+                              <path d="M6 9l6 6 6-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            )}
+                          </svg>
+                        </ReadMoreButton>
                       )}
-                    </FullDescription>
-                    
-                    {hasMultipleParagraphs && (
-                      <ReadMoreButton onClick={() => toggleDescription(member.id)}>
-                        {isExpanded ? 'Read Less' : 'Read More'}
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                          {isExpanded ? (
-                            <path d="M18 15l-6-6-6 6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                          ) : (
-                            <path d="M6 9l6 6 6-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                          )}
-                        </svg>
-                      </ReadMoreButton>
-                    )}
-                  </DescriptionContainer>
-                    
+                    </DescriptionContainer>
+
                     {member.linkedin && (
-                      <LinkedInButton 
-                        href={member.linkedin} 
-                        target="_blank" 
+                      <LinkedInButton
+                        href={member.linkedin}
+                        target="_blank"
                         rel="noopener noreferrer"
                       >
                         <LinkedInIcon viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z"/>
+                          <path fillRule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z" />
                         </LinkedInIcon>
                         View LinkedIn Profile
                       </LinkedInButton>

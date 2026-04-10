@@ -109,6 +109,12 @@ nav.navbar {
 
   }
 }
+nav.navbar.notscrolled {
+  padding: 0px 0;
+  border: 1px solid #1a050520;
+  background: #ffffff;
+  border-radius: 2px;
+}
 
 nav.navbar.scrolled {
   padding: 0px 0;
@@ -186,7 +192,7 @@ span.navbar-text {
 }
 .navbar-text button {
   font-weight: 700;
-  color: rgb(30, 36, 63);
+  color: rgb(255, 255, 255);
   border: 1px solid rgb(30, 36, 63);
   padding: 6px 34px;
   font-size: 18px;
@@ -587,7 +593,6 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 /************ Footer Css ************/
 .footer {
   padding: 0 0 50px 0;
-  background-image: url('./assets/img/footer-bg.png');
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -686,7 +691,7 @@ body {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 20px;
 }

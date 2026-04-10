@@ -13,11 +13,10 @@ const AbotUs = () => {
       <AboutUsBanner></AboutUsBanner>
       <BelieveComponent></BelieveComponent>
       <PurposeComponent></PurposeComponent>
-      <OurValues></OurValues>
-      <AdvantageSection/>
+      <AdvantageSection />
       <LeadershipTeam></LeadershipTeam>
-      <AdvisoryBoard/>
-      <PatentAndPublications/>
+      <AdvisoryBoard />
+      <PatentAndPublications />
     </div>
   )
 }

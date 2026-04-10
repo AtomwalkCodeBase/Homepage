@@ -1,149 +1,193 @@
-import styled from 'styled-components';
-import LetsConnect from './LetsConnect';
+import styled from "styled-components";
+import { FiMail, FiPhone, FiMapPin } from "react-icons/fi";
 import ContactCards from './ContactCards';
 import ContactCard from './ContactCard';
+import ContactHero from './ContactHero';
+import PatentAndPublications from "./PatentAndPublications";
 
-const ContactSection = styled.section`
+const Section = styled.section`
+  padding: 100px 20px;
+  background: #f6f2ea
+`;
+
+const Wrapper = styled.div`
+  max-width: 1100px;
+  margin: auto;
+  display: grid;
+  gap: 40px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+`;
+
+const Left = styled.div``;
+
+const Title = styled.h2`
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 15px;
+`;
+
+const Description = styled.p`
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 25px;
+`;
+
+const InfoItem = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #e1fff6;
-  padding: 50px 20px;
-  color: #333;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 18px;
 
-  @media(min-width: 768px) {
-    flex-direction: row;
-    /* justify-content: space-between; */
-    padding: 50px 250px;
+  svg {
+    font-size: 20px;
+    color: #ef4444;
+    margin-top: 4px;
   }
 `;
 
-const Title = styled.h1`
-  font-size: 2em;
-  text-align: center;
-  margin-bottom: 20px;
+const InfoText = styled.div`
+  font-size: 0.95rem;
+  color: #475569;
 
-  @media(min-width: 768px) {
-    font-size: 2.5em;
-    text-align: left;
+  strong {
+    display: block;
+    color: #1e293b;
   }
 `;
 
-const ContactDetails = styled.div`
-  flex: 1;
-  margin-bottom: 30px;
-  text-align: center;
-
-  @media(min-width: 768px) {
-    text-align: left;
-    margin-bottom: 0;
-  }
-`;
-
-const Address = styled.div`
-  margin: 20px 0;
-`;
-
-const ContactForm = styled.form`
-  flex: 1;
-  background-color: #dffddb;
+const FormCard = styled.form`
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
   padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-  &:hover{
-  transform: scale(1.05);
-  box-shadow: 0 4px 57px -9px #454545;
-  }
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
 `;
 
-const FormTitle = styled.h2`
+const FormTitle = styled.h3`
+  font-size: 1.4rem;
+  font-weight: 600;
   margin-bottom: 20px;
-  font-size: 1.5em;
-  text-align: center;
+  color: #1e293b;
+`;
+
+const InputGroup = styled.div`
+  display: grid;
+  gap: 15px;
 `;
 
 const Input = styled.input`
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  /* background-color: #f6eaff; */
-  border: 1px solid #333;
-  /* border: none; */
-  border-radius: 5px;
-  color: #333;
-  font-size: 1em;
-`;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 0.9rem;
+  outline: none;
 
-const TextArea = styled.textarea`
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  /* background-color: #f6eaff; */
-  border: 1px solid #333;
-  /* border: none; */
-  border-radius: 5px;
-  color:  #333;
-  font-size: 1em;
-  height: 100px;
-`;
-
-const Button = styled.button`
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #333;
-  margin-top: 20px;
-  /* background: linear-gradient(90.21deg, rgba(170, 54, 124, 0.5) -5.91%, rgba(74, 47, 189, 0.5) 111.58%); */
-  background-color: rgb(223, 253, 219);
-  /* border: none; */
-  border-radius: 5px;
-  color: #333;
-  font-size: 1em;
-  font-weight:500;
-  cursor: pointer;
-
-  &:hover {
-    background-color: rgb(223, 253, 245);
+  &:focus {
+    border-color: #6366f1;
+    background: #fff;
   }
 `;
 
-const Para =styled.p`
-@media (min-width:768px) {
-  width: 440px;
-}
-`
+const TextArea = styled.textarea`
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 0.9rem;
+  outline: none;
+  min-height: 120px;
+
+  &:focus {
+    border-color: #6366f1;
+    background: #fff;
+  }
+`;
+
+const Button = styled.button`
+  margin-top: 20px;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #ef4444;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    background: #dc2626;
+  }
+`;
 
 const ContactUs = () => {
   return (
     <>
-    <LetsConnect title={"Let's connect"} description={"We would love to hear from you. How can we help?"} background={"#ffc24b"}></LetsConnect>
-    <ContactCard></ContactCard>
-    <ContactCards></ContactCards>
-    <ContactSection>
-      <ContactDetails>
-        <Title>Get in Touch with Atomwalk 👋</Title>
-        <Para>
-          Feel free to connect with us for any of your needs regarding our services. Our support team is ready to solve any of your issues. Just push a text to us and we will get back to you immediately.
-        </Para>
-        <Address>
-          {/* <p><strong>India</strong></p> */}
-          <p><strong>Address: </strong>Atomwalk Technologies, Gopalan Millennium Towers, ITPL Main Road, Brookfield, Whitefield, Bengaluru, Karnataka 560037</p>
-          <p><strong>Email:</strong> info@atomwalk.com</p>
-          <p><strong>Phone:</strong> +91-7259555003</p>
-        </Address>
-      </ContactDetails>
+      <ContactHero />
+      <ContactCards></ContactCards>
+      <ContactCard></ContactCard>
+      <Section>
+        <Wrapper>
+          {/* LEFT SIDE */}
+          <Left>
+            <Title>Get in Touch with Atomwalk </Title>
+            <Description>
+              Have questions or need help? Our team is ready to assist you.
+              Reach out and we’ll get back to you as soon as possible.
+            </Description>
 
-      <ContactForm>
-        <FormTitle>Drop Us a Message</FormTitle>
-        <Input type="text" placeholder="Name*" required />
-        <Input type="text" placeholder="+91 Phone No*" required />
-        <Input type="email" placeholder="Email*" required />
-        <Input type="text" placeholder="Which Business do you have ?*" required />
-        <Input type="text" placeholder="Location*" required />
-        <TextArea placeholder="Message*" required />
-        <Button type="submit">Connect With Atomwalk Today</Button>
-      </ContactForm>
-    </ContactSection>
+            <InfoItem>
+              <FiMapPin />
+              <InfoText>
+                <strong>Address</strong>
+                Atomwalk Technologies, Gopalan Millennium Towers, ITPL Main Road,
+                Whitefield, Bengaluru – 560037
+              </InfoText>
+            </InfoItem>
+
+            <InfoItem>
+              <FiMail />
+              <InfoText>
+                <strong>Email</strong>
+                info@atomwalk.com
+              </InfoText>
+            </InfoItem>
+
+            <InfoItem>
+              <FiPhone />
+              <InfoText>
+                <strong>Phone</strong>
+                +91-7259555003
+              </InfoText>
+            </InfoItem>
+          </Left>
+
+          {/* RIGHT SIDE FORM */}
+          <FormCard>
+            <FormTitle>Send us a message</FormTitle>
+
+            <InputGroup>
+              <Input type="text" placeholder="Your Name*" required />
+              <Input type="tel" placeholder="Phone Number*" required />
+              <Input type="email" placeholder="Email Address*" required />
+              <Input type="text" placeholder="Business Type*" />
+              <Input type="text" placeholder="Location*" />
+              <TextArea placeholder="Your Message*" required />
+            </InputGroup>
+
+            <Button type="submit">
+              Connect With Atomwalk
+            </Button>
+          </FormCard>
+        </Wrapper>
+      </Section>
+      <PatentAndPublications />
     </>
   );
 };

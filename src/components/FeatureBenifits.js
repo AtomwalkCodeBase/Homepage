@@ -2,14 +2,14 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
 // Icons (same as before)
-import { 
-  FaCrown, FaChartLine, FaMobileAlt, FaUserTie, 
+import {
+  FaCrown, FaChartLine, FaMobileAlt, FaUserTie,
   FaFileInvoiceDollar, FaShieldAlt, FaCogs, FaExpandArrowsAlt,
   FaTrashAlt, FaTrashRestoreAlt, FaChartPie, FaHardHat,
   FaBuilding, FaEye,
   FaFileAlt, FaExclamationTriangle, FaTachometerAlt,
   FaProjectDiagram, FaTruckLoading, FaQrcode,
-  FaVials,  FaTasks,
+  FaVials, FaTasks,
 } from 'react-icons/fa';
 
 import { BsFillGearFill, BsGraphUpArrow, BsBoxSeam } from 'react-icons/bs';
@@ -304,41 +304,41 @@ const Solar = [
 ];
 
 const inventoryManagement = [
-  { 
-    title: "Structured Setup & Categorization", 
-    text: "Define inventory categories, organize items by location, and manage multiple inventories with full compliance.", 
-    bgColor: "#00bcd4", 
-    icon: <FaProjectDiagram /> 
+  {
+    title: "Structured Setup & Categorization",
+    text: "Define inventory categories, organize items by location, and manage multiple inventories with full compliance.",
+    bgColor: "#00bcd4",
+    icon: <FaProjectDiagram />
   },
-  { 
-    title: "Flexible Item Management", 
-    text: "Add and maintain items with supplier details, batch/expiry info, BIN locations, and custom additional fields.", 
-    bgColor: "#4caf50", 
-    icon: <BsBoxSeam /> 
+  {
+    title: "Flexible Item Management",
+    text: "Add and maintain items with supplier details, batch/expiry info, BIN locations, and custom additional fields.",
+    bgColor: "#4caf50",
+    icon: <BsBoxSeam />
   },
-  { 
-    title: "Stock Inflow via Purchase Orders", 
-    text: "Automatically increase stock levels during goods receipt, with GRN, BIN allocation, and auto accounting entries.", 
-    bgColor: "#ffc107", 
-    icon: <FaTruckLoading /> 
+  {
+    title: "Stock Inflow via Purchase Orders",
+    text: "Automatically increase stock levels during goods receipt, with GRN, BIN allocation, and auto accounting entries.",
+    bgColor: "#ffc107",
+    icon: <FaTruckLoading />
   },
-  { 
-    title: "QR-Based Stock Inspection", 
-    text: "Perform physical stock checks with QR code scanning to instantly verify and adjust discrepancies.", 
-    bgColor: "#9c27b0", 
-    icon: <FaQrcode /> 
+  {
+    title: "QR-Based Stock Inspection",
+    text: "Perform physical stock checks with QR code scanning to instantly verify and adjust discrepancies.",
+    bgColor: "#9c27b0",
+    icon: <FaQrcode />
   },
-  { 
-    title: "Automated Consumption Adjustments", 
-    text: "Track real-time stock reductions during sales and work orders with FIFO-based allocation and history logs.", 
-    bgColor: "#ff9800", 
-    icon: <FaCogs /> 
+  {
+    title: "Automated Consumption Adjustments",
+    text: "Track real-time stock reductions during sales and work orders with FIFO-based allocation and history logs.",
+    bgColor: "#ff9800",
+    icon: <FaCogs />
   },
-  { 
-    title: "Comprehensive Audit Trail", 
-    text: "Maintain transparent, audit-ready inventory movement records for accountability and compliance.", 
-    bgColor: "#4caf50", 
-    icon: <FaFileInvoiceDollar /> 
+  {
+    title: "Comprehensive Audit Trail",
+    text: "Maintain transparent, audit-ready inventory movement records for accountability and compliance.",
+    bgColor: "#4caf50",
+    icon: <FaFileInvoiceDollar />
   }
 ];
 
@@ -393,33 +393,35 @@ const glpmanagement = [
 
 
 const FeatureBenefits = ({ data }) => {
-  const benefits = data === 'AI' ? Ai : 
-                   data === 'Solar' ? Solar : 
-                   data === 'Hospital' ? Hospital : 
-                   data === 'Facility' ? Facility : 
-                   data === 'LMS' ? labManagement : 
-                   data === 'Claim' ? claimBenefits : 
-                   data === 'Customer' ? leadBenefits : 
-                   data === 'HR' ? hrmBenefits : 
-                   data === 'Equipment' ? labEquipment : 
-                   data === 'Waste' ? wasteManagement : 
-                   data === 'Inventory' ? inventoryManagement : 
-                   data === 'Sales and Procurement' ? sales : 
-                   data === 'GLP' ? glpmanagement : 
-                   leaveBenefits;
+  const benefits = data === 'AI' ? Ai :
+    data === 'Solar' ? Solar :
+      data === 'Hospital' ? Hospital :
+        data === 'Facility' ? Facility :
+          data === 'LMS' ? labManagement :
+            data === 'Claim' ? claimBenefits :
+              data === 'Customer' ? leadBenefits :
+                data === 'HR' ? hrmBenefits :
+                  data === 'Equipment' ? labEquipment :
+                    data === 'Waste' ? wasteManagement :
+                      data === 'Inventory' ? inventoryManagement :
+                        data === 'Sales and Procurement' ? sales :
+                          data === 'GLP' ? glpmanagement :
+                            leaveBenefits;
 
   const getTitle = () => {
-    switch(data) {
+    switch (data) {
       case 'Solar': return 'Solar Intelligence Optimize, Control, and Grow.';
       case 'Facility': return 'All-in-One Facility Management, Streamlined and Smarter.';
       case 'AI': return 'AI-Powered Insights for Smarter Operations';
       case 'GLP': return 'Get your lab in order, and your data in line';
+      case 'Customer': return 'Unified CRM. One Powerful Platform';
+      case 'HR': return 'Smart HR. Simplified Operations';
       default: return `All-in-One ${data} Management, Faster and Easier.`;
     }
   };
 
   const getSubtitle = () => {
-    switch(data) {
+    switch (data) {
       case 'Solar': return 'Harness the power of intelligent solar management for maximum efficiency and growth.';
       case 'Facility': return 'Comprehensive facility solutions that simplify operations and enhance productivity.';
       case 'AI': return 'Transform your operations with cutting-edge artificial intelligence solutions.';
@@ -438,7 +440,7 @@ const FeatureBenefits = ({ data }) => {
         >
           {getTitle().split(',')[0]}, <span>{getTitle().split(',')[1]}</span>
         </Title>
-        
+
         <Subtitle
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -446,7 +448,7 @@ const FeatureBenefits = ({ data }) => {
         >
           {getSubtitle()}
         </Subtitle>
-        
+
         <BenefitsContainer
           variants={containerVariants}
           initial="hidden"
@@ -458,21 +460,21 @@ const FeatureBenefits = ({ data }) => {
               variants={itemVariants}
               whileHover="hover"
             >
-              
-              <IconCircle 
+
+              <IconCircle
                 bgcolor={benefit.bgColor}
                 variants={iconVariants}
               >
                 {benefit.icon}
               </IconCircle>
-              
-              <BenefitTitle 
+
+              <BenefitTitle
                 bgcolor={benefit.bgColor}
                 variants={titleVariants}
               >
                 {benefit.title}
               </BenefitTitle>
-              
+
               <BenefitText>
                 {benefit.text}
               </BenefitText>

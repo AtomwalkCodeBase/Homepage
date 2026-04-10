@@ -1,215 +1,130 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import logo from "../assets/img/Atom_walk_logo-removebg-preview.png";
-import Email from "../assets/img/email.png";
-import Phone from "../assets/img/telephone-call.png";
-// import Footer from "../assets/img/Footer-1.jpg";
-import Footer from "../assets/img/footer-bg.png";
-import navIcon1 from "../assets/img/nav-icon1.svg";
-import navIcon2 from "../assets/img/nav-icon2.svg";
-import navIcon3 from "../assets/img/nav-icon3.svg";
-import navIcon4 from "../assets/img/youtube-icon.png";
+import {
+  FiPhone,
+  FiMail,
+  FiMapPin,
+} from "react-icons/fi";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaYoutube,
+  FaLinkedinIn,
+} from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+import footers from "../assets/img/footericon.png"
 import UnderConstructionPopup from "./UnderConstructionPopup";
-// import Modal from "./modals/Modal";
-// import { FaLock, FaUser } from "react-icons/fa";
-const FooterContainer = styled.footer`
- background-color: rgb(13, 11, 62); /* Dark background color */
-  /* background-image: url(${Footer}); */
-  background-position: center center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  color: #ffffff;
-  padding: 40px 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+
+const FooterWrapper = styled.footer`
+background-image: url(${footers});
+  /* background: radial-gradient(circle at 20% 20%, #0f172a, #020617); */
+  color: #cbd5f5;
+  padding: 80px 20px 30px;
+`;
+
+const Container = styled.div`
+  max-width: 1200px;
+  margin: auto;
+`;
+
+const Grid = styled.div`
+  display: grid;
+  gap: 40px;
 
   @media (min-width: 768px) {
-    flex-direction: row;
-    justify-content: space-between;
-    text-align: left;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
   }
 `;
 
-const FooterLeft = styled.div`
-  flex: 1;
+const Title = styled.h4`
+  color: white;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  letter-spacing: 1px;
+`;
+
+const Logo = styled.h2`
+  color: white;
   margin-bottom: 20px;
+`;
 
-  @media (min-width: 768px) {
-    margin-bottom: 0;
-  }
+const ContactItem = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
 
-  h1 {
-    font-size: 2em;
-    margin-left: 35px;
-    color: #ffffff;
+  svg {
+    color: #22d3ee;
+    margin-top: 3px;
   }
 `;
 
-const ContactInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 20px 0;
+const Links = styled.ul`
+  list-style: none;
+  padding: 0;
 
-  @media (min-width: 768px) {
-    flex-direction: row;
-    justify-content: center;
-    align-items: center; /* Align with text */
-  }
+  li {
+    margin-bottom: 10px;
 
-  div {
-    margin: 10px 20px;
-    padding: 10px 20px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-    font-size: 1.1em;
-    font-weight: 500;
-    cursor: pointer;
-    display: flex;
-  }
+    a {
+      text-decoration: none;
+      color: #94a3b8;
+      font-size: 0.9rem;
+      transition: 0.3s;
 
-  img {
-    width: 20px;
-    margin-right: 10px;
-  }
-
-  a {
-    text-decoration: none;
-    color: white;
-  }
-`;
-
-const FooterLinksContainer = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  text-align: left;
-
-  @media (max-width: 768px) {
-  display: flex;
-  flex-direction: column;
-  justify-content:center;
-  text-align: center;
-  }
-`;
-
-const FooterLinks = styled.div`
-  margin: 10px 20px;
-
-  h3 {
-    font-size: 1.2em;
-    margin-bottom: 15px;
-    color: #ffffff;
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-
-    li {
-      margin: 8px 0;
-      font-size: 1em;
-      color: #a7a9ac;
-
-      a {
-        color: #a7a9ac;
-        text-decoration: none;
-
-        &:hover {
-          color: #55e6a5;
-        }
+      &:hover {
+        color: #22d3ee;
       }
     }
   }
 `;
 
-const FooterBottom = styled.div`
-  /* margin-top: 20px; */
-  font-size: 0.8em;
-  text-align: center;
-  background-color: rgb(13, 11, 62);
+const Socials = styled.div`
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
 
-  @media (min-width: 768px) {
-    /* margin-top: 20px; */
-    text-align: center;
+  a {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #E31837;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: 0.3s;
+
+    &:hover {
+      transform: translateY(-3px);
+      background: #b21010;
+    }
+  }
+`;
+
+const Bottom = styled.div`
+  border-top: 1px solid #1e293b;
+  margin-top: 50px;
+  padding-top: 20px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #94a3b8;
+
+  a {
+    color: white;
+    text-decoration: none;
+    margin: 0 5px;
+
+    &:hover {
+      color: #22d3ee;
+    }
   }
 
   span {
-    color: #55e6a5;
+    color: #22d3ee;
   }
 `;
-// Main Container
-const NewsletterContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: rgb(13, 11, 62);
-  padding: 20px;
-  color: white;
-
-  @media (min-width: 768px) {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center; /* Align with ContactInfo */
-    justify-content: center;
-    width: 100%;
-  }
-`;
-
-// Logo Container
-const LogoContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-
-  @media (min-width: 768px) {
-    margin-bottom: 0;
-    display: none;
-  }
-
-  img {
-    /* height: 100px; */
-    margin-right: 15px;
-    width: 150px;
-  }
-`;
-
-// Text Container
-const TextContainer = styled.div`
-  font-size: 1.2em;
-  text-align: center;
-  white-space: nowrap; /* Prevents text from wrapping */
-  margin-bottom: 10px;
-
-  @media (min-width: 768px) {
-    text-align: left;
-    margin-bottom: 0;
-  }
-`;
-
-
-const DropdownContainer = styled.div`
-  position: relative;
-  display: inline-block;
-`;
-
-
-const SupportLink = styled.a`
-  cursor: pointer;
-  color: #a7a9ac;
-  text-decoration: none;
-  display: inline-block;
-  position: relative;
-
-  &:hover {
-    color: #55e6a5;
-  }
-`;
-
-
 
 export default function Footer2() {
   const [opennavbar, setOpennavbar] = useState(true);
@@ -296,133 +211,106 @@ export default function Footer2() {
 
   return (
     <>
-      {opennavbar && <div>
-        <FooterContainer>
-          <FooterLeft>
-            <NewsletterContainer>
-              <LogoContainer>
-                <img src={logo} alt="AtomWalk Logo" />
-              </LogoContainer>
-
-              <TextContainer>
-                Connect with  Atomwalk Technologies
-              </TextContainer>
-
-
-            </NewsletterContainer>
-            <ContactInfo>
+      {opennavbar && (
+        <FooterWrapper>
+          <Container>
+            <Grid>
+              {/* LEFT */}
               <div>
-                <a href="mailto:info@atomwalk.com">
-                  <img src={Email} alt="AtomWalk Logo" />
-                  info@atomwalk.com
-                </a>
+                <Title>CONTACT US</Title>
+
+                <ContactItem>
+                  <FiPhone /> +91 7259555003
+                </ContactItem>
+
+                <ContactItem>
+                  <FiMail /> info@atomwalk.com
+                </ContactItem>
+
+                <ContactItem>
+                  <FiMapPin />
+                  Gopalan Millennium Towers, Whitefield, Bengaluru
+                </ContactItem>
+
+                <Socials>
+                  <a href="https://x.com/Atomwalk_Tech"><FaXTwitter /></a>
+                  <a href="https://www.facebook.com/profile.php?id=61572466203683"><FaFacebookF /></a>
+                  <a href="https://www.instagram.com/atomwalktechnologies"><FaInstagram /></a>
+                  <a href="https://www.youtube.com/@AtomwalkTechnologies"><FaYoutube /></a>
+                  <a href="https://www.linkedin.com/company/atomwalk-technologies"><FaLinkedinIn /></a>
+                </Socials>
               </div>
+
+              {/* SERVICES */}
               <div>
-                <a href="tel:+917259555003">
-                  <img src={Phone} alt="AtomWalk Logo" />
-                  +91-7259555003
-                </a>
+                <Title>SERVICES</Title>
+                <Links>
+                  <li><a href="/crm.html">CRM</a></li>
+                  <li><a href="/hrm.html">HRM</a></li>
+                  <li><a href="/lms.html">Lab Management</a></li>
+                  <li><a href="/Product.html">ERP</a></li>
+                  <li><a href="#">Energy Management</a></li>
+                </Links>
               </div>
-            </ContactInfo>
-          </FooterLeft>
 
+              {/* QUICK LINKS */}
+              <div>
+                <Title>QUICK LINKS</Title>
+                <Links>
 
+                  <li><a href="/aboutUs.html">About Us</a></li>
+                  <li>
+                    <a href="/Product.html">Products</a>
+                  </li>
+                  <li><a href="/contactUs.html">Contact Us</a></li>
 
-          <FooterLinksContainer>
-            <FooterLinks>
-              <h3>Quick Links</h3>
-              <ul>
-                <li>
-                  <a href="/">Home</a>
-                </li>
-                <li>
-                  <a href="/aboutUs.html">About Us</a>
-                </li>
-                <li>
-                  <a href="/Product.html">Products</a>
-                </li>
-                <li>
-                  <a href="/contactUs.html">Contact Us</a>
-                </li>
-              </ul>
-            </FooterLinks>
+                  <li>
+                    <a href="/pricing.html">Pricing</a>
+                  </li>
+                  <li><a href="/blog.html">Blog</a></li>
+                  <li>
+                    <a href="https://atomwalk.netlify.app/login">Atomwalk Folder</a>
+                  </li>
 
-            <FooterLinks>
-              <h3>Products</h3>
-              <ul>
-                <li>
-                  <a href="/crm.html">Customer Relationship Management</a>
-                </li>
-                <li>
-                  <a href="/hrm.html">Human Resource Management</a>
-                </li>
-                <li>
-                  <a href="/lms.html">Lab Management System</a>
-                </li>
-                <li>
-                  <a href="/Product.html">Enterprise Resource Planning</a>
-                </li>
-                <li>
-                  <a href="https://atomwalk.netlify.app" target="_blank" rel="noopener noreferrer">Atomwalk Folder</a>
-                </li>
-              </ul>
-            </FooterLinks>
-            <FooterLinks>
-              <h3>Resources</h3>
-              <ul>
-                <li>
-                  <a href="/Blog.html">Blog</a>
-                </li>
-                <li>
-                  <DropdownContainer>
-                    <SupportLink href="/manual.html">
-                      Manual
-                    </SupportLink>
-                  </DropdownContainer>
-                </li>
-                <li>
-                </li>
-                <li>
-                  <a href="/faq.html">FAQs</a>
-                </li>
-                <li>
-                  <a href="/Careers.html">Career</a>
-                </li>
-                <li>
-                  <a href="/news-events.html">News and Event</a>
-                </li>
-              </ul>
-            </FooterLinks>
-          </FooterLinksContainer>
-        </FooterContainer>
-        <FooterBottom>
-          <div style={{ padding: "25px" }}>
-            <p>© 2024 Atomwalk. All Rights Reserved.</p>
-            <p>
-              <a href="/privacy-policy.html" style={{ color: "white", textDecoration: "none" }}>Privacy Policy</a> |
-              <a href="/terms-and-conditions.html" style={{ color: "white", textDecoration: "none" }}> Terms & Conditions</a> |
-              <a href="/disclaimer.html" style={{ color: "white", textDecoration: "none" }}> Disclaimer</a> |
-              Made with <span>♥</span> Atomwalk
-            </p>
-            <div style={{ marginTop: "5px" }} className="social-icon">
-              <a href="https://www.linkedin.com/company/atomwalk-technologies"><img src={navIcon1} alt="linkedin" /></a>
-              <a href="https://www.facebook.com/profile.php?id=61572466203683"><img src={navIcon2} alt="facebook" /></a>
-              <a href="https://www.instagram.com/atomwalktechnologies"><img src={navIcon3} alt="instagram" /></a>
-              <a href="https://www.youtube.com/@AtomwalkTechnologies"><img src={navIcon4} alt="youtube" /></a>
-              <a href="https://x.com/Atomwalk_Tech?t=JhtnhZPBgFhB3kGmcL58mw&s=08"><img src="https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/new-twitter-logo.png" alt="twiter" style={{ width: "20px", height: "20px" }} /></a>
-            </div>
-          </div>
-        </FooterBottom>
-      </div>}
-      {/* </div>:<FooterBottom>
-      <div style={{padding:"25px"}}>
-        <p>© 2024 Atomwalk. All Rights Reserved.</p>
-        <p>
-          Made with <span>♥</span> Atomwalk
-        </p>
-            </div>
-      </FooterBottom>} */}
-      <UnderConstructionPopup visible={openpop} setvisible={setopenpop}></UnderConstructionPopup>
+                </Links>
+              </div>
+
+              {/* HELP */}
+              <div>
+                <Title>HELP</Title>
+                <Links>
+                  <li>
+                    <a href="/manual.html">Manual</a>
+                  </li>
+                  <li>
+                    <a href="/faq.html">FAQs</a>
+                  </li>
+                  <li>
+                    <a href="/Careers.html">Career</a>
+                  </li>
+                  <li>
+                    <a href="/news-events.html">News and Event</a>
+                  </li>
+
+                  <li><a href="/terms-and-conditions.html">Terms & Conditions</a></li>
+                  <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                </Links>
+              </div>
+            </Grid>
+
+            {/* BOTTOM */}
+            <Bottom>
+              © 2026 Atomwalk. All Rights Reserved.
+              Made with <span>♥</span> in India
+            </Bottom>
+          </Container>
+        </FooterWrapper>
+      )}
+
+      <UnderConstructionPopup
+        visible={openpop}
+        setvisible={setopenpop}
+      />
     </>
   );
 }

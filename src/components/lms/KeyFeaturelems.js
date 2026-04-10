@@ -99,60 +99,60 @@ const FeatureDescription = styled.p`
 `;
 
 const KeyFeaturelems = () => {
-  const handelNvigation=(data)=>{
-    window.location.href=`/${data}`
+  const handelNvigation = (data) => {
+    window.location.href = `/${data}`
   }
   return (
     <SectionContainer>
-    <MainTitle>
-    Key Features
-    </MainTitle>
-    <Subtitle>
-    Atomwalk Office is more than just an ERP; it’s a comprehensive solution that automates and 
-    optimizes your entire business operation. Our platform offers:
-    </Subtitle>
-    <FeaturesContainer>
-      <FeatureBox onClick={()=>handelNvigation('userManagement.html')}> 
-        <IconContainer bgColor="#D8F5E3">
-          <img src={Compliance} alt="Speed" />
-        </IconContainer>
-        <FeatureTitle> Enhanced User Management</FeatureTitle>
-        <FeatureDescription>
-        Atomwalk’s LEM ensures every role in the lab gets precisely what they
-need—empowering admins, managers, and users to focus on productivity without any
-roadblocks.
-        </FeatureDescription>
-      </FeatureBox>
-      <FeatureBox onClick={()=>handelNvigation('equipmentManagement.html')}>
-        <IconContainer bgColor="#F0E7FF">
-          <img src={Excellence} alt="Trust"/>
-        </IconContainer>
-        <FeatureTitle>Rule Based Equipment Management</FeatureTitle>
-        <FeatureDescription>
-        Say goodbye to scheduling conflicts. With Atomwalk’s LEM, you’ll always know
-which equipment is available, making the booking process seamless.
-        </FeatureDescription>
-      </FeatureBox>
-      <FeatureBox onClick={()=>handelNvigation('equipmentMaintenance.html')}>
-        <IconContainer bgColor="#E0F7FC">
-          <img src={Grow} alt="Accuracy" />
-        </IconContainer>
-        <FeatureTitle>Equipment Maintenance</FeatureTitle>
-        <FeatureDescription>
-        Don’t let unexpected breakdowns slow you down. Atomwalk’s LEM sends alerts for
-maintenance and calibrations, ensuring minimal downtime and maximum lab
-productivity.</FeatureDescription>
-      </FeatureBox>
-      <FeatureBox onClick={()=>handelNvigation('reportandDashboard.html')}>
-        <IconContainer bgColor="#FFF2E0">
-          <img src={Payroll} alt="Reliability" />
-        </IconContainer>
-        <FeatureTitle>Gain Insights with Report & Dashboard</FeatureTitle>
-        <FeatureDescription>
-        Unlock the power of data with Atomwalk’s detailed reports and Dashboard. Gain clear insights into usage pattern of equipments and labs </FeatureDescription>
-      </FeatureBox>
-    </FeaturesContainer>
-  </SectionContainer>
+      <MainTitle>
+        Key Modules of Atomwalk Lab Equipment Management
+      </MainTitle>
+      <Subtitle>
+        Atomwalk Office is more than just an ERP; it’s a comprehensive solution that automates and
+        optimizes your entire business operation. Our platform offers:
+      </Subtitle>
+      <FeaturesContainer>
+        <FeatureBox onClick={() => handelNvigation('userManagement.html')}>
+          <IconContainer bgColor="#D8F5E3">
+            <img src={Compliance} alt="Speed" />
+          </IconContainer>
+          <FeatureTitle> Enhanced User Management</FeatureTitle>
+          <FeatureDescription>
+            Atomwalk’s LEM ensures every role in the lab gets precisely what they
+            need—empowering admins, managers, and users to focus on productivity without any
+            roadblocks.
+          </FeatureDescription>
+        </FeatureBox>
+        <FeatureBox onClick={() => handelNvigation('equipmentManagement.html')}>
+          <IconContainer bgColor="#F0E7FF">
+            <img src={Excellence} alt="Trust" />
+          </IconContainer>
+          <FeatureTitle>Rule Based Equipment Management</FeatureTitle>
+          <FeatureDescription>
+            Say goodbye to scheduling conflicts. With Atomwalk’s LEM, you’ll always know
+            which equipment is available, making the booking process seamless.
+          </FeatureDescription>
+        </FeatureBox>
+        <FeatureBox onClick={() => handelNvigation('equipmentMaintenance.html')}>
+          <IconContainer bgColor="#E0F7FC">
+            <img src={Grow} alt="Accuracy" />
+          </IconContainer>
+          <FeatureTitle>Equipment Maintenance</FeatureTitle>
+          <FeatureDescription>
+            Don’t let unexpected breakdowns slow you down. Atomwalk’s LEM sends alerts for
+            maintenance and calibrations, ensuring minimal downtime and maximum lab
+            productivity.</FeatureDescription>
+        </FeatureBox>
+        <FeatureBox onClick={() => handelNvigation('reportandDashboard.html')}>
+          <IconContainer bgColor="#FFF2E0">
+            <img src={Payroll} alt="Reliability" />
+          </IconContainer>
+          <FeatureTitle>Gain Insights with Report & Dashboard</FeatureTitle>
+          <FeatureDescription>
+            Unlock the power of data with Atomwalk’s detailed reports and Dashboard. Gain clear insights into usage pattern of equipments and labs </FeatureDescription>
+        </FeatureBox>
+      </FeaturesContainer>
+    </SectionContainer>
   )
 }
 

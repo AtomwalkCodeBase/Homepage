@@ -99,61 +99,61 @@ const FeatureDescription = styled.p`
 `;
 
 const KeyFetureLms = () => {
-  const handelNvigation=(data)=>{
-    window.location.href=`/${data}`
+  const handelNvigation = (data) => {
+    window.location.href = `/${data}`
   }
   return (
     <SectionContainer>
-    <MainTitle>
-    Key Features
-    </MainTitle>
-    <Subtitle>
-    Atomwalk Office is more than just an ERP; it’s a comprehensive solution that automates and 
-    optimizes your entire business operation. Our platform offers:
-    </Subtitle>
-    <FeaturesContainer>
-      <FeatureBox onClick={()=>handelNvigation('userroleManagement.html')}> 
-        <IconContainer bgColor="#D8F5E3">
-          <img src={Compliance} alt="Speed" />
-        </IconContainer>
-        <FeatureTitle>User and Role Management</FeatureTitle>
-        <FeatureDescription>
-        Atomwalk’s LMS ensures Role-based access control to restrict data access based on user roles, and
-        manage permissions to ensure secure and appropriate data access.
-        </FeatureDescription>
-      </FeatureBox>
-      <FeatureBox onClick={()=>handelNvigation('labProcessemplate.html')}>
-        <IconContainer bgColor="#F0E7FF">
-          <img src={Excellence} alt="Trust"/>
-        </IconContainer>
-        <FeatureTitle>Lab Process Template</FeatureTitle>
-        <FeatureDescription>
-        Provide a simplified way to manage experiment templates required 
-        for the laboratory. Include various experiment templates with necessary 
-        steps, required inventory, and equipment. This ensures optimized and 
-        error-free execution of experiments by lab users.
-        </FeatureDescription>
-      </FeatureBox>
-      <FeatureBox onClick={()=>handelNvigation('labExperimentProject.html')}>
-        <IconContainer bgColor="#E0F7FC">
-          <img src={Grow} alt="Accuracy" />
-        </IconContainer>
-        <FeatureTitle>Lab Experiment Project Execution</FeatureTitle>
-        <FeatureDescription>
-        Don’t let unexpected breakdowns slow you down. Atomwalk’s LEM sends alerts for
-        maintenance and calibrations, ensuring minimal downtime and maximum lab
-        productivity.</FeatureDescription>
-      </FeatureBox>
-      <FeatureBox onClick={()=>handelNvigation('pIwithReport.html')}>
-        <IconContainer bgColor="#FFF2E0">
-          <img src={Payroll} alt="Reliability" />
-        </IconContainer>
-        <FeatureTitle>PI with Report & Dashboard</FeatureTitle>
-        <FeatureDescription>
-        Unlock the power of data with Atomwalk’s detailed reports and Dashboard. Gain clear insights into usage pattern of equipments and labs </FeatureDescription>
-      </FeatureBox>
-    </FeaturesContainer>
-  </SectionContainer>
+      <MainTitle>
+        Key Modules of Atomwalk LMS
+      </MainTitle>
+      <Subtitle>
+        Atomwalk Office is more than just an ERP; it’s a comprehensive solution that automates and
+        optimizes your entire business operation. Our platform offers:
+      </Subtitle>
+      <FeaturesContainer>
+        <FeatureBox onClick={() => handelNvigation('userroleManagement.html')}>
+          <IconContainer bgColor="#D8F5E3">
+            <img src={Compliance} alt="Speed" />
+          </IconContainer>
+          <FeatureTitle>User and Role Management</FeatureTitle>
+          <FeatureDescription>
+            Atomwalk’s LMS ensures Role-based access control to restrict data access based on user roles, and
+            manage permissions to ensure secure and appropriate data access.
+          </FeatureDescription>
+        </FeatureBox>
+        <FeatureBox onClick={() => handelNvigation('labProcessemplate.html')}>
+          <IconContainer bgColor="#F0E7FF">
+            <img src={Excellence} alt="Trust" />
+          </IconContainer>
+          <FeatureTitle>Lab Process Template</FeatureTitle>
+          <FeatureDescription>
+            Provide a simplified way to manage experiment templates required
+            for the laboratory. Include various experiment templates with necessary
+            steps, required inventory, and equipment. This ensures optimized and
+            error-free execution of experiments by lab users.
+          </FeatureDescription>
+        </FeatureBox>
+        <FeatureBox onClick={() => handelNvigation('labExperimentProject.html')}>
+          <IconContainer bgColor="#E0F7FC">
+            <img src={Grow} alt="Accuracy" />
+          </IconContainer>
+          <FeatureTitle>Lab Experiment Project Execution</FeatureTitle>
+          <FeatureDescription>
+            Don’t let unexpected breakdowns slow you down. Atomwalk’s LEM sends alerts for
+            maintenance and calibrations, ensuring minimal downtime and maximum lab
+            productivity.</FeatureDescription>
+        </FeatureBox>
+        <FeatureBox onClick={() => handelNvigation('pIwithReport.html')}>
+          <IconContainer bgColor="#FFF2E0">
+            <img src={Payroll} alt="Reliability" />
+          </IconContainer>
+          <FeatureTitle>PI with Report & Dashboard</FeatureTitle>
+          <FeatureDescription>
+            Unlock the power of data with Atomwalk’s detailed reports and Dashboard. Gain clear insights into usage pattern of equipments and labs </FeatureDescription>
+        </FeatureBox>
+      </FeaturesContainer>
+    </SectionContainer>
   )
 }
 

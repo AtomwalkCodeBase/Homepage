@@ -7,7 +7,7 @@ import Scel from './../assets/img/scalability.png'
 // Styled Components
 const Section = styled.section`
   padding: 100px 20px;
-  background-color:rgb(225 255 246);
+  background-color:#f6f2ea;
   text-align: center;
 `;
 
@@ -83,17 +83,17 @@ const SeamlessIntegration = () => {
         <Heading>Seamless Integration and Workflow</Heading>
         <Paragraph>Atomwalk Office ERP connects every aspect of your business into one unified system</Paragraph>
         <Features>
-          <FeatureItem style={{backgroundColor:"rgb(181 255 206)"}}>
+          <FeatureItem style={{ backgroundColor: "rgb(181 255 206)" }}>
             <FeatureIcon src={Atomation} alt="Automated Processes" />
             <FeatureTitle>Automated Processes</FeatureTitle>
             <FeatureText>From bank reconciliation to payroll processing, automate repetitive tasks.</FeatureText>
           </FeatureItem>
-          <FeatureItem style={{backgroundColor:"rgb(188 216 255)"}}>
+          <FeatureItem style={{ backgroundColor: "rgb(188 216 255)" }}>
             <FeatureIcon src={Server} alt="Centralized Data" />
             <FeatureTitle>Centralized Data</FeatureTitle>
             <FeatureText>Access and manage all your business data from a single platform.</FeatureText>
           </FeatureItem>
-          <FeatureItem style={{backgroundColor:"rgb(255 211 168)"}}>
+          <FeatureItem style={{ backgroundColor: "rgb(255 211 168)" }}>
             <FeatureIcon src={Scel} alt="Scalability" />
             <FeatureTitle>Scalability</FeatureTitle>
             <FeatureText>Whether you’re managing one location or multiple, Atomwalk scales with your business.</FeatureText>

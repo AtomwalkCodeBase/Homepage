@@ -92,7 +92,7 @@ const ContactCards = () => {
   const closeModal = () => setModalIsOpen(false);
 
   const goToContact = () => {
-    window.location.href = "/contactUs.html";
+    window.location.href = "/news-events.html";
   };
 
   const goToSales = () => {

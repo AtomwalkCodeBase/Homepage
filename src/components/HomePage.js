@@ -14,6 +14,7 @@ import CTASection from './CTASection'
 import RocketSteps from './RocketSteps'
 import CustomerStoriesVideo from './CustomerStoriesVideo'
 import ProcessFlowmap from './ProcessFlowmap'
+import Carousel from './Carousel'
 const HomePage = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [showsuccess, setShowsuccess] = useState(false);
@@ -48,7 +49,8 @@ const HomePage = () => {
         <link rel="canonical" href="https://atomwalk.com/" />
       </Helmet>
       {showsuccess && <Success message="We have successfully recorded your information."></Success>}
-      <HeroSection />
+      {/* <HeroSection /> */}
+      <Carousel></Carousel>
       <TechMahindraSection />
       <RocketSteps></RocketSteps>
       <Features></Features>

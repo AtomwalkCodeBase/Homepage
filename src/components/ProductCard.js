@@ -36,7 +36,7 @@ const floatUp = keyframes`
 // Main container with modern light background
 const SectionContainer = styled.section`
   padding: 100px 20px;
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
+  background: #f6f2ea;
   position: relative;
   overflow: hidden;
 
@@ -263,11 +263,11 @@ const FeatureList = styled.div`
 
 // Modern CTA button
 const CTAButton = styled.button`
-  background: linear-gradient(135deg, #9C27B0 0%, #E91E63 100%);
+  background: #e41c39;
   color: white;
   border: none;
   padding: 18px 40px;
-  border-radius: 50px;
+  /* border-radius: 50px; */
   font-size: 1.1em;
   font-weight: 600;
   cursor: pointer;
@@ -291,7 +291,7 @@ const CTAButton = styled.button`
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 20px 40px rgba(156, 39, 176, 0.4);
+    box-shadow: 0 20px 40px rgba(176, 44, 39, 0.4);
 
     &::before {
       left: 100%;
@@ -368,7 +368,7 @@ const ProductCard = () => {
       image: Crm,
       items: [
         "Lead Management",
-        "Customer Management", 
+        "Customer Management",
         "Channel partner management",
         "Annual Maintenance Contract",
         "Campaign Management"
@@ -408,6 +408,38 @@ const ProductCard = () => {
       ],
       onClick: () => salespage("/inventory.html"),
       delay: "0.3s"
+    },
+    {
+      title: "Process Templates & Project Management",
+      image: Process,
+      items: [
+        "Activity Definition with User group",
+        "Equipment and Document definition for Activity",
+        "Process items and Bill of Material",
+        "Project Activity Allocation Tracking",
+        "Project Activity Dependency (Critical Path)",
+        "Item Cost and Effort Tracking",
+        "Efficiency tracking at Activity",
+        "Integration with Inventory Allocation, Wastage and Release"
+      ],
+      onClick: () => salespage("/processandproject.html"),
+      delay: "0.8s"
+    },
+    {
+      title: "HR & Payroll",
+      image: Hr,
+      items: [
+        "On-Boarding Process",
+        "Employee Data",
+        "Attendance",
+        "Leave Management",
+        "Claim Management",
+        "Payroll",
+        "Performance Management System",
+        "Exit Process"
+      ],
+      onClick: () => salespage("/hrm.html"),
+      delay: "0.9s"
     },
     {
       title: "GST & TDS",
@@ -458,53 +490,9 @@ const ProductCard = () => {
       ],
       delay: "0.7s"
     },
-    {
-      title: "Process Templates & Project Management",
-      image: Process,
-      items: [
-        "Activity Definition with User group",
-        "Equipment and Document definition for Activity",
-        "Process items and Bill of Material",
-        "Project Activity Allocation Tracking",
-        "Project Activity Dependency (Critical Path)",
-        "Item Cost and Effort Tracking",
-        "Efficiency tracking at Activity",
-        "Integration with Inventory Allocation, Wastage and Release"
-      ],
-      onClick: () => salespage("/processandproject.html"),
-      delay: "0.8s"
-    },
-    {
-      title: "HR & Payroll",
-      image: Hr,
-      items: [
-        "On-Boarding Process",
-        "Employee Data",
-        "Attendance",
-        "Leave Management",
-        "Claim Management",
-        "Payroll",
-        "Performance Management System",
-        "Exit Process"
-      ],
-      onClick: () => salespage("/hrm.html"),
-      delay: "0.9s"
-    }
   ];
 
   const labFeatures = [
-    {
-      title: "Lab Equipment Management System",
-      image: Labeq,
-      items: [
-        "Enhanced User Management",
-        "Simplified Equipment Management",
-        "Equipment Maintenance",
-        "Gain Insights with Report & Analytics"
-      ],
-      onClick: () => salespage("/labequipmentmangement.html"),
-      delay: "0.1s"
-    },
     {
       title: "Lab Management System",
       image: Lab,
@@ -516,7 +504,20 @@ const ProductCard = () => {
       ],
       onClick: () => salespage("/labmanagement.html"),
       delay: "0.2s"
+    },
+    {
+      title: "Lab Equipment Management System",
+      image: Labeq,
+      items: [
+        "Enhanced User Management",
+        "Simplified Equipment Management",
+        "Equipment Maintenance",
+        "Gain Insights with Report & Analytics"
+      ],
+      onClick: () => salespage("/labequipmentmangement.html"),
+      delay: "0.1s"
     }
+
   ];
 
   return (
@@ -525,20 +526,20 @@ const ProductCard = () => {
         <SectionTitle>
           Atomwalk Office ERP connects every aspect of your business into one unified system
         </SectionTitle>
-        
+
         <FeaturesContainer>
           {features.map((feature, index) => (
             <React.Fragment key={index}>
-              <FeatureSection 
+              <FeatureSection
                 direction={index % 2 === 0 ? 'left' : 'right'}
                 delay={feature.delay}
                 // onClick={feature.onClick}
-                style={{ cursor: 'default'}}
+                style={{ cursor: 'default' }}
               >
                 <ImageContainer>
                   <img src={feature.image} alt={feature.title} className="feature-image" />
                 </ImageContainer>
-                
+
                 <ContentContainer className="feature-content">
                   <FeatureHeading>{feature.title}</FeatureHeading>
                   <FeatureList>
@@ -548,45 +549,45 @@ const ProductCard = () => {
                       ))}
                     </ul>
                   </FeatureList>
-                  <CTAButton onClick={feature.onClick}>
-                    View Details
-                  </CTAButton>
+                  {feature.onClick && (
+                    <CTAButton onClick={feature.onClick}>
+                      View Details
+                    </CTAButton>
+                  )}
                 </ContentContainer>
-                
+
                 {/* Floating accents */}
-                <FloatingAccent 
-                  size="80px" 
-                  top="10%" 
+                <FloatingAccent
+                  size="80px"
+                  top="10%"
                   right={index % 2 === 0 ? "10%" : "auto"}
                   left={index % 2 === 0 ? "auto" : "10%"}
                   delay={`${index * 0.5}s`}
                 />
-                <FloatingAccent 
-                  size="40px" 
-                  bottom="20%" 
+                <FloatingAccent
+                  size="40px"
+                  bottom="20%"
                   right={index % 2 === 0 ? "20%" : "auto"}
                   left={index % 2 === 0 ? "auto" : "20%"}
                   delay={`${index * 0.3}s`}
                 />
               </FeatureSection>
-              
+
               {index < features.length - 1 && <SectionSeparator />}
             </React.Fragment>
           ))}
         </FeaturesContainer>
       </SectionContainer>
 
-      <SectionContainer style={{
-        background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 25%, #bae6fd 50%, #e0f2fe 100%)'
-      }}>
-        <SectionTitle style={{marginTop:"40px"}}>
+      <SectionContainer>
+        <SectionTitle style={{ marginTop: "40px" }}>
           Atomwalk Lab Management: Streamlining Labs, Unifying Excellence.
         </SectionTitle>
-        
+
         <FeaturesContainer>
           {labFeatures.map((feature, index) => (
             <React.Fragment key={index}>
-              <FeatureSection 
+              <FeatureSection
                 direction={index % 2 === 0 ? 'left' : 'right'}
                 delay={feature.delay}
                 onClick={feature.onClick}
@@ -595,7 +596,7 @@ const ProductCard = () => {
                 <ImageContainer>
                   <img src={feature.image} alt={feature.title} className="feature-image" />
                 </ImageContainer>
-                
+
                 <ContentContainer className="feature-content">
                   <FeatureHeading>{feature.title}</FeatureHeading>
                   <FeatureList>
@@ -605,15 +606,15 @@ const ProductCard = () => {
                       ))}
                     </ul>
                   </FeatureList>
-                  <CTAButton 
-                   onClick={feature.onClick}>
+                  {feature.onClick && <CTAButton
+                    onClick={feature.onClick}>
                     View Details
-                  </CTAButton>
+                  </CTAButton>}
                 </ContentContainer>
-                
-                <FloatingAccent 
-                  size="70px" 
-                  top="15%" 
+
+                <FloatingAccent
+                  size="70px"
+                  top="15%"
                   right={index % 2 === 0 ? "15%" : "auto"}
                   left={index % 2 === 0 ? "auto" : "15%"}
                   delay={`${index * 0.4}s`}
@@ -621,7 +622,7 @@ const ProductCard = () => {
                   color2="#3b82f6"
                 />
               </FeatureSection>
-              
+
               {index < labFeatures.length - 1 && <SectionSeparator />}
             </React.Fragment>
           ))}

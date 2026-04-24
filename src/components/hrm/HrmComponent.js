@@ -22,7 +22,7 @@ const HrmComponent = () => {
       </Helmet>
       {/* <Page> */}
 
-      <LetsConnect title={"Work Smarter with Atomwalk HRM Anytime, Anywhere"} description={"Manage hiring, payroll, performance, and compliance in one place. Empower your workforce with seamless web and mobile access."} background={"#eae3ff"} lead={true} img={HRMHeadBG}></LetsConnect>
+      <LetsConnect title={"Work Smarter with Atomwalk HRM Anytime, Anywhere"} description={"Manage hiring, payroll, performance, and compliance in one place. Empower your workforce with seamless web and mobile access."} background={"#eae3ff"} lead={true} img={HRMHeadBG} ></LetsConnect>
       {/* </Header> */}
       {/* </Page> */}
       <KeyFeatureHrm />

@@ -568,7 +568,7 @@ const LeadershipAdvisors = () => {
       name: "Mr. Manoj Kumar Sahoo",
       role: "Founder and Director",
       image: `${Team}`,
-      shortDesc: "Manoj K. Sahoo brings over 25 years of experience in product engineering, software solution development, and technology innovations.",
+      shortDesc: "Manoj K. Sahoo brings over 32+ years of experience in product engineering, software solution development, and technology innovations.",
       fullDesc: [
         "He has played a key role in the creation of two of India's most iconic software products—Finacle (Infosys's global banking solution) and Tally (a widely adopted business platform for SMBs). Mr Sahoo holds a B.Tech from NIT Rourkela and an MS from BITS Pilani, with deep domain expertise in payments, supply chain management, and delivery excellence. Manoj also holds multiple patents in product innovation, reflecting his commitment to scalable, practical solutions.",
         "As the Founder and Director of Atomwalk, Manoj K. Sahoo is the driving force behind the company’s ERP vision leading product strategy and development to help businesses achieve operational efficiency and digital transformation."
@@ -594,10 +594,10 @@ const LeadershipAdvisors = () => {
       name: "Dr. Lipika Sahoo",
       role: "Co-Founder, Director Innovation",
       image: `${Lipika}`,
-      shortDesc: "Dr. Lipika Sahoo, Co-Founder and Director of Atomwalk, brings 24 years of experience in academia and industry, specializing in technology, innovation, and intellectual property.",
+      shortDesc: "Dr. Lipika Sahoo, Co-Founder and Director of Atomwalk, brings over two decades of experience across academia and industry, with deep expertise in technology, innovation, and intellectual property. She holds a PhD from the Indian Institute of Science (IISc), Bangalore, along with qualifications from NLSIU, XIMB, and IIM Bangalore.",
       fullDesc: [
-        "She holds a PhD from the Indian Institute of Science (IISc) Bangalore, along with postgraduate qualifications from NLSIU, XIMB, and IIM Bangalore, and advanced certifications from WIPO. A recognized expert in intellectual property strategy, technology transfer, and innovation management, Dr. Sahoo is passionate about empowering technologists, scientists, and deep-tech entrepreneurs to protect and commercialize their ideas. She actively contributes to startup ecosystems as a mentor, reviewer, and advisor, offering deep insight into IP valuation, licensing, R&D strategy, and business process optimization.",
-        "Dr. Sahoo’s strategic vision and expertise have been instrumental in shaping Atomwalk’s growth, enabling the company to effectively support deep-tech innovators in protecting and commercializing their intellectual property."
+        "A recognized authority in IP strategy, technology transfer, and innovation management, she is dedicated to helping technologists, scientists, and deep-tech entrepreneurs strategize, protect, and commercialize their ideas.",
+        "Her vision and leadership have been instrumental in accelerating Atomwalk’s growth, strengthening its innovation-led approach, and positioning it as a trusted partner for deep-tech innovators and companies to build, manage, and scale intelligent systems—while maximizing and amplifying the impact of their innovations."
       ],
       linkedin: null,
       isExecutive: true,

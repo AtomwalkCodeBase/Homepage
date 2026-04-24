@@ -93,6 +93,19 @@ const LeadManagement = () => {
       description: "Monitor, analyze, and optimize team performance with a comprehensive manager dashboard in Atomwalk CRM.",
       background: "#e6f7f1",
       img: "https://cdni.iconscout.com/illustration/premium/thumb/business-analysis-data-reporting-dashboard-management-performance-illustration-svg-download-png-14025242.png"
+    },
+    {
+      path: "opportunityToOrder",
+      heding: "Opportunity to Order",
+      title: "Opportunity to Order | Atomwalk Technologies",
+      metaDescription: "Convert leads into orders seamlessly with Atomwalk CRM.",
+      keywords: "opportunity to order, lead conversion, CRM sales pipeline",
+      canonical: "https://home.atomwalk.com/opportunityToOrder.html",
+      pageTitle: "Opportunity to Order",
+      titles: "OpportunityToOrder",
+      description: "Convert leads into orders seamlessly with Atomwalk CRM.",
+      background: "#e6f7f1",
+      img: "https://cdni.iconscout.com/illustration/premium/thumb/business-analysis-data-reporting-dashboard-management-performance-illustration-svg-download-png-14025242.png"
     }
   ];
 
@@ -161,6 +174,8 @@ const LeadManagement = () => {
         background={currentPageConfig.background}
         img={currentPageConfig.img}
         lead={true}
+        breadcrumbTitle={"CRM"}
+        link={"/crm.html"}
       />
       <ProcessFlow bgcolors={"#e8f1fe"} data={currentPageConfig.titles}></ProcessFlow>
       <CrmFeatures data={showData}></CrmFeatures>

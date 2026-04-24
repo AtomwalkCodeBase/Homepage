@@ -12,6 +12,7 @@ import Ramaiah from './../assets/img/Ramaiah_Square.png';
 import UniversePower from './../assets/img/UniversePower_Sqare.png';
 import Advika from './../assets/img/Advika_Sqare.png';
 import Olety from './../assets/img/Olety.jpg';
+// import lusin from './../assets/img/';
 // Testimonial Data
 
 const gradientShift = keyframes`
@@ -74,6 +75,12 @@ const testimonialData = [
     name: "Mr Sridhar Alampalli, Advika (NGO)",
     text: "We, at Advika, are very happy with the software solutions provided by Atomwalk Technologies, a Bangalore based cloud ERP company. At Advika, a NGO dedicated to uplifting the lives of orphan children, managing daily operations, was a real challenge. From administrative to inventory to logistical issues, there were frequent problems of co ordination and implementation. Added to that, compliance as per regulatory authorities, was particularly important, especially maintaining meticulous records of inmates and other information as mandated by authorities. Atomwalk provided us with a comprehensive software which has streamlined our operations, integrated all processes. Now we are able to manage our data more effectively, track donations, monitor each child’s progress, manage inventory and ensure compliances required for an NGO. Our staff is also relieved of mundane tasks of maintaining heavy ledgers, making manual entries. Now that our resources are utilized efficiently, we have more time on our hands to focus on all round development of our children. Special thanks to the exceptional team support, help and guidance from Atomwalk Team in onboarding to the platform, helping us make the most of this powerful tool. The software itself is intuitive, user friendly and cost effective. We highly recommend the software solutions of Atomwalk Technologies for any organization seeking reliable, hassle free, user friendly and economically viable solutions for managing their day to day operations.",
     img: `${Advika}`,
+  },
+  {
+    id: 10,
+    name: "Anthony, Leucine Rich Bio Pvt Ltd",
+    text: "We have been using the Atomwalk Lab Management System, and it has significantly improved our lab operations. The system is highly capable of understanding every aspect of our workflow and is customized to fit our specific requirements. The batch processing feature has saved us a considerable amount of time, making our processes much more efficient. One of the most valuable features is the ability to track the status of each sample in real-time, along with automated email notifications in case of any failures. Overall, Atomwalk has made our lab more organized, efficient, and reliable. We highly recommend Atomwalk to any lab looking to enhance their operations and streamline their processes.",
+    img: `https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/CL9.jpg`,
   },
 
 ];

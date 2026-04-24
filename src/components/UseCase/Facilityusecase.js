@@ -289,7 +289,7 @@ export default function Facilityusecase() {
             descriptionsheader: "Manage waste inventory efficiently from storage to disposal",
             descriptions: [
                 {
-                    image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/FMS-Waste-Inventory.png",
+                    // image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/FMS-Waste-Inventory.png",
                     text: "Waste inventory tracking",
                     desc: "Track stored waste quantities and categories in real time.",
                     bullets: [
@@ -299,7 +299,7 @@ export default function Facilityusecase() {
                     ]
                 },
                 {
-                    image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/FMS-Waste-Lifecycle.png",
+                    // image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/FMS-Waste-Lifecycle.png",
                     text: "Waste lifecycle management",
                     desc: "Manage waste from collection to final disposal.",
                     bullets: [
@@ -329,6 +329,9 @@ export default function Facilityusecase() {
                 title={selectedCase.title}
                 subtitle={selectedCase.subtitle}
                 mainImage={selectedCase.mainImage}
+                sub={"Facility Management"}
+                link={"/facilitymanagement.html"}
+
             />
 
             {/* Feature section gets descriptions */}

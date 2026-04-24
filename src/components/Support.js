@@ -1,5 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 
 // React Modal Setup
@@ -75,19 +76,22 @@ const TextArea = styled.textarea`
 const SubmitButton = styled.button`
   padding: 0.8rem;
   font-size: 1rem;
-  background-color: black;
+  background-color: #e41c39;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   &:hover {
-    background-color: #333;
+    background-color: #ff3939;
   }
 `;
 
 const Supports = ({ isOpen, onRequestClose }) => {
-
+  const onsubmit = () => {
+    toast.success("Message sent! We'll contact you soon.");
+    onRequestClose();
+  }
   return (
     <>
       {/* <SupportButton onClick={openModal}>Support</SupportButton> */}
@@ -100,7 +104,7 @@ const Supports = ({ isOpen, onRequestClose }) => {
         <ModalContent>
           <CloseButton onClick={onRequestClose}>&times;</CloseButton>
           <Title>Contact Support</Title>
-          <Form>
+          <Form onSubmit={onsubmit}>
             <Input type="text" placeholder="Enter your name" required />
             <Input type="email" placeholder="Enter your email" required />
             <TextArea placeholder="Describe your issue or question" rows="4" required />

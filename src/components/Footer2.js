@@ -302,6 +302,9 @@ export default function Footer2() {
                 </Links>
               </div>
             </Grid>
+            <Bottom>
+              <a href="/terms-of-service">Terms of Service</a> | <a href="/privacy-policy.html">Privacy Policy</a> | <a href="/abuse-policy">Abuse Policy</a> | <a href="/security-whitepaper">Security Whitepaper</a> | <a href="/shared-responsibility">Shared Responsibility</a> | <a href="/anti-spam-policy">Anti-Spam Policy</a>
+            </Bottom>
 
             {/* BOTTOM */}
             <Bottom>

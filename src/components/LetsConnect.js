@@ -16,24 +16,73 @@ const float = keyframes`
 
 // Styled Components
 
-const Section = styled.section`
+const Wrapper = styled.div`
   background-color: #f6f2ea;
   position: relative;
-  overflow: hidden;
+`;
 
+const BreadcrumbContainer = styled.div`
+  padding: 20px 10%;
+  background-color: #f6f2ea;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+  @media (max-width: 768px) {
+    padding: 15px 20px;
+  }
+`;
+
+const BreadcrumbList = styled.ul`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+`;
+
+const BreadcrumbItem = styled.li`
+  font-size: 0.9rem;
+  color: ${(props) => (props.active ? '#e41c39' : '#64748b')};
+  font-weight: ${(props) => (props.active ? '600' : '400')};
+  cursor: ${(props) => (props.active ? 'default' : 'pointer')};
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: ${(props) => (props.active ? '#e41c39' : '#e41c39')};
+  }
+`;
+
+const Separator = styled.span`
+  color: #cbd5e1;
+  font-size: 0.85rem;
+  margin: 0 4px;
+`;
+
+const HomeIcon = styled.span`
+  display: inline-flex;
+  align-items: center;
+  font-size: 1rem;
+  margin-right: 2px;
+`;
+
+const Section = styled.section`
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
   text-align: center;
   padding: 50px 20px;
- background-image: repeating-linear-gradient(
+  background-image: repeating-linear-gradient(
     to right,
     rgba(0, 0, 0, 0.05) 0px,
     rgba(0, 0, 0, 0.05) 1px,
     transparent 1px,
     transparent 40px
   );
+
   @media (min-width: 768px) {
     flex-direction: row;
     text-align: left;
@@ -48,10 +97,8 @@ const Bubble = styled.div`
   border-radius: 50%;
   background: rgba(228, 28, 57, 0.08);
   animation: ${float} ${(props) => props.duration}s ease-in-out infinite;
-
   width: ${(props) => props.size}px;
   height: ${(props) => props.size}px;
-
   top: ${(props) => props.top};
   left: ${(props) => props.left};
 `;
@@ -99,11 +146,9 @@ const Button = styled.button`
   font-size: 1rem;
   color: #fff;
   border: none;
-  /* border-radius: 30px; */
   cursor: pointer;
   background-color: #e41c39;
   transition: all 0.3s ease;
-
   box-shadow: 0 4px 14px rgba(228, 28, 57, 0.3);
 
   &:hover {
@@ -144,6 +189,10 @@ const PeopleImage = styled.img`
 const LetsConnect = (props) => {
   const navigate = useNavigate();
 
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
+
   const navigationback = () => {
     navigate(-1);
   };
@@ -153,35 +202,71 @@ const LetsConnect = (props) => {
   };
 
   return (
-    <Section>
+    <Wrapper>
+      {/* Breadcrumb Section */}
+      <BreadcrumbContainer>
+        <BreadcrumbList>
+          <BreadcrumbItem onClick={() => handleNavigate('/')}>
+            <HomeIcon>🏠</HomeIcon> Home
+          </BreadcrumbItem>
+          <Separator>›</Separator>
+          {props.breadcrumbTitle && (
+            <>
+              <BreadcrumbItem onClick={() => handleNavigate(props.link || '/')}>
+                {props.breadcrumbTitle || props.title}
+              </BreadcrumbItem>
 
-      {/* Bubble Effects */}
-      <Bubble size={120} top="10%" left="5%" duration={6} />
-      <Bubble size={80} top="70%" left="10%" duration={8} />
-      <Bubble size={150} top="20%" left="80%" duration={7} />
-      <Bubble size={60} top="75%" left="85%" duration={5} />
+              <Separator>›</Separator>
+            </>)}
+          <BreadcrumbItem active>
+            {props.title}
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </BreadcrumbContainer>
 
-      <TextContainer>
-        <Title>{props.title}</Title>
-        <Description>{props.description}</Description>
+      {/* Main Section */}
+      <Section>
+        {/* Bubble Effects */}
+        <Bubble size={120} top="10%" left="5%" duration={6} />
+        <Bubble size={80} top="70%" left="10%" duration={8} />
+        <Bubble size={150} top="20%" left="80%" duration={7} />
+        <Bubble size={60} top="75%" left="85%" duration={5} />
 
-        <ButtonContainer>
-          <Button onClick={reqdemo}>
-            Request a Demo
-          </Button>
-          <Button style={{ backgroundColor: "transparent", color: "#e41c39", border: "2px solid #e41c39" }} onClick={navigationback}>
-            Back
-          </Button>
-        </ButtonContainer>
-      </TextContainer>
+        <TextContainer>
+          <Title>{props.title}</Title>
+          <Description>{props.description}</Description>
 
-      <ImageContainer>
-        <PeopleImage
-          src={props.data ? product : props.crm ? Crm : props.lead ? props.img : People}
-          alt="People talking"
-        />
-      </ImageContainer>
-    </Section>
+          <ButtonContainer>
+            <Button onClick={reqdemo}>Request a Demo</Button>
+            <Button
+              style={{
+                backgroundColor: 'transparent',
+                color: '#e41c39',
+                border: '2px solid #e41c39',
+              }}
+              onClick={navigationback}
+            >
+              Back
+            </Button>
+          </ButtonContainer>
+        </TextContainer>
+
+        <ImageContainer>
+          <PeopleImage
+            src={
+              props.data
+                ? product
+                : props.crm
+                  ? Crm
+                  : props.lead
+                    ? props.img
+                    : People
+            }
+            alt="People talking"
+          />
+        </ImageContainer>
+      </Section>
+    </Wrapper>
   );
 };
 

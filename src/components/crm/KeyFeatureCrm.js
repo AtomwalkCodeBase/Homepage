@@ -156,7 +156,7 @@ const KeyFeatureCrm = () => {
             Manage channel partners as extended arms to grow your business with Atomwalk CRM.
           </FeatureDescription>
         </FeatureBox>
-        <FeatureBox onClick={() => handelNvigation('aMCTracking.html')}>
+        <FeatureBox onClick={() => handelNvigation('leadManagement.html')}>
           <IconContainer bgColor="#FFF2E0">
             <img src={OnboardingIcon} alt="Reliability" />
           </IconContainer>

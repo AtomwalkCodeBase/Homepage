@@ -354,6 +354,34 @@ const VideoWrapper = styled.div`
 /* DATA */
 const data = [
   {
+    title: "How Atomwalk ERP helped NGO to streamline operations and maximize impact",
+    name: "Sridhar Alampalli",
+    role: "Chairman-Shanthala Chits Pvt.Ltd",
+    image:
+      "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/sridhar.png",
+    video:
+      "https://youtu.be/QtZG6jPRHGE?si=zmpbPT7QBIPGcV_I",
+  },
+  {
+    title:
+      "How Atomwalk HRM Transformed Employee Engagement and Productivity",
+    name: "Ankur Mehrortra",
+    role: "Serial Entrepreneur , Business Coach, Meteonic Innovation Pvt Ltd.",
+    image:
+      "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Ankur.png",
+    video:
+      "https://youtu.be/c63g5G_aMT8?si=S_BHRN8RWEWSzRy6",
+  },
+  {
+    title: "Purpose in Practice: Leadership driving data success",
+    name: "Dr. Prashanthi K",
+    role: "Associate Professor,Ramaiah University of Applied Sciences",
+    image:
+      "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Prashanthi.png",
+    video:
+      "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/website-vedio/purpose.mp4",
+  },
+  {
     title:
       "From Infrastructure to Intelligence: How Atomwalk ERP is Driving the Future of Enterprise AI",
     name: "Shalini Srivastava",
@@ -372,24 +400,7 @@ const data = [
     video:
       "https://youtu.be/QB2ntnUdoEk?si=WJXqK19JzWMg2CGI",
   },
-  {
-    title: "How Atomwalk ERP helped NGO to streamline operations and maximize impact",
-    name: "Sridhar Alampalli",
-    role: "Chairman-Shanthala Chits Pvt.Ltd",
-    image:
-      "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/sridhar.png",
-    video:
-      "https://youtu.be/QtZG6jPRHGE?si=zmpbPT7QBIPGcV_I",
-  },
-  {
-    title: "Purpose in Practice: Leadership driving data success",
-    name: "Dr. Prashanthi K",
-    role: "Associate Professor,Ramaiah University of Applied Sciences",
-    image:
-      "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Prashanthi.png",
-    video:
-      "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/website-vedio/purpose.mp4",
-  },
+
 ];
 
 const SuccessStories = () => {

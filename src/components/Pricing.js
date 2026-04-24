@@ -8,7 +8,7 @@ const PricingContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 60px 20px;
-  background-color: #caf0f8;
+  background-color: rgb(246 242 234 / 98%);
 `;
 
 const Title = styled.h1`
@@ -215,116 +215,116 @@ const CloseButton = styled.button`
 // Pricing plans data
 const pricingPlans = {
   IN: [
-    { 
-      name: "Free Trial", 
-      price: "Valid for 1 Month", 
+    {
+      name: "Free Trial",
+      price: "Valid for 1 Month",
       // period: "/month",
       pricePerUser: false,
       // message: "Schedule a demo",  
-      userAccess: "3 User Access", 
-      validity: "30 days Validity", 
-      space: "20MB Storage Space", 
-      multiBranch: false, 
+      userAccess: "3 User Access",
+      validity: "30 days Validity",
+      space: "20MB Storage Space",
+      multiBranch: false,
       color: "red",
       buttonColor: "red",
       popular: false
     },
-    { 
-      name: "Basic", 
-      price: "As per the requirement", 
+    {
+      name: "Basic",
+      price: "As per the requirement",
       // period: "/month",
       pricePerUser: false,
       // message: "Schedule a demo",  
-      userAccess: "5 User Access", 
-      validity: "1 Year Validity", 
-      space: "200MB Storage Space", 
-      multiBranch: false, 
+      userAccess: "5 User Access",
+      validity: "1 Year Validity",
+      space: "200MB Storage Space",
+      multiBranch: false,
       color: "#2196f3",
       buttonColor: "#2196f3",
       popular: false
     },
-    { 
-      name: "Premium", 
-      price: "As per the requirement", 
+    {
+      name: "Premium",
+      price: "As per the requirement",
       // period: "/month",
       pricePerUser: false,
       // message: "Schedule a demo", 
-      userAccess: "10 User Access", 
-      validity: "1 Year Validity", 
-      space: "500MB Storage Space", 
-      multiBranch: true, 
+      userAccess: "10 User Access",
+      validity: "1 Year Validity",
+      space: "500MB Storage Space",
+      multiBranch: true,
       color: "orange",
       buttonColor: "orange",
       popular: true
     },
-    { 
-      name: "Ultimate", 
-      price: "As per the requirement", 
+    {
+      name: "Ultimate",
+      price: "As per the requirement",
       // period: "/month",
       pricePerUser: false,
       // message: "Schedule a demo",  
-      userAccess: "25 User Access", 
-      validity: "1 Year Validity", 
-      space: "1.2GB Storage Space", 
-      multiBranch: true, 
+      userAccess: "25 User Access",
+      validity: "1 Year Validity",
+      space: "1.2GB Storage Space",
+      multiBranch: true,
       color: "#800080",
       buttonColor: "#800080",
       popular: false
     }
   ],
   US: [
-    { 
-      name: "Free Trial", 
+    {
+      name: "Free Trial",
       price: "Valid for 1 Month",
       // period: "/month",
       pricePerUser: false,
       // message: "No credit card required", 
-      userAccess: "3 User Access", 
-      validity: "30 days Validity", 
-      space: "20MB Storage Space", 
-      multiBranch: false, 
+      userAccess: "3 User Access",
+      validity: "30 days Validity",
+      space: "20MB Storage Space",
+      multiBranch: false,
       color: "red",
       buttonColor: "red",
       popular: false
     },
-    { 
-      name: "Basic", 
-      price: "As per the requirement",  
+    {
+      name: "Basic",
+      price: "As per the requirement",
       // period: "/month",
       pricePerUser: false,
       // message: "Billed at $663 per year", 
-      userAccess: "5 User Access", 
-      validity: "1 Year Validity", 
-      space: "200MB Storage Space", 
-      multiBranch: false, 
+      userAccess: "5 User Access",
+      validity: "1 Year Validity",
+      space: "200MB Storage Space",
+      multiBranch: false,
       color: "#2196f3",
       buttonColor: "#2196f3",
       popular: false
     },
-    { 
-      name: "Premium", 
-      price: "As per the requirement", 
+    {
+      name: "Premium",
+      price: "As per the requirement",
       // period: "/month",
       pricePerUser: false,
       // message: "Billed at $1,325 per year", 
-      userAccess: "10 User Access", 
-      validity: "1 Year Validity", 
-      space: "500MB Storage Space", 
-      multiBranch: true, 
+      userAccess: "10 User Access",
+      validity: "1 Year Validity",
+      space: "500MB Storage Space",
+      multiBranch: true,
       color: "orange",
       buttonColor: "orange",
       popular: true
     },
-    { 
-      name: "Ultimate", 
-      price: "As per the requirement", 
+    {
+      name: "Ultimate",
+      price: "As per the requirement",
       // period: "/month",
       pricePerUser: false,
       // message: "Billed at $3,314 per year", 
-      userAccess: "25 User Access", 
-      validity: "1 Year Validity", 
-      space: "1.2GB Storage Space", 
-      multiBranch: true, 
+      userAccess: "25 User Access",
+      validity: "1 Year Validity",
+      space: "1.2GB Storage Space",
+      multiBranch: true,
       color: "#800080",
       buttonColor: "#800080",
       popular: false
@@ -359,7 +359,7 @@ const Pricing = ({ region = "IN" }) => {
         Choose the perfect HRM solution tailored for your organization's needs. 
         All plans include our support and continuous updates.
       </Subtitle> */}
-      
+
       <PlansContainer>
         {plans.map((plan, index) => (
           <PlanCard key={index}>
@@ -371,7 +371,7 @@ const Pricing = ({ region = "IN" }) => {
               </Price>
               {plan.message && <p style={{ color: "#7f8c8d", fontSize: "0.9em" }}>{plan.message}</p>}
             </PlanHeader>
-            
+
             <FeatureList>
               <FeatureItem valid>{plan.userAccess}</FeatureItem>
               <FeatureItem valid>{plan.validity}</FeatureItem>
@@ -380,9 +380,9 @@ const Pricing = ({ region = "IN" }) => {
               <FeatureItem valid>24/7 Support</FeatureItem>
               <FeatureItem valid>Regular Updates</FeatureItem>
             </FeatureList>
-            
-            <Button 
-              color={plan.buttonColor} 
+
+            <Button
+              color={plan.buttonColor}
               hoverColor={plan.popular ? "#e67e22" : null}
               onClick={plan.name === "Free Trial" ? requestDemo : () => openModal(plan)}
             >
@@ -391,7 +391,7 @@ const Pricing = ({ region = "IN" }) => {
           </PlanCard>
         ))}
       </PlansContainer>
-      
+
       <ReactModal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
@@ -406,8 +406,8 @@ const Pricing = ({ region = "IN" }) => {
           <ModalText>
             You've chosen our {selectedPlan?.name} Plan. Click below to proceed with your selection or contact our sales team for more information.
           </ModalText>
-          <Button 
-            color={selectedPlan?.buttonColor || "#3498db"} 
+          <Button
+            color={selectedPlan?.buttonColor || "#3498db"}
             onClick={requestDemo}
           >
             Proceed with {selectedPlan?.name} Plan

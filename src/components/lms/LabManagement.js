@@ -13,7 +13,7 @@ const Section = styled.section`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #e8f4fc;
+  background-color: #f6f2ea;
   padding:90px 40px 0px 40px ;
   /* border-radius: 20px; */
   /* margin: 20px; */
@@ -54,7 +54,7 @@ const Description = styled.p`
 `;
 
 const Button = styled.button`
-  background-color: #337af3;
+  background-color: #f34933;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -127,8 +127,8 @@ const LabManagement = () => {
           <Image src={mainImage} alt="Laboratory Technician" />
         </ImageContainer>
       </Section>
-      <FeatureBenifits data={'LMS'}></FeatureBenifits>
       <KeyFetureLms></KeyFetureLms>
+      <FeatureBenifits data={'LMS'}></FeatureBenifits>
       <NewFAQSection data={"equipment"}></NewFAQSection>
     </>
   );

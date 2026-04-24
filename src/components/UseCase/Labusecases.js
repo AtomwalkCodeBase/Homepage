@@ -15,7 +15,7 @@ export default function Labusecases() {
             title: "End-to-End Sample Lifecycle Management",
             subtitle: "From collection to final analysis and reporting.",
             mainImage: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/samplework2.png",
-            descriptionsheader: "Simplify Lab Operations with Smart Sample Managemen",
+            descriptionsheader: "Simplify Lab Operations with Smart Sample Management",
             descriptions: [
                 {
                     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/samplelife.png",
@@ -438,6 +438,8 @@ export default function Labusecases() {
                 title={selectedCase.title}
                 subtitle={selectedCase.subtitle}
                 mainImage={selectedCase.mainImage}
+                sub={"Lab Management"}
+                link={"/lms.html"}
             />
 
             {/* Feature section gets descriptions */}

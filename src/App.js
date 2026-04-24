@@ -119,7 +119,12 @@ import NewsDetail from "./components/NewsDetail";
 import Labusecases from "./components/UseCase/Labusecases";
 import Facilityusecase from "./components/UseCase/Facilityusecase";
 import FinanceUserScreen2 from "./pages/ProjectManagement/FinanceUserScreen2";
-import ChannelPatnerListScreen from "./pages/ProjectManagement/ChannelPatnerListScreen"; 
+import ChannelPatnerListScreen from "./pages/ProjectManagement/ChannelPatnerListScreen";
+import TermsOfService from "./components/Policy/TermsOfService";
+import AbusePolicy from "./components/Policy/AbusePolicy";
+import SecurityWhitepaper from "./components/Policy/SecurityWhitepaper";
+import SharedResponsibility from "./components/Policy/SharedResponsibility";
+import AntiSpamPolicy from "./components/Policy/AntiSpamPolicy";
 // import SupervisorDashboard from "./pages/fishIndurstry/SupervisorDashboard";
 // import MyAppriaisal from "./pages/MyAppriaisal";
 
@@ -239,7 +244,11 @@ function App() {
                 <Route path="/hr-manager-accessibility" element={<HRMRoleBasedAccessibility />} />
                 <Route path="/intellectual-property" element={<PatentPage />} />
                 <Route path="/awards" element={<AwardsPage />} />
-
+                <Route path="/terms-of-service" element={<TermsOfService />} />
+                <Route path="/abuse-policy" element={<AbusePolicy />} />
+                <Route path="/security-whitepaper" element={<SecurityWhitepaper />} />
+                <Route path="/shared-responsibility" element={<SharedResponsibility />} />
+                <Route path="/anti-spam-policy" element={<AntiSpamPolicy />} />
 
                 {/* Login Route */}
                 <Route path="/login" element={<Login />} />
@@ -311,7 +320,7 @@ function App() {
                   <Route path="/customerList" element={<CustomerList />} />
                   <Route path="/ticketList" element={<TaskScreen />} />
 
-                        {/* PROJECT MANAGEMENT PAGE ROUTES */}
+                  {/* PROJECT MANAGEMENT PAGE ROUTES */}
                   <Route path="/managers/timesheet/dashboard" element={<ManagerDashboard />} />
                   <Route path="/admin-dashboard" element={<ManagerDashboard />} />
                   <Route path="/expense-list" element={<ExpenseTrackingScreen />} />

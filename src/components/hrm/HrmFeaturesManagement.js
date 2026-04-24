@@ -121,6 +121,8 @@ const HrmFeaturesManagement = () => {
         background="#eae3ff"
         lead={true}
         img={currentPage.image}
+        breadcrumbTitle={"HRM"}
+        link={"/hrm.html"}
       />
 
       <ProcessFlow data={currentPage.data} />

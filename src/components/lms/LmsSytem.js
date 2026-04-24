@@ -149,6 +149,8 @@ const LmsSytem = ({ data }) => {
         background={currentPage.background}
         img={currentPage.img}
         lead={true}
+        breadcrumbTitle={"Lab Management System"}
+        link={"/lms.html"}
       />
 
       <ProcessFlow

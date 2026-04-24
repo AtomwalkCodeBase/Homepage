@@ -4,6 +4,7 @@ import ContactCards from './ContactCards';
 import ContactCard from './ContactCard';
 import ContactHero from './ContactHero';
 import PatentAndPublications from "./PatentAndPublications";
+import { Whatsapp } from "react-bootstrap-icons";
 
 const Section = styled.section`
   padding: 100px 20px;
@@ -160,9 +161,9 @@ const ContactUs = () => {
             </InfoItem>
 
             <InfoItem>
-              <FiPhone />
+              <Whatsapp />
               <InfoText>
-                <strong>Phone</strong>
+                <strong>WhatsApp</strong>
                 +91-7259555003
               </InfoText>
             </InfoItem>

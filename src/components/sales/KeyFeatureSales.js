@@ -109,10 +109,10 @@ const KeyFeatureSales = () => {
       <MainTitle>
         Key Modules of Sales and Procurement
       </MainTitle>
-      <Subtitle>
+      {/* <Subtitle>
         Atomwalk Office is more than just an ERP; it’s a comprehensive solution that automates and
         optimizes your entire business operation. Our platform offers:
-      </Subtitle>
+      </Subtitle> */}
       <FeaturesContainer>
         <FeatureBox onClick={() => handelNvigation('saleslifecycle.html')}>
           <IconContainer bgColor="#D8F5E3">

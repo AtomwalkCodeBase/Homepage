@@ -14,7 +14,7 @@ const Container = styled.div`
   width: 100%;
   margin: auto;
   text-align: center;
-  background-color: #f5e9fd;
+  background-color: #ffffff;
   @media (max-width: 768px) {
     padding: 100px 30px;
   }
@@ -108,28 +108,28 @@ const PlanSuccess = () => {
           <FeatureIcon src={Money} alt="Centralized access" />
           <FeatureTitle>AI & Blockchain Integration:</FeatureTitle>
           <FeatureDescription>
-          Leverage advanced technologies for automated data entry, secure transactions, and business innovation.
+            Leverage advanced technologies for automated data entry, secure transactions, and business innovation.
           </FeatureDescription>
         </Feature>
         <Feature>
-          <FeatureIcon src={Real}alt="Vetted providers" />
+          <FeatureIcon src={Real} alt="Vetted providers" />
           <FeatureTitle>Real-time Insights:</FeatureTitle>
           <FeatureDescription>
-          Make informed decisions with real-time data, analytics, and reporting.
+            Make informed decisions with real-time data, analytics, and reporting.
           </FeatureDescription>
         </Feature>
         <Feature>
           <FeatureIcon src={Prefit} alt="Simplified workflows" />
           <FeatureTitle>Cost-Effective:</FeatureTitle>
           <FeatureDescription>
-          Low setup costs with no upfront investment and all updates included at no additional charge.
+            Low setup costs with no upfront investment and all updates included at no additional charge.
           </FeatureDescription>
         </Feature>
         <Feature>
           <FeatureIcon src={Login} alt="Simplified workflows" />
           <FeatureTitle>User-Friendly Interface</FeatureTitle>
           <FeatureDescription>
-          Simplified, integrated, and accessible from any device, anywhere.
+            Simplified, integrated, and accessible from any device, anywhere.
           </FeatureDescription>
         </Feature>
       </FeaturesContainer>

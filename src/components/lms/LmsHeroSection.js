@@ -165,21 +165,21 @@ const LmsHeroSection = () => {
         <Features>
           <FeatureItem
             background={background}
-            onMouseEnter={() => handleMouseEnter('linear-gradient(180deg, #bbfcc0, rgb(255 246 247))', HrAPP)}
-            onMouseLeave={handleMouseLeave}
-            onClick={() => { window.location.href = '/labequipmentmangement.html' }}
-          >
-            <FeatureIcon src={Hr} alt="HR" />
-            <FeatureText>Lab Equipment Management System: Precision Tracking for Lab Equipment Efficiency.</FeatureText>
-          </FeatureItem>
-          <FeatureItem
-            background={background}
             onMouseEnter={() => handleMouseEnter('linear-gradient(180deg, #edd4fc, rgb(255 246 247))', CrmApp)}
             onMouseLeave={handleMouseLeave}
             onClick={() => { window.location.href = '/labmanagement.html' }}
           >
             <FeatureIcon src={Crm} alt="CRM" />
             <FeatureText>Lab Management System: Streamlined Solutions for Modern Lab Operations.</FeatureText>
+          </FeatureItem>
+          <FeatureItem
+            background={background}
+            onMouseEnter={() => handleMouseEnter('linear-gradient(180deg, #bbfcc0, rgb(255 246 247))', HrAPP)}
+            onMouseLeave={handleMouseLeave}
+            onClick={() => { window.location.href = '/labequipmentmangement.html' }}
+          >
+            <FeatureIcon src={Hr} alt="HR" />
+            <FeatureText>Lab Equipment Management System: Precision Tracking for Lab Equipment Efficiency.</FeatureText>
           </FeatureItem>
           {/* <FeatureItem
             background={background}

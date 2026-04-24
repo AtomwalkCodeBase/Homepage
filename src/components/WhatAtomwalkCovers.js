@@ -1,18 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 import {
-    FiSmartphone,
-    FiCode,
-    FiCloud,
-    FiLayers,
-    FiServer,
-    FiShield
+  FiSmartphone,
+  FiCode,
+  FiCloud,
+  FiLayers,
+  FiServer,
+  FiShield
 } from 'react-icons/fi';
 
 // Section Container
 const SectionContainer = styled.div`
   padding: 100px 20px;
-  background: linear-gradient(135deg, #f9faff 0%, #f0f4ff 100%);
+  background: #ffffff;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -320,72 +320,72 @@ const FeatureDescription = styled.p`
 `;
 
 const WhatAtomwalkCovers = () => {
-    const features = [
-        {
-            icon: <FiCloud />,
-            title: "Cloud-Powered Business Solutions",
-            description: "Atomwalk delivers secure and scalable cloud services that ensure 24/7 accessibility and reliability for your enterprise.",
-            iconBg: "#ffe0f5",
-            iconColor: "#e84393"
-        },
-        {
-            icon: <FiCode />,
-            title: "Customized Software Development",
-            description: "From ERP modules to mobile apps, Atomwalk builds tailor-made software to address unique business requirements.",
-            iconBg: "#F0E7FF",
-            iconColor: "#9b59b6"
-        },
-        {
-            icon: <FiSmartphone />,
-            title: "Downloadable Mobile Applications & Software",
-            description: "Comprehensive mobile applications and enterprise software designed to support diverse business and operational needs.",
-            iconBg: "#D8F5E3",
-            iconColor: "#2ecc71"
-        },
-        {
-            icon: <FiLayers />,
-            title: "R&D in Business Automation",
-            description: "Our research focuses on innovating in ERP, HRM, and sustainable tech to streamline business automation and management.",
-            iconBg: "#FFF5D6",
-            iconColor: "#f1c40f"
-        },
-        {
-            icon: <FiServer />,
-            title: "Custom Hardware cum Software Development",
-            description: "Customized computer hardware cum software services tailored to meet specific business needs.",
-            iconBg: "#D6F0FF",
-            iconColor: "#2980b9"
-        },
-        {
-            icon: <FiShield />,
-            title: "Data Security & Compliance",
-            description: "Atomwalk ensures enterprise-grade security, regulatory compliance, and data protection across all business operations.",
-            iconBg: "#E6F4FF",
-            iconColor: "#1abc9c"
-        }
-    ];
+  const features = [
+    {
+      icon: <FiCloud />,
+      title: "Cloud-Powered Business Solutions",
+      description: "Atomwalk delivers secure and scalable cloud services that ensure 24/7 accessibility and reliability for your enterprise.",
+      iconBg: "#ffe0f5",
+      iconColor: "#e84393"
+    },
+    {
+      icon: <FiCode />,
+      title: "Customized Software Development",
+      description: "From ERP modules to mobile apps, Atomwalk builds tailor-made software to address unique business requirements.",
+      iconBg: "#F0E7FF",
+      iconColor: "#9b59b6"
+    },
+    {
+      icon: <FiSmartphone />,
+      title: "Downloadable Mobile Applications & Software",
+      description: "Comprehensive mobile applications and enterprise software designed to support diverse business and operational needs.",
+      iconBg: "#D8F5E3",
+      iconColor: "#2ecc71"
+    },
+    {
+      icon: <FiLayers />,
+      title: "R&D in Business Automation",
+      description: "Our research focuses on innovating in ERP, HRM, and sustainable tech to streamline business automation and management.",
+      iconBg: "#FFF5D6",
+      iconColor: "#f1c40f"
+    },
+    {
+      icon: <FiServer />,
+      title: "Custom Hardware cum Software Development",
+      description: "Customized computer hardware cum software services tailored to meet specific business needs.",
+      iconBg: "#D6F0FF",
+      iconColor: "#2980b9"
+    },
+    {
+      icon: <FiShield />,
+      title: "Data Security & Compliance",
+      description: "Atomwalk ensures enterprise-grade security, regulatory compliance, and data protection across all business operations.",
+      iconBg: "#E6F4FF",
+      iconColor: "#1abc9c"
+    }
+  ];
 
-    return (
-        <SectionContainer>
-            <MainTitle>Technology & Solutions We Offer</MainTitle>
-            <Subtitle>
-                Atomwalk provides a wide spectrum of technology-driven products and services,
-                empowering businesses with both software and hardware solutions.
-            </Subtitle>
+  return (
+    <SectionContainer>
+      <MainTitle>Technology & Solutions We Offer</MainTitle>
+      <Subtitle>
+        Atomwalk provides a wide spectrum of technology-driven products and services,
+        empowering businesses with both software and hardware solutions.
+      </Subtitle>
 
-            <FeaturesContainer>
-                {features.map((feature, index) => (
-                    <FeatureBox key={index} color={feature.iconColor}>
-                        <IconContainer bgColor={feature.iconBg} color={feature.iconColor}>
-                            {feature.icon}
-                        </IconContainer>
-                        <FeatureTitle>{feature.title}</FeatureTitle>
-                        <FeatureDescription>{feature.description}</FeatureDescription>
-                    </FeatureBox>
-                ))}
-            </FeaturesContainer>
-        </SectionContainer>
-    );
+      <FeaturesContainer>
+        {features.map((feature, index) => (
+          <FeatureBox key={index} color={feature.iconColor}>
+            <IconContainer bgColor={feature.iconBg} color={feature.iconColor}>
+              {feature.icon}
+            </IconContainer>
+            <FeatureTitle>{feature.title}</FeatureTitle>
+            <FeatureDescription>{feature.description}</FeatureDescription>
+          </FeatureBox>
+        ))}
+      </FeaturesContainer>
+    </SectionContainer>
+  );
 };
 
 export default WhatAtomwalkCovers;

@@ -407,7 +407,7 @@ const AwardsPage = () => {
   const reqdemo = () => {
     window.location.href = "/demo.html";
   };
-  
+
   const recognition = [
     {
       id: 1,
@@ -434,9 +434,18 @@ const AwardsPage = () => {
       organization: "Government of India, DPIIT",
       color: "#3b82f6",
       imageUrl: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/DIPP_Certificate1.jpg"
-    },    
+    },
+    {
+      id: 2,
+      title: "National Startup Awards 2026 Finalist",
+      description: "Atomwalk Technologies Private Limited was shortlisted as a finalist for the National Startup Awards 2026, a prestigious recognition of innovation and impact in the startup ecosystem. The event, held on National Startup Day (16 January 2026) at Bharat Mandapam, was graced by the Hon’ble Prime Minister Narendra Modi. This recognition highlights Atomwalk’s commitment to driving digital transformation through intelligent, scalable solutions across industries.",
+      year: "2026",
+      organization: "Government of India",
+      color: "#22c55e",
+      imageUrl: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/bhartmandap.png"
+    }
   ];
-  
+
   const awards = [
     {
       id: 1,
@@ -468,7 +477,7 @@ const AwardsPage = () => {
         <HeaderSection>
           <PageTitle>Our Awards & Recognitions</PageTitle>
           <PageSubtitle>
-            Celebrating excellence and innovation in technology. Our commitment to advancing 
+            Celebrating excellence and innovation in technology. Our commitment to advancing
             digital solutions has been recognized by leading organizations worldwide.
           </PageSubtitle>
         </HeaderSection>
@@ -487,8 +496,8 @@ const AwardsPage = () => {
                             Loading certificate...
                           </ImagePlaceholder>
                         )}
-                        <CertificateImage 
-                          src={recognition.imageUrl} 
+                        <CertificateImage
+                          src={recognition.imageUrl}
                           alt={`${recognition.title} certificate`}
                           onLoad={() => handleImageLoad(recognition.id)}
                           style={{ display: imageLoaded[recognition.id] ? 'block' : 'none' }}
@@ -526,8 +535,8 @@ const AwardsPage = () => {
                             Loading award...
                           </ImagePlaceholder>
                         )}
-                        <CertificateImage 
-                          src={award.imageUrl} 
+                        <CertificateImage
+                          src={award.imageUrl}
                           alt={`${award.title} certificate`}
                           onLoad={() => handleImageLoad(award.id)}
                           style={{ display: imageLoaded[award.id] ? 'block' : 'none' }}
@@ -554,8 +563,8 @@ const AwardsPage = () => {
         <CTASection>
           <CTATitle>Celebrating Excellence Together</CTATitle>
           <CTAText>
-            At Atomwalk Technologies, our achievements reflect our relentless dedication to innovation, 
-            sustainability, and customer success. Join us as we continue our mission to 
+            At Atomwalk Technologies, our achievements reflect our relentless dedication to innovation,
+            sustainability, and customer success. Join us as we continue our mission to
             transform enterprises with next-generation digital solutions.
           </CTAText>
 

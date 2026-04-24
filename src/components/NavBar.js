@@ -190,7 +190,8 @@ export const NavBar = () => {
     "project-report", "DoctorDashboard", "IPDappointments", "patient-admission",
     "my-training", "fmsdashboard", "tasks", "customerList", "ticketList",
     "sampledashboard", "supervisordashboard", "samplestatus", "/equipmentBooking",
-    "/upload", "/inventoryUpdate", "/expense-list",
+    "/upload", "/inventoryUpdate", "/expense-list", "/channel-partners/list",
+    "/finance/employee-verification",
   ];
 
   useEffect(() => {

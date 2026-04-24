@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { FiZap, FiClock, FiCheckCircle, } from 'react-icons/fi';
 import { theme } from '../../styles/Theme';
 import StatsCard from '../../components/StatsCard';
-import { buildActivityGroupMap, buildStatsSummary, deriveActivityStatusForDate, filterActivities, formatAPITime, formatDate, formatMonthLabel, formatToApiDate, formatToDDMMYYYY, formatWeekLabel, getMonthRange, getStatusLabelVariant, getTodayApiDateStr, mapEmployeeCustomerOrderItemData, parseApiDate } from './utils/utils';
+import { buildActivityGroupMap, buildStatsSummary, deriveActivityStatusForDate, filterActivities, formatAPITime, formatDate, formatMonthLabel, formatToApiDate, formatToDDMMYYYY, formatWeekLabel, getStatusLabelVariant, getTodayApiDateStr, mapEmployeeCustomerOrderItemData, parseApiDate } from './utils/utils';
 import Badge from '../../components/Badge';
 import { getEmpAllocationData, getemployeeList, processTimesheetApproval } from '../../services/productServices';
 import PaginationComponent from '../../components/Pagination';
@@ -332,14 +332,30 @@ const ManagerDashboard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const currentDate = useMemo(() => {
-    const selectedDateObj = parseApiDate(selectedDate);
-    const currentMonth = new Date().getMonth();
-    const currentYear = new Date().getFullYear();
-    const selectedMonth = selectedDateObj.getMonth();
-    const selectedYear = selectedDateObj.getFullYear();
-    const offset = (selectedYear - currentYear) * 12 + (selectedMonth - currentMonth);
-    return getMonthRange({ type: "current", mode: "month", offset });
-  }, [activeTab, selectedDate]);
+    const selectedDateObj = parseApiDate(selectedDate) || new Date();
+    
+    const day = selectedDateObj.getDay();
+    // Assuming week starts on Sunday (0)
+    const diffToWeekStart = day;
+    
+    const start = new Date(selectedDateObj);
+    start.setDate(selectedDateObj.getDate() - diffToWeekStart);
+    
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+
+    const format = (date) => {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, "0");
+      const d = String(date.getDate()).padStart(2, "0");
+      return `${y}-${m}-${d}`;
+    };
+
+    return {
+      start: format(start),
+      end: format(end),
+    };
+  }, [selectedDate]);
 
   const [selectedSessionItem, setSelectedSessionItem] = useState(null);
   const [sessionDayLogStatuses, setSessionDayLogStatuses] = useState({});
@@ -377,7 +393,7 @@ const ManagerDashboard = () => {
 
   const statsSummary = useMemo(() => {
     return buildStatsSummary(derivedActivities);
-  }, [derivedActivities]);
+  }, [derivedActivities, pathname]);
 
   const auditSummary = derivedActivities.reduce(
     (acc, item) => {
@@ -471,6 +487,8 @@ const ManagerDashboard = () => {
       setSearchTerm('');
       setCurrentPage(1);
       setM_Employee_id(null);
+      setAllEmployeeAllocationData([]);
+      setWeeklyTimesheetSummaryData([]);
     }
   }, [pathname]);
 
@@ -1094,6 +1112,7 @@ const ManagerDashboard = () => {
                   currentPage={currentPage}
                   onPageChange={handlePageChange}
                   siblingCount={2}
+                  listName='audits'
                 />
                 <TableActions>
                   <Button variant="outline" size="sm" onClick={() => handleAuditExport(filteredActivities)}>

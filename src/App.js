@@ -118,6 +118,8 @@ import ManagerDashboard from "./pages/ProjectManagement/ManagerDashboard";
 import NewsDetail from "./components/NewsDetail";
 import Labusecases from "./components/UseCase/Labusecases";
 import Facilityusecase from "./components/UseCase/Facilityusecase";
+import FinanceUserScreen2 from "./pages/ProjectManagement/FinanceUserScreen2";
+import ChannelPatnerListScreen from "./pages/ProjectManagement/ChannelPatnerListScreen"; 
 // import SupervisorDashboard from "./pages/fishIndurstry/SupervisorDashboard";
 // import MyAppriaisal from "./pages/MyAppriaisal";
 
@@ -278,9 +280,6 @@ function App() {
                   <Route path="/holidays" element={<HolidayCalendar />} />
                   {/* <Route path="/timesheet" element={<TimeSheetManagement />} /> */}
                   <Route path="/timesheet" element={<TimesheetRouter />} />
-                  <Route path="/managers/timesheet/dashboard" element={<ManagerDashboard />} />
-                  <Route path="/admin-dashboard" element={<ManagerDashboard />} />
-                  <Route path="/expense-list" element={<ExpenseTrackingScreen />} />
                   <Route path="/shifts" element={<ShiftScheduling />} />
                   <Route path="/claims" element={<MyClaims />} />
                   <Route path="/appointees" element={<Appointees />} />
@@ -311,6 +310,13 @@ function App() {
                   <Route path="/tasks" element={<TaskScreen />} />
                   <Route path="/customerList" element={<CustomerList />} />
                   <Route path="/ticketList" element={<TaskScreen />} />
+
+                        {/* PROJECT MANAGEMENT PAGE ROUTES */}
+                  <Route path="/managers/timesheet/dashboard" element={<ManagerDashboard />} />
+                  <Route path="/admin-dashboard" element={<ManagerDashboard />} />
+                  <Route path="/expense-list" element={<ExpenseTrackingScreen />} />
+                  <Route path="/channel-partners/list" element={<ChannelPatnerListScreen />} />
+                  <Route path="/finance/employee-verification" element={<FinanceUserScreen2 />} />
                 </Route>
 
                 {/* Catch All */}

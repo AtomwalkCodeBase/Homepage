@@ -703,7 +703,7 @@ const Dashboard = () => {
   // Fetch data from various services
   useEffect(()=>{
     if(companyInfo.business_type === "APM"){
-      navigation(profile?.is_manager ? "/managers/timesheet/dashboard" : "/timesheet")
+      navigation(profile?.grade_level >= 700 ? "/channel-partners/list" : (profile?.is_manager ? "/managers/timesheet/dashboard" : "/timesheet"))
     }
   },[companyInfo])
   useEffect(() => {

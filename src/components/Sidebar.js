@@ -25,6 +25,7 @@ import {
   FaKey,
   FaTasks,
   FaList,
+  FaUserCheck,
 } from "react-icons/fa"
 import { SiGooglecalendar } from "react-icons/si"
 import { PiListPlusFill } from "react-icons/pi"
@@ -540,6 +541,7 @@ const Sidebar = ({ onToggle, initialOpen = false }) => {
           items: [
             { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
             ...(companyInfo.business_type === "APM" && profile.grade_level >= 500 ? [{ path: "/admin-dashboard", name: "Admin Dashboard", icon: <ImUserTie /> }] : []),
+            ...(companyInfo.business_type === "APM" && profile.grade_level >= 700 ? [{ path: "/channel-partners/list", name: "Channel Partners", icon: <FaUserCheck /> }] : []),
             ...(companyInfo.business_type === "APM" && profile?.is_manager ? [{ path: "/managers/timesheet/dashboard", name: "Manager Dashboard", icon: <RiDashboardFill /> }] : []),
             { path: "/timesheet", name: `${companyInfo.business_type === "APM" ? "Dashboard" : "Timesheet"}`, icon: <FaChartBar /> },
             ...(companyInfo.business_type === "APM" && profile.grade_level > 100 ? [{ path: "/expense-list", name: "Expense Item List", icon: <FaMoneyBillWave /> }] : []),
@@ -695,6 +697,7 @@ const Sidebar = ({ onToggle, initialOpen = false }) => {
           { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },
           ...(companyInfo.business_type === "APM" && profile?.is_manager ? [{ path: "/managers/timesheet/dashboard", name: "Manager Dashboard", icon: <RiDashboardFill /> }] : []),
           ...(companyInfo.business_type === "APM" && profile.grade_level >= 500 ? [{ path: "/admin-dashboard", name: "Admin Dashboard", icon: <ImUserTie /> }] : []),
+          ...(companyInfo.business_type === "APM" && profile.grade_level >= 700 ? [{ path: "/channel-partners/list", name: "Channel Partners", icon: <FaUserCheck /> }] : []),
           // ...(companyInfo.business_type === "APM" ? [{ path: "/retainer-dashboard", name: "Retainer Dashboard", icon: <RiDashboardFill /> }] : []),
           ...(profile?.is_manager && (companyInfo.business_type === "APM" ? profile?.grade_level > 300 : true) ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : []),
           { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },

@@ -174,6 +174,8 @@ export default function Footer2() {
     "samplestatus",
     "supervisordashboard",
     "/expense-list",
+    "/channel-partners/list",
+    "/finance/employee-verification",
   ];
 
   useEffect(() => {
@@ -270,6 +272,9 @@ export default function Footer2() {
                   <li><a href="/blog.html">Blog</a></li>
                   <li>
                     <a href="https://atomwalk.netlify.app/login">Atomwalk Folder</a>
+                  </li>
+                  <li>
+                    <a href="/retainer/login">Channel Partner Login</a>
                   </li>
 
                 </Links>

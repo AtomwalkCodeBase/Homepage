@@ -468,6 +468,9 @@ const GovtIDProof = proofType(employee.ref_govt_id_number)
         ) : isImageUrl(employee.emp_file_1) ? (
           <FilePreviewBox>
             <FileImage src={employee.emp_file_1} alt="ID Document" />
+            <FileDocRow href={employee.emp_file_1} target="_blank" rel="noopener noreferrer">
+                              <FiEye /><span>Open Full Image</span><FiExternalLink />
+                            </FileDocRow>
           </FilePreviewBox>
         ) : (
           <FileDocRow href={employee.emp_file_1} target="_blank" rel="noopener noreferrer">

@@ -498,7 +498,7 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavi
     !isCompleted &&              // Not completed
     !hasOpenSession; 
 
-    const finalHideButtons = isCompleted || shouldHidePrimaryButton;
+    const finalHideButtons = shouldHidePrimaryButton;
 
   // Hide buttons only when:
   // - Audit date is passed AND is non-negotiable AND there's NO open session
@@ -621,7 +621,8 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavi
             </ButtonGroup>
           )}
 
-          {!finalHideButtons && (
+         {(activity?.original_P?.status === "S" || activity?.original_P?.status === "C") &&
+          !finalHideButtons && (
             <TodayActionButtons
               activity={activity}
               todayCheckedIn={todayCheckedIn}
@@ -846,6 +847,7 @@ export const TodayActionButtons = ({
     .map(([, log]) => log);
 
   const hasOngoingSessionToday = todayLogs.some((log) => log.check_in && !log.check_out);
+  const isActivityCompleted = activity?.original_A?.status === "S";
 
   // for Retainer flow
   if (retainer) {
@@ -890,12 +892,17 @@ export const TodayActionButtons = ({
   }
 
   // 1. Fully complete
-  if (complete) {
+  if (isActivityCompleted) {
     return (<ButtonGroup>
-      <StatusMessage type="success">Activity is completed</StatusMessage>
-    {activity?.original_A?.status !== "A" && <PrimaryBtn size="md" onClick={() => onAction({ type: 'reverse', activity, retainerPage, retainer, onRetainerUpdate })}>
+      {/* <StatusMessage type="success">Activity is completed</StatusMessage> */}
+        <PrimaryBtn size="md" onClick={() => onAction({ type: "start_a", activity, retainerPage, retainer, isMaxAuditEndDatePass: showAuditExceededMessage })}>
+          <PlayCircle /> Start Again
+        </PrimaryBtn>
+
+    {activity?.original_A?.status !== "A" && 
+    <SecondaryBtn size="md" onClick={() => onAction({ type: 'reverse', activity, retainerPage, retainer, onRetainerUpdate })}>
           <GiBackwardTime /> Reverse Audit Status
-        </PrimaryBtn>}
+        </SecondaryBtn>}
     </ButtonGroup>);
   }
 
@@ -904,7 +911,7 @@ export const TodayActionButtons = ({
     return (
       <ButtonGroup>
         <PrimaryBtn size="md" onClick={() => onAction({ type: "checkout_yesterday", activity, retainerPage, retainer, onRetainerUpdate })}>
-          <CheckCircle2 /> Checkout For Yesterday
+          <CheckCircle2 /> Close Check-in
         </PrimaryBtn>
         <SecondaryBtn size="lg" onClick={() => onAction({ type: "complete_y", activity, retainerPage, retainer, onRetainerUpdate })}>
           <CheckCircle2 /> Completed

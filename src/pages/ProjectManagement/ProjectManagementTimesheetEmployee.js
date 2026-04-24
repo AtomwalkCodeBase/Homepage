@@ -435,7 +435,11 @@ const ProjectManagementTimesheetEmployee = () => {
       return false
     } catch (error) {
       const backendMessage = error?.response?.data?.error || error?.response?.data?.message || "";
-      toast.error(backendMessage || "Unable to submit activity. Try again later..")
+        if (backendMessage.includes("No Time Sheet record found for previous Date") || backendMessage.includes("E00001")) {
+          toast.error("Previous activity record was incomplete due to missing check-in days. The system has marked earlier records as completed. You can now click 'Start Again' to continue the activity.");
+        }else {
+          toast.error(backendMessage || "Unable to submit activity. Try again later..")
+        }
       await fetchEmpAllocationData();
       // toast.error("Something went wrong")
       return false
@@ -520,6 +524,20 @@ const ProjectManagementTimesheetEmployee = () => {
         return submit({ project: activity, mode: "ADD" });
       },
     },
+    start_a: {
+      title: "Start Activity",
+      message: "Are you sure, Again you want to start the activity ?",
+      handler: async (activity, submit, refresh, retainerPage) => {
+        if (!retainerPage) {
+          const hasActivityStart = employeeActivity.some((p) => p.todaysStatus === "Active" || p.hasPendingCheckout === true);
+          if (hasActivityStart) {
+            toast.info("Complete pending activity first.");
+            return false;
+          }
+        }
+        return submit({ project: activity, mode: "ADD" });
+      },
+    },
 
     resume: {
       title: "Resume Activity",
@@ -591,6 +609,7 @@ const ProjectManagementTimesheetEmployee = () => {
   const handleActivityAction = ({ type, activity, retainerPage, retainer, onRetainerUpdate, isMaxAuditEndDatePass }) => {
     const action = ACTIVITY_ACTIONS[type];
     const overrideMessages = {
+      start_a: `Audit end date has passed.${'\n\n'} Are you sure again you want to start this activity?`,
       start: `Audit end date has passed.${'\n\n'} Are you sure you want to start this activity?`,
       resume: `Audit end date has passed.${'\n\n'} Are you sure you want to resume this activity?`,
     };

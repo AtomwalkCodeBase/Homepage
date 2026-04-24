@@ -333,16 +333,12 @@ const ManagerDashboard = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const currentDate = useMemo(() => {
     const selectedDateObj = parseApiDate(selectedDate) || new Date();
-    
-    const day = selectedDateObj.getDay();
-    // Assuming week starts on Sunday (0)
-    const diffToWeekStart = day;
-    
+
     const start = new Date(selectedDateObj);
-    start.setDate(selectedDateObj.getDate() - diffToWeekStart);
-    
-    const end = new Date(start);
-    end.setDate(start.getDate() + 6);
+    start.setDate(selectedDateObj.getDate() - 5);
+
+    const end = new Date(selectedDateObj);
+    end.setDate(selectedDateObj.getDate() + 5);
 
     const format = (date) => {
       const y = date.getFullYear();

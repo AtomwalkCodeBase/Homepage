@@ -326,13 +326,13 @@ export const buildActivityGroupMap = (apiData = []) => {
   return Object.values(groups).map(group => {
     const allA = group.allAEntries;
 
-    const original_A =
-      allA.length === 0
-        ? null
-        : allA.reduce((prev, curr) =>
-            Number(curr.id) > Number(prev.id) ? curr : prev
-          );
+    // const original_A = allA.length === 0 ? null : allA.reduce((prev, curr) =>  Number(curr.id) > Number(prev.id) ? curr : prev );
+    const original_A = allA.length === 0 ? null : allA.reduce((prev, curr) => {
+        const prevDate = parseApiDate(prev.start_date);
+        const currDate = parseApiDate(curr.start_date);
 
+        return currDate > prevDate ? curr : prev;
+      });
     return {
       key: group.key,
       original_P: group.original_P,
@@ -395,30 +395,48 @@ export const normalizeProjects = (apiData = []) => {
         const effort_unit = (A && A.effort_unit) ? A.effort_unit :
             (allA.length > 0 && allA.find(a => a.effort_unit)?.effort_unit) || null;
 
-        const complete = A?.status && A.status !== "N";
-
         let project_period_status = "Planned";
-        const anyAHasCompleted = allA.some(x => x && (x.status === "S" || (x.status_display && x.status_display.toUpperCase() === "SUBMITTED")));
-        if (complete || anyAHasCompleted) {
-            project_period_status = "Completed";
-        } else if (allA && allA.length > 0) {
-            project_period_status = "In Progress";
-        } else if (P) {
-            if (planned_end_date) {
-                const end = parseApiDate(planned_end_date);
-                const today = parseApiDate(todayApiStr);
-                if (end && today && end.getTime() < today.getTime()) {
-                    project_period_status = "Pending";
-                } else {
-                    project_period_status = "Planned";
-                }
-            } else {
-                project_period_status = "Planned";
-            }
+    let complete = false;
+    let isParentCompleted = false;
+    
+    // Determine status based on Parent (P) activity_type
+    if (P && P.activity_type === "P") {
+      // Check if Parent status is Completed (other than "S")
+      if (P.status !== "S") {
+        // Parent status is "C" or other - COMPLETED
+        project_period_status = "Completed";
+        complete = true;
+        isParentCompleted = true;
+      } else {
+        // Parent status is "S" - Check if there are any Activity entries
+        const hasActivityEntries = allA && allA.length > 0;
+        
+        if (hasActivityEntries) {
+          // Has Activity entries - IN PROGRESS
+          project_period_status = "In Progress";
+          complete = false;
+          isParentCompleted = false;
         } else {
-            // If neither P nor A exist (shouldn't happen), mark Pending by default
-            project_period_status = "Pending";
+          // No Activity entries - PLANNED
+          project_period_status = "Planned";
+          complete = false;
+          isParentCompleted = false;
         }
+      }
+    } else if (A) {
+      // For Activity (A) records without parent
+      const hasAnyActivity = A.ts_data_list && A.ts_data_list.length > 0;
+      if (hasAnyActivity) {
+        project_period_status = "In Progress";
+        complete = false;
+      } else {
+        project_period_status = "Planned";
+        complete = false;
+      }
+    } else {
+      project_period_status = "Pending";
+    }
+
 
         const todayLog = day_logs[todayApiStr] || null;
         let todaysStatus = "Planned";

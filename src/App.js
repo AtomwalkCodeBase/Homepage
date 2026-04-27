@@ -125,6 +125,7 @@ import AbusePolicy from "./components/Policy/AbusePolicy";
 import SecurityWhitepaper from "./components/Policy/SecurityWhitepaper";
 import SharedResponsibility from "./components/Policy/SharedResponsibility";
 import AntiSpamPolicy from "./components/Policy/AntiSpamPolicy";
+import PartnershipInquiries from "./components/PartnershipInquiries";
 // import SupervisorDashboard from "./pages/fishIndurstry/SupervisorDashboard";
 // import MyAppriaisal from "./pages/MyAppriaisal";
 
@@ -249,6 +250,7 @@ function App() {
                 <Route path="/security-whitepaper" element={<SecurityWhitepaper />} />
                 <Route path="/shared-responsibility" element={<SharedResponsibility />} />
                 <Route path="/anti-spam-policy" element={<AntiSpamPolicy />} />
+                <Route path="/PartnershipInquiries" element={<PartnershipInquiries />} />
 
                 {/* Login Route */}
                 <Route path="/login" element={<Login />} />

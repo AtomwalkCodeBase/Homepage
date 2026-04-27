@@ -6,6 +6,7 @@ import FeatureBenifits from "../FeatureBenifits";
 import KeyFeaturelems from "./KeyFeaturelems";
 import NewFAQSection from "../hrm/NewFAQSection";
 import { Helmet } from "react-helmet-async";
+import LetsConnect from "../LetsConnect";
 const Section = styled.section`
   display: flex;
   justify-content: space-between;
@@ -100,7 +101,8 @@ const LabEqupmentmanagement = () => {
         <meta name="keywords" content="Centralized Equipment Management, User Access & Permission Management, Equipment Integration & Monitoring, Calibration & Maintenance Scheduling, Customized Reports & Data Security, Cloud-based Lab Management System" />
         <link rel="canonical" href="https://home.atomwalk.com/labequipmentmangement.html" />
       </Helmet>
-      <Section>
+      <LetsConnect title={"Lab Equipment Management"} description={"Atomwalk LEM helps you efficiently manage your equipments. Atomwalk LEM offers easy user creation, permission management, user access management, integration with equipments, customized reporting systems, web browser access, Monitoring and scheduling regular calibration/maintenance of equipments, Automatic backup with multiple servers."} background={"#d6e7ff"} img={mainImage} lead={true}></LetsConnect >
+      {/* <Section>
         <AbstractShape src={abstractShape} alt="Abstract Shape" />
         <TextContainer>
           <Title>Lab Equipment Management System</Title>
@@ -115,7 +117,7 @@ const LabEqupmentmanagement = () => {
         <ImageContainer>
           <Image src={mainImage} alt="Laboratory Technician" />
         </ImageContainer>
-      </Section>
+      </Section> */}
       <KeyFeaturelems></KeyFeaturelems>
       <FeatureBenifits data={'Equipment'}></FeatureBenifits>
       <NewFAQSection data={"equipment"}></NewFAQSection>

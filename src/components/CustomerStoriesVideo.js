@@ -370,7 +370,7 @@ const data = [
     image:
       "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Ankur.png",
     video:
-      "https://youtu.be/c63g5G_aMT8?si=S_BHRN8RWEWSzRy6",
+      "https://youtu.be/xb6bQxAB0IM?si=-Y3TXvrXLa3mRI_c",
   },
   {
     title: "Purpose in Practice: Leadership driving data success",

@@ -6,6 +6,7 @@ import FeatureBenifits from "../FeatureBenifits";
 import KeyFetureLms from "./KeyFetureLms";
 import NewFAQSection from "../hrm/NewFAQSection";
 import { Helmet } from "react-helmet-async";
+import LetsConnect from "../LetsConnect";
 // import labApparatus from "./../assets/img/machine.png"; // The lab apparatus image
 
 // Styled Components
@@ -109,24 +110,13 @@ const LabManagement = () => {
         <meta name="keywords" content="lab management software, lab manager software, lab software, lab management software free , LIMS system, best LIMS software" />
         <link rel="canonical" href="https://home.atomwalk.com/labmanagement.html" />
       </Helmet>
-      <Section>
+      <LetsConnect title={"Lab Management System"} description={"Atomwalk Laboratory Management System (LMS) is a powerful solution that simplifies lab operations.It helps manage experiments, workflows, and data efficiently in one place. From test management to reporting and data storage, it streamlines every process."} background={"#d6e7ff"} img={mainImage} lead={true}></LetsConnect >
+      {/* <Section>
         <AbstractShape src={abstractShape} alt="Abstract Shape" />
-        <TextContainer>
-          <Title>Lab Management System</Title>
-          <Description>
-            Atomwalk Laboratory Management System (LMS) is a sophisticated software
-            solution designed to tackle the multifaceted challenges faced by laboratories. LMS
-            efficiently manages entire spectrum of lab processes. You can manage your
-            laboratory experimental designs and their associated data, streamlining operations
-            by automating workflows, managing tests/ experiments/ protocols, handling reporting
-            procedures and maintaining efficient data storage and retrieval.
-          </Description>
-          <Button onClick={() => { window.location.href = "/userManagement.html" }}>Learn more</Button>
-        </TextContainer>
         <ImageContainer>
           <Image src={mainImage} alt="Laboratory Technician" />
         </ImageContainer>
-      </Section>
+      </Section> */}
       <KeyFetureLms></KeyFetureLms>
       <FeatureBenifits data={'LMS'}></FeatureBenifits>
       <NewFAQSection data={"equipment"}></NewFAQSection>

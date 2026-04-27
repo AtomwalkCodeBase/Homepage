@@ -10,7 +10,7 @@ const ProcessHeroPage = () => {
   return (
     <>
       <LetsConnect
-        title={"Smarter Workorder Management"}
+        title={"Project Manufacturing Management"}
         description={"Plan, track, and execute projects with real-time visibility—keep teams aligned and deliver on time."}
         background={"#ADEBF3"}
         lead={true}

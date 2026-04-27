@@ -60,6 +60,11 @@ const Container = styled.div`
   height: 90vh;
   position: relative;
   overflow: hidden;
+  
+  @media (max-width: 768px) {
+    height: 70vh; /* Reduce height on mobile */
+    min-height: 500px; /* Set minimum height */
+  }
 `;
 
 const BackgroundContainer = styled.div`
@@ -109,6 +114,7 @@ const Content = styled.div`
     flex-direction: column;
     justify-content: center;
     text-align: center;
+    padding: 0 5%; /* Reduce padding on mobile */
   }
 `;
 
@@ -129,15 +135,21 @@ const Title = styled.h1`
   }
 
   @media (max-width: 768px) {
-    font-size: 2.2rem;
+    font-size: 1.8rem; /* Smaller font size */
+    width: 100%; /* Full width instead of 120% */
+    margin-bottom: 15px;
   }
 `;
-
 const Desc = styled.p`
   font-size: 1.3rem;
   margin-bottom: 30px;
   opacity: 0.9;
   line-height: 1.5;
+  
+  @media (max-width: 768px) {
+    font-size: 1rem; /* Smaller font size */
+    margin-bottom: 20px;
+  }
 `;
 
 const Button = styled.button`
@@ -170,8 +182,12 @@ const Button = styled.button`
   &:hover {
     border-color: #e31837;
   }
+  
+  @media (max-width: 768px) {
+    padding: 10px 24px;
+    font-size: 0.9rem;
+  }
 `;
-
 const RightNav = styled.div`
   position: absolute;
   right: 40px;
@@ -181,19 +197,14 @@ const RightNav = styled.div`
   flex-direction: column;
   gap: 30px;
   z-index: 3;
-`;
-
-const Dot = styled.div`
-  width: ${(props) => (props.active ? "32px" : "12px")};
-  height: 3px;
-  background: ${(props) => (props.active ? "#e31837" : "rgba(255,255,255,0.5)")};
-  transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-  cursor: pointer;
-  border-radius: 2px;
   
-  &:hover {
-    background: ${(props) => (props.active ? "#e31837" : "rgba(255,255,255,0.8)")};
-    width: ${(props) => !props.active && "18px"};
+  @media (max-width: 768px) {
+    right: 15px; /* Move closer to edge */
+    gap: 20px;
+    top: auto;
+    bottom: 100px;
+    transform: none;
+    flex-direction: row; /* Make dots horizontal on mobile */
   }
 `;
 
@@ -204,6 +215,12 @@ const BottomNav = styled.div`
   display: flex;
   gap: 20px;
   z-index: 3;
+  
+  @media (max-width: 768px) {
+    right: 20px;
+    bottom: 20px;
+    gap: 12px;
+  }
 `;
 
 const Arrow = styled.div`
@@ -229,7 +246,41 @@ const Arrow = styled.div`
   &:active {
     transform: scale(0.95);
   }
+  
+  @media (max-width: 768px) {
+    width: 36px;
+    height: 36px;
+    font-size: 24px;
+  }
 `;
+
+const Dot = styled.div`
+  width: ${(props) => (props.active ? "32px" : "12px")};
+  height: 3px;
+  background: ${(props) => (props.active ? "#e31837" : "rgba(255,255,255,0.5)")};
+  transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  cursor: pointer;
+  border-radius: 2px;
+  
+  &:hover {
+    background: ${(props) => (props.active ? "#e31837" : "rgba(255,255,255,0.8)")};
+    width: ${(props) => !props.active && "18px"};
+  }
+  
+  @media (max-width: 768px) {
+    width: ${(props) => (props.active ? "24px" : "8px")};
+    height: 3px;
+    
+    &:hover {
+      width: ${(props) => !props.active && "14px"};
+    }
+  }
+`;
+
+
+
+
+
 
 export default function Carousel() {
   const [index, setIndex] = useState(0);

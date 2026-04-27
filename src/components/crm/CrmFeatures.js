@@ -207,23 +207,23 @@ const CrmFeatures = ({ data }) => {
   const features = isClaim === 'leadManagement'
     ? [
       {
-        title: 'Streamlined Lead Engagement',
-        subtitle: 'Effortless Management for Higher Conversions',
+        title: 'Product Interest & Demand Signal Tracking',
+        subtitle: 'Understand Buyer Intent and Drive Smarter Engagement',
         description:
-          'This fully integrated dashboard in the Atomwalk CRM application provides users with an intuitive workspace to access and manage lead details effortlessly. Users can quickly add new leads, view a comprehensive lead list, and upload data in bulk to keep information up-to-date. Additionally, tasks can be assigned to specific leads for timely follow-ups, while a detailed Lead Performance Dashboard offers insight into engagement metrics and conversion progress. The "Add Product Interest" feature lets users associate specific product interests with each lead, enhancing personalization and targeted engagement. With these functionalities in one place, the Atomwalk CRM helps optimize lead nurturing and boosts overall conversion rates.',
-        benefits: ['Centralized Lead Insights', 'Seamless Team Collaboration', 'Optimized Engagement Strategies'],
-        imageSrc: img1,  // Replace with your relevant image variable
-        imageAlt: 'Lead Engagement Overview',
+          'Atomwalk CRM enables users to capture, track, and analyze product interests and demand signals across every lead. With a centralized dashboard, users can easily manage lead data, add new entries, and upload information in bulk while continuously monitoring engagement patterns. The platform allows teams to associate specific product interests with each lead, helping identify buying intent and prioritize high-potential opportunities. Integrated activity tracking and performance insights further empower users to tailor outreach strategies, ensuring more relevant interactions and improved conversion outcomes.',
+        benefits: ['Accurate Demand Insights', 'Targeted Product Mapping', 'Data-Driven Engagement'],
+        imageSrc: img1,
+        imageAlt: 'Product Interest and Demand Signal Tracking Overview',
         imgPosition: 'right',
       },
       {
-        title: 'Enhanced Lead Detailing and Task Management',
-        subtitle: 'Boost Productivity with Organized Workflow',
+        title: 'Activity & Follow-up Planning',
+        subtitle: 'Stay Organized and Never Miss an Opportunity',
         description:
-          'Atomwalk CRM enables users to update lead profiles with detailed information, including lead source, contact data, and preferences, ensuring a personalized approach to engagement. Tasks can be assigned to leads for follow-ups, meetings, or next steps, with reminders to maintain timely actions. Users can also record product interests to tailor interactions to specific requirements and even reassign ownership of leads to ensure proper management. These features provide a structured workflow, fostering collaboration and enhancing lead conversion outcomes.',
-        benefits: ['Detailed Lead Profiles', 'Efficient Task Management', 'Seamless Ownership Reassignment'],
-        imageSrc: img2,  // Replace with your relevant image variable
-        imageAlt: 'Lead Enrichment and Task Management Overview',
+          'Atomwalk CRM helps users efficiently plan, track, and manage all lead-related activities in one place. From scheduling follow-ups and meetings to assigning tasks with timely reminders, every interaction is well-organized to ensure consistent engagement. Users can enrich lead profiles with key details such as contact information, preferences, and product interests, enabling more personalized communication. Additionally, seamless ownership reassignment ensures that leads are always handled by the right team member, improving collaboration and boosting conversion outcomes.',
+        benefits: ['Smart Activity Planning', 'Timely Follow-up Reminders', 'Flexible Lead Ownership'],
+        imageSrc: img2,
+        imageAlt: 'Activity and Follow-up Planning Overview',
         imgPosition: 'left',
       },
       {
@@ -237,14 +237,14 @@ const CrmFeatures = ({ data }) => {
         imgPosition: 'right',
       },
       {
-        title: 'Get Complete Context on Every Lead',
-        subtitle: 'Personalized and Informed Lead Follow-ups',
+        title: 'Quotation Workflow Management',
+        subtitle: 'Create and Manage Quotes with Ease',
         description:
-          'To maximize the potential of lost leads, implement follow-up automation to re-engage them after a set period, such as three months, with “win-back” campaigns that offer special promotions or address any unmet needs. Keep detailed records of why leads were marked as lost (e.g., budget constraints, timing, lack of interest) to enable tailored future follow-up strategies. Design re-engagement workflows in the CRM to tag lost leads, retarget them, and monitor for any shifts in their engagement levels. Analyzing lost lead data periodically can reveal common reasons for drop-off, providing insights to refine marketing and sales approaches. Maintain lost leads as a distinct segment in the CRM, allowing for strategic re-engagement with new products or services, ensuring they stay accessible for potential future opportunities.'
-        , benefits: ['Comprehensive Lead History', 'Cross-Departmental Integration', 'Informed Outreach'],
-        imageSrc: img1,  // Replace with your relevant image variable
-        imageAlt: 'Lead Context',
-        imgPosition: 'right',
+          'Atomwalk CRM makes it easy to create and manage quotations in one place. Users can generate quotes quickly, monitor their status, and follow up on time to close deals faster.',
+        benefits: ['Quick Quote Creation', 'Simple Management', 'Faster Closures'],
+        imageSrc: img1,
+        imageAlt: 'Quotation Workflow Management Overview',
+        imgPosition: 'left',
       },
       {
         title: 'Streamline Opportunity to Order Conversion',
@@ -258,7 +258,7 @@ const CrmFeatures = ({ data }) => {
         ],
         imageSrc: img1,  // Replace with your relevant image variable
         imageAlt: 'Opportunity to Order Conversion Process',
-        imgPosition: 'left',
+        imgPosition: 'right',
       }
 
     ] : isClaim === 'managerPerformanceDashboard' ? [

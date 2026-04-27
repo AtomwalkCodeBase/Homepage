@@ -177,10 +177,10 @@ export const ProcessFlow = ({ data, bgcolors }) => {
       { step: 'Employee Response' },
     ],
     Lead: [
-      { step: 'Lead Capture', color: '#4A90E2' },
-      { step: 'Lead Enrichment and Task Assignment', color: '#4A90E2' },
-      // { step: 'Obtain Customer Management', color: '#4A90E2' },
-      { step: 'Lead Tracking and Status Management ', color: '#4A90E2' },
+      { step: 'Product Interest', color: '#4A90E2' },
+      { step: 'Activity & Follow-up', color: '#4A90E2' },
+      { step: 'Lead Tracking', color: '#4A90E2' },
+      { step: 'Quotation Workflow', color: '#4A90E2' },
       { step: 'Lead Closure', color: '#4A90E2' },
     ],
     Campaign: [
@@ -284,7 +284,8 @@ export const ProcessFlow = ({ data, bgcolors }) => {
     "Project Management": [
       { step: 'Project/Work Order Creation', color: '#4A90E2' },
       { step: 'User Activity Management', color: '#4A90E2' },
-      { step: 'Project Management', color: '#4A90E2' },
+      { step: 'Quality & Compliance', color: '#4A90E2' },
+      { step: 'Costing & Margin', color: '#4A90E2' },
     ],
     "Report & Dashboard": [
       { step: 'Activity Dashboard', color: '#4A90E2' },

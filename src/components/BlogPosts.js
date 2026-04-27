@@ -4,7 +4,7 @@ import { useBlogs } from './hooks/useBlogs';
 
 // Styled Components
 const MainWrapper = styled.div`
-  background-color: #fefce8; /* Match BlogDetail.js warm off-white */
+  background-color: #F0FCFF; /* Match BlogDetail.js warm off-white */
 `;
 
 const NoResults = styled.p`
@@ -127,7 +127,7 @@ const SearchInput = styled.input`
 const SearchButton = styled.button`
   padding: 10px 15px;
   font-size: 16px;
-  background-color: #d97706; /* Gold to match BlogDetail.js */
+  background-color: #e41c39; /* Gold to match BlogDetail.js */
   color: #ffffff;
   border: none;
   border-radius: 4px;

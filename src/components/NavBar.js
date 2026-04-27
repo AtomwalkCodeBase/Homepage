@@ -23,7 +23,29 @@ const Atomicon = styled.img`
 const WhatWeDoWrapper = styled.div`
   position: relative;
 `;
-
+const StyledNavbar = styled(Navbar)`
+  height: 100px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  transition: all 0.3s ease;
+  background: ${props => props.scrolled ? 'rgba(246, 242, 234, 0.98)' : '#ffffff'};
+  backdrop-filter: ${props => props.scrolled ? 'blur(10px)' : 'none'};
+  box-shadow: ${props => props.scrolled ? '0 4px 20px rgba(0,0,0,0.05)' : 'none'};
+  
+  @media (max-width: 768px) {
+    background: #ffffff !important;  /* Force solid background on mobile */
+    backdrop-filter: none !important; /* Remove blur effect on mobile */
+    
+    /* When navbar is collapsed (menu open), ensure background is solid */
+    &.navbar-expand-md.show,
+    &.navbar-expand-md[aria-expanded="true"] {
+      background: #ffffff !important;
+    }
+  }
+`;
 const StyledNavLink = styled(Nav.Link)`
   font-weight: 500;
   transition: all 0.3s ease;
@@ -281,22 +303,11 @@ export const NavBar = () => {
     <div>
       {opennavbar && (
         <>
-          <Navbar
+          <StyledNavbar
             ref={navbarRef}
             expand="md"
-            className={scrolled ? "scrolled" : "notscrolled"}
-            style={{
-              height: '100px',
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              zIndex: 1000,
-              transition: 'all 0.3s ease',
-              background: scrolled ? 'rgba(246, 242, 234, 0.98)' : '#ffffff',
-              backdropFilter: scrolled ? 'blur(10px)' : 'none',
-              boxShadow: scrolled ? '0 4px 20px rgba(0,0,0,0.05)' : 'none'
-            }}
+            scrolled={scrolled}
+
           >
             <Container>
               <Navbar.Brand href="/">
@@ -305,7 +316,7 @@ export const NavBar = () => {
               <Navbar.Toggle aria-controls="basic-navbar-nav">
                 <span className="navbar-toggler-icon"></span>
               </Navbar.Toggle>
-              <Navbar.Collapse id="basic-navbar-nav">
+              <Navbar.Collapse id="basic-navbar-nav" style={window.innerWidth <= 768 ? { background: '#ffffff', padding: '10px 15px', borderRadius: '8px', marginTop: "30px" } : {}}  >
                 <Nav className="ms-auto" style={{ gap: '25px' }}>
                   <WhatWeDoWrapper ref={whatWeDoRef}>
                     <StyledNavLink
@@ -380,7 +391,7 @@ export const NavBar = () => {
                 </span>
               </Navbar.Collapse>
             </Container>
-          </Navbar>
+          </StyledNavbar>
           <WhatWeDoMenu
             show={showWhatWeDo}
             onClose={() => setShowWhatWeDo(false)}

@@ -90,7 +90,9 @@ const ContactCards = () => {
 
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
-
+  const goTopartnership = () => {
+    window.location.href = "/PartnershipInquiries";
+  };
   const goToContact = () => {
     window.location.href = "/news-events.html";
   };
@@ -127,7 +129,7 @@ const ContactCards = () => {
       icon: <FaHandshake />,
       bg: "#e6fffa",
       color: "#14b8a6",
-      action: () => alert("Coming Soon"),
+      action: goTopartnership,
       btnText: "Become a Partner",
     },
     {

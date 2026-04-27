@@ -32,7 +32,7 @@ const MenuContainer = styled.div`
   background: #ffffff;
   border-radius: 0 0 20px 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-  z-index: 999;
+  z-index: 1999;
   animation: ${slideDown} 0.3s ease-out;
   border-top: 3px solid #e11d2e;
   max-height: 85vh;
@@ -113,6 +113,9 @@ const ProductList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  @media (max-width: 768px) {
+   margin-top: 200px;
+  }
 `;
 
 const ProductItem = styled.div`
@@ -381,10 +384,10 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
             ],
             useCases: [
                 { name: "Lead Lifecycle Automation", link: "/leadManagement.html" },
-                { name: "Activity & Follow-up Planning", link: "/leadManagement.html" },
-                { name: "Product Interest & Demand Signal Tracking", link: "/leadManagement.html" },
-                { name: "Opportunity to Order Conversion", link: "/crm.html" },
-                { name: "Quotation Workflow Management", link: "/crm.html" },
+                { name: "Activity & Follow-up Planning", link: "/leadManagement.html?3" },
+                { name: "Product Interest & Demand Signal Tracking", link: "/leadManagement.html?2" },
+                { name: "Opportunity to Order Conversion", link: "/leadManagement.html?5" },
+                { name: "Quotation Workflow Management", link: "/leadManagement.html?4" },
                 { name: "Customer Interaction Tracking", link: "/CustomerManagement.html" },
                 { name: "AMC / Service Contract Lifecycle Management", link: "/aMCTracking.html" },
                 { name: "Campaign Planning & Performance Tracking", link: "/campaignManagement.html" },
@@ -425,7 +428,7 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
             id: 4,
             name: "Atomwalk Office ERP — Manufacturing & Process Industries",
 
-            link: "/product.html",
+            link: "/processandproject.html.html",
             industries: [
                 { name: "Pharma Manufacturing" },
                 { name: "Chemical & Process Industries" },
@@ -445,8 +448,8 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
                 { name: "Manufacturing Costing & Margin Visibility", link: "/project.html" },
                 { name: "Project Manufacturing Management", link: "/processandproject.html" },
                 { name: "Equipment Maintenance Planning", link: "/equipmentMaintenance.html" },
-                { name: "Quality & Compliance Tracking", link: "/Product.html" },
-                { name: "Dispatch & Delivery Monitoring", link: "/activityreport.html" }
+                { name: "Quality & Compliance Tracking", link: "/project.html?4" },
+                { name: "Advanced Dashboards", link: "/activityreport.html" }
             ]
         },
         // {
@@ -603,12 +606,18 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
             }
         };
 
+        const handleMouseLeave = () => {
+            onClose();
+        };
+
         if (show) {
             document.addEventListener('mousedown', handleClickOutside);
+            menuRef.current?.addEventListener('mouseleave', handleMouseLeave);
         }
 
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
+            menuRef.current?.removeEventListener('mouseleave', handleMouseLeave);
         };
     }, [show, onClose]);
 

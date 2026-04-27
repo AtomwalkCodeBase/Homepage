@@ -317,18 +317,32 @@ const ProcessFeatures = ({ data }) => {
         imgPosition: "left",
       },
       {
-        title: "Manufacturing Project Management",
-        subtitle: "Plan, Track, Optimize",
+        title: "Quality & Compliance Tracking",
+        subtitle: "Maintain Standards with Confidence",
         description:
-          "Streamline projects with activity planning, resource tracking, and cost analysis for better efficiency.",
+          "Ensure consistent product quality and stay compliant with industry standards. Monitor quality checks, manage inspections, and keep records organized for better accountability.",
         benefits: [
-          "Auto task & dependency setup",
-          "Resource and inventory tracking",
-          "Cost and margin insights"
+          "Standardized quality checks",
+          "Easy compliance management",
+          "Clear audit records"
+        ],
+        imageSrc: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/qcdata.png",
+        imageAlt: "Quality and Compliance Tracking",
+        imgPosition: "right",
+      },
+      {
+        title: "Manufacturing Costing & Margin Visibility",
+        subtitle: "Control Costs, Improve Profitability",
+        description:
+          "Gain clear visibility into production costs and margins across every project. Monitor expenses, optimize resource usage, and make informed decisions to improve overall profitability.",
+        benefits: [
+          "Accurate cost breakdown",
+          "Real-time margin insights",
+          "Better resource utilization"
         ],
         imageSrc: img9,
-        imageAlt: "Project Management",
-        imgPosition: "right",
+        imageAlt: "Manufacturing Costing and Margin Visibility",
+        imgPosition: "left",
       }
     ] : isClaim === 'activityreport' ? [
       {

@@ -17,7 +17,7 @@ const LeadManagement = () => {
   const managementPages = [
     {
       path: "leadManagement",
-      heding: "Lead Management",
+      heding: "Lead Lifecycle Automation",
       title: "Lead Management | Atomwalk Technologies",
       metaDescription: "Efficiently track, manage, and convert leads to boost sales and grow your business.",
       keywords: "Lead management software, CRM lead management, sales lead tracking",

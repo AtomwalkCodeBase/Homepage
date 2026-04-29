@@ -443,12 +443,12 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
             useCases: [
                 { name: "Order-to-Cash Automation", link: "/process.html" },
                 { name: "Production Planning & Scheduling", link: "/project.html" },
-                { name: "Batch Traceability & Genealogy", link: "/Product.html" },
+                { name: "Batch Traceability & Genealogy", link: "/labusecase?case=batch-traceability-data-integrity-management" },
                 { name: "Inventory & Supply Chain Optimization", link: "/inventory.html" },
-                { name: "Manufacturing Costing & Margin Visibility", link: "/project.html" },
+                { name: "Manufacturing Costing & Margin Visibility", link: "/project.html?3" },
                 { name: "Project Manufacturing Management", link: "/processandproject.html" },
                 { name: "Equipment Maintenance Planning", link: "/equipmentMaintenance.html" },
-                { name: "Quality & Compliance Tracking", link: "/project.html?4" },
+                { name: "Quality & Compliance Tracking", link: "/project.html?2" },
                 { name: "Advanced Dashboards", link: "/activityreport.html" }
             ]
         },

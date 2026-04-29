@@ -379,7 +379,7 @@ const data = [
     image:
       "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Prashanthi.png",
     video:
-      "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/website-vedio/purpose.mp4",
+      "https://youtu.be/fnjEc05BiFE?si=qFIegMMcNNuK5HQq",
   },
   {
     title:

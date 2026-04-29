@@ -11,19 +11,19 @@ const slides = [
   {
     title: "Scalable Manufacturing, Seamless Operations",
     desc: "Enable agile production with real-time visibility and data-driven decision-making across the factory floor.",
-    image: "https://suryacipta.com/wp-content/uploads/2022/05/Production-Management-Software.jpg",
+    image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Production-Management-Software.jpg",
     link: "/processandproject.html"
   },
   {
     title: "Smarter Labs, Faster Discovery",
     desc: "Drive innovation with connected lab ecosystems built for automation, compliance, and real-time intelligence",
-    image: "https://www.isotekindo.co.id/assets/upload/lg/untuk-artikel-narkoba-3-434b4.png",
+    image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/untuk-artikel-narkoba-3-434b4.png",
     link: "/lms.html"
   },
   {
     title: "Shaping Sustainable Facility Operations",
     desc: "Transform facilities with digital control, waste optimization, and compliance-first systems designed for a greener tomorrow.",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDjMI8zP_v3eF50TZXjRCSjF3GbisD-yRCgg&s",
+    image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/fasilite.jpeg",
     link: "/facilitymanagement.html"
   },
   {
@@ -276,11 +276,6 @@ const Dot = styled.div`
     }
   }
 `;
-
-
-
-
-
 
 export default function Carousel() {
   const [index, setIndex] = useState(0);

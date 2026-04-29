@@ -9,8 +9,8 @@ const Container = styled(motion.div)`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding-top: 50px;
-  background-color: #DBCAB8;
+  /* padding-top: 50px; */
+  background-color: #decfbc;
   overflow: hidden;
 
   @media (max-width: 768px) {

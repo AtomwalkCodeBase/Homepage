@@ -303,20 +303,6 @@ const ProcessFeatures = ({ data }) => {
         imgPosition: "right",
       },
       {
-        title: "Advanced Activity Tracking",
-        subtitle: "Execute with Precision",
-        description:
-          "Manage activities with structured job cards, dependency tracking, and real-time inventory updates.",
-        benefits: [
-          "Structured job cards",
-          "Dependency-based execution",
-          "Real-time inventory tracking"
-        ],
-        imageSrc: img8,
-        imageAlt: "User Activity Management",
-        imgPosition: "left",
-      },
-      {
         title: "Quality & Compliance Tracking",
         subtitle: "Maintain Standards with Confidence",
         description:
@@ -328,8 +314,23 @@ const ProcessFeatures = ({ data }) => {
         ],
         imageSrc: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/qcdata.png",
         imageAlt: "Quality and Compliance Tracking",
+        imgPosition: "left",
+      },
+      {
+        title: "Advanced Activity Tracking",
+        subtitle: "Execute with Precision",
+        description:
+          "Manage activities with structured job cards, dependency tracking, and real-time inventory updates.",
+        benefits: [
+          "Structured job cards",
+          "Dependency-based execution",
+          "Real-time inventory tracking"
+        ],
+        imageSrc: img8,
+        imageAlt: "User Activity Management",
         imgPosition: "right",
       },
+
       {
         title: "Manufacturing Costing & Margin Visibility",
         subtitle: "Control Costs, Improve Profitability",

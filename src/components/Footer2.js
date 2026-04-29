@@ -271,7 +271,7 @@ export default function Footer2() {
                   </li>
                   <li><a href="/blog.html">Blog</a></li>
                   <li>
-                    <a href="https://atomwalk.netlify.app/login">Atomwalk Folder</a>
+                    <a href="https://atomwalk.netlify.app" target="_blank" rel="noopener noreferrer">Atomwalk Folder</a>
                   </li>
                   <li>
                     <a href="/retainer/login">Channel Partner Login</a>

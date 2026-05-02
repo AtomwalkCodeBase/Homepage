@@ -20,7 +20,7 @@ const slides = [
     title: "Collaborate and Innovate",
     subtitle: "Work with Industry Leaders",
     description:
-      "Collaborate with talented professionals and contribute to projects that make a real impact. Your ideas and expertise are valued here.",
+      "Collaborate with talented professionals and contribute to projects that make a real impact.",
     image: `${Innovate}`,
   },
   {
@@ -225,7 +225,7 @@ const CareerSlider = () => {
 
   return (
     <Container>
-        <Header>Careers at Atomwalk Technologies</Header>
+      <Header>Careers at Atomwalk Technologies</Header>
 
       <CarouselWrapper>
         <AnimatePresence mode="wait">

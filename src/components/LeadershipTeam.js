@@ -594,7 +594,7 @@ const LeadershipAdvisors = () => {
       name: "Dr. Lipika Sahoo",
       role: "Co-Founder, Director Innovation",
       image: `${Lipika}`,
-      shortDesc: "Dr. Lipika Sahoo, Co-Founder and Director of Atomwalk, brings over two decades of experience across academia and industry, with deep expertise in technology, innovation, and intellectual property. She holds a PhD from the Indian Institute of Science (IISc), Bangalore, along with qualifications from NLSIU, XIMB, and IIM Bangalore.",
+      shortDesc: "Dr. Lipika Sahoo, Co-Founder and Director of Atomwalk, brings over two decades of experience across academia and industry, with deep expertise in technology, innovation, and intellectual property. She holds a PhD from Indian Institute of Science (IISc) Bengaluru, along with qualifications from IIMB, XIMB and NLSIU Bengaluru.",
       fullDesc: [
         "A recognized authority in IP strategy, technology transfer, and innovation management, she is dedicated to helping technologists, scientists, and deep-tech entrepreneurs strategize, protect, and commercialize their ideas.",
         "Her vision and leadership have been instrumental in accelerating Atomwalk’s growth, strengthening its innovation-led approach, and positioning it as a trusted partner for deep-tech innovators and companies to build, manage, and scale intelligent systems—while maximizing and amplifying the impact of their innovations."

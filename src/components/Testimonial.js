@@ -38,8 +38,7 @@ const TestimonialsHero = () => {
         </Title>
 
         <Sub>
-          Learn why professionals trust our solutions to <br />complete their
-          customer journeys.
+          Delivering seamless, connected experiences <br />across the enterprise
         </Sub>
 
         <Button onClick={() => setShow(true)}>

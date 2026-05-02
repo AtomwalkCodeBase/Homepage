@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 2rem 4rem;
   line-height: 1.6;
   color: #1a1a1a;
   background-color: #fefefe;
@@ -95,7 +95,7 @@ const TermsOfService = () => {
             </Header>
 
             <Paragraph>
-                This Agreement ("Agreement") is between <strong>You</strong> (<strong>the user, whether individual or entity</strong>) and <strong>Atomwalk Technologies Pvt. Ltd.</strong> (Hereinafter <strong>Atomwalk Technologies</strong>) a company having registered office at Gopalan Millennium Towers, ITPL Main Rd, Brookfield, Whitefield, Bengaluru, Karnataka 560037
+                This Agreement ("Agreement") is between <strong>You</strong> (<strong>the user, whether individual or entity</strong>) and <strong>Atomwalk Technologies Pvt. Ltd.</strong> (Hereinafter <strong>Atomwalk Technologies</strong>) a company having registered office at Gopalan Millennium Towers, ITPL Main Rd, Brookfield, Whitefield, Bengaluru, Karnataka 560037.
             </Paragraph>
 
             <Section>
@@ -166,7 +166,7 @@ const TermsOfService = () => {
             <Section>
                 <SectionTitle>FEES AND PAYMENTS</SectionTitle>
                 <Paragraph>
-                    At Atomwalk Technologies, Services are offered through a range of subscription plans, each varying in duration. For subscriptions not shorter than one year, payment is exclusively accepted via credit card. At the end of your subscription period, you will receive an alert notifying you of the upcoming renewal. If you wish to continue using the services, you may choose to renew your subscription. You have the option to update your payment method before the renewal date if needed. Periodically, Atomwalk Technologies may modify the pricing of its services or introduce charges for services that were once available without cost. Any adjustments to pricing will not affect your current subscription until the end of your billing cycle. Charges for the Services will only apply if you have selected a paid plan. Additionally, any applicable taxes such as VAT, sales tax, or other regional levies will be added to your subscription fees, and you agree to pay these additional amounts. Atomwalk Technologies will issue an invoice detailing these taxes to assist with any tax credits, as applicable.
+                    At Atomwalk Technologies, Services are offered through a range of subscription plans, each varying in duration. At the end of your subscription period, you will receive an alert notifying you of the upcoming renewal. If you wish to continue using the services, you may choose to renew your subscription. You have the option to update your payment method before the renewal date if needed. Periodically, Atomwalk Technologies may modify the pricing of its services or introduce charges for services that were once available without cost. Any adjustments to pricing will not affect your current subscription until the end of your billing cycle. Charges for the Services will only apply if you have selected a paid plan. Additionally, any applicable taxes such as GST/ VAT/ Sales tax, or other regional levies will be added to your subscription fees, and you agree to pay these additional amounts. Atomwalk Technologies will issue an invoice detailing these taxes to assist with any tax credits, as applicable.
                 </Paragraph>
             </Section>
 

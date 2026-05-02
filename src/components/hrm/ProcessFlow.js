@@ -176,6 +176,18 @@ export const ProcessFlow = ({ data, bgcolors }) => {
       { step: 'Employee Event Creation' },
       { step: 'Employee Response' },
     ],
+    "Timesheet": [
+      { step: 'Project Selection' },
+      { step: 'Daily Timesheet Effort' },
+      { step: 'Flexible Ad Hoc' },
+      { step: 'Reporting & Analytics' },
+    ],
+    "Training": [
+      { step: 'Training Module' },
+      { step: 'Employee Enrollment' },
+      { step: 'Training Completion' },
+      { step: 'Training Goals' },
+    ],
     Lead: [
       { step: 'Product Interest', color: '#4A90E2' },
       { step: 'Activity & Follow-up', color: '#4A90E2' },

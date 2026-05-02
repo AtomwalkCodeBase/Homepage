@@ -197,7 +197,7 @@ const ProductDemoModal = ({ isOpen, onRequestClose, setShowsuccess }) => {
           <Button onClick={addLead}>Book My Demo</Button>
         </FormContainer>
         <ImageContainer>
-          <img src={rocketImage} alt="Rocket" style={{ width: "100%" }} />
+          <img src={"https://img.freepik.com/free-vector/gradient-erp-illustration_23-2149368728.jpg?semt=ais_hybrid&w=740&q=80"} alt="Rocket" style={{ width: "100%" }} />
         </ImageContainer>
       </ModalContent>
     </Modal>

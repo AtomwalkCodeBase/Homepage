@@ -333,6 +333,34 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
     // Products with their associated industries and use cases
     const products = [
         {
+            id: 4,
+            name: "Atomwalk Office ERP — Manufacturing & Process Industries",
+
+            link: "/processandproject.html.html",
+            industries: [
+                { name: "Pharma Manufacturing" },
+                { name: "Chemical & Process Industries" },
+                { name: "Food Processing" },
+                { name: "Engineering Manufacturing" },
+                { name: "CDMO Production Facilities" },
+                { name: "Packaging & Conversion" },
+                { name: "Automotive Components" },
+                { name: "Industrial Equipment Manufacturing" },
+                { name: "Agro & Fertilizer Processing" }
+            ],
+            useCases: [
+                { name: "Order-to-Cash Automation", link: "/process.html" },
+                { name: "Production Planning & Scheduling", link: "/project.html" },
+                { name: "Batch Traceability & Genealogy", link: "/labusecase?case=batch-traceability-data-integrity-management" },
+                { name: "Inventory & Supply Chain Optimization", link: "/inventory.html" },
+                { name: "Manufacturing Costing & Margin Visibility", link: "/project.html?3" },
+                { name: "Project Manufacturing Management", link: "/processandproject.html" },
+                { name: "Equipment Maintenance Planning", link: "/equipmentMaintenance.html" },
+                { name: "Quality & Compliance Tracking", link: "/project.html?2" },
+                { name: "Advanced Dashboards", link: "/activityreport.html" }
+            ]
+        },
+        {
             id: 1,
             name: "Atomwalk AW360™ Lab Management",
             link: "/lms.html",
@@ -365,6 +393,30 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
                 { name: "GLP Study & Protocol Management", link: "/glp.html" },
                 { name: "GMP workflows, release testing", link: "/labusecase?case=gmp-workflows-release-testing" },
 
+            ]
+        },
+        {
+            id: 5,
+            name: "Atomwalk ERP — Seafood Industry",
+
+            link: "https://home.atomwalk.com/product.html",
+            industries: [
+                { name: "Seafood & Fish Processing Plants" },
+                { name: "Shrimp & Aquaculture Processing" },
+                { name: "Frozen Food Manufacturing" },
+                { name: "Marine Export Processing Units" },
+                { name: "Cold Chain & Seafood Distribution" },
+                { name: "Ready-to-Cook Seafood Production" }
+            ],
+            useCases: [
+                { name: "Catch-Based Production Planning", link: "/Seafoodusecase?case=catch-based-production-planning" },
+                { name: "Yield Variance & Wastage Control", link: "/Seafoodusecase?case=yield-variance-wastage-control" },
+                { name: "Cold Storage & Shelf-Life Optimization", link: "/Seafoodusecase?case=cold-storage-shelf-life-optimization" },
+                { name: "Export Batch Traceability", link: "/Seafoodusecase?case=export-batch-traceability" },
+                { name: "Multi-Stage Processing Workflow Tracking", link: "/Seafoodusecase?case=multi-stage-processing-workflow-tracking" },
+                { name: "Demand-Driven Production Scheduling", link: "/Seafoodusecase?case=demand-driven-production-scheduling" },
+                // { name: "Container & Dispatch Planning", link: "/Seafoodusecase?case=container-dispatch-planning" },
+                { name: "Quality & Certification Compliance", link: "/Seafoodusecase?case=quality-certification-compliance" }
             ]
         },
         {
@@ -417,65 +469,13 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
                 { name: "Performance & Productivity Analytics", link: "/appraisal.html" },
                 { name: "Skill-based Resource Allocation", link: "/skillAllocation.html" },
                 { name: "Training & Certification Tracking", link: "/training.html" },
-                { name: "Time Sheet & Effort Tracking", link: "/timeSheet.html" },
+                { name: "Time Sheet & Effort Tracking", link: "/datasheet.html" },
                 { name: "Expense Claims & Reimbursement Management", link: "/claim.html" },
                 { name: "Employee Request Desk (Internal Service Portal)", link: "/emphelp.html" },
                 { name: "Help Desk & Issue Resolution Tracking", link: "/emphelp.html" },
                 { name: "Events, Training & Engagement Management", link: "/empevent.html" }
             ]
         },
-        {
-            id: 4,
-            name: "Atomwalk Office ERP — Manufacturing & Process Industries",
-
-            link: "/processandproject.html.html",
-            industries: [
-                { name: "Pharma Manufacturing" },
-                { name: "Chemical & Process Industries" },
-                { name: "Food Processing" },
-                { name: "Engineering Manufacturing" },
-                { name: "CDMO Production Facilities" },
-                { name: "Packaging & Conversion" },
-                { name: "Automotive Components" },
-                { name: "Industrial Equipment Manufacturing" },
-                { name: "Agro & Fertilizer Processing" }
-            ],
-            useCases: [
-                { name: "Order-to-Cash Automation", link: "/process.html" },
-                { name: "Production Planning & Scheduling", link: "/project.html" },
-                { name: "Batch Traceability & Genealogy", link: "/labusecase?case=batch-traceability-data-integrity-management" },
-                { name: "Inventory & Supply Chain Optimization", link: "/inventory.html" },
-                { name: "Manufacturing Costing & Margin Visibility", link: "/project.html?3" },
-                { name: "Project Manufacturing Management", link: "/processandproject.html" },
-                { name: "Equipment Maintenance Planning", link: "/equipmentMaintenance.html" },
-                { name: "Quality & Compliance Tracking", link: "/project.html?2" },
-                { name: "Advanced Dashboards", link: "/activityreport.html" }
-            ]
-        },
-        // {
-        //     id: 5,
-        //     name: "Atomwalk ERP — Seafood Industry",
-
-        //     link: "https://home.atomwalk.com/product.html",
-        //     industries: [
-        //         { name: "Seafood & Fish Processing Plants" },
-        //         { name: "Shrimp & Aquaculture Processing" },
-        //         { name: "Frozen Food Manufacturing" },
-        //         { name: "Marine Export Processing Units" },
-        //         { name: "Cold Chain & Seafood Distribution" },
-        //         { name: "Ready-to-Cook Seafood Production" }
-        //     ],
-        //     useCases: [
-        //         { name: "Catch-Based Production Planning", },
-        //         { name: "Yield Variance & Wastage Control", },
-        //         { name: "Cold Storage & Shelf-Life Optimization", },
-        //         { name: "Export Batch Traceability", },
-        //         { name: "Multi-Stage Processing Workflow Tracking", },
-        //         { name: "Demand-Driven Production Scheduling", },
-        //         { name: "Container & Dispatch Planning", },
-        //         { name: "Quality & Certification Compliance", }
-        //     ]
-        // },
         {
             id: 6,
             name: "Atomwalk Office ERP — Facility & Waste Operations Platform",

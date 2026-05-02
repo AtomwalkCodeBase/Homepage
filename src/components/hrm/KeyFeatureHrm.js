@@ -225,8 +225,24 @@ const KeyFeatureHrm = () => {
             Mobile-first HR solution with all essential features in a lightweight interface. Employee self-service portal with secure authentication and offline capabilities.
           </FeatureDescription>
         </FeatureBox>
-
-
+        <FeatureBox onClick={() => { handleCardPress('timesheet') }}>
+          <IconContainer bgColor="#dff7da">
+            <img src="https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/timeManagement.webp" alt="Performance Mangement" />
+          </IconContainer>
+          <FeatureTitle>Project & Timesheet Management:</FeatureTitle>
+          <FeatureDescription>
+            Manage project allocation, track daily effort, and gain clear visibility into team productivity through structured timesheet tracking and reporting.
+          </FeatureDescription>
+        </FeatureBox>
+        <FeatureBox onClick={() => { handleCardPress('training') }}>
+          <IconContainer bgColor="#dae7f7">
+            <img src="https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Training.png" alt="Performance Mangement" />
+          </IconContainer>
+          <FeatureTitle>Training Management:</FeatureTitle>
+          <FeatureDescription>
+            Manage training programs, enroll employees, track completion, and record evaluations with a structured training management system
+          </FeatureDescription>
+        </FeatureBox>
       </FeaturesContainer>
 
     </SectionContainer>

@@ -4,37 +4,37 @@ import styled, { keyframes } from "styled-components";
 const slides = [
   {
     title: "Engineering Intelligent Enterprise Solutions",
-    desc: "Designing smarter, future-ready solutions that scale, adapt, and evolve.",
+    desc: "Powering your digital foundation. Scalable. Adaptive. Future-ready",
     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Labhero2.png",
     link: "/product.html"
   },
   {
     title: "Scalable Manufacturing, Seamless Operations",
-    desc: "Enable agile production with real-time visibility and data-driven decision-making across the factory floor.",
+    desc: "Unified platform. Real-time. Data-driven",
     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Production-Management-Software.jpg",
     link: "/processandproject.html"
   },
   {
     title: "Smarter Labs, Faster Discovery",
-    desc: "Drive innovation with connected lab ecosystems built for automation, compliance, and real-time intelligence",
+    desc: "Lab automation. Simplify workflows. Accelerate discovery",
     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/untuk-artikel-narkoba-3-434b4.png",
     link: "/lms.html"
   },
   {
     title: "Shaping Sustainable Facility Operations",
-    desc: "Transform facilities with digital control, waste optimization, and compliance-first systems designed for a greener tomorrow.",
+    desc: "Efficient systems. Lower waste. Stronger compliance",
     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/fasilite.jpeg",
     link: "/facilitymanagement.html"
   },
   {
     title: "Modern Workforce Management Solutions",
-    desc: "Drive productivity and engagement through intelligent, connected HR systems.",
+    desc: "Reimagine HR. Empower teams. Greater efficiency",
     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/atomwalkHRM.png",
     link: "/hrm.html"
   },
   {
     title: "Driving Customer Centric Growth",
-    desc: "Gain deeper insights and build lasting relationships through connected engagement.",
+    desc: "Smarter insights. Better engagement. From lead to cash",
     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/atomwalkCRM.png",
     link: "/crm.html"
   },

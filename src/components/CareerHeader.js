@@ -113,7 +113,7 @@ const CareersHeader = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
 
   const handleEmailClick = () => {
-    window.location.href = "mailto:info@atomwalk.com";
+    window.location.href = "mailto:info@atomwalk.com?subject=Job Application&body=Hello HR Team,";
   };
 
   return (

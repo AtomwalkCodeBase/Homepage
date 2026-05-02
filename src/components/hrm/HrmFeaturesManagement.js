@@ -99,7 +99,30 @@ const HrmFeaturesManagement = () => {
       description: "Keep your workforce informed and connected with real-time company announcements, personalized birthday and work anniversary recognitions, and interactive features that promote team bonding and employee participation.",
       image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/HRM-Events.png",
       data: "Event Updates"
+    },
+    {
+      path: "/datasheet.html",
+      seoTitle: "Timesheet & Attendance | Atomwalk HRM",
+      metaDescription: "Streamline time tracking and attendance management with our intuitive timesheet system.",
+      keywords: "Employee timesheet software, Attendance tracking system, Time and attendance management, Work hour logging, HRMS web and mobile app, Employee timesheet mobile app",
+      canonical: "https://home.atomwalk.com/timesheet.html",
+      title: "Timesheet & Attendance",
+      description: "Efficiently manage employee time and attendance with our comprehensive timesheet system. Track work hours, manage leave requests, and generate detailed reports for better workforce planning.",
+      image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/timeManagement.webp",
+      data: "Timesheet"
+    },
+    {
+      path: "/training.html",
+      seoTitle: "Employee Training & Development | Atomwalk HRM",
+      metaDescription: "Enhance employee skills and knowledge with our comprehensive training management system.",
+      keywords: "Employee training software, Learning management system, Professional development platform, Skill assessment tools, HRMS web and mobile app, Employee training mobile app",
+      canonical: "https://home.atomwalk.com/training.html",
+      title: "Employee Training & Development",
+      description: "Keep your workforce informed and connected with real-time company announcements, personalized birthday and work anniversary recognitions, and interactive features that promote team bonding and employee participation.",
+      image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Training.png",
+      data: "Training"
     }
+
   ];
 
   const currentPage =

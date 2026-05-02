@@ -105,12 +105,12 @@ const Button = styled.button`
 `;
 
 const FormComponent = () => {
-let currentDate = new Date();
-let day = ("0" + currentDate.getDate()).slice(-2);  // Get current day
-let month = ("0" + (currentDate.getMonth() + 1)).slice(-2);  // Get current month
-let year = currentDate.getFullYear();
-// Format as DD-MM-YYYY
-let formattedDate = `${day}-${month}-${year}`;
+  let currentDate = new Date();
+  let day = ("0" + currentDate.getDate()).slice(-2);  // Get current day
+  let month = ("0" + (currentDate.getMonth() + 1)).slice(-2);  // Get current month
+  let year = currentDate.getFullYear();
+  // Format as DD-MM-YYYY
+  let formattedDate = `${day}-${month}-${year}`;
   const formInitialDetails = {
     name: "",
     company_name: "",
@@ -120,26 +120,26 @@ let formattedDate = `${day}-${month}-${year}`;
     add_task: "N",
     task_type: "Book My Demo",
     task_date: formattedDate,
-    remarks:""
-}
-const [formDetails, setFormDetails] = useState(formInitialDetails);
-const[showsuccess,setShowsuccess]=useState(false);
-const [selectedRequirements, setSelectedRequirements] = useState([]); // To store selected requirements
-const [numberOfEmployees, setNumberOfEmployees] = useState(""); // To store selected number of employees
-const [hrTools, setHrTools] = useState(""); // To store HR tools info from TextArea
+    remarks: ""
+  }
+  const [formDetails, setFormDetails] = useState(formInitialDetails);
+  const [showsuccess, setShowsuccess] = useState(false);
+  const [selectedRequirements, setSelectedRequirements] = useState([]); // To store selected requirements
+  const [numberOfEmployees, setNumberOfEmployees] = useState(""); // To store selected number of employees
+  const [hrTools, setHrTools] = useState(""); // To store HR tools info from TextArea
 
-const onFormUpdate = (category, value) => {
-  setFormDetails({
-    ...formDetails,
-    [category]: value
-  })
-}
-const endpoint = 'https://www.atomwalk.com/api';
-  const addLead =(e)=> {
+  const onFormUpdate = (category, value) => {
+    setFormDetails({
+      ...formDetails,
+      [category]: value
+    })
+  }
+  const endpoint = 'https://www.atomwalk.com/api';
+  const addLead = (e) => {
     e.preventDefault();
-    return authAxiosPost(`https://www.atomwalk.com/api/add_lead/PMA_00001/`,{ 'lead_data':formDetails});
-   }
-   const authAxiosPost = async (url, data) => {
+    return authAxiosPost(`https://www.atomwalk.com/api/add_lead/PMA_00001/`, { 'lead_data': formDetails });
+  }
+  const authAxiosPost = async (url, data) => {
     try {
       let token = localStorage.getItem('apiResponse');
       let parsedToken = JSON.parse(token);
@@ -161,15 +161,15 @@ const endpoint = 'https://www.atomwalk.com/api';
       console.log('Error making authenticated API call:', error);
       setFormDetails(formInitialDetails);
     }
-   };
-   useEffect(()=>{
-    if(showsuccess){
+  };
+  useEffect(() => {
+    if (showsuccess) {
       setTimeout(() => {
         setShowsuccess(false);
-        window.location.href='/demo.html'
+        window.location.href = '/demo.html'
       }, 3000);
     }
-  },[showsuccess]);
+  }, [showsuccess]);
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
     const updatedRequirements = checked
@@ -210,67 +210,67 @@ const endpoint = 'https://www.atomwalk.com/api';
   };
   return (
     <>
-    {showsuccess&&<Success message="We have successfully recorded your information."></Success>}
-    <Container>
-      <FormWrapper>
-        <Title>We are a call away!</Title>
-        <Description>Discuss Pricing, take a Demo or share your business problems.</Description>
-        <Form>
-          <Input onChange={(e) => onFormUpdate('name', e.target.value)} type="text" placeholder="Full Name" />
-          <Input onChange={(e) => onFormUpdate('mobile_number', e.target.value)} type="tel" placeholder="Phone" />
-          <Input onChange={(e) => onFormUpdate('email_id', e.target.value)} type="email" placeholder="Work Email*" required />
-          <Input onChange={(e) => onFormUpdate('company_name', e.target.value)} type="text" placeholder="Company Name" />
-          <CheckBoxWrapper>
-           <CheckBoxLabel>Please select your requirement(s):</CheckBoxLabel>
-            <label>
-              <input type="checkbox" name="requirement" value="Customer Management" onChange={handleCheckboxChange} /> Customer Management
-            </label>
-            <label>
-              <input type="checkbox" name="requirement" value="Inventory Management" onChange={handleCheckboxChange} /> Inventory Management
-            </label>
-            <label>
-              <input type="checkbox" name="requirement" value="Process Templates & Project Management" onChange={handleCheckboxChange} /> Process Templates & Project Management
-            </label>
-            <label>
-              <input type="checkbox" name="requirement" value="HR & Payroll" onChange={handleCheckboxChange} /> HR & Payroll
-            </label>
-            <label>
-              <input type="checkbox" name="requirement" value="Lab Management System" onChange={handleCheckboxChange} /> Lab Management System
-            </label>
-            <label>
-              <input type="checkbox" name="requirement" value="Geo-Tagging" onChange={handleCheckboxChange} /> Geo-Tagging
-            </label>
-            <label>
-              <input type="checkbox" name="requirement" value="Claim Management" onChange={handleCheckboxChange} /> Claim Management
-            </label>
-            <label>
-              <input type="checkbox" name="requirement" value="Enterprise Resource Planning" onChange={handleCheckboxChange} /> Enterprise Resource Planning
-            </label>
-            <label>
-              <input type="checkbox" name="requirement" value="Employee Engagement" onChange={handleCheckboxChange} /> Employee Engagement
-            </label>
-            <label>
-              <input type="checkbox" name="requirement" value="Others" onChange={handleCheckboxChange} /> Others
-            </label>
-            <label>
-              <input type="checkbox" name="requirement" value="All" onChange={handleCheckboxChange} /> All
-            </label>
-          </CheckBoxWrapper>
+      {showsuccess && <Success message="We have successfully recorded your information."></Success>}
+      <Container>
+        <FormWrapper>
+          <Title>We are a call away!</Title>
+          <Description>Discuss Pricing, take a Demo or share your business problems.</Description>
+          <Form>
+            <Input onChange={(e) => onFormUpdate('name', e.target.value)} type="text" placeholder="Full Name" />
+            <Input onChange={(e) => onFormUpdate('mobile_number', e.target.value)} type="tel" placeholder="Phone" />
+            <Input onChange={(e) => onFormUpdate('email_id', e.target.value)} type="email" placeholder="Work Email*" required />
+            <Input onChange={(e) => onFormUpdate('company_name', e.target.value)} type="text" placeholder="Company Name" />
+            <CheckBoxWrapper>
+              <CheckBoxLabel>Please select your requirement(s):</CheckBoxLabel>
+              <label>
+                <input type="checkbox" name="requirement" value="Customer Management" onChange={handleCheckboxChange} /> Customer Management
+              </label>
+              <label>
+                <input type="checkbox" name="requirement" value="Inventory Management" onChange={handleCheckboxChange} /> Inventory Management
+              </label>
+              <label>
+                <input type="checkbox" name="requirement" value="Process Templates & Project Management" onChange={handleCheckboxChange} /> Process Templates & Project Management
+              </label>
+              <label>
+                <input type="checkbox" name="requirement" value="HR & Payroll" onChange={handleCheckboxChange} /> HR & Payroll
+              </label>
+              <label>
+                <input type="checkbox" name="requirement" value="Lab Management System" onChange={handleCheckboxChange} /> Lab Management System
+              </label>
+              <label>
+                <input type="checkbox" name="requirement" value="Geo-Tagging" onChange={handleCheckboxChange} /> Geo-Tagging
+              </label>
+              <label>
+                <input type="checkbox" name="requirement" value="Claim Management" onChange={handleCheckboxChange} /> Claim Management
+              </label>
+              <label>
+                <input type="checkbox" name="requirement" value="Enterprise Resource Planning" onChange={handleCheckboxChange} /> Enterprise Resource Planning
+              </label>
+              <label>
+                <input type="checkbox" name="requirement" value="Employee Engagement" onChange={handleCheckboxChange} /> Employee Engagement
+              </label>
+              <label>
+                <input type="checkbox" name="requirement" value="Others" onChange={handleCheckboxChange} /> Others
+              </label>
+              <label>
+                <input type="checkbox" name="requirement" value="All" onChange={handleCheckboxChange} /> All
+              </label>
+            </CheckBoxWrapper>
 
-          <TextArea onChange={handleHrToolsChange} rows="4" placeholder="Are you currently using any HR tools? (Optional)" />
-          
-           <Select onChange={handleEmployeesChange}>
-            <option value="">Number of Employees</option>
-            <option value="1-10">1-10</option>
-            <option value="11-50">11-50</option>
-            <option value="51-200">51-200</option>
-            <option value="201-500">201-500</option>
-            <option value="500+">500+</option>
-          </Select>
-          <Button onClick={addLead}>Book Meeting</Button>
-        </Form>
-      </FormWrapper>
-    </Container>
+            <TextArea onChange={handleHrToolsChange} rows="4" placeholder="Do you currently use any ERP tools? (Optional)" />
+
+            <Select onChange={handleEmployeesChange}>
+              <option value="">Number of Employees</option>
+              <option value="1-10">1-10</option>
+              <option value="11-50">11-50</option>
+              <option value="51-200">51-200</option>
+              <option value="201-500">201-500</option>
+              <option value="500+">500+</option>
+            </Select>
+            <Button onClick={addLead}>Book Meeting</Button>
+          </Form>
+        </FormWrapper>
+      </Container>
     </>
   );
 };

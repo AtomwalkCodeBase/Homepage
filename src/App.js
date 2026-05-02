@@ -126,6 +126,7 @@ import SecurityWhitepaper from "./components/Policy/SecurityWhitepaper";
 import SharedResponsibility from "./components/Policy/SharedResponsibility";
 import AntiSpamPolicy from "./components/Policy/AntiSpamPolicy";
 import PartnershipInquiries from "./components/PartnershipInquiries";
+import Seafoodusecase from "./components/UseCase/Seafoodusecase";
 // import SupervisorDashboard from "./pages/fishIndurstry/SupervisorDashboard";
 // import MyAppriaisal from "./pages/MyAppriaisal";
 
@@ -168,6 +169,7 @@ function App() {
                 {/* Public Routes */}
                 <Route path="/" element={<HomePage />} />
                 <Route path="/labusecase" element={<Labusecases />} />
+                <Route path="/seafoodusecase" element={<Seafoodusecase />} />
                 <Route path="/facilityusecase" element={<Facilityusecase />} />
                 <Route path="/Product.html" element={<Product />} />
                 <Route path="/contactUs.html" element={<ContactUs />} />
@@ -190,6 +192,8 @@ function App() {
                 <Route path="/hrm.html" element={<HrmComponent />} />
                 <Route path="/leave.html" element={<HrmFeaturesManagement />} />
                 <Route path="/claim.html" element={<HrmFeaturesManagement />} />
+                <Route path="/datasheet.html" element={<HrmFeaturesManagement />} />
+                <Route path="/training.html" element={<HrmFeaturesManagement />} />
                 <Route path="/employeehr.html" element={<HrmFeaturesManagement />} />
                 <Route path="/payroll.html" element={<HrmFeaturesManagement />} />
                 <Route path="/appraisal.html" element={<HrmFeaturesManagement />} />

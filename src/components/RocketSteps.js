@@ -419,9 +419,7 @@ export default function RocketSteps() {
             Run Everything on One Platform
           </Title>
           <Description>
-            Stop buying separate software for every department.
-            From factory floor to research lab run everything
-            on one unified platform.
+            Bring every function together From lab to production to sales all on one platform
           </Description>
           <Contact onClick={() => window.location.href = "/contactUs.html"}>
             Contact Us

@@ -162,6 +162,8 @@ const FeatureDescription = ({ data }) => {
   const isAttendanceData = data === 'Attendance';
   const isEmpHelpData = data === 'Help & Request';
   const isEmpEventData = data === 'Event Updates';
+  const isEmpTimesheetData = data === 'Timesheet';
+  const isEmpTrainingData = data === 'Training';
 
   const getFeatureContent = (feature) => (
     <Features>
@@ -627,6 +629,131 @@ const FeatureDescription = ({ data }) => {
                       imageAlt: "Weekly Score Dashboard",
                       imgPosition: "right"
                     },
+                  ] : isEmpTimesheetData ? [
+                    {
+                      title: "Project Selection & Team Allocation",
+                      subtitle: "Manage projects, view project details and control project-wise team assignments.",
+                      description: "Employees can access assigned and other available projects, view project details including timelines, team size and project manager, and submit effort against relevant activities. Managers can allocate team members project-wise and maintain visibility over project ownership and participation.",
+                      benefits: [
+                        "Manage Different Projects List",
+                        "Project Detailed View",
+                        "Project-Wise Team Member Allocation",
+                        "Assigned and Other Projects Selection",
+                        "Activity-Based Effort Mapping"
+                      ],
+                      imageSrc: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/ProjectAllocation.svg",
+                      imageAlt: "Project Allocation",
+                      imgPosition: "left"
+                    },
+
+                    {
+                      title: "Daily Timesheet Effort Submission",
+                      subtitle: "Capture daily effort across one or multiple projects with flexible submission controls.",
+                      description: "Employees can submit daily timesheet effort against assigned projects, log effort across multiple projects in a single day, record working hours, define start-end times, and add work notes. The system supports structured effort tracking while improving accountability and utilization monitoring.",
+                      benefits: [
+                        "Daily Effort Submission",
+                        "Multiple Project Entries in a Single Day",
+                        "Working Hours & Time Capture",
+                        "Project/Activity Wise Effort Logging",
+                        "Remarks and Work Notes"
+                      ],
+                      imageSrc: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/DailyTimesheet.svg",
+                      imageAlt: "Timesheet Entry",
+                      imgPosition: "right"
+                    },
+
+                    {
+                      title: "Flexible Ad Hoc Project Time Logging",
+                      subtitle: "Allow employees to record effort even for projects outside direct assignment when permitted.",
+                      description: "The platform supports ad hoc project effort entry where employees can submit time against projects they may not be assigned to, subject to configuration and approval controls. This helps capture support work, cross-functional contribution and incidental effort that may otherwise be missed.",
+                      benefits: [
+                        "Ad Hoc Project Effort Submission",
+                        "Effort Logging for Non-Assigned Projects",
+                        "Configuration-Based Control",
+                        "Cross-Functional Work Capture",
+                        "Approval-Driven Flexibility"
+                      ],
+                      imageSrc: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Flexible.svg",
+                      imageAlt: "Ad Hoc Projects",
+                      imgPosition: "left"
+                    },
+
+                    {
+                      title: "Advanced Project Effort Reporting & Analytics",
+                      subtitle: "Track project effort, employee utilization and export reports for management decisions.",
+                      description: "Managers can analyze project effort through project-wise reports, employee effort distribution, charts, detailed reporting and downloadable exports. The reporting framework supports monitoring utilization trends, project hours, team contribution and managerial decision-making.",
+                      benefits: [
+                        "Advanced Project Report Tracking",
+                        "Project-Wise Effort Analytics",
+                        "Employee Effort Distribution",
+                        "Charts & Detailed Reports",
+                        "XLS Export Download"
+                      ],
+                      imageSrc: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/AdvancedProject.svg",
+                      imageAlt: "Project Reports",
+                      imgPosition: "right"
+                    }
+                  ] : isEmpTrainingData ? [
+                    {
+                      "title": "Training Module Setup & Session Management",
+                      "subtitle": "Create structured training programs and manage sessions efficiently.",
+                      "description": "Atomwalk HRM enables organizations to configure training modules, define programs, and manage training sessions based on skill development objectives. Training administrators can organize and track sessions systematically while maintaining clear visibility and coordination.",
+                      "benefits": [
+                        "Training Module Setup",
+                        "Session Scheduling & Management",
+                        "Structured Program Configuration",
+                        "Centralized Training Administration"
+                      ],
+                      "imageSrc": "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/TrainingModule.svg",
+                      "imageAlt": "Training Setup",
+                      "imgPosition": "left"
+                    },
+
+                    {
+                      "title": "Employee Enrollment & Trainer-Led Learning",
+                      "subtitle": "Enable flexible training enrollment and manage different training modes with structured tracking.",
+                      "description": "Atomwalk HRM allows employees to enroll in training programs while managers can define training modes such as online, self-study, or on-the-job training. The system maintains visibility of enrolled participants and provides downloadable attendance formats for manual tracking during sessions.",
+                      "benefits": [
+                        "Employee Self-Enrollment for Trainings",
+                        "Training Mode Configuration (Online, Self-Study, On-the-Job)",
+                        "Participant List Visibility for Managers",
+                        "Downloadable Attendance Sheet with Name and Signature"
+                      ],
+                      "imageSrc": "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/EmployeeEnrollment.svg",
+                      "imageAlt": "Employee Enrollment",
+                      "imgPosition": "right"
+                    },
+
+                    {
+                      "title": "Training Completion & Evaluation Tracking",
+                      "subtitle": "Track training completion and record evaluations with proper documentation and control.",
+                      "description": "After training completion, managers can record evaluation details including evaluation date, training score, upload certificate files, and add remarks. The system maintains structured records of completed trainings for easy tracking and future reference.",
+                      "benefits": [
+                        "Training Completion Tracking",
+                        "Manager Evaluation Recording",
+                        "Certificate Upload and Record Management",
+                        "Centralized Training Records",
+                        "Easy Access to Training History"
+                      ],
+                      "imageSrc": "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/TrainingCompletion.svg",
+                      "imageAlt": "Completion Tracking",
+                      "imgPosition": "left"
+                    },
+
+                    {
+                      title: "Training Goals & Performance Development",
+                      subtitle: "Track training goals and measure employee learning outcomes.",
+                      description: "Set training objectives, monitor goal achievement, and evaluate learning outcomes through structured goal tracking. The system helps organizations align training initiatives with employee development plans and broader performance improvement strategies.",
+                      benefits: [
+                        "Training Goal Tracking",
+                        "Learning Outcome Monitoring",
+                        "Employee Skill Development",
+                        "Performance-Oriented Training Insights"
+                      ],
+                      imageSrc: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/TrainingGoals.svg",
+                      imageAlt: "Training Goals",
+                      imgPosition: "right"
+                    }
                   ] : [
                     {
                       title: "Job Offer Records - Onboarding Process",

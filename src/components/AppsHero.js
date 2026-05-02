@@ -97,8 +97,7 @@ const AppsHero = () => {
           </Title>
 
           <Description>
-            Each application works seamlessly with the others,
-            giving organizations the power to manage their entire business through one integrated platform.
+            Integrated apps that work seamlessly together to simplify and connect every business function through one powerful platform.
           </Description>
 
           <Button onClick={() => window.location.href = "https://play.google.com/store/apps/developer?id=Atomwalk+Technologies+Private+Ltd.&hl=en_IN"}>

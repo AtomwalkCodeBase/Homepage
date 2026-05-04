@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import Team from './../assets/img/manoj.png';
 import Lipika from './../assets/img/Lipika.JPG';
-import Sk from './../assets/img/Sk.svg';
 import Jaganath from './../assets/img/sk2.svg';
 import Satish from './../assets/img/Satish (1).jpg';
 import Jayanthi from './../assets/img/freepik__enhance__57693.png';
@@ -583,7 +582,7 @@ const LeadershipAdvisors = () => {
       image: `${Jaganath}`,
       shortDesc: "Dr. M. R. Jaganath has had an illustrious career as a scientist specializing in deep technology, translational medicine, drug discovery, and drug development.",
       fullDesc: [
-        "He currently serves as Director of Strategy on the Board of Atomwalk, where he leverages his expertise to drive innovation in GLP software solutions. Dr. Jaganath holds a PhD from the Indian Institute of Science (IISc) Bangalore, along with degrees in Agriculture and Agricultural Microbiology from the University of Agricultural Sciences (UAS) Bangalore. His diverse career spans banking at the Reserve Bank of India (RBI), supporting startups in distillery effluent treatment and plant tissue culture, and significant contributions to drug discovery and development.",
+        "He currently serves as Director of Strategy on the Board of Atomwalk, where he leverages his expertise to drive innovation in GLP software solutions. Dr. Jaganath holds a PhD from the Indian Institute of Science (IISc) Bengaluru, along with degrees in Agriculture and Agricultural Microbiology from the University of Agricultural Sciences (UAS) Bengaluru. His diverse career spans banking at the Reserve Bank of India (RBI), supporting startups in distillery effluent treatment and plant tissue culture, and significant contributions to drug discovery and development.",
         "Previously, as Chief Scientific Officer at Connexios Life Sciences, Dr. Jaganath led translational network biology efforts and drug candidate development for type 2 diabetes. He has authored numerous publications as a prolific scientist. His broad expertise and leadership have been instrumental in advancing GLP software solutions, enhancing operational efficiency and regulatory compliance in life sciences and related industries."
       ],
       linkedin: null,
@@ -594,33 +593,14 @@ const LeadershipAdvisors = () => {
       name: "Dr. Lipika Sahoo",
       role: "Co-Founder, Director Innovation",
       image: `${Lipika}`,
-      shortDesc: "Dr. Lipika Sahoo, Co-Founder and Director of Atomwalk, brings over two decades of experience across academia and industry, with deep expertise in technology, innovation, and intellectual property. She holds a PhD from Indian Institute of Science (IISc) Bengaluru, along with qualifications from IIMB, XIMB and NLSIU Bengaluru.",
+      shortDesc: "Dr. Lipika Sahoo, Co-Founder and Director of Atomwalk, brings over two decades of experience across academia and industry, with deep expertise in technology, innovation, and intellectual property.",
       fullDesc: [
-        "A recognized authority in IP strategy, technology transfer, and innovation management, she is dedicated to helping technologists, scientists, and deep-tech entrepreneurs strategize, protect, and commercialize their ideas.",
+        "She holds a PhD from Indian Institute of Science (IISc) Bengaluru, along with qualifications from IIMB, XIMB and NLSIU Bengaluru. A recognized authority in IP strategy, technology transfer, and innovation management, she is dedicated to helping technologists, scientists, and deep-tech entrepreneurs strategize, protect, and commercialize their ideas.",
         "Her vision and leadership have been instrumental in accelerating Atomwalk’s growth, strengthening its innovation-led approach, and positioning it as a trusted partner for deep-tech innovators and companies to build, manage, and scale intelligent systems—while maximizing and amplifying the impact of their innovations."
       ],
       linkedin: null,
       isExecutive: true,
       linkedin: "https://www.linkedin.com/in/dr-lipika-sahoo-atomwalk/",
-    },
-    {
-      id: 4,
-      name: "Mr. SK Patnaik",
-      role: "Business, Product and Sales Strategy",
-      image: Sk,
-      shortDesc: "SK Patnaik is a seasoned business strategist with over 25years of experience in sales & market entry strategy, revenue growth, product innovation, and business management.",
-      fullDesc: [
-        "SK holds an MBA in Marketing and Systems from the Xavier Institute of Management, Bhubaneswar.",
-
-        "His diverse career has spanned global markets – the US, UK, Europe, South-East Asia, and India, holding key leadership roles in the IT Services industry, while successfully setting-up and scaling new business divisions.",
-
-        "At Infosys, he played a pivotal role in establishing the operations for Manufacturing Vertical in Asia-Pacific and India regions, driving early-stage adoption of solutions around emerging technologies in IoT, Smart Manufacturing, Automation & AI, Digital & Cloud for several Fortune 500 Clients. He has extensive experiences in ERP systems like SAP, Oracle as well as Platforms like Salesforce and other SaaS solutions.",
-
-        "SK joined Atomwalk’s Board in 2021 after his foray into start-ups co-founding one into deep-tech Wireless products. At Atomwalk, his strategic vision is integral to shaping the business, product, and sales strategy - driving sustainable growth."
-      ],
-      linkedin: null,
-      isExecutive: true,
-      linkedin: "https://www.linkedin.com/in/sk-patnaik-/",
     },
     {
       id: 5,

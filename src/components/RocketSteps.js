@@ -12,7 +12,7 @@ import Sms from "../assets/img/Solar_session_1.jpeg";
 import Hms from "../assets/img/Healthimage.jpg";
 
 export const Section = styled.section`
-  padding: 100px 10%;
+  padding: 100px 6%;
   background: linear-gradient(to bottom, #f6f2ea, #ffffff);
 
   @media (max-width: 992px) {
@@ -419,7 +419,7 @@ export default function RocketSteps() {
             Run Everything on One Platform
           </Title>
           <Description>
-            Bring every function together From lab to production to sales all on one platform
+            Bring every function together From lab to production to sales all on one platform.
           </Description>
           <Contact onClick={() => window.location.href = "/contactUs.html"}>
             Contact Us

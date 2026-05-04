@@ -96,13 +96,13 @@ const AbusePolicy = () => {
             </Header>
 
             <Paragraph>
-                At Atomwalk Technologies, we are committed to maintaining a safe, respectful, and professional environment for all users, clients, and employees. This policy defines unacceptable behavior and sets clear expectations for how we address abuse, whether it occurs within our platform, communications, or in the workplace.
+                At Atomwalk Technologies Pvt. Ltd., we are committed to maintaining a safe, respectful, and professional environment for all users, clients, and employees. This policy defines unacceptable behavior and sets clear expectations for how we address abuse, whether it occurs within our platform, communications, or in the workplace.
             </Paragraph>
 
             <Section>
                 <SectionTitle>Types of Abuse</SectionTitle>
                 <Paragraph>
-                    Atomwalk Technologies has a zero-tolerance policy toward abusive behavior. The following behaviors are strictly prohibited:
+                    Atomwalk Technologies Pvt. Ltd. has a zero-tolerance policy toward abusive behavior. The following behaviors are strictly prohibited:
                 </Paragraph>
 
                 <SubsectionTitle>1. Spam, Malware, and Phishing</SubsectionTitle>
@@ -166,22 +166,22 @@ const AbusePolicy = () => {
 
                 <SubsectionTitle>7. Other Violations</SubsectionTitle>
                 <Paragraph>
-                    Any other behavior or content that violates the ethical standards of Atomwalk Technologies, including:
+                    Any other behavior or content that violates the ethical standards of Atomwalk Technologies Pvt. Ltd., including:
                 </Paragraph>
                 <List>
                     <li>Any form of harassment, bullying, or targeted abuse.</li>
                     <li>Impersonation of another individual or entity with the intent to deceive or harm.</li>
-                    <li>Misuse of Atomwalk Technologies' services for fraudulent, deceptive, or harmful purposes.</li>
+                    <li>Misuse of Atomwalk Technologies Pvt. Ltd. services for fraudulent, deceptive, or harmful purposes.</li>
                 </List>
             </Section>
 
             <Section>
                 <SectionTitle>Zero Tolerance Policy</SectionTitle>
                 <Paragraph>
-                    Atomwalk Technologies enforces a zero-tolerance policy toward abusive behavior and violations of this policy. Any individual found engaging in any of the above forms of abuse will face immediate consequences, including but not limited to:
+                    Atomwalk Technologies Pvt. Ltd. enforces a zero-tolerance policy toward abusive behavior and violations of this policy. Any individual found engaging in any of the above forms of abuse will face immediate consequences, including but not limited to:
                 </Paragraph>
                 <List>
-                    <li>Suspension or termination of accounts or access to Atomwalk Technologies' platforms and services.</li>
+                    <li>Suspension or termination of accounts or access to Atomwalk Technologies Pvt. Ltd.' platforms and services.</li>
                     <li>Investigation and disciplinary action for employees, which may include counseling, suspension, or termination of employment.</li>
                     <li>Legal action where applicable, including cooperation with law enforcement for criminal activities such as identity theft, exploitation, or harassment.</li>
                 </List>
@@ -196,14 +196,14 @@ const AbusePolicy = () => {
                     <strong>Email:</strong> <a href="mailto:support@atomwalk.com" style={{ color: '#3b82f6', textDecoration: 'none' }}>support@atomwalk.com</a>
                 </Paragraph>
                 <Paragraph>
-                    All reports are handled confidentially, and Atomwalk Technologies is committed to investigating any complaints thoroughly and fairly.
+                    All reports are handled confidentially, and Atomwalk Technologies Pvt. Ltd. is committed to investigating any complaints thoroughly and fairly.
                 </Paragraph>
             </Section>
 
             <Section>
                 <SectionTitle>Support for Affected Individuals</SectionTitle>
                 <Paragraph>
-                    If you are a victim of abuse or harassment, Atomwalk Technologies offers the following support:
+                    If you are a victim of abuse or harassment, Atomwalk Technologies Pvt. Ltd. offers the following support:
                 </Paragraph>
                 <List>
                     <li>Counseling services or assistance for employees or users who may need support.</li>
@@ -214,7 +214,7 @@ const AbusePolicy = () => {
             <Section>
                 <SectionTitle>Preventive Measures</SectionTitle>
                 <Paragraph>
-                    Atomwalk Technologies is committed to reducing abuse through proactive measures, including:
+                    Atomwalk Technologies Pvt. Ltd. is committed to reducing abuse through proactive measures, including:
                 </Paragraph>
                 <List>
                     <li><strong>Education and training:</strong> Regular training for employees, users, and customers about abusive behavior, its impact, and how to report it.</li>
@@ -226,7 +226,7 @@ const AbusePolicy = () => {
             <Section>
                 <SectionTitle>Conclusion</SectionTitle>
                 <Paragraph>
-                    Abuse in any form is unacceptable at Atomwalk Technologies. We believe in fostering a safe, respectful, and professional environment where all individuals can work, collaborate, and communicate without fear of harm or exploitation. We are committed to enforcing this policy and taking swift action against any violations.
+                    Abuse in any form is unacceptable at Atomwalk Technologies Pvt. Ltd. We believe in fostering a safe, respectful, and professional environment where all individuals can work, collaborate, and communicate without fear of harm or exploitation. We are committed to enforcing this policy and taking swift action against any violations.
                 </Paragraph>
             </Section>
 

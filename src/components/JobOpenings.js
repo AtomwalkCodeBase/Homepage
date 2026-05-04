@@ -117,7 +117,7 @@ const ApplyInfo = styled.p`
 
 const JobOpenings = () => {
   const jobs = [
-    
+
     {
       code: "AW/BDA/002-2025",
       title: "Business Development Associate",
@@ -142,7 +142,7 @@ const JobOpenings = () => {
         "Incentive linked pay"
       ],
       eligibility: "Bachelor's/Master's degree in Business Administration, Marketing, or a related field",
-      location: "ITPL Main Road, Bangalore, India",
+      location: "ITPL Main Road, Bengaluru, India",
       applyInfo: "Write to us with your resume at support@atomwalk.com"
     },
     {
@@ -171,7 +171,7 @@ const JobOpenings = () => {
         "Performance-based career growth opportunities"
       ],
       eligibility: "Bachelor's degree in Computer Science, IT, or related field (2025 graduates)",
-      location: "ITPL Main Road, Bangalore, India",
+      location: "ITPL Main Road, Bengaluru, India",
       applyInfo: "Write to us with your resume and GitHub profile at support@atomwalk.com "
     }
   ];
@@ -184,37 +184,37 @@ const JobOpenings = () => {
           <Card key={index}>
             {job.code && <JobCode>Job Code: {job.code}</JobCode>}
             <JobTitle>{job.title}</JobTitle>
-            
+
             <SectionTitle>Job Description:</SectionTitle>
             <JobDetails>
               {job.description.map((item, i) => (
                 <li key={i}>{item}</li>
               ))}
             </JobDetails>
-            
+
             <SectionTitle>Required Skills:</SectionTitle>
             <JobDetails>
               {job.skills.map((skill, i) => (
                 <li key={i}>{skill}</li>
               ))}
             </JobDetails>
-            
+
             <HighlightText>Top benefits or perks:</HighlightText>
             <JobDetails>
               {job.benefits.map((benefit, i) => (
                 <li key={i}>{benefit}</li>
               ))}
             </JobDetails>
-            
+
             <SectionTitle>Eligibility Criteria:</SectionTitle>
             <JobDetails>
               <li>{job.eligibility}</li>
             </JobDetails>
-            
+
             <JobDetails>
               <strong>Location:</strong> {job.location}
             </JobDetails>
-            
+
             <ApplyInfo>{job.applyInfo}</ApplyInfo>
           </Card>
         ))

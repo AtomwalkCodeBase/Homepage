@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-
+import Sk from './../assets/img/Sk.svg';
 // Sophisticated Keyframe Animations
 const fadeInUp = keyframes`
   0% { 
@@ -210,7 +210,7 @@ const ImageContainer = styled.div`
   flex: 0 0 300px;
   overflow: hidden;
   position: relative;
-  background: linear-gradient(135deg, #f5f2e8, #e8e2d1);
+  /* background: linear-gradient(135deg, #f5f2e8, #e8e2d1); */
   
   &::after {
     content: '';
@@ -219,7 +219,7 @@ const ImageContainer = styled.div`
     left: 0;
     right: 0;
     height: 40%;
-    background: linear-gradient(to top, rgba(255,255,255,0.9) 0%, transparent 100%);
+    /* background: linear-gradient(to top, rgba(255,255,255,0.9) 0%, transparent 100%); */
   }
   
   @media (max-width: 900px) {
@@ -449,19 +449,19 @@ const ProfileButton = styled.a`
 //   color: #b8860b;
 //   cursor: pointer;
 //   transition: all 0.3s ease;
-  
+
 //   &:hover {
 //     background: rgba(184, 134, 11, 0.05);
 //     border-color: #b8860b;
 //     transform: translateY(-2px);
 //   }
-  
+
 //   &:disabled {
 //     opacity: 0.5;
 //     cursor: not-allowed;
 //     transform: none;
 //   }
-  
+
 //   svg {
 //     width: 20px;
 //     height: 20px;
@@ -488,8 +488,28 @@ const AdvisoryBoard = () => {
   // };
 
   const advisors = [
+
     {
       id: 1,
+      name: "Mr. SK Patnaik",
+      role: "Strategic Advisor",
+      image: Sk,
+      shortDesc: ["SK Patnaik is a seasoned business strategist with over 25years of experience in sales & market entry strategy, revenue growth, product innovation, and business management.",
+        "His diverse career has spanned global markets – the US, UK, Europe, South-East Asia, and India, holding key leadership roles in the IT Services industry, while successfully setting-up and scaling new business divisions.",
+      ],
+      fullBio: [
+        "SK holds an MBA in Marketing and Systems from the Xavier Institute of Management, Bhubaneswar.",
+
+        "At Infosys, he played a pivotal role in establishing the operations for Manufacturing Vertical in Asia-Pacific and India regions, driving early-stage adoption of solutions around emerging technologies in IoT, Smart Manufacturing, Automation & AI, Digital & Cloud for several Fortune 500 Clients. He has extensive experiences in ERP systems like SAP, Oracle as well as Platforms like Salesforce and other SaaS solutions.",
+
+        "SK joined Atomwalk’s Board in 2021 after his foray into start-ups co-founding one into deep-tech Wireless products. At Atomwalk, his strategic vision is integral to shaping the business, product, and sales strategy - driving sustainable growth."
+      ],
+      // linkedin: null,
+      // isExecutive: true,
+      linkedin: "https://www.linkedin.com/in/sk-patnaik-/",
+    },
+    {
+      id: 2,
       name: "Dr. Raghuveer Rao P",
       role: "Strategic Advisor",
       image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/prvrao-photo.jpg",
@@ -501,8 +521,8 @@ const AdvisoryBoard = () => {
         "His research interests include fundamentals of soil behaviour, contaminant transport through subsoil, foundation engineering, slope stability analysis, numerical analysis and geotechnical instrumentation.",
         "He was consultant for several projects of national importance in the areas of site investigation, foundation design, field and laboratory testing, transient analysis and design of surge protection systems for water transmission mains, lift irrigation schemes and circulating water systems for thermal and nuclear power projects."
       ],
-    //   linkedin: "https://www.linkedin.com",
-    //   profileLink: "/advisors/eleanor-richmond"
+      linkedin: "https://www.linkedin.com/in/raghuveer-rao-pallepati-1801372/",
+      //   profileLink: "/advisors/eleanor-richmond"
     },
     // {
     //   id: 2,
@@ -563,18 +583,18 @@ const AdvisoryBoard = () => {
         <AdvisorCardsContainer>
           {advisors.map((advisor, index) => {
             const isExpanded = expandedBios[advisor.id];
-            
+
             return (
-              <AdvisorCard 
-                key={advisor.id} 
+              <AdvisorCard
+                key={advisor.id}
                 delay={index}
                 hasImage={advisor.image}
-                style={{ display: index === currentIndex ? 'flex' : 'none' }}
+              // style={{ display: index === currentIndex ? 'flex' : 'none' }}
               >
                 <ImageContainer>
                   {advisor.image ? (
-                    <AdvisorImage 
-                      src={advisor.image} 
+                    <AdvisorImage
+                      src={advisor.image}
                       alt={advisor.name}
                       className="advisor-image"
                       onError={(e) => {
@@ -585,34 +605,34 @@ const AdvisoryBoard = () => {
                   ) : null}
                   <DefaultIcon style={{ display: advisor.image ? 'none' : 'flex' }}>
                     <svg viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                     </svg>
                   </DefaultIcon>
                 </ImageContainer>
-                
+
                 <AdvisorDetails>
                   <AdvisorName>{advisor.name}</AdvisorName>
-         
+
                   <AdvisorDescription>
-                    {Array.isArray(advisor.shortDesc) 
+                    {Array.isArray(advisor.shortDesc)
                       ? advisor.shortDesc.map((paragraph, i) => (
-                          <p key={i}>{paragraph}</p>
-                        ))
+                        <p key={i}>{paragraph}</p>
+                      ))
                       : advisor.shortDesc
                     }
                   </AdvisorDescription>
-                  
+
                   <ReadMoreButton onClick={() => toggleBio(advisor.id)}>
                     {isExpanded ? 'Read Less' : 'Read Full Bio'}
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       {isExpanded ? (
-                        <path d="M18 15l-6-6-6 6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M18 15l-6-6-6 6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       ) : (
-                        <path d="M6 9l6 6 6-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M6 9l6 6 6-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       )}
                     </svg>
                   </ReadMoreButton>
-                  
+
                   {isExpanded && (
                     <FullBio>
                       {advisor.fullBio.map((paragraph, i) => (
@@ -620,26 +640,26 @@ const AdvisoryBoard = () => {
                       ))}
                     </FullBio>
                   )}
-                  
+
                   <AdvisorLinks>
                     {advisor.linkedin && (
-                      <LinkedInButton 
-                        href={advisor.linkedin} 
-                        target="_blank" 
+                      <LinkedInButton
+                        href={advisor.linkedin}
+                        target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`${advisor.name} LinkedIn`}
                       >
                         <svg viewBox="0 0 24 24">
-                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                         </svg>
                       </LinkedInButton>
                     )}
-                    
+
                     {advisor.profileLink && (
                       <ProfileButton href={advisor.profileLink}>
                         View Profile
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                          <path d="M5 12h14M12 5l7 7-7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          <path d="M5 12h14M12 5l7 7-7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </ProfileButton>
                     )}

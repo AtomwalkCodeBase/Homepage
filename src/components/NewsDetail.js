@@ -7,7 +7,7 @@ const newsData = [
         id: "1",
         title: "Smarter Instrument Maintenance for Modern Laboratories",
         subheading: "Moving beyond fixed schedules to intelligent, risk-based equipment management.",
-        location: "Bangalore",
+        location: "Bengaluru",
         date: "March 17, 2026",
         content: [
             `Laboratory equipment is central to ensuring accuracy, reliability, and compliance in every operation. Traditionally, maintenance and calibration are managed through fixed schedules, where instruments are serviced at predefined intervals regardless of how they are actually used. While this approach provides a basic level of control, it often fails to reflect the dynamic nature of real laboratory environments.`,
@@ -31,7 +31,7 @@ const newsData = [
         id: "3",
         title: "Intelligent Healthcare Operations with Smart HMS",
         subheading: "Enhancing patient care and hospital efficiency through connected, AI-enabled workflows.",
-        location: "Bangalore",
+        location: "Bengaluru",
         date: "March 20, 2026",
         content: [
             "Hospitals operate in highly dynamic environments where efficiency, accuracy, and timely decision-making are critical. Managing patient records, appointments, diagnostics, billing, and resources across departments often involves multiple systems and manual coordination. This often leads to delays, inefficiencies, and limited visibility into overall operations.",
@@ -52,7 +52,7 @@ const newsData = [
         id: "2",
         title: "Digitizing Seafood Operations with End-to-End ERP",
         subheading: "Bringing traceability, quality control, and operational efficiency into a unified seafood management platform.",
-        location: "Bangalore",
+        location: "Bengaluru",
         date: "March 20, 2026",
         content: [
             "Seafood businesses operate in a highly dynamic and sensitive environment where quality, traceability, and timely execution are critical. From raw material procurement to final export, every stage requires careful coordination and strict compliance. However, many organizations still rely on disconnected systems and manual processes, leading to inefficiencies, lack of visibility, and increased operational risks.",
@@ -67,7 +67,7 @@ const newsData = [
         id: "4",
         title: "Instant Report Drafting for Laboratories",
         subheading: "Turning laboratory data into structured insights without manual effort.",
-        location: "Bangalore",
+        location: "Bengaluru",
         date: "December 20, 2025",
         content: [
             "Laboratories generate large volumes of data across experiments, samples, and processes, but converting this data into meaningful insights often remains a manual and time-consuming task. Many teams still rely on spreadsheets and repetitive workflows to compile reports, which slows down decision-making and introduces inconsistencies.",

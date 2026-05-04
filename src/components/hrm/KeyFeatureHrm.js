@@ -225,7 +225,7 @@ const KeyFeatureHrm = () => {
             Mobile-first HR solution with all essential features in a lightweight interface. Employee self-service portal with secure authentication and offline capabilities.
           </FeatureDescription>
         </FeatureBox>
-        <FeatureBox onClick={() => { handleCardPress('timesheet') }}>
+        <FeatureBox onClick={() => { handleCardPress('datasheet') }}>
           <IconContainer bgColor="#dff7da">
             <img src="https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/timeManagement.webp" alt="Performance Mangement" />
           </IconContainer>

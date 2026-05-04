@@ -95,7 +95,7 @@ const AntiSpamPolicy = () => {
             </Header>
 
             <Paragraph>
-                Atomwalk Technologies ("we," "our," or "the Company") is committed to maintaining a clean, secure, and respectful online environment for all users. As part of our dedication to quality, integrity, and compliance with applicable laws, we have established this Anti-Spam Policy to prevent the misuse of our services and to protect our customers from unwanted or unsolicited communications.
+                Atomwalk Technologies Pvt. Ltd. ("we," "our," or "the Company") is committed to maintaining a clean, secure, and respectful online environment for all users. As part of our dedication to quality, integrity, and compliance with applicable laws, we have established this Anti-Spam Policy to prevent the misuse of our services and to protect our customers from unwanted or unsolicited communications.
             </Paragraph>
 
             <Section>
@@ -113,7 +113,7 @@ const AntiSpamPolicy = () => {
             <Section>
                 <SectionTitle>Prohibited Activities</SectionTitle>
                 <Paragraph>
-                    Atomwalk Technologies prohibits the use of its products and services for any activities that may result in the sending, distribution, or delivery of spam. The following activities are strictly prohibited:
+                    Atomwalk Technologies Pvt. Ltd. prohibits the use of its products and services for any activities that may result in the sending, distribution, or delivery of spam. The following activities are strictly prohibited:
                 </Paragraph>
                 <List>
                     <li>Sending unsolicited commercial emails or messages without prior consent.</li>
@@ -128,7 +128,7 @@ const AntiSpamPolicy = () => {
             <Section>
                 <SectionTitle>Responsibilities of Users</SectionTitle>
                 <Paragraph>
-                    All users of Atomwalk Technologies' services are responsible for ensuring that their actions comply with this Anti-Spam Policy. This includes, but is not limited to:
+                    All users of Atomwalk Technologies Pvt. Ltd.'s services are responsible for ensuring that their actions comply with this Anti-Spam Policy. This includes, but is not limited to:
                 </Paragraph>
                 <List>
                     <li>Obtaining proper consent from individuals before sending marketing or promotional communications.</li>
@@ -141,14 +141,14 @@ const AntiSpamPolicy = () => {
             <Section>
                 <SectionTitle>Compliance with Anti-Spam Laws</SectionTitle>
                 <Paragraph>
-                    Atomwalk Technologies is committed to complying with all applicable anti-spam laws and regulations, including but not limited to the CAN-SPAM Act (U.S.), GDPR (EU), and other local legislation governing the use of electronic communications. We expect all users of our services to do the same.
+                    Atomwalk Technologies Pvt. Ltd. is committed to complying with all applicable anti-spam laws and regulations, including but not limited to the CAN-SPAM Act (U.S.), GDPR (EU), and other local legislation governing the use of electronic communications. We expect all users of our services to do the same.
                 </Paragraph>
             </Section>
 
             <Section>
                 <SectionTitle>Enforcement of this Policy</SectionTitle>
                 <Paragraph>
-                    Atomwalk Technologies takes violations of this Anti-Spam Policy seriously. Any user found to be in breach of this policy may face one or more of the following actions:
+                    Atomwalk Technologies Pvt. Ltd. takes violations of this Anti-Spam Policy seriously. Any user found to be in breach of this policy may face one or more of the following actions:
                 </Paragraph>
                 <List>
                     <li>Immediate suspension or termination of accounts.</li>
@@ -168,7 +168,7 @@ const AntiSpamPolicy = () => {
             <Section>
                 <SectionTitle>Policy Updates</SectionTitle>
                 <Paragraph>
-                    Atomwalk Technologies reserves the right to update or modify this Anti-Spam Policy at any time. Any changes will be communicated through our website or via email to registered users. Users are encouraged to review this policy regularly to stay informed of any updates.
+                    Atomwalk Technologies Pvt. Ltd. reserves the right to update or modify this Anti-Spam Policy at any time. Any changes will be communicated through our website or via email to registered users. Users are encouraged to review this policy regularly to stay informed of any updates.
                 </Paragraph>
             </Section>
 
@@ -185,7 +185,7 @@ const AntiSpamPolicy = () => {
             <NoteBox>
                 <strong>📧 Our Commitment</strong>
                 <Paragraph style={{ marginTop: '0.5rem', marginBottom: 0 }}>
-                    This Anti-Spam Policy is designed to help protect users and ensure a safe and secure online experience while using Atomwalk Technologies' services. Thank you for your cooperation in keeping our platform free from spam.
+                    This Anti-Spam Policy is designed to help protect users and ensure a safe and secure online experience while using Atomwalk Technologies Pvt. Ltd.'s services. Thank you for your cooperation in keeping our platform free from spam.
                 </Paragraph>
             </NoteBox>
 

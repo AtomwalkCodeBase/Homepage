@@ -4,12 +4,13 @@ import styled from 'styled-components';
 import { FiZap, FiClock, FiCheckCircle, } from 'react-icons/fi';
 import { theme } from '../../styles/Theme';
 import StatsCard from '../../components/StatsCard';
-import { buildActivityGroupMap, buildStatsSummary, deriveActivityStatusForDate, filterActivities, formatAPITime, formatDate, formatMonthLabel, formatToApiDate, formatToDDMMYYYY, formatWeekLabel, getStatusLabelVariant, getTodayApiDateStr, mapEmployeeCustomerOrderItemData, parseApiDate } from './utils/utils';
+import { buildActivityGroupMap, buildStatsSummary, DateForApiFormate, deriveActivityStatusForDate, filterActivities, formatAPITime, formatDate, formatToApiDate, formatToDDMMYYYY, formatWeekLabel, getCurrentDateTimeDefaults, getStatusLabelVariant, getTodayApiDateStr, mapEmployeeCustomerOrderItemData, parseApiDate, parseISO } from './utils/utils';
 import Badge from '../../components/Badge';
 import { getEmpAllocationData, getemployeeList, processTimesheetApproval } from '../../services/productServices';
 import PaginationComponent from '../../components/Pagination';
 import Button from '../../components/Button';
-import { FaChevronLeft, FaChevronRight, FaEye, FaFileExport, FaRegCalendarAlt, FaRegCalendarCheck } from 'react-icons/fa';
+import { FaEye, FaFileExport, FaRegCalendarAlt, FaRegCalendarCheck } from 'react-icons/fa';
+import { HiArrowsRightLeft } from "react-icons/hi2";
 import EmployeeWiseTSView from '../../components/modals/ModalForProjectmanagemnt/EmployeeWiseTSView';
 import WeeklyTimesheetSummary from './WeeklyTimesheetSummary';
 import { MultiSelectDropdown } from '../../components/MultiSelectDropdown';
@@ -291,22 +292,28 @@ const FullWidthCell = styled(Cell)`
   padding: ${theme.spacing.lg};
   color: ${theme.colors.textLight};
 `;
-const CalendarContainer = styled.div`
-  display: flex;
-   gap: 1rem;
-  align-items: center;
-  margin-bottom: 1rem;
-`
 
-const MonthText = styled.h4`
-  margin: 0;
-`
 const TableActions = styled.div`
   margin-top: 1rem;
   display: flex;
   gap: 12px;
   justify-content: flex-end;
   flex-wrap: wrap;
+`;
+
+const DateInput = styled.input`
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  background: white;
+
+  @media (max-width: 768px) {
+    width: 45%;
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+  }
 `;
 
 
@@ -327,29 +334,24 @@ const ManagerDashboard = () => {
   const [employeeFilter, setEmployeeFilter] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(getTodayApiDateStr());
-  const todayDate = getTodayApiDateStr();
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(getCurrentDateTimeDefaults().todayISO);
+  const [draftDate, setDraftDate] = useState(getCurrentDateTimeDefaults().todayISO);
+  const todayDate = getCurrentDateTimeDefaults().todayISO;
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const currentDate = useMemo(() => {
-    const selectedDateObj = parseApiDate(selectedDate) || new Date();
+    const selected = new Date(selectedDate);
 
-    const start = new Date(selectedDateObj);
-    start.setDate(selectedDateObj.getDate() - 5);
+    const prevDate = new Date(selected);
+    prevDate.setDate(prevDate.getDate() - 1);
 
-    const end = new Date(selectedDateObj);
-    end.setDate(selectedDateObj.getDate() + 5);
-
-    const format = (date) => {
-      const y = date.getFullYear();
-      const m = String(date.getMonth() + 1).padStart(2, "0");
-      const d = String(date.getDate()).padStart(2, "0");
-      return `${y}-${m}-${d}`;
-    };
+    const nextDate = new Date(selected);
+    nextDate.setDate(nextDate.getDate() + 1);
 
     return {
-      start: format(start),
-      end: format(end),
+      start: DateForApiFormate(prevDate, true),
+      end: DateForApiFormate(nextDate, true),
     };
   }, [selectedDate]);
 
@@ -367,10 +369,16 @@ const ManagerDashboard = () => {
   }, [allEmployeeAllocationData]);
 
   const derivedActivities = useMemo(() => {
+    if (!allEmployeeAllocationData.length) return [];
+
+    const selectedDay = selectedDate ? parseISO(selectedDate) : null;
+    const selectedApiDateStr =
+      selectedDay && !isNaN(selectedDay.getTime()) ? formatToApiDate(selectedDay) : null;
+    if (!selectedApiDateStr) return [];
+
     let derived = deriveActivityStatusForDate(
       groupedActivities,
-      selectedDate,
-      // currentDate.start,
+      selectedApiDateStr,
       new Date()
     );
 
@@ -384,8 +392,6 @@ const ManagerDashboard = () => {
 
     return derived;
   }, [groupedActivities, selectedDate, pathname, emp_grade]);
-
-  // console.log("derivedActivities", derivedActivities)
 
   const statsSummary = useMemo(() => {
     return buildStatsSummary(derivedActivities);
@@ -425,9 +431,8 @@ const ManagerDashboard = () => {
     ACTUAL: { total: auditSummary.Actual.size },
   };
 
-  // console.log("finalStatsSummary", finalStatsSummary)
-
   const filteredActivities = useMemo(() => {
+    if (!derivedActivities.length) return [];
     let filtered = filterActivities(derivedActivities, statusFilter, customerFilter, employeeFilter, searchTerm);
     return filtered;
   }, [derivedActivities, statusFilter, customerFilter, employeeFilter, searchTerm]);
@@ -443,35 +448,7 @@ const ManagerDashboard = () => {
     setCurrentPage(page);
     if (perPage !== itemsPerPage) {
       setItemsPerPage(perPage);
-      setCurrentPage(1); // Reset to first page when changing items per page
-    }
-  };
-
-  const handlePreviousDay = () => {
-    if (activeTab === "daily") {
-      const date = parseApiDate(selectedDate);
-      date.setDate(date.getDate() - 1);
-      setSelectedDate(formatToApiDate(date));
-    } else {
-      // For weekly/monthly view, navigate by month
-      const date = parseApiDate(selectedDate);
-      date.setMonth(date.getMonth() - 1);
-      date.setDate(1); // Set to first day of the month
-      setSelectedDate(formatToApiDate(date));
-    }
-  };
-
-  const handleNextDay = () => {
-    if (activeTab === "daily") {
-      const date = parseApiDate(selectedDate);
-      date.setDate(date.getDate() + 1);
-      setSelectedDate(formatToApiDate(date));
-    } else {
-      // For weekly/monthly view, navigate by month
-      const date = parseApiDate(selectedDate);
-      date.setMonth(date.getMonth() + 1);
-      date.setDate(1); // Set to first day of the month
-      setSelectedDate(formatToApiDate(date));
+      setCurrentPage(1);
     }
   };
 
@@ -499,7 +476,6 @@ const ManagerDashboard = () => {
           const response = await getemployeeList()
           const filteredData = response.data.filter((emp) => emp.is_manager && emp.emp_id !== m_emp_id )
           setEmployees(filteredData)
-          // console.log(filteredData)
           setLoading(false)
         } catch (err) {
           toast.error("Failed to fetch Employee List")
@@ -535,14 +511,13 @@ const ManagerDashboard = () => {
     }
 
     setIsLoading(true)
+    setAllEmployeeAllocationData([]);
     try {
       const res = await getEmpAllocationData(pathname === "/admin-dashboard" ? a_payload : m_payload);
+      const allocationData = res?.data || [];
       const WeeklyTimesheetSummary = mapEmployeeCustomerOrderItemData(res.data);
 
       setWeeklyTimesheetSummaryData(WeeklyTimesheetSummary)
-
-      const allocationData = res?.data || [];
-
       setAllEmployeeAllocationData(allocationData)
 
     } catch (error) {
@@ -556,7 +531,8 @@ const ManagerDashboard = () => {
       }
       setAllEmployeeAllocationData([])
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
+      setDataLoaded(true);
     }
   };
 
@@ -667,7 +643,6 @@ const ManagerDashboard = () => {
     handleViewSession(employee, orderItem);
   };
 
-
   const handleCloseSessionModal = () => {
     setSelectedSessionItem(null);
     setSessionDayLogStatuses({});
@@ -688,9 +663,7 @@ const ManagerDashboard = () => {
       try {
         const payload = {
           emp_id: selectedItem.employee.emp_id,
-          // start_date: formatToDDMMYYYY(selectedItem.orderItem.actual_start_date),
           start_date: selectedItem.orderItem.actual_start_date,
-          // end_date: formatToDDMMYYYY(selectedItem.orderItem.actual_end_date),
           end_date: selectedItem.orderItem.actual_end_date,
           call_mode: confirmType,
           a_emp_id: approverId,
@@ -797,8 +770,6 @@ const ManagerDashboard = () => {
 
     if (!Array.isArray(data) || data.length === 0) return rows;
 
-    // Support both hierarchical (employees → customers → order_items)
-    // and flattened activity row structures.
     const first = data[0];
 
     const isEmployeeStructured = Boolean(first?.customers);
@@ -837,7 +808,6 @@ const ManagerDashboard = () => {
     } else {
       // Flat list (derived activities / filtered rows)
       data.forEach((item) => {
-        // console.log("come block 2")
         const planned = item.planned || {};
         const actualTime = item.actual || {};
         const actual = item.original_A || {};
@@ -889,8 +859,6 @@ const ManagerDashboard = () => {
       }
     };
 
-
-  // console.log("paginatedActivities", profile);
   return (
     <Layout title="Allocation Dashboard">
       <PageSubtitle>
@@ -928,7 +896,7 @@ const ManagerDashboard = () => {
         <Main>
           <StatsGrid>
             {statsData.map((stats) => <StatsCard icon={stats.icon} label={stats.label} value={stats.value} color={stats.color}
-              sections={stats.sections} onClick={() => { stats.onClick(); window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }); }} onItemClick={(item) => { stats.onItemClick(item); window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }) }}
+              sections={stats.sections} onClick={() => { stats.onClick(); window.scrollTo({ top: 860, behavior: "smooth" }); }} onItemClick={(item) => { stats.onItemClick(item); window.scrollTo({ top: 860, behavior: "smooth" }) }}
             />)}
           </StatsGrid>
 
@@ -975,43 +943,20 @@ const ManagerDashboard = () => {
                   loading={loading}
                   loadingText='Loading...'
                 />}
-              {/* {activeTab === "daily" ?
-                <DateToggle>
-                  <DateButton onClick={handlePreviousDay}>
-                    <FiChevronLeft />
-                  </DateButton>
-                  <DateDisplay>{selectedDate}</DateDisplay>
-                  <DateButton onClick={handleNextDay}>
-                    <FiChevronRight />
-                  </DateButton>
-                </DateToggle> : <DateToggle>
-                   <DateButton onClick={handlePreviousDay}>
-                    <FiChevronLeft />
-                  </DateButton>
-                  <DateDisplay>{formatMonthLabel(currentDate.start)}</DateDisplay>
-                  <DateButton onClick={handleNextDay}>
-                    <FiChevronRight />
-                  </DateButton>
-                  </DateToggle>
-                  } */}
-              <Button style={{ marginLeft: "auto" }} onClick={() => { setStatusFilter(null); setCustomerFilter(null); setEmployeeFilter(null); setSearchTerm(''); setCurrentPage(1); setM_Employee_id(null); }}><MdFilterAltOff /> Clear All</Button>
+              <Button style={{ marginLeft: "auto" }} onClick={() => { setCustomerFilter(null); setEmployeeFilter(null); setSearchTerm(''); setCurrentPage(1); setM_Employee_id(null); }}><MdFilterAltOff /> Clear All</Button>
 
             </div>
           </FilterSection>
           }
           <Card hoverable={false}>
 
-            <div style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <CalendarContainer>
-                <Button size='sm' variant="primary" iconOnly={true} onClick={handlePreviousDay}>
-                  <FaChevronLeft />
-                </Button>
-                <MonthText>{activeTab === "daily" ? selectedDate : formatMonthLabel(currentDate.start)}</MonthText>
-                <Button size="sm" variant="primary" iconOnly={true} onClick={handleNextDay}>
-                  <FaChevronRight />
-                </Button>
-              </CalendarContainer>
-              <Button onClick={() => { setSelectedDate(todayDate) }}><MdFilterAltOff /> Clear filter</Button>
+            <div style={{ width: "100%", display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+              <div style={{display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "1rem"}}>
+              <span style={{color: theme.colors.textLight}}>Select Date: </span>
+              <DateInput type="date" value={draftDate} onChange={(e) => setDraftDate(e.target.value)} />
+              <Button onClick={() => { setSelectedDate(draftDate); setCurrentPage(1); }}><HiArrowsRightLeft /> Fetch</Button>
+              </div>
+              <Button onClick={() => {setStatusFilter(null); setDraftDate(todayDate); setSelectedDate(todayDate); setCurrentPage(1); }}><MdFilterAltOff /> Clear filter</Button>
             </div>
 
             {pathname !== "/admin-dashboard" && <TabContainer>
@@ -1039,7 +984,7 @@ const ManagerDashboard = () => {
                     (<DataRow>
                       <FullWidthCell>Loading...</FullWidthCell>
                     </DataRow>)
-                    : paginatedActivities.length ? (paginatedActivities.map(audit => {
+                    : dataLoaded && paginatedActivities.length !== 0 ? (paginatedActivities.map(audit => {
                       const { variant, status_label } = getStatusLabelVariant(audit?.project_period_status);
                       const statusMeta = getStatusMeta(audit.status);
                       return (
@@ -1109,6 +1054,7 @@ const ManagerDashboard = () => {
                   onPageChange={handlePageChange}
                   siblingCount={2}
                   listName='audits'
+                  showPageSize = {true}
                 />
                 <TableActions>
                   <Button variant="outline" size="sm" onClick={() => handleAuditExport(filteredActivities)}>

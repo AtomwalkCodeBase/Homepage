@@ -579,10 +579,10 @@ export const ActivityCard = ({ activity, filterType, onAction, isManager, onNavi
             <Label><CalendarEvent size={14} />Planned Date and Time</Label>
             <DetailValue>{formatDate(activity.planned_start_date)} to {formatDate(activity.planned_end_date)}<br /> {activity.planned_start_time ? `${formatAPITime(activity.planned_start_time)} to ${formatAPITime(activity.planned_end_time)}` : ""}</DetailValue>
           </Item>
-          <Item>
+          {/* <Item>
             <Label><CalendarEvent size={14} />Actual Date</Label>
             <DetailValue>{activity.actual_start_date ? `${formatDate(activity.actual_start_date)} to ${formatDate(activity.actual_end_date)}` : "Not started"}</DetailValue>
-          </Item>
+          </Item> */}
           {activity.original_P.store_name && (
             <Item>
               <Label><MapPin size={14} />Location</Label>

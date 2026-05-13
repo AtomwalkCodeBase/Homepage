@@ -219,7 +219,7 @@ const EmployeeManagement = () => {
       toast.error("Export failed: " + result.message)
     }
   }
-  if (loading) return <Layout title="Employee Management">Loading...</Layout>
+  if (loading) return <Layout title="Employee Management"><h5>Loading...</h5></Layout>
   if (error) return <Layout title="Employee Management">Error: {error}</Layout>
 
   return (

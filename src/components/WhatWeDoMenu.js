@@ -336,7 +336,7 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
             id: 4,
             name: "Atomwalk Office ERP — Manufacturing & Process Industries",
 
-            link: "/processandproject.html.html",
+            link: "/processandproject.html",
             industries: [
                 { name: "Pharma Manufacturing" },
                 { name: "Chemical & Process Industries" },
@@ -397,7 +397,7 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
         },
         {
             id: 5,
-            name: "Atomwalk ERP — Seafood Industry",
+            name: "Atomwalk Office ERP — Seafood Industry",
 
             link: "https://home.atomwalk.com/product.html",
             industries: [

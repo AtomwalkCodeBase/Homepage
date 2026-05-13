@@ -124,7 +124,7 @@ const TextSection = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 54px;
+  font-size: 48px;
   font-weight: 500;
   margin-bottom: 20px;
   color: #000000;

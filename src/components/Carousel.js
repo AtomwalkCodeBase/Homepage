@@ -4,38 +4,38 @@ import styled, { keyframes } from "styled-components";
 const slides = [
   {
     title: "Engineering Intelligent Enterprise Solutions",
-    desc: "Powering your digital foundation. Scalable. Adaptive. Future-ready",
-    image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Labhero2.png",
+    desc: "Powering your digital foundation. Scalable. Adaptive. Future-ready.",
+    image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/newErp.png",
     link: "/product.html"
   },
   {
     title: "Scalable Manufacturing, Seamless Operations",
-    desc: "Unified platform. Real-time. Data-driven",
-    image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/Production-Management-Software.jpg",
+    desc: "Unified platform. Real-time. Data-driven.",
+    image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/newman.png",
     link: "/processandproject.html"
   },
   {
     title: "Smarter Labs, Faster Discovery",
-    desc: "Lab automation. Simplify workflows. Accelerate discovery",
-    image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/untuk-artikel-narkoba-3-434b4.png",
+    desc: "Lab automation. Simplify workflows. Accelerate discovery.",
+    image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/newlab2.png",
     link: "/lms.html"
   },
   {
     title: "Shaping Sustainable Facility Operations",
-    desc: "Efficient systems. Lower waste. Stronger compliance",
-    image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/fasilite.jpeg",
+    desc: "Efficient systems. Lower waste. Stronger compliance.",
+    image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/newfasility.png",
     link: "/facilitymanagement.html"
   },
   {
     title: "Modern Workforce Management Solutions",
-    desc: "Reimagine HR. Empower teams. Greater efficiency",
-    image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/atomwalkHRM.png",
+    desc: "Reimagine HR. Empower teams. Greater efficiency.",
+    image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/newhrm.png",
     link: "/hrm.html"
   },
   {
     title: "Driving Customer Centric Growth",
-    desc: "Smarter insights. Better engagement. From lead to cash",
-    image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/atomwalkCRM.png",
+    desc: "Smarter insights. Better engagement. From lead to cash.",
+    image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/newCrm2.png",
     link: "/crm.html"
   },
 ];
@@ -92,13 +92,21 @@ const GlassOverlay = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
+  /* background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.7),
+    rgba(0, 0, 0, 0.3)
+  );*/
+  backdrop-filter: blur(2px); 
+  z-index: 1;
+   @media (max-width: 768px) {
+      background: linear-gradient(
     to right,
     rgba(0, 0, 0, 0.7),
     rgba(0, 0, 0, 0.3)
   );
-  backdrop-filter: blur(6px);
-  z-index: 1;
+  backdrop-filter: blur(3px);
+   }
 `;
 
 const Content = styled.div`
@@ -130,6 +138,7 @@ const Title = styled.h1`
   line-height: 1.2;
   margin-bottom: 20px;
   width: 120%;
+  color:#000000;
   span {
     color: #e31837;
   }
@@ -138,23 +147,25 @@ const Title = styled.h1`
     font-size: 1.8rem; /* Smaller font size */
     width: 100%; /* Full width instead of 120% */
     margin-bottom: 15px;
+    color:#ffffff;
   }
 `;
 const Desc = styled.p`
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   margin-bottom: 30px;
   opacity: 0.9;
   line-height: 1.5;
-  
+  color:#000000;
   @media (max-width: 768px) {
     font-size: 1rem; /* Smaller font size */
     margin-bottom: 20px;
+    color:#ffffff;
   }
 `;
 
 const Button = styled.button`
   padding: 12px 28px;
-  border: 1px solid #fff;
+  border: 1px solid #2a0303;
   background: transparent;
   color: #fff;
   cursor: pointer;
@@ -162,7 +173,7 @@ const Button = styled.button`
   position: relative;
   overflow: hidden;
   z-index: 1;
-
+  background: #e31837;
   &::before {
     content: '';
     position: absolute;
@@ -170,7 +181,7 @@ const Button = styled.button`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: #e31837;
+     background: #b70621;
     transition: left 0.3s ease;
     z-index: -1;
   }
@@ -197,7 +208,7 @@ const RightNav = styled.div`
   flex-direction: column;
   gap: 30px;
   z-index: 3;
-  
+
   @media (max-width: 768px) {
     right: 15px; /* Move closer to edge */
     gap: 20px;
@@ -224,7 +235,7 @@ const BottomNav = styled.div`
 `;
 
 const Arrow = styled.div`
-  color: #fff;
+  color: #e40b0b;
   font-size: 28px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -255,9 +266,9 @@ const Arrow = styled.div`
 `;
 
 const Dot = styled.div`
-  width: ${(props) => (props.active ? "32px" : "12px")};
-  height: 3px;
-  background: ${(props) => (props.active ? "#e31837" : "rgba(255,255,255,0.5)")};
+  width: ${(props) => (props.active ? "42px" : "22px")};
+  height: 6px;
+  background: ${(props) => (props.active ? "#e31837" : "rgba(23, 22, 22, 0.5)")};
   transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
   cursor: pointer;
   border-radius: 2px;

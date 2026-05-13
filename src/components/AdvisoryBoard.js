@@ -493,7 +493,7 @@ const AdvisoryBoard = () => {
       id: 1,
       name: "Mr. SK Patnaik",
       role: "Strategic Advisor",
-      image: Sk,
+      image: "https://cdn.jsdelivr.net/gh/AtomwalkCodeBase/Blogs@main/Website-images/skpatanyak.png",
       shortDesc: ["SK Patnaik is a seasoned business strategist with over 25years of experience in sales & market entry strategy, revenue growth, product innovation, and business management.",
         "His diverse career has spanned global markets – the US, UK, Europe, South-East Asia, and India, holding key leadership roles in the IT Services industry, while successfully setting-up and scaling new business divisions.",
       ],

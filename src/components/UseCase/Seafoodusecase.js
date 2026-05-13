@@ -13,9 +13,9 @@ export default function Seafoodusecase() {
             "product": "Seafood 1",
             "slug": "catch-based-production-planning",
             "title": "Catch-based Production Planning",
-            "subtitle": "AW360 ERP enables dynamic planning aligned with daily catch volumes, ensuring optimized resource allocation, reduced wastage, and streamlined seafood processing operations—from raw material intake and cold storage to final packaging.",
+            "subtitle": "Atomwalk Office ERP adapts to daily catch volumes, optimizing resources, reducing waste, and streamlining seafood processing",
             "mainImage": "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/CatchProductionPlanning.png",
-            "descriptionsheader": "Align production schedules with real-time catch data to drive efficiency, reduce waste, and improve operational profitability",
+            "descriptionsheader": "Align production with real‑time catch data to maximize efficiency",
             "descriptions": [
                 {
                     "image": "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/DynamicScheduling.png",
@@ -54,9 +54,9 @@ export default function Seafoodusecase() {
             "product": "Seafood 2",
             "slug": "yield-variance-wastage-control",
             "title": "Yield Variance & Wastage Control",
-            "subtitle": "AW360 ERP enables seafood export businesses to monitor yield deviations and control wastage through precise data tracking, ensuring consistent output efficiency across every stage of processing.",
+            "subtitle": "Atomwalk Office ERP helps exporters track yield deviations, control wastage, and ensure efficiency across processing stages",
             "mainImage": "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/YieldVarianceWastageControl.png",
-            "descriptionsheader": "Gain complete visibility into yield performance and wastage to improve consistency, control losses, and maximize profitability",
+            "descriptionsheader": "Gain real‑time visibility into yield and waste to maximize profitability",
             "descriptions": [
                 {
                     "image": "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/YieldMonitoring.png",
@@ -95,9 +95,9 @@ export default function Seafoodusecase() {
             "product": "Seafood 3",
             "slug": "cold-storage-shelf-life-optimization",
             "title": "Cold Storage & Shelf-Life Optimization",
-            "subtitle": "AW360 ERP enables structured cold storage management with location-wise tracking and batch-level expiry visibility, helping seafood exporters maintain product quality, reduce spoilage, and manage inventory efficiently.",
+            "subtitle": "Atomwalk Office ERP streamlines cold storage with tracking and expiry visibility, helping exporters cut spoilage and maintain quality",
             "mainImage": "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/ColdStorageShelfLife.png",
-            "descriptionsheader": "Manage cold storage systematically and track shelf life accurately to reduce losses and improve inventory control",
+            "descriptionsheader": "Manage cold storage and track shelf life to improve inventory",
             "descriptions": [
                 {
                     "image": "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/StorageStructureManagement.png",
@@ -136,9 +136,9 @@ export default function Seafoodusecase() {
             "product": "Seafood 4",
             "slug": "export-batch-traceability",
             "title": "Export Batch Traceability",
-            "subtitle": "AW360 ERP provides complete batch-level traceability across processing and export stages, enabling seafood businesses to track every lot from raw material intake to final dispatch with accuracy and control.",
+            "subtitle": "Atomwalk Office ERP provides batch‑level traceability, letting seafood businesses track every lot across stages accurately",
             "mainImage": "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/ExportBatchTraceability.png",
-            "descriptionsheader": "Track every batch across processing stages with complete visibility and control for accurate export management",
+            "descriptionsheader": "Track batches across stages with visibility, control, and export accuracy",
             "descriptions": [
                 {
                     "image": "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/BatchIdentification.png",
@@ -177,9 +177,9 @@ export default function Seafoodusecase() {
             "product": "Seafood 5",
             "slug": "multi-stage-processing-workflow-tracking",
             "title": "Multi-stage Processing Workflow Tracking",
-            "subtitle": "AW360 ERP enables structured tracking of seafood processing across multiple stages, providing clear visibility, controlled workflow movement, and accurate progress tracking for every batch.",
+            "subtitle": "Atomwalk Office ERP tracks seafood processing across stages, ensuring visibility, controlled workflows, and accurate batch progress",
             "mainImage": "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/MultiStageWorkflowTracking.png",
-            "descriptionsheader": "Track, control, and optimize each processing stage with complete visibility and operational clarity",
+            "descriptionsheader": "Track, control, and optimize each processing stage with full visibility and clarity",
             "descriptions": [
                 {
                     "image": "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/StagewiseTracking.png",
@@ -208,9 +208,9 @@ export default function Seafoodusecase() {
             "product": "Seafood 6",
             "slug": "demand-driven-production-scheduling",
             "title": "Demand-Driven Production Scheduling",
-            "subtitle": "AW360 ERP enables production planning based on customer orders and demand, helping seafood businesses align processing activities with actual requirements, avoid overproduction, and ensure timely order fulfillment.",
+            "subtitle": "Atomwal Office ERP plans production by customer demand, aligning processes to prevent overproduction and ensure timely fulfillment",
             "mainImage": "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/DemandDrivenScheduling.png",
-            "descriptionsheader": "Plan production based on actual demand to improve accuracy, reduce excess stock, and fulfill orders on time",
+            "descriptionsheader": "Plan production on demand to improve accuracy and ensure fulfillment",
             "descriptions": [
                 {
                     "image": "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/OrderbasedPlanning.png",
@@ -249,9 +249,9 @@ export default function Seafoodusecase() {
             product: "Seafood 7",
             slug: "container-dispatch-planning",
             title: "Container & Dispatch Planning",
-            subtitle: "AW360 ERP streamlines container allocation and dispatch scheduling for seafood exports, ensuring efficient load management, timely shipments, and complete visibility from warehouse to port.",
+            subtitle: "Atomwalk Office ERP streamlines container allocation and dispatch scheduling, ensuring efficient loads, timely shipments, and visibility.",
             mainImage: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/ContainerDispatchPlanning.png",
-            descriptionsheader: "Optimize container utilization and dispatch coordination for seamless export operations",
+            descriptionsheader: "Streamline container allocation and dispatch scheduling with visibility and control",
             descriptions: [
                 {
                     image: "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/ContainerAllocation.png",
@@ -290,9 +290,9 @@ export default function Seafoodusecase() {
             "product": "Seafood 8",
             "slug": "quality-certification-compliance",
             "title": "Quality & Certification Compliance",
-            "subtitle": "AW360 ERP enables seafood businesses to record quality checks and manage certification documents in a centralized system, ensuring better control, traceability, and audit readiness.",
+            "subtitle": "Office ERP records quality checks and certifications in one system, ensuring control, traceability, and audit readiness",
             "mainImage": "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/QualityCertificationCompliance.png",
-            "descriptionsheader": "Maintain quality records and certification documents in one place for better control and audit readiness",
+            "descriptionsheader": "Maintain quality records and certifications centrally for control and readiness.",
             "descriptions": [
                 {
                     "image": "https://raw.githubusercontent.com/AtomwalkCodeBase/Blogs/main/Website-images/QualityInspection.png",

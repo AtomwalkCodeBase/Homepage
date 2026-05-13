@@ -21,7 +21,7 @@ const Content = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 52px;
+  font-size: 46px;
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.5px;

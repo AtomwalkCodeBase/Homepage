@@ -102,13 +102,19 @@ const Tag = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 3.2rem;
+  font-size: clamp(2rem, 5vw, 3.2rem);
   font-weight: 700;
   line-height: 1.2;
   color: #333;
+  text-align: center;
 
   span {
     color: #999;
+  }
+
+
+  @media (max-width: 480px) {
+    font-size: 1.8rem;
   }
 `;
 

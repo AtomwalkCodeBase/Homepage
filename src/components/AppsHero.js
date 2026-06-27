@@ -33,12 +33,22 @@ const Right = styled.div`
   flex: 1;
   display: flex;
   justify-content: center;
+    align-items: center;
 `;
 
 const Image = styled.img`
-  width: 115%;
+  width: 100%;
   max-width: 600px;
+  height: auto;
   object-fit: contain;
+
+  @media (max-width: 768px) {
+    max-width: 90%;
+  }
+
+  @media (max-width: 480px) {
+    max-width: 100%;
+  }
 `;
 
 /* TAG */

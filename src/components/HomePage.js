@@ -53,6 +53,7 @@ const HomePage = () => {
       <Carousel></Carousel>
       <TechMahindraSection />
       <RocketSteps></RocketSteps>
+      <AppsHero></AppsHero>
       <Features></Features>
       <WhatsNew></WhatsNew>
       <CTASection></CTASection>
@@ -60,8 +61,6 @@ const HomePage = () => {
       <CustomerStoriesVideo></CustomerStoriesVideo>
       <CustomerLogos />
       <Testimonial></Testimonial>
-
-      <AppsHero></AppsHero>
       <Contact></Contact>
       <ProductDemoModal isOpen={modalIsOpen} onRequestClose={closeModal} setShowsuccess={setShowsuccess} />
     </div>

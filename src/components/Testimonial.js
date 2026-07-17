@@ -6,7 +6,7 @@ import TestimonialCardComponent from "./TestimonialCardComponent";
    MAIN COMPONENT
 ========================= */
 const TestimonialsHero = () => {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
 
   if (show) return <div> <TestimonialCardComponent /> </div>;
 
@@ -90,6 +90,10 @@ const Content = styled.div`
   transform: translate(-50%, -50%);
   text-align: center;
   width: 600px;
+  
+  @media (max-width: 768px) {
+     top: 45%;
+  }
 `;
 
 const Tag = styled.div`

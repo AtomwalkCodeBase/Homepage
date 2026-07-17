@@ -323,12 +323,28 @@ const MobileIndicator = styled.div`
   }
 `;
 
+const SearchInput = styled.input`
+  width: 100%;
+  padding: 10px 14px;
+  margin-bottom: 18px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+
+  &:focus {
+    border-color: #e11d2e;
+    box-shadow: 0 0 0 2px rgba(225, 29, 46, 0.1);
+  }
+`;
+
 const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
     const menuRef = useRef(null);
     const [hoveredIndustry, setHoveredIndustry] = useState(null);
     const [useCases, setUseCases] = useState([]);
     const [hoveredProduct, setHoveredProduct] = useState(null);
     const [industriesForProduct, setIndustriesForProduct] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
 
     // Products with their associated industries and use cases
     const products = [
@@ -599,6 +615,23 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
         // },
     ];
 
+    const filteredProducts = products.filter((product) => {
+        const search = searchTerm.toLowerCase().trim();
+
+        if (!search) return true;
+
+        const searchableFields = [
+            product.name,
+            ...(product.keywords || []),
+            ...(product.industries?.map(i => i.name) || []),
+            ...(product.useCases?.map(u => u.name) || [])
+        ];
+
+        return searchableFields.some(field =>
+            String(field).toLowerCase().includes(search)
+        );
+    });
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -623,10 +656,13 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
 
     // Set default selected product and its industries
     useEffect(() => {
-        if (show && products.length > 0 && !hoveredProduct) {
-            setHoveredProduct(products[0]);
-            if (products[0].industries) {
-                setIndustriesForProduct(products[0].industries);
+        if (show && filteredProducts.length > 0) {
+            if (
+                !hoveredProduct ||
+                !filteredProducts.some((p) => p.id === hoveredProduct.id)
+            ) {
+                setHoveredProduct(filteredProducts[0]);
+                setIndustriesForProduct(filteredProducts[0].industries || []);
             }
         }
     }, [show, hoveredProduct]);
@@ -692,24 +728,37 @@ const WhatWeDoMenu = ({ show, onClose, navbarHeight }) => {
                     {/* Products Column */}
                     <ProductsColumn>
                         <ColumnTitle>Products</ColumnTitle>
+                        <SearchInput
+                            type="text"
+                            placeholder="Search product, industry, use case..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
                         <ProductList>
-                            {products.map((product) => (
-                                <ProductItem
-                                    key={product.id}
-                                    hovered={hoveredProduct?.id === product.id}
-                                    onMouseEnter={() => handleProductHover(product)}
-                                >
-                                    <ProductTitle>
-                                        {/* <span className="icon">{product.icon}</span> */}
-                                        {product.name}
-                                    </ProductTitle>
-                                    <ProductLink
-                                        onClick={(e) => handleProductClick(product.link, e)}
+                            {filteredProducts.length ? (
+                                filteredProducts.map((product) => (
+                                    <ProductItem
+                                        key={product.id}
+                                        hovered={hoveredProduct?.id === product.id}
+                                        onMouseEnter={() => handleProductHover(product)}
                                     >
-                                        Learn More →
-                                    </ProductLink>
-                                </ProductItem>
-                            ))}
+                                        <ProductTitle>
+                                            {/* <span className="icon">{product.icon}</span> */}
+                                            {product.name}
+                                        </ProductTitle>
+                                        <ProductLink
+                                            onClick={(e) => handleProductClick(product.link, e)}
+                                        >
+                                            Learn More →
+                                        </ProductLink>
+                                    </ProductItem>
+                                ))
+                            ) : (
+                                <EmptyState style={{ height: "180px" }}>
+                                    <div className="icon">🔍</div>
+                                    <p>No products found.</p>
+                                </EmptyState>
+                            )}
                         </ProductList>
                     </ProductsColumn>
 

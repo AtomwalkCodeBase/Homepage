@@ -97,7 +97,7 @@ const GlassOverlay = styled.div`
     rgba(0, 0, 0, 0.7),
     rgba(0, 0, 0, 0.3)
   );*/
-  backdrop-filter: blur(2px); 
+  /* backdrop-filter: blur(2px);  */
   z-index: 1;
    @media (max-width: 768px) {
       background: linear-gradient(

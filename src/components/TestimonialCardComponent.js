@@ -97,7 +97,7 @@ const ReadMoreButton = styled.button`
 
 const TestimonialSection = styled.div`
   background-color:#ffffff;
-  padding: 50px 20px;
+  padding: 50px 40px;
   text-align: center;
 `;
 

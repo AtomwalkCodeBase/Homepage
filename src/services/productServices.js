@@ -1,4 +1,4 @@
-import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext, processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip, processbarthdaywish, getResponseList, forgetPin, getCustomerDetailListURL, userTaskListURL, addCustomerTicketURL, getTaskCategoryURL, getOrderListURL, getEmpShiftData, getAppointeeList, getbookedlist, doctorbooking, getactivityList, getProjectLists, addTimesheet, getTimesheetList, profileDtlURL, processProjectLists, getprojectTimesheetList, getCustomerListURL, getProcessListURL, processProjectList, createaddressURL, equipentTypeListURL, getAvailableRoomslistURL, getActivitylistURL, validateApproveLimit, getMyenrollmentlist, getenrollmentlist, processenrollments, getTravelRequest, getTravelModeList, postTravelRequest, employeeTaskAllocationData, processAllocation, getActivities, projectList, getActivityQc, getBookingListURL, processActivity, getstatus, getSampleEventLists, processSampleEvents, getlabprocess, getlabsample, processsample, getProductCategoryListURL, getUserListURL, getExpensePlannedItemList, processExpensePlannedItemList, getPoItemList, getInventoryItemList, processPoRequest } from "../services/ConstantServies";
+import { addEmpLeave, getEmpLeavedata, addClaim, getEmpClaimdata, getExpenseItemList, getProjectList, getEmpAttendanceData, getEmpHolidayData, empCheckData, processClaim, getClaimApproverList, getfiletotext, processAppointee, getEmployeeRequestList, getEmployeeRequestCategory, processEmployeeRequest, setuserpin, getEventList, getCompany, getpayslip, processbarthdaywish, getResponseList, forgetPin, getCustomerDetailListURL, userTaskListURL, addCustomerTicketURL, getTaskCategoryURL, getOrderListURL, getEmpShiftData, getAppointeeList, getbookedlist, doctorbooking, getactivityList, getProjectLists, addTimesheet, getTimesheetList, profileDtlURL, processProjectLists, getprojectTimesheetList, getCustomerListURL, getProcessListURL, processProjectList, createaddressURL, equipentTypeListURL, getAvailableRoomslistURL, getActivitylistURL, validateApproveLimit, getMyenrollmentlist, getenrollmentlist, processenrollments, getTravelRequest, getTravelModeList, postTravelRequest, employeeTaskAllocationData, processAllocation, getActivities, projectList, getActivityQc, getBookingListURL, processActivity, getstatus, getSampleEventLists, processSampleEvents, getlabprocess, getlabsample, processsample, getProductCategoryListURL, getUserListURL, getExpensePlannedItemList, processExpensePlannedItemList, getPoItemList, getInventoryItemList, processPoRequest, contractAllocationData, processContractAllocation } from "../services/ConstantServies";
 import { authAxios, authAxiosFilePost, authAxiosget, authAxiosPost } from "./HttpMethod";
 
 export function getEmpLeave(leave_type, emp_id) {
@@ -64,7 +64,7 @@ export function getEmpClaim(call_type, emp_id, period) {
   if (emp_id) {
     data['emp_id'] = emp_id;
   }
-  if (period){
+  if (period) {
     data['period'] = period;
   }
   return authAxios(getEmpClaimdata, data)
@@ -505,4 +505,12 @@ export function postProcessPoRequest(res) {
 
 export function getemployeeLists(data) {
   return authAxios(profileDtlURL, data)
+}
+
+export function getContractAllocationData(data) {
+  return authAxios(contractAllocationData, data)
+}
+
+export function postContarctAllocationData(activity_data) {
+  return authAxiosFilePost(processContractAllocation, activity_data);
 }

@@ -82,6 +82,13 @@ const IconContainer = styled.div`
     background: ${props.theme.colors.error}22;
     color: ${props.theme.colors.error};
   `}
+
+  ${(props) =>
+    props.color === "info" &&
+    `
+    background: ${props.theme.colors.info}22;
+    color: ${props.theme.colors.info};
+  `}
 `
 
 const MainStats = styled.div`
@@ -146,7 +153,7 @@ const StatItem = styled.div`
     cursor: pointer;
 
     &:hover {
-      background: ${ props.color ? props.theme.colors[props.color]: props.theme.colors.backgroundDark || "#f0f0f0"};
+      background: ${props.color ? props.theme.colors[props.color] : props.theme.colors.backgroundDark || "#f0f0f0"};
     }
   `}
 `;
@@ -211,17 +218,17 @@ const SectionTitle = styled.h4`
   letter-spacing: 0.5px;
 `
 
-const StatsCard = ({ 
-  icon, 
-  label, 
-  value, 
-  change, 
-  changeType = "increase", 
+const StatsCard = ({
+  icon,
+  label,
+  value,
+  change,
+  changeType = "increase",
   color = "primary",
   sections = [],
   onClick,
   onSectionClick,
-  onItemClick 
+  onItemClick
 }) => {
   const handleHeaderClick = (e) => {
     if (onClick) {
@@ -260,8 +267,8 @@ const StatsCard = ({
         </MainStats>
       </CardHeader>
 
-     {sections.length !== 0 && (sections.map((section, sectionIndex) => (
-        <SectionContainer 
+      {sections.length !== 0 && (sections.map((section, sectionIndex) => (
+        <SectionContainer
           key={sectionIndex}
           clickable={!!onSectionClick}
           onClick={(e) => handleSectionClick(e, sectionIndex, section)}
@@ -269,7 +276,7 @@ const StatsCard = ({
           {section.title && <SectionTitle>{section.title}</SectionTitle>}
           <StatsGrid>
             {section.items.map((item, itemIndex) => (
-              <StatItem 
+              <StatItem
                 key={itemIndex}
                 clickable={!!onItemClick}
                 onClick={(e) => handleItemClick(e, sectionIndex, itemIndex, item, section)}

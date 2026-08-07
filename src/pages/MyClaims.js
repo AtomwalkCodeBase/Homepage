@@ -28,13 +28,14 @@ import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
 import Badge from "../components/Badge"
-import { getEmpClaim, getExpenseItem, getExpenseProjectList, getProjectlist, postClaimAction, validateClaimItem } from "../services/productServices"
+import { getEmpAllocationData, getEmpClaim, getExpenseItem, getExpenseProjectList, getProjectlist, postClaimAction, validateClaimItem } from "../services/productServices"
 import ClaimModal from "../components/modals/ClaimModal"
 import ClaimActionModal from "../components/modals/ClaimActionModal"
 import { toast } from "react-toastify"
 import { useAuth } from "../context/AuthContext"
 import { useExport } from "../context/ExportContext"
 import ConfirmationPopup from "../components/modals/ConfirmationPopup"
+import { formatToDDMMYYYY, getMonthRange, normalizeProjects } from "./ProjectManagement/utils/utils";
 
 const ClaimsHeader = styled.div`
   display: flex;
@@ -300,6 +301,7 @@ const ClaimItemRow = styled.tr`
 `
 
 const MyClaims = () => {
+  const { companyInfo, profile } = useAuth()
   const [activeTab, setActiveTab] = useState("all")
   const [isOpen, setIsOpen] = useState(false)
   const [claims, setClaims] = useState([])
@@ -315,13 +317,13 @@ const MyClaims = () => {
   const [timeFilter, setTimeFilter] = useState("CY")
   const [filteredClaims, setFilteredClaims] = useState([])
   const [expandedClaims, setExpandedClaims] = useState(new Set())
-  const { profile } = useAuth()
   const { exportClaimsData } = useExport()
-  const [deleteopen , setDeleteopen] = useState(false)
-  const [masterClaimIds, setMasterClaimIds] = useState({masterClaimId: null,
+  const [deleteopen, setDeleteopen] = useState(false)
+  const [masterClaimIds, setMasterClaimIds] = useState({
+    masterClaimId: null,
     id: null,
   })
-  const [claimupdate, setClaimupdate] = useState(null)
+  const [claimupdate, setClaimupdate] = useState(null);
 
   // Claim Action Modal State
   const [isActionModalOpen, setIsActionModalOpen] = useState(false)
@@ -361,47 +363,48 @@ const MyClaims = () => {
 
   const handleConfirm = (claim, status) => {
     setIsOpen(true)
-    setMasterClaimId(claim.master_claim_id? claim.master_claim_id : null)
-    setClaimupdate({...claim,  substatusText: status})
+    setMasterClaimId(claim.master_claim_id ? claim.master_claim_id : null)
+    setClaimupdate({ ...claim, substatusText: status })
   }
-  const handeleDelete = (claim,id) => {
+  const handeleDelete = (claim, id) => {
     setDeleteopen(true)
     setMasterClaimIds({
       masterClaimIds: claim.master_claim_id, // Use the selected master claim ID
       id: id, // Use the selected claim ID
     })
   }
-    const handeleDeleteclose = () => {
+  const handeleDeleteclose = () => {
     setDeleteopen(false)
   }
-  const handeleconform=()=>{
-    handlesubmitall(masterClaimIds.masterClaimId,masterClaimIds.id)
+  const handeleconform = () => {
+    handlesubmitall(masterClaimIds.masterClaimId, masterClaimIds.id)
     setDeleteopen(false)
   }
- const handlesubmitall = (claim,id) => {
-  if(id){
+  const handlesubmitall = (claim, id) => {
+    if (id) {
       const claimPayload = {
-    claim_id: id, // item claim ID
-    call_mode: "DELETE",
-  };
-   postClaimAction(claimPayload).then((res) => {
-    toast.success("claims Delete successfully")
-    setIsLoadings(isLoadings+1)
+        claim_id: id, // item claim ID
+        call_mode: "DELETE",
+      };
+      postClaimAction(claimPayload).then((res) => {
+        toast.success("claims Delete successfully")
+        setIsLoadings(isLoadings + 1)
       })
-      .catch((err) =>  toast.error("Failed to Delete  claim"))
-  }
-  else{ const claimPayload = {
-    m_claim_id: claim.master_claim_id, // Use the selected master claim ID
-    call_mode: "SUBMIT_ALL",
-  };
-   postClaimAction(claimPayload).then((res) => {
-    toast.success("All claims submitted successfully")
-    setIsLoadings(isLoadings+1)
+        .catch((err) => toast.error("Failed to Delete  claim"))
+    }
+    else {
+      const claimPayload = {
+        m_claim_id: claim.master_claim_id, // Use the selected master claim ID
+        call_mode: "SUBMIT_ALL",
+      };
+      postClaimAction(claimPayload).then((res) => {
+        toast.success("All claims submitted successfully")
+        setIsLoadings(isLoadings + 1)
       })
-      .catch((err) =>  toast.error("Failed to submit all claims"))
+        .catch((err) => toast.error("Failed to submit all claims"))
+    }
   }
-  }
- 
+
   const fetchClaimDetails = () => {
     getEmpClaim("GET", empId, timeFilter)
       .then((res) => {
@@ -429,7 +432,7 @@ const MyClaims = () => {
         } else if (activeTab === "empApprovedData") {
           const validClaims = res.data.filter(
             (claim) =>
-              claim.claim_items && claim.claim_items.length > 0 &&claim.expense_status === "A"
+              claim.claim_items && claim.claim_items.length > 0 && claim.expense_status === "A"
           );
           setEmpClaims(validClaims);
         }
@@ -455,15 +458,15 @@ const MyClaims = () => {
   };
 
   useEffect(() => {
-      fetchClaimDetailsofemp();
+    fetchClaimDetailsofemp();
   }, [activeTab]);
 
   useEffect(() => {
     fetchClaimItemList()
     fetchClaimDetails()
-    fetchProjectList()
+    fetchProjectList();
     // fetchClaimDetailsofemp()
-    if(activeTab === "empdata"){
+    if (activeTab === "empdata") {
       validApproveClaim()
     }
   }, [isLoadings, timeFilter])
@@ -507,7 +510,7 @@ const MyClaims = () => {
 
   const formatIndianCurrency = (num) => {
     if (!num && num !== 0) return null;
-    
+
     const numberValue = Number(num);
     if (isNaN(numberValue)) return null;
 
@@ -519,7 +522,7 @@ const MyClaims = () => {
 
     const lastThree = integerPart.substring(integerPart.length - 3);
     const otherNumbers = integerPart.substring(0, integerPart.length - 3);
-    
+
     if (otherNumbers !== '') {
       integerPart = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + ',' + lastThree;
     } else {
@@ -688,7 +691,7 @@ const MyClaims = () => {
     setActionType("BackToClaimant")
     setIsActionModalOpen(true)
   }
-  
+
   const handleApproveAll = (remark) => {
     if (!approveAllClaim) return;
     const claimPayload = {
@@ -708,15 +711,15 @@ const MyClaims = () => {
         })
         .filter(item => item.approve_type === 'A')
     };
-      
-   postClaimAction(claimPayload)
-    .then((res) => {
-      toast.success("Claims approved successfully");
-      setIsLoadings(isLoadings + 1);
-    })
-    .catch((err) => toast.error("Failed to approve claims"));
-  setIsApproveAllPopupOpen(false);
-  setApproveAllClaim(null);
+
+    postClaimAction(claimPayload)
+      .then((res) => {
+        toast.success("Claims approved successfully");
+        setIsLoadings(isLoadings + 1);
+      })
+      .catch((err) => toast.error("Failed to approve claims"));
+    setIsApproveAllPopupOpen(false);
+    setApproveAllClaim(null);
   }
 
   const handleCloseActionModal = () => {
@@ -823,7 +826,7 @@ const MyClaims = () => {
                 </tr>
               </thead>
               <tbody>
-              {empClaims.length > 0 ? (
+                {empClaims.length > 0 ? (
                   empClaims.map((claim) => {
                     const statusInfo = getStatusInfo(claim)
                     const isExpanded = expandedClaims.has(claim.id)
@@ -885,7 +888,7 @@ const MyClaims = () => {
                                     {/* <th>Remarks</th> */}
                                     <th>Receipt</th>
                                     <th>Status</th>
-                                    <th>Actions</th>  
+                                    <th>Actions</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -897,78 +900,80 @@ const MyClaims = () => {
                                         <td>
                                           <div style={{ display: "flex", alignItems: "center" }}>
                                             <span style={{ marginRight: "0.5rem" }}>{getItemIcon(item.item_name)}</span>
-                                          {item.item_name}
-                                        </div>
-                                      </td>
-                                      <td>{item.project_name || "N/A"}</td>
-                                      <td>₹{formatIndianCurrency(item.expense_amt)}</td>
-                                      <td>{item.expense_date}</td>
-                                      {/* <td>{item.remarks}</td> */}
-                                      <td>
-                                        {item.submitted_file_1 ? (
-                                          <Badge variant="success">Yes</Badge>
-                                        ) : (
-                                          <Badge variant="error">No</Badge>
-                                        )}
-                                      </td>
-                                      <td>
-                                        <Badge variant={subStatus.variant}>{subStatus.text}</Badge>
-                                      </td>
-                                      <td>
-                               <ActionButtons>
-                              {!isFinalApproval(item.claim_id) && subStatus.text !== "Approved" && subStatus.text !== "Rejected" && subStatus.text !== "Back To Claimant" ?
-                                <>
-                                  <Button
-                                    onClick={() => handleApprove(item, claim)}
-                                    variant="primary"
-                                    size="sm"
-                                    title="Approve"
-                                  >
-                                    <FaCheck />
-                                  </Button>
-                                  <Button
-                                    onClick={() => handleReject(item, claim)}
-                                    variant="outline"
-                                    size="sm"
-                                    title="Reject"
-                                  >
-                                    <FaBan />
-                                  </Button>
-                                  <Button
-                                    onClick={() => handleBackToClaimant(item, claim)}
-                                    variant="outline"
-                                    size="sm"
-                                    title="Back To Claimant"
-                                  >
-                                    <RiArrowGoBackLine />
-                                  </Button>
-                                  <Button
-                                    onClick={() => handleForward(item, claim)}
-                                    variant="outline"
-                                    size="sm"
-                                    title="Forward"
-                                  >
-                                    <RiShareForward2Line />
-                                  </Button>
-                                </>
-                            :isFinalApproval(item.claim_id)&&     <Button
-                                    onClick={() => handleForward(item, claim)}
-                                    variant="primary"
-                                    size="sm"
-                                    title="Forward"
-                                  >
-                                    <RiShareForward2Line />
-                                  </Button> }
-                            </ActionButtons>
-                                      </td>
-                                    </ClaimItemRow>
-                              )})}
+                                            {item.item_name}
+                                          </div>
+                                        </td>
+                                        <td>{item.project_name || "N/A"}</td>
+                                        <td>₹{formatIndianCurrency(item.expense_amt)}</td>
+                                        <td>{item.expense_date}</td>
+                                        {/* <td>{item.remarks}</td> */}
+                                        <td>
+                                          {item.submitted_file_1 ? (
+                                            <Badge variant="success">Yes</Badge>
+                                          ) : (
+                                            <Badge variant="error">No</Badge>
+                                          )}
+                                        </td>
+                                        <td>
+                                          <Badge variant={subStatus.variant}>{subStatus.text}</Badge>
+                                        </td>
+                                        <td>
+                                          <ActionButtons>
+                                            {!isFinalApproval(item.claim_id) && subStatus.text !== "Approved" && subStatus.text !== "Rejected" && subStatus.text !== "Back To Claimant" ?
+                                              <>
+                                                <Button
+                                                  onClick={() => handleApprove(item, claim)}
+                                                  variant="primary"
+                                                  size="sm"
+                                                  title="Approve"
+                                                >
+                                                  <FaCheck />
+                                                </Button>
+                                                <Button
+                                                  onClick={() => handleReject(item, claim)}
+                                                  variant="outline"
+                                                  size="sm"
+                                                  title="Reject"
+                                                >
+                                                  <FaBan />
+                                                </Button>
+                                                <Button
+                                                  onClick={() => handleBackToClaimant(item, claim)}
+                                                  variant="outline"
+                                                  size="sm"
+                                                  title="Back To Claimant"
+                                                >
+                                                  <RiArrowGoBackLine />
+                                                </Button>
+                                                <Button
+                                                  onClick={() => handleForward(item, claim)}
+                                                  variant="outline"
+                                                  size="sm"
+                                                  title="Forward"
+                                                >
+                                                  <RiShareForward2Line />
+                                                </Button>
+                                              </>
+                                              : isFinalApproval(item.claim_id) && <Button
+                                                onClick={() => handleForward(item, claim)}
+                                                variant="primary"
+                                                size="sm"
+                                                title="Forward"
+                                              >
+                                                <RiShareForward2Line />
+                                              </Button>}
+                                          </ActionButtons>
+                                        </td>
+                                      </ClaimItemRow>
+                                    )
+                                  })}
                                 </tbody>
-                                  {!allItemsFinalApproval(claim) && statusInfo.text === "Submitted" && (
-                                  <TableActions style={{margin:"1rem"}}>
-                                    <Button onClick={() => { 
-                                      setApproveAllClaim(claim); 
-                                      setIsApproveAllPopupOpen(true)}} 
+                                {!allItemsFinalApproval(claim) && statusInfo.text === "Submitted" && (
+                                  <TableActions style={{ margin: "1rem" }}>
+                                    <Button onClick={() => {
+                                      setApproveAllClaim(claim);
+                                      setIsApproveAllPopupOpen(true)
+                                    }}
                                       variant="primary" size="sm">
                                       <FaCheckCircle style={{ marginRight: 4 }} /> Approve All Claims
                                     </Button>
@@ -1024,10 +1029,10 @@ const MyClaims = () => {
                           </td>
                           <td>
                             <ActionButtons>
-                               <Button onClick={() => handleViewDetails(claim)} variant="ghost" size="sm" title="View">
+                              <Button onClick={() => handleViewDetails(claim)} variant="ghost" size="sm" title="View">
                                 <FaEye />
                               </Button>
-                                  {/* <Button
+                              {/* <Button
                                     onClick={()=>toggleClaimExpansion(claim.id)}
                                     variant="primary"
                                     size="sm"
@@ -1035,7 +1040,7 @@ const MyClaims = () => {
                                   >
                                     <FaEdit/>
                                   </Button> */}
-                            
+
                             </ActionButtons>
                           </td>
                         </ExpandableRow>
@@ -1046,7 +1051,7 @@ const MyClaims = () => {
                                 <thead>
                                   <tr>
                                     <th>Item Name</th>
-                                    <th>Project</th>
+                                    {<th>{companyInfo.business_type !== "APM" ? "Project" : "Order Item"}</th>}
                                     <th>Amount</th>
                                     <th>Date</th>
                                     {/* <th>Remarks</th> */}
@@ -1066,7 +1071,7 @@ const MyClaims = () => {
                                             {item.item_name}
                                           </div>
                                         </td>
-                                        <td>{item.project_name || "N/A"}</td>
+                                        <td>{companyInfo.business_type !== "APM" ? item.project_name || "N/A" : item.o_item_key || "N/A"}</td>
                                         <td>₹{formatIndianCurrency(item.expense_amt)}</td>
                                         <td>{item.expense_date}</td>
                                         {/* <td>{item.remarks}</td> */}
@@ -1075,49 +1080,49 @@ const MyClaims = () => {
                                         </td>
                                         <td>
                                           {item.submitted_file_1 ? (
-                                             <a href={item.submitted_file_1} target="_blank" rel="noopener noreferrer">
-                                            <Badge variant="success">Yes</Badge>
+                                            <a href={item.submitted_file_1} target="_blank" rel="noopener noreferrer">
+                                              <Badge variant="success">Yes</Badge>
                                             </a>
                                           ) : (
                                             <Badge variant="error">No</Badge>
                                           )}
                                         </td>
                                         <td>
-                                <ActionButtons>
-                              {(substatus.text === "Not Submitted" || substatus.text === "Back To Claimant") && (
-                                <Button
-                                  onClick={() => handleConfirm(item, substatus.text)}
-                                  variant="primary"
-                                  size="sm"
-                                  title="Update claim"
-                                >
-                                  <FaEdit />
-                                </Button>
-                              )}
+                                          <ActionButtons>
+                                            {(substatus.text === "Not Submitted" || substatus.text === "Back To Claimant") && (
+                                              <Button
+                                                onClick={() => handleConfirm(item, substatus.text)}
+                                                variant="primary"
+                                                size="sm"
+                                                title="Update claim"
+                                              >
+                                                <FaEdit />
+                                              </Button>
+                                            )}
 
-                              {substatus.text === "Not Submitted" && (
-                                <Button
-                                  onClick={() => handeleDelete(claim, item.id)}
-                                  variant="primary"
-                                  size="sm"
-                                  title="Delete claim"
-                                >
-                                  <FaTrash />
-                                </Button>
-                              )}
-                            </ActionButtons>
+                                            {substatus.text === "Not Submitted" && (
+                                              <Button
+                                                onClick={() => handeleDelete(claim, item.id)}
+                                                variant="primary"
+                                                size="sm"
+                                                title="Delete claim"
+                                              >
+                                                <FaTrash />
+                                              </Button>
+                                            )}
+                                          </ActionButtons>
                                         </td>
                                       </ClaimItemRow>
                                     )
                                   })}
                                 </tbody>
-                                  {statusInfo.text === "Not Submitted" &&<TableActions style={{margin:"1rem"}}><Button onClick={()=>handleConfirm(claim)} variant="primary" size="sm">
-                                        <FaPlus /> Add New Claim
-                                      </Button>
-                                       <Button variant="primary" size="sm" onClick={()=>handlesubmitall(claim)}>
-                                                            <FaPaperPlane/> Submit All Claims
-                                                          </Button>
-                                      </TableActions>}
+                                {statusInfo.text === "Not Submitted" && <TableActions style={{ margin: "1rem" }}><Button onClick={() => handleConfirm(claim)} variant="primary" size="sm">
+                                  <FaPlus /> Add New Claim
+                                </Button>
+                                  <Button variant="primary" size="sm" onClick={() => handlesubmitall(claim)}>
+                                    <FaPaperPlane /> Submit All Claims
+                                  </Button>
+                                </TableActions>}
                               </ClaimItemsTable>
                             </td>
                           </tr>
@@ -1149,7 +1154,7 @@ const MyClaims = () => {
       </Card>
 
       {/* Claim Submission Modal */}
-      <ClaimModal
+      {isOpen && <ClaimModal
         isOpen={isOpen}
         onClose={handleClosePopup}
         onConfirm={handleConfirm}
@@ -1161,9 +1166,9 @@ const MyClaims = () => {
         masterClaimId={masterClaimId}
         claimupdate={claimupdate}
       />
-
+      }
       {/* Claim Action Modal */}
-      <ClaimActionModal
+      {isActionModalOpen && <ClaimActionModal
         isOpen={isActionModalOpen}
         onClose={handleCloseActionModal}
         claim={selectedClaimForAction}
@@ -1171,7 +1176,7 @@ const MyClaims = () => {
         validationResponse={masterClaimId ? validationResponse[masterClaimId] || [] : []}
         actionType={actionType}
         onSuccess={handleActionSuccess}
-      />
+      />}
 
       {/* Claim Details Modal */}
       {isDetailModalOpen && selectedClaim && (
@@ -1181,12 +1186,12 @@ const MyClaims = () => {
               <FaTimes />
             </CloseButton>
 
-            <ModalTitle>Master Claim Details</ModalTitle>
+            <ModalTitle>{companyInfo.business_type !== "APM" && "Master"} Claim Details</ModalTitle>
 
             <ModalGrid>
               <div>
                 <ModalSection>
-                  <ModalLabel>Master Claim ID</ModalLabel>
+                  <ModalLabel>{companyInfo.business_type !== "APM" ? "Master Claim ID" : "Claim ID"}</ModalLabel>
                   <ModalValue>{selectedClaim.master_claim_id}</ModalValue>
 
                   <ModalLabel>Employee Name</ModalLabel>
@@ -1195,7 +1200,7 @@ const MyClaims = () => {
                   <ModalLabel>Total Amount</ModalLabel>
                   <ModalValue>₹{formatIndianCurrency(selectedClaim.expense_amt)}</ModalValue>
 
-                  <ModalLabel>Claim Date</ModalLabel>
+                  <ModalLabel>{companyInfo.business_type !== "APM" ? "Claim Date" : "Submitted Claim"}</ModalLabel>
                   <ModalValue>{selectedClaim.claim_date}</ModalValue>
                 </ModalSection>
               </div>
@@ -1210,18 +1215,18 @@ const MyClaims = () => {
                   <ModalLabel>Items Count</ModalLabel>
                   <ModalValue>{selectedClaim.claim_items?.length || 0}</ModalValue>
 
-          {(() => {
-              const statusText = getStatusInfo(selectedClaim).text;
-              if (statusText === "Approved"||statusText === "Rejected"||statusText === "Forwarded" || statusText === "Submitted") {
-                return (
-              <>
-                <ModalLabel>{statusText} {statusText === "Forwarded"? "To" : "By"}</ModalLabel>
-                <ModalValue>{statusText === "Submitted" ? EmpId : selectedClaim.approved_by || "N/A"}</ModalValue>
-              </>
-                );
-              }
-              
-            })()}
+                  {(() => {
+                    const statusText = getStatusInfo(selectedClaim).text;
+                    if (statusText === "Approved" || statusText === "Rejected" || statusText === "Forwarded" || statusText === "Submitted") {
+                      return (
+                        <>
+                          <ModalLabel>{statusText} {statusText === "Forwarded" ? "To" : "By"}</ModalLabel>
+                          <ModalValue>{statusText === "Submitted" ? EmpId : selectedClaim.approved_by || "N/A"}</ModalValue>
+                        </>
+                      );
+                    }
+
+                  })()}
                   <ModalLabel>Approval Remarks</ModalLabel>
                   <ModalValue>{selectedClaim.approval_remarks || "N/A"}</ModalValue>
                 </ModalSection>
@@ -1234,7 +1239,7 @@ const MyClaims = () => {
                 <thead>
                   <tr>
                     <th>Item Name</th>
-                    <th>Project</th>
+                    {<th>{companyInfo.business_type !== "APM" ? "Project" : "Order Item"}</th>}
                     <th>Amount</th>
                     <th>Date</th>
                     {/* <th>Remarks</th> */}
@@ -1245,50 +1250,51 @@ const MyClaims = () => {
                 <tbody>
                   {selectedClaim.claim_items?.map((item) => {
                     const substatus = getStatusInfo(item)
-                    return(
+                    return (
                       <>
-                      <ClaimItemRow key={item.id}>
-                        <td style={{ verticalAlign: "top" }}>
-                          <div style={{ display: "flex", alignItems: "center" }}>
-                            <span style={{ marginRight: "0.5rem" }}>{getItemIcon(item.item_name)}</span>
-                            {item.item_name}
-                          </div>
-                          {item.remarks && (
-                                <div style={{ fontSize: "1rem", color: "#555", marginTop: "10px" }}>
-                                  <ModalLabel
-                                    style={{
-                                      fontSize: "1rem",
-                                      color: "#888",
-                                      display: "inline-block",
-                                      marginRight: "4px",
-                                    }}
-                                  >
-                                    Remarks:
-                                  </ModalLabel>
-                                  <span>{item.remarks || "N/A"}</span>
-                                </div>
-                              )}
-                        </td>
-                        <td style={{ verticalAlign: "top" }}>{item.project_name || "N/A"}</td>
-                        <td style={{ verticalAlign: "top" }}>₹{formatIndianCurrency(item.expense_amt)}</td>
-                        <td style={{ verticalAlign: "top" }}>{item.expense_date}</td>
+                        <ClaimItemRow key={item.id}>
+                          <td style={{ verticalAlign: "top" }}>
+                            <div style={{ display: "flex", alignItems: "center" }}>
+                              <span style={{ marginRight: "0.5rem" }}>{getItemIcon(item.item_name)}</span>
+                              {item.item_name}
+                            </div>
+                            {item.remarks && (
+                              <div style={{ fontSize: "1rem", color: "#555", marginTop: "10px" }}>
+                                <ModalLabel
+                                  style={{
+                                    fontSize: "1rem",
+                                    color: "#888",
+                                    display: "inline-block",
+                                    marginRight: "4px",
+                                  }}
+                                >
+                                  Remarks:
+                                </ModalLabel>
+                                <span>{item.remarks || "N/A"}</span>
+                              </div>
+                            )}
+                          </td>
+                          <td style={{ verticalAlign: "top" }}>{companyInfo.business_type !== "APM" ? item.project_name || "N/A" : item.o_item_key || "N/A"}</td>
+                          <td style={{ verticalAlign: "top" }}>₹{formatIndianCurrency(item.expense_amt)}</td>
+                          <td style={{ verticalAlign: "top" }}>{item.expense_date}</td>
 
-                        <td style={{ verticalAlign: "top" }}>
-                          <Badge variant={substatus.variant}>{substatus.text}</Badge>
-                        </td>
+                          <td style={{ verticalAlign: "top" }}>
+                            <Badge variant={substatus.variant}>{substatus.text}</Badge>
+                          </td>
 
-                        <td style={{ verticalAlign: "top" }}>
-                          {item.submitted_file_1 ? (
-                            <a href={item.submitted_file_1} target="_blank" rel="noopener noreferrer">
-                              <Badge variant="success">View</Badge>
-                            </a>
-                          ) : (
-                            <Badge variant="error">No</Badge>
-                          )}
-                        </td>
-                      </ClaimItemRow>
-                    </>
-                  )})}
+                          <td style={{ verticalAlign: "top" }}>
+                            {item.submitted_file_1 ? (
+                              <a href={item.submitted_file_1} target="_blank" rel="noopener noreferrer">
+                                <Badge variant="success">View</Badge>
+                              </a>
+                            ) : (
+                              <Badge variant="error">No</Badge>
+                            )}
+                          </td>
+                        </ClaimItemRow>
+                      </>
+                    )
+                  })}
                 </tbody>
               </ClaimItemsTable>
             </ModalSection>
@@ -1297,7 +1303,7 @@ const MyClaims = () => {
       )}
       <ConfirmationPopup isOpen={deleteopen} onClose={handeleDeleteclose} onConfirm={handeleconform} timesheet={true}></ConfirmationPopup>
 
-      <ConfirmationPopup isOpen={isApproveAllPopupOpen} onClose={() => {setIsApproveAllPopupOpen(false); setApproveAllClaim(null);}} onConfirm={handleApproveAll} approve="APPROVE" timesheet={true}/>
+      <ConfirmationPopup isOpen={isApproveAllPopupOpen} onClose={() => { setIsApproveAllPopupOpen(false); setApproveAllClaim(null); }} onConfirm={handleApproveAll} approve="APPROVE" timesheet={true} />
     </Layout>
   )
 }

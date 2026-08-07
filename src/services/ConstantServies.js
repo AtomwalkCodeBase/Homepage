@@ -103,11 +103,13 @@ export const getActivitylistURL = `${hrendpoint}/get_project_activity_list/${db_
 
 export const getBookingListURL = `${hrendpoint}/get_user_booking_list/${db_name}/`;
 
-
+//matrix
 export const employeeTaskAllocationData = `${newhrendpoint}/get_emp_allocation_data/${db_name}/`;
 export const processAllocation = `${newhrendpoint}/process_emp_allocation/${db_name}/`;
 export const getExpensePlannedItemList = `${newhrendpoint}/order_item_expense_list/${db_name}/`;
 export const processExpensePlannedItemList = `${newhrendpoint}/process_order_item_expense/${db_name}/`;
+export const contractAllocationData = `${newhrendpoint}/get_contract_allocation_data/${db_name}/`;
+export const processContractAllocation = `${newhrendpoint}/process_contract_allocation/${db_name}/`;
 
 export const getActivities = `${hrendpoint}/get_user_activity/${db_name}/`;
 export const projectList = `${newhrendpoint}/get_project_list/${db_name}/`;

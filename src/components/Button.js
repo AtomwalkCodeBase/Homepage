@@ -112,6 +112,21 @@ const ButtonStyles = css`
       background: ${props.theme.colors.secondary}ee;
     }
   `}
+
+  ${(props) =>
+    props.variant === "success" &&
+    `
+    background: ${props.theme.colors.success};
+    color: white;
+    
+    &:hover {
+      background: ${props.theme.colors.success}dd;
+    }
+    
+    &:active {
+      background: ${props.theme.colors.success}ee;
+    }
+  `}
   
   ${(props) =>
     props.variant === "outline" &&
@@ -129,11 +144,11 @@ const ButtonStyles = css`
     }
   `}
    ${(props) =>
-     props.variant === "outlines" &&
-     `
+    props.variant === "outlines" &&
+    `
     background: transparent;
     color: ${props.theme.colors.error};
-    border: 1px solid ${props.theme.colors.primary};
+    border: 1px solid ${props.theme.colors.error};
     
     &:hover {
       background: ${props.theme.colors.primaryLight};
@@ -167,12 +182,12 @@ const ButtonStyles = css`
   svg {
     margin-right: ${(props) => (props.iconOnly ? "0" : "0.5rem")};
     font-size: ${(props) => {
-      const { uiPreferences } = props
-      const iconSize = uiPreferences?.components?.iconSize || "medium"
-      if (iconSize === "small") return "0.9em"
-      if (iconSize === "large") return "1.3em"
-      return "1.1em" // medium (default)
-    }};
+    const { uiPreferences } = props
+    const iconSize = uiPreferences?.components?.iconSize || "medium"
+    if (iconSize === "small") return "0.9em"
+    if (iconSize === "large") return "1.3em"
+    return "1.1em" // medium (default)
+  }};
   }
   
   ${(props) => {

@@ -127,6 +127,10 @@ import SharedResponsibility from "./components/Policy/SharedResponsibility";
 import AntiSpamPolicy from "./components/Policy/AntiSpamPolicy";
 import PartnershipInquiries from "./components/PartnershipInquiries";
 import Seafoodusecase from "./components/UseCase/Seafoodusecase";
+import { ActivityProvider } from "./context/ActivityClaimContext";
+import RetainerAllocationScreen from "./pages/ProjectManagement/RetainerAllocationScreen";
+import ResourceAllocation from "./components/modals/ModalForProjectmanagemnt/ModifiedAssignedResourceModal";
+import ClamDetailsScreen from "./components/modals/ModalForProjectmanagemnt/ClamDetailsScreen";
 // import SupervisorDashboard from "./pages/fishIndurstry/SupervisorDashboard";
 // import MyAppriaisal from "./pages/MyAppriaisal";
 
@@ -163,183 +167,189 @@ function App() {
       <AuthProvider>
         <ThemeProvider>
           <ExportProvider>
-            <Router>
-              <NavBar />
-              <Routes>
-                {/* Public Routes */}
-                <Route path="/" element={<HomePage />} />
-                <Route path="/labusecase" element={<Labusecases />} />
-                <Route path="/seafoodusecase" element={<Seafoodusecase />} />
-                <Route path="/facilityusecase" element={<Facilityusecase />} />
-                <Route path="/Product.html" element={<Product />} />
-                <Route path="/contactUs.html" element={<ContactUs />} />
-                <Route path="/aboutUs.html" element={<AbotUs />} />
-                <Route path="/pricing.html" element={<PricingRoute />} />
-                <Route path="/demo.html" element={<FormComponent />} />
-                <Route path="/seals.html" element={<ContactSalesPage />} />
-                <Route path="/customer/login.html" element={<Logins />} />
-                <Route path="/LabUser/login.html" element={<LabLoginScreen />} />
-                <Route path="/careers.html" element={<Career />} />
-                <Route path="/thankyou.html" element={<ThankYouPage />} />
-                <Route path="/terms-and-conditions.html" element={<TermsAndConditions />} />
-                <Route path="/privacy-policy.html" element={<PrivacyPolicy />} />
-                <Route path="/disclaimer.html" element={<Disclaimer />} />
-                <Route path="/faq.html" element={<Commonfnadq />} />
-                <Route path="/news" element={<NewsDetail />} />
-                {/* Domain Specific Routes */}
-                <Route path="/crm.html" element={<HerosectionCrm />} />
-                <Route path="/lms.html" element={<LmsHeroSection />} />
-                <Route path="/hrm.html" element={<HrmComponent />} />
-                <Route path="/leave.html" element={<HrmFeaturesManagement />} />
-                <Route path="/claim.html" element={<HrmFeaturesManagement />} />
-                <Route path="/datasheet.html" element={<HrmFeaturesManagement />} />
-                <Route path="/training.html" element={<HrmFeaturesManagement />} />
-                <Route path="/employeehr.html" element={<HrmFeaturesManagement />} />
-                <Route path="/payroll.html" element={<HrmFeaturesManagement />} />
-                <Route path="/appraisal.html" element={<HrmFeaturesManagement />} />
-                <Route path="/attendance.html" element={<HrmFeaturesManagement />} />
-                <Route path="/emphelp.html" element={<HrmFeaturesManagement />} />
-                <Route path="/empevent.html" element={<HrmFeaturesManagement />} />
-                <Route path="/empliteapp.html" element={<NewFeatures />} />
-                <Route path="/leadManagement.html" element={<LeadManagement />} />
-                <Route path="/CustomerManagement.html" element={<LeadManagement />} />
-                <Route path="/Channelpartner.html" element={<LeadManagement />} />
-                <Route path="/aMCTracking.html" element={<LeadManagement />} />
-                <Route path="/campaignManagement.html" element={<LeadManagement />} />
-                <Route path="/managerPerformanceDashboard.html" element={<LeadManagement />} />
-                <Route path="/userManagement.html" element={<LmsSytem />} />
-                <Route path="/equipmentManagement.html" element={<LmsSytem />} />
-                <Route path="/equipmentMaintenance.html" element={<LmsSytem />} />
-                <Route path="/reportandDashboard.html" element={<LmsSytem />} />
-                <Route path="/userroleManagement.html" element={<LmsSytem data={true} />} />
-                <Route path="/labProcessemplate.html" element={<LmsSytem data={true} />} />
-                <Route path="/labExperimentProject.html" element={<LmsSytem data={true} />} />
-                <Route path="/pIwithReport.html" element={<LmsSytem data={true} />} />
-                <Route path="/labmanagement.html" element={<LabManagement />} />
-                <Route path="/labequipmentmangement.html" element={<LabEqupmentmanagement />} />
-                <Route path="/sales.html" element={<SalesHeroSection />} />
-                <Route path="/saleslifecycle.html" element={<SalesSytem />} />
-                <Route path="/procurement.html" element={<SalesSytem />} />
-                <Route path="/compliance.html" element={<SalesSytem />} />
-                <Route path="/salesreport.html" element={<SalesSytem />} />
-                <Route path="/processandproject.html" element={<ProcessHeroPage />} />
-                <Route path="/process.html" element={<ProcessManagementSystem />} />
-                <Route path="/project.html" element={<ProcessManagementSystem />} />
-                <Route path="/activityreport.html" element={<ProcessManagementSystem />} />
-                <Route path="/inventory.html" element={<InventoryHeroPage />} />
-                <Route path="/inventoryop.html" element={<InventoryManagementSystem />} />
-                <Route path="/warehouse.html" element={<InventoryManagementSystem />} />
-                <Route path="/inventoryreport.html" element={<InventoryManagementSystem />} />
-                <Route path="/assessment.html" element={<Assessment />} />
-                <Route path="/wastemanagement.html" element={<WasteManagementHeroPage />} />
-                <Route path="/glp.html" element={<GlpHeroPage />} />
-                <Route path="/facilitymanagement.html" element={<Fmsheropage />} />
-                <Route path="/hospitalmanagement.html" element={<HmsHeroPage />} />
-                <Route path="/solarmanagement.html" element={<Smsheropage />} />
-                <Route path="/projectmanual.html" element={<ManualModuleDetails />} />
-                <Route path="/salesmanual.html" element={<ManualModuleDetails />} />
-                <Route path="/employeehrmsmanual.html" element={<ManualModuleDetails />} />
-                <Route path="/aimanagement.html" element={<PpeHeroPage />} />
-                <Route path="/manual.html" element={<Manual />} />
-                <Route path="/hrmanual.html" element={<ManualModuleDetails />} />
-                <Route path="/crmanual.html" element={<ManualModuleDetails />} />
-                <Route path="/manualsteps.html" element={<ManualSteps />} />
-                <Route path="/employee-accessibility" element={<HRMRoleBasedAccessibility />} />
-                <Route path="/employee-manager-accessibility" element={<HRMRoleBasedAccessibility />} />
-                <Route path="/hr-manager-accessibility" element={<HRMRoleBasedAccessibility />} />
-                <Route path="/intellectual-property" element={<PatentPage />} />
-                <Route path="/awards" element={<AwardsPage />} />
-                <Route path="/terms-of-service" element={<TermsOfService />} />
-                <Route path="/abuse-policy" element={<AbusePolicy />} />
-                <Route path="/security-whitepaper" element={<SecurityWhitepaper />} />
-                <Route path="/shared-responsibility" element={<SharedResponsibility />} />
-                <Route path="/anti-spam-policy" element={<AntiSpamPolicy />} />
-                <Route path="/PartnershipInquiries" element={<PartnershipInquiries />} />
+            <ActivityProvider>
+              <Router>
+                <NavBar />
+                <Routes>
+                  {/* Public Routes */}
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/labusecase" element={<Labusecases />} />
+                  <Route path="/seafoodusecase" element={<Seafoodusecase />} />
+                  <Route path="/facilityusecase" element={<Facilityusecase />} />
+                  <Route path="/Product.html" element={<Product />} />
+                  <Route path="/contactUs.html" element={<ContactUs />} />
+                  <Route path="/aboutUs.html" element={<AbotUs />} />
+                  <Route path="/pricing.html" element={<PricingRoute />} />
+                  <Route path="/demo.html" element={<FormComponent />} />
+                  <Route path="/seals.html" element={<ContactSalesPage />} />
+                  <Route path="/customer/login.html" element={<Logins />} />
+                  <Route path="/LabUser/login.html" element={<LabLoginScreen />} />
+                  <Route path="/careers.html" element={<Career />} />
+                  <Route path="/thankyou.html" element={<ThankYouPage />} />
+                  <Route path="/terms-and-conditions.html" element={<TermsAndConditions />} />
+                  <Route path="/privacy-policy.html" element={<PrivacyPolicy />} />
+                  <Route path="/disclaimer.html" element={<Disclaimer />} />
+                  <Route path="/faq.html" element={<Commonfnadq />} />
+                  <Route path="/news" element={<NewsDetail />} />
+                  {/* Domain Specific Routes */}
+                  <Route path="/crm.html" element={<HerosectionCrm />} />
+                  <Route path="/lms.html" element={<LmsHeroSection />} />
+                  <Route path="/hrm.html" element={<HrmComponent />} />
+                  <Route path="/leave.html" element={<HrmFeaturesManagement />} />
+                  <Route path="/claim.html" element={<HrmFeaturesManagement />} />
+                  <Route path="/datasheet.html" element={<HrmFeaturesManagement />} />
+                  <Route path="/training.html" element={<HrmFeaturesManagement />} />
+                  <Route path="/employeehr.html" element={<HrmFeaturesManagement />} />
+                  <Route path="/payroll.html" element={<HrmFeaturesManagement />} />
+                  <Route path="/appraisal.html" element={<HrmFeaturesManagement />} />
+                  <Route path="/attendance.html" element={<HrmFeaturesManagement />} />
+                  <Route path="/emphelp.html" element={<HrmFeaturesManagement />} />
+                  <Route path="/empevent.html" element={<HrmFeaturesManagement />} />
+                  <Route path="/empliteapp.html" element={<NewFeatures />} />
+                  <Route path="/leadManagement.html" element={<LeadManagement />} />
+                  <Route path="/CustomerManagement.html" element={<LeadManagement />} />
+                  <Route path="/Channelpartner.html" element={<LeadManagement />} />
+                  <Route path="/aMCTracking.html" element={<LeadManagement />} />
+                  <Route path="/campaignManagement.html" element={<LeadManagement />} />
+                  <Route path="/managerPerformanceDashboard.html" element={<LeadManagement />} />
+                  <Route path="/userManagement.html" element={<LmsSytem />} />
+                  <Route path="/equipmentManagement.html" element={<LmsSytem />} />
+                  <Route path="/equipmentMaintenance.html" element={<LmsSytem />} />
+                  <Route path="/reportandDashboard.html" element={<LmsSytem />} />
+                  <Route path="/userroleManagement.html" element={<LmsSytem data={true} />} />
+                  <Route path="/labProcessemplate.html" element={<LmsSytem data={true} />} />
+                  <Route path="/labExperimentProject.html" element={<LmsSytem data={true} />} />
+                  <Route path="/pIwithReport.html" element={<LmsSytem data={true} />} />
+                  <Route path="/labmanagement.html" element={<LabManagement />} />
+                  <Route path="/labequipmentmangement.html" element={<LabEqupmentmanagement />} />
+                  <Route path="/sales.html" element={<SalesHeroSection />} />
+                  <Route path="/saleslifecycle.html" element={<SalesSytem />} />
+                  <Route path="/procurement.html" element={<SalesSytem />} />
+                  <Route path="/compliance.html" element={<SalesSytem />} />
+                  <Route path="/salesreport.html" element={<SalesSytem />} />
+                  <Route path="/processandproject.html" element={<ProcessHeroPage />} />
+                  <Route path="/process.html" element={<ProcessManagementSystem />} />
+                  <Route path="/project.html" element={<ProcessManagementSystem />} />
+                  <Route path="/activityreport.html" element={<ProcessManagementSystem />} />
+                  <Route path="/inventory.html" element={<InventoryHeroPage />} />
+                  <Route path="/inventoryop.html" element={<InventoryManagementSystem />} />
+                  <Route path="/warehouse.html" element={<InventoryManagementSystem />} />
+                  <Route path="/inventoryreport.html" element={<InventoryManagementSystem />} />
+                  <Route path="/assessment.html" element={<Assessment />} />
+                  <Route path="/wastemanagement.html" element={<WasteManagementHeroPage />} />
+                  <Route path="/glp.html" element={<GlpHeroPage />} />
+                  <Route path="/facilitymanagement.html" element={<Fmsheropage />} />
+                  <Route path="/hospitalmanagement.html" element={<HmsHeroPage />} />
+                  <Route path="/solarmanagement.html" element={<Smsheropage />} />
+                  <Route path="/projectmanual.html" element={<ManualModuleDetails />} />
+                  <Route path="/salesmanual.html" element={<ManualModuleDetails />} />
+                  <Route path="/employeehrmsmanual.html" element={<ManualModuleDetails />} />
+                  <Route path="/aimanagement.html" element={<PpeHeroPage />} />
+                  <Route path="/manual.html" element={<Manual />} />
+                  <Route path="/hrmanual.html" element={<ManualModuleDetails />} />
+                  <Route path="/crmanual.html" element={<ManualModuleDetails />} />
+                  <Route path="/manualsteps.html" element={<ManualSteps />} />
+                  <Route path="/employee-accessibility" element={<HRMRoleBasedAccessibility />} />
+                  <Route path="/employee-manager-accessibility" element={<HRMRoleBasedAccessibility />} />
+                  <Route path="/hr-manager-accessibility" element={<HRMRoleBasedAccessibility />} />
+                  <Route path="/intellectual-property" element={<PatentPage />} />
+                  <Route path="/awards" element={<AwardsPage />} />
+                  <Route path="/terms-of-service" element={<TermsOfService />} />
+                  <Route path="/abuse-policy" element={<AbusePolicy />} />
+                  <Route path="/security-whitepaper" element={<SecurityWhitepaper />} />
+                  <Route path="/shared-responsibility" element={<SharedResponsibility />} />
+                  <Route path="/anti-spam-policy" element={<AntiSpamPolicy />} />
+                  <Route path="/PartnershipInquiries" element={<PartnershipInquiries />} />
 
-                {/* Login Route */}
-                <Route path="/login" element={<Login />} />
+                  {/* Login Route */}
+                  <Route path="/login" element={<Login />} />
 
-                {/*Blog route*/}
-                <Route path="/Blog.html" element={<Blog />} />
-                <Route path="/Blog.html/:id" element={<BlogDetails />} />
-                <Route path="/Blog.html/addblog" element={<BlogForm />} />
-                <Route path="/Blog.html/edit/:id?" element={<BlogForm />} />
+                  {/*Blog route*/}
+                  <Route path="/Blog.html" element={<Blog />} />
+                  <Route path="/Blog.html/:id" element={<BlogDetails />} />
+                  <Route path="/Blog.html/addblog" element={<BlogForm />} />
+                  <Route path="/Blog.html/edit/:id?" element={<BlogForm />} />
 
-                <Route path="/news-events.html" element={<NewsEventsList />} />
-                <Route path="/news-events.html/:id" element={<NewsEventDetail />} />
-                <Route path="/news-events.html/addEvents" element={<NewsEventForm />} />
-                <Route path="/news-events.html/edit/:id?" element={<NewsEventForm />} />
+                  <Route path="/news-events.html" element={<NewsEventsList />} />
+                  <Route path="/news-events.html/:id" element={<NewsEventDetail />} />
+                  <Route path="/news-events.html/addEvents" element={<NewsEventForm />} />
+                  <Route path="/news-events.html/edit/:id?" element={<NewsEventForm />} />
 
-                {/* Protected Routes with GlobalStyles */}
-                <Route
-                  element={
-                    <ProtectedRoute>
-                      <>
-                        <GlobalStyles />
-                        <Outlet />
-                      </>
-                    </ProtectedRoute>
-                  }
-                >
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/lab/dashboard" element={<LmsDashBoard />} />
-                  <Route path="/sampledashboard" element={<SampleDashboard />} />
-                  {/* <Route path="/supervisordashboard" element={<SupervisorDashboard />} /> */}
+                  {/* Protected Routes with GlobalStyles */}
+                  <Route
+                    element={
+                      <ProtectedRoute>
+                        <>
+                          <GlobalStyles />
+                          <Outlet />
+                        </>
+                      </ProtectedRoute>
+                    }
+                  >
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/lab/dashboard" element={<LmsDashBoard />} />
+                    <Route path="/sampledashboard" element={<SampleDashboard />} />
+                    {/* <Route path="/supervisordashboard" element={<SupervisorDashboard />} /> */}
 
-                  {/* <Route path="/equipmentBooking" element={<LabEquimentBookingScreen />} /> */}
-                  {/* <Route path="/inventoryUpdate" element={<LmsInventoryUpdate />} /> */}
-                  {/* <Route path="/upload" element={<FileAuditDashboard />} /> */}
-                  <Route path="/employees" element={<EmployeeManagement />} />
-                  <Route path="/attendance-tracking" element={<AttendanceTracking />} />
-                  <Route path="/leave-management" element={<LeaveManagement />} />
-                  <Route path="/holidays" element={<HolidayCalendar />} />
-                  {/* <Route path="/timesheet" element={<TimeSheetManagement />} /> */}
-                  <Route path="/timesheet" element={<TimesheetRouter />} />
-                  <Route path="/shifts" element={<ShiftScheduling />} />
-                  <Route path="/claims" element={<MyClaims />} />
-                  <Route path="/appointees" element={<Appointees />} />
-                  <Route path="/analytics" element={<Analytics />} />
-                  <Route path="/helpdesk" element={<HelpDesk />} />
-                  <Route path="/requestdesk" element={<RequestDesk />} />
-                  <Route path="/resolvedesk" element={<HelpDesk />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/payslip" element={<MyPaySlip />} />
-                  <Route path="/wishes" element={<MyWishes />} />
-                  <Route path="/invoices" element={<Invoices />} />
-                  <Route path="samplestatus" element={<CustomerStatus />} />
-                  <Route path="/tickets" element={<Tickets />} />
-                  <Route path="/appointments" element={<MyAppointments />} />
-                  <Route path="/shift-detail" element={<MyShiftDetail />} />
-                  <Route path="/appointmentlist" element={<MyBookedAppointments />} />
-                  <Route path="/doctordashboard" element={<DoctorDashboard />} />
-                  <Route path="/OPDappointments" element={<Appointments />} />
-                  <Route path="/projectmanagement" element={<ProjectManagement />} />
-                  <Route path="/project-report" element={<ProjectReport />} />
-                  <Route path="/my-training" element={<MyTraining />} />
-                  <Route path="/IPDappointments" element={<InPatients />} />
-                  <Route path="/patient-admission" element={<PatientAdmission />} />
-                  {/* <Route path="/appraisal" element={<MyAppriaisal />} /> */}
+                    {/* <Route path="/equipmentBooking" element={<LabEquimentBookingScreen />} /> */}
+                    {/* <Route path="/inventoryUpdate" element={<LmsInventoryUpdate />} /> */}
+                    {/* <Route path="/upload" element={<FileAuditDashboard />} /> */}
+                    <Route path="/employees" element={<EmployeeManagement />} />
+                    <Route path="/attendance-tracking" element={<AttendanceTracking />} />
+                    <Route path="/leave-management" element={<LeaveManagement />} />
+                    <Route path="/holidays" element={<HolidayCalendar />} />
+                    {/* <Route path="/timesheet" element={<TimeSheetManagement />} /> */}
+                    <Route path="/timesheet" element={<TimesheetRouter />} />
+                    <Route path="/shifts" element={<ShiftScheduling />} />
+                    <Route path="/claims" element={<MyClaims />} />
+                    <Route path="/appointees" element={<Appointees />} />
+                    <Route path="/analytics" element={<Analytics />} />
+                    <Route path="/helpdesk" element={<HelpDesk />} />
+                    <Route path="/requestdesk" element={<RequestDesk />} />
+                    <Route path="/resolvedesk" element={<HelpDesk />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/payslip" element={<MyPaySlip />} />
+                    <Route path="/wishes" element={<MyWishes />} />
+                    <Route path="/invoices" element={<Invoices />} />
+                    <Route path="samplestatus" element={<CustomerStatus />} />
+                    <Route path="/tickets" element={<Tickets />} />
+                    <Route path="/appointments" element={<MyAppointments />} />
+                    <Route path="/shift-detail" element={<MyShiftDetail />} />
+                    <Route path="/appointmentlist" element={<MyBookedAppointments />} />
+                    <Route path="/doctordashboard" element={<DoctorDashboard />} />
+                    <Route path="/OPDappointments" element={<Appointments />} />
+                    <Route path="/projectmanagement" element={<ProjectManagement />} />
+                    <Route path="/project-report" element={<ProjectReport />} />
+                    <Route path="/my-training" element={<MyTraining />} />
+                    <Route path="/IPDappointments" element={<InPatients />} />
+                    <Route path="/patient-admission" element={<PatientAdmission />} />
+                    {/* <Route path="/appraisal" element={<MyAppriaisal />} /> */}
 
-                  {/* FMS PAGE ROUTES */}
-                  <Route path="/fmsdashboard" element={<FmsDashBoard />} />
-                  <Route path="/tasks" element={<TaskScreen />} />
-                  <Route path="/customerList" element={<CustomerList />} />
-                  <Route path="/ticketList" element={<TaskScreen />} />
+                    {/* FMS PAGE ROUTES */}
+                    <Route path="/fmsdashboard" element={<FmsDashBoard />} />
+                    <Route path="/tasks" element={<TaskScreen />} />
+                    <Route path="/customerList" element={<CustomerList />} />
+                    <Route path="/ticketList" element={<TaskScreen />} />
 
-                  {/* PROJECT MANAGEMENT PAGE ROUTES */}
-                  <Route path="/managers/timesheet/dashboard" element={<ManagerDashboard />} />
-                  <Route path="/admin-dashboard" element={<ManagerDashboard />} />
-                  <Route path="/expense-list" element={<ExpenseTrackingScreen />} />
-                  <Route path="/channel-partners/list" element={<ChannelPatnerListScreen />} />
-                  <Route path="/finance/employee-verification" element={<FinanceUserScreen2 />} />
-                </Route>
+                    {/* PROJECT MANAGEMENT PAGE ROUTES */}
+                    <Route path="/managers/timesheet/dashboard" element={<ManagerDashboard />} />
+                    <Route path="/admin-dashboard" element={<ManagerDashboard />} />
+                    <Route path="/expense-list" element={<ExpenseTrackingScreen />} />
+                    <Route path="/channel-partners/list" element={<ChannelPatnerListScreen BrachManager={false} />} />
+                    <Route path="/finance/employee-verification" element={<FinanceUserScreen2 />} />
+                    <Route path="/retainer-list" element={<ChannelPatnerListScreen BrachManager={true} />} />
+                    <Route path="/retainer/allocation-list" element={<RetainerAllocationScreen />} />
+                    <Route path="/resource-list" element={<ResourceAllocation />} />
+                    <Route path="/clamDetails" element={<ClamDetailsScreen />} />
+                  </Route>
 
-                {/* Catch All */}
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-              <Footer2 />
-            </Router>
-            <ToastContainer position="top-right" autoClose={3000} />
+                  {/* Catch All */}
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+                <Footer2 />
+              </Router>
+              <ToastContainer position="top-right" autoClose={3000} />
+            </ActivityProvider>
           </ExportProvider>
         </ThemeProvider>
       </AuthProvider>

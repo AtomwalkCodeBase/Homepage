@@ -5,7 +5,9 @@ import styled from "styled-components"
 import { FaTimes, FaUpload, FaMoneyBillWave, FaCalendarAlt } from "react-icons/fa"
 import Button from "../Button"
 import { toast } from "react-toastify"
-import { postClaim } from "../../services/productServices"
+import { getEmpAllocationData, postClaim } from "../../services/productServices"
+import { useAuth } from "../../context/AuthContext"
+import { formatMonthLabel, formatToDDMMYYYY, getActivityOrderItemId, getMonthRange, normalizeProjects } from "../../pages/ProjectManagement/utils/utils"
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -217,63 +219,133 @@ const ErrorMessage = styled.div`
   display: ${props => props.show ? 'block' : 'none'};
   margin-bottom: 1rem;`
 
-const ClaimModal = ({ isOpen, onClose, dropdownValue, projecttype,setIsLoadings,isLoadings,masterClaimId,claimupdate }) => {
+const ClaimModal = ({ isOpen, onClose, dropdownValue, projecttype, setIsLoadings, isLoadings, masterClaimId, claimupdate }) => {
+  const { companyInfo } = useAuth();
   const [isLoading, setIsLoading] = useState(false)
   const [isFileError, setIsFileError] = useState(false)
   const [formData, setFormData] = useState({
     type: "",
     projecttype: "",
+    o_item_id: "",
     amount: "",
     date: "",
     description: "",
-    files:null,
-    emp_id:localStorage.getItem("empId"),
+    files: null,
+    emp_id: localStorage.getItem("empId"),
   })
 
-  const selectedItem = Array.isArray(dropdownValue)? dropdownValue.find(item => item.id == formData.type) : null;
+  const [offset, setOffset] = useState(0);
+  const [employeeActivity, setEmployeeActivity] = useState([]);
+  const [dateRange, setDateRange] = useState(() => getMonthRange({ type: "current" }));
+
+  const selectedItem = Array.isArray(dropdownValue) ? dropdownValue.find(item => item.id == formData.type) : null;
   const isReceiptRequired = selectedItem ? selectedItem.is_exp_bill_required : false;
 
+  const fetchEmpAllocationData = async (startOverride, endOverride) => {
+    const emp_id = localStorage.getItem("empId")
+    const start = startOverride || dateRange.start
+    const end = endOverride || dateRange.end
 
-useEffect(() => {
-  const fileFromUrl = (url) => {
-    if (!url) return null;
-    const name = url.split("/").pop().split("?")[0];
-    return { uri: url, name };
-  };
+    const startDateObj = new Date(start)
+    const endDateObj = new Date(end)
 
-  if (claimupdate?.item_id) {
-    setFormData({
-      type: claimupdate.item_id ?? "",
-      projecttype: claimupdate.project_id ?? "",
-      amount: claimupdate.expense_amt ?? "",
-      date: claimupdate.expense_date
-        ? (() => {
-            // Convert "03-Jul-2025" to "yyyy-mm-dd"
-            const [day, monStr, year] = claimupdate.expense_date.split("-");
-            const months = {
-              Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06",
-              Jul: "07", Aug: "08", Sep: "09", Oct: "10", Nov: "11", Dec: "12",
-            };
-            const month = months[monStr] || "01";
-            return `${year}-${month}-${day}`;
-          })()
-        : "",
-      description: claimupdate.remarks ?? "",
-      files: fileFromUrl(claimupdate.submitted_file_1),
-      emp_id: localStorage.getItem("empId"),
-    });
-  } else {
-    setFormData({
-      type: "",
-      projecttype: "",
-      amount: "",
-      date: "",
-      description: "",
-      files: null,
-      emp_id: localStorage.getItem("empId"),
-    });
+    if (endDateObj < startDateObj) {
+      toast.info("End date cannot be earlier than start date")
+      return false;
+    }
+    const payload = {
+      emp_id: emp_id,
+      start_date: formatToDDMMYYYY(start),
+      end_date: formatToDDMMYYYY(end),
+    }
+
+    try {
+      const response = await getEmpAllocationData(payload);
+      setEmployeeActivity(normalizeProjects(response.data))
+      // console.log("normalizeProjects(response.data)", normalizeProjects(response.data))
+    } catch (error) {
+      toast.error("No data found...")
+    }
   }
-}, [claimupdate]);
+
+  useEffect(() => {
+    if (isOpen) {
+      if (!claimupdate?.item_id) {
+        const range = getMonthRange({ type: "current" });
+        setDateRange(range);
+        setOffset(0);
+        fetchEmpAllocationData(range.start, range.end);
+      }
+    }
+  }, [isOpen]);
+
+
+  useEffect(() => {
+    const fileFromUrl = (url) => {
+      if (!url) return null;
+      const name = url.split("/").pop().split("?")[0];
+      return { uri: url, name };
+    };
+
+    if (claimupdate?.item_id) {
+
+      let expenseDateYYYYMMDD = "";
+      if (claimupdate.expense_date) {
+        const [day, monStr, year] = claimupdate.expense_date.split("-");
+        const months = {
+          Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06",
+          Jul: "07", Aug: "08", Sep: "09", Oct: "10", Nov: "11", Dec: "12",
+        };
+        const month = months[monStr] || "01";
+        expenseDateYYYYMMDD = `${year}-${month}-${day}`;
+      }
+
+      setFormData({
+        type: claimupdate.item_id ?? "",
+        projecttype: claimupdate.project_id ?? "",
+        o_item_id: claimupdate.o_item_id ?? "",
+        amount: claimupdate.expense_amt ?? "",
+        date: expenseDateYYYYMMDD,
+        description: claimupdate.remarks ?? "",
+        files: fileFromUrl(claimupdate.submitted_file_1),
+        emp_id: localStorage.getItem("empId"),
+      });
+
+      // If APM → jump the month navigator to the expense-date month
+      if (companyInfo.business_type === "APM" && expenseDateYYYYMMDD) {
+        const expenseDate = new Date(expenseDateYYYYMMDD);
+        const today = new Date();
+
+        // Calculate how many months away from current month
+        const monthsFromToday =
+          (expenseDate.getFullYear() - today.getFullYear()) * 12 +
+          (expenseDate.getMonth() - today.getMonth());
+
+        const range = getMonthRange({
+          type: "current",
+          mode: "month",
+          offset: monthsFromToday,
+        });
+
+        setOffset(monthsFromToday);
+        setDateRange(range);
+
+        //Fetch order items for that month so the dropdown has the correct options
+        fetchEmpAllocationData(range.start, range.end);
+      }
+    } else {
+      setFormData({
+        type: "",
+        projecttype: "",
+        o_item_id: "",
+        amount: "",
+        date: "",
+        description: "",
+        files: null,
+        emp_id: localStorage.getItem("empId"),
+      });
+    }
+  }, [claimupdate, companyInfo.business_type]);
   const handleSubmit = async (e) => {
     const { value } = e.nativeEvent.submitter;
     e.preventDefault()
@@ -290,8 +362,8 @@ useEffect(() => {
 
     const dateObj = new Date(formData.date)
     const expense_date = `${dateObj.getDate().toString().padStart(2, '0')}-${(dateObj.getMonth() + 1).toString().padStart(2, '0')}-${dateObj.getFullYear()}`
-    const formDatas = new FormData() 
-    formDatas.append("file_1",  formData.files)
+    const formDatas = new FormData()
+    formDatas.append("file_1", formData.files)
     formDatas.append("remarks", formData.description)
     formDatas.append("item", formData.type)
     formDatas.append("quantity", "1")
@@ -310,15 +382,23 @@ useEffect(() => {
     if (formData.projecttype) {
       formDatas.append("project_id", formData.projecttype)
     }
-    if(masterClaimId) {
-        formDatas.append('m_claim_id', masterClaimId);
+    if (formData.o_item_id) {
+      formDatas.append("o_item_id", Number(formData.o_item_id))
     }
-    if( claimupdate?.item_id) {
+    if (masterClaimId) {
+      formDatas.append('m_claim_id', masterClaimId);
+    }
+    if (claimupdate?.item_id) {
       formDatas.append("claim_id", claimupdate.id)
     }
 
     try {
+
+      // for (let [key, value] of formDatas.entries()) {
+      //   console.log(key, value);
+      // }
       const res = await postClaim(formDatas)
+      // const res = { status: 200 }
       if (res.status === 200) {
         setIsLoadings(isLoadings + 1)
         onClose() // Show success modal on successful submission
@@ -327,11 +407,12 @@ useEffect(() => {
         setFormData({
           type: "",
           projecttype: "",
+          o_item_id: "",
           amount: "",
           date: "",
           description: "",
-          files:null,
-          emp_id:localStorage.getItem("empId"),
+          files: null,
+          emp_id: localStorage.getItem("empId"),
         })
       } else {
         console.log("Unexpected response:", res)
@@ -356,12 +437,12 @@ useEffect(() => {
   }
 
   const handleFileChange = (e) => {
-      setFormData((prev) => ({
-        ...prev,
-        files: (e.target.files[0]),
-      }))
-    }
-  
+    setFormData((prev) => ({
+      ...prev,
+      files: (e.target.files[0]),
+    }))
+  }
+
 
   const removeFile = () => {
     setFormData((prev) => ({
@@ -370,6 +451,31 @@ useEffect(() => {
     }))
   }
 
+  const handleNavigate = (direction) => {
+    const today = new Date();
+    const currentStart = dateRange?.start ? new Date(dateRange.start) : today;
+
+    const monthsFromToday =
+      (currentStart.getFullYear() - today.getFullYear()) * 12 +
+      (currentStart.getMonth() - today.getMonth());
+
+    // 2. Apply the step
+    const newOffset = monthsFromToday + direction;
+
+    // 3. Let the existing helper do the work
+    const range = getMonthRange({
+      type: "current",
+      mode: "month",
+      offset: newOffset,
+    });
+
+    setOffset(newOffset);
+    setDateRange(range);
+    fetchEmpAllocationData(range.start, range.end);
+  };
+
+  console.log()
+
   if (!isOpen) return null
 
   return (
@@ -377,7 +483,7 @@ useEffect(() => {
       <ModalContainer onClick={(e) => e.stopPropagation()}>
         <form onSubmit={handleSubmit}>
           <ModalHeader>
-            <ModalTitle>{claimupdate ? "Update claim" : "Add New Claim"}</ModalTitle>
+            <ModalTitle>{claimupdate?.item_id ? "Update claim" : "Add New Claim"}</ModalTitle>
             <CloseButton onClick={onClose}>
               <FaTimes />
             </CloseButton>
@@ -395,7 +501,7 @@ useEffect(() => {
                 ))}
               </FormSelect>
             </FormGroup>
-            {projecttype.length > 0 && (
+            {projecttype.length > 0 && companyInfo.business_type !== "APM" && (
               <FormGroup>
                 <FormLabel htmlFor="projecttype">Project Type</FormLabel>
                 <FormSelect id="projecttype" name="projecttype" value={formData.projecttype} onChange={handleChange}>
@@ -405,6 +511,44 @@ useEffect(() => {
                       {value.title}
                     </option>
                   ))}
+                </FormSelect>
+              </FormGroup>
+            )}
+
+            {companyInfo.business_type === "APM" && (
+              <FormGroup>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <FormLabel htmlFor="o_item_id">Select Order item</FormLabel>
+                  <div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      style={{ padding: "0.25rem 0.5rem" }}
+                      onClick={() => handleNavigate(-1)}
+                    >
+                      &lt;
+                    </Button>
+                    <span>{formatMonthLabel(dateRange.start)}</span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      style={{ padding: "0.25rem 0.5rem" }}
+                      onClick={() => handleNavigate(1)}
+                    >
+                      &gt;
+                    </Button>
+                  </div>
+                </div>
+                <FormSelect id="o_item_id" name="o_item_id" value={formData.o_item_id} onChange={handleChange} required>
+                  <option value="">Select Order item</option>
+                  {employeeActivity.map((value, index) => {
+                    const o_item_id = getActivityOrderItemId(value)
+                    return (
+                      <option key={index} value={Number(o_item_id)}>
+                        {`${value.customer_name} (${value.project_code})`}
+                      </option>
+                    )
+                  })}
                 </FormSelect>
               </FormGroup>
             )}
@@ -435,6 +579,12 @@ useEffect(() => {
                   type="date"
                   value={formData.date}
                   onChange={handleChange}
+                  {...(companyInfo.business_type === "APM" && dateRange?.start && dateRange?.end
+                    ? {
+                      min: dateRange.start,   // must be yyyy-mm-dd
+                      max: dateRange.end,     // must be yyyy-mm-dd
+                    }
+                    : {})}
                   required
                   style={{ paddingLeft: "2rem" }}
                 />
@@ -465,7 +615,7 @@ useEffect(() => {
             <FormGroup>
               <FormLabel>Receipts/Attachments</FormLabel>
               <FileUploadContainer onClick={() => document.getElementById("file-upload").click()}>
-                <FileInput id="file-upload" name="file-upload" type="file"  onChange={handleFileChange}/>
+                <FileInput id="file-upload" name="file-upload" type="file" onChange={handleFileChange} />
                 <FileUploadIcon>
                   <FaUpload />
                 </FileUploadIcon>
@@ -479,13 +629,13 @@ useEffect(() => {
                   <div style={{ fontWeight: "500", marginBottom: "0.5rem" }}>
                     Uploaded Files (1)
                   </div>
-                    <UploadedFile >
-                      <FaUpload />
-                      <span>{formData?.files.name}</span>
-                      <button type="button" onClick={() => removeFile(1)}>
-                        <FaTimes />
-                      </button>
-                    </UploadedFile>
+                  <UploadedFile >
+                    <FaUpload />
+                    <span>{formData?.files.name}</span>
+                    <button type="button" onClick={() => removeFile(1)}>
+                      <FaTimes />
+                    </button>
+                  </UploadedFile>
                 </div>
               )}
             </FormGroup>
@@ -498,8 +648,8 @@ useEffect(() => {
             {/* <Button  variant="primary" type="submit" disabled={isLoading} value="submit">
               {isLoading ? "Submitting..." : "Submit Claim"}
             </Button> */}
-            <Button  variant="primary" type="submit" disabled={isLoading} value="save">
-              {claimupdate.item_id?isLoading ? "Update..." : "Update Claim":isLoading ? "Saveing..." : "Save Claim"}
+            <Button variant="primary" type="submit" disabled={isLoading} value="save">
+              {claimupdate.item_id ? isLoading ? "Update..." : "Update Claim" : isLoading ? "Saveing..." : "Save Claim"}
             </Button>
           </ModalFooter>
         </form>

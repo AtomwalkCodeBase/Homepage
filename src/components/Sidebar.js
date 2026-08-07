@@ -569,10 +569,11 @@ const Sidebar = ({ onToggle, initialOpen = false }) => {
           name: "Finance",
           icon: <FaMoneyBillWave />,
           items: [
-            ...(profile?.is_manager
+            ...((profile?.is_manager && companyInfo.business_type !== "APM")
               ? [{ path: "/claims", name: "My Claims", icon: <FaMoneyBillWave /> }]
               : [{ path: "/claims", name: "My Claims", icon: <FaMoneyBillWave /> }]),
             { path: "/payslip", name: "Pay Slip", icon: <FaFileAlt /> },
+            // ...(companyInfo.business_type === "APM" && profile.grade_level > 100 ? [{ path: "/claims", name: "My Claims", icon: <FaMoneyBillWave /> }] : []),
           ],
         },
         {
@@ -629,7 +630,7 @@ const Sidebar = ({ onToggle, initialOpen = false }) => {
     "/project-report",
     "/wishes",
     "/shifts",
-    "/claims",
+    // "/claims",
     "/sampledashboard",
     "/supervisordashboard",
     "/lab/dashboard"

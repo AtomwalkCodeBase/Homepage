@@ -213,7 +213,7 @@ export const NavBar = () => {
     "my-training", "fmsdashboard", "tasks", "customerList", "ticketList",
     "sampledashboard", "supervisordashboard", "samplestatus", "/equipmentBooking",
     "/upload", "/inventoryUpdate", "/expense-list", "/channel-partners/list",
-    "/finance/employee-verification",
+    "/finance/employee-verification", "/retainer-list", "/retainer/allocation-list", "resource-list", "/clamDetails"
   ];
 
   useEffect(() => {

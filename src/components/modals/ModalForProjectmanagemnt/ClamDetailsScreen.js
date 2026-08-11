@@ -199,7 +199,7 @@ const ClamDetailsScreen = () => {
       (acc, claim) => {
         const submittedItems = (claim?.claim_items || []).filter((item) => {
           const { label } = getStatusVariant(item.expense_status);
-          return label === "Submitted";
+          return label === "Submitted" || label === "Approved";
         });
 
         submittedItems.forEach((item) => {
@@ -462,34 +462,6 @@ const ClamDetailsScreen = () => {
         </Card>
       )}
 
-      {allocationResources.length > 1 &&
-        <Card title="Allocation Dates">
-          <DetailsGrid style={{ marginTop: "1rem" }}>
-            {allocationResources.map((allocation, index) => (
-              <DetailItem key={allocation.allocationId || index}>
-                <DetailIconWrap>
-                  <FaUserTie size={13} />
-                </DetailIconWrap>
-
-                <DetailText>
-                  <DetailLabel>
-                    Allocation {index + 1}
-                  </DetailLabel>
-
-                  <DetailValue>
-                    {formatDate(allocation.start_date)} –{" "}
-                    {formatDate(allocation.end_date)}
-                  </DetailValue>
-
-                  <DetailValue>
-                    TL: {allocation.tl_count} &nbsp; | &nbsp; EX: {allocation.ex_count}
-                  </DetailValue>
-                </DetailText>
-              </DetailItem>
-            ))}
-          </DetailsGrid>
-        </Card>}
-
       <Card hoverable={false} style={{ marginTop: "1rem" }} title={
         <>
           <FaFileInvoiceDollar size={12} style={{ marginRight: "0.4rem" }} />
@@ -521,9 +493,8 @@ const ClamDetailsScreen = () => {
                 // console.log(item)
                 const { variant, label } = getStatusVariant(item.expense_status)
                 const index = item?.master_data?.claim_items?.findIndex(
-                  (data) => data.claim_id === item.claim_id
+                  (data) => data.id === item.id
                 );
-
 
                 return (
                   <>

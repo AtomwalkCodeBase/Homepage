@@ -2,15 +2,12 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FaArrowLeft, FaCheck, FaClipboardList, FaEye, FaEyeSlash, FaHourglassEnd, FaMinusCircle, FaMoneyBillWave, FaUserCheck, FaUserPlus, FaUserTimes } from 'react-icons/fa';
-import { BsListCheck } from "react-icons/bs";
-import { PiClockClockwise } from 'react-icons/pi';
+import { FaArrowLeft, FaEye, FaEyeSlash, FaMoneyBillWave, } from 'react-icons/fa';
 import { useActivity } from '../../context/ActivityClaimContext';
-import { formatDate, formatMonthLabel, formatToDDMMYYYY, formatWeekLabel, getMonthRange, getStatusVariant, getStatusVariant1, groupByOrderItemId, matchClaimsToActivity } from './utils/utils';
+import { formatDate, getMonthRange, getStatusVariant1, matchClaimsToActivity } from './utils/utils';
 import { useFilter } from './hooks/useFilter';
 import Layout from '../../components/Layout';
 import Button from '../../components/Button';
-import StatsCard from '../../components/StatsCard';
 import Card from '../../components/Card';
 import DataTable, { Td } from '../../components/DataTable';
 import PaginationComponent from '../../components/Pagination';
@@ -38,16 +35,7 @@ const ClaimsHeader = styled.div`
     gap: 0.5rem;
   }
 `;
-const StatsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-  gap: ${({ theme }) => theme.spacing.lg};
-  margin-bottom: ${({ theme }) => theme.spacing.xl};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    grid-template-columns: 1fr;
-  }
-`;
 
 const FilterRow = styled.div`
   display: flex;

@@ -338,20 +338,6 @@ const RetainerAllocationScreen = () => {
         }
     }, [emp_id]);
 
-    const handleRangeChange = (type) => {
-        setActiveRangeType(type);
-        setOffset(0);
-        const range = getMonthRange({ type: "current", mode: type, offset: 0 });
-        setDateRange(range);
-    };
-
-    const handleNavigate = (direction) => {
-        const newOffset = offset + direction;
-        setOffset(newOffset);
-        const range = getMonthRange({ type: "current", mode: activeRangeType, offset: newOffset });
-        setDateRange(range);
-    };
-
     const handleClearFilters = () => {
         if (typeof window !== "undefined") {
             window.sessionStorage.removeItem(ACTIVITY_LIST_STORAGE_KEY);
@@ -452,57 +438,10 @@ const RetainerAllocationScreen = () => {
 
     const notAssignedCount = getStatusCount(groupedData, "Not Planned");
     // const assignedCount = getStatusCount(filteredActivities, "Not Started", "Completed");
-    const notStartedCount = getStatusCount(groupedData, "Not Started");
+    // const notStartedCount = getStatusCount(groupedData, "Not Started");
     const actualSubmittedCount = getStatusCount(groupedData, "Actual Submitted");
-    const planApprovedCount = getStatusCount(groupedData, "Plan Approved");
+    // const planApprovedCount = getStatusCount(groupedData, "Plan Approved");
     const planSubmittedCount = getStatusCount(groupedData, "Plan Submitted");
-
-    const statsData = [
-        // value={filter.status}
-        //       onChange={(e) => setFilter((prev) => ({ ...prev, status: e.target.value }))}
-        {
-            icon: <FaClipboardList />,
-            label: "Total Audit Item",
-            value: groupedData.length,
-            color: "primary",
-            onClick: (prev) => setFilter({ ...prev, status: "ALL" }),
-        },
-        {
-            icon: <FaUserTimes />,
-            label: "Resource Not Planned",
-            value: notAssignedCount,
-            color: "error",
-            onClick: (prev) => setFilter({ ...prev, status: "NS" }),
-        },
-        {
-            icon: <FaUserCheck />,
-            label: "Resource Planned Submitted",
-            value: planSubmittedCount,
-            color: "info",
-            onClick: (prev) => setFilter({ ...prev, status: "PS" }),
-        },
-        {
-            icon: <BsListCheck />,
-            label: "Planned Approved",
-            value: planApprovedCount,
-            color: "info",
-            onClick: (prev) => setFilter({ ...prev, status: "PA" }),
-        },
-        {
-            icon: <FaHourglassEnd />,
-            label: "In Progress",
-            value: notStartedCount,
-            color: "info",
-            onClick: (prev) => setFilter({ ...prev, status: "P" }),
-        },
-        {
-            icon: <FaCheck />,
-            label: "Audit Actual Submitted",
-            value: actualSubmittedCount,
-            color: "success",
-            onClick: (prev) => setFilter({ ...prev, status: "AS" }),
-        },
-    ];
 
     const tabs = [
         { key: 'submitted', label: `Plan Review (${planSubmittedCount})`, },
@@ -517,7 +456,7 @@ const RetainerAllocationScreen = () => {
             <ClaimsHeader>
                 <Tagline>Review plans, actuals and claims submitted by the {emp_type}</Tagline>
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    <Button size="md" onClick={() => window.history.back()}>
+                    <Button size="md" onClick={() => { window.history.back(); sessionStorage.removeItem(TAB_STORAGE_KEY) }}>
                         <FaArrowLeft />Back
                     </Button>
                 </div>
@@ -536,13 +475,6 @@ const RetainerAllocationScreen = () => {
                 </Stats>
             </StyledCard>
 
-            {/* <StatsGrid>
-                {statsData.map((stats) =>
-                    <StatsCard icon={stats.icon} label={stats.label} value={stats.value} color={stats.color}
-                        sections={stats?.sections} onClick={() => { stats?.onClick(); window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }); }} onItemClick={(item) => { stats.onItemClick(item); window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }) }}
-                    />)}
-            </StatsGrid> */}
-
             <Card style={{ marginTop: "1rem" }} >
                 <TabContainer>
                     {tabs.map(t => (
@@ -553,7 +485,7 @@ const RetainerAllocationScreen = () => {
                 </TabContainer>
 
                 <FilterRow style={{ marginBottom: "1rem" }}>
-                    <SearchBox type="text" placeholder="Search Auditor's name, ID..." value={filter.search} onChange={(e) => setFilter((prev) => ({ ...prev, search: e.target.value, }))} />
+                    <SearchBox type="text" placeholder="Search customer name, audit type, location, order item id ..." value={filter.search} onChange={(e) => setFilter((prev) => ({ ...prev, search: e.target.value, }))} />
 
                     <FilterSelect
                         name="status"
@@ -713,15 +645,16 @@ const RetainerAllocationScreen = () => {
                                             </Td>
 
                                             <Td>
-                                                {(activeTab === "actual" || activeTab === "submitted") &&
-                                                    <Button
-                                                        size="sm"
-                                                        variant="primary"
-                                                        onClick={(e) => handleAssignResources(item, e, activeTab)}
-                                                    >
-                                                        Review {activeTab === "actual" ? "Actual" : "Plan"}
-                                                        <ArrowRight />
-                                                    </Button>
+                                                {(activeTab === "actual" || activeTab === "submitted" || activeTab === "pending") &&
+                                                    (item.activityStatus === "AA" || item.activityStatus === "AS" || item.activityStatus === "PS" || item.activityStatus === "PA") && (
+                                                        <Button
+                                                            size="sm"
+                                                            variant="primary"
+                                                            onClick={(e) => handleAssignResources(item, e, activeTab)}
+                                                        >
+                                                            Review {(activeTab === "actual" || (item.activityStatus === "AA" || item.activityStatus === "AP")) ? "Actual" : "Plan"}
+                                                            <ArrowRight />
+                                                        </Button>)
                                                 }
                                             </Td>
                                         </>

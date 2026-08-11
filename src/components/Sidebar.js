@@ -34,6 +34,7 @@ import { useAuth } from "../context/AuthContext"
 import { useTheme } from "../context/ThemeContext"
 import { IoTicket } from "react-icons/io5"
 import { RiDashboardFill } from "react-icons/ri"
+import { TbUsersGroup } from "react-icons/tb"
 const SidebarContainer = styled.div`
   width: ${(props) => {
     const { isOpen, uiPreferences } = props
@@ -553,6 +554,13 @@ const Sidebar = ({ onToggle, initialOpen = false }) => {
           ],
         },
         {
+          name: "Resource Management",
+          icon: <TbUsersGroup />,
+          items: [
+            ...(companyInfo.business_type === "APM" && (profile.grade_level <= 700 && profile.grade_level > 100) ? [{ path: "/retainer-list", name: "Channel Partners List", icon: <TbUsersGroup /> }] : []),
+          ],
+        },
+        {
           name: "Leave & Holidays",
           icon: <FaCalendarAlt />,
           items: [
@@ -699,6 +707,7 @@ const Sidebar = ({ onToggle, initialOpen = false }) => {
           ...(companyInfo.business_type === "APM" && profile?.is_manager ? [{ path: "/managers/timesheet/dashboard", name: "Manager Dashboard", icon: <RiDashboardFill /> }] : []),
           ...(companyInfo.business_type === "APM" && profile.grade_level >= 500 ? [{ path: "/admin-dashboard", name: "Admin Dashboard", icon: <ImUserTie /> }] : []),
           ...(companyInfo.business_type === "APM" && profile.grade_level >= 700 ? [{ path: "/channel-partners/list", name: "Channel Partners", icon: <FaUserCheck /> }] : []),
+          ...(companyInfo.business_type === "APM" && (profile.grade_level <= 700 && profile.grade_level > 100) ? [{ path: "/retainer-list", name: "Channel Partners List", icon: <TbUsersGroup /> }] : []),
           // ...(companyInfo.business_type === "APM" ? [{ path: "/retainer-dashboard", name: "Retainer Dashboard", icon: <RiDashboardFill /> }] : []),
           ...(profile?.is_manager && (companyInfo.business_type === "APM" ? profile?.grade_level > 300 : true) ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : []),
           { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },

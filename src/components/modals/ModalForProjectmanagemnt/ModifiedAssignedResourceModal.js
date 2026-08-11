@@ -121,19 +121,13 @@ const ResourceAllocation = () => {
   const { start, end } = getMonthRange();
 
   const [editingId, setEditingId] = useState(null);
-  const [editBackup, setEditBackup] = useState({}); // groupId -> { originalRow, segmentKeys }
   const [loading, setLoading] = useState(false);
-  const [showResourceAvailability, setShowResourceAvailability] = useState(false);
   const [showConfirmPopup, setShowConfirmPopup] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [employees, setEmployees] = useState([]);
-
-  // originalAllocations: frozen DB snapshot for THIS activity, set once per load.
   const [originalAllocations, setOriginalAllocations] = useState([]);
-  // workingAllocations: the only mutable state driving both cards.
   const [workingAllocations, setWorkingAllocations] = useState([]);
-  // busyAllocations: read-only reference data (other activities blocking a date).
   const [busyAllocations, setBusyAllocations] = useState([]);
 
   const activityStart = activityData?.original_P?.start_date || activityData?.planned_start_date || "";
@@ -234,17 +228,7 @@ const ResourceAllocation = () => {
         loadExisting({ emp_id: cpId, start_date: DateForApiFormate(start), end_date: DateForApiFormate(end) }),
       ]);
 
-      const normalized = currentAllocations.map((item) => ({
-        id: item.id,
-        emp_id: item.emp_id,
-        employee_name: item.employee_name,
-        emp_type: item.emp_type,
-        remarks: item.remarks || "",
-        contract_rate: item.contract_rate,
-        start_date: item.start_date,
-        end_date: item.end_date,
-        is_approved: !!item.is_approved,
-      }));
+      const normalized = currentAllocations.filter((item) => item.is_active === true);
 
       setOriginalAllocations(normalized);
       setWorkingAllocations(normalized.map((r) => ({ ...r, rowKey: `existing_${r.id}` })));
@@ -370,45 +354,15 @@ const ResourceAllocation = () => {
         loadAllData={loadAllData}
         tabMode={tabMode}
         partnerActiveTab={partnerActiveTab}
-        requiredTL={plannedTL}
-        requiredEX={plannedEX}
+        plannedTL={plannedTL}
+        plannedEX={plannedEX}
         tlContractRate={plannedTLRate}
         exContractRate={plannedEXRate}
         loading={loading}
       />
 
-      {/* {!["AA", "AS", "C", "PA"].includes(activityData.activityStatus) && !activityData.a_id  &&
-          <div style={{display: "flex", justifyContent: "flex-end", gap: "1rem", marginBottom: "1rem"}}>
-
-            <Button onClick={() => setShowResourceAvailability(true)}>Add Resources</Button>
-            {showResourceAvailability &&
-              <Button variant="outline" onClick={() => setShowResourceAvailability(false)}>Close</Button>}
-          </div>
-        }
-         */}
-      {/* {pendingCount > 0 && (
-          <div style={{ marginTop: "1rem", padding: "0.75rem", borderRadius: "6px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <Button onClick={() => setShowConfirmPopup(true)} color="primary" style={{ marginLeft: "auto" }}>{saveLabel} Resources in plan </Button>
-          </div>
-        )} */}
 
 
-
-      {/* {showResourceAvailability && <ResourceAvailability
-          employees={employees}
-          dayWindow={dayWindow}
-          activityData={activityData}
-          activityDates={dayWindow}
-          activityStart={activityStart}
-          activityEnd={activityEnd}
-          busyDateMap={busyDateMap}
-          employeeDateMap={employeeDateMap}
-          handleToggleAllocation={handleToggleAllocation}
-          workingAllocations={workingAllocations}
-          handleAutoAssign={handleAutoAssign}
-          handleUndoAutoAssign={handleUndoAutoAssign}
-          lastAutoAssign={lastAutoAssign}
-        />} */}
 
 
       {/* </Card> */}

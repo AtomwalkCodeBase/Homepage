@@ -189,7 +189,8 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
     }
     try {
       const resourceData = await fetchContractAllocations(payload);
-      setResourcePlannedList(resourceData);
+      const filteredData = resourceData.filter((data) => data.is_active)
+      setResourcePlannedList(filteredData);
       await fetchEmpActivityAllocations(payload, resourceData);
     } catch (error) {
       toast.error(error?.response?.data?.message || "Failed to fetch activity allocations");

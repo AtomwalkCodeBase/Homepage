@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState} from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Layout from '../../components/Layout'
 import styled from 'styled-components';
 import { FiZap, FiClock, FiCheckCircle, } from 'react-icons/fi';
@@ -32,7 +32,6 @@ const Container = styled.div`
 
 const Main = styled.main`
   padding: ${theme.spacing.xs};
-   / * max-width: 1400px; */ 
   margin: 0 auto;
 
   @media (max-width: ${theme.breakpoints.md}) {
@@ -419,11 +418,11 @@ const ManagerDashboard = () => {
       }
 
       return acc;
-      },
-      {
-        Planned: new Set(),
-        Actual: new Set(),
-      }
+    },
+    {
+      Planned: new Set(),
+      Actual: new Set(),
+    }
   );
 
   const finalStatsSummary = {
@@ -452,7 +451,7 @@ const ManagerDashboard = () => {
     }
   };
 
-    useEffect(() => {
+  useEffect(() => {
     if (pathname === "/admin-dashboard") {
       setStatusFilter(null);
       setCustomerFilter(null);
@@ -470,21 +469,21 @@ const ManagerDashboard = () => {
     setCurrentPage(1);
   }, [statusFilter, customerFilter, employeeFilter, searchTerm]);
 
-    useEffect(() => {
-      const fetchEmployees = async () => {
-        try {
-          const response = await getemployeeList()
-          const filteredData = response.data.filter((emp) => emp.is_manager && emp.emp_id !== m_emp_id )
-          setEmployees(filteredData)
-          setLoading(false)
-        } catch (err) {
-          toast.error("Failed to fetch Employee List")
-          setLoading(false)
-        }
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const response = await getemployeeList()
+        const filteredData = response.data.filter((emp) => emp.is_manager && emp.emp_id !== m_emp_id)
+        setEmployees(filteredData)
+        setLoading(false)
+      } catch (err) {
+        toast.error("Failed to fetch Employee List")
+        setLoading(false)
       }
-  
-      fetchEmployees()
-    }, [])
+    }
+
+    fetchEmployees()
+  }, [])
 
   useEffect(() => {
     fetchEmpAllocation(currentDate.start, currentDate.end);
@@ -649,49 +648,49 @@ const ManagerDashboard = () => {
     setEmployeeDayLogsModal(false);
   };
 
-    const handleApproveWeekly = (employee, orderItem, call_mode) => {
+  const handleApproveWeekly = (employee, orderItem, call_mode) => {
     setSelectedItem({ employee, orderItem });
     setConfirmType(call_mode);
     setConfirmModalOpen(true);
   };
 
-    const handleConfirm = async () => {
-      if (!selectedItem) return;
-      const approverId = localStorage.getItem("empId")
-  
-      setIsLoading(true);
-      try {
-        const payload = {
-          emp_id: selectedItem.employee.emp_id,
-          start_date: selectedItem.orderItem.actual_start_date,
-          end_date: selectedItem.orderItem.actual_end_date,
-          call_mode: confirmType,
-          a_emp_id: approverId,
-        };
-  
-        const response = await processTimesheetApproval(payload);
-  
-        // console.log(payload)
-  
-        // const response = { status: 200 }
-  
-        if (response?.status === 200) {
-          toast.success(`Timesheet Approved from ${payload.start_date} to ${payload.end_date} Successfully`);
-          // Optionally refresh data here
-        } else {
-          toast.error(response?.data?.message || "Something went wrong");
-        }
-  
-      } catch (error) {
-        console.error("Error processing timesheet:", error);
-        toast.error("An error occurred while processing the request.");
-      } finally {
-        setIsLoading(false);
-        setConfirmModalOpen(false);
-        setSelectedItem(null);
-        setConfirmType(null);
+  const handleConfirm = async () => {
+    if (!selectedItem) return;
+    const approverId = localStorage.getItem("empId")
+
+    setIsLoading(true);
+    try {
+      const payload = {
+        emp_id: selectedItem.employee.emp_id,
+        start_date: selectedItem.orderItem.actual_start_date,
+        end_date: selectedItem.orderItem.actual_end_date,
+        call_mode: confirmType,
+        a_emp_id: approverId,
+      };
+
+      const response = await processTimesheetApproval(payload);
+
+      // console.log(payload)
+
+      // const response = { status: 200 }
+
+      if (response?.status === 200) {
+        toast.success(`Timesheet Approved from ${payload.start_date} to ${payload.end_date} Successfully`);
+        // Optionally refresh data here
+      } else {
+        toast.error(response?.data?.message || "Something went wrong");
       }
-    };
+
+    } catch (error) {
+      console.error("Error processing timesheet:", error);
+      toast.error("An error occurred while processing the request.");
+    } finally {
+      setIsLoading(false);
+      setConfirmModalOpen(false);
+      setSelectedItem(null);
+      setConfirmType(null);
+    }
+  };
   const STATUS_META = {
     NOT_STARTED: {
       PLANNED: {
@@ -839,25 +838,25 @@ const ManagerDashboard = () => {
 
     return rows;
   };
-  
-    const handleAuditExport = (data = null) => {
-      // If no data is passed, choose based on the active tab
-      const toExport = Array.isArray(data)
-        ? data
-        : activeTab === "weekly"
+
+  const handleAuditExport = (data = null) => {
+    // If no data is passed, choose based on the active tab
+    const toExport = Array.isArray(data)
+      ? data
+      : activeTab === "weekly"
         ? WeeklyTimesheetSummaryData
         : paginatedActivities;
 
-      const transformData = buildAuditExportData(toExport);
+    const transformData = buildAuditExportData(toExport);
 
-      const result = exportEmployeeAuditData(transformData, "Audit_Report", pathname);
+    const result = exportEmployeeAuditData(transformData, "Audit_Report", pathname);
 
-      if (result.success) {
-        toast.success("Exported successfully");
-      } else {
-        toast.error("Export failed: " + result.message);
-      }
-    };
+    if (result.success) {
+      toast.success("Exported successfully");
+    } else {
+      toast.error("Export failed: " + result.message);
+    }
+  };
 
   return (
     <Layout title="Allocation Dashboard">
@@ -933,7 +932,7 @@ const ManagerDashboard = () => {
               {pathname !== "/admin-dashboard" && profile.grade_level >= 500 &&
                 <MultiSelectDropdown
                   options={employees.map(e => ({ label: `${e.name}(${e.emp_id})`, value: e.emp_id }))}
-                  selectedValues= {m_employee_id ? [m_employee_id] : []}
+                  selectedValues={m_employee_id ? [m_employee_id] : []}
                   onChange={(val) => setM_Employee_id(val.length > 0 ? val[0] : '')}
                   placeholder="All Manager"
                   searchPlaceholder="Search manager..."
@@ -951,12 +950,12 @@ const ManagerDashboard = () => {
           <Card hoverable={false}>
 
             <div style={{ width: "100%", display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-              <div style={{display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "1rem"}}>
-              <span style={{color: theme.colors.textLight}}>Select Date: </span>
-              <DateInput type="date" value={draftDate} onChange={(e) => setDraftDate(e.target.value)} />
-              <Button onClick={() => { setSelectedDate(draftDate); setCurrentPage(1); }}><HiArrowsRightLeft /> Fetch</Button>
+              <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "1rem" }}>
+                <span style={{ color: theme.colors.textLight }}>Select Date: </span>
+                <DateInput type="date" value={draftDate} onChange={(e) => setDraftDate(e.target.value)} />
+                <Button onClick={() => { setSelectedDate(draftDate); setCurrentPage(1); }}><HiArrowsRightLeft /> Fetch</Button>
               </div>
-              <Button onClick={() => {setStatusFilter(null); setDraftDate(todayDate); setSelectedDate(todayDate); setCurrentPage(1); }}><MdFilterAltOff /> Clear filter</Button>
+              <Button onClick={() => { setStatusFilter(null); setDraftDate(todayDate); setSelectedDate(todayDate); setCurrentPage(1); }}><MdFilterAltOff /> Clear filter</Button>
             </div>
 
             {pathname !== "/admin-dashboard" && <TabContainer>
@@ -1054,7 +1053,7 @@ const ManagerDashboard = () => {
                   onPageChange={handlePageChange}
                   siblingCount={2}
                   listName='audits'
-                  showPageSize = {true}
+                  showPageSize={true}
                 />
                 <TableActions>
                   <Button variant="outline" size="sm" onClick={() => handleAuditExport(filteredActivities)}>

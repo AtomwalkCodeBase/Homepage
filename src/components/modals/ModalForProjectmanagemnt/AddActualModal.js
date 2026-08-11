@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { toast } from "react-toastify";
 import Modal from "../Modal";
 import { formatToApiDate } from "../../../pages/ProjectManagement/utils/utils";
+import Button from "../../Button";
 
 const toLocalDateOnly = (value) => {
   if (!value) return null;
@@ -291,11 +292,11 @@ const AddActualModal = ({
         </ActualFormGroup>
       )}
 
-      {/* <ActualButtonGroup>
-          <Button variant="outlines" onClick={onClose}>Cancel</Button>
-          <Button variant="primary" onClick={handleSave}>Continue</Button>
-        </ActualButtonGroup>
-      </ActualModalContent>
+      <ActualButtonGroup>
+        <Button variant="outlines" onClick={onClose}>Cancel</Button>
+        <Button variant="primary" onClick={handleSave}>Continue</Button>
+      </ActualButtonGroup>
+      {/* </ActualModalContent>
     </ActualModalOverlay> */}
     </Modal>
   );

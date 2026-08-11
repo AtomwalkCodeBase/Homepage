@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
-import { FaCalendarAlt, FaEdit, FaFileAlt, FaMapMarkerAlt, FaPlus, FaTrash, FaUser, FaUserCheck, FaUserPlus, FaUserSlash, FaUserTie } from "react-icons/fa";
+import { FaPlus, FaUserCheck, FaUserPlus, FaUserSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { LuCopy, LuCopyPlus } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { theme } from "../../../styles/Theme";
 import { DateForApiFormate, formatAPITime, formatToApiDate, getCurrentDateTimeDefaults } from "../../../pages/ProjectManagement/utils/utils";
-import { getContractAllocationData, postActivityAllocationData, postAllocationData, postContarctAllocationData } from "../../../services/productServices";
+import { getContractAllocationData, postAllocationData, postContarctAllocationData } from "../../../services/productServices";
 import { useFilter } from "../../../pages/ProjectManagement/hooks/useFilter";
 import Card from "../../Card";
 import Button from "../../Button";
@@ -175,54 +175,6 @@ const TotalsBar = styled.div`
   color: #333;
 `;
 
-const ClaimsTable = styled.div`
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #eee;
-  border-radius: 6px;
-  overflow: hidden;
-`;
-
-const ClaimsHeaderRow = styled.div`
-  display: grid;
-  grid-template-columns: 1.3fr 1fr 1fr 0.8fr;
-  background: ${({ theme }) => theme.colors?.backgroundAlt || '#f1f5f9'};
-  padding: 6px 10px;
-  font-size: 0.66rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #888;
-`;
-
-const ClaimsRow = styled.div`
-  display: grid;
-  grid-template-columns: 1.3fr 1fr 1fr 0.8fr;
-  align-items: center;
-  padding: 7px 10px;
-  border-top: 1px solid #f1f1f1;
-  font-size: 0.76rem;
-  color: #333;
-`;
-
-const FileLink = styled.a`
-  font-size: 0.72rem;
-  color: ${({ theme }) => theme.colors?.primary || '#0E7A91'};
-  text-decoration: underline;
-`;
-
-const GrandTotalBar = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 24px;
-  padding: 10px 12px;
-  margin-top: 10px;
-  background: ${({ theme }) => theme.colors?.primary || '#0E7A91'}1A;
-  border: 1px solid ${({ theme }) => theme.colors?.primary || '#0E7A91'}33;
-  border-radius: 6px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors?.primary || '#0E7A91'};
-`;
 
 const ButtonRows = styled.div`
   display: flex;
@@ -251,19 +203,6 @@ const Pill = styled.span`
   margin-right: ${({ theme }) => theme.spacing.xs || '0.75rem'};
   margin-top: ${({ theme }) => theme.spacing.xs || '0.75rem'};
 `;
-
-/* ---------------------------------- */
-/* Helpers                             */
-/* ---------------------------------- */
-
-// Parses an entry's resource strings: "empId^name^rate^type"
-const parseActualResources = (entry) => {
-  if (!entry?.resource_list?.length) return [];
-  return entry.resource_list.map((str) => {
-    const [emp_id, name, rate, emp_type] = (str || "").split("^");
-    return { emp_id, name, rate, emp_type };
-  });
-};
 
 const formatEmpType = (type) => (type === 'T' ? 'TL' : 'EX');
 
@@ -370,8 +309,6 @@ const CurrentAssignments = ({
   busyDateMap = {},
   loading: parentLoading = false,
 }) => {
-
-  console.log("activityData", activityData)
   const cpId = activityData?.emp_id;
 
   const [loading, setLoading] = useState(false);
@@ -383,10 +320,6 @@ const CurrentAssignments = ({
   const [filterStartDate, setFilterStartDate] = useState("");
   const [filterEndDate, setFilterEndDate] = useState("");
   const [allAEntries, setAllAEntries] = useState(activityData?.allAEntries || []);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalDate, setModalDate] = useState("");
-  const [selectedEmpId, setSelectedEmpId] = useState("");
-  const [noOfItems, setNoOfItems] = useState("");
   const [isUpdateMode, setIsUpdateMode] = useState(false);
   const [actualDraftsByDate, setActualDraftsByDate] = useState({});
   const [isActualRangeModalOpen, setIsActualRangeModalOpen] = useState(false);
@@ -412,7 +345,6 @@ const CurrentAssignments = ({
 
   const [resourceList, setResourceList] = useState([]);
 
-  const activityEndDateOnly = toLocalDateOnly(activityEnd);
   const isPastActivityWindow = DateForApiFormate(activityEnd) && DateForApiFormate(today) >= DateForApiFormate(activityEnd);
   const isStatusApproved = activityData?.original_P?.status === "A" || activityData?.original_A?.status === "A";
 
@@ -555,9 +487,8 @@ const CurrentAssignments = ({
         })
       )
       );
-      const mergedData = responses.flatMap((response) => Array.isArray(response?.data) ? response.data : []).filter(item => item?.is_active === true);;
+      const mergedData = responses.flatMap((response) => Array.isArray(response?.data) ? response.data : []).filter(item => item?.is_active);;
       setResourceList(mergedData);
-      // console.log("mergedData", mergedData)
     } catch (error) {
       console.error("Failed to fetch resource data:", error);
       toast.error("Failed to load resource data");
@@ -639,6 +570,18 @@ const CurrentAssignments = ({
           activityCompleteFd.append("call_mode", "UPDATE");
           activityCompleteFd.append("activity_date", DateForApiFormate(today));
           activityCompleteFd.append("end_time", formatAPITime(end_time));
+          const totalNoOfResources = rows.length;
+          const resourceListStr = rows
+            .filter((r) => !r.is_deleted)
+            .map((r) => {
+              const name = employees.find((e) => e.emp_id === r.emp_id)?.name || r.employee_name || "";
+              const empType = r.emp_type === "T" || r.emp_type === "TL" ? "TL" : "EX";
+              return `${name}^1^${empType}`;
+            })
+            .join("|");
+
+          activityCompleteFd.append("no_of_resource", totalNoOfResources);
+          activityCompleteFd.append("resource_list", resourceListStr);
           activityCompleteFd.append("geo_type", "O");
           activityCompleteFd.append("is_complete", "1");
 
@@ -656,6 +599,7 @@ const CurrentAssignments = ({
       toast.success("Actuals saved successfully");
     } catch (err) {
       toast.error(err?.response?.data?.message || "Failed to save actuals");
+      throw err;
     }
   };
 
@@ -786,60 +730,6 @@ const CurrentAssignments = ({
       };
     });
   };
-
-  const handleConfirmActualRange = () => {
-    if (!actualStartDate || !actualEndDate) {
-      toast.error("Please select start date and end date");
-      return;
-    }
-    if (actualStartDate > actualEndDate) {
-      toast.error("Start date cannot be after end date");
-      return;
-    }
-    if (!rangeEmpId) {
-      toast.error("Please select a resource");
-      return;
-    }
-
-    const emp = employees.find((e) => e.emp_id === rangeEmpId);
-
-    setActualDraftsByDate((prev) => {
-      const next = { ...prev };
-      let cur = toLocalDateOnly(actualStartDate);
-      const end = toLocalDateOnly(actualEndDate);
-
-      while (cur <= end) {
-        const dStr = formatToApiDate(cur);
-        const existing = next[dStr] || { confirmed: false, rows: [] };
-        next[dStr] = {
-          ...existing,
-          confirmed: false,
-          rows: [
-            ...existing.rows,
-            {
-              rowKey: crypto.randomUUID(),
-              original_emp_id: null,
-              emp_id: rangeEmpId,
-              employee_name: emp?.name || "",
-              emp_type: rangeEmpType,
-              remarks: rangeRemarks,
-              contract_rate: 0,
-              start_date: dStr, // ADD
-              end_date: dStr,
-            },
-          ],
-        };
-        cur.setDate(cur.getDate() + 1);
-      }
-      return next;
-    });
-
-    setIsActualRangeModalOpen(false);
-    setRangeEmpId("");
-    setRangeEmpType("E");
-    setRangeRemarks("");
-  };
-
   const handleCancelCopyAllActual = () => {
     setActualDraftsByDate((prev) => {
       const next = {};
@@ -1063,8 +953,66 @@ const CurrentAssignments = ({
   //   }
   // };
 
+  // const handleEditActualAgain = (dStr) => {
+  //   setActualDraftsByDate((prev) => ({ ...prev, [dStr]: { ...prev[dStr], confirmed: false } }));
+  // };
+
   const handleEditActualAgain = (dStr) => {
-    setActualDraftsByDate((prev) => ({ ...prev, [dStr]: { ...prev[dStr], confirmed: false } }));
+    setActualDraftsByDate((prev) => {
+      // Already have a draft → just unlock it
+      if (prev[dStr]) {
+        return {
+          ...prev,
+          [dStr]: { ...prev[dStr], confirmed: false },
+        };
+      }
+
+      // No draft yet (pure API actuals) → create one from current API rows for this date
+      const apiRowsForDate = resourceList
+        .filter((row) => {
+          if (!row?.s_date || !row?.e_date) return false;
+          const currentDate = DateForApiFormate(dStr, true);
+          const startDate = DateForApiFormate(row.s_date, true);
+          const endDate = DateForApiFormate(row.e_date, true);
+          return (
+            currentDate &&
+            startDate &&
+            endDate &&
+            currentDate >= startDate &&
+            currentDate <= endDate
+          );
+        })
+        .map((row) => ({
+          rowKey: `api-${row.id}-${row.allocation_id}-${dStr}`,
+          original_emp_id: row.emp_id,
+          emp_id: row.emp_id,
+          employee_name: row.employee_name,
+          emp_type: row.emp_type,
+          remarks: row.remarks || "",
+          contract_rate: Number(row.contract_rate) || 0,
+          resource_id: row.id,
+          allocation_id: row.allocation_id,
+          order_item_id: row.order_item_id,
+          is_approved: Boolean(row.is_approved),
+          is_present: Boolean(row.is_present),
+          is_active: Boolean(row.is_active),
+          a_percent: row.a_percent,
+          ope_amt: row.ope_amt,
+          app_remarks: row.app_remarks || "",
+          approve_date: row.approve_date,
+          s_date: row.s_date,
+          e_date: row.e_date,
+          source: "api",
+        }));
+
+      return {
+        ...prev,
+        [dStr]: {
+          confirmed: false,
+          rows: apiRowsForDate,
+        },
+      };
+    });
   };
 
   const handleCancelApiRowEdit = (dStr, rowKey, originalRow) => {
@@ -1091,68 +1039,6 @@ const CurrentAssignments = ({
         },
       };
     });
-  };
-
-  const handleOpenActualModal = (dStr) => {
-    const existing = allAEntries.find((entry) => entry.start_date === dStr);
-    setModalDate(dStr);
-    if (existing) {
-      setIsUpdateMode(true);
-      setNoOfItems(existing.no_of_items || "");
-      const resList = parseActualResources(existing);
-      if (resList.length > 0) {
-        setSelectedEmpId(resList[0].emp_id);
-      } else {
-        setSelectedEmpId("");
-      }
-    } else {
-      setIsUpdateMode(false);
-      setNoOfItems("");
-      setSelectedEmpId("");
-    }
-    setIsModalOpen(true);
-  };
-
-  const handleSaveActual = () => {
-    if (!selectedEmpId) {
-      toast.error("Please select a resource");
-      return;
-    }
-    if (noOfItems === "" || isNaN(noOfItems) || Number(noOfItems) < 0) {
-      toast.error("Please enter a valid number of items audited");
-      return;
-    }
-
-    const selectedEmp = employees.find((emp) => emp.emp_id === selectedEmpId);
-    if (!selectedEmp) {
-      toast.error("Selected employee not found");
-      return;
-    }
-
-    const empType = Number(selectedEmp.grade_level) > 1 ? "T" : "E";
-    const resourceStr = `${selectedEmp.emp_id}^${selectedEmp.name}^${noOfItems}^${empType}`;
-
-    if (isUpdateMode) {
-      setAllAEntries((prev) =>
-        prev.map((entry) =>
-          entry.start_date === modalDate
-            ? { ...entry, no_of_items: Number(noOfItems), resource_list: [resourceStr] }
-            : entry
-        )
-      );
-      toast.success("Actual updated successfully");
-    } else {
-      const newEntry = {
-        id: `temp_${Date.now()}`,
-        start_date: modalDate,
-        no_of_items: Number(noOfItems),
-        resource_list: [resourceStr],
-      };
-      setAllAEntries((prev) => [...prev, newEntry]);
-      toast.success("Actual added successfully");
-    }
-
-    setIsModalOpen(false);
   };
 
   // const plannedDates = dayWindow.filter((d) => {
@@ -1238,9 +1124,6 @@ const CurrentAssignments = ({
 
     const maxDate = new Date(Math.max(...validDates));
 
-    // console.log("activityStartDateOnly", activityStart)
-    // console.log("candidateMinDate", candidateMinDate)
-
     setFilterStartDate(toInputDate(minDate));
     setFilterEndDate(toInputDate(maxDate));
   }, [plannedDates]);
@@ -1261,9 +1144,6 @@ const CurrentAssignments = ({
 
   const minActualDate = activityStartDate ? toInputDate(activityStartDate) : "";
   const maxActualDate = toInputDate(maxAllowedActualDate);
-
-  // console.log("activityData", activityData)
-  // console.log("plannedDates", JSON.stringify(plannedDates))
 
   const hasAnyDateWithoutActual = plannedDates.some(({ dStr }) => {
     const alreadyHasResourceActual = resourceList.some((row) => {
@@ -1408,11 +1288,6 @@ const CurrentAssignments = ({
             ) : null
           ) : null
         }  >
-        {/* <ButtonRows>
-    <Button variant="primary" onClick={handleCopyAllActual}>
-      Copy Actual (All Dates)
-    </Button>
-  </ButtonRows> */}
         <ScrollableTableWrapper>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             {filteredPlannedDates.length !== 0 &&
@@ -1434,9 +1309,6 @@ const CurrentAssignments = ({
                   </FormField>
                 )}
               </div>}
-
-
-
             {filteredPlannedDates.length !== 0 &&
               <CountPill1 $variant={false}>
                 <Pill $variant={true} />: <strong>Matched With Plan Resource</strong> &nbsp;&nbsp; <Pill $variant={false} />: <strong>Not Matched With Plan Resource</strong>
@@ -1540,24 +1412,11 @@ const CurrentAssignments = ({
 
                 const isStarted = startedDates.has(dStr) || hasResourceActual;
 
-                // console.log("isStarted", isStarted)
-                // console.log("startedDates", startedDates)
-                // console.log("actualResourcesForDate", actualResourcesForDate)
-
                 // const actualEntry = allAEntries.find((entry) => entry.start_date === dStr) || null;
                 // const actualResources = parseActualResources(actualEntry);
 
                 const actualDraft = actualDraftsByDate[dStr];
                 const actualRows = actualDraft?.rows || [];
-
-                // console.log("actualDraft", JSON.stringify(actualDraftsByDate))
-                // console.log("actualDraft", actualDraft)
-                // console.log("actualDraft", isStarted)
-
-                // console.log("actualResourcesForDate", actualResourcesForDate)
-                // console.log("actualDraft", actualDraftsByDate)
-                // console.log("actualDraft", actualDraft)
-                // console.log("actualRows", actualRows)
                 const draftRowsByKey = new Map(actualRows.map((r) => [r.rowKey, r]));
 
                 //             const displayedActualRows = hasResourceActual
@@ -1800,11 +1659,6 @@ const CurrentAssignments = ({
                             style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
                           >
                             <span>Actual</span>
-                            {/* {!actualDraft && planAssignments.length > 0 && (
-      <Button size="sm" variant="outlines" onClick={() => handleCopyActual(dStr, planAssignments)}>
-        Copy Actual
-      </Button>
-    )} */}
                           </SubPanelHeader>
 
                           {displayedActualRows.length === 0 && (
@@ -1823,70 +1677,34 @@ const CurrentAssignments = ({
                                 dStr={dStr}
                                 onSave={hasResourceActual ? () => handleSaveApiRowEdit(row.rowKey) : undefined}
                                 onCancel={hasResourceActual ? () => handleCancelApiRowEdit(dStr, row.rowKey, actualResourcesForDate.find((r) => r.rowKey === row.rowKey)) : undefined}
-
-                                readOnly={
-                                  !actualDraft || actualDraft.confirmed
-                                }
-
+                                readOnly={!actualDraft || actualDraft.confirmed}
                                 isReplaced={
                                   hasResourceActual
                                     ? !planEmpIds.has(row.emp_id)
-                                    : row.original_emp_id != null &&
-                                    row.emp_id !== row.original_emp_id
+                                    : row.original_emp_id != null && row.emp_id !== row.original_emp_id
                                 }
-
                                 minActualDate={DateForApiFormate(minActualDate, true)}
                                 maxActualDate={DateForApiFormate(maxActualDate, true)}
-
                                 onFieldChange={(field, value) => {
                                   if (disableActualAction) return;
-
-                                  handleActualFieldChange(
-                                    dStr,
-                                    row.rowKey,
-                                    field,
-                                    value
-                                  );
-
+                                  handleActualFieldChange(dStr, row.rowKey, field, value);
                                   if (field === "emp_type") {
-                                    // CHANGED — search across ALL planned dates for a matching emp_type rate, not just this date
                                     let matchedRate = null;
                                     for (const dateKey of Object.keys(dateWiseAssignments)) {
                                       const match = (dateWiseAssignments[dateKey] || []).find((r) => r.emp_type === value && r.contract_rate);
                                       if (match) { matchedRate = match.contract_rate; break; }
                                     }
                                     const finalRate = matchedRate || getContractRateByType(value);
-
-                                    handleActualFieldChange(
-                                      dStr,
-                                      row.rowKey,
-                                      "contract_rate",
-                                      finalRate
-                                    );
+                                    handleActualFieldChange(dStr, row.rowKey, "contract_rate", finalRate);
                                   }
                                 }}
-
                                 disableActualAction={disableActualAction}
-
                                 onEmployeeChange={(emp_id) => {
                                   if (disableActualAction) return;
-
-                                  handleActualEmployeeChange(
-                                    dStr,
-                                    row.rowKey,
-                                    emp_id
-                                  );
+                                  handleActualEmployeeChange(dStr, row.rowKey, emp_id);
                                 }}
-
-                                // onToggleEdit={hasResourceActual ? () => toggleEditApiRow(row.rowKey, dStr, actualResourcesForDate) : undefined}
                                 onToggleEdit={undefined}
-
-                                onRemove={() => {
-                                                       handleRemoveActualRow(
-                                    dStr,
-                                    row.rowKey
-                                  );
-                                }}
+                                onRemove={() => handleRemoveActualRow(dStr, row.rowKey)}
                               />
                             );
                           })}
@@ -1922,8 +1740,10 @@ const CurrentAssignments = ({
                               </div>
                             )}
 
-                          {!isStatusApproved &&
-                            actualDraft?.confirmed && (
+                          {/* Date-level Edit button (not per-resource) when status is not Approved */}
+                          {(activityData?.original_P?.status !== "A" ||
+                            activityData?.original_A?.status !== "A") &&
+                            (hasResourceActual || (actualDraft?.rows?.length > 0)) && (
                               <div
                                 style={{
                                   display: "flex",
@@ -1932,48 +1752,48 @@ const CurrentAssignments = ({
                                   padding: "8px 10px",
                                 }}
                               >
-                                <Badge
-                                  variant="success"
-                                  style={{ fontSize: "0.6rem" }}
-                                >
-                                  Confirmed
-                                </Badge>
-
-                                <Button
-                                  size="sm"
-                                  variant="outlines"
-                                  onClick={() => handleEditActualAgain(dStr)}
-                                >
-                                  Edit
-                                </Button>
-
+                                {(!actualDraft || actualDraft.confirmed) ? (
+                                  <>
+                                    <Badge variant="success" style={{ fontSize: "0.6rem" }}>
+                                      Confirmed
+                                    </Badge>
+                                    <Button
+                                      size="sm"
+                                      variant="outlines"
+                                      onClick={() => handleEditActualAgain(dStr)}
+                                    >
+                                      Edit
+                                    </Button>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Badge variant="warning" style={{ fontSize: "0.6rem" }}>
+                                      Editing
+                                    </Badge>
+                                    <Button
+                                      size="sm"
+                                      variant="outlines"
+                                      onClick={() =>
+                                        setActualDraftsByDate((prev) => ({
+                                          ...prev,
+                                          [dStr]: { ...prev[dStr], confirmed: true },
+                                        }))
+                                      }
+                                    >
+                                      Cancel Edit
+                                    </Button>
+                                  </>
+                                )}
                               </div>
                             )}
-
                           <TotalsBar style={{ marginTop: 10 }}>
-                            {/* <span>Plan Total: ₹{planTotal}</span> */}
                             <span>Actual Total: ₹{actualTotal}</span>
                           </TotalsBar>
                         </SubPanel>
                       </PlanActualGrid>
-
-                      {/* <TotalsBar style={{ marginTop: 10 }}>
-                      <span>Plan Total: ₹{planTotal}</span>
-                      <span>Actual Total: ₹{actualTotal}</span>
-                    </TotalsBar> */}
                     </Section>
 
                     <ButtonRows>
-                      {/* {hasResourceActual && activityData?.original_P?.is_ope_actual &&
-                      <>
-                        <Button onClick={() => navigate('/clamDetails', { state: { data:{...activityData, mode: "ADD"} } })}>Add claims</Button>
-                        <Button onClick={() => navigate('/clamDetails', { state: { data:{...activityData, mode: "VIEW"} } })}>View claims</Button>
-                      </>
-                    }  */}
-                      {/* 
-                    {planAssignments.length !== 0 && activityData.activityStatus === "C" && <Button onClick={() => handleOpenActualModal(dStr)}>
-                      {hasActual ? "Update Actual" : "Add Actual"}
-                    </Button>} */}
 
                     </ButtonRows>
                   </DateBlock>
@@ -2078,64 +1898,6 @@ const FormSelect = styled.select`
   }
 `;
 
-const ActualModalOverlay = styled.div`
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-`;
-
-const ActualModalContent = styled.div`
-  background: #fff;
-  padding: 24px;
-  border-radius: 8px;
-  width: 400px;
-  max-width: 90%;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-`;
-
-const ActualModalHeader = styled.h3`
-  margin-top: 0;
-  margin-bottom: 16px;
-  color: #333;
-`;
-
-const ActualFormGroup = styled.div`
-  margin-bottom: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-`;
-
-const ActualLabel = styled.label`
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #555;
-`;
-
-const ActualInput = styled.input`
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 0.9rem;
-`;
-
-const ActualSelect = styled.select`
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 0.9rem;
-`;
-
-const ActualButtonGroup = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 20px;
-`;
 const InlineEditForm = ({ row, onChange, onConfirm, onCancel, activityStart, activityEnd, openConfirmation, tlContractRate, exContractRate, }) => {
   const formattedStart = activityStart ? DateForApiFormate(activityStart, true) : "";
   const formattedEnd = activityEnd ? DateForApiFormate(activityEnd, true) : "";
@@ -2150,6 +1912,7 @@ const InlineEditForm = ({ row, onChange, onConfirm, onCancel, activityStart, act
           max={formattedEnd}
           value={row.start_date || ""}
           onChange={(e) => onChange(row.rowKey, "start_date", e.target.value)}
+          disabled
         />
       </FormField>
       <FormField>
@@ -2160,6 +1923,7 @@ const InlineEditForm = ({ row, onChange, onConfirm, onCancel, activityStart, act
           max={formattedEnd}
           value={row.end_date || ""}
           onChange={(e) => onChange(row.rowKey, "end_date", e.target.value)}
+          disabled
         />
       </FormField>
       <FormField>
@@ -2220,6 +1984,39 @@ const InlineEditForm = ({ row, onChange, onConfirm, onCancel, activityStart, act
 };
 
 const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, onEmployeeChange, onRemove, disableActualAction, onToggleEdit, onSave, onCancel, minActualDate, maxActualDate, busyDateMap = {}, dStr }) => {
+  const initialRef = useRef(null);
+
+  if (!readOnly && initialRef.current === null) {
+    initialRef.current = {
+      emp_id: row.emp_id,
+      emp_type: row.emp_type,
+      start_date: row.start_date || row.s_date || "",
+      end_date: row.end_date || row.e_date || "",
+      remarks: row.remarks || "",
+      contract_rate: row.contract_rate,
+      employee_name: row.employee_name || "",
+    };
+  }
+
+  const isDirty = (() => {
+    if (!initialRef.current || readOnly) return false;
+
+    const orig = initialRef.current;
+    const currStart = row.start_date || row.s_date || "";
+    const currEnd = row.end_date || row.e_date || "";
+
+    return (
+      row.emp_id !== orig.emp_id ||
+      row.emp_type !== orig.emp_type ||
+      currStart !== orig.start_date ||
+      currEnd !== orig.end_date ||
+      (row.remarks || "") !== (orig.remarks || "") ||
+      Number(row.contract_rate) !== Number(orig.contract_rate) ||
+      (row.employee_name || "") !== (orig.employee_name || "")
+    );
+  })();
+
+
   if (readOnly) {
     return (
       <ResourceRow>
@@ -2245,9 +2042,6 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
       </ResourceRow>
     );
   }
-
-  // console.log("row.start_date", row)
-  // console.log("row.end_date", row)
 
   const getStartDateField = (row) => row.start_date ? 'start_date' : 's_date';
   const getEndDateField = (row) => row.end_date ? 'end_date' : 'e_date';
@@ -2290,6 +2084,7 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
             max={maxActualDate}
             value={DateForApiFormate(row.start_date || row.s_date || "", true)}
             onChange={(e) => onFieldChange(getStartDateField(row), e.target.value)}
+            disabled
           />
         </FormField>
 
@@ -2300,7 +2095,8 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
             min={row.start_date || minActualDate}
             max={maxActualDate}
             value={DateForApiFormate(row.end_date || row.e_date || "", true)}
-            onChange={(e) => onFieldChange(getStartDateField(row), e.target.value)}
+            onChange={(e) => onFieldChange(getEndDateField(row), e.target.value)}
+            disabled
           />
         </FormField>
 
@@ -2326,7 +2122,7 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
 
       </EditRowContainer>
       <div style={{ display: "flex", alignItems: "flex-end", gap: "0.5rem" }}>
-        {onSave && (
+        {onSave && isDirty && (
           <Button size="sm" variant="success" onClick={onSave}>Save</Button>
         )}
         {onCancel && <Button size="sm" variant="outlines" onClick={onCancel}>Cancel</Button>}

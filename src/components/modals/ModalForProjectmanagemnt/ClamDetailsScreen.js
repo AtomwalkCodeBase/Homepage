@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import { FaCalendarAlt, FaMapMarkerAlt, FaUserTie, FaUser, FaPlus, FaFileInvoiceDollar, FaFileAlt, FaChevronDown, FaChevronUp, FaArrowLeft, FaCheck } from "react-icons/fa";
-import { useLocation, useNavigate } from "react-router-dom";
+import { FaCalendarAlt, FaMapMarkerAlt, FaUserTie, FaUser, FaFileInvoiceDollar, FaFileAlt, FaArrowLeft, FaCheck } from "react-icons/fa";
+import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaPenToSquare } from "react-icons/fa6";
-import { getContractAllocationData, getEmpClaim, getemployeeLists, postClaimAction } from "../../../services/productServices";
+import { getEmpClaim, getemployeeLists, postClaimAction } from "../../../services/productServices";
 import { DateForApiFormate, matchClaimsToActivity } from "../../../pages/ProjectManagement/utils/utils";
 import Button from "../../Button";
 import Card from "../../Card";
@@ -17,10 +17,6 @@ import Layout from "../../Layout";
 const formatDate = (dateStr) => {
   if (!dateStr) return "—";
   return new Date(dateStr).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" });
-};
-
-const formatDayLabel = (dateStr) => {
-  return new Date(dateStr).toLocaleDateString("en-US", { weekday: "short", day: "numeric", month: "short" });
 };
 
 const currency = (n) => `₹${Number(n || 0).toLocaleString("en-IN")}`;
@@ -45,13 +41,6 @@ const ClaimsHeader = styled.div`
   }
 `;
 
-const InfoStrip = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-bottom: 1rem;
-`;
-
 const InfoPill = styled.div`
   display: flex;
   align-items: center;
@@ -65,140 +54,6 @@ const InfoPill = styled.div`
   span {
     font-weight: 600;
     color: ${({ theme }) => theme.colors?.textLight || "#777"};
-  }
-`;
-
-const SectionTitleRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: ${({ theme }) => theme.spacing?.sm || "1rem"} ${({ theme }) => theme.spacing?.md || "1rem"};
-`;
-
-const SectionTitle = styled.h4`
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors?.text || "#222"};
-  margin: 0;
-`;
-
-const DateBlock = styled.div`
-  border: 1px solid ${({ theme }) => theme.colors?.border || "#e5e7eb"};
-  border-radius: 8px;
-  margin-bottom: 0.75rem;
-  overflow: hidden;
-`;
-
-const DateHeader = styled.button`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.65rem 0.9rem;
-  background: ${({ theme }) => theme.colors?.backgroundAlt || "#fafafa"};
-  border: none;
-  cursor: pointer;
-  text-align: left;
-`;
-
-const HeaderDate = styled.span`
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors?.text || "#222"};
-`;
-
-const HeaderSummary = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.72rem;
-  color: ${({ theme }) => theme.colors?.textLight || "#777"};
-`;
-
-const DateBody = styled.div`
-  padding: 0.85rem 0.9rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 0.75rem;
-`;
-
-const StatBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  cursor: ${({ pointer }) => pointer ? "pointer" : "default"};
-`;
-
-const StatLabel = styled.span`
-  font-size: 0.62rem;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors?.textLight || "#999"};
-`;
-
-const StatValue = styled.span`
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors?.text || "#222"};
-`;
-
-const TotalsFooter = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 1.5rem;
-  padding: 0.6rem 0.9rem;
-  background: ${({ theme }) => theme.colors?.backgroundAlt || "#fafafa"};
-  border-top: 1px dashed ${({ theme }) => theme.colors?.border || "#e5e7eb"};
-  font-size: 0.75rem;
-  font-weight: 600;
-`;
-
-const FooterText = styled.span`
-  color: ${({ theme }) => theme.colors?.textLight || "#e5e7eb"};
-`;
-
-
-const GrandTotalBar = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 1rem;
-  padding: 0.85rem 1rem;
-  border-radius: 8px;
-  background: ${({ theme }) => theme.colors?.primary ? `${theme.colors.primary}12` : "#6C5CE712"};
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors?.primary || "#6C5CE7"};
-`;
-
-const ClaimsTable = styled.div`
-  display: grid;
-  grid-template-columns: 1.1fr 1fr 1fr 1fr 1.4fr 0.7fr;
-  border: 1px solid ${({ theme }) => theme.colors?.border || "#e5e7eb"};
-  border-radius: 8px;
-  overflow: hidden;
-`;
-
-const ClaimsHeaderRow = styled.div`
-  display: contents;
-  > span {
-    background: ${({ theme }) => theme.colors?.backgroundAlt || "#f4f4f6"};
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: ${({ theme }) => theme.colors?.textLight || "#777"};
-    padding: 0.55rem 0.75rem;
-  }
-`;
-
-const ClaimsRow = styled.div`
-  display: contents;
-  > span, > a {
-    padding: 0.6rem 0.75rem;
-    font-size: 0.75rem;
-    border-top: 1px solid ${({ theme }) => theme.colors?.border || "#eee"};
-    display: flex;
-    align-items: center;
   }
 `;
 
@@ -289,50 +144,38 @@ const DetailValue = styled.span`
 `;
 
 const ClamDetailsScreen = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const activityData = location.state?.data;
+  const cp_emp_id = activityData?.emp_id;
   const loggedEmpId = localStorage.getItem("empId");
   const ViewMode = activityData.mode;
-  const [loading, setLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [openOpeModal, setOpenOpeModal] = useState(false);
   const [openSubmitAllModal, setOpenSubmitAllModal] = useState(false);
   const [selectedClaimItem, setSelectedClaimItem] = useState(null);
   const [approveType, setApproveType] = useState("APPROVE"); // "APPROVE" | "REJECT"
   const [approveRemarks, setApproveRemarks] = useState("");
 
-  // console.log("activityData", activityData)
-
   const [claimList, setClaimList] = useState(() => activityData?.claims || []);
-  const claimStatus = claimList?.master_data?.status_display
+  const claimStatus = claimList?.[0]?.status_display;
 
-  // console.log("claimList", claimList)
+  const allItemsSubmitted = useMemo(() => {
+    const items = claimList?.[0]?.claim_items || [];
+    if (!items.length) return false;
 
-  // const claimStatus = useMemo(() => {
-  //   for (const claim of claimList) {
-  //     for (const item of (claim?.claim_items || [])) {
-  //       const { label } = getStatusVariant(item.expense_status);
-  //       if (label === "Submitted") {
-  //         return "Submitted";
-  //       }
-  //     }
-  //   }
-  //   return "";
-  // }, [claimList]);
+    return items.every((item) => {
+      const { label } = getStatusVariant(item.expense_status);
+      return label === "Submitted";
+    });
+  }, [claimList]);
 
-
-  const [resourceList, setResourceList] = useState([]);
-  const [expandedDate, setExpandedDate] = useState(null);
-  const [selectedClaim, setSelectedClaim] = useState(null);
   const [selectedMasterClaimId, setSelectedMasterClaimId] = useState(null);
 
   const fetchClaimsForActivity = useCallback(async () => {
-    if (!loggedEmpId || !activityData) return;
+    if (!cp_emp_id || !activityData) return;
 
     try {
       setIsLoading(true);
-      const profileRes = await getemployeeLists({ emp_id: loggedEmpId });
+      const profileRes = await getemployeeLists({ emp_id: cp_emp_id });
       const profile = profileRes?.data?.[0] || {};
 
       if (!profile.id) {
@@ -349,23 +192,20 @@ const ClamDetailsScreen = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [loggedEmpId, activityData]);
-
-  const dateRows = useMemo(() => groupResourcesByDate(resourceList), [resourceList]);
-
-  const totals = useMemo(() =>
-    dateRows.reduce((acc, row) => ({
-      resource: acc.resource + row.tl_amount + row.ex_amount,
-      claim: acc.claim + row.claim_amount,
-    }), { resource: 0, claim: 0 }),
-    [dateRows]
-  );
+  }, [cp_emp_id, activityData]);
 
   const totalClaim = useMemo(() => {
     return claimList.reduce(
       (acc, claim) => {
-        acc.totalOPE += Number(claim?.expense_amt || 0);
-        acc.totalSettlement += Number(claim?.settlement_amt || 0);
+        const submittedItems = (claim?.claim_items || []).filter((item) => {
+          const { label } = getStatusVariant(item.expense_status);
+          return label === "Submitted";
+        });
+
+        submittedItems.forEach((item) => {
+          acc.totalOPE += Number(item?.expense_amt || 0);
+          acc.totalSettlement += Number(item?.settlement_amt || 0);
+        });
 
         return acc;
       },
@@ -373,83 +213,14 @@ const ClamDetailsScreen = () => {
     );
   }, [claimList]);
 
-  const grandTotal = totals.resource + totalClaim.totalOPE;
-
-  const fetchResourceData = useCallback(async () => {
-    const startDate = activityData?.planned_start_date || activityData.earliestPlannedDate;
-    const endDate = activityData?.planned_end_date || activityData.latestPlannedDate;
-    const allocationIds = [
-      ...new Set(
-        (
-          activityData?.grouped_data?.length
-            ? activityData.grouped_data.flatMap(
-              item => item?.allAEntries || []
-            )
-            : activityData?.allAEntries || []
-        )
-          .map(item => item?.id)
-          .filter(Boolean)
-      )
-    ];
-
-    if (!startDate || !endDate || !allocationIds.length) {
-      // if (!startDate || !endDate) {
-      setResourceList([]);
-      return;
-    }
-
-    try {
-      setLoading(true);
-      const responses = await Promise.all(allocationIds.map(allocationId =>
-        getContractAllocationData({
-          emp_id: loggedEmpId,
-          allocation_id: allocationId,
-          start_date: DateForApiFormate(startDate),
-          end_date: DateForApiFormate(endDate),
-        })
-      )
-      );
-      const mergedData = responses.flatMap((response) => Array.isArray(response?.data) ? response.data : []);
-      setResourceList(mergedData);
-    } catch (error) {
-      console.error("Failed to fetch resource data:", error);
-      toast.error("Failed to load resource data");
-      setResourceList([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [activityData, loggedEmpId]);
-
-  useEffect(() => {
-    fetchResourceData();
-  }, [fetchResourceData]);
-
   useEffect(() => {
     if (activityData?.claims?.length) {
       setClaimList(activityData.claims);
     } else {
       fetchClaimsForActivity();
     }
-  }, [activityData, fetchClaimsForActivity]);
+  }, [activityData?.id || activityData?.planned_start_date]);
 
-  const toggleDate = (date) => {
-    setExpandedDate((prev) => (prev === date ? null : date));
-  };
-
-  const handleOpenClaimModal = (data) => {
-    setSelectedClaim(data)
-    setOpenOpeModal(true);
-  };
-
-  // const handleAddClaim = () => {
-  //   const existingClaim = claimList?.[0] || null || claimList.length === 0;
-  //   handleOpenClaimModal(existingClaim ? {...activityData, master_data: existingClaim}: null);
-  // };
-
-  const handleAddClaim = () => {
-    const existingClaim = claimList?.[0] || null;
-    handleOpenClaimModal({ ...activityData, ...(existingClaim && { master_data: existingClaim, }), });
-  };
 
   const handleApproveReject = async ({
     masterClaimId,
@@ -529,8 +300,6 @@ const ClamDetailsScreen = () => {
       return;
     }
 
-    // Optional: filter only pending ones.
-    // Comment the filter if you want to send ALL items.
     const pendingItems = items.filter((item) => {
       const { label } = getStatusVariant(item.expense_status);
       // adjust these labels according to your getStatusVariant output
@@ -562,11 +331,6 @@ const ClamDetailsScreen = () => {
     setOpenSubmitAllModal(true);
   };
 
-  // console.log("activityData shdbk", activityData)
-
-  // const matchingRetainer = (activityData?.original_P?.retainer_list || []).find((r) => r.a_type === "P" && r.start_date === activityData?.original_P?.start_date && r.end_date === activityData?.original_P?.end_date,);
-  const matchingRetainer = (activityData?.original_P?.retainer_list || []).find((r) => r.a_type === "P" && r.start_date === activityData?.original_P?.start_date && r.end_date === activityData?.original_P?.end_date,);
-
   const allocationResources = useMemo(() => {
     return (activityData?.grouped_data || []).map((allocation) => {
       const matchingRetainer = (
@@ -579,23 +343,18 @@ const ClamDetailsScreen = () => {
       );
 
       return {
-        allocationId:
-          allocation?.allocation_id ||
-          allocation?.id ||
-          allocation?.allAEntries?.[0]?.id,
-
+        allocationId: allocation?.allocation_id || allocation?.id || allocation?.allAEntries?.[0]?.id,
         start_date: matchingRetainer?.start_date,
         end_date: matchingRetainer?.end_date,
         tl_count: matchingRetainer?.tl_count || 0,
+        tl_rate: matchingRetainer?.tl_rate || 0,
         ex_count: matchingRetainer?.ex_count || 0,
+        ex_rate: matchingRetainer?.ex_rate || 0,
+        activityStatus: allocation?.activityStatus || "",
+        statusDisplay: allocation?.statusDisplay || "",
       };
     });
   }, [activityData]);
-
-  const plannedTL = matchingRetainer?.tl_count || 0;
-  const plannedEX = matchingRetainer?.ex_count || 0;
-
-  // console.log("selectedClaim", selectedClaim)
 
   return (
     <Layout title="Clam Details">
@@ -639,7 +398,8 @@ const ClamDetailsScreen = () => {
                 <DetailIconWrap><FaUserTie size={13} /></DetailIconWrap>
                 <DetailText>
                   <DetailLabel>Required TL</DetailLabel>
-                  <DetailValue>{plannedTL ?? '—'}</DetailValue>
+                  <DetailValue>{allocationResources[0].tl_count ?? "—"}</DetailValue>
+                  {allocationResources[0].tl_rate && <DetailValue>{allocationResources[0].tl_rate ?? "—"}/per day</DetailValue>}
                 </DetailText>
               </DetailItem>
 
@@ -647,7 +407,9 @@ const ClamDetailsScreen = () => {
                 <DetailIconWrap><FaUser size={13} /></DetailIconWrap>
                 <DetailText>
                   <DetailLabel>Required EX</DetailLabel>
-                  <DetailValue>{plannedEX ?? '—'}</DetailValue>
+                  <DetailValue>{allocationResources[0].ex_count ?? "—"}</DetailValue>
+                  {allocationResources[0].ex_rate && <DetailValue>{allocationResources[0].ex_rate ?? "—"}/per day</DetailValue>}
+
                 </DetailText>
               </DetailItem>
             </>
@@ -670,6 +432,35 @@ const ClamDetailsScreen = () => {
           </DetailText>
         </DetailItem>}
       </Card>
+
+      {allocationResources.length > 1 && (
+        <Card title="Allocation Dates">
+          <DetailsGrid style={{ marginTop: "1rem" }}>
+            {allocationResources.map((allocation, index) => (
+              <DetailItem key={allocation.allocationId || index}>
+                <DetailIconWrap>
+                  <FaUserTie size={13} />
+                </DetailIconWrap>
+                <DetailText>
+                  <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+                    <DetailLabel>Allocation {index + 1}</DetailLabel>
+                    <Badge variant={getStatusVariant(allocation.activityStatus)}>
+                      {allocation.statusDisplay}
+                    </Badge>
+                  </div>
+                  <DetailValue>
+                    {formatDate(allocation.start_date)} – {formatDate(allocation.end_date)}
+                  </DetailValue>
+                  <DetailValue>
+                    TL: {allocation.tl_count} &nbsp; | &nbsp;
+                    EX: {allocation.ex_count}
+                  </DetailValue>
+                </DetailText>
+              </DetailItem>
+            ))}
+          </DetailsGrid>
+        </Card>
+      )}
 
       {allocationResources.length > 1 &&
         <Card title="Allocation Dates">
@@ -709,7 +500,7 @@ const ClamDetailsScreen = () => {
         {claimList.length > 0 && (
           <InfoPill style={{ marginBottom: "0.8rem", fontSize: "1rem" }}>
             <FaFileInvoiceDollar size={12} style={{ marginRight: "0.4rem" }} />
-            <span>Master Clam Id:</span>
+            <span>Clam Id:</span>
             {claimList[0].master_claim_id}
           </InfoPill>
         )}
@@ -722,7 +513,7 @@ const ClamDetailsScreen = () => {
             <DataTable
               emptyMessage="No claims submitted yet"
               isLoading={isLoading}
-              columns={["Sl no.", "Category", "Date", "Amount", "Status", "Remarks", "Attachment", "Action"]}
+              columns={["Sl no.", "Category", "Date", "Amount", "Status", "Remarks", "Reference File", "Action"]}
               data={claimList.flatMap((claim) =>
                 (claim?.claim_items || []).map((item) => ({ ...item, master_data: claim, }))
               )}
@@ -747,11 +538,11 @@ const ClamDetailsScreen = () => {
                         {item.remarks || "--"}
                       </RemarkField>
                     </Td>
-                    <Td><FileLink href={item.submitted_file_1} target="_blank" rel="noreferrer" disabled={!item.submitted_file_1}>{item.submitted_file_1 ? "View" : "Not Submitted"}</FileLink></Td>
+                    <Td><FileLink href={item.submitted_file_1} target="_blank" rel="noreferrer" disabled={!item.submitted_file_1}>{item.submitted_file_1 ? "View" : "Not Attached"}</FileLink></Td>
                     {/* {(ViewMode !== "VIEW" && label !== "Submitted") && <Td><Button size="sm" onClick={() => handleOpenClaimModal(item)}>Update</Button></Td>} */}
                     <Td>{(() => {
                       const { label } = getStatusVariant(item.expense_status);
-                      const isFinal = label === "Approved" || label === "Rejected";
+                      const isFinal = label === "Approved" || label === "Rejected" || label === "Not Submitted";
 
                       if (ViewMode === "VIEW" || isFinal) return null;
 
@@ -787,7 +578,7 @@ const ClamDetailsScreen = () => {
 
 
 
-        {claimList.length > 0 && claimStatus !== "Submitted" && claimStatus === "Approved" &&
+        {claimList.length > 0 && allItemsSubmitted && claimStatus !== "Approved" &&
           <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1rem" }}>
             <Button onClick={() => {
               setSelectedClaimItem(null);          // bulk mode
@@ -847,60 +638,4 @@ const getStatusVariant = (expense_status) => {
   };
 
   return statusMap[expense_status] || { variant: 'default', label: 'Unknown' };
-};
-
-const groupResourcesByDate = (list = []) => {
-  const grouped = list.reduce((acc, item) => {
-    const startDate = DateForApiFormate(item.s_date, true);
-    const endDate = DateForApiFormate(item.e_date, true);
-
-    if (!startDate || !endDate) return acc;
-
-    const current = new Date(`${startDate}T00:00:00`);
-    const end = new Date(`${endDate}T00:00:00`);
-
-    while (current <= end) {
-      const date = [
-        current.getFullYear(),
-        String(current.getMonth() + 1).padStart(2, "0"),
-        String(current.getDate()).padStart(2, "0"),
-      ].join("-");
-
-      if (!acc[date]) {
-        acc[date] = {
-          date,
-          tl_count: 0,
-          ex_count: 0,
-          tl_amount: 0,
-          ex_amount: 0,
-          claim_amount: 0,
-          resources: [],
-        };
-      }
-
-      const rate = Number(item.contract_rate) || 0;
-      const claim = Number(item.ope_amt) || 0;
-
-      if (item.emp_type === "T") {
-        acc[date].tl_count += 1;
-        acc[date].tl_amount += rate;
-      } else if (item.emp_type === "E") {
-        acc[date].ex_count += 1;
-        acc[date].ex_amount += rate;
-      }
-
-      acc[date].claim_amount += claim;
-      acc[date].resources.push(item);
-
-      current.setDate(current.getDate() + 1);
-    }
-
-    return acc;
-  }, {});
-
-  return Object.values(grouped).sort(
-    (a, b) =>
-      new Date(`${a.date}T00:00:00`) -
-      new Date(`${b.date}T00:00:00`)
-  );
 };

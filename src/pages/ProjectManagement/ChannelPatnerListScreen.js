@@ -401,7 +401,21 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
 
-          <Button variant="outline" onClick={() => { setSearchTerm(""); }}>
+          <Button variant="outline" onClick={() => {
+            setSearchTerm("");
+
+            if (BrachManager) {
+              setActiveRangeType("month");
+              setOffset(0);
+
+              const currentMonthRange = getMonthRange({
+                type: "current",
+                mode: "month",
+                offset: 0,
+              });
+              setDateRange(currentMonthRange);
+            }
+          }}>
             Clear Filters
           </Button>
         </FilterRow>

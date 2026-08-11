@@ -1442,6 +1442,9 @@ const CurrentAssignments = ({
                   ]
                   : actualRows;
 
+                const actualTlCount = displayedActualRows.filter((a) => a.emp_type === 'T').length;
+                const actualExCount = displayedActualRows.filter((a) => a.emp_type === 'E').length;
+
                 const planEmpIds = new Set(planAssignments.map((a) => a.emp_id));
 
                 const isPlannedFromApi = planAssignments.some((row) => row.status === "ORIGINAL");
@@ -1461,7 +1464,7 @@ const CurrentAssignments = ({
                 const hasActual = allAEntries.some((entry) => entry.start_date === dStr);
 
                 const matchedPlanRequiredResource = plannedTL === tlCount && plannedEX === exCount;
-                // const matchedActualRequiredResource = plannedTL === actualTlCount && plannedEX === actualExCount;
+                const matchedActualRequiredResource = plannedTL === actualTlCount && plannedEX === actualExCount;
 
                 const hasActualForDate = (dStr) =>
                   resourceList.some((row) => {
@@ -1515,6 +1518,10 @@ const CurrentAssignments = ({
                         <SubPanel>
                           <SubPanelHeader $variant="plan" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                             <span>Plan</span>
+
+                            <CountPill $variant={matchedPlanRequiredResource}>
+                              TL: <strong>{tlCount}</strong> &nbsp;&nbsp; EX: <strong>{exCount}</strong>
+                            </CountPill>
 
                             {!isPastActivityWindow && !isStarted && isPlannedFromApi && (dStr === nextStartableDate && apiDate >= DateForApiFormate(nextStartableDate)) && (
                               <Button size="sm" variant="primary" onClick={() => openConfirmation({
@@ -1659,6 +1666,10 @@ const CurrentAssignments = ({
                             style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
                           >
                             <span>Actual</span>
+
+                            <CountPill $variant={matchedActualRequiredResource}>
+                              TL: <strong>{actualTlCount}</strong> &nbsp;&nbsp; EX: <strong>{actualExCount}</strong>
+                            </CountPill>
                           </SubPanelHeader>
 
                           {displayedActualRows.length === 0 && (

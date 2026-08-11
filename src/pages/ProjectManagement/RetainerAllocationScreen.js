@@ -339,9 +339,9 @@ const RetainerAllocationScreen = () => {
     }, [emp_id]);
 
     const handleClearFilters = () => {
-        if (typeof window !== "undefined") {
-            window.sessionStorage.removeItem(ACTIVITY_LIST_STORAGE_KEY);
-        }
+        // if (typeof window !== "undefined") {
+        //     window.sessionStorage.removeItem(ACTIVITY_LIST_STORAGE_KEY);
+        // }
 
         const currentMonthRange = getMonthRange({ type: "current", mode: "month" });
 
@@ -487,18 +487,6 @@ const RetainerAllocationScreen = () => {
                 <FilterRow style={{ marginBottom: "1rem" }}>
                     <SearchBox type="text" placeholder="Search customer name, audit type, location, order item id ..." value={filter.search} onChange={(e) => setFilter((prev) => ({ ...prev, search: e.target.value, }))} />
 
-                    <FilterSelect
-                        name="status"
-                        value={filter.status}
-                        onChange={(e) => setFilter((prev) => ({ ...prev, status: e.target.value }))}
-                    >
-                        <option value="ALL">All</option>
-                        <option value="NA">Not Assigned</option>
-                        <option value="P">In Progress</option>
-                        <option value="C">Completed</option>
-                        <option value="NS">Not Started</option>
-                    </FilterSelect>
-
                     <Button variant="outline" size='sm' onClick={handleClearFilters}>
                         Clear Filters
                     </Button>
@@ -568,7 +556,7 @@ const RetainerAllocationScreen = () => {
                                         {activeTab === "actual" && (employee.activityStatus === "C" || employee.activityStatus === "AP" || employee.activityStatus === "AS") ? (
                                             <Button
                                                 size='sm'
-                                                onClick={() => navigate('/clamDetails', { state: { data: { ...employee, mode: "ADD" } } })}
+                                                onClick={() => navigate('/clamDetails', { state: { data: { ...employee, mode: "ADD", emp_id: emp_id } } })}
                                             >
                                                 <FaMoneyBillWave />
                                                 Claim

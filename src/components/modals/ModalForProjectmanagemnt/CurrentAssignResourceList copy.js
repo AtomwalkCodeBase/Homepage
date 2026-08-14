@@ -902,6 +902,21 @@ const CurrentAssignments = ({
     setActualDraftsByDate((prev) => {
       const draft = prev[dStr];
       if (!draft) return prev;
+
+      const target = draft.rows.find((r) => r.rowKey === rowKey);
+      if (!target) return prev;
+
+      const isApiRow = target.source === "api" || target.resource_id != null;
+
+      if (isApiRow) {
+        return {
+          ...prev,
+          [dStr]: {
+            ...draft, rows: draft.rows.map((r) => r.rowKey === rowKey ? { ...r, is_deleted: true } : r),
+          },
+        };
+      }
+
       return { ...prev, [dStr]: { ...draft, rows: draft.rows.filter((r) => r.rowKey !== rowKey) } };
     });
   };
@@ -959,15 +974,20 @@ const CurrentAssignments = ({
 
   const handleEditActualAgain = (dStr) => {
     setActualDraftsByDate((prev) => {
-      // Already have a draft → just unlock it
+      // Already have a draft → unlock it and capture a fresh baseline
       if (prev[dStr]) {
+        const currentRows = prev[dStr].rows || [];
         return {
           ...prev,
-          [dStr]: { ...prev[dStr], confirmed: false },
+          [dStr]: {
+            ...prev[dStr], confirmed: false,
+            // deep-ish copy so later mutations don't pollute the baseline
+            baselineRows: currentRows.map((r) => ({ ...r })),
+          },
         };
       }
 
-      // No draft yet (pure API actuals) → create one from current API rows for this date
+      // No draft yet (pure API actuals) → create one from current API rows
       const apiRowsForDate = resourceList
         .filter((row) => {
           if (!row?.s_date || !row?.e_date) return false;
@@ -1010,6 +1030,7 @@ const CurrentAssignments = ({
         [dStr]: {
           confirmed: false,
           rows: apiRowsForDate,
+          baselineRows: apiRowsForDate.map((r) => ({ ...r })),
         },
       };
     });
@@ -1156,7 +1177,7 @@ const CurrentAssignments = ({
   });
 
   const hasUserActualChanges = savedApiEditKeys.size > 0 || Object.values(actualDraftsByDate).some((draft) =>
-    (draft.rows || []).some((row) => row.source !== "api")
+    (draft.rows || []).some((row) => row.source !== "api" || row.is_deleted === true)
   );
 
   const openConfirmation = ({
@@ -1433,14 +1454,14 @@ const CurrentAssignments = ({
                 //     ),
                 //   ]
                 // : actualRows;
-                const displayedActualRows = hasResourceActual
+                const displayedActualRows = (hasResourceActual
                   ? [
                     ...actualResourcesForDate.map((apiRow) => draftRowsByKey.get(apiRow.rowKey) || apiRow),
                     ...actualRows.filter(
                       (draftRow) => !actualResourcesForDate.some((apiRow) => apiRow.rowKey === draftRow.rowKey)
                     ),
                   ]
-                  : actualRows;
+                  : actualRows).filter((r) => !r.is_deleted);
 
                 const actualTlCount = displayedActualRows.filter((a) => a.emp_type === 'T').length;
                 const actualExCount = displayedActualRows.filter((a) => a.emp_type === 'E').length;
@@ -1677,7 +1698,14 @@ const CurrentAssignments = ({
                           )}
 
                           {displayedActualRows.map((row) => {
-                            const disableActualAction = row.is_approved === true || row.is_present === true;
+                            const disableActualAction = row.is_present === true;
+
+                            const alreadyAllocatedEmpIds = new Set(
+                              displayedActualRows
+                                .filter((r) => !r.is_deleted)
+                                .map((r) => r.emp_id)
+                                .filter(Boolean)
+                            );
 
                             return (
                               <ActualEditRow
@@ -1686,8 +1714,21 @@ const CurrentAssignments = ({
                                 employees={employees}
                                 busyDateMap={busyDateMap}
                                 dStr={dStr}
-                                onSave={hasResourceActual ? () => handleSaveApiRowEdit(row.rowKey) : undefined}
-                                onCancel={hasResourceActual ? () => handleCancelApiRowEdit(dStr, row.rowKey, actualResourcesForDate.find((r) => r.rowKey === row.rowKey)) : undefined}
+                                alreadyAllocatedEmpIds={alreadyAllocatedEmpIds}
+                                onSave={hasResourceActual && (row.source === "api" || row.resource_id != null) ? () => handleSaveApiRowEdit(row.rowKey) : undefined}
+                                // onCancel={hasResourceActual ? () => handleCancelApiRowEdit(dStr, row.rowKey, actualResourcesForDate.find((r) => r.rowKey === row.rowKey)) : undefined}
+                                onCancel={hasResourceActual
+                                  ? () => {
+                                    // API row → restore original values (Undo)
+                                    if (row.source === "api" || row.resource_id != null) {
+                                      handleCancelApiRowEdit(dStr, row.rowKey, actualResourcesForDate.find((r) => r.rowKey === row.rowKey));
+                                    } else {
+                                      // Brand-new row that was never saved → just remove it
+                                      handleRemoveActualRow(dStr, row.rowKey);
+                                    }
+                                  }
+                                  : undefined
+                                }
                                 readOnly={!actualDraft || actualDraft.confirmed}
                                 isReplaced={
                                   hasResourceActual
@@ -1784,12 +1825,42 @@ const CurrentAssignments = ({
                                     <Button
                                       size="sm"
                                       variant="outlines"
-                                      onClick={() =>
-                                        setActualDraftsByDate((prev) => ({
-                                          ...prev,
-                                          [dStr]: { ...prev[dStr], confirmed: true },
-                                        }))
-                                      }
+                                      onClick={() => {
+                                        setActualDraftsByDate((prev) => {
+                                          const draft = prev[dStr];
+                                          if (!draft) return prev;
+
+                                          const baseline = draft.baselineRows || [];
+
+                                          // Keep only rows that the user has explicitly clicked Save on
+                                          const savedRowsFromCurrent = (draft.rows || []).filter((r) =>
+                                            savedApiEditKeys.has(r.rowKey)
+                                          );
+
+                                          // Start from the clean baseline, then overlay any saved rows
+                                          const baselineMap = new Map(baseline.map((r) => [r.rowKey, { ...r }]));
+                                          savedRowsFromCurrent.forEach((r) => {
+                                            baselineMap.set(r.rowKey, { ...r }); // saved version wins
+                                          });
+
+                                          // Also drop any brand-new rows that were never saved
+                                          const restoredRows = Array.from(baselineMap.values()).filter((r) => {
+                                            // keep API rows that were in baseline, plus any saved new rows
+                                            return r.source === "api" || r.resource_id != null || savedApiEditKeys.has(r.rowKey);
+                                          });
+
+                                          return {
+                                            ...prev,
+                                            [dStr]: {
+                                              ...draft,
+                                              confirmed: true,
+                                              rows: restoredRows,
+                                              // clear baseline after cancel (optional, keeps state clean)
+                                              baselineRows: undefined,
+                                            },
+                                          };
+                                        });
+                                      }}
                                     >
                                       Cancel Edit
                                     </Button>
@@ -1994,7 +2065,9 @@ const InlineEditForm = ({ row, onChange, onConfirm, onCancel, activityStart, act
   );
 };
 
-const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, onEmployeeChange, onRemove, disableActualAction, onToggleEdit, onSave, onCancel, minActualDate, maxActualDate, busyDateMap = {}, dStr }) => {
+const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, onEmployeeChange, onRemove, disableActualAction, onToggleEdit, onSave, onCancel, minActualDate, maxActualDate, busyDateMap = {}, dStr,
+  alreadyAllocatedEmpIds = new Set(),
+}) => {
   const initialRef = useRef(null);
 
   if (!readOnly && initialRef.current === null) {
@@ -2026,6 +2099,20 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
       (row.employee_name || "") !== (orig.employee_name || "")
     );
   })();
+
+  // After a successful Save we re-baseline so isDirty becomes false and Save disappears
+  const handleSaveClick = () => {
+    if (onSave) onSave();
+    initialRef.current = {
+      emp_id: row.emp_id,
+      emp_type: row.emp_type,
+      start_date: row.start_date || row.s_date || "",
+      end_date: row.end_date || row.e_date || "",
+      remarks: row.remarks || "",
+      contract_rate: row.contract_rate,
+      employee_name: row.employee_name || "",
+    };
+  };
 
 
   if (readOnly) {
@@ -2066,6 +2153,16 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
             <FormSelect value={row.emp_id} onChange={(e) => onEmployeeChange(e.target.value)}>
               {employees.filter((emp) => emp.is_active !== false && emp.is_active !== 0 && emp.is_active !== "false") // ADDED
                 .filter((emp) => emp.emp_id === row.emp_id || !busyDateMap[emp.emp_id]?.[DateForApiFormate(row.start_date || row.s_date || dStr, true)]) // ADDED — keep current selection visible, hide others with allocation on this date
+                .filter((emp) => {
+                  if (emp.emp_id === row.emp_id) return true;
+
+                  if (alreadyAllocatedEmpIds.has(emp.emp_id)) return false;
+
+                  const dateKey = DateForApiFormate(row.start_date || row.s_date || dStr, true);
+                  if (busyDateMap[emp.emp_id]?.[dateKey]) return false;
+
+                  return true;
+                })
                 .map((emp) => (
                   <option key={emp.emp_id} value={emp.emp_id}>{emp.name}</option>
                 ))}
@@ -2134,9 +2231,9 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
       </EditRowContainer>
       <div style={{ display: "flex", alignItems: "flex-end", gap: "0.5rem" }}>
         {onSave && isDirty && (
-          <Button size="sm" variant="success" onClick={onSave}>Save</Button>
+          <Button size="sm" variant="success" onClick={handleSaveClick}>Save</Button>
         )}
-        {onCancel && <Button size="sm" variant="outlines" onClick={onCancel}>Cancel</Button>}
+        {onCancel && isDirty && <Button size="sm" variant="outlines" onClick={onCancel}>Cancel</Button>}
         <Button size="sm" variant="outlines" onClick={onRemove}> <FaUserSlash /> Remove</Button>
       </div>
     </>

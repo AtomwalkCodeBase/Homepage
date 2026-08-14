@@ -359,6 +359,7 @@ const ResourceAllocation = () => {
         tlContractRate={plannedTLRate}
         exContractRate={plannedEXRate}
         loading={loading}
+        busyDateMap={busyDateMap}
       />
 
 

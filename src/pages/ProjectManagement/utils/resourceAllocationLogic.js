@@ -35,6 +35,7 @@ export const buildActualPayloadsForSubmit = (actualDraftsByDate, resourceList) =
                 emp_type: row.emp_type,
                 remarks: row.remarks || "",
                 contract_rate: Number(row.contract_rate) || 0,
+                a_quanity: Number(row.a_quanity ?? row.a_quantity ?? 0) || 0,
                 start_date: comparableDate,
                 end_date: comparableDate,
                 rowKey: row.rowKey,
@@ -57,6 +58,7 @@ export const buildActualPayloadsForSubmit = (actualDraftsByDate, resourceList) =
                 emp_type: r.emp_type,
                 remarks: r.remarks || "",
                 contract_rate: Number(r.contract_rate) || 0,
+                a_quanity: Number(r.a_quanity ?? r.a_quantity ?? 0) || 0,
                 start_date: comparableDate,
                 end_date: comparableDate,
             });
@@ -87,6 +89,7 @@ export const buildActualPayloadsForSubmit = (actualDraftsByDate, resourceList) =
             end_date: DateForApiFormate(row.end_date),
             remarks: row.remarks || "",
             contract_rate: row.contract_rate || 0,
+            a_quanity: Number(row.a_quanity ?? row.a_quantity ?? 0) || 0,
         };
 
         if (row.id == null) {
@@ -106,7 +109,8 @@ export const buildActualPayloadsForSubmit = (actualDraftsByDate, resourceList) =
             row.end_date !== original.end_date ||
             row.emp_type !== original.emp_type ||
             (row.remarks || "") !== (original.remarks || "") ||
-            String(row.contract_rate ?? "") !== String(original.contract_rate ?? "");
+            String(row.contract_rate ?? "") !== String(original.contract_rate ?? "") ||
+            Number(row.a_quanity ?? row.a_quantity ?? 0) !== Number(original.a_quanity ?? original.a_quantity ?? 0);
 
         if (changed) {
             updatePayload.push({ ...base, id: row.id, is_updated: true });

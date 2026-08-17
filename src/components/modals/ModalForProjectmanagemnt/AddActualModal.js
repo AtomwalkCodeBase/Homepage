@@ -148,8 +148,8 @@ const AddActualModal = ({
           <ActualInput
             type="date"
             value={startDate}
-            min={minActualDate}
-            max={maxActualDate}
+            // min={minActualDate}
+            // max={maxActualDate}
             onChange={(e) => {
               const value = e.target.value;
               setStartDate(value);
@@ -163,8 +163,8 @@ const AddActualModal = ({
           <ActualInput
             type="date"
             value={endDate}
-            min={startDate || minActualDate}
-            max={maxActualDate}
+            // min={startDate || minActualDate}
+            // max={maxActualDate}
             onChange={(e) => setEndDate(e.target.value)}
           />
         </ActualFormGroup>

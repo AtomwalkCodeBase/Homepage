@@ -286,6 +286,17 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
       }
     });
 
+    //    resources.forEach((item) => {
+    //     if (item.statusDisplay === "Plan Submitted") {
+    //       if (jobTitle.includes("retainer")) {
+    //         counts.R += 1;
+    //       }
+    //       if (jobTitle.includes("associate")) {
+    //         counts.A += 1;
+    //       }
+    //     }
+    //   });
+    // });
     return counts;
   }, [groupedEmployeeList]);
 

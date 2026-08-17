@@ -354,6 +354,7 @@ const CurrentAssignments = ({
   const [activityStarted, setActivityStarted] = useState(!!a_id);
 
   const [startedDates, setStartedDates] = useState(() => new Set());
+  const [deletedApiRowKeys, setDeletedApiRowKeys] = useState(() => new Set());
 
   // last date (string) that has been started — used as the cutoff for "Copy Actual (All Dates)"
   const lastStartedDate = startedDates.size
@@ -571,19 +572,22 @@ const CurrentAssignments = ({
           activityCompleteFd.append("activity_date", DateForApiFormate(today));
           activityCompleteFd.append("end_time", formatAPITime(end_time));
           const totalNoOfResources = rows.length;
+          const totalNoOfItem = rows.filter((r) => !r.is_deleted).reduce((sum, r) => sum + (Number(r.a_quanity) || 0), 0);
           const resourceListStr = rows
             .filter((r) => !r.is_deleted)
             .map((r) => {
               const name = employees.find((e) => e.emp_id === r.emp_id)?.name || r.employee_name || "";
               const empType = r.emp_type === "T" || r.emp_type === "TL" ? "TL" : "EX";
-              return `${name}^1^${empType}`;
+              const quantity = Number(r.a_quanity) || 1;
+              return `${name}^${quantity}^${empType}`;
             })
             .join("|");
 
+          activityCompleteFd.append("no_of_items", totalNoOfItem);
           activityCompleteFd.append("no_of_resource", totalNoOfResources);
           activityCompleteFd.append("resource_list", resourceListStr);
           activityCompleteFd.append("geo_type", "O");
-          activityCompleteFd.append("is_complete", "1");
+          activityCompleteFd.append("is_completed", 1);
 
           await postAllocationData(activityCompleteFd);
 
@@ -593,6 +597,8 @@ const CurrentAssignments = ({
         }
       }
 
+      setDeletedApiRowKeys(new Set());
+      setSavedApiEditKeys(new Set());
       setActualDraftsByDate({});
 
       await loadAllData();
@@ -658,6 +664,7 @@ const CurrentAssignments = ({
                   // resource data
                   remarks: resource.remarks || "",
                   contract_rate: Number(resource.contract_rate) || 0,
+                  a_quanity: Number(resource.a_quanity ?? resource.a_quantity ?? 0) || 0,
 
                   // API identifiers
                   resource_id: resource.id,
@@ -724,6 +731,7 @@ const CurrentAssignments = ({
             emp_type: row.emp_type,
             remarks: row.remarks,
             contract_rate: row.contract_rate,
+            a_quanity: Number(row.a_quanity ?? row.a_quantity ?? 0) || 0,
             resource_id: row.resource_id, // needed so buildActualPayloadsForSubmit treats it as UPDATE not ADD
           })),
         },
@@ -784,6 +792,7 @@ const CurrentAssignments = ({
               emp_type: defaultType,
               remarks: "",
               contract_rate: rateForType(defaultType),
+              a_quanity: 0,
               start_date: dStr,
               end_date: dStr,
             },
@@ -806,6 +815,7 @@ const CurrentAssignments = ({
           emp_type: row.emp_type,
           remarks: row.remarks || "",
           contract_rate: row.contract_rate || getContractRateByType(row.emp_type),
+          a_quanity: Number(row.a_quanity ?? row.a_quantity ?? 0) || 0,
           start_date: dStr,
           end_date: dStr,
         })),
@@ -858,6 +868,7 @@ const CurrentAssignments = ({
             emp_type: row.emp_type,
             remarks: row.remarks || "",
             contract_rate: row.contract_rate || getContractRateByType(row.emp_type),
+            a_quanity: Number(row.a_quanity ?? row.a_quantity ?? 0) || 0,
             start_date: dStr,
             end_date: dStr,
           })),
@@ -898,26 +909,49 @@ const CurrentAssignments = ({
     });
   };
 
+  // const handleRemoveActualRow = (dStr, rowKey) => {
+  //   setActualDraftsByDate((prev) => {
+  //     const draft = prev[dStr];
+  //     if (!draft) return prev;
+
+  //     const target = draft.rows.find((r) => r.rowKey === rowKey);
+  //     if (!target) return prev;
+
+  //     const isApiRow = target.source === "api" || target.resource_id != null;
+
+  //     if (isApiRow) {
+  //       return {
+  //         ...prev,
+  //         [dStr]: {
+  //           ...draft, rows: draft.rows.map((r) => r.rowKey === rowKey ? { ...r, is_deleted: true } : r),
+  //         },
+  //       };
+  //     }
+
+  //     return { ...prev, [dStr]: { ...draft, rows: draft.rows.filter((r) => r.rowKey !== rowKey) } };
+  //   });
+  // };
+
   const handleRemoveActualRow = (dStr, rowKey) => {
     setActualDraftsByDate((prev) => {
       const draft = prev[dStr];
       if (!draft) return prev;
 
       const target = draft.rows.find((r) => r.rowKey === rowKey);
-      if (!target) return prev;
+      const isApiRow = target && (target.source === "api" || target.resource_id != null);
 
-      const isApiRow = target.source === "api" || target.resource_id != null;
-
+      // remember API rows that were hard-removed so Submit button can appear
       if (isApiRow) {
-        return {
-          ...prev,
-          [dStr]: {
-            ...draft, rows: draft.rows.map((r) => r.rowKey === rowKey ? { ...r, is_deleted: true } : r),
-          },
-        };
+        setDeletedApiRowKeys((prevKeys) => new Set(prevKeys).add(rowKey));
       }
 
-      return { ...prev, [dStr]: { ...draft, rows: draft.rows.filter((r) => r.rowKey !== rowKey) } };
+      return {
+        ...prev,
+        [dStr]: {
+          ...draft,
+          rows: draft.rows.filter((r) => r.rowKey !== rowKey),
+        },
+      };
     });
   };
 
@@ -1010,6 +1044,7 @@ const CurrentAssignments = ({
           emp_type: row.emp_type,
           remarks: row.remarks || "",
           contract_rate: Number(row.contract_rate) || 0,
+          a_quanity: Number(row.a_quanity ?? row.a_quantity ?? 0) || 0,
           resource_id: row.id,
           allocation_id: row.allocation_id,
           order_item_id: row.order_item_id,
@@ -1054,7 +1089,7 @@ const CurrentAssignments = ({
           ...draft,
           rows: draft.rows.map((r) =>
             r.rowKey === rowKey
-              ? { ...r, emp_id: originalRow.emp_id, employee_name: originalRow.employee_name, emp_type: originalRow.emp_type, remarks: originalRow.remarks, contract_rate: originalRow.contract_rate }
+              ? { ...r, emp_id: originalRow.emp_id, employee_name: originalRow.employee_name, emp_type: originalRow.emp_type, remarks: originalRow.remarks, contract_rate: originalRow.contract_rate, a_quanity: Number(originalRow.a_quanity ?? originalRow.a_quantity ?? 0) || 0 }
               : r
           ),
         },
@@ -1146,8 +1181,14 @@ const CurrentAssignments = ({
     const maxDate = new Date(Math.max(...validDates));
 
     setFilterStartDate(toInputDate(minDate));
-    setFilterEndDate(toInputDate(maxDate));
-  }, [plannedDates]);
+    // setFilterEndDate(toInputDate(maxDate));
+    setFilterEndDate((prev) => {
+      if (!prev) return toInputDate(maxDate);
+      const prevDate = toLocalDateOnly(prev);
+      if (!prevDate || maxDate > prevDate) return toInputDate(maxDate);
+      return prev;
+    });
+  }, [plannedDates, activityStart]);
 
 
   today.setHours(0, 0, 0, 0);
@@ -1176,8 +1217,9 @@ const CurrentAssignments = ({
     return !alreadyHasResourceActual;
   });
 
-  const hasUserActualChanges = savedApiEditKeys.size > 0 || Object.values(actualDraftsByDate).some((draft) =>
-    (draft.rows || []).some((row) => row.source !== "api" || row.is_deleted === true)
+  const hasUserActualChanges = savedApiEditKeys.size > 0 || deletedApiRowKeys.size > 0 || Object.values(actualDraftsByDate).some((draft) =>
+    // (draft.rows || []).some((row) => row.source !== "api" || row.is_deleted === true)
+    (draft.rows || []).some((row) => row.source !== "api")
   );
 
   const openConfirmation = ({
@@ -1454,14 +1496,39 @@ const CurrentAssignments = ({
                 //     ),
                 //   ]
                 // : actualRows;
-                const displayedActualRows = (hasResourceActual
-                  ? [
-                    ...actualResourcesForDate.map((apiRow) => draftRowsByKey.get(apiRow.rowKey) || apiRow),
-                    ...actualRows.filter(
+                // const displayedActualRows = (hasResourceActual
+                //   ? [
+                //     ...actualResourcesForDate.map((apiRow) => draftRowsByKey.get(apiRow.rowKey) || apiRow),
+                //     ...actualRows.filter(
+                //       (draftRow) => !actualResourcesForDate.some((apiRow) => apiRow.rowKey === draftRow.rowKey)
+                //     ),
+                //   ]
+                //   : actualRows).filter((r) => !r.is_deleted);
+
+                const displayedActualRows = (() => {
+                  if (!hasResourceActual) {
+                    return actualRows; // pure draft (no API rows yet)
+                  }
+
+                  // Once a draft exists we treat the draft as the source of truth.
+                  // Any API row whose rowKey is no longer in the draft is considered removed.
+                  if (actualDraft && Array.isArray(actualDraft.rows)) {
+                    const draftKeys = new Set(actualDraft.rows.map((r) => r.rowKey));
+
+                    const fromApiStillPresent = actualResourcesForDate
+                      .filter((apiRow) => draftKeys.has(apiRow.rowKey))
+                      .map((apiRow) => draftRowsByKey.get(apiRow.rowKey) || apiRow);
+
+                    const pureDraftRows = actualRows.filter(
                       (draftRow) => !actualResourcesForDate.some((apiRow) => apiRow.rowKey === draftRow.rowKey)
-                    ),
-                  ]
-                  : actualRows).filter((r) => !r.is_deleted);
+                    );
+
+                    return [...fromApiStillPresent, ...pureDraftRows];
+                  }
+
+                  // No draft yet → show pure API rows
+                  return actualResourcesForDate;
+                })();
 
                 const actualTlCount = displayedActualRows.filter((a) => a.emp_type === 'T').length;
                 const actualExCount = displayedActualRows.filter((a) => a.emp_type === 'E').length;
@@ -2078,6 +2145,7 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
       end_date: row.end_date || row.e_date || "",
       remarks: row.remarks || "",
       contract_rate: row.contract_rate,
+      a_quanity: Number(row.a_quanity ?? row.a_quantity ?? 0) || 0,
       employee_name: row.employee_name || "",
     };
   }
@@ -2096,6 +2164,7 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
       currEnd !== orig.end_date ||
       (row.remarks || "") !== (orig.remarks || "") ||
       Number(row.contract_rate) !== Number(orig.contract_rate) ||
+      Number(row.a_quanity ?? row.a_quantity ?? 0) !== Number(orig.a_quanity ?? orig.a_quantity ?? 0) ||
       (row.employee_name || "") !== (orig.employee_name || "")
     );
   })();
@@ -2110,6 +2179,7 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
       end_date: row.end_date || row.e_date || "",
       remarks: row.remarks || "",
       contract_rate: row.contract_rate,
+      a_quanity: Number(row.a_quanity ?? row.a_quantity ?? 0) || 0,
       employee_name: row.employee_name || "",
     };
   };
@@ -2122,6 +2192,9 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
           <ResourceName>
             {row.employee_name || row.emp_id}
             {isReplaced && <Badge variant="info" style={{ fontSize: '0.58rem' }}>Add</Badge>}
+            {row.a_quanity != null && row.a_quanity !== "" && row.a_quanity !== 0 && (
+              <span style={{ fontSize: '0.7rem', color: theme.colors.textLight }}>(Qty: {row.a_quanity})</span>
+            )}
           </ResourceName>
           <ResourceMeta>
             <Badge variant={row.emp_type === 'T' ? 'forward' : 'info'} style={{ fontSize: '0.6rem' }}>
@@ -2217,6 +2290,16 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
           />
         </FormField>
 
+        <FormField>
+          <FormLabel>No of items / scans</FormLabel>
+          <FormInput
+            type="number"
+            min="0"
+            step="1"
+            value={row.a_quanity ?? ""}
+            onChange={(e) => onFieldChange("a_quanity", e.target.value === "" ? 0 : Number(e.target.value))}
+          />
+        </FormField>
 
         <FormField style={{ gridColumn: "span 2" }}>
           <FormLabel>Remarks</FormLabel>

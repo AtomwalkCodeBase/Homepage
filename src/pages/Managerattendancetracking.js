@@ -355,13 +355,17 @@ const ManagerAttendanceTracking = () => {
       .catch(() => toast.error("Failed to load employee list"))
   }, [])
 
-  const employeeMap = useMemo(() => {
-    const map = {}
-    employeeList.forEach((emp) => {
-      if (emp?.emp_id) map[emp.emp_id] = emp
-    })
-    return map
-  }, [employeeList])
+const employeeMap = useMemo(() => {
+  const map = {}
+  employeeList.forEach((emp) => {
+    if (emp?.emp_id) map[emp.emp_id] = emp
+  })
+  return map
+}, [employeeList])
+
+// Total headcount = whatever the employee list API returns, not just
+// employees who happen to have an attendance record this month.
+// const totalEmployees = employeeList.length
 
   const getDaysInMonth = (month, year) => new Date(year, month + 1, 0).getDate()
 
@@ -406,63 +410,64 @@ const ManagerAttendanceTracking = () => {
     return Object.values(byKey)
   }, [rawRecords])
 
-  const employeeSummaries = useMemo(() => {
-    const map = {}
-    dedupedRecords.forEach((rec) => {
-      if (!map[rec.emp_id]) {
-        map[rec.emp_id] = {
-          emp_id: rec.emp_id,
-          presentDays: 0,
-          leaveDays: 0,
-          lateDays: 0,
-          records: [],
-          latest: rec,
-        }
+const employeeSummaries = useMemo(() => {
+  const map = {}
+  dedupedRecords.forEach((rec) => {
+    if (!map[rec.emp_id]) {
+      map[rec.emp_id] = {
+        emp_id: rec.emp_id,
+        presentDays: 0,
+        leaveDays: 0,
+        lateDays: 0,
+        records: [],
+        latest: rec,
       }
-      const entry = map[rec.emp_id]
-      entry.records.push(rec)
-      if (rec.attendance_type === "A") entry.presentDays += 1
-      if (rec.attendance_type === "L") entry.leaveDays += 1
+    }
+    const entry = map[rec.emp_id]
+    entry.records.push(rec)
+    if (rec.attendance_type === "A") entry.presentDays += 1
+    if (rec.attendance_type === "L") entry.leaveDays += 1
 
-      if (rec.attendance_type === "A" && rec.start_time) {
-        const checkIn = moment(rec.start_time, "HH:mm")
-        const threshold = moment(LATE_THRESHOLD, "HH:mm")
-        if (checkIn.isValid() && checkIn.isAfter(threshold)) entry.lateDays += 1
-      }
-
-      // Track the most recently submitted record for "today's status"
-      const currentDateVal = moment(rec.a_date, "DD-MM-YYYY")
-      const latestDateVal = moment(entry.latest.a_date, "DD-MM-YYYY")
-      if (currentDateVal.isAfter(latestDateVal)) entry.latest = rec
-    })
-
-    // Working days elapsed so far this month (excludes weekly + company holidays)
-    const today = new Date()
-    const isSameMonth = today.getMonth() === currentMonth && today.getFullYear() === currentYear
-    const lastDay = isSameMonth ? today.getDate() : getDaysInMonth(currentMonth, currentYear)
-    let workingDaysSoFar = 0
-    for (let d = 1; d <= lastDay; d++) {
-      if (!holidayMap[d]) workingDaysSoFar += 1
+    if (rec.attendance_type === "A" && rec.start_time) {
+      const checkIn = moment(rec.start_time, "HH:mm")
+      const threshold = moment(LATE_THRESHOLD, "HH:mm")
+      if (checkIn.isValid() && checkIn.isAfter(threshold)) entry.lateDays += 1
     }
 
-    return Object.values(map)
-      .map((entry) => {
-        const empInfo = employeeMap[entry.emp_id]
-        return {
-          ...entry,
-          absentDays: Math.max(workingDaysSoFar - entry.presentDays - entry.leaveDays, 0),
-          workingDaysSoFar,
-          // Enriched from the employee master list - falls back to emp_id
-          // if the list hasn't loaded yet or the employee isn't in it.
-          name: empInfo?.name || entry.emp_id,
-          empNoId: empInfo?.id || entry.emp_id,
-          gradeName: empInfo?.grade_name || "",
-          image: empInfo?.image || "",
-          departmentName: empInfo?.department_name || "",
-        }
-      })
-      .sort((a, b) => a.name.localeCompare(b.name))
-  }, [dedupedRecords, holidayMap, currentMonth, currentYear, employeeMap])
+    const currentDateVal = moment(rec.a_date, "DD-MM-YYYY")
+    const latestDateVal = moment(entry.latest.a_date, "DD-MM-YYYY")
+    if (currentDateVal.isAfter(latestDateVal)) entry.latest = rec
+  })
+
+  const today = new Date()
+  const isSameMonth = today.getMonth() === currentMonth && today.getFullYear() === currentYear
+  const lastDay = isSameMonth ? today.getDate() : getDaysInMonth(currentMonth, currentYear)
+  let workingDaysSoFar = 0
+  for (let d = 1; d <= lastDay; d++) {
+    if (!holidayMap[d]) workingDaysSoFar += 1
+  }
+
+  return Object.values(map)
+    .map((entry) => {
+      const empInfo = employeeMap[entry.emp_id]
+      // Employee exists in attendance data but not in the active employee
+      // master list (e.g. deactivated/offboarded, or a sync delay) - still
+      // show their attendance, just flag it instead of guessing a name.
+      const isKnownEmployee = Boolean(empInfo)
+      return {
+        ...entry,
+        absentDays: Math.max(workingDaysSoFar - entry.presentDays - entry.leaveDays, 0),
+        workingDaysSoFar,
+        name: empInfo?.name || entry.emp_id,
+        empNoId: empInfo?.id || entry.emp_id,
+        gradeName: empInfo?.grade_name || "",
+        image: empInfo?.image || "",
+        departmentName: empInfo?.department_name || "",
+        isKnownEmployee,
+      }
+    })
+    .sort((a, b) => a.name.localeCompare(b.name))
+}, [dedupedRecords, holidayMap, currentMonth, currentYear, employeeMap])
 
   const filteredSummaries = useMemo(() => {
     return employeeSummaries.filter((e) => {
@@ -496,14 +501,20 @@ const ManagerAttendanceTracking = () => {
       .sort((a, b) => a.emp_id.localeCompare(b.emp_id))
   }, [dedupedRecords, selectedDay, search, statusFilter, employeeMap])
 
-  /* --------------------------------- Stats --------------------------------- */
+/* --------------------------------- Stats --------------------------------- */
 
-  const todayStr = moment().format("DD-MM-YYYY")
-  const todaysRecords = dedupedRecords.filter((r) => r.a_date === todayStr)
-  const totalEmployees = employeeSummaries.length
-  const presentToday = todaysRecords.filter((r) => r.attendance_type_display === "Present").length
-  const onLeaveToday = todaysRecords.filter((r) => r.attendance_type_display === "On Leave").length
-  const notMarkedToday = Math.max(totalEmployees - presentToday - onLeaveToday, 0)
+// Total headcount = whatever the employee list API returns, not just
+// employees who happen to have an attendance record this month.
+const totalEmployees = employeeList.length
+
+// Unique employees who have at least one attendance record this month
+const markedThisMonth = employeeSummaries.length
+
+// Sum of leave days taken across everyone this month
+const totalLeaveDaysThisMonth = employeeSummaries.reduce((sum, e) => sum + e.leaveDays, 0)
+
+// Active employees with zero attendance records this month at all
+const notMarkedThisMonth = Math.max(totalEmployees - markedThisMonth, 0)
 
   /* -------------------------------- Handlers -------------------------------- */
 
@@ -537,17 +548,32 @@ const ManagerAttendanceTracking = () => {
     navigate(`/attendance-tracking?${params.toString()}`)
   }
 
-  const SUMMARY_COLUMNS = [
-    { key: "emp_id", label: "Employee ID" },
-    { key: "emp_name", label: "Employee Name" },
-    { key: "present_days", label: "Present Days" },
-    { key: "leave_days", label: "Leave Days" },
-    { key: "absent_days", label: "Absent Days" },
-    { key: "late_days", label: "Late Days" },
-    { key: "working_days_so_far", label: "Working Days So Far" },
-    { key: "last_status", label: "Latest Status" },
-  ]
+const SUMMARY_COLUMNS = [
+  { key: "emp_id", label: "Employee ID" },
+  { key: "emp_name", label: "Employee Name" },
+  { key: "present_days", label: "Present Days" },
+  { key: "leave_days", label: "Leave Days" },
+  { key: "absent_days", label: "Absent Days" },
+  { key: "late_days", label: "Late Days" },
+  { key: "working_days_so_far", label: "Working Days So Far" },
+  // { key: "last_status", label: "Latest Status" },
+  { key: "note", label: "Note" },
+]
 
+const handleExportSummary = () => {
+  const exportRows = filteredSummaries.map((e) => ({
+    emp_id: e.emp_id,
+    emp_name: e.name,
+    present_days: e.presentDays,
+    leave_days: e.leaveDays,
+    absent_days: e.absentDays,
+    late_days: e.lateDays,
+    working_days_so_far: e.workingDaysSoFar,
+    // last_status: e.latest.attendance_type_display,
+    note: e.isKnownEmployee ? "" : "Not in active employee list",
+  }))
+  downloadCSV(`Attendance_Summary_${moment(date).format("MMM_YYYY")}`, SUMMARY_COLUMNS, exportRows)
+}
   const DAILY_COLUMNS = [
     { key: "emp_id", label: "Employee ID" },
     { key: "emp_name", label: "Employee Name" },
@@ -558,19 +584,6 @@ const ManagerAttendanceTracking = () => {
     { key: "remarks", label: "Remarks" },
   ]
 
-  const handleExportSummary = () => {
-    const exportRows = filteredSummaries.map((e) => ({
-      emp_id: e.emp_id,
-      emp_name: e.name,
-      present_days: e.presentDays,
-      leave_days: e.leaveDays,
-      absent_days: e.absentDays,
-      late_days: e.lateDays,
-      working_days_so_far: e.workingDaysSoFar,
-      last_status: e.latest.attendance_type_display,
-    }))
-    downloadCSV(`Attendance_Summary_${moment(date).format("MMM_YYYY")}`, SUMMARY_COLUMNS, exportRows)
-  }
 
   const handleExportDaily = () => {
     const exportRows = dailyRecords.map((r) => ({
@@ -695,44 +708,44 @@ const ManagerAttendanceTracking = () => {
         </HeaderActions>
       </PageHeader>
 
-      <StatsGrid>
-        <StatCard>
-          <StatIconWrap $color="#2196F3">
-            <FaUsers />
-          </StatIconWrap>
-          <div>
-            <StatValue>{totalEmployees}</StatValue>
-            <StatLabel>Total Employees</StatLabel>
-          </div>
-        </StatCard>
-        <StatCard>
-          <StatIconWrap $color={STATUS_COLORS.present}>
-            <FaUserCheck />
-          </StatIconWrap>
-          <div>
-            <StatValue>{presentToday}</StatValue>
-            <StatLabel>Present Today</StatLabel>
-          </div>
-        </StatCard>
-        <StatCard>
-          <StatIconWrap $color={STATUS_COLORS.leave}>
-            <FaUserClock />
-          </StatIconWrap>
-          <div>
-            <StatValue>{onLeaveToday}</StatValue>
-            <StatLabel>On Leave Today</StatLabel>
-          </div>
-        </StatCard>
-        <StatCard>
-          <StatIconWrap $color={STATUS_COLORS.absent}>
-            <FaUserTimes />
-          </StatIconWrap>
-          <div>
-            <StatValue>{notMarkedToday}</StatValue>
-            <StatLabel>Not Marked Today</StatLabel>
-          </div>
-        </StatCard>
-      </StatsGrid>
+<StatsGrid>
+  <StatCard>
+    <StatIconWrap $color="#2196F3">
+      <FaUsers />
+    </StatIconWrap>
+    <div>
+      <StatValue>{totalEmployees}</StatValue>
+      <StatLabel>Total Employees</StatLabel>
+    </div>
+  </StatCard>
+  <StatCard>
+    <StatIconWrap $color={STATUS_COLORS.present}>
+      <FaUserCheck />
+    </StatIconWrap>
+    <div>
+      <StatValue>{markedThisMonth}</StatValue>
+      <StatLabel>Marked Attendance This Month</StatLabel>
+    </div>
+  </StatCard>
+  <StatCard>
+    <StatIconWrap $color={STATUS_COLORS.leave}>
+      <FaUserClock />
+    </StatIconWrap>
+    <div>
+      <StatValue>{totalLeaveDaysThisMonth}</StatValue>
+      <StatLabel>Total Leave Days This Month</StatLabel>
+    </div>
+  </StatCard>
+  <StatCard>
+    <StatIconWrap $color={STATUS_COLORS.absent}>
+      <FaUserTimes />
+    </StatIconWrap>
+    <div>
+      <StatValue>{notMarkedThisMonth}</StatValue>
+      <StatLabel>Not Marked This Month</StatLabel>
+    </div>
+  </StatCard>
+</StatsGrid>
 
       <Card
         title="Employee Attendance"
@@ -794,7 +807,7 @@ const ManagerAttendanceTracking = () => {
                   <th>Absent</th>
                   <th>Late</th>
                   <th>Attendance</th>
-                  <th>Today's Status</th>
+                  <th>Action</th>
                   <th></th>
                 </tr>
               </thead>
@@ -808,22 +821,27 @@ const ManagerAttendanceTracking = () => {
                     return (
                       <tr key={e.emp_id}>
                         <td>
-                          <EmployeeInfoWrap>
-                            <EmployeeAvatar>
-                              {e.image ? (
-                                <img src={e.image} alt={e.name} />
-                              ) : (
-                                (e.name || e.emp_id).charAt(0).toUpperCase()
-                              )}
-                            </EmployeeAvatar>
-                            <NameCell>
-                              <EmpIdText>{e.name}</EmpIdText>
-                              <SubText>
-                                {e.emp_id} · {e.records.length} record(s) this month
-                              </SubText>
-                            </NameCell>
-                          </EmployeeInfoWrap>
-                        </td>
+  <EmployeeInfoWrap>
+    <EmployeeAvatar>
+      {e.image ? (
+        <img src={e.image} alt={e.name} />
+      ) : (
+        (e.name || e.emp_id).charAt(0).toUpperCase()
+      )}
+    </EmployeeAvatar>
+    <NameCell>
+      <EmpIdText>{e.name}</EmpIdText>
+      <SubText>
+        {e.emp_id} · {e.records.length} record(s) this month
+      </SubText>
+      {!e.isKnownEmployee && (
+        <SubText style={{ color: "#F44336" }}>
+          ⚠ Not found in active employee list
+        </SubText>
+      )}
+    </NameCell>
+  </EmployeeInfoWrap>
+</td>
                         <td>{e.presentDays}</td>
                         <td>{e.leaveDays}</td>
                         <td>{e.absentDays}</td>
@@ -838,19 +856,7 @@ const ManagerAttendanceTracking = () => {
                             <SubText>{Math.round(presentPct)}%</SubText>
                           </AttendanceBarWrap>
                         </td>
-                        <td>
-                          <Badge
-                            variant={
-                              e.latest.attendance_type_display === "Present"
-                                ? "success"
-                                : e.latest.attendance_type_display === "On Leave"
-                                  ? "warning"
-                                  : "error"
-                            }
-                          >
-                            {e.latest.attendance_type_display}
-                          </Badge>
-                        </td>
+                        
                         <td>
                           <Button
                             variant="outline"
@@ -860,7 +866,7 @@ const ManagerAttendanceTracking = () => {
                             }
                           >
                             <FaEye style={{ marginRight: "0.4rem" }} />
-                            View
+                            View Attendance Screen
                           </Button>
                         </td>
                       </tr>
@@ -893,33 +899,37 @@ const ManagerAttendanceTracking = () => {
                   dailyRecords.map((rec) => {
                     const empInfo = employeeMap[rec.emp_id]
                     return (
-                      <tr key={rec.id}>
-                        <td>
-                          <NameCell>
-                            <EmpIdText>{empInfo?.name || rec.emp_id}</EmpIdText>
-                            <SubText>{rec.emp_id}</SubText>
-                          </NameCell>
-                        </td>
-                        <td>{rec.start_time || "N/A"}</td>
-                        <td>{rec.end_time || "N/A"}</td>
-                        <td>
-                          <Badge
-                            variant={
-                              rec.attendance_type_display === "Present"
-                                ? "success"
-                                : rec.attendance_type_display === "On Leave"
-                                  ? "warning"
-                                  : "error"
-                            }
-                          >
-                            {rec.attendance_type_display}
-                          </Badge>
-                        </td>
-                        <td>{rec.remarks || "-"}</td>
-                      </tr>
-                    )
-                  })
-                ) : (
+                    <tr key={rec.id}>
+                      <td>
+                        <NameCell>
+                          <EmpIdText>{empInfo?.name || rec.emp_id}</EmpIdText>
+                          <SubText>{rec.emp_id}</SubText>
+                          {!empInfo && (
+                            <SubText style={{ color: "#F44336" }}>
+                              ⚠ Not found in active employee list
+                            </SubText>
+                          )}
+                        </NameCell>
+                      </td>
+                      <td>{rec.start_time || "N/A"}</td>
+                      <td>{rec.end_time || "N/A"}</td>
+                      <td>
+                        <Badge
+                          variant={
+                            rec.attendance_type_display === "Present"
+                              ? "success"
+                              : rec.attendance_type_display === "On Leave"
+                                ? "warning"
+                                : "error"
+                          }
+                        >
+                          {rec.attendance_type_display}
+                        </Badge>
+                      </td>
+                      <td>{rec.remarks || "-"}</td>
+                    </tr>
+                  )}))
+                  : (
                   <tr>
                     <td colSpan={5}>
                       <EmptyState>No attendance records for {moment(selectedDay).format("DD MMM YYYY")}</EmptyState>

@@ -20,11 +20,12 @@ import Layout from "../components/Layout"
 import Card from "../components/Card"
 import Button from "../components/Button"
 import Badge from "../components/Badge"
-import { useAuth } from "../context/AuthContext"
+// import { useAuth } from "../context/AuthContext"
 import { getEmpHoliday, getEmpsAttendance, getemployeeList } from "../services/productServices"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import moment from "moment/moment"
+import { getCompanyInfo } from "../services/authServices"
 
 /* ------------------------------------------------------------------ */
 /*  NOTE ON DATA SOURCE                                                */
@@ -264,7 +265,7 @@ const EmptyState = styled.div`
 
 /* ------------------------------ Constants ---------------------------- */
 
-const LATE_THRESHOLD = "10:15" // HH:mm, 24hr - tweak to your company's grace time
+const LATE_GRACE_MINUTES = 10 // buffer after company start_time before marking "late"
 const STATUS_COLORS = {
   present: "#4CAF50",
   leave: "#FF9800",
@@ -307,7 +308,7 @@ const downloadCSV = (filename, columns, rows) => {
 /* ------------------------------------------------------------------ */
 
 const ManagerAttendanceTracking = () => {
-  const { profile } = useAuth()
+  // const { profile } = useAuth()
   const navigate = useNavigate()
 
   const [date, setDate] = useState(new Date())
@@ -324,6 +325,24 @@ const ManagerAttendanceTracking = () => {
   const [selectedDay, setSelectedDay] = useState(moment().format("YYYY-MM-DD"))
   const [search, setSearch] = useState("")
   const [statusFilter, setStatusFilter] = useState("All Status")
+
+  const [lateThreshold, setLateThreshold] = useState("10:00") // default until company info loads / if start_time missing
+
+useEffect(() => {
+  const fetchCompanyInfo = async () => {
+    try {
+      const res = await getCompanyInfo()
+      const startTime = res?.data?.start_time
+      // Only trust it if it looks like a valid "HH:mm" string, else keep default
+      if (startTime && moment(startTime, "HH:mm", true).isValid()) {
+        setLateThreshold(startTime)
+      }
+    } catch (err) {
+      console.error("Failed to fetch company info, using default late threshold:", err)
+    }
+  }
+  fetchCompanyInfo()
+}, [])
 
   /* -------------------------------- Fetching ------------------------------- */
 
@@ -430,9 +449,10 @@ const employeeSummaries = useMemo(() => {
 
     if (rec.attendance_type === "A" && rec.start_time) {
       const checkIn = moment(rec.start_time, "HH:mm")
-      const threshold = moment(LATE_THRESHOLD, "HH:mm")
+      const threshold = moment(lateThreshold, "HH:mm").add(LATE_GRACE_MINUTES, "minutes")
       if (checkIn.isValid() && checkIn.isAfter(threshold)) entry.lateDays += 1
     }
+    
 
     const currentDateVal = moment(rec.a_date, "DD-MM-YYYY")
     const latestDateVal = moment(entry.latest.a_date, "DD-MM-YYYY")
@@ -467,7 +487,7 @@ const employeeSummaries = useMemo(() => {
       }
     })
     .sort((a, b) => a.name.localeCompare(b.name))
-}, [dedupedRecords, holidayMap, currentMonth, currentYear, employeeMap])
+}, [dedupedRecords, holidayMap, currentMonth, currentYear, employeeMap, lateThreshold])
 
   const filteredSummaries = useMemo(() => {
     return employeeSummaries.filter((e) => {

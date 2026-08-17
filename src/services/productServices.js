@@ -90,6 +90,17 @@ export function getEmpAttendance(res) {
   // console.log('Final response data', data)
   return authAxios(getEmpAttendanceData, data)
 }
+export function getEmpsAttendance(res) {
+  let data = {
+    // 'emp_id': res.empId ? res.empId : localStorage.getItem('empNoId'),
+    'month': res.month,
+    'year': res.year,
+    'start_date': res.startdate,
+    'end_date': res.enddate,
+  };
+  // console.log('Final response data', data)
+  return authAxios(getEmpAttendanceData, data)
+}
 export function getTimesheetData(start_date, end_date, empid) {
   let data = {
     'start_date': start_date,

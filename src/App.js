@@ -131,6 +131,7 @@ import { ActivityProvider } from "./context/ActivityClaimContext";
 import RetainerAllocationScreen from "./pages/ProjectManagement/RetainerAllocationScreen";
 import ResourceAllocation from "./components/modals/ModalForProjectmanagemnt/ModifiedAssignedResourceModal";
 import ClamDetailsScreen from "./components/modals/ModalForProjectmanagemnt/ClamDetailsScreen";
+import ManagerAttendanceTracking from "./pages/Managerattendancetracking";
 // import SupervisorDashboard from "./pages/fishIndurstry/SupervisorDashboard";
 // import MyAppriaisal from "./pages/MyAppriaisal";
 
@@ -296,6 +297,7 @@ function App() {
                     {/* <Route path="/upload" element={<FileAuditDashboard />} /> */}
                     <Route path="/employees" element={<EmployeeManagement />} />
                     <Route path="/attendance-tracking" element={<AttendanceTracking />} />
+                    <Route path="/mgr-attendance-tracking" element={<ManagerAttendanceTracking />} />
                     <Route path="/leave-management" element={<LeaveManagement />} />
                     <Route path="/holidays" element={<HolidayCalendar />} />
                     {/* <Route path="/timesheet" element={<TimeSheetManagement />} /> */}

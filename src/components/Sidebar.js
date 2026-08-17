@@ -597,7 +597,13 @@ const Sidebar = ({ onToggle, initialOpen = false }) => {
         {
           name: "Employee Management",
           icon: <FaUsers />,
-          items: (profile?.is_manager && (companyInfo?.business_type === "APM" ? profile?.grade_level > 300 : true)) ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : [],
+          items: (profile?.is_manager && (companyInfo?.business_type === "APM" ? profile?.grade_level > 300 : true))
+            ? [
+              { path: "/employees", name: "Employees", icon: <FaUsers /> },
+              { path: "/mgr-attendance-tracking", name: "Employees Attendance", icon: <FaCalendarCheck /> },
+            ]
+            : [],
+          // items: (profile?.is_manager && (companyInfo?.business_type === "APM" ? profile?.grade_level > 300 : true)) ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : [],
         },
         {
           name: "Support",

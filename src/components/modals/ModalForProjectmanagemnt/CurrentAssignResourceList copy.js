@@ -441,7 +441,7 @@ const CurrentAssignments = ({
       }
 
       const now = new Date();
-      const activity_date = DateForApiFormate(dStr); // dd-mm-yyyy
+      const activity_date = DateForApiFormate(activityStart); // dd-mm-yyyy
       const start_time = now.toTimeString().slice(0, 5); // "HH:MM"
 
       const fd = new FormData();
@@ -561,18 +561,14 @@ const CurrentAssignments = ({
         //   console.log(key, value);
         // }
 
-        if (hasAddOrUpdate) {
-          const now = new Date();
 
-          const end_time = now.toTimeString().slice(0, 5);
-          const activityCompleteFd = new FormData();
-          activityCompleteFd.append("emp_id", cpId);
-          activityCompleteFd.append("a_id", aIdForDate);
-          activityCompleteFd.append("call_mode", "UPDATE");
-          activityCompleteFd.append("activity_date", DateForApiFormate(today));
-          activityCompleteFd.append("end_time", formatAPITime(end_time));
+        const hasApiModification = rows.some(
+          (r) => (r.source === "api" || r.resource_id != null) && (r.is_deleted || /* any field change is already reflected in the payload */ true));
+        if (hasAddOrUpdate) {
           const totalNoOfResources = rows.length;
           const totalNoOfItem = rows.filter((r) => !r.is_deleted).reduce((sum, r) => sum + (Number(r.a_quanity) || 0), 0);
+          const tlCount = rows.filter((r) => r.emp_type === "T" || r.emp_type === "TL").length;
+          const exCount = rows.filter((r) => r.emp_type === "E" || r.emp_type === "EX").length;
           const resourceListStr = rows
             .filter((r) => !r.is_deleted)
             .map((r) => {
@@ -583,17 +579,37 @@ const CurrentAssignments = ({
             })
             .join("|");
 
-          activityCompleteFd.append("no_of_items", totalNoOfItem);
-          activityCompleteFd.append("no_of_resource", totalNoOfResources);
-          activityCompleteFd.append("resource_list", resourceListStr);
-          activityCompleteFd.append("geo_type", "O");
-          activityCompleteFd.append("is_completed", 1);
+          const activityFd = new FormData();
+          activityFd.append("emp_id", cpId);
+          activityFd.append("a_id", aIdForDate);
+          activityFd.append("geo_type", "O");
 
-          await postAllocationData(activityCompleteFd);
+          // Decide call_mode
+          if (hasApiModification) {
+            // Only the fields requested for DATA_CORRECT
+            activityFd.append("call_mode", "DATA_CORRECT");
+            activityFd.append("tl_count", tlCount);
+            activityFd.append("ex_count", exCount);
+            activityFd.append("no_of_resource", totalNoOfResources);
+            activityFd.append("resource_list", resourceListStr);
+            activityFd.append("no_of_items", totalNoOfItem); // same as resource count; change if your API expects something else
+          } else {
+            // Original UPDATE path
+            const now = new Date();
+            const end_time = now.toTimeString().slice(0, 5);
 
-          // for (let [key, value] of activityCompleteFd.entries()) {
-          //   console.log(key, value);
-          // }
+            activityFd.append("call_mode", "UPDATE");
+            activityFd.append("activity_date", DateForApiFormate(today));
+            activityFd.append("end_time", formatAPITime(end_time));
+            activityFd.append("no_of_resource", totalNoOfResources);
+            activityFd.append("resource_list", resourceListStr);
+            activityFd.append("no_of_items", totalNoOfItem); // same as resource count; change if your API expects something else
+            activityFd.append("is_complete", "1");
+            activityFd.append("tl_count", tlCount);
+            activityFd.append("ex_count", exCount);
+          }
+
+          await postAllocationData(activityFd);
         }
       }
 
@@ -2223,7 +2239,7 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
         <FormField>
           <FormLabel>Resource {isReplaced && <Badge variant="warning" style={{ fontSize: '0.55rem' }}>Replaced</Badge>}</FormLabel>
           {employees.length > 0 ? (
-            <FormSelect value={row.emp_id} onChange={(e) => onEmployeeChange(e.target.value)}>
+            <FormSelect value={row.emp_id} onChange={(e) => onEmployeeChange(e.target.value)} disabled={row.source === "api"}>
               {employees.filter((emp) => emp.is_active !== false && emp.is_active !== 0 && emp.is_active !== "false") // ADDED
                 .filter((emp) => emp.emp_id === row.emp_id || !busyDateMap[emp.emp_id]?.[DateForApiFormate(row.start_date || row.s_date || dStr, true)]) // ADDED — keep current selection visible, hide others with allocation on this date
                 .filter((emp) => {
@@ -2245,6 +2261,7 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
               type="text"
               value={row.employee_name}
               onChange={(e) => onFieldChange("employee_name", e.target.value)}
+              disabled={row.source === "api"}
             />
           )}
         </FormField>

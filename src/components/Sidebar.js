@@ -553,7 +553,7 @@ const Sidebar = ({ onToggle, initialOpen = false }) => {
             ...(profile?.is_manager ? [{ path: "/shifts", name: "Shift Scheduling", icon: <SiGooglecalendar /> }] : []),
           ],
         },
-        ...((companyInfo.business_type === "APM" && profile?.is_manager) ? [{
+        ...(companyInfo?.business_type === "APM" && profile?.is_manager && profile?.grade_level > 300 ? [{
           name: "Resource Management",
           icon: <TbUsersGroup />,
           items: [
@@ -594,17 +594,22 @@ const Sidebar = ({ onToggle, initialOpen = false }) => {
             ]
             : [],
         },
-        {
-          name: "Employee Management",
-          icon: <FaUsers />,
-          items: (profile?.is_manager && (companyInfo?.business_type === "APM" ? profile?.grade_level > 300 : true))
-            ? [
-              { path: "/employees", name: "Employees", icon: <FaUsers /> },
-              { path: "/mgr-attendance-tracking", name: "Employees Attendance", icon: <FaCalendarCheck /> },
-            ]
-            : [],
-          // items: (profile?.is_manager && (companyInfo?.business_type === "APM" ? profile?.grade_level > 300 : true)) ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : [],
-        },
+        ...(profile?.is_manager
+          ? [{
+            name: "Employee Management",
+            icon: <FaUsers />,
+            items:
+              companyInfo?.business_type === "APM" && profile?.grade_level > 300
+                ? [
+                  { path: "/employees", name: "Employees", icon: <FaUsers />, },
+                ] :
+                [
+                  { path: "/employees", name: "Employees", icon: <FaUsers /> },
+                  { path: "/mgr-attendance-tracking", name: "Employees Attendance", icon: <FaCalendarCheck /> },
+                ],
+          },
+          ]
+          : []),
         {
           name: "Support",
           icon: <FaComments />,
@@ -647,7 +652,8 @@ const Sidebar = ({ onToggle, initialOpen = false }) => {
     // "/claims",
     "/sampledashboard",
     "/supervisordashboard",
-    "/lab/dashboard"
+    "/lab/dashboard",
+    "/mgr-attendance-tracking"
 
   ])
 
@@ -713,9 +719,10 @@ const Sidebar = ({ onToggle, initialOpen = false }) => {
           ...(companyInfo.business_type === "APM" && profile?.is_manager ? [{ path: "/managers/timesheet/dashboard", name: "Manager Dashboard", icon: <RiDashboardFill /> }] : []),
           ...(companyInfo.business_type === "APM" && profile.grade_level >= 500 ? [{ path: "/admin-dashboard", name: "Admin Dashboard", icon: <ImUserTie /> }] : []),
           ...(companyInfo.business_type === "APM" && profile.grade_level >= 700 ? [{ path: "/channel-partners/list", name: "Channel Partners", icon: <FaUserCheck /> }] : []),
-          ...(companyInfo.business_type === "APM" && (profile.grade_level <= 700 && profile.grade_level > 100) ? [{ path: "/retainer-list", name: "Channel Partners List", icon: <TbUsersGroup /> }] : []),
+          ...(companyInfo.business_type === "APM" && (profile.grade_level <= 700 && profile.grade_level > 300) ? [{ path: "/retainer-list", name: "Channel Partners List", icon: <TbUsersGroup /> }] : []),
           // ...(companyInfo.business_type === "APM" ? [{ path: "/retainer-dashboard", name: "Retainer Dashboard", icon: <RiDashboardFill /> }] : []),
           ...(profile?.is_manager && (companyInfo.business_type === "APM" ? profile?.grade_level > 300 : true) ? [{ path: "/employees", name: "Employees", icon: <FaUsers /> }] : []),
+          ...((profile?.is_manager && companyInfo.business_type !== "APM") ? [{ path: "/mgr-attendance-tracking", name: "Employees Attendance", icon: <FaCalendarCheck /> }] : []),
           { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
           { path: "/timesheet", name: `${companyInfo.business_type === "APM" ? "Dashboard" : "Timesheet"}`, icon: <FaChartBar /> },
           ...(companyInfo.business_type === "APM" && profile.grade_level > 100 ? [{ path: "/expense-list", name: "Expense Item List", icon: <FaMoneyBillWave /> }] : []),

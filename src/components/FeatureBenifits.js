@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { FaLock } from 'react-icons/fa';
 
 // Icons (same as before)
 import {
@@ -303,6 +304,15 @@ const Solar = [
   { title: 'Real-Time Task Management', text: 'In solar operations, it ensures tasks are efficiently assigned to the right team members for smooth workflow', bgColor: '#4caf50', icon: <BsFillGearFill /> },
 ];
 
+const Naac = [
+  { title: 'Simplify', text: 'Complex accreditation documentation', bgColor: '#4caf50', icon: <FaFileAlt /> },
+  { title: 'Comply', text: 'Stay aligned with NAAC criteria and standards', bgColor: '#9c27b0', icon: <FaShieldAlt /> },
+  { title: 'Elevate', text: 'Your institution\'s accreditation score', bgColor: '#ff9800', icon: <FaChartLine /> },
+  { title: 'Standardize', text: 'Data across all departments', bgColor: '#ffc107', icon: <FaCogs /> },
+  { title: 'Track', text: 'Real-time progress across all seven criteria', bgColor: '#00bcd4', icon: <FaTasks /> },
+  { title: 'Secure', text: 'Audit-ready institutional records', bgColor: '#4caf50', icon: <FaLock /> },
+];
+
 const inventoryManagement = [
   {
     title: "Structured Setup & Categorization",
@@ -391,7 +401,6 @@ const glpmanagement = [
   },
 ];
 
-
 const FeatureBenefits = ({ data }) => {
   const benefits = data === 'AI' ? Ai :
     data === 'Solar' ? Solar :
@@ -406,7 +415,8 @@ const FeatureBenefits = ({ data }) => {
                       data === 'Inventory' ? inventoryManagement :
                         data === 'Sales and Procurement' ? sales :
                           data === 'GLP' ? glpmanagement :
-                            leaveBenefits;
+                            data === 'NAAC' ? Naac :
+                              leaveBenefits;
 
   const getTitle = () => {
     switch (data) {
@@ -416,6 +426,8 @@ const FeatureBenefits = ({ data }) => {
       case 'GLP': return 'Get your lab in order, and your data in line';
       case 'Customer': return 'Unified CRM. One Powerful Platform';
       case 'HR': return 'Smart HR. Simplified Operations';
+      case 'NAAC': return 'NAAC Accreditation. Streamlined Excellence.';
+
       default: return `All-in-One ${data} Management, Faster and Easier.`;
     }
   };
@@ -426,6 +438,7 @@ const FeatureBenefits = ({ data }) => {
       case 'Facility': return 'Comprehensive facility solutions that simplify operations and enhance productivity.';
       case 'AI': return 'Transform your operations with cutting-edge artificial intelligence solutions.';
       case 'GLP': return 'Discover how our GLP can streamline your operations and boost productivity';
+      case 'NAAC': return "Discover how Atomwalk's NAAC solution can simplify your accreditation process and elevate institutional excellence.";
       default: return `Discover how our ${data} management solution can streamline your operations and boost productivity.`;
     }
   };

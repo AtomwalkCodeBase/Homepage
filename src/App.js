@@ -135,6 +135,9 @@ import ManagerAttendanceTracking from "./pages/Managerattendancetracking";
 // import SupervisorDashboard from "./pages/fishIndurstry/SupervisorDashboard";
 // import MyAppriaisal from "./pages/MyAppriaisal";
 
+import NAACComponent from "./components/naac/NAAC_Component";
+import NaacFeaturesManagement from "./components/naac/NaacFeaturesManagement";
+
 function App() {
   const url = "https://www.atomwalk.com/rest-auth/login/";
   const data = {
@@ -261,6 +264,19 @@ function App() {
                   <Route path="/shared-responsibility" element={<SharedResponsibility />} />
                   <Route path="/anti-spam-policy" element={<AntiSpamPolicy />} />
                   <Route path="/PartnershipInquiries" element={<PartnershipInquiries />} />
+
+                  {/* For NAAC Routes */}
+                  <Route path="/naac.html" element={<NAACComponent />} />
+                  <Route path="/naac-view.html" element={<NaacFeaturesManagement />} />
+                  <Route path="/curricular-aspects.html" element={<NaacFeaturesManagement />} />
+                  <Route path="/teaching-learning.html" element={<NaacFeaturesManagement />} />
+                  <Route path="/research-extension.html" element={<NaacFeaturesManagement />} />
+                  <Route path="/infrastructure.html" element={<NaacFeaturesManagement />} />
+                  <Route path="/student-support.html" element={<NaacFeaturesManagement />} />
+                  <Route path="/governance.html" element={<NaacFeaturesManagement />} />
+                  <Route path="/values-best-practices.html" element={<NaacFeaturesManagement />} />
+                  <Route path="/department.html" element={<NaacFeaturesManagement />} />
+                  <Route path="/scholarship.html" element={<NaacFeaturesManagement />} />
 
                   {/* Login Route */}
                   <Route path="/login" element={<Login />} />

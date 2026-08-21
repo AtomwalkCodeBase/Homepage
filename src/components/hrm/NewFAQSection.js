@@ -386,6 +386,30 @@ const NewFAQSection = ({ data }) => {
         },
       ],
     },
+    NAAC: {
+      'General Overview': [
+        { question: 'What is the NAAC Accreditation module, and who is it for?', answer: 'The NAAC module by Atomwalk Technology helps higher education institutions manage the entire accreditation lifecycle — from SSR preparation and criterion-wise documentation to committee coordination and self-assessment reporting — on a single intelligent platform.' },
+        { question: 'Which NAAC criteria does the platform support?', answer: 'The platform covers all seven NAAC criteria, including Curricular Aspects, Teaching-Learning & Evaluation, Research & Innovation, Infrastructure, Student Support, Governance, and Institutional Values & Best Practices.' },
+        { question: 'Can multiple departments contribute data for accreditation?', answer: 'Yes, department heads and faculty coordinators can upload and update their respective criterion data, which is consolidated centrally for SSR preparation and institutional review.' },
+      ],
+      'Documentation & SSR': [
+        { question: 'How do I upload supporting documents for a specific criterion?', answer: 'Navigate to the relevant criterion section, select "Upload Evidence," and attach the required documents. Each upload can be tagged to the corresponding metric for easy tracking and verification.' },
+        { question: 'Can I track document completion status across criteria?', answer: 'Yes, a real-time dashboard shows completion status for every criterion and sub-metric, helping institutions identify pending documentation before submission deadlines.' },
+        { question: 'Does the system help generate the Self Study Report (SSR)?', answer: 'Yes, the platform compiles verified data and documents into a structured SSR format aligned with NAAC guidelines, reducing manual compilation effort.' },
+      ],
+      'Committees & Meetings': [
+        { question: 'Can I schedule and record IQAC or committee meetings?', answer: 'Yes, you can schedule meetings, record minutes, assign action items, and track follow-ups directly within the platform, ensuring accountability across teams.' },
+        { question: 'How are committee responsibilities assigned and tracked?', answer: 'Institutional leadership can assign criterion-wise responsibilities to specific committee members, with progress and deadlines visible on a shared dashboard.' },
+      ],
+      'Student & Institutional Data': [
+        { question: 'Can the platform track student support and progression data?', answer: 'Yes, it consolidates data on scholarships, placements, higher education progression, and grievance redressal to support Criterion 5 documentation.' },
+        { question: 'Does it support tracking research output and grants?', answer: 'Yes, the platform tracks institutional research funding, seed money allocations, publications, and external grants relevant to Criterion 3.' },
+      ],
+      'Reports & Analytics': [
+        { question: 'Can I generate criterion-wise readiness reports?', answer: 'Yes, the platform generates real-time readiness and gap-analysis reports for each criterion, helping institutions prioritize pending tasks before the accreditation cycle.' },
+        { question: 'Is historical accreditation data preserved for future cycles?', answer: 'Yes, all criterion data, documents, and reports are securely archived, making it easier to prepare for subsequent NAAC cycles.' },
+      ],
+    },
 
   };
 

@@ -553,13 +553,13 @@ const Sidebar = ({ onToggle, initialOpen = false }) => {
             ...(profile?.is_manager ? [{ path: "/shifts", name: "Shift Scheduling", icon: <SiGooglecalendar /> }] : []),
           ],
         },
-        {
+        ...((companyInfo.business_type === "APM" && profile?.is_manager) ? [{
           name: "Resource Management",
           icon: <TbUsersGroup />,
           items: [
-            ...(companyInfo.business_type === "APM" && (profile.grade_level <= 700 && profile.grade_level > 100) ? [{ path: "/retainer-list", name: "Channel Partners List", icon: <TbUsersGroup /> }] : []),
+            { path: "/retainer-list", name: "Channel Partners List", icon: <TbUsersGroup /> },
           ],
-        },
+        }] : []),
         {
           name: "Leave & Holidays",
           icon: <FaCalendarAlt />,

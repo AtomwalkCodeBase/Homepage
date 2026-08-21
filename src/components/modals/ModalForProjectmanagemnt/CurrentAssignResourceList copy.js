@@ -1480,6 +1480,7 @@ const CurrentAssignments = ({
                   is_approved: Boolean(row.is_approved),
                   is_present: Boolean(row.is_present),
                   is_active: Boolean(row.is_active),
+                  a_quanity: row.a_quanity,
 
                   // useful later for update API
                   allocation_id: row.allocation_id,
@@ -2208,8 +2209,8 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
           <ResourceName>
             {row.employee_name || row.emp_id}
             {isReplaced && <Badge variant="info" style={{ fontSize: '0.58rem' }}>Add</Badge>}
-            {row.a_quanity != null && row.a_quanity !== "" && row.a_quanity !== 0 && (
-              <span style={{ fontSize: '0.7rem', color: theme.colors.textLight }}>(Qty: {row.a_quanity})</span>
+            {row.a_quantity != null && row.a_quantity !== "" && row.a_quantity !== 0 && (
+              <span style={{ fontSize: '0.7rem', color: theme.colors.textLight }}>(Qty: {row.a_quantity})</span>
             )}
           </ResourceName>
           <ResourceMeta>

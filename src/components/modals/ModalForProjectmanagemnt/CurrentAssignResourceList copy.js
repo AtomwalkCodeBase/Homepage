@@ -566,7 +566,7 @@ const CurrentAssignments = ({
           (r) => (r.source === "api" || r.resource_id != null) && (r.is_deleted || /* any field change is already reflected in the payload */ true));
         if (hasAddOrUpdate) {
           const totalNoOfResources = rows.length;
-          const totalNoOfItem = rows.filter((r) => !r.is_deleted).reduce((sum, r) => sum + (Number(r.a_quanity) || 0), 0);
+          const totalNoOfItem = rows.filter((r) => !r.is_deleted).reduce((sum, r) => sum + (Number(r.a_quantity) || 0), 0);
           const tlCount = rows.filter((r) => r.emp_type === "T" || r.emp_type === "TL").length;
           const exCount = rows.filter((r) => r.emp_type === "E" || r.emp_type === "EX").length;
           const resourceListStr = rows
@@ -574,7 +574,7 @@ const CurrentAssignments = ({
             .map((r) => {
               const name = employees.find((e) => e.emp_id === r.emp_id)?.name || r.employee_name || "";
               const empType = r.emp_type === "T" || r.emp_type === "TL" ? "TL" : "EX";
-              const quantity = Number(r.a_quanity) || 1;
+              const quantity = Number(r.a_quantity) || 1;
               return `${name}^${quantity}^${empType}`;
             })
             .join("|");
@@ -608,7 +608,9 @@ const CurrentAssignments = ({
             activityFd.append("tl_count", tlCount);
             activityFd.append("ex_count", exCount);
           }
-
+          // for (let [key, value] of activityFd.entries()) {
+          //   console.log(key, value);
+          // }
           await postAllocationData(activityFd);
         }
       }
@@ -680,7 +682,7 @@ const CurrentAssignments = ({
                   // resource data
                   remarks: resource.remarks || "",
                   contract_rate: Number(resource.contract_rate) || 0,
-                  a_quanity: Number(resource.a_quanity ?? resource.a_quantity ?? 0) || 0,
+                  a_quantity: Number(resource.a_quantity ?? resource.a_quantity ?? 0) || 0,
 
                   // API identifiers
                   resource_id: resource.id,
@@ -747,7 +749,7 @@ const CurrentAssignments = ({
             emp_type: row.emp_type,
             remarks: row.remarks,
             contract_rate: row.contract_rate,
-            a_quanity: Number(row.a_quanity ?? row.a_quantity ?? 0) || 0,
+            a_quantity: Number(row.a_quantity ?? row.a_quantity ?? 0) || 0,
             resource_id: row.resource_id, // needed so buildActualPayloadsForSubmit treats it as UPDATE not ADD
           })),
         },
@@ -808,7 +810,7 @@ const CurrentAssignments = ({
               emp_type: defaultType,
               remarks: "",
               contract_rate: rateForType(defaultType),
-              a_quanity: 0,
+              a_quantity: 0,
               start_date: dStr,
               end_date: dStr,
             },
@@ -831,7 +833,7 @@ const CurrentAssignments = ({
           emp_type: row.emp_type,
           remarks: row.remarks || "",
           contract_rate: row.contract_rate || getContractRateByType(row.emp_type),
-          a_quanity: Number(row.a_quanity ?? row.a_quantity ?? 0) || 0,
+          a_quantity: Number(row.a_quantity ?? row.a_quantity ?? 0) || 0,
           start_date: dStr,
           end_date: dStr,
         })),
@@ -884,7 +886,7 @@ const CurrentAssignments = ({
             emp_type: row.emp_type,
             remarks: row.remarks || "",
             contract_rate: row.contract_rate || getContractRateByType(row.emp_type),
-            a_quanity: Number(row.a_quanity ?? row.a_quantity ?? 0) || 0,
+            a_quantity: Number(row.a_quantity ?? row.a_quantity ?? 0) || 0,
             start_date: dStr,
             end_date: dStr,
           })),
@@ -1060,7 +1062,7 @@ const CurrentAssignments = ({
           emp_type: row.emp_type,
           remarks: row.remarks || "",
           contract_rate: Number(row.contract_rate) || 0,
-          a_quanity: Number(row.a_quanity ?? row.a_quantity ?? 0) || 0,
+          a_quantity: Number(row.a_quantity ?? row.a_quantity ?? 0) || 0,
           resource_id: row.id,
           allocation_id: row.allocation_id,
           order_item_id: row.order_item_id,
@@ -1105,7 +1107,7 @@ const CurrentAssignments = ({
           ...draft,
           rows: draft.rows.map((r) =>
             r.rowKey === rowKey
-              ? { ...r, emp_id: originalRow.emp_id, employee_name: originalRow.employee_name, emp_type: originalRow.emp_type, remarks: originalRow.remarks, contract_rate: originalRow.contract_rate, a_quanity: Number(originalRow.a_quanity ?? originalRow.a_quantity ?? 0) || 0 }
+              ? { ...r, emp_id: originalRow.emp_id, employee_name: originalRow.employee_name, emp_type: originalRow.emp_type, remarks: originalRow.remarks, contract_rate: originalRow.contract_rate, a_quantity: Number(originalRow.a_quantity ?? originalRow.a_quantity ?? 0) || 0 }
               : r
           ),
         },
@@ -1480,7 +1482,7 @@ const CurrentAssignments = ({
                   is_approved: Boolean(row.is_approved),
                   is_present: Boolean(row.is_present),
                   is_active: Boolean(row.is_active),
-                  a_quanity: row.a_quanity,
+                  a_quantity: row.a_quantity,
 
                   // useful later for update API
                   allocation_id: row.allocation_id,
@@ -2162,7 +2164,7 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
       end_date: row.end_date || row.e_date || "",
       remarks: row.remarks || "",
       contract_rate: row.contract_rate,
-      a_quanity: Number(row.a_quanity ?? row.a_quantity ?? 0) || 0,
+      a_quantity: Number(row.a_quantity ?? row.a_quantity ?? 0) || 0,
       employee_name: row.employee_name || "",
     };
   }
@@ -2181,7 +2183,7 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
       currEnd !== orig.end_date ||
       (row.remarks || "") !== (orig.remarks || "") ||
       Number(row.contract_rate) !== Number(orig.contract_rate) ||
-      Number(row.a_quanity ?? row.a_quantity ?? 0) !== Number(orig.a_quanity ?? orig.a_quantity ?? 0) ||
+      Number(row.a_quantity ?? row.a_quantity ?? 0) !== Number(orig.a_quantity ?? orig.a_quantity ?? 0) ||
       (row.employee_name || "") !== (orig.employee_name || "")
     );
   })();
@@ -2196,7 +2198,7 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
       end_date: row.end_date || row.e_date || "",
       remarks: row.remarks || "",
       contract_rate: row.contract_rate,
-      a_quanity: Number(row.a_quanity ?? row.a_quantity ?? 0) || 0,
+      a_quantity: Number(row.a_quantity ?? row.a_quantity ?? 0) || 0,
       employee_name: row.employee_name || "",
     };
   };
@@ -2314,8 +2316,8 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
             type="number"
             min="0"
             step="1"
-            value={row.a_quanity ?? ""}
-            onChange={(e) => onFieldChange("a_quanity", e.target.value === "" ? 0 : Number(e.target.value))}
+            value={row.a_quantity ?? ""}
+            onChange={(e) => onFieldChange("a_quantity", e.target.value === "" ? 0 : Number(e.target.value))}
           />
         </FormField>
 

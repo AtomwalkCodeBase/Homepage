@@ -561,22 +561,41 @@ export const normalizeProjects = (apiData = []) => {
 };
 
 export const formatToDDMMYYYY = (dateValue) => {
-  if (!dateValue) return ""
+  if (!dateValue) return "";
 
   if (dateValue instanceof Date) {
-    const dd = String(dateValue.getDate()).padStart(2, "0")
-    const mm = String(dateValue.getMonth() + 1).padStart(2, "0")
-    const yyyy = dateValue.getFullYear()
-    return `${dd}-${mm}-${yyyy}`
+    const dd = String(dateValue.getDate()).padStart(2, "0");
+    const mm = String(dateValue.getMonth() + 1).padStart(2, "0");
+    const yyyy = dateValue.getFullYear();
+    return `${dd}-${mm}-${yyyy}`;
   }
 
-  if (typeof dateValue === "string" && dateValue.includes("-")) {
-    const [year, month, day] = dateValue.split("-")
-    return `${day}-${month}-${year}`
+  if (typeof dateValue === "string") {
+    const value = dateValue.trim();
+
+    const isoMatch = value.match(/^(\d{4})-(\d{2})-(\d{2})(?:[T\s].*)?$/);
+    if (isoMatch) {
+      const [, year, month, day] = isoMatch;
+      return `${day}-${month}-${year}`;
+    }
+
+    const ddmmyyyyMatch = value.match(/^(\d{2})-(\d{2})-(\d{4})$/);
+    if (ddmmyyyyMatch) {
+      const [, day, month, year] = ddmmyyyyMatch;
+      return `${day}-${month}-${year}`;
+    }
+
+    const parsed = new Date(value);
+    if (!Number.isNaN(parsed.getTime())) {
+      const dd = String(parsed.getDate()).padStart(2, "0");
+      const mm = String(parsed.getMonth() + 1).padStart(2, "0");
+      const yyyy = parsed.getFullYear();
+      return `${dd}-${mm}-${yyyy}`;
+    }
   }
 
-  return ""
-}
+  return "";
+};
 
 export const getRandomColor = () => {
   const colors = ["#5B8DEF", "#F45B69", "#52B788", "#F59E0B", "#8B5CF6"];
@@ -1572,6 +1591,7 @@ export const groupByOrderItemId = (data = [], resourcePlannedList = [], employee
 
         total_planned_item: 0,
         grouped_data: [],
+        resource_planned: [],
       };
     }
 
@@ -1609,11 +1629,24 @@ export const groupByOrderItemId = (data = [], resourcePlannedList = [], employee
   return Object.values(grouped).map((group) => {
     const groupStatus = getGroupStatus(group.grouped_data, resourcePlannedList);
 
+    const matchedResourcePlanned = (resourcePlannedList || []).filter(
+      (rp) => extractOrderNumber(rp.order_item_id) === extractOrderNumber(group.order_item_id),
+    );
+
     return {
       ...group,
       ...groupStatus,
+      resource_planned: matchedResourcePlanned,
     };
   });
+};
+
+export const extractOrderNumber = (orderItemId, keepLeadingZeros = false) => {
+  if (!orderItemId) return "";
+  const str = String(orderItemId);
+  const digits = str.replace(/\D/g, '');
+  if (!digits) return "";
+  return keepLeadingZeros ? digits : parseInt(digits, 10).toString();
 };
 
 export const getGroupStatus = (groupedData = []) => {
@@ -1764,28 +1797,12 @@ export const formatRetainerActivities1 = (apiData = [], resourcePlannedList = []
         (resource) => resource?.is_approved === true
       );
 
-    // =====================================================
-    // STATUS PRIORITY
-    //
-    // NA / NS
-    //    ↓
-    // Plan Submitted
-    //    ↓
-    // Plan Approved
-    //    ↓
-    // In Progress
-    //    ↓
-    // Actual Submitted
-    //    ↓
-    // Actual Approved
-    // =====================================================
-
     if (isActualApproved) {
       statusDisplay = "Actual Approved";
       activityStatus = "AA";
     }
 
-    else if (isActualSubmitted) {
+    else if (isActualSubmitted || original_A) {
       statusDisplay = "Actual Submitted";
       activityStatus = "AS";
     }
@@ -1836,43 +1853,30 @@ export const formatRetainerActivities1 = (apiData = [], resourcePlannedList = []
       a_id: original_A?.id ?? null,
 
       employee_name: original_P?.employee_name ?? "",
-
       emp_id: original_P?.emp_id ?? "",
 
       customer_name: original_P?.customer_name ?? "",
 
       product_name: original_P?.product_name ?? "",
-
       project_name: original_P?.project_name ?? "",
 
       activity_name: original_P?.activity_name ?? "",
-
       order_item_id: original_P?.order_item_id ?? "",
-
       order_item_key: original_P?.order_item_key ?? "",
+      audit_type: original_P?.audit_type ?? "",
+      store_name: original_P?.store_name ?? "",
+      store_remarks: original_P?.store_remarks ?? "",
 
       planned_start_date: original_P?.start_date || null,
-
       planned_end_date: original_P?.end_date || null,
-
       planned_start_time: original_P?.start_time || null,
-
       planned_end_time: original_P?.end_time || null,
-
       actual_start_date: original_A?.start_date || null,
-
       actual_end_date: original_A?.end_date || null,
 
       is_file_applicable: original_P?.is_file_applicable ?? false,
 
-      audit_type: original_P?.audit_type ?? "",
-
-      store_name: original_P?.store_name ?? "",
-
-      store_remarks: original_P?.store_remarks ?? "",
-
       complete: completed,
-
       is_complete: activityStatus === "C",
 
       // New calculated status
@@ -2102,3 +2106,5 @@ export const mergeAdjacentRows = (allocations) => {
   });
   return merged;
 };
+
+export const currency = (n) => `₹${Number(n || 0).toLocaleString("en-IN")}`;

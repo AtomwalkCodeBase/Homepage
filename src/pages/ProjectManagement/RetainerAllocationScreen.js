@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FaArrowLeft, FaEye, FaEyeSlash, FaMoneyBillWave, } from 'react-icons/fa';
+import { FaArrowLeft, FaDownload, FaEye, FaEyeSlash, FaMoneyBillWave, FaShareAlt, } from 'react-icons/fa';
 import { useActivity } from '../../context/ActivityClaimContext';
 import { formatDate, getMonthRange, getStatusVariant1, matchClaimsToActivity } from './utils/utils';
 import { useFilter } from './hooks/useFilter';
@@ -15,6 +15,7 @@ import { usePagination } from './hooks/usePagination';
 import Badge from '../../components/Badge';
 import { ArrowRight, CheckCircle, Clock, Send, User } from 'lucide-react';
 import { getEmpClaim } from '../../services/productServices';
+import * as XLSX from 'xlsx';
 
 const Tagline = styled.p`
  color: ${({ theme }) => theme.colors.textLight};
@@ -358,6 +359,55 @@ const RetainerAllocationScreen = () => {
         sessionStorage.setItem(TAB_STORAGE_KEY, key);
     };
 
+    const downloadAllocation = (employee) => {
+        const resources = employee?.original_P?.resource_list || [];
+        const actualId = employee?.original_A?.id || employee?.a_id;
+        const allocationId = employee?.activityStatus === "AS" || employee?.activityStatus === "AA"
+            ? `A${String(actualId || "").padStart(9, "0")}`
+            : employee?.p_id || employee?.original_P?.id || "";
+        const rows = resources.map((resource) => ({
+            "ALLOCATION ID": allocationId,
+            "CP EMP ID": localStorage.getItem("c_emp_id") || "",
+            "RESOURCE ID": resource.resource_id ?? resource.id ?? resource.emp_id ?? "",
+            "START DATE": formatReportDate(resource.start_date || employee.planned_start_date),
+            "END DATE": formatReportDate(resource.end_date || employee.planned_end_date),
+            "RESOURCE TYPE(T/E)": resource.emp_type || "",
+            "CONTARCT RATE": resource.contract_rate ?? resource.contart_rate ?? "",
+            "NO OF AUDIT/ SCAN": 1,
+            "IS PRESENT?": true,
+            "REMARK": "",
+        }));
+        if (!rows.length) {
+            toast.error("No planned resources found for this order item");
+            return null;
+        }
+        const worksheet = XLSX.utils.json_to_sheet(rows, { header: REPORT_HEADERS });
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Allocation");
+        const filename = `Allocation_${employee.order_item_key || employee.order_item_id}.xlsx`;
+        XLSX.writeFile(workbook, filename);
+        toast.success("Allocation report downloaded");
+        return { workbook, filename };
+    };
+
+    const shareAllocation = async (employee) => {
+        const report = downloadAllocation(employee);
+        if (!report) return;
+        const file = new File([XLSX.write(report.workbook, { bookType: "xlsx", type: "array" })], report.filename, {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
+            try {
+                await navigator.share({ title: "Allocation Report", files: [file] });
+                return;
+            } catch (error) {
+                if (error.name === "AbortError") return;
+            }
+        }
+        window.open("https://mail.google.com/mail/?view=cm&fs=1&su=Allocation%20Report&body=The%20allocation%20report%20has%20been%20downloaded%20and%20is%20ready%20to%20attach.", "_blank", "noopener,noreferrer");
+        toast.info("Gmail opened. Attach the downloaded allocation report to send it.");
+    };
+
     // const groupedData = groupByOrderItemId(assignedActivity, resourcePlannedList);
 
     const enrichedAssignedActivity = useMemo(() => {
@@ -630,8 +680,17 @@ const RetainerAllocationScreen = () => {
                                                         >
                                                             Review {(activeTab === "actual" || (item.activityStatus === "AA" || item.activityStatus === "AP")) ? "Actual" : "Plan"}
                                                             <ArrowRight />
-                                                        </Button>)
-                                                }
+                                                        </Button>)}
+                                                {item.statusDisplay === "Plan Submitted" && isDateOnOrAfterToday(item.planned_end_date) && (
+                                                    <>
+                                                        <Button size="sm" variant="outline" title="Download allocation" onClick={(e) => { e.stopPropagation(); downloadAllocation(item); }}>
+                                                            <FaDownload />
+                                                        </Button>
+                                                        {/* <Button size="sm" variant="outline" title="Share allocation" onClick={(e) => { e.stopPropagation(); shareAllocation(item); }}>
+                                                            <FaShareAlt />
+                                                        </Button> */}
+                                                    </>
+                                                )}
                                             </Td>
                                         </>
                                     );
@@ -656,6 +715,26 @@ const RetainerAllocationScreen = () => {
 }
 
 export default RetainerAllocationScreen;
+
+const REPORT_HEADERS = [
+    "ALLOCATION ID", "CP EMP ID", "RESOURCE ID", "START DATE", "END DATE",
+    "RESOURCE TYPE(T/E)", "CONTARCT RATE", "NO OF AUDIT/ SCAN", "IS PRESENT?", "REMARK",
+];
+
+const formatReportDate = (value) => {
+    const date = new Date(value);
+    if (!value || Number.isNaN(date.getTime())) return "";
+    return `${String(date.getDate()).padStart(2, "0")}-${String(date.getMonth() + 1).padStart(2, "0")}-${date.getFullYear()}`;
+};
+
+const isDateOnOrAfterToday = (value) => {
+    const endDate = new Date(value);
+    const today = new Date();
+    if (Number.isNaN(endDate.getTime())) return false;
+    endDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    return endDate.getTime() <= today.getTime();
+};
 
 function getMatchingRetainerList(original_P = {}) {
     const {

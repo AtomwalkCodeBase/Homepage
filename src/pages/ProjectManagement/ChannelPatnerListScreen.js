@@ -14,6 +14,7 @@ import { formatMonthLabel, formatToDDMMYYYY, formatWeekLabel, getMonthRange, gro
 import Badge from '../../components/Badge';
 import { useFilter } from './hooks/useFilter';
 import { usePagination } from './hooks/usePagination';
+import { FaMoneyBillWave } from 'react-icons/fa';
 
 
 const Subtitle = styled.div`
@@ -136,9 +137,18 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
     getEmployeeList();
   }, []);
 
-  useEffect(() => {
-    if (BrachManager) getAuditAllocationData();
-  }, [dateRange, BrachManager]);
+  const getEmployeeList = async () => {
+    setIsLoading(true)
+    try {
+      const res = await getemployeeLists({ "rm_emp_id": "ALL_CONTRACT" });
+      setEmployeeList(res.data)
+
+    } catch (error) {
+      toast.error(error.response.message || error.message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   // Save activeTab to storage
   useEffect(() => {
@@ -160,22 +170,17 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
   useEffect(() => {
     if (setStoredActivityListSelection) {
       const current = getStoredActivityListSelection(CHANNEL_PARTNER_LIST_STORAGE_KEY) || {};
-      setStoredActivityListSelection(CHANNEL_PARTNER_LIST_STORAGE_KEY, { ...current, activeRangeType, offset });
+      setStoredActivityListSelection(CHANNEL_PARTNER_LIST_STORAGE_KEY, {
+        ...current,
+        activeRangeType,
+        offset,
+        dateRange,
+      });
     }
-  }, [activeRangeType, offset]);
+  }, [activeRangeType, offset, dateRange, getStoredActivityListSelection, setStoredActivityListSelection]);
 
-  const getEmployeeList = async () => {
-    setIsLoading(true)
-    try {
-      const res = await getemployeeLists({ "rm_emp_id": "ALL_CONTRACT" });
-      setEmployeeList(res.data)
-
-    } catch (error) {
-      toast.error(error.response.message || error.message)
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  const [isDataLoading, setIsDataLoading] = useState(false);
+  const fetchedDateRange = React.useRef(null);
 
   const getAuditAllocationData = async (startOverride, endOverride) => {
     const start = startOverride || dateRange.start;
@@ -187,6 +192,8 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
       start_date: formatToDDMMYYYY(start),
       end_date: formatToDDMMYYYY(end),
     }
+
+    setIsDataLoading(true);
     try {
       const resourceData = await fetchContractAllocations(payload);
       const filteredData = resourceData.filter((data) => data.is_active)
@@ -194,72 +201,54 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
       await fetchEmpActivityAllocations(payload, resourceData);
     } catch (error) {
       toast.error(error?.response?.data?.message || "Failed to fetch activity allocations");
+    } finally {
+      setIsDataLoading(false);
     }
   }
 
-  const getEmployeesWithClaims = useCallback(async () => {
+  useEffect(() => {
+    if (BrachManager) {
+      const currentRangeStr = `${dateRange?.start}-${dateRange?.end}`;
+      if (fetchedDateRange.current !== currentRangeStr) {
+        fetchedDateRange.current = currentRangeStr;
+        getAuditAllocationData();
+      }
+    }
+  }, [dateRange, BrachManager]);
+
+  const getEmployeesGroupedData = useCallback(() => {
     if (!employeeList.length || !resourcePlannedList.length) {
       setGroupedEmployeeList([]);
       return;
     }
 
-    setIsClaimsLoading(true);
-
-    try {
-      const groupedData = await Promise.all(
-        employeeList.map(async (employee) => {
-          const matchedResources = resourcePlannedList.filter(
-            (resource) => String(resource.ra_emp_id) === String(employee.emp_id)
-          );
-
-          if (!matchedResources.length) {
-            return {
-              ...employee,
-              resourcePlannedList: [], groupedData: []
-            };
-          }
-
-          let claims = [];
-
-          try {
-            const claimRes = await getEmpClaim("GET", employee.id, "CY");
-            claims = claimRes?.data || [];
-          } catch (error) {
-            console.error(`Failed to fetch claims for ${employee.emp_id}`, error);
-          }
-
-          const enrichedResources = matchedResources.map((resource) => {
-            const matchedClaims = matchClaimsToActivity(claims, resource);
-
-            return {
-              ...resource,
-              claims: matchedClaims || [],
-              hasClaim: matchedClaims.length > 0,
-            };
-          });
-
-          const groupedData = groupByOrderItemId(assignedActivity, matchedResources, employee.emp_id);
-
-          return {
-            ...employee,
-            resourcePlannedList: enrichedResources,
-            groupedData,
-          };
-        })
+    const groupedData = employeeList.map((employee) => {
+      const matchedResources = resourcePlannedList.filter(
+        (resource) => String(resource.ra_emp_id) === String(employee.emp_id)
       );
 
-      setGroupedEmployeeList(groupedData);
-    } catch (error) {
-      console.error("Failed to group employee claims", error);
-      toast.error("Failed to load employee claims");
-    } finally {
-      setIsClaimsLoading(false);
-    }
+      if (!matchedResources.length) {
+        return {
+          ...employee,
+          resourcePlannedList: [], groupedData: []
+        };
+      }
+
+      const grouped = groupByOrderItemId(assignedActivity, matchedResources, employee.emp_id);
+
+      return {
+        ...employee,
+        resourcePlannedList: matchedResources,
+        groupedData: grouped,
+      };
+    });
+
+    setGroupedEmployeeList(groupedData);
   }, [employeeList, resourcePlannedList, assignedActivity]);
 
   useEffect(() => {
     if (employeeList.length && resourcePlannedList.length && assignedActivity.length) {
-      getEmployeesWithClaims();
+      getEmployeesGroupedData();
     }
   }, [employeeList, resourcePlannedList, assignedActivity]);
 
@@ -445,7 +434,7 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
             </tr>
           </thead>
           <tbody>
-            {isLoading || loading || isClaimsLoading ?
+            {isLoading || loading || isClaimsLoading || isDataLoading ?
               (<tr>
                 <td colSpan={7} style={{ textAlign: "center", padding: "1rem" }}>
                   Loading...
@@ -478,6 +467,20 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
                           <BUttonGroup>
                             <Button title="View Retainer Allocation" iconOnly={true} onClick={() => navigate("/retainer/allocation-list", { state: { ...employee, groupedData, partnerActiveTab: activeTab, cp_id: employee.emp_id } })}>
                               <IoEyeOutline />
+                            </Button>
+                            <Button title="View Retainer Payable" iconOnly={true} onClick={() => {
+                              if (typeof window !== "undefined") {
+                                window.sessionStorage.removeItem("ReceivableListSelection");
+                              }
+                              navigate("/retainer/payable", {
+                                state: {
+                                  cp_id: employee.emp_id, cp_name: employee.name,
+                                  start_date: dateRange?.start,
+                                  end_date: dateRange?.end,
+                                },
+                              });
+                            }}>
+                              <FaMoneyBillWave />
                             </Button>
                           </BUttonGroup>}
 

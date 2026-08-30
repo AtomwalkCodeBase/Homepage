@@ -2164,7 +2164,7 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
       end_date: row.end_date || row.e_date || "",
       remarks: row.remarks || "",
       contract_rate: row.contract_rate,
-      a_quantity: Number(row.a_quantity ?? row.a_quantity ?? 0) || 0,
+      a_quantity: row.a_quantity === "" || row.a_quantity == null ? "" : Number(row.a_quantity ?? 0),
       employee_name: row.employee_name || "",
     };
   }
@@ -2176,6 +2176,13 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
     const currStart = row.start_date || row.s_date || "";
     const currEnd = row.end_date || row.e_date || "";
 
+    const currQty = row.a_quantity === "" || row.a_quantity == null
+      ? ""
+      : Number(row.a_quantity);
+    const origQty = orig.a_quantity === "" || orig.a_quantity == null
+      ? ""
+      : Number(orig.a_quantity);
+
     return (
       row.emp_id !== orig.emp_id ||
       row.emp_type !== orig.emp_type ||
@@ -2183,7 +2190,7 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
       currEnd !== orig.end_date ||
       (row.remarks || "") !== (orig.remarks || "") ||
       Number(row.contract_rate) !== Number(orig.contract_rate) ||
-      Number(row.a_quantity ?? row.a_quantity ?? 0) !== Number(orig.a_quantity ?? orig.a_quantity ?? 0) ||
+      currQty !== origQty ||
       (row.employee_name || "") !== (orig.employee_name || "")
     );
   })();
@@ -2198,7 +2205,7 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
       end_date: row.end_date || row.e_date || "",
       remarks: row.remarks || "",
       contract_rate: row.contract_rate,
-      a_quantity: Number(row.a_quantity ?? row.a_quantity ?? 0) || 0,
+      a_quantity: row.a_quantity === "" || row.a_quantity == null ? "" : Number(row.a_quantity),
       employee_name: row.employee_name || "",
     };
   };
@@ -2316,8 +2323,11 @@ const ActualEditRow = ({ row, employees, readOnly, isReplaced, onFieldChange, on
             type="number"
             min="0"
             step="1"
-            value={row.a_quantity ?? ""}
-            onChange={(e) => onFieldChange("a_quantity", e.target.value === "" ? 0 : Number(e.target.value))}
+            value={row.a_quantity === "" || row.a_quantity == null ? "" : row.a_quantity}
+            onChange={(e) => {
+              const raw = e.target.value;
+              onFieldChange("a_quantity", raw === "" ? "" : Number(raw));
+            }}
           />
         </FormField>
 

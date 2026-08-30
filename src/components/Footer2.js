@@ -175,7 +175,7 @@ export default function Footer2() {
     "supervisordashboard",
     "/expense-list",
     "/channel-partners/list",
-    "/finance/employee-verification", "/retainer-list", "/retainer/allocation-list", "resource-list", "/clamDetails"
+    "/finance/employee-verification", "/retainer-list", "/retainer/allocation-list", "resource-list", "/clamDetails", "/retainer/payable"
   ];
 
   useEffect(() => {

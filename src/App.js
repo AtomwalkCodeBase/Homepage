@@ -137,6 +137,7 @@ import ManagerAttendanceTracking from "./pages/Managerattendancetracking";
 
 import NAACComponent from "./components/naac/NAAC_Component";
 import NaacFeaturesManagement from "./components/naac/NaacFeaturesManagement";
+import RetainerPayableScreen from "./pages/ProjectManagement/RetainerPayableScreen";
 
 function App() {
   const url = "https://www.atomwalk.com/rest-auth/login/";
@@ -356,6 +357,7 @@ function App() {
                     <Route path="/channel-partners/list" element={<ChannelPatnerListScreen BrachManager={false} />} />
                     <Route path="/finance/employee-verification" element={<FinanceUserScreen2 />} />
                     <Route path="/retainer-list" element={<ChannelPatnerListScreen BrachManager={true} />} />
+                    <Route path="/retainer/payable" element={<RetainerPayableScreen />} />
                     <Route path="/retainer/allocation-list" element={<RetainerAllocationScreen />} />
                     <Route path="/resource-list" element={<ResourceAllocation />} />
                     <Route path="/clamDetails" element={<ClamDetailsScreen />} />

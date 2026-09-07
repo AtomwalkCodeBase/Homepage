@@ -175,7 +175,8 @@ export default function Footer2() {
     "supervisordashboard",
     "/expense-list",
     "/channel-partners/list",
-    "/finance/employee-verification", "/retainer-list", "/retainer/allocation-list", "resource-list", "/clamDetails", "/retainer/payable"
+    "/finance/employee-verification", "/retainer-list", "/retainer/allocation-list", "resource-list", "/clamDetails", "/retainer/payable",
+    "/document-management", "/email-template"
   ];
 
   useEffect(() => {
@@ -275,6 +276,9 @@ export default function Footer2() {
                   </li>
                   <li>
                     <a href="/retainer/login">Channel Partner Login</a>
+                  </li>
+                  <li>
+                    <a href="/docket/user/login">Docket Management</a>
                   </li>
 
                 </Links>

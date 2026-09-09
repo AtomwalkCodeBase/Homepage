@@ -929,7 +929,7 @@ const ManagerDashboard = () => {
               />
             </FilterRow>
             <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", alignItems: "center", marginTop: "1rem" }}>
-              {pathname !== "/admin-dashboard" && profile.grade_level >= 500 &&
+              {pathname !== "/admin-dashboard" && profile.grade_level >= 420 &&
                 <MultiSelectDropdown
                   options={employees.map(e => ({ label: `${e.name}(${e.emp_id})`, value: e.emp_id }))}
                   selectedValues={m_employee_id ? [m_employee_id] : []}

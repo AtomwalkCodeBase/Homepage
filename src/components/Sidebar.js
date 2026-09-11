@@ -482,6 +482,9 @@ const SubMenuLink = styled(Link)`
     font-size: 1rem;
   }
 `
+
+const ApmUserAccess = ['M00215', 'M12479', 'M00573', 'M14001', 'M13354'] //user : mangesh, ravi, harini, janki, raghav
+
 const Sidebar = ({ onToggle, initialOpen = false }) => {
   const [isOpen, setIsOpen] = useState(initialOpen)
   const [expandedGroups, setExpandedGroups] = useState({})
@@ -542,7 +545,7 @@ const Sidebar = ({ onToggle, initialOpen = false }) => {
           icon: <FaClock />,
           items: [
             { path: "/attendance-tracking", name: "Attendance", icon: <FaClock /> },
-            ...(companyInfo.business_type === "APM" && profile.grade_level >= 420 ? [{ path: "/admin-dashboard", name: "Admin Dashboard", icon: <ImUserTie /> }] : []),
+            ...(companyInfo.business_type === "APM" && (profile.grade_level >= 420 || ApmUserAccess?.map(String).includes(String(profile?.emp_id))) ? [{ path: "/admin-dashboard", name: "Admin Dashboard", icon: <ImUserTie /> }] : []),
             ...(companyInfo.business_type === "APM" && profile?.is_manager ? [{ path: "/managers/timesheet/dashboard", name: "Manager Dashboard", icon: <RiDashboardFill /> }] : []),
             { path: "/timesheet", name: `${companyInfo.business_type === "APM" ? "Dashboard" : "Timesheet"}`, icon: <FaChartBar /> },
             ...(companyInfo.business_type === "APM" && profile.grade_level > 100 ? [{ path: "/expense-list", name: "Expense Item List", icon: <FaMoneyBillWave /> }] : []),
@@ -718,7 +721,7 @@ const Sidebar = ({ onToggle, initialOpen = false }) => {
         : [
           { path: "/dashboard", name: "Dashboard", icon: <FaHome /> },
           ...(companyInfo.business_type === "APM" && profile?.is_manager ? [{ path: "/managers/timesheet/dashboard", name: "Manager Dashboard", icon: <RiDashboardFill /> }] : []),
-          ...(companyInfo.business_type === "APM" && profile.grade_level >= 420 ? [{ path: "/admin-dashboard", name: "Admin Dashboard", icon: <ImUserTie /> }] : []),
+          ...(companyInfo.business_type === "APM" && (profile.grade_level >= 420 || ApmUserAccess?.map(String).includes(String(profile?.emp_id))) ? [{ path: "/admin-dashboard", name: "Admin Dashboard", icon: <ImUserTie /> }] : []),
           ...(companyInfo.business_type === "APM" && (profile?.is_manager && profile.grade_level >= 420) ? [{ path: "/channel-partners/list", name: "Verify Channel Partners", icon: <FaUserCheck /> }] : []),
           ...(companyInfo.business_type === "APM" && (profile.grade_level <= 700 && profile.grade_level > 300) ? [{ path: "/retainer-list", name: "Channel Partners List", icon: <TbUsersGroup /> }] : []),
           // ...(companyInfo.business_type === "APM" ? [{ path: "/retainer-dashboard", name: "Retainer Dashboard", icon: <RiDashboardFill /> }] : []),

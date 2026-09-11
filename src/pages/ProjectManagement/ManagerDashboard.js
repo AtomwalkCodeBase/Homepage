@@ -383,9 +383,9 @@ const ManagerDashboard = () => {
 
     if (pathname === "/admin-dashboard") {
       if (emp_grade === "R") {
-        derived = derived.filter(a => Number(a.emp_grade) < 2);
+        derived = derived.filter(a => Number(a.emp_grade) < 4);
       } else if (emp_grade === "E") {
-        derived = derived.filter(a => Number(a.emp_grade) >= 2);
+        derived = derived.filter(a => Number(a.emp_grade) >= 4);
       }
     }
 

@@ -362,6 +362,7 @@ const ManagerDashboard = () => {
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [confirmType, setConfirmType] = useState(null);
+  const [activityFilter, setActivityFilter] = useState('');
 
   const groupedActivities = useMemo(() => {
     return buildActivityGroupMap(allEmployeeAllocationData);
@@ -432,9 +433,9 @@ const ManagerDashboard = () => {
 
   const filteredActivities = useMemo(() => {
     if (!derivedActivities.length) return [];
-    let filtered = filterActivities(derivedActivities, statusFilter, customerFilter, employeeFilter, searchTerm);
+    let filtered = filterActivities(derivedActivities, statusFilter, customerFilter, employeeFilter, activityFilter, searchTerm);
     return filtered;
-  }, [derivedActivities, statusFilter, customerFilter, employeeFilter, searchTerm]);
+  }, [derivedActivities, statusFilter, customerFilter, employeeFilter, activityFilter, searchTerm]);
 
   // Calculate paginated data
   const paginatedActivities = useMemo(() => {
@@ -549,6 +550,15 @@ const ManagerDashboard = () => {
   });
 
   const uniqueEmployees = Array.from(employeeMap.values()).sort((a, b) => a.name.localeCompare(b.name));
+
+  const activityOptions = useMemo(() => {
+    const uniqueActivities = [...new Set(derivedActivities.map(a => a.activity_name).filter(Boolean))];
+
+    return uniqueActivities.map(activity => ({
+      label: activity,
+      value: activity,
+    }));
+  }, [derivedActivities]);
 
   const statsData = [
     {
@@ -841,11 +851,7 @@ const ManagerDashboard = () => {
 
   const handleAuditExport = (data = null) => {
     // If no data is passed, choose based on the active tab
-    const toExport = Array.isArray(data)
-      ? data
-      : activeTab === "weekly"
-        ? WeeklyTimesheetSummaryData
-        : paginatedActivities;
+    const toExport = Array.isArray(data) ? data : activeTab === "weekly" ? WeeklyTimesheetSummaryData : paginatedActivities;
 
     const transformData = buildAuditExportData(toExport);
 
@@ -916,6 +922,8 @@ const ManagerDashboard = () => {
                 noOptionsText="No customers found"
                 width='350px'
                 singleSelect={true}
+                loading={isLoading}
+                loadingText='Loading...'
               />
               <MultiSelectDropdown
                 options={uniqueEmployees.map(e => ({ label: e.name, value: e.id }))}
@@ -926,6 +934,8 @@ const ManagerDashboard = () => {
                 noOptionsText="No employees found"
                 width='350px'
                 singleSelect={true}
+                loading={isLoading}
+                loadingText='Loading...'
               />
             </FilterRow>
             <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", alignItems: "center", marginTop: "1rem" }}>
@@ -941,8 +951,27 @@ const ManagerDashboard = () => {
                   singleSelect={true}
                   loading={loading}
                   loadingText='Loading...'
-                />}
-              <Button style={{ marginLeft: "auto" }} onClick={() => { setCustomerFilter(null); setEmployeeFilter(null); setSearchTerm(''); setCurrentPage(1); setM_Employee_id(null); }}><MdFilterAltOff /> Clear All</Button>
+                />
+              }
+
+              {pathname === "/admin-dashboard" &&
+                <MultiSelectDropdown
+                  options={activityOptions}
+                  selectedValues={activityFilter ? [activityFilter] : []}
+                  onChange={(val) =>
+                    setActivityFilter(val.length > 0 ? val[0] : '')
+                  }
+                  placeholder="All Branch"
+                  searchPlaceholder="Search branch name..."
+                  noOptionsText="No branch found"
+                  width="350px"
+                  singleSelect={true}
+                  loading={isLoading}
+                  loadingText='Loading...'
+                />
+
+              }
+              <Button style={{ marginLeft: "auto" }} onClick={() => { setCustomerFilter(null); setEmployeeFilter(null); setSearchTerm(''); setCurrentPage(1); setM_Employee_id(null); setActivityFilter('') }}><MdFilterAltOff /> Clear All</Button>
 
             </div>
           </FilterSection>
@@ -971,7 +1000,7 @@ const ManagerDashboard = () => {
               <TableScroll>
                 <GridTable>
                   <HeaderRow>
-                    <HeaderCell>Customer & Location</HeaderCell>
+                    <HeaderCell>Customer & Location <br /> Allocation</HeaderCell>
                     <HeaderCell>Audit Details</HeaderCell>
                     <HeaderCell>Planned Schedule</HeaderCell>
                     <HeaderCell>Actual</HeaderCell>
@@ -992,6 +1021,7 @@ const ManagerDashboard = () => {
                             <CustomerInfo>
                               <div className="name">{audit.customer_name}</div>
                               <div className="location">📍 {audit.store_name}</div>
+                              <div className="location">{audit.activity_name}</div>
                             </CustomerInfo>
                           </Cell>
                           <Cell>

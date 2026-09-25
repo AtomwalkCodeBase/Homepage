@@ -1440,6 +1440,7 @@ export const deriveActivityStatusForDate = (groupedActivities, selectedDate, cur
         original_A: group.original_A,
         allAEntries: group.allAEntries,
         project_period_status,
+        activity_name: P.activity_name,
 
         planned,
         actual,
@@ -1535,7 +1536,7 @@ export const buildStatsSummary = (activities) => {
   return stats;
 };
 
-export const filterActivities = (activities, statusFilter, customer, employee, searchText) => {
+export const filterActivities = (activities, statusFilter, customer, employee, activityFilter, searchText) => {
 
   return activities.filter(a => {
 
@@ -1548,6 +1549,9 @@ export const filterActivities = (activities, statusFilter, customer, employee, s
       return false;
 
     if (employee && a.emp_id !== employee)
+      return false;
+
+    if (activityFilter && a.activity_name !== activityFilter)
       return false;
 
     if (searchText) {

@@ -263,6 +263,10 @@ const RetainerAllocationScreen = () => {
     ];
 
     const [dateRange, setDateRange] = useState(() => {
+        if (activityData?.start_date && activityData?.end_date) {
+            return { start: activityData.start_date, end: activityData.end_date };
+        }
+
         if (storedSelection?.dateRange?.start && storedSelection?.dateRange?.end) {
             return storedSelection.dateRange;
         }

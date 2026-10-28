@@ -86,25 +86,107 @@ const SearchBox = styled.input`
     color: ${theme.colors.textLight};
   }
 `;
+const TableContainer = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: ${theme.spacing.md};
+  margin-bottom: ${theme.spacing.md};
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${theme.colors.border};
+    border-radius: 4px;
+  }
+`;
+
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
+  min-width: 680px;
 
   th {
     text-align: left;
     padding: 12px;
     background: #f3f4f6;
+    white-space: nowrap;
   }
 
   td {
     padding: 12px;
     border-bottom: 1px solid #eee;
+    white-space: nowrap;
   }
 `;
 const BUttonGroup = styled.div`
   display: flex;
   gap: ${theme.spacing.md};
 `;
+
+const DateInput = styled.input`
+  padding: 0.35rem 0.6rem;
+  border: 1px solid ${theme.colors.border};
+  border-radius: ${theme.borderRadius.sm || '4px'};
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: ${theme.colors.text};
+  background: white;
+
+  &:focus {
+    outline: none;
+    border-color: ${theme.colors.primary};
+  }
+`;
+
+const getTodayDateStr = () => {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const dd = String(today.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+};
+
+const shiftDateByDays = (dateStr, days) => {
+  if (!dateStr) return "";
+  const [y, m, d] = dateStr.split("-").map(Number);
+  const date = new Date(y, m - 1, d);
+  date.setDate(date.getDate() + days);
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+};
+
+const getApiThreeDayRange = (dateStr) => {
+  if (!dateStr) return { start_date: "", end_date: "" };
+  const [y, m, d] = dateStr.split("-").map(Number);
+  const prevDate = new Date(y, m - 1, d - 1);
+  const nextDate = new Date(y, m - 1, d + 1);
+  return {
+    start_date: formatToDDMMYYYY(prevDate),
+    end_date: formatToDDMMYYYY(nextDate),
+  };
+};
+
+const getMonthStartAndEnd = (dateStr) => {
+  if (!dateStr) return { start: "", end: "" };
+  const [y, m, d] = dateStr.split("-").map(Number);
+  const start = new Date(y, m - 1, 1);
+  const end = new Date(y, m, 0);
+  const format = (date) => {
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
+    return `${yyyy}-${mm}-${dd}`;
+  };
+  return {
+    start: format(start),
+    end: format(end),
+  };
+};
 
 const CHANNEL_PARTNER_LIST_STORAGE_KEY = "ChannelPartnerListSelection";
 
@@ -124,13 +206,13 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
   const [employeeList, setEmployeeList] = useState([]);
   const [resourcePlannedList, setResourcePlannedList] = useState([]);
   const [groupedEmployeeList, setGroupedEmployeeList] = useState([]);
-  const [dateRange, setDateRange] = useState(() => {
-    return getMonthRange({
-      type: "current",
-      mode: storedSelection?.activeRangeType || "month",
-      offset: storedSelection?.offset || 0,
-    });
+  const [selectedDate, setSelectedDate] = useState(() => {
+    return storedSelection?.selectedDate || getTodayDateStr();
   });
+
+  const monthRange = useMemo(() => {
+    return getMonthStartAndEnd(selectedDate);
+  }, [selectedDate]);
 
 
   useEffect(() => {
@@ -174,29 +256,30 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
         ...current,
         activeRangeType,
         offset,
-        dateRange,
+        selectedDate,
       });
     }
-  }, [activeRangeType, offset, dateRange, getStoredActivityListSelection, setStoredActivityListSelection]);
+  }, [activeRangeType, offset, selectedDate, getStoredActivityListSelection, setStoredActivityListSelection]);
 
   const [isDataLoading, setIsDataLoading] = useState(false);
-  const fetchedDateRange = React.useRef(null);
+  const fetchedDate = React.useRef(null);
 
-  const getAuditAllocationData = async (startOverride, endOverride) => {
-    const start = startOverride || dateRange.start;
-    const end = endOverride || dateRange.end;
+  const getAuditAllocationData = async (dateOverride) => {
+    const targetDate = dateOverride || selectedDate;
+    if (!targetDate) return;
 
-    if (!start || !end) return;
+    const { start_date, end_date } = getApiThreeDayRange(targetDate);
+    if (!start_date || !end_date) return;
 
     const payload = {
-      start_date: formatToDDMMYYYY(start),
-      end_date: formatToDDMMYYYY(end),
-    }
+      start_date,
+      end_date,
+    };
 
     setIsDataLoading(true);
     try {
       const resourceData = await fetchContractAllocations(payload);
-      const filteredData = resourceData.filter((data) => data.is_active)
+      const filteredData = resourceData.filter((data) => data.is_active);
       setResourcePlannedList(filteredData);
       await fetchEmpActivityAllocations(payload, resourceData);
     } catch (error) {
@@ -204,17 +287,16 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
     } finally {
       setIsDataLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     if (BrachManager) {
-      const currentRangeStr = `${dateRange?.start}-${dateRange?.end}`;
-      if (fetchedDateRange.current !== currentRangeStr) {
-        fetchedDateRange.current = currentRangeStr;
-        getAuditAllocationData();
+      if (fetchedDate.current !== selectedDate) {
+        fetchedDate.current = selectedDate;
+        getAuditAllocationData(selectedDate);
       }
     }
-  }, [dateRange, BrachManager]);
+  }, [selectedDate, BrachManager]);
 
   const getEmployeesGroupedData = useCallback(() => {
     if (!employeeList.length || !resourcePlannedList.length) {
@@ -335,20 +417,8 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
 
   const { currentPage, itemsPerPage, paginatedData: paginatedActivities, totalItems, handlePageChange, setCurrentPage } = usePagination(sortedEmployees, 10);
 
-  const handleRangeChange = (type) => {
-    setActiveRangeType(type);
-    setOffset(0);
-    const range = getMonthRange({ type: "current", mode: type, offset: 0 });
-    setDateRange(range);
-  };
-
-  const handleNavigate = (direction) => {
-    setOffset((prevOffset) => {
-      const newOffset = prevOffset + direction;
-      const range = getMonthRange({ type: "current", mode: activeRangeType, offset: newOffset });
-      setDateRange(range);
-      return newOffset;
-    });
+  const handleNavigateDay = (direction) => {
+    setSelectedDate((prev) => shiftDateByDays(prev, direction));
   };
 
   const tabs = useMemo(() => {
@@ -376,10 +446,9 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
 
         {BrachManager && (
           <MonthToggleComponent
-            activeRangeType={activeRangeType}
-            dateRange={dateRange}
-            handleNavigate={handleNavigate}
-            onRangeChange={handleRangeChange}
+            selectedDate={selectedDate}
+            onDateChange={(newDate) => setSelectedDate(newDate)}
+            handleNavigate={handleNavigateDay}
           />
         )}
       </Subtitle>
@@ -405,22 +474,15 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
             setSearchTerm("");
 
             if (BrachManager) {
-              setActiveRangeType("month");
-              setOffset(0);
-
-              const currentMonthRange = getMonthRange({
-                type: "current",
-                mode: "month",
-                offset: 0,
-              });
-              setDateRange(currentMonthRange);
+              setSelectedDate(getTodayDateStr());
             }
           }}>
             Clear Filters
           </Button>
         </FilterRow>
-        <Table>
-          <thead>
+        <TableContainer>
+          <Table>
+            <thead>
             <tr>
               <th>{activeTab === "R" ? "Retainer" : "Associate"}'s ID</th>
               <th>Name</th>
@@ -452,10 +514,10 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
                       <td>{employee.name}</td>
                       {!BrachManager && <td>{employee.mobile_number || "--"}</td>}
                       {!BrachManager && <td>{employee.email_id || "--"}</td>}
-                      {BrachManager && <td><Badge variant='primary' style={{ cursor: "pointer", marginLeft: "0.9rem" }} onClick={() => navigate("/retainer/allocation-list", { state: { ...employee, groupedData, activeTab: "all", partnerActiveTab: activeTab, cp_id: employee.emp_id } })}>{groupedData.length || 0}</Badge></td>}
-                      {BrachManager && <td><Badge variant='info' style={{ cursor: "pointer", marginLeft: "0.9rem" }} onClick={() => navigate("/retainer/allocation-list", { state: { ...employee, groupedData, activeTab: "submitted", partnerActiveTab: activeTab, cp_id: employee.emp_id } })}>{planSubmittedCount || 0} </Badge></td>}
-                      {BrachManager && <td><Badge variant='success' style={{ cursor: "pointer", marginLeft: "0.9rem" }} onClick={() => navigate("/retainer/allocation-list", { state: { ...employee, groupedData, activeTab: "actual", partnerActiveTab: activeTab, cp_id: employee.emp_id } })}>{actualSubmittedCount || 0} </Badge></td>}
-                      {BrachManager && <td><Badge variant='error' style={{ cursor: "pointer", marginLeft: "0.9rem" }} onClick={() => navigate("/retainer/allocation-list", { state: { ...employee, groupedData, activeTab: "pending", partnerActiveTab: activeTab, cp_id: employee.emp_id } })}>{notAssignedCount || 0}</Badge></td>}
+                      {BrachManager && <td><Badge variant='primary' style={{ cursor: "pointer", marginLeft: "0.9rem" }} onClick={() => navigate("/retainer/allocation-list", { state: { ...employee, groupedData, activeTab: "all", partnerActiveTab: activeTab, cp_id: employee.emp_id, start_date: monthRange.start, end_date: monthRange.end, selectedDate } })}>{groupedData.length || 0}</Badge></td>}
+                      {BrachManager && <td><Badge variant='info' style={{ cursor: "pointer", marginLeft: "0.9rem" }} onClick={() => navigate("/retainer/allocation-list", { state: { ...employee, groupedData, activeTab: "submitted", partnerActiveTab: activeTab, cp_id: employee.emp_id, start_date: monthRange.start, end_date: monthRange.end, selectedDate } })}>{planSubmittedCount || 0} </Badge></td>}
+                      {BrachManager && <td><Badge variant='success' style={{ cursor: "pointer", marginLeft: "0.9rem" }} onClick={() => navigate("/retainer/allocation-list", { state: { ...employee, groupedData, activeTab: "actual", partnerActiveTab: activeTab, cp_id: employee.emp_id, start_date: monthRange.start, end_date: monthRange.end, selectedDate } })}>{actualSubmittedCount || 0} </Badge></td>}
+                      {BrachManager && <td><Badge variant='error' style={{ cursor: "pointer", marginLeft: "0.9rem" }} onClick={() => navigate("/retainer/allocation-list", { state: { ...employee, groupedData, activeTab: "pending", partnerActiveTab: activeTab, cp_id: employee.emp_id, start_date: monthRange.start, end_date: monthRange.end, selectedDate } })}>{notAssignedCount || 0}</Badge></td>}
                       <td>
                         {!BrachManager && <BUttonGroup>
                           <Button title="View Employee" iconOnly={true} onClick={() => navigate("/finance/employee-verification", { state: employee })}>
@@ -465,7 +527,7 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
 
                         {BrachManager &&
                           <BUttonGroup>
-                            <Button title="View Retainer Allocation" iconOnly={true} onClick={() => navigate("/retainer/allocation-list", { state: { ...employee, groupedData, partnerActiveTab: activeTab, cp_id: employee.emp_id } })}>
+                            <Button title="View Retainer Allocation" iconOnly={true} onClick={() => navigate("/retainer/allocation-list", { state: { ...employee, groupedData, partnerActiveTab: activeTab, cp_id: employee.emp_id, start_date: monthRange.start, end_date: monthRange.end, selectedDate } })}>
                               <IoEyeOutline />
                             </Button>
                             <Button title="View Retainer Payable" iconOnly={true} onClick={() => {
@@ -475,8 +537,8 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
                               navigate("/retainer/payable", {
                                 state: {
                                   cp_id: employee.emp_id, cp_name: employee.name,
-                                  start_date: dateRange?.start,
-                                  end_date: dateRange?.end,
+                                  start_date: monthRange?.start,
+                                  end_date: monthRange?.end,
                                 },
                               });
                             }}>
@@ -498,6 +560,7 @@ const ChannelPatnerListScreen = ({ BrachManager = true }) => {
             }
           </tbody>
         </Table>
+        </TableContainer>
         <PaginationComponent
           totalItems={totalItems}
           itemsPerPage={itemsPerPage}
@@ -518,16 +581,24 @@ const getStatusCount = (arr, status) => {
   return arr.filter(item => item.statusDisplay === status).length;
 }
 
-export const MonthToggleComponent = ({ activeRangeType, dateRange, handleNavigate }) => {
+export const MonthToggleComponent = ({ selectedDate, onDateChange, handleNavigate, activeRangeType, dateRange }) => {
   return (
     <div>
-      <div style={{ marginTop: '0.5rem', fontWeight: 'bold', fontSize: '1.1rem', color: '#333', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+      <div style={{ marginTop: '0.5rem', fontWeight: 'bold', fontSize: '1.1rem', color: '#333', display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
         <Button variant="outline" size="sm" style={{ padding: '0.25rem 0.5rem' }} onClick={() => handleNavigate(-1)}>
           &lt; Prev
         </Button>
-        <span>
-          {activeRangeType === 'month' ? formatMonthLabel(dateRange.start) : formatWeekLabel(dateRange.start, dateRange.end)}
-        </span>
+        {selectedDate !== undefined ? (
+          <DateInput
+            type="date"
+            value={selectedDate || ""}
+            onChange={(e) => onDateChange && onDateChange(e.target.value)}
+          />
+        ) : (
+          <span>
+            {activeRangeType === 'month' ? formatMonthLabel(dateRange.start) : formatWeekLabel(dateRange.start, dateRange.end)}
+          </span>
+        )}
         <Button variant="outline" size="sm" style={{ padding: '0.25rem 0.5rem' }} onClick={() => handleNavigate(1)}>
           Next &gt;
         </Button>
